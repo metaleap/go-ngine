@@ -1,4 +1,4 @@
 go-ngine
 ========
 
-A native OpenGL 3D engine for Go. Early work-in-progress. Not ready for developer use just yet...
+A native OpenGL 3D engine for Go. Early work-in-progress. Not ready for developer use just yet... see http://go-ngine.com for details & updates.
