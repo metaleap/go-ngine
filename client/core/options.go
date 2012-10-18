@@ -5,11 +5,14 @@ import (
 )
 
 type TOptions struct {
+	DefaultRenderTechnique string
+
 	glBackfaceCulling, glTextureAnisotropy, glTextureFiltering, glTextureMipMaps bool
 }
 
 func NewOptions (glBackfaceCulling bool) *TOptions {
 	var opt = &TOptions {}
+	opt.DefaultRenderTechnique = "unlit"
 	opt.glBackfaceCulling = glBackfaceCulling
 	return opt
 }

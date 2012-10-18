@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 
 	ngine "github.com/metaleap/go-ngine/client"
 	ncore "github.com/metaleap/go-ngine/client/core"
@@ -54,7 +55,26 @@ func PrintPostLoopSummary () {
 	}
 }
 
+func SamplesMainFunc (loader func ()) {
+	runtime.LockOSThread()
+	var err error
+	defer ngine.Dispose()
+
+	if err = ngine.Init(1280, 720, false, 0, AssetRootDirPath(), "Loading Sample...", SamplesOnSec); err != nil {
+		fmt.Printf("ABORT: %v\n", err)
+	} else {
+		ngine.Stats.TrackGC = true
+		loader()
+		ngine.Loop.Loop()
+		PrintPostLoopSummary()
+	}
+}
+
+func SamplesOnSec () {
+	ngine.Windowing.SetTitle(WindowTitle())
+}
+
 func WindowTitle () string {
 	ctl = ngine.Core.CurCamera.Controller
-	return fmt.Sprintf("%v FPS @ %vx%v | Cam: P=%v D=%v", ngine.Stats.Fps, ngine.Windowing.WinWidth, ngine.Windowing.WinHeight, ctl.Pos, ctl.Dir)
+	return fmt.Sprintf("%v FPS @ %vx%v | F2: Toggle Render Technique | Cam: P=%v D=%v", ngine.Stats.Fps, ngine.Windowing.WinWidth, ngine.Windowing.WinHeight, ctl.Pos, ctl.Dir)
 }

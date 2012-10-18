@@ -4,7 +4,6 @@ import (
 	gl "github.com/chsc/gogl/gl42"
 
 	glutil "github.com/metaleap/go-util/gl"
-	numutil "github.com/metaleap/go-util/num"
 
 	nglcore "github.com/metaleap/go-ngine/client/glcore"
 )
@@ -20,7 +19,6 @@ var (
 	curProg, tmpProg *glutil.TShaderProgram
 	curTechnique ITechnique
 	curScene *TScene
-	dirLightVec = &numutil.TVec3 {}
 )
 
 type TEngineCore struct {
@@ -36,18 +34,17 @@ type TEngineCore struct {
 }
 
 func NewEngineCore (viewWidth, viewHeight int) *TEngineCore {
-	var defCanvas = NewCanvas(viewWidth, viewHeight, true)
+	var defCanvas *TCanvas
 	Core = &TEngineCore {}
+	Core.Options = NewOptions(true)
+	Core.Meshes = map [string] *TMesh {}
+	Core.Materials = map [string] *TMaterial {}
+	Core.Scenes = map [string] *TScene {}
+	Core.Timer = &TTimer {}
+	defCanvas = NewCanvas(viewWidth, viewHeight, true)
 	Core.Canvases = [] *TCanvas { defCanvas }
 	Core.CurCanvas = defCanvas
 	Core.CurCamera = defCanvas.Cameras[0]
-	Core.Meshes = map [string] *TMesh {}
-	Core.Materials = map [string] *TMaterial {}
-	Core.Options = NewOptions(true)
-	Core.Scenes = map [string] *TScene {}
-	Core.Timer = &TTimer {}
-	dirLightVec.X, dirLightVec.Y, dirLightVec.Z = 0, 1, 0
-	dirLightVec.Normalize()
 	return Core
 }
 
