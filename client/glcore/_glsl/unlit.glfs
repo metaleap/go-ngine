@@ -1,0 +1,9 @@
+in vec2 vTexCoords;
+
+uniform sampler2D uTex0;
+
+out vec4 oColor;
+
+void main () {
+	oColor = texture(uTex0, vTexCoords);
+}

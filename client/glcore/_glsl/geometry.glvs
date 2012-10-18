@@ -1,0 +1,12 @@
+in vec3 aPos;
+
+uniform mat4 uMatCam;
+uniform mat4 uMatModelView;
+uniform mat4 uMatProj;
+
+smooth out vec3 vPos;
+
+void main () {
+	vPos = (aPos * 0.33) + 0.66;
+	gl_Position = uMatProj * uMatCam * uMatModelView * vec4(aPos, 1.0);
+}

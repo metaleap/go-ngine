@@ -1,0 +1,13 @@
+in vec3 aPos;
+in vec2 aTexCoords;
+
+uniform mat4 uMatCam;
+uniform mat4 uMatModelView;
+uniform mat4 uMatProj;
+
+out vec2 vTexCoords;
+
+void main () {
+	gl_Position = uMatProj * uMatCam * uMatModelView * vec4(aPos, 1.0);
+	vTexCoords = aTexCoords;
+}
