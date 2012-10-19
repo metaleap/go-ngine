@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"runtime"
 
+	util "github.com/go3d/go-util"
+
 	ngine "github.com/go3d/go-ngine/client"
 	ncore "github.com/go3d/go-ngine/client/core"
 )
@@ -15,7 +17,7 @@ var (
 )
 
 func AssetRootDirPath () string {
-	return filepath.Join(os.Getenv("GOPATH"), "src", "github.com", "go-ngine", "go-ngine", "_sampleprogs", "_sharedassets")
+	return util.BaseCodePath("go-ngine", "_sampleprogs", "_sharedassets")
 }
 
 func NewMeshCube () *ncore.TMesh {

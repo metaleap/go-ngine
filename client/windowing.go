@@ -3,7 +3,7 @@ package client
 import (
 	glfw "github.com/jteeuwen/glfw"
 
-	coreutil "github.com/go3d/go-util"
+	util "github.com/go3d/go-util"
 )
 
 type TWindowing struct {
@@ -42,7 +42,7 @@ func (me *TWindowing) glfwInit (winWidth, winHeight int, winFullScreen bool, vsy
 	}
 	if (me.isGlfwInit && !me.isGlfwWindow) {
 		glfw.OpenWindowHint(glfw.FsaaSamples, 0) // AA is a pluggable post-processing shader, because super-/multi-sampling is simply highly undesirable
-		if err = glfw.OpenWindow(winWidth, winHeight, 8, 8, 8, 0, 24, 8, coreutil.Ifi(winFullScreen, glfw.Fullscreen, glfw.Windowed)); err == nil {
+		if err = glfw.OpenWindow(winWidth, winHeight, 8, 8, 8, 0, 24, 8, util.Ifi(winFullScreen, glfw.Fullscreen, glfw.Windowed)); err == nil {
 			me.WinWidth, me.WinHeight = winWidth, winHeight
 			me.isGlfwWindow = true
 		}

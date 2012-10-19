@@ -5,16 +5,25 @@ import (
 	"go/ast"
 	"go/parser"
 	"go/token"
-	"os"
-	"path/filepath"
 	"strings"
 
+	xmlx "github.com/jteeuwen/go-pkg-xmlx"
+
 	ioutil "github.com/go3d/go-util/io"
+	util "github.com/go3d/go-util"
 )
+
+type glNameInfo struct {
+	filePaths []string
+	nameKind string // can be function, enum, type
+	glVersion string
+}
 
 var (
 	curFilePath = ""
-	glNames = map[string][]string {}
+	glNames = map[string]*glNameInfo {}
+	glVersions = map[string][]string {}
+	specDoc *xmlx.Document
 )
 
 func checkGoFile (filePath string) {
@@ -38,7 +47,7 @@ func checkGoFile (filePath string) {
 
 func inspectNode (node ast.Node) bool {
 	var x, sel *ast.Ident
-	var sl []string
+	var gni *glNameInfo
 	switch selExpr := node.(type) {
 	case *ast.SelectorExpr:
 		switch xExpr := selExpr.X.(type) {
@@ -48,8 +57,8 @@ func inspectNode (node ast.Node) bool {
 		sel = selExpr.Sel
 	}
 	if (x != nil) && (sel != nil) && (x.Name == "gl") {
-		if sl = glNames[sel.Name]; sl == nil { sl = []string {} }
-		if !inSlice(sl, curFilePath) { sl, glNames[sel.Name] = append(sl, curFilePath), sl }
+		if gni = glNames[sel.Name]; gni == nil { gni, glNames[sel.Name] = &glNameInfo { []string {}, "", "" }, gni }
+		if !inSlice(gni.filePaths, curFilePath) { gni.filePaths = append(gni.filePaths, curFilePath) }
 		return false
 	}
 	return true
@@ -60,12 +69,44 @@ func inSlice (slice []string, val string) bool {
 	return false
 }
 
+func loadSpecXml () {
+	specDoc = xmlx.New()
+	if err := specDoc.LoadBytes(ioutil.ReadBinaryFile(util.BaseCodePath("go-ngine", "_tools", "gl_imp_parser_version_checker", "opengl.xml"), true), nil); err != nil {
+		panic(err)
+	}
+}
+
 func main() {
-	ioutil.WalkDirectory(filepath.Join(os.Getenv("GOPATH"), "src", "github.com", "go3d"), ".go", checkGoFile, true)
-	for glName, filePaths := range glNames {
-		println(glName)
-		for _, fp := range filePaths {
-			fmt.Printf("\t\t%v\n", fp)
+	loadSpecXml()
+	var enumNodes, funcNodes = specDoc.SelectNodesRecursive("*", "enum"), specDoc.SelectNodesRecursive("*", "function")
+	var ver, kind string
+	var verList []string
+	var gni *glNameInfo
+	ioutil.WalkDirectory(util.BaseCodePath(), ".go", checkGoFile, true)
+	for glName, _ := range glNames {
+		kind, ver = "", ""
+		for _, enode := range enumNodes { if enode.As("*", "name") == glName { ver, kind = enode.As("*", "version"), "enum" } }
+		if len(ver) == 0 {
+			for _, fnode := range funcNodes { if fnode.As("*", "name") == glName { ver, kind = fnode.As("*", "version"), "function" } }
+		}
+		if len(ver) > 0 {
+			glNames[glName].glVersion, glNames[glName].nameKind = ver, kind
+			if (ver > "3.2") {
+				if verList = glVersions[ver]; (verList == nil) || (len(verList) == 0) { verList = []string {} }
+				if !inSlice(verList, glName) { verList = append(verList, glName) }
+				glVersions[ver] = verList
+			}
+		}
+	}
+	for ver, verList = range glVersions {
+		fmt.Printf("GL v%v used %vx:\n", ver, len(verList))
+		for _, glName := range verList {
+			if gni = glNames[glName]; gni != nil {
+				fmt.Printf("\t%v %v:\n", gni.nameKind, glName)
+				for _, filePath := range gni.filePaths {
+					fmt.Printf("\t\t%v\n", filePath)
+				}
+			}
 		}
 	}
 }
