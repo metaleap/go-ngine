@@ -1,7 +1,7 @@
 package main
 
 import (
-	ngine_samplescenes "github.com/metaleap/go-ngine/samplescenes"
+	ngine_samplescenes "github.com/go-ngine/go-ngine/samplescenes"
 )
 
 func main() {

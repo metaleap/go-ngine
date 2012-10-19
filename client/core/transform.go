@@ -1,8 +1,8 @@
 package core
 
 import (
-	glutil "github.com/metaleap/go-util/gl"
-	numutil "github.com/metaleap/go-util/num"
+	glutil "github.com/go-ngine/go-util/gl"
+	numutil "github.com/go-ngine/go-util/num"
 )
 
 type ITransformable interface {

@@ -7,7 +7,7 @@ import (
 
 	gl "github.com/chsc/gogl/gl42"
 
-	glutil "github.com/metaleap/go-util/gl"
+	glutil "github.com/go-ngine/go-util/gl"
 )
 
 type TShaderManager struct {
@@ -46,7 +46,7 @@ func (me *TShaderManager) compileAll () error {
 		for glShaderType, shaderTypeIndex = range ShaderMan.AllSources.enumerate() {
 			if shaderSrc = me.AllSources.source(glShaderType, shaderName); len(shaderSrc) > 0 {
 				glShaders[shaderTypeIndex] = gl.CreateShader(glShaderType)
-				glutil.ShaderSource(shaderName, glShaders[shaderTypeIndex], shaderSrc, defines, false)
+				glutil.ShaderSource(shaderName, glShaders[shaderTypeIndex], shaderSrc, defines, false, "150")
 				gl.CompileShader(glShaders[shaderTypeIndex])
 				if gl.GetShaderiv(glShaders[shaderTypeIndex], gl.COMPILE_STATUS, &glStatus); glStatus == 0 { err = fmt.Errorf("SHADER %s: %s\n", shaderName, glutil.ShaderInfoLog(glShaders[shaderTypeIndex], true)) }
 			} else {

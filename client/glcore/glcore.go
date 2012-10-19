@@ -7,7 +7,7 @@ import (
 
 	gl "github.com/chsc/gogl/gl42"
 
-	glutil "github.com/metaleap/go-util/gl"
+	glutil "github.com/go-ngine/go-util/gl"
 )
 
 var (
@@ -15,15 +15,15 @@ var (
 	ShaderMan = NewShaderManager()
 )
 
-func Dispose () {
-	if (IsGlInit) {
+func Dispose() {
+	if IsGlInit {
 		IsGlInit = false
 		ShaderMan.dispose()
 	}
 }
 
-func Init () error {
-	var minMatch = "4_2"
+func Init() error {
+	var minMatch = "3_2"
 	var err error
 	var vPos int
 	var vMatch = "VERSION_"
@@ -36,22 +36,21 @@ Look for their "driver downloads" pages and follow their
 instructions to find & download the newest driver version
 for: <%v>.
 `
-	if (!IsGlInit) {
+	if !IsGlInit {
 		if err = gl.Init(); err != nil {
 			// 	check for a message such as "unable to initialize VERSION_4_0"
 			if vPos = strings.Index(err.Error(), vMatch); vPos >= 0 {
-				vMatch = err.Error() [vPos + len(vMatch) : ]
+				vMatch = err.Error()[vPos+len(vMatch):]
 				if vMatch > minMatch {
 					err = nil
 				} else {
-					if vMatch > "1_0" {
-						vMatch = glutil.GlStr(gl.VERSION)
-					}
+					if vMatch > "1_0" { vMatch = glutil.GlStr(gl.VERSION) }
 					err = fmt.Errorf(vMessage, strings.Replace(minMatch, "_", ".", -1), strings.Replace(vMatch, "_", ".", -1), glutil.GlStr(gl.VENDOR), glutil.GlStr(gl.RENDERER))
 				}
 			}
 		}
 		if err == nil {
+			glutil.SetVersion()
 			IsGlInit = true
 			gl.ClearColor(0, 0.05, 0.25, 1)
 			gl.Enable(gl.DEPTH_TEST)
@@ -66,9 +65,7 @@ for: <%v>.
 	return err
 }
 
-func LogLastError (step string, fmtArgs ... interface{}) {
-	var err = glutil.LastError(step, fmtArgs ...)
-	if err != nil {
-		log.Println(err.Error())
-	}
+func LogLastError(step string, fmtArgs ...interface{}) {
+	var err = glutil.LastError(step, fmtArgs...)
+	if err != nil { log.Println(err.Error()) }
 }

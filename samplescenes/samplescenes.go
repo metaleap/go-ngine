@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"runtime"
 
-	ngine "github.com/metaleap/go-ngine/client"
-	ncore "github.com/metaleap/go-ngine/client/core"
+	ngine "github.com/go-ngine/go-ngine/client"
+	ncore "github.com/go-ngine/go-ngine/client/core"
 )
 
 var (
@@ -15,7 +15,7 @@ var (
 )
 
 func AssetRootDirPath () string {
-	return filepath.Join(os.Getenv("GOPATH"), "src", "github.com", "metaleap", "go-ngine", "_sampleprogs", "_sharedassets")
+	return filepath.Join(os.Getenv("GOPATH"), "src", "github.com", "go-ngine", "go-ngine", "_sampleprogs", "_sharedassets")
 }
 
 func NewMeshCube () *ncore.TMesh {
