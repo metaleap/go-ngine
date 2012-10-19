@@ -2,8 +2,6 @@ package samplescenes
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
 	"runtime"
 
 	util "github.com/go3d/go-util"
