@@ -5,8 +5,6 @@ import (
 	"math"
 	"runtime"
 
-	glfw "github.com/jteeuwen/glfw"
-
 	glutil "github.com/go3d/go-util/gl"
 
 	ncore "github.com/go3d/go-ngine/client/core"
@@ -22,7 +20,7 @@ type TEngineLoop struct {
 
 func (me *TEngineLoop) Loop () {
 	var onLoopHandler func ()
-	me.SecTickLast, me.TickNow = glfw.Time(), glfw.Time()
+	me.SecTickLast, me.TickNow = Windowing.Time(), Windowing.Time()
 	Stats.fps = 0
 	if (!me.IsLooping) {
 		me.IsLooping = true
@@ -33,13 +31,13 @@ func (me *TEngineLoop) Loop () {
 			Stats.fps++
 			Stats.fpsAll++
 			me.TickLast = me.TickNow
-			me.TickNow = glfw.Time()
+			me.TickNow = Windowing.Time()
 			me.TickDelta = me.TickNow - me.TickLast
 			Core.Timer.LastTick, Core.Timer.NowTick, Core.Timer.TickDelta = me.TickLast, me.TickNow, me.TickDelta
 			if math.Floor(me.TickNow) != me.SecTickLast {
 				runtime.GC()
 				if Stats.TrackGC {
-					if Stats.GcTime = glfw.Time() - me.TickNow; Stats.GcTime > Stats.GcMaxTime { Stats.GcMaxTime = Stats.GcTime }
+					if Stats.GcTime = Windowing.Time() - me.TickNow; Stats.GcTime > Stats.GcMaxTime { Stats.GcMaxTime = Stats.GcTime }
 				}
 				Stats.fpsSecs++
 				Stats.Fps, Stats.fps, me.SecTickLast = Stats.fps, 0, math.Floor(me.TickNow)
@@ -48,7 +46,7 @@ func (me *TEngineLoop) Loop () {
 			for _, onLoopHandler = range me.OnLoopHandlers {
 				onLoopHandler()
 			}
-			Windowing.glfwOnLoop()
+			Windowing.OnLoop()
 		}
 		nglcore.LogLastError("ngine.PostLoop")
 	}
@@ -70,7 +68,7 @@ var (
 	Loop *TEngineLoop
 	Core *ncore.TEngineCore
 	Stats *TEngineStats
-	Windowing = newWindowing()
+	Windowing IWindowing
 )
 
 func Dispose () {
@@ -78,16 +76,17 @@ func Dispose () {
 	if Core != nil { Core.Dispose() }
 	nglcore.LogLastError("ngine.Core_Dispose")
 	nglcore.Dispose()
-	Windowing.glfwExit()
+	Windowing.Exit()
 	Core, Loop, Stats = nil, nil, nil
 }
 
-func Init (winWidth, winHeight int, winFullScreen bool, vsync int, assetRootDirPath, winTitle string, onSecTick func ()) error {
+func Init (windowing IWindowing, winWidth, winHeight int, winFullScreen bool, vsync int, assetRootDirPath, winTitle string, onSecTick func ()) error {
 	var err error
-	if err = Windowing.glfwInit(winWidth, winHeight, winFullScreen, vsync, winTitle); err == nil {
+	Windowing = windowing
+	if err = Windowing.Init(winWidth, winHeight, winFullScreen, vsync, winTitle); err == nil {
 		if err = nglcore.Init(); err == nil {
 			AssetRootDirPath, Loop, Stats = assetRootDirPath, &TEngineLoop {}, &TEngineStats {}
-			Core = ncore.NewEngineCore(Windowing.WinWidth, Windowing.WinHeight)
+			Core = ncore.NewEngineCore(winWidth, winHeight)
 			Loop.OnSecTick = onSecTick
 			Loop.OnLoopHandlers = [] func () {}
 			log.Println(glutil.GlConnInfo())
