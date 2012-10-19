@@ -1,10 +1,23 @@
 package main
 
+/*
+	Essentially just takes a single -f=filepath parameter and attempts to "go install" the package it belongs to.
+
+	1. If the package is inside the github.com/go-ngine/go-ngine path, then before "go install":
+	-	reads all shader files inside go-ngine/client/glcore/_glsl or sub-dirs
+	-	places #include-processed shader sources in go-ngine/client/glcore/-auto-generated-glsl-src.go
+
+	2. If the specified -f file is a main package and "go install" succeeded, attempts to run the built command
+
+	I use this tool as my "build system" in Sublime Text 2, my custom GoBuildRun.sublime-build file then is simply:
+	{ "cmd": ["\\gd\\bin\\buildrun.exe", "-f=$file"] }
+
+*/
+
 import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"path"
 	"path/filepath"
 	"os"
 	"os/exec"
@@ -32,30 +45,12 @@ func (this shaderSrcSortables) MapAll () map[string]shaderSrcSortable {
 	return map[string]shaderSrcSortable { "Vertex": this.vert, "TessCtl": this.tessCtl, "TessEval": this.tessEval, "Geometry": this.geo, "Fragment": this.frag, "Compute": this.comp }
 }
 
-func checkForFileCopy (filePath string) {
-/*
-	var fileCopyMatch = "//CP "
-	var err error
-	var file *os.File
-	var rawBytes []byte
-	var tmp string
-	if file, err = os.Open(filePath); err == nil {
-		if rawBytes, err = ioutil.ReadAll(file); err == nil {
-			if tmp = string(rawBytes); strings.HasPrefix(tmp, fileCopyMatch) {
-				tmp = tmp[len(fileCopyMatch) : ]
-				tmp = tmp[ : strings.IndexAny(tmp, "\r\n")]
-				ioutil.WriteFile(tmp, rawBytes, os.ModePerm)
-			}
-		}
-	}
-*/
-}
-
 func checkForMainPackage (filePath string) bool {
 	var err error
 	var file *os.File
 	var rawBytes []byte
 	var tmp string
+	if strings.Index(filePath, "buildrun") >= 0 { panic("buildrun tool cannot build itself!") }
 	if file, err = os.Open(filePath); err == nil {
 		defer file.Close()
 		if rawBytes, err = ioutil.ReadAll(file); err == nil {
@@ -144,13 +139,6 @@ func generateShadersFile (srcDirPath, outFilePath, pkgName string, stripComments
 			glslSrc += fmt.Sprintf("\trss.%s[\"%s\"] = %#v\n", varName, shaderName, includeShaders(shaderSource.name, shaderSource.src, iShaders))
 		}
 	}
-/*
-	for _, shaderSource = range fShaders {
-		shaderSource.src = includeShaders(shaderSource.name, shaderSource.src, iShaders)
-		// if shaderSource.name == "cast.fs" { ioutil.WriteFile(outFilePath + ".fs", []byte(shaderSource.src), os.ModePerm) }
-		glslSrc += fmt.Sprintf("\tFShaders[\"%s\"] = %#v\n", shaderSource.name[: strings.LastIndex(shaderSource.name, ".")], shaderSource.src)
-	}
-*/
 	if glslSrc += fmt.Sprintf("\tShaderMan.AllSources = rss\n\tShaderMan.AllNames = %#v\n}\n", allNames); glslSrc != glslOldSrc {
 		ioutil.WriteFile(outFilePath, []byte(glslSrc), os.ModePerm)
 	}
@@ -224,105 +212,6 @@ func main () {
 		cmdRawOut, err = exec.Command(cmdRunPath).CombinedOutput()
 		if len(cmdRawOut) > 0 { fmt.Printf("%v\n", trimLines(string(cmdRawOut), 10)) }
 		if err != nil { fmt.Printf("%+v\n", err) }
-	}
-}
-
-func old_main () {
-	var startTime = time.Now()
-	var flagDebug = flag.Bool("d", false, "debug: true to add, false to strip debug symbols")
-	var flagRun = flag.Bool("r", false, "run the built binary?")
-	var flagFilePath = flag.String("f", "", "file: current .go source file from which to build")
-	var pathSep = string(os.PathSeparator)
-	var subPathMatch, pkgPrefix, pkgOutPrefix = pathSep + "src" + pathSep + "terra" + pathSep, "terra" + pathSep, "terra-"
-	var origFilePath, gdDirPath, srcFilePath, tmpFileName, buildPkg, buildOut string
-	var dir *os.File
-	var dirPath, err = os.Getwd()
-	var cmd *exec.Cmd
-	var cmdArgs, dirFileNames, pkgNameParts []string
-	var cmdRawOut []byte
-//	var pos int
-//	var isMainPkg bool
-	if err != nil { panic(err) }
-	flag.Parse()
-	origFilePath = *flagFilePath
-//Restart:
-	if (len(origFilePath) > 0) && strings.Contains(origFilePath, subPathMatch) {
-		gdDirPath = origFilePath[0 : strings.Index(origFilePath, subPathMatch)]
-		if strings.HasSuffix(origFilePath, ".exe.go") { srcFilePath = origFilePath }
-		for (len(srcFilePath) == 0) && (strings.Index(dirPath, pkgPrefix) > 0) {
-			if dir, err = os.Open(dirPath); err != nil { panic(err) }
-			if dirFileNames, err = dir.Readdirnames(0); err != nil{ dir.Close(); panic(err) }
-			for _, tmpFileName = range dirFileNames {
-				if strings.HasSuffix(tmpFileName, ".exe.go") {
-					srcFilePath = path.Join(dirPath, tmpFileName)
-					break
-				}
-			}
-			dirPath = path.Dir(dirPath)
-			dir.Close()
-		}
-		if len(srcFilePath) > 0 {
-			checkForFileCopy(srcFilePath)
-			buildPkg = pkgPrefix + path.Dir(srcFilePath[strings.Index(srcFilePath, subPathMatch) + len(subPathMatch) :])
-			pkgNameParts = strings.Split(buildPkg[len(pkgPrefix) :], pathSep)
-			buildOut = path.Join(gdDirPath, pkgOutPrefix + pkgNameParts[0], path.Base(srcFilePath[0 : len(srcFilePath) - len(".go")]))
-			if strings.Contains(buildOut, pkgOutPrefix + "client" + pathSep) { generateShadersFile(path.Join(path.Dir(srcFilePath), "_glsl"), path.Join(path.Dir(srcFilePath), "engine", "shaders", "-auto-generated-glsl-src.go"), "shaders", !*flagDebug) }
-			cmdArgs = []string { "install"/*, "-o", buildOut*/ }
-			if !*flagDebug { cmdArgs = append(cmdArgs, "-gcflags=-B", "-ldflags=-s") }
-			cmdArgs = append(cmdArgs, buildPkg)
-			fmt.Printf("go %v :\n", cmdArgs)
-			cmdRawOut, err = exec.Command("go", cmdArgs...).CombinedOutput()
-			if len(cmdRawOut) > 0 { fmt.Printf("%v\n", trimLines(string(cmdRawOut), 5)) }
-			if err != nil { fmt.Printf("%+v\n", err); os.Exit(1) }
-			cmdRawOut, err = exec.Command("cp", "-f", path.Join(os.ExpandEnv("$GOBIN"), pkgNameParts[len(pkgNameParts) - 1]), buildOut).CombinedOutput()
-			if len(cmdRawOut) > 0 { fmt.Printf("%v\n", trimLines(string(cmdRawOut), 5)) }
-			if err != nil { fmt.Printf("%+v\n", err); os.Exit(1) }
-			fmt.Printf("Built %v in %v\n", buildOut, time.Now().Sub(startTime))
-			if *flagRun {
-				cmd = exec.Command(buildOut)
-				cmd.Dir = path.Dir(buildOut)
-				cmd.Stderr = os.Stderr
-				cmd.Stdin = os.Stdin
-				cmd.Stdout = os.Stdout
-				err = cmd.Start()
-				if err != nil { fmt.Printf("\nRUN ERROR:\n%+v\n", err); os.Exit(1) }
-			}
-		} else {
-			fmt.Printf("No src file found building from %v, doing a module compile only.\n", origFilePath)
-			cmdArgs = []string { "-o", path.Join(gdDirPath, "_tmp", "6g.o"), origFilePath }
-			cmdRawOut, err = exec.Command("6g", cmdArgs...).CombinedOutput()
-			if len(cmdRawOut) > 0 { fmt.Printf("%v\n", trimLines(string(cmdRawOut), 5)) }
-			if err != nil { fmt.Printf("%+v\n", err); os.Exit(1) }
-		}
-	} else {
-		checkForFileCopy(origFilePath)
-		subPathMatch, pkgPrefix = pathSep + "src" + pathSep + "github.com" + pathSep + "go-ngine" + pathSep, "github.com" + pathSep + "go-ngine" + pathSep
-		if strings.Contains(origFilePath, subPathMatch) {
-			gdDirPath = origFilePath[ : strings.Index(origFilePath, subPathMatch)]
-			buildPkg = origFilePath[strings.Index(origFilePath, subPathMatch) + len(subPathMatch) : ]
-//			for pos = strings.LastIndex(buildPkg, pathSep); pos >= 0; pos = strings.LastIndex(buildPkg, pathSep) {
-//				buildPkg = buildPkg[ : pos]
-//				if strings.HasPrefix(buildPkg, "go-ngine" + pathSep) || strings.HasPrefix(buildPkg, "go-glutil" + pathSep) { continue }
-				if buildPkg == "go-ngine" { generateShadersFile(path.Join(gdDirPath, subPathMatch, "go-ngine", "_glsl"), path.Join(gdDirPath, subPathMatch, "go-ngine", "-auto-generated-glsl-src.go"), "ngine", !*flagDebug) }
-				cmdArgs = []string { "install"/*, "-o", buildOut*/ }
-				if !*flagDebug { cmdArgs = append(cmdArgs, "-gcflags=-B", "-ldflags=-s") }
-				cmdArgs = append(cmdArgs, subPathMatch + buildPkg)
-				fmt.Printf("go %v :\n", cmdArgs)
-				cmdRawOut, err = exec.Command("go", cmdArgs...).CombinedOutput()
-				if len(cmdRawOut) > 0 { fmt.Printf("%v\n", trimLines(string(cmdRawOut), 5)) }
-				if err != nil { fmt.Printf("%+v\n", err) }
-//				if (isMainPkg) { fmt.Println("DOBREAK"); break }
-//			}
-/*
-			if buildPkg == "go-ngine" {
-				subPathMatch, pkgPrefix = pathSep + "src" + pathSep + "terra" + pathSep, "terra" + pathSep
-				origFilePath = path.Join(gdDirPath, subPathMatch, "_glrttest", "rttest.exe.go")
-				goto Restart
-			}
-*/
-		} else {
-			fmt.Printf("Not in known package path: %v (does not match %v)\n", origFilePath, subPathMatch)
-		}
 	}
 }
 
