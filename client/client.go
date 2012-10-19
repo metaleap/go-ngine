@@ -7,10 +7,10 @@ import (
 
 	glfw "github.com/jteeuwen/glfw"
 
-	glutil "github.com/go-ngine/go-util/gl"
+	glutil "github.com/go3d/go-util/gl"
 
-	ncore "github.com/go-ngine/go-ngine/client/core"
-	nglcore "github.com/go-ngine/go-ngine/client/glcore"
+	ncore "github.com/go3d/go-ngine/client/core"
+	nglcore "github.com/go3d/go-ngine/client/glcore"
 )
 
 type TEngineLoop struct {

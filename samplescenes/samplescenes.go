@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"runtime"
 
-	ngine "github.com/go-ngine/go-ngine/client"
-	ncore "github.com/go-ngine/go-ngine/client/core"
+	ngine "github.com/go3d/go-ngine/client"
+	ncore "github.com/go3d/go-ngine/client/core"
 )
 
 var (

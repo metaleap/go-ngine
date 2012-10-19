@@ -3,9 +3,9 @@ package core
 import (
 	gl "github.com/chsc/gogl/gl42"
 
-	glutil "github.com/go-ngine/go-util/gl"
+	glutil "github.com/go3d/go-util/gl"
 
-	nglcore "github.com/go-ngine/go-ngine/client/glcore"
+	nglcore "github.com/go3d/go-ngine/client/glcore"
 )
 
 var (

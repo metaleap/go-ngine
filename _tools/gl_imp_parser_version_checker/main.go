@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	ioutil "github.com/go-ngine/go-util/io"
+	ioutil "github.com/go3d/go-util/io"
 )
 
 var (
@@ -61,7 +61,7 @@ func inSlice (slice []string, val string) bool {
 }
 
 func main() {
-	ioutil.WalkDirectory(filepath.Join(os.Getenv("GOPATH"), "src", "github.com", "go-ngine"), ".go", checkGoFile, true)
+	ioutil.WalkDirectory(filepath.Join(os.Getenv("GOPATH"), "src", "github.com", "go3d"), ".go", checkGoFile, true)
 	for glName, filePaths := range glNames {
 		println(glName)
 		for _, fp := range filePaths {

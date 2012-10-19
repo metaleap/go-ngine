@@ -7,7 +7,7 @@ import (
 
 	gl "github.com/chsc/gogl/gl42"
 
-	glutil "github.com/go-ngine/go-util/gl"
+	glutil "github.com/go3d/go-util/gl"
 )
 
 type TShaderManager struct {

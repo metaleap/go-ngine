@@ -3,10 +3,10 @@ package core
 import (
 	gl "github.com/chsc/gogl/gl42"
 
-	glutil "github.com/go-ngine/go-util/gl"
-	numutil "github.com/go-ngine/go-util/num"
+	glutil "github.com/go3d/go-util/gl"
+	numutil "github.com/go3d/go-util/num"
 
-	nglcore "github.com/go-ngine/go-ngine/client/glcore"
+	nglcore "github.com/go3d/go-ngine/client/glcore"
 )
 
 type TCamera struct {

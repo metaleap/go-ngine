@@ -1,7 +1,7 @@
 package main
 
 import (
-	ngine_samplescenes "github.com/go-ngine/go-ngine/samplescenes"
+	ngine_samplescenes "github.com/go3d/go-ngine/samplescenes"
 )
 
 func main() {

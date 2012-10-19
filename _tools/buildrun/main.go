@@ -1,19 +1,5 @@
 package main
 
-/*
-	Essentially just takes a single -f=filepath parameter and attempts to "go install" the package it belongs to.
-
-	1. If the package is inside the github.com/go-ngine/go-ngine path, then before "go install":
-	-	reads all shader files inside go-ngine/client/glcore/_glsl or sub-dirs
-	-	places #include-processed shader sources in go-ngine/client/glcore/-auto-generated-glsl-src.go
-
-	2. If the specified -f file is a main package and "go install" succeeded, attempts to run the built command
-
-	I use this tool as my "build system" in Sublime Text 2, my custom GoBuildRun.sublime-build file then is simply:
-	{ "cmd": ["\\gd\\bin\\buildrun.exe", "-f=$file"] }
-
-*/
-
 import (
 	"flag"
 	"fmt"
@@ -185,7 +171,7 @@ func main () {
 	var origFilePath, cmdRunPath string
 	var cmdRawOut []byte
 	var err error
-	var ngineMatch = "github.com/go-ngine/go-ngine/"
+	var ngineMatch = "github.com/go3d/go-ngine/"
 	var nginePath string
 	var allowRun = true
 	flag.Parse()

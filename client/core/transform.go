@@ -1,8 +1,8 @@
 package core
 
 import (
-	glutil "github.com/go-ngine/go-util/gl"
-	numutil "github.com/go-ngine/go-util/num"
+	glutil "github.com/go3d/go-util/gl"
+	numutil "github.com/go3d/go-util/num"
 )
 
 type ITransformable interface {

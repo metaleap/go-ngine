@@ -7,10 +7,10 @@ import (
 	gl "github.com/chsc/gogl/gl42"
 	glfw "github.com/jteeuwen/glfw"
 
-	numutil "github.com/go-ngine/go-util/num"
+	numutil "github.com/go3d/go-util/num"
 
-	ngine "github.com/go-ngine/go-ngine/client"
-	ncore "github.com/go-ngine/go-ngine/client/core"
+	ngine "github.com/go3d/go-ngine/client"
+	ncore "github.com/go3d/go-ngine/client/core"
 )
 
 func LoadSampleScene_01_TriQuad() {

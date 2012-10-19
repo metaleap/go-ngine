@@ -3,7 +3,7 @@ package client
 import (
 	glfw "github.com/jteeuwen/glfw"
 
-	coreutil "github.com/go-ngine/go-util"
+	coreutil "github.com/go3d/go-util"
 )
 
 type TWindowing struct {
