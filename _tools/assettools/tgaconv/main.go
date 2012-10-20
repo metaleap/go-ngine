@@ -20,7 +20,7 @@ var (
 	fOutDirPath = flag.String("out", "C:\\oga\\yughues_png", "PNG out dir root path")
 )
 
-func processFile (srcFilePath string) {
+func processFile (srcFilePath string, recurse bool) bool {
 	var outFilePath = strings.Replace(strings.Replace(srcFilePath, *fSrcDirPath, *fOutDirPath, -1), ".tga", ".png", -1)
 	var err error
 	var dirPath = filepath.Dir(outFilePath)
@@ -49,6 +49,7 @@ func processFile (srcFilePath string) {
 			}
 		}
 	}
+	return recurse
 }
 
 func main () {
