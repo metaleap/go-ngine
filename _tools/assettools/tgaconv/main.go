@@ -15,9 +15,9 @@ import (
 )
 
 var (
-	fSrcDirPath = flag.String("src", "C:\\oga\\yughues", "TGA src dir root path")
+	fSrcDirPath = flag.String("src", "Q:\\oga\\yughues", "TGA src dir root path")
 	fRecurse = flag.Bool("rec", false, "recurse into sub-dirs")
-	fOutDirPath = flag.String("out", "C:\\oga\\yughues_png", "PNG out dir root path")
+	fOutDirPath = flag.String("out", "Q:\\oga\\yughues_png", "PNG out dir root path")
 )
 
 func processFile (srcFilePath string, recurse bool) bool {

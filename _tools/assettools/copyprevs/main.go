@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	srcDirPath = "C:\\oga\\yughues\\"
-	prevDirPath = "C:\\oga\\prevs\\"
+	srcDirPath = "Q:\\oga\\yughues\\"
+	prevDirPath = "Q:\\oga\\prevs\\"
 )
 
 func processPreview (filePath string, recurse bool) bool {

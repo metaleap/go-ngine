@@ -19,31 +19,31 @@ Canvas 3: screen
 
 */
 
-type TCanvas struct {
-	Cameras  []*TCamera
+type tRenderCanvas struct {
+	Cameras  []*tCamera
 	Disabled bool
 
 	viewWidth, viewHeight int
 }
 
-func NewCanvas(viewWidth, viewHeight int, addCam bool) *TCanvas {
-	var canvas = &TCanvas{}
+func NewCanvas(viewWidth, viewHeight int, addCam bool) *tRenderCanvas {
+	var canvas = &tRenderCanvas{}
 	canvas.viewWidth, canvas.viewHeight = viewWidth, viewHeight
 	if addCam {
-		canvas.Cameras = []*TCamera{NewCamera(canvas, Core.Options.DefaultRenderTechnique)}
+		canvas.Cameras = []*tCamera { NewCamera(canvas, Core.Options.DefaultRenderTechnique) }
 	} else {
-		canvas.Cameras = []*TCamera{}
+		canvas.Cameras = []*tCamera {}
 	}
 	return canvas
 }
 
-func (me *TCanvas) Dispose() {
+func (me *tRenderCanvas) Dispose() {
 	for _, cam := range me.Cameras {
 		cam.Dispose()
 	}
 }
 
-func (me *TCanvas) render() {
+func (me *tRenderCanvas) render() {
 	for _, curCam = range me.Cameras {
 		if !curCam.Disabled {
 			Core.CurCamera = curCam

@@ -5,11 +5,11 @@ import (
 
 	glutil "github.com/go3d/go-util/gl"
 
-	nglcore "github.com/go3d/go-ngine/client/glcore"
+	nglcore "github.com/go3d/go-ngine/core/glcore"
 )
 
 var (
-	techs = map[string]ITechnique {
+	techs = map[string]iRenderTechnique {
 	}
 	techMakers = map[string]fTechniqueConstructor {
 		"geometry": newTechnique_Geometry,
@@ -17,9 +17,9 @@ var (
 	}
 )
 
-type fTechniqueConstructor func () ITechnique
+type fTechniqueConstructor func () iRenderTechnique
 
-type ITechnique interface {
+type iRenderTechnique interface {
 	Name () string
 	OnPreRender ()
 	OnRenderMesh ()
@@ -27,15 +27,15 @@ type ITechnique interface {
 	Program () *glutil.TShaderProgram
 }
 
-func GetTechnique (name string) ITechnique {
-	var t = techs[name]
-	var maker = techMakers[name]
-	if (t == nil) && (maker != nil) {
-		techs[name] = maker()
-		t = techs[name]
+	func getRenderTechnique (name string) iRenderTechnique {
+		var t = techs[name]
+		var maker = techMakers[name]
+		if (t == nil) && (maker != nil) {
+			techs[name] = maker()
+			t = techs[name]
+		}
+		return t
 	}
-	return t
-}
 
 type tTechnique_Base struct {
 	prog *glutil.TShaderProgram
@@ -54,7 +54,7 @@ type tTechnique_Geometry struct {
 	tTechnique_Base
 }
 
-	func newTechnique_Geometry () ITechnique {
+	func newTechnique_Geometry () iRenderTechnique {
 		var tech = &tTechnique_Geometry {}
 		tech.tTechnique_Base.setProg("geometry", nil, nil)
 		return tech
@@ -81,7 +81,7 @@ type tTechnique_Unlit struct {
 	tTechnique_Base
 }
 
-	func newTechnique_Unlit () ITechnique {
+	func newTechnique_Unlit () iRenderTechnique {
 		var tech = &tTechnique_Unlit {}
 		tech.tTechnique_Base.setProg("unlit", []string { "uTex0" }, []string { "aTexCoords" })
 		return tech

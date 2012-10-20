@@ -91,11 +91,11 @@ func (me *TController) MoveUp () {
 }
 
 func (me *TController) StepSizeMove () float64 {
-	return Core.Timer.TickDelta * me.MoveSpeed * me.MoveSpeedupFactor
+	return Loop.TickDelta * me.MoveSpeed * me.MoveSpeedupFactor
 }
 
 func (me *TController) StepSizeTurn () float64 {
-	return Core.Timer.TickDelta * me.TurnSpeed * me.TurnSpeedupFactor
+	return Loop.TickDelta * me.TurnSpeed * me.TurnSpeedupFactor
 }
 
 func (me *TController) TurnDown () {

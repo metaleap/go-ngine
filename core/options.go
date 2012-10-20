@@ -4,36 +4,36 @@ import (
 	gl "github.com/chsc/gogl/gl42"
 )
 
-type TOptions struct {
+type tOptions struct {
 	DefaultRenderTechnique string
 
 	glBackfaceCulling, glTextureAnisotropy, glTextureFiltering, glTextureMipMaps bool
 }
 
-func NewOptions (glBackfaceCulling bool) *TOptions {
-	var opt = &TOptions {}
+func NewOptions (glBackfaceCulling bool) *tOptions {
+	var opt = &tOptions {}
 	opt.DefaultRenderTechnique = "unlit"
 	opt.glBackfaceCulling = glBackfaceCulling
 	return opt
 }
 
-func (me *TOptions) GlBackfaceCulling () bool {
+func (me *tOptions) GlBackfaceCulling () bool {
 	return me.glBackfaceCulling
 }
 
-func (me *TOptions) GlTextureAnisotropy () bool {
+func (me *tOptions) GlTextureAnisotropy () bool {
 	return me.glTextureAnisotropy
 }
 
-func (me *TOptions) GlTextureFiltering () bool {
+func (me *tOptions) GlTextureFiltering () bool {
 	return me.glTextureFiltering
 }
 
-func (me *TOptions) GlTextureMipMaps () bool {
+func (me *tOptions) GlTextureMipMaps () bool {
 	return me.glTextureMipMaps
 }
 
-func (me *TOptions) SetGlBackfaceCulling (val bool) {
+func (me *tOptions) SetGlBackfaceCulling (val bool) {
 	if me.glBackfaceCulling = val; me.glBackfaceCulling {
 		gl.Enable(gl.CULL_FACE)
 	} else {
@@ -41,12 +41,12 @@ func (me *TOptions) SetGlBackfaceCulling (val bool) {
 	}
 }
 
-func (me *TOptions) SetGlTextureAnisotropy (val bool) {
+func (me *tOptions) SetGlTextureAnisotropy (val bool) {
 	if val != me.glTextureAnisotropy {
 		
 	}
 }
 
-func (me *TOptions) ToggleGlBackfaceCulling () {
+func (me *tOptions) ToggleGlBackfaceCulling () {
 	me.SetGlBackfaceCulling(!me.glBackfaceCulling)
 }

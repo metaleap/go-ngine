@@ -7,7 +7,7 @@ import (
 type TNode struct {
 	Disabled bool
 	SubNodes map[string]*TNode
-	Transform *TTransform
+	Transform *tTransform
 
 	mat *TMaterial
 	mesh *TMesh
@@ -21,7 +21,7 @@ func newNode (meshKey string, parent *TNode) *TNode {
 	node.parentNode = parent
 	node.SubNodes = map[string]*TNode {}
 	node.SetMeshKey(meshKey)
-	node.Transform = NewTransform(node)
+	node.Transform = newTransform(node)
 	return node
 }
 
@@ -79,7 +79,7 @@ func (me *TNode) SetMeshKey (newMeshKey string) {
 	}
 }
 
-func (me *TNode) transform () *TTransform {
+func (me *TNode) transform () *tTransform {
 	return me.Transform
 }
 
@@ -89,6 +89,6 @@ func (me *TNode) transformChildrenUpdateMatrices () {
 	}
 }
 
-func (me *TNode) transformParent () ITransformable {
+func (me *TNode) transformParent () iTransformable {
 	return me.parentNode
 }

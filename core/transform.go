@@ -5,24 +5,24 @@ import (
 	numutil "github.com/go3d/go-util/num"
 )
 
-type ITransformable interface {
+type iTransformable interface {
 	transformChildrenUpdateMatrices ()
-	transformParent () ITransformable
-	transform () *TTransform
+	transformParent () iTransformable
+	transform () *tTransform
 }
 
-type TTransform struct {
+type tTransform struct {
 	Pos, Rot, Scaling *numutil.TVec3
 
-	owner ITransformable
+	owner iTransformable
 	matModelView, matRotX, matRotY, matRotZ, matScaling, matTranslation *numutil.TMat4
 	matNormal *numutil.TMat3
 	glMatModelView *glutil.TGlMat4
 	glMatNormal *glutil.TGlMat3
 }
 
-func NewTransform (owner ITransformable) *TTransform {
-	var t = &TTransform {}
+func newTransform (owner iTransformable) *tTransform {
+	var t = &tTransform {}
 	t.owner = owner
 	t.Pos, t.Rot = &numutil.TVec3 {}, &numutil.TVec3 {}
 	t.Scaling = &numutil.TVec3 { 1, 1, 1 }
@@ -33,88 +33,88 @@ func NewTransform (owner ITransformable) *TTransform {
 	return t
 }
 
-func (me *TTransform) OnAnyChanged () {
+func (me *tTransform) OnAnyChanged () {
 	me.onScalingChanged()
 	me.onPosChanged()
 	me.onRotChanged()
 	me.updateMatrices()
 }
 
-func (me *TTransform) onPosChanged () {
+func (me *tTransform) onPosChanged () {
 	me.matTranslation.Translation(me.Pos)
 }
 
-func (me *TTransform) OnPosChanged () {
+func (me *tTransform) OnPosChanged () {
 	me.onPosChanged()
 	me.updateMatrices()
 }
 
-func (me *TTransform) OnPosRotChanged () {
+func (me *tTransform) OnPosRotChanged () {
 	me.onPosChanged()
 	me.onRotChanged()
 	me.updateMatrices()
 }
 
-func (me *TTransform) OnPosScalingChanged () {
+func (me *tTransform) OnPosScalingChanged () {
 	me.onPosChanged()
 	me.onScalingChanged()
 	me.updateMatrices()
 }
 
-func (me *TTransform) onRotChanged () {
+func (me *tTransform) onRotChanged () {
 	me.onRotXChanged()
 	me.onRotYChanged()
 	me.onRotZChanged()
 }
 
-func (me *TTransform) OnRotChanged () {
+func (me *tTransform) OnRotChanged () {
 	me.onRotChanged()
 	me.updateMatrices()
 }
 
-func (me *TTransform) OnRotScalingChanged () {
+func (me *tTransform) OnRotScalingChanged () {
 	me.onRotChanged()
 	me.onScalingChanged()
 	me.updateMatrices()
 }
 
-func (me *TTransform) onRotXChanged () {
+func (me *tTransform) onRotXChanged () {
 	me.matRotX.RotationX(me.Rot.X)
 }
 
-func (me *TTransform) OnRotXChanged () {
+func (me *tTransform) OnRotXChanged () {
 	me.onRotXChanged()
 	me.updateMatrices()
 }
 
-func (me *TTransform) onRotYChanged () {
+func (me *tTransform) onRotYChanged () {
 	me.matRotY.RotationY(me.Rot.Y)
 }
 
-func (me *TTransform) OnRotYChanged () {
+func (me *tTransform) OnRotYChanged () {
 	me.onRotYChanged()
 	me.updateMatrices()
 }
 
-func (me *TTransform) onRotZChanged () {
+func (me *tTransform) onRotZChanged () {
 	me.matRotZ.RotationZ(me.Rot.Z)
 }
 
-func (me *TTransform) OnRotZChanged () {
+func (me *tTransform) OnRotZChanged () {
 	me.onRotZChanged()
 	me.updateMatrices()
 }
 
-func (me *TTransform) onScalingChanged () {
+func (me *tTransform) onScalingChanged () {
 	me.matScaling.Scaling(me.Scaling)
 }
 
-func (me *TTransform) OnScalingChanged () {
+func (me *tTransform) OnScalingChanged () {
 	me.onScalingChanged()
 	me.updateMatrices()
 }
 
-func (me *TTransform) OnSomeChanged (scaling, pos, rotX, rotY, rotZ bool) {
+func (me *tTransform) OnSomeChanged (scaling, pos, rotX, rotY, rotZ bool) {
 	if scaling { me.onScalingChanged() }
 	if pos { me.onPosChanged() }
 	if rotX { me.onRotXChanged() }
@@ -123,46 +123,46 @@ func (me *TTransform) OnSomeChanged (scaling, pos, rotX, rotY, rotZ bool) {
 	me.updateMatrices()
 }
 
-func (me *TTransform) SetPos (pos *numutil.TVec3) {
+func (me *tTransform) SetPos (pos *numutil.TVec3) {
 	me.Pos = pos
 	me.OnPosChanged()
 }
 
-func (me *TTransform) SetRot (rot *numutil.TVec3) {
+func (me *tTransform) SetRot (rot *numutil.TVec3) {
 	me.Rot = rot
 	me.OnRotChanged()
 }
 
-func (me *TTransform) SetRotX (rad float64) {
+func (me *tTransform) SetRotX (rad float64) {
 	me.Rot.X = rad
 	me.OnRotXChanged()
 }
 
-func (me *TTransform) SetRotY (rad float64) {
+func (me *tTransform) SetRotY (rad float64) {
 	me.Rot.Y = rad
 	me.OnRotYChanged()
 }
 
-func (me *TTransform) SetRotZ (rad float64) {
+func (me *tTransform) SetRotZ (rad float64) {
 	me.Rot.Z = rad
 	me.OnRotZChanged()
 }
 
-func (me *TTransform) SetScaling (scaling *numutil.TVec3) {
+func (me *tTransform) SetScaling (scaling *numutil.TVec3) {
 	me.Scaling = scaling
 	me.OnScalingChanged()
 }
 
-func (me *TTransform) SetScalingN (scaling float64) {
+func (me *tTransform) SetScalingN (scaling float64) {
 	me.Scaling.X, me.Scaling.Y, me.Scaling.Z = scaling, scaling, scaling
 	me.OnScalingChanged()
 }
 
-func (me *TTransform) StepDelta (deltaPerSecond float64) float64 {
-	return Core.Timer.TickDelta * deltaPerSecond
+func (me *tTransform) StepDelta (deltaPerSecond float64) float64 {
+	return Loop.TickDelta * deltaPerSecond
 }
 
-func (me *TTransform) updateMatrices () {
+func (me *tTransform) updateMatrices () {
 	var mat *numutil.TMat4
 	var parent = me.owner.transformParent()
 	if parent != nil { mat = parent.transform().matModelView } else { mat = numutil.Mat4Identity }

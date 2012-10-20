@@ -5,50 +5,46 @@ import (
 
 	glutil "github.com/go3d/go-util/gl"
 
-	nglcore "github.com/go3d/go-ngine/client/glcore"
+	nglcore "github.com/go3d/go-ngine/core/glcore"
 )
 
 var (
-	Core *TEngineCore
-
 	curCanvIndex, lastCanvIndex int
-	curCam *TCamera
-	curCanvas *TCanvas
+	curCam *tCamera
+	curCanvas *tRenderCanvas
 	curMesh *TMesh
 	curNode *TNode
 	curProg, tmpProg *glutil.TShaderProgram
-	curTechnique ITechnique
+	curTechnique iRenderTechnique
 	curScene *TScene
 )
 
-type TEngineCore struct {
-	Canvases []*TCanvas
-	CurCamera *TCamera
-	CurCanvas *TCanvas
+type tEngineCore struct {
+	Canvases []*tRenderCanvas
+	CurCamera *tCamera
+	CurCanvas *tRenderCanvas
 	DefaultCanvasIndex int
 	Materials map[string]*TMaterial
 	Meshes map[string]*TMesh
-	Options *TOptions
+	Options *tOptions
 	Scenes map[string]*TScene
-	Timer *TTimer
 }
 
-func NewEngineCore (viewWidth, viewHeight int) *TEngineCore {
-	var defCanvas *TCanvas
-	Core = &TEngineCore {}
+func newEngineCore (viewWidth, viewHeight int) *tEngineCore {
+	var defCanvas *tRenderCanvas
+	Core = &tEngineCore {}
 	Core.Options = NewOptions(true)
 	Core.Meshes = map [string] *TMesh {}
 	Core.Materials = map [string] *TMaterial {}
 	Core.Scenes = map [string] *TScene {}
-	Core.Timer = &TTimer {}
 	defCanvas = NewCanvas(viewWidth, viewHeight, true)
-	Core.Canvases = [] *TCanvas { defCanvas }
+	Core.Canvases = [] *tRenderCanvas { defCanvas }
 	Core.CurCanvas = defCanvas
 	Core.CurCamera = defCanvas.Cameras[0]
 	return Core
 }
 
-func (me *TEngineCore) Dispose () {
+func (me *tEngineCore) Dispose () {
 	for _, canvas := range me.Canvases { canvas.Dispose() }
 	for _, scene := range me.Scenes { scene.Dispose() }
 	for _, mesh := range me.Meshes { mesh.Dispose() }
@@ -56,7 +52,7 @@ func (me *TEngineCore) Dispose () {
 	Core = nil
 }
 
-func (me *TEngineCore) RenderLoop () {
+func (me *tEngineCore) RenderLoop () {
 	lastCanvIndex = len(me.Canvases) - 1
 	for curCanvIndex, curCanvas = range me.Canvases {
 		if !curCanvas.Disabled {
@@ -66,7 +62,7 @@ func (me *TEngineCore) RenderLoop () {
 	}
 }
 
-func (me *TEngineCore) ResizeView (viewWidth, viewHeight int) {
+func (me *tEngineCore) ResizeView (viewWidth, viewHeight int) {
 	var defaultCanvas = me.Canvases[me.DefaultCanvasIndex]
 	defaultCanvas.viewWidth, defaultCanvas.viewHeight = viewWidth, viewHeight
 	for _, cam := range defaultCanvas.Cameras {
@@ -75,22 +71,22 @@ func (me *TEngineCore) ResizeView (viewWidth, viewHeight int) {
 	}
 }
 
-func (me *TEngineCore) SyncUpdates () {
+func (me *tEngineCore) SyncUpdates () {
 	for key, mesh := range me.Meshes {
 		if !mesh.glInit { mesh.initBuffer() }
 		if !mesh.glSynced { mesh.updateBuffer() }
-		nglcore.LogLastError("TEngineCore.SyncUpdates(meshkey=%s)", key)
+		nglcore.LogLastError("tEngineCore.SyncUpdates(meshkey=%s)", key)
 	}
 }
 
-func (me *TEngineCore) useProgram (name string) {
+func (me *tEngineCore) useProgram (name string) {
 	if tmpProg = nglcore.ShaderMan.AllProgs[name]; tmpProg != curProg {
 		curProg = tmpProg
 		gl.UseProgram(curProg.Program)
 	}
 }
 
-func (me *TEngineCore) useTechnique (technique ITechnique) {
+func (me *tEngineCore) useTechnique (technique iRenderTechnique) {
 	if technique != curTechnique {
 		curTechnique = technique
 		me.useProgram(curTechnique.Name())

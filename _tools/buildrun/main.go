@@ -181,7 +181,7 @@ func main () {
 	goInstPath = goInstPath [0 : strings.LastIndex(goInstPath, "/")]
 	if (strings.HasPrefix(goInstPath, ngineMatch)) {
 		nginePath = origFilePath [ : strings.Index(origFilePath, "github.com") + len(ngineMatch)]
-		generateShadersFile(filepath.Join(nginePath, "client", "glcore", "_glsl"), filepath.Join(nginePath, "client", "glcore", "-auto-generated-glsl-src.go"), "glcore", true)
+		generateShadersFile(filepath.Join(nginePath, "core", "glcore", "_glsl"), filepath.Join(nginePath, "core", "glcore", "-auto-generated-glsl-src.go"), "glcore", true)
 	}
 	cmdRawOut, err = exec.Command("go", "install", goInstPath).CombinedOutput()
 	if len(cmdRawOut) > 0 {
