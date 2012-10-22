@@ -2,7 +2,6 @@ package main
 
 import (
 	"math"
-	"path/filepath"
 
 	gl "github.com/chsc/gogl/gl42"
 	glfw "github.com/jteeuwen/glfw"
@@ -19,8 +18,8 @@ func main() {
 }
 
 func LoadSampleScene_01_TriQuad() {
-	ngine.Core.Materials["cat"] = ngine.NewMaterialFromLocalTextureImageFile(filepath.Join(ngine.AssetRootDirPath, "misc", "cat.png"))
-	ngine.Core.Materials["dog"] = ngine.NewMaterialFromLocalTextureImageFile(filepath.Join(ngine.AssetRootDirPath, "misc", "dog.png"))
+	ngine.Core.Materials["cat"] = ngine.NewMaterialFromLocalTextureImageFile("misc/cat.png")
+	ngine.Core.Materials["dog"] = ngine.NewMaterialFromLocalTextureImageFile("misc/dog.png")
 	ngine.Core.Meshes["face3"] = ngine_samplescenes.NewMeshFace3()
 	ngine.Core.Meshes["face4"] = ngine_samplescenes.NewMeshFace4()
 	var scene = ngine.NewScene()

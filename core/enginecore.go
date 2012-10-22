@@ -28,16 +28,19 @@ type tEngineCore struct {
 	Meshes map[string]*TMesh
 	Options *tOptions
 	Scenes map[string]*TScene
+	Textures map[string]*TTexture
 }
 
-func newEngineCore (viewWidth, viewHeight int) *tEngineCore {
+func newEngineCore (options *tOptions) *tEngineCore {
 	var defCanvas *tRenderCanvas
 	Core = &tEngineCore {}
-	Core.Options = NewOptions(true)
+	Core.Options = options
+	Core.Options.DefaultTextureParams.setAgain()
 	Core.Meshes = map [string] *TMesh {}
 	Core.Materials = map [string] *TMaterial {}
+	Core.Textures = map[string] *TTexture {}
 	Core.Scenes = map [string] *TScene {}
-	defCanvas = NewCanvas(viewWidth, viewHeight, true)
+	defCanvas = NewCanvas(options.winWidth, options.winHeight, true)
 	Core.Canvases = [] *tRenderCanvas { defCanvas }
 	Core.CurCanvas = defCanvas
 	Core.CurCamera = defCanvas.Cameras[0]
@@ -48,8 +51,23 @@ func (me *tEngineCore) Dispose () {
 	for _, canvas := range me.Canvases { canvas.Dispose() }
 	for _, scene := range me.Scenes { scene.Dispose() }
 	for _, mesh := range me.Meshes { mesh.Dispose() }
-	for _, mat := range me.Materials { mat.Dispose() }
+	for _, tex := range me.Textures { tex.GpuDelete() }
 	Core = nil
+}
+
+func (me *tEngineCore) onSecTick () {
+	var allDone = true
+	for tex, texDone := range asyncTextures {
+		if !texDone {
+			if (tex.img != nil) {
+				tex.GpuSync()
+				asyncTextures[tex] = true
+			} else {
+				allDone = false
+			}
+		}
+	}
+	if allDone { asyncTextures = map[*TTexture]bool {} }
 }
 
 func (me *tEngineCore) RenderLoop () {
@@ -62,8 +80,9 @@ func (me *tEngineCore) RenderLoop () {
 	}
 }
 
-func (me *tEngineCore) ResizeView (viewWidth, viewHeight int) {
+func (me *tEngineCore) resizeView (viewWidth, viewHeight int) {
 	var defaultCanvas = me.Canvases[me.DefaultCanvasIndex]
+	me.Options.winWidth, me.Options.winHeight = viewWidth, viewHeight
 	defaultCanvas.viewWidth, defaultCanvas.viewHeight = viewWidth, viewHeight
 	for _, cam := range defaultCanvas.Cameras {
 		cam.ViewPort.update()
@@ -72,6 +91,10 @@ func (me *tEngineCore) ResizeView (viewWidth, viewHeight int) {
 }
 
 func (me *tEngineCore) SyncUpdates () {
+	for key, tex := range me.Textures {
+		tex.GpuSync()
+		nglcore.LogLastError("tEngineCore.SyncUpdates(texkey=%s)", key)
+	}
 	for key, mesh := range me.Meshes {
 		if !mesh.glInit { mesh.initBuffer() }
 		if !mesh.glSynced { mesh.updateBuffer() }

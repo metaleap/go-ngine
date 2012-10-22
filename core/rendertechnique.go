@@ -103,7 +103,7 @@ type tTechnique_Unlit struct {
 			gl.VertexAttribPointer(curProg.AttrLocs["aTexCoords"], 2, gl.FLOAT, gl.FALSE, 0, gl.Pointer(nil))
 			gl.BindBuffer(gl.ARRAY_BUFFER, 0)
 			gl.ActiveTexture(gl.TEXTURE0)
-			gl.BindTexture(gl.TEXTURE_2D, curNode.mat.glTexture)
+			gl.BindTexture(gl.TEXTURE_2D, Core.Textures[curNode.mat.texKey].glTex)
 			gl.Uniform1i(curProg.UnifLocs["uTex0"], 0)
 		}
 	}

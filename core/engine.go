@@ -9,7 +9,6 @@ import (
 )
 
 var (
-	AssetRootDirPath = "."
 	Loop *tEngineLoop
 	Core *tEngineCore
 	Stats *tEngineStats
@@ -25,14 +24,11 @@ func Dispose () {
 	Core, Loop, Stats = nil, nil, nil
 }
 
-func Init (winWidth, winHeight int, winFullScreen bool, vsync int, assetRootDirPath, winTitle string, onSecTick func ()) error {
+func Init (options *tOptions, winTitle string, onSecTick func ()) error {
 	var err error
-	if err = Windowing.Init(winWidth, winHeight, winFullScreen, vsync, winTitle); err == nil {
+	if err = Windowing.Init(options, winTitle); err == nil {
 		if err = nglcore.Init(); err == nil {
-			AssetRootDirPath, Loop, Stats = assetRootDirPath, newEngineLoop(), &tEngineStats {}
-			Core = newEngineCore(winWidth, winHeight)
-			Loop.OnSecTick = onSecTick
-			Loop.OnLoopHandlers = [] func () {}
+			Loop, Stats, Core = newEngineLoop(onSecTick), newEngineStats(), newEngineCore(options)
 			log.Println(glutil.GlConnInfo())
 		}
 	}

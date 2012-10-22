@@ -60,8 +60,8 @@ for: <%v>.
 			if err = ShaderMan.compileAll(); err == nil {
 			}
 		}
+		if err == nil { err = glutil.LastError("nglcore.Init") }
 	}
-	if err == nil { err = glutil.LastError("nglcore.Init") }
 	return err
 }
 

@@ -5,15 +5,18 @@ import (
 )
 
 type tOptions struct {
-	DefaultRenderTechnique string
+	AssetRootDirPath, DefaultRenderTechnique string
+	DefaultTextureParams *tTextureParams
 
-	glBackfaceCulling, glTextureAnisotropy, glTextureFiltering, glTextureMipMaps bool
+	glBackfaceCulling, glTextureAnisotropy, glTextureFiltering, glTextureMipMaps, winFullScreen bool
+	winHeight, winSwapInterval, winWidth int
 }
 
-func NewOptions (glBackfaceCulling bool) *tOptions {
+func NewOptions (assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) *tOptions {
 	var opt = &tOptions {}
-	opt.DefaultRenderTechnique = "unlit"
-	opt.glBackfaceCulling = glBackfaceCulling
+	opt.DefaultTextureParams = NewTextureParams(true, 6)
+	opt.AssetRootDirPath, opt.DefaultRenderTechnique = assetRootDirPath, "unlit"
+	opt.winWidth, opt.winHeight, opt.winSwapInterval, opt.winFullScreen = winWidth, winHeight, winSwapInterval, winFullScreen
 	return opt
 }
 
@@ -49,4 +52,12 @@ func (me *tOptions) SetGlTextureAnisotropy (val bool) {
 
 func (me *tOptions) ToggleGlBackfaceCulling () {
 	me.SetGlBackfaceCulling(!me.glBackfaceCulling)
+}
+
+func (me *tOptions) WinHeight () int {
+	return me.winHeight
+}
+
+func (me *tOptions) WinWidth () int {
+	return me.winWidth
 }

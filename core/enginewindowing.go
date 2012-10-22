@@ -8,7 +8,6 @@ import (
 
 type tEngineWindowing struct {
 	KeyToggleMinDelay float64
-	WinWidth, WinHeight int
 
 	isGlfwInit, isGlfwWindow, togglePress bool
 	lastToggles map[int]float64
@@ -32,7 +31,7 @@ func (me *tEngineWindowing) Exit () {
 	}
 }
 
-func (me *tEngineWindowing) Init (winWidth, winHeight int, winFullScreen bool, vsync int, winTitle string) error {
+func (me *tEngineWindowing) Init (opt *tOptions, winTitle string) error {
 	var err error
 	if (!me.isGlfwInit) {
 		if err = glfw.Init(); err == nil {
@@ -41,14 +40,14 @@ func (me *tEngineWindowing) Init (winWidth, winHeight int, winFullScreen bool, v
 	}
 	if (me.isGlfwInit && !me.isGlfwWindow) {
 		glfw.OpenWindowHint(glfw.FsaaSamples, 0) // AA is a pluggable post-processing shader, because super-/multi-sampling is simply highly undesirable
-		if err = glfw.OpenWindow(winWidth, winHeight, 8, 8, 8, 0, 24, 8, util.Ifi(winFullScreen, glfw.Fullscreen, glfw.Windowed)); err == nil {
-			me.WinWidth, me.WinHeight = winWidth, winHeight
+		if err = glfw.OpenWindow(opt.winWidth, opt.winHeight, 8, 8, 8, 0, 24, 8, util.Ifi(opt.winFullScreen, glfw.Fullscreen, glfw.Windowed)); err == nil {
+			opt.winWidth, opt.winHeight = glfw.WindowSize()
 			me.isGlfwWindow = true
 		}
 	}
 	if (me.isGlfwWindow) {
 		me.SetTitle(winTitle)
-		glfw.SetSwapInterval(vsync)
+		glfw.SetSwapInterval(opt.winSwapInterval)
 		glfw.SetWindowCloseCallback(glfwOnWindowClose)
 		glfw.SetWindowSizeCallback(glfwOnWindowResize)
 		// glfw.Disable(glfw.MouseCursor)
@@ -63,8 +62,7 @@ func glfwOnWindowClose () int {
 }
 
 func glfwOnWindowResize (width, height int) {
-	Windowing.WinWidth, Windowing.WinHeight = width, height
-	if (Core != nil) { Core.ResizeView(width, height) }
+	if (Core != nil) { Core.resizeView(width, height) }
 }
 
 func (me *tEngineWindowing) IifKey (key int, ifTrue, ifFalse float64) float64 {

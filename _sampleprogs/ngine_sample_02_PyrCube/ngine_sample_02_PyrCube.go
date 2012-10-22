@@ -2,7 +2,6 @@ package main
 
 import (
 	"math"
-	"path/filepath"
 
 	gl "github.com/chsc/gogl/gl42"
 	glfw "github.com/jteeuwen/glfw"
@@ -18,9 +17,12 @@ func main() {
 }
 
 func LoadSampleScene_02_PyrCube() {
-	ngine.Core.Materials["cobbles"] = ngine.NewMaterialFromLocalTextureImageFile(filepath.Join(ngine.AssetRootDirPath, "misc", "cobbles.png"))
-	ngine.Core.Materials["crate"] = ngine.NewMaterialFromLocalTextureImageFile(filepath.Join(ngine.AssetRootDirPath, "misc", "crate.jpg"))
-	ngine.Core.Materials["mosaic"] = ngine.NewMaterialFromLocalTextureImageFile(filepath.Join(ngine.AssetRootDirPath, "misc", "mosaic.jpg"))
+	// ngine.Core.Materials["cobbles"] = ngine.NewMaterialFromLocalTextureImageFile("misc/cobbles.png")
+	// ngine.Core.Materials["crate"] = ngine.NewMaterialFromLocalTextureImageFile("misc/crate.jpeg")
+	// ngine.Core.Materials["mosaic"] = ngine.NewMaterialFromLocalTextureImageFile("misc/mosaic.jpeg")
+	ngine.Core.Materials["cobbles"] = ngine.NewMaterialFromRemoteTextureImageFile("http://dl.dropbox.com/u/136375/misc/cobbles.png")
+	ngine.Core.Materials["crate"] = ngine.NewMaterialFromRemoteTextureImageFile("http://dl.dropbox.com/u/136375/misc/cat.png")
+	ngine.Core.Materials["mosaic"] = ngine.NewMaterialFromRemoteTextureImageFile("http://dl.dropbox.com/u/136375/misc/dog.png")
 	ngine.Core.Meshes["face3"] = ngine_samplescenes.NewMeshPyramid()
 	ngine.Core.Meshes["face4"] = ngine_samplescenes.NewMeshCube()
 	ngine.Core.Meshes["plane"] = ngine_samplescenes.NewMeshPlane()
@@ -89,13 +91,16 @@ func LoadSampleScene_02_PyrCube() {
 		1, 1,
 		0, 1,
 	})
-	floor.Transform.SetPos(&numutil.TVec3 { 0.1, -1.75, -8 })
+	floor.Transform.SetPos(&numutil.TVec3 { 0.1, 0, -8 })
 	floor.Transform.SetScalingN(100)
+	ngine.Core.CurCamera.Controller.Pos.Y = 1.6
 	ngine.Core.SyncUpdates()
 	ngine.Loop.OnLoopHandlers = append(ngine.Loop.OnLoopHandlers, func() {
 		ngine.Core.CurCamera.Controller.MoveSpeedupFactor = 1
 		if ngine.Windowing.KeyToggled(glfw.KeyF2) { ngine.Core.CurCamera.ToggleTechnique() }
 		if ngine.Windowing.KeyToggled(glfw.KeyF3) { ngine.Core.Options.ToggleGlBackfaceCulling() }
+		if ngine.Windowing.KeyToggled(glfw.KeyF4) { ngine.Core.Options.DefaultTextureParams.ToggleFilter() }
+		if ngine.Windowing.KeyToggled(glfw.KeyF5) { ngine.Core.Options.DefaultTextureParams.ToggleFilterAnisotropy() }
 		if ngine.Windowing.KeyPressed(glfw.KeyLshift) {
 			ngine.Core.CurCamera.Controller.MoveSpeedupFactor = 10
 		} else if ngine.Windowing.KeyPressed(glfw.KeyRshift) {
