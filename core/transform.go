@@ -128,6 +128,26 @@ func (me *tTransform) SetPos (pos *numutil.TVec3) {
 	me.OnPosChanged()
 }
 
+func (me *tTransform) SetPosX (posX float64) {
+	me.Pos.X = posX
+	me.OnPosChanged()
+}
+
+func (me *tTransform) SetPosXYZ (posX, posY, posZ float64) {
+	me.Pos.X, me.Pos.Y, me.Pos.Z = posX, posY, posZ
+	me.OnPosChanged()
+}
+
+func (me *tTransform) SetPosY (posY float64) {
+	me.Pos.Y = posY
+	me.OnPosChanged()
+}
+
+func (me *tTransform) SetPosZ (posZ float64) {
+	me.Pos.Z = posZ
+	me.OnPosChanged()
+}
+
 func (me *tTransform) SetRot (rot *numutil.TVec3) {
 	me.Rot = rot
 	me.OnRotChanged()
@@ -136,6 +156,11 @@ func (me *tTransform) SetRot (rot *numutil.TVec3) {
 func (me *tTransform) SetRotX (rad float64) {
 	me.Rot.X = rad
 	me.OnRotXChanged()
+}
+
+func (me *tTransform) SetRotXYZ (radX, radY, radZ float64) {
+	me.Rot.X, me.Rot.Y, me.Rot.Z = radX, radY, radZ
+	me.OnRotChanged()
 }
 
 func (me *tTransform) SetRotY (rad float64) {

@@ -3,6 +3,8 @@ package core
 import (
 )
 
+type tMaterials map[string]*TMaterial
+
 type TMaterial struct {
 	texKey string
 }

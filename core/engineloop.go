@@ -11,18 +11,20 @@ import (
 type tEngineLoop struct {
 	IsLooping bool
 	SecTickLast, TickNow, TickLast, TickDelta float64
-	OnLoopHandlers []func()
+	handlers []func()
 	OnSecTick func()
 }
 
-func newEngineLoop (onSecTick func()) *tEngineLoop {
+func newEngineLoop () *tEngineLoop {
 	var loop = &tEngineLoop {}
-	if loop.OnSecTick = onSecTick; onSecTick == nil {
-		loop.OnSecTick = func () {
-		}
+	loop.OnSecTick = func () {
 	}
-	loop.OnLoopHandlers = [] func() {}
+	loop.handlers = [] func() {}
 	return loop
+}
+
+func (me *tEngineLoop) AddHandler (loopHandler func ()) {
+	me.handlers = append(me.handlers, loopHandler)
 }
 
 func (me *tEngineLoop) Loop () {
@@ -51,7 +53,7 @@ func (me *tEngineLoop) Loop () {
 				Core.onSecTick()
 				me.OnSecTick()
 			}
-			for _, onLoopHandler = range me.OnLoopHandlers {
+			for _, onLoopHandler = range me.handlers {
 				onLoopHandler()
 			}
 			Windowing.OnLoop()

@@ -4,7 +4,7 @@ import (
 	gl "github.com/chsc/gogl/gl42"
 )
 
-func (me *tMeshMap) NewCube () *TMesh {
+func (me *tMeshes) NewCube () *TMesh {
 	var mesh = NewMesh()
 	mesh.Verts = []gl.Float {
 		// Front face
@@ -82,7 +82,7 @@ func (me *tMeshMap) NewCube () *TMesh {
 	return mesh
 }
 
-func (me *tMeshMap) NewPlane () *TMesh {
+func (me *tMeshes) NewPlane () *TMesh {
 	var mesh = NewMesh()
 	mesh.Verts = []gl.Float {
 		1, 0, -1,
@@ -100,7 +100,7 @@ func (me *tMeshMap) NewPlane () *TMesh {
 	return mesh
 }
 
-func (me *tMeshMap) NewPyramid () *TMesh {
+func (me *tMeshes) NewPyramid () *TMesh {
 	var mesh = NewMesh()
 	mesh.Verts = []gl.Float {
 		// Front face
@@ -142,7 +142,7 @@ func (me *tMeshMap) NewPyramid () *TMesh {
 	return mesh
 }
 
-func (me *tMeshMap) NewQuad () *TMesh {
+func (me *tMeshes) NewQuad () *TMesh {
 	var mesh = NewMesh()
 	mesh.Verts = []gl.Float {
 		1, 1, 0,
@@ -160,7 +160,7 @@ func (me *tMeshMap) NewQuad () *TMesh {
 	return mesh
 }
 
-func (me *tMeshMap) NewTriangle () *TMesh {
+func (me *tMeshes) NewTriangle () *TMesh {
 	var mesh = NewMesh()
 	mesh.Verts = []gl.Float {
 		0, 1, 0,

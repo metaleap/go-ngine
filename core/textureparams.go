@@ -10,8 +10,6 @@ import (
 )
 
 type tTextureParams struct {
-	TextureProviders *tTextureProviders
-
 	aniso float64
 	filter bool
 
@@ -21,7 +19,6 @@ type tTextureParams struct {
 
 func NewTextureParams (filter bool, filterAnisotropy float64) *tTextureParams {
 	var tp = &tTextureParams {}
-	tp.TextureProviders = textureProviders
 	tp.filter, tp.aniso = filter, filterAnisotropy
 	return tp
 }

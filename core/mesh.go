@@ -4,7 +4,7 @@ import (
 	gl "github.com/chsc/gogl/gl42"
 )
 
-type tMeshMap map[string]*TMesh
+type tMeshes map[string]*TMesh
 
 type TMesh struct {
 	Indices []gl.Uint

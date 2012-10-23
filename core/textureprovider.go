@@ -7,37 +7,36 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 )
 
 type FTextureProvider func (args ... interface {}) (image.Image, error)
 
 type tTextureProviders struct {
-	LocalFile, RemoteFile, Uint8Array FTextureProvider
+	IoReader, LocalFile, RemoteFile FTextureProvider
 }
 
 var (
-	textureProviders = &tTextureProviders { textureProviderLocalFile, textureProviderRemoteFile, textureProviderUint8Array }
+	textureProviders = &tTextureProviders { textureProviderIoReader, textureProviderLocalFile, textureProviderRemoteFile }
 )
+
+func textureProviderIoReader (args ... interface {}) (img image.Image, err error) {
+	img, _, err = image.Decode(args[0].(io.Reader))
+	return
+}
 
 func textureProviderLocalFile (args ... interface {}) (img image.Image, err error) {
 	var file *os.File
-	if file, err = os.Open(args[0].(string)); err != nil { return }
+	var fpath = args[0].(string)
+	if !strings.HasSuffix(fpath, "/") { fpath = Core.AssetManager.LocalFilePath(fpath) }
+	if file, err = os.Open(fpath); err != nil { return }
 	defer file.Close()
-	return textureProviderReader(file)
-}
-
-func textureProviderReader (args ... interface {}) (img image.Image, err error) {
-	img, _, err = image.Decode(args[0].(io.Reader))
-	return
+	return textureProviderIoReader(file)
 }
 
 func textureProviderRemoteFile (args ... interface {}) (img image.Image, err error) {
 	var resp *http.Response
 	if resp, err = http.Get(args[0].(string)); err != nil { return }
 	defer resp.Body.Close()
-	return textureProviderReader(resp.Body)
-}
-
-func textureProviderUint8Array (args ... interface {}) (image.Image, error) {
-	return nil, nil
+	return textureProviderIoReader(resp.Body)
 }

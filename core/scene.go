@@ -1,5 +1,7 @@
 package core
 
+type tScenes map[string]*TScene
+
 type TScene struct {
 	RootNode *TNode
 }

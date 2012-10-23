@@ -24,11 +24,11 @@ func Dispose () {
 	Core, Loop, Stats = nil, nil, nil
 }
 
-func Init (options *tOptions, winTitle string, onSecTick func ()) error {
+func Init (options *tOptions, winTitle string) error {
 	var err error
 	if err = Windowing.init(options, winTitle); err == nil {
 		if err = nglcore.Init(); err == nil {
-			Loop, Stats, Core = newEngineLoop(onSecTick), newEngineStats(), newEngineCore(options)
+			Loop, Stats, Core = newEngineLoop(), newEngineStats(), newEngineCore(options)
 			log.Println(glutil.GlConnInfo())
 		}
 	}

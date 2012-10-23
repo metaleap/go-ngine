@@ -34,12 +34,12 @@ func AssetRootDirPath () string {
 }
 
 func NewMaterialFromLocalTextureImageFile (assetRootRelativeFilePath string) *ngine.TMaterial {
-	ngine.Core.Textures[assetRootRelativeFilePath] = ngine.NewTextureLoadLocalFile(assetRootRelativeFilePath, false)
+	ngine.Core.Textures[assetRootRelativeFilePath] = ngine.Core.Textures.NewTextureLoad(false, ngine.Core.Textures.Providers().LocalFile, assetRootRelativeFilePath)
 	return ngine.NewMaterial(assetRootRelativeFilePath)
 }
 
 func NewMaterialFromRemoteTextureImageFile (fileUrl string) *ngine.TMaterial {
-	ngine.Core.Textures[fileUrl] = ngine.NewTextureLoadRemoteFile(fileUrl, true)
+	ngine.Core.Textures[fileUrl] = ngine.Core.Textures.NewTextureLoad(true, ngine.Core.Textures.Providers().RemoteFile, fileUrl)
 	return ngine.NewMaterial(fileUrl)
 }
 
@@ -55,9 +55,10 @@ func SamplesMainFunc (loader func ()) {
 	var err error
 	defer ngine.Dispose()
 
-	if err = ngine.Init(ngine.NewOptions(AssetRootDirPath(), 1280, 720, 0, false), "Loading Sample...", SamplesOnSec); err != nil {
+	if err = ngine.Init(ngine.NewOptions(AssetRootDirPath(), 1280, 720, 0, false), "Loading Sample..."); err != nil {
 		fmt.Printf("ABORT: %v\n", err)
 	} else {
+		ngine.Loop.OnSecTick = SamplesOnSec
 		ngine.Stats.TrackGC = true
 		loader()
 		ngine.Loop.Loop()
