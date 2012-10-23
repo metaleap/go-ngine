@@ -33,34 +33,14 @@ func AssetRootDirPath () string {
 	return util.BaseCodePath("go-ngine", "_sampleprogs", "_sharedassets")
 }
 
-func NewMeshCube () *ngine.TMesh {
-	var mesh = &ngine.TMesh {}
-	mesh.SetVertsCube()
-	return mesh
+func NewMaterialFromLocalTextureImageFile (assetRootRelativeFilePath string) *ngine.TMaterial {
+	ngine.Core.Textures[assetRootRelativeFilePath] = ngine.NewTextureLoadLocalFile(assetRootRelativeFilePath, false)
+	return ngine.NewMaterial(assetRootRelativeFilePath)
 }
 
-func NewMeshFace3 () *ngine.TMesh {
-	var mesh = &ngine.TMesh {}
-	mesh.SetVertsFace3()
-	return mesh
-}
-
-func NewMeshFace4 () *ngine.TMesh {
-	var mesh = &ngine.TMesh {}
-	mesh.SetVertsFace4()
-	return mesh
-}
-
-func NewMeshPlane () *ngine.TMesh {
-	var mesh = &ngine.TMesh {}
-	mesh.SetVertsPlane()
-	return mesh
-}
-
-func NewMeshPyramid () *ngine.TMesh {
-	var mesh = &ngine.TMesh {}
-	mesh.SetVertsPyramid()
-	return mesh
+func NewMaterialFromRemoteTextureImageFile (fileUrl string) *ngine.TMaterial {
+	ngine.Core.Textures[fileUrl] = ngine.NewTextureLoadRemoteFile(fileUrl, true)
+	return ngine.NewMaterial(fileUrl)
 }
 
 func PrintPostLoopSummary () {

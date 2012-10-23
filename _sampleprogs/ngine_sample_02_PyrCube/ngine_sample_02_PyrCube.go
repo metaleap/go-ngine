@@ -4,7 +4,7 @@ import (
 	"math"
 
 	gl "github.com/chsc/gogl/gl42"
-	glfw "github.com/jteeuwen/glfw"
+	glfw "github.com/go-gl/glfw"
 
 	numutil "github.com/go3d/go-util/num"
 
@@ -17,15 +17,12 @@ func main() {
 }
 
 func LoadSampleScene_02_PyrCube() {
-	// ngine.Core.Materials["cobbles"] = ngine.NewMaterialFromLocalTextureImageFile("misc/cobbles.png")
-	// ngine.Core.Materials["crate"] = ngine.NewMaterialFromLocalTextureImageFile("misc/crate.jpeg")
-	// ngine.Core.Materials["mosaic"] = ngine.NewMaterialFromLocalTextureImageFile("misc/mosaic.jpeg")
-	ngine.Core.Materials["cobbles"] = ngine.NewMaterialFromRemoteTextureImageFile("http://dl.dropbox.com/u/136375/misc/cobbles.png")
-	ngine.Core.Materials["crate"] = ngine.NewMaterialFromRemoteTextureImageFile("http://dl.dropbox.com/u/136375/misc/cat.png")
-	ngine.Core.Materials["mosaic"] = ngine.NewMaterialFromRemoteTextureImageFile("http://dl.dropbox.com/u/136375/misc/dog.png")
-	ngine.Core.Meshes["face3"] = ngine_samplescenes.NewMeshPyramid()
-	ngine.Core.Meshes["face4"] = ngine_samplescenes.NewMeshCube()
-	ngine.Core.Meshes["plane"] = ngine_samplescenes.NewMeshPlane()
+	ngine.Core.Materials["cobbles"] = ngine_samplescenes.NewMaterialFromRemoteTextureImageFile("http://dl.dropbox.com/u/136375/misc/cobbles.png")
+	ngine.Core.Materials["crate"] = ngine_samplescenes.NewMaterialFromLocalTextureImageFile("misc/crate.jpeg")
+	ngine.Core.Materials["mosaic"] = ngine_samplescenes.NewMaterialFromLocalTextureImageFile("misc/mosaic.jpeg")
+	ngine.Core.Meshes["face3"] = ngine.Core.Meshes.NewPyramid()
+	ngine.Core.Meshes["face4"] = ngine.Core.Meshes.NewCube()
+	ngine.Core.Meshes["plane"] = ngine.Core.Meshes.NewPlane()
 	ngine.Core.Options.SetGlBackfaceCulling(false)
 	var scene = ngine.NewScene()
 	ngine.Core.Scenes[""] = scene

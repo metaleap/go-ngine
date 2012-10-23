@@ -4,7 +4,7 @@ import (
 	"math"
 
 	gl "github.com/chsc/gogl/gl42"
-	glfw "github.com/jteeuwen/glfw"
+	glfw "github.com/go-gl/glfw"
 
 	numutil "github.com/go3d/go-util/num"
 
@@ -18,10 +18,10 @@ func main() {
 }
 
 func LoadSampleScene_01_TriQuad() {
-	ngine.Core.Materials["cat"] = ngine.NewMaterialFromLocalTextureImageFile("misc/cat.png")
-	ngine.Core.Materials["dog"] = ngine.NewMaterialFromLocalTextureImageFile("misc/dog.png")
-	ngine.Core.Meshes["face3"] = ngine_samplescenes.NewMeshFace3()
-	ngine.Core.Meshes["face4"] = ngine_samplescenes.NewMeshFace4()
+	ngine.Core.Materials["cat"] = ngine_samplescenes.NewMaterialFromLocalTextureImageFile("misc/cat.png")
+	ngine.Core.Materials["dog"] = ngine_samplescenes.NewMaterialFromLocalTextureImageFile("misc/dog.png")
+	ngine.Core.Meshes["face3"] = ngine.Core.Meshes.NewTriangle()
+	ngine.Core.Meshes["face4"] = ngine.Core.Meshes.NewQuad()
 	var scene = ngine.NewScene()
 	ngine.Core.Options.SetGlBackfaceCulling(false)
 	ngine.Core.Scenes[""] = scene

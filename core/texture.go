@@ -15,6 +15,7 @@ var (
 )
 
 type TTexture struct {
+	LastError error
 	Params *tTextureParams
 
 	img image.Image
@@ -23,6 +24,32 @@ type TTexture struct {
 	glTexWidth, glTexHeight, glTexLevels gl.Sizei
 	glPixPointer gl.Pointer
 	glSizedInternalFormat, glPixelDataFormat, glPixelDataType gl.Enum
+}
+
+func NewTexture () *TTexture {
+	var tex = &TTexture {}
+	tex.Params = Core.Options.DefaultTextureParams
+	return tex
+}
+
+func NewTextureLoadLocalFile (assetRootRelativeFilePath string, async bool) *TTexture {
+	var tex = NewTexture()
+	if async {
+		tex.LoadAsync(textureProviders.LocalFile, Core.AssetManager.LocalFilePath(assetRootRelativeFilePath))
+	} else {
+		tex.Load(textureProviders.LocalFile, Core.AssetManager.LocalFilePath(assetRootRelativeFilePath))
+	}
+	return tex
+}
+
+func NewTextureLoadRemoteFile (fileUrl string, async bool) *TTexture {
+	var tex = NewTexture()
+	if async {
+		tex.LoadAsync(textureProviders.RemoteFile, fileUrl)
+	} else {
+		tex.Load(textureProviders.RemoteFile, fileUrl)
+	}
+	return tex
 }
 
 func (me *TTexture) GpuDelete () {
@@ -38,7 +65,7 @@ func (me *TTexture) GpuSync () {
 	gl.GenTextures(1, &me.glTex)
 	gl.BindTexture(gl.TEXTURE_2D, me.glTex)
 	defer gl.BindTexture(gl.TEXTURE_2D, 0)
-	me.Params.Apply(me)
+	me.Params.apply(me)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT)
 	if me.img != nil {
@@ -59,8 +86,8 @@ func (me *TTexture) GpuSynced () bool {
 	return me.gpuSynced
 }
 
-func (me *TTexture) Load (provider FTextureProvider, args ... interface {}) error {
-	return me.load_OnImg(provider(args ...))
+func (me *TTexture) Load (provider FTextureProvider, args ... interface {}) {
+	me.load_OnImg(provider(args ...))
 }
 
 func (me *TTexture) LoadAsync (provider FTextureProvider, args ... interface {}) {
@@ -68,7 +95,8 @@ func (me *TTexture) LoadAsync (provider FTextureProvider, args ... interface {})
 	asyncTextures[me] = false
 	go func () {
 		if err := me.load_OnImg(provider(args ...)); err != nil {
-			panic(err)
+			//	mark as "done" anyway in the async queue.
+			asyncTextures[me] = true
 		}
 	} ()
 }
@@ -78,6 +106,8 @@ func (me *TTexture) load_OnImg (img image.Image, err error) error {
 	var conv = false
 	var nuImage *image.RGBA
 	me.gpuSynced, me.img = false, nil
+	if err != nil { me.LastError = err }
+	if me.Loaded() { me.Unload() }
 	if me.img = img; me.img != nil {
 		switch me.img.(type) {
 		case *image.YCbCr, *image.Paletted:
@@ -95,6 +125,10 @@ func (me *TTexture) load_OnImg (img image.Image, err error) error {
 
 func (me *TTexture) Loaded () bool {
 	return me.img != nil
+}
+
+func (me *TTexture) SuppressMipMaps () {
+	me.noMipMap = true
 }
 
 func (me *TTexture) Unload () {

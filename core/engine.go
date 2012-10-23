@@ -20,13 +20,13 @@ func Dispose () {
 	if Core != nil { Core.Dispose() }
 	nglcore.LogLastError("ngine.Core_Dispose")
 	nglcore.Dispose()
-	Windowing.Exit()
+	Windowing.dispose()
 	Core, Loop, Stats = nil, nil, nil
 }
 
 func Init (options *tOptions, winTitle string, onSecTick func ()) error {
 	var err error
-	if err = Windowing.Init(options, winTitle); err == nil {
+	if err = Windowing.init(options, winTitle); err == nil {
 		if err = nglcore.Init(); err == nil {
 			Loop, Stats, Core = newEngineLoop(onSecTick), newEngineStats(), newEngineCore(options)
 			log.Println(glutil.GlConnInfo())

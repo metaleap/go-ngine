@@ -11,9 +11,13 @@ import (
 
 type FTextureProvider func (args ... interface {}) (image.Image, error)
 
-var TextureProviders = struct {
+type tTextureProviders struct {
 	LocalFile, RemoteFile, Uint8Array FTextureProvider
-	} { textureProviderLocalFile, textureProviderRemoteFile, textureProviderUint8Array }
+}
+
+var (
+	textureProviders = &tTextureProviders { textureProviderLocalFile, textureProviderRemoteFile, textureProviderUint8Array }
+)
 
 func textureProviderLocalFile (args ... interface {}) (img image.Image, err error) {
 	var file *os.File

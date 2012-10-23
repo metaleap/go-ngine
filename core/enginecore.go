@@ -20,12 +20,13 @@ var (
 )
 
 type tEngineCore struct {
+	AssetManager *tAssetManager
 	Canvases []*tRenderCanvas
 	CurCamera *tCamera
 	CurCanvas *tRenderCanvas
 	DefaultCanvasIndex int
 	Materials map[string]*TMaterial
-	Meshes map[string]*TMesh
+	Meshes tMeshMap
 	Options *tOptions
 	Scenes map[string]*TScene
 	Textures map[string]*TTexture
@@ -35,8 +36,9 @@ func newEngineCore (options *tOptions) *tEngineCore {
 	var defCanvas *tRenderCanvas
 	Core = &tEngineCore {}
 	Core.Options = options
+	Core.AssetManager = newAssetManager()
 	Core.Options.DefaultTextureParams.setAgain()
-	Core.Meshes = map [string] *TMesh {}
+	Core.Meshes = tMeshMap {}
 	Core.Materials = map [string] *TMaterial {}
 	Core.Textures = map[string] *TTexture {}
 	Core.Scenes = map [string] *TScene {}

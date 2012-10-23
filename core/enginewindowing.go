@@ -1,7 +1,7 @@
 package core
 
 import (
-	glfw "github.com/jteeuwen/glfw"
+	glfw "github.com/go-gl/glfw"
 
 	util "github.com/go3d/go-util"
 )
@@ -20,7 +20,7 @@ func newWindowing () *tEngineWindowing {
 	return curGlfw
 }
 
-func (me *tEngineWindowing) Exit () {
+func (me *tEngineWindowing) dispose () {
 	if (me.isGlfwWindow) {
 		me.isGlfwWindow = false
 		glfw.CloseWindow()
@@ -31,7 +31,7 @@ func (me *tEngineWindowing) Exit () {
 	}
 }
 
-func (me *tEngineWindowing) Init (opt *tOptions, winTitle string) error {
+func (me *tEngineWindowing) init (opt *tOptions, winTitle string) error {
 	var err error
 	if (!me.isGlfwInit) {
 		if err = glfw.Init(); err == nil {

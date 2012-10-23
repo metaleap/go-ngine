@@ -10,6 +10,8 @@ import (
 )
 
 type tTextureParams struct {
+	TextureProviders *tTextureProviders
+
 	aniso float64
 	filter bool
 
@@ -19,11 +21,12 @@ type tTextureParams struct {
 
 func NewTextureParams (filter bool, filterAnisotropy float64) *tTextureParams {
 	var tp = &tTextureParams {}
+	tp.TextureProviders = textureProviders
 	tp.filter, tp.aniso = filter, filterAnisotropy
 	return tp
 }
 
-func (me *tTextureParams) Apply (tex *TTexture) {
+func (me *tTextureParams) apply (tex *TTexture) {
 	if me.glAniso > 0 { gl.TexParameterf(gl.TEXTURE_2D, glutil.TEXTURE_MAX_ANISOTROPY_EXT, me.glAniso) }
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, me.glFilterMag)
 	if tex.noMipMap {
@@ -45,7 +48,7 @@ func (me *tTextureParams) gpuSync () {
 	for _, tex := range Core.Textures {
 		if (tex.Params == me) && tex.GpuSynced() {
 			gl.BindTexture(gl.TEXTURE_2D, tex.glTex)
-			me.Apply(tex)
+			me.apply(tex)
 		} else {
 		}
 	}
