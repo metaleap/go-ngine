@@ -7,16 +7,17 @@ import (
 	glfw "github.com/go-gl/glfw"
 
 	ngine "github.com/go3d/go-ngine/core"
-	ngine_samplescenes "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
+	ngine_samples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
 )
 
 var (
 	floor, tri, quad *ngine.TNode
+	cam *ngine.TCamera
 	camCtl *ngine.TController
 )
 
 func main () {
-	ngine_samplescenes.SamplesMainFunc(LoadSampleScene_02_PyrCube)
+	ngine_samples.SamplesMainFunc(LoadSampleScene_02_PyrCube)
 }
 
 func onLoop () {
@@ -27,7 +28,6 @@ func onLoop () {
 	if ngine.Windowing.KeyToggled(glfw.KeyF5) { ngine.Core.Options.DefaultTextureParams.ToggleFilterAnisotropy() }
 
 	//	check camera-control keys
-	camCtl = ngine.Core.CurCamera.Controller
 	camCtl.MoveSpeedupFactor = 1
 	if ngine.Windowing.KeyPressed(glfw.KeyLshift) {
 		camCtl.MoveSpeedupFactor = 10
@@ -62,9 +62,9 @@ func onLoop () {
 func LoadSampleScene_02_PyrCube () {
 	ngine.Core.Options.SetGlBackfaceCulling(false)
 
-	ngine.Core.Materials["cobbles"] = ngine_samplescenes.NewMaterialFromRemoteTextureImageFile("http://dl.dropbox.com/u/136375/misc/cobbles.png")
-	ngine.Core.Materials["crate"] = ngine_samplescenes.NewMaterialFromLocalTextureImageFile("misc/crate.jpeg")
-	ngine.Core.Materials["mosaic"] = ngine_samplescenes.NewMaterialFromLocalTextureImageFile("misc/mosaic.jpeg")
+	ngine.Core.Materials["cobbles"] = ngine_samples.NewMaterialFromRemoteTextureImageFile("http://dl.dropbox.com/u/136375/misc/cobbles.png")
+	ngine.Core.Materials["crate"] = ngine_samples.NewMaterialFromLocalTextureImageFile("misc/crate.jpeg")
+	ngine.Core.Materials["mosaic"] = ngine_samples.NewMaterialFromLocalTextureImageFile("misc/mosaic.jpeg")
 
 	ngine.Core.Meshes["face3"] = ngine.Core.Meshes.NewPyramid()
 	ngine.Core.Meshes["face4"] = ngine.Core.Meshes.NewCube()
@@ -134,7 +134,12 @@ func LoadSampleScene_02_PyrCube () {
 
 	floor.Transform.SetPosXYZ(0.1, 0, -8)
 	floor.Transform.SetScalingN(100)
+
+	cam, camCtl = ngine_samples.Cam, ngine_samples.CamCtl
+	camCtl.BeginUpdate()
+	camCtl.Pos.Y = 1.6
+	camCtl.EndUpdate()
+
 	ngine.Core.SyncUpdates()
-	ngine.Core.CurCamera.Controller.With(func (ctl *ngine.TController) { ctl.Pos.Y = 1.6 })
 	ngine.Loop.AddHandler(onLoop)
 }

@@ -152,9 +152,3 @@ func (me *TController) updateMatrixRot () {
 		me.UpAxis.Normalize()
 	}
 }
-
-func (me *TController) With (actions func (ctl *TController)) {
-	me.BeginUpdate()
-	defer me.EndUpdate()
-	actions(me)
-}

@@ -10,9 +10,10 @@ import (
 )
 
 var (
+	Cam *ngine.TCamera
+	CamCtl *ngine.TController
 	MaxKeyHint = len(keyHints) - 1
 
-	ctl *ngine.TController
 	curKeyHint = 0
 	keyHints = []string {
 		"[F2]  --  Toggle Render Technique",
@@ -60,6 +61,8 @@ func SamplesMainFunc (loader func ()) {
 	} else {
 		ngine.Loop.OnSecTick = SamplesOnSec
 		ngine.Stats.TrackGC = true
+		Cam = ngine.Core.Canvases[ngine.Core.DefaultCanvasIndex].Cameras[0]
+		CamCtl = Cam.Controller
 		loader()
 		ngine.Loop.Loop()
 		PrintPostLoopSummary()
@@ -75,6 +78,5 @@ func SamplesOnSec () {
 }
 
 func WindowTitle () string {
-	ctl = ngine.Core.CurCamera.Controller
-	return fmt.Sprintf("%v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", ngine.Stats.FpsLastSec, ngine.Core.Options.WinWidth(), ngine.Core.Options.WinHeight(), keyHints[curKeyHint], ctl.Pos, ctl.Dir)
+	return fmt.Sprintf("%v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", ngine.Stats.FpsLastSec, ngine.Windowing.WinWidth(), ngine.Windowing.WinHeight(), keyHints[curKeyHint], CamCtl.Pos, CamCtl.Dir)
 }

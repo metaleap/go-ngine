@@ -106,7 +106,7 @@ func (me *tEngineWindowing) KeyToggled (key int) bool {
 	return false
 }
 
-func (me *tEngineWindowing) OnLoop () {
+func (me *tEngineWindowing) onLoop () {
 	if (glfw.Key(glfw.KeyEsc) == glfw.KeyPress) || (glfw.WindowParam(glfw.Opened) != 1) {
 		Loop.IsLooping = false
 	} else {
@@ -120,4 +120,12 @@ func (me *tEngineWindowing) SetTitle (newTitle string) {
 
 func (me *tEngineWindowing) Time () float64 {
 	return glfw.Time()
+}
+
+func (me *tEngineWindowing) WinHeight () int {
+	return Core.Options.winHeight
+}
+
+func (me *tEngineWindowing) WinWidth () int {
+	return Core.Options.winWidth
 }

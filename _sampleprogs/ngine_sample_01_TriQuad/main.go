@@ -7,7 +7,7 @@ import (
 	glfw "github.com/go-gl/glfw"
 
 	ngine "github.com/go3d/go-ngine/core"
-	ngine_samplescenes "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
+	ngine_samples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
 )
 
 var (
@@ -15,12 +15,12 @@ var (
 )
 
 func main () {
-	ngine_samplescenes.MaxKeyHint = 1
-	ngine_samplescenes.SamplesMainFunc(LoadSampleScene_01_TriQuad)
+	ngine_samples.MaxKeyHint = 1
+	ngine_samples.SamplesMainFunc(LoadSampleScene_01_TriQuad)
 }
 
 func onLoop () {
-	if ngine.Windowing.KeyToggled(glfw.KeyF2) { ngine.Core.CurCamera.ToggleTechnique() }
+	if ngine.Windowing.KeyToggled(glfw.KeyF2) { ngine_samples.Cam.ToggleTechnique() }
 	if ngine.Windowing.KeyToggled(glfw.KeyF3) { ngine.Core.Options.ToggleGlBackfaceCulling() }
 	tri.Transform.Rot.X -= 0.0005
 	tri.Transform.Rot.Y -= 0.0005
@@ -35,8 +35,8 @@ func onLoop () {
 func LoadSampleScene_01_TriQuad () {
 	ngine.Core.Options.SetGlBackfaceCulling(false)
 
-	ngine.Core.Materials["cat"] = ngine_samplescenes.NewMaterialFromLocalTextureImageFile("misc/cat.png")
-	ngine.Core.Materials["dog"] = ngine_samplescenes.NewMaterialFromLocalTextureImageFile("misc/dog.png")
+	ngine.Core.Materials["cat"] = ngine_samples.NewMaterialFromLocalTextureImageFile("misc/cat.png")
+	ngine.Core.Materials["dog"] = ngine_samples.NewMaterialFromLocalTextureImageFile("misc/dog.png")
 
 	ngine.Core.Meshes["face3"] = ngine.Core.Meshes.NewTriangle()
 	ngine.Core.Meshes["face4"] = ngine.Core.Meshes.NewQuad()

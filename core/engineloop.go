@@ -54,7 +54,7 @@ func (me *tEngineLoop) Loop () {
 			for _, onLoopHandler = range me.handlers {
 				onLoopHandler()
 			}
-			Windowing.OnLoop()
+			Windowing.onLoop()
 		}
 		glLogLastError("ngine.PostLoop")
 	}

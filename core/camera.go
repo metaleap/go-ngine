@@ -7,21 +7,21 @@ import (
 	numutil "github.com/go3d/go-util/num"
 )
 
-type tCamera struct {
+type TCamera struct {
 	Controller *TController
 	Disabled bool
 	RenderSceneKey string
 	ViewPort *tCamViewPort
 
 	technique iRenderTechnique
-	canvas *tRenderCanvas
+	canvas *TRenderCanvas
 	nearPlane, farPlane, fieldOfView float64
 	matProj *numutil.TMat4
 	glMatProj *glutil.TGlMat4
 }
 
-	func NewCamera (parentCanvas *tRenderCanvas, technique string) *tCamera {
-		var cam = &tCamera {}
+	func NewCamera (parentCanvas *TRenderCanvas, technique string) *TCamera {
+		var cam = &TCamera {}
 		cam.SetTechnique(technique)
 		cam.canvas = parentCanvas
 		cam.matProj = &numutil.TMat4 {}
@@ -32,22 +32,22 @@ type tCamera struct {
 		return cam
 	}
 
-	func (me *tCamera) Dispose () {
+	func (me *TCamera) Dispose () {
 	}
 
-	func (me *tCamera) FarPlane () float64 {
+	func (me *TCamera) FarPlane () float64 {
 		return me.farPlane
 	}
 
-	func (me *tCamera) FieldOfView () float64 {
+	func (me *TCamera) FieldOfView () float64 {
 		return me.fieldOfView
 	}
 
-	func (me *tCamera) NearPlane () float64 {
+	func (me *TCamera) NearPlane () float64 {
 		return me.nearPlane
 	}
 
-	func (me *tCamera) render () {
+	func (me *TCamera) render () {
 		Core.useTechnique(me.technique)
 		gl.UniformMatrix4fv(curProg.UnifLocs["uMatCam"], 1, gl.FALSE, &me.Controller.glMat[0])
 		gl.UniformMatrix4fv(curProg.UnifLocs["uMatProj"], 1, gl.FALSE, &me.glMatProj[0])
@@ -58,18 +58,18 @@ type tCamera struct {
 		curScene.RootNode.render()
 	}
 
-	func (me *tCamera) SetPerspective (nearPlane, farPlane, fieldOfView float64) {
+	func (me *TCamera) SetPerspective (nearPlane, farPlane, fieldOfView float64) {
 		me.nearPlane, me.farPlane, me.fieldOfView = nearPlane, farPlane, fieldOfView
 		me.updatePerspective()
 	}
 
-	func (me *tCamera) SetTechnique (name string) {
+	func (me *TCamera) SetTechnique (name string) {
 		if (me.technique == nil) || (me.technique.Name() != name) {
 			me.technique = getRenderTechnique(name)
 		}
 	}
 
-	func (me *tCamera) ToggleTechnique () {
+	func (me *TCamera) ToggleTechnique () {
 		var allNames, curTech, name = glShaderMan.AllNames, curTechnique.Name(), ""
 		var curIndex, i int
 		var tech iRenderTechnique = nil
@@ -79,14 +79,14 @@ type tCamera struct {
 		if tech != nil { me.technique = tech }
 	}
 
-	func (me *tCamera) updatePerspective () {
+	func (me *TCamera) updatePerspective () {
 		me.matProj.Perspective(me.fieldOfView, me.ViewPort.aspect, me.nearPlane, me.farPlane)
 		me.glMatProj.Load(me.matProj)
 	}
 
 type tCamViewPort struct {
 	absolute bool
-	camera *tCamera
+	camera *TCamera
 	glX, glY gl.Int
 	glW, glH gl.Sizei
 	relX, relY, relW, relH float64
@@ -94,7 +94,7 @@ type tCamViewPort struct {
 	aspect float64
 }
 
-	func newViewPort (cam *tCamera) *tCamViewPort {
+	func newViewPort (cam *TCamera) *tCamViewPort {
 		var vp = &tCamViewPort {}
 		vp.camera = cam
 		vp.SetRel(0, 0, 1, 1)

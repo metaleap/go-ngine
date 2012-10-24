@@ -9,8 +9,8 @@ import (
 var (
 	curCanvIndex, lastCanvIndex int
 	curMatKey string
-	curCam *tCamera
-	curCanvas *tRenderCanvas
+	curCam *TCamera
+	curCanvas *TRenderCanvas
 	curMat *TMaterial
 	curMesh *TMesh
 	curNode *TNode
@@ -22,8 +22,8 @@ var (
 type tEngineCore struct {
 	AssetManager *tAssetManager
 	Canvases tRenderCanvases
-	CurCamera *tCamera
-	CurCanvas *tRenderCanvas
+	CurCamera *TCamera
+	CurCanvas *TRenderCanvas
 	DefaultCanvasIndex int
 	Materials tMaterials
 	Meshes tMeshes
@@ -33,7 +33,7 @@ type tEngineCore struct {
 }
 
 func newEngineCore (options *tOptions) *tEngineCore {
-	var defCanvas *tRenderCanvas
+	var defCanvas *TRenderCanvas
 	Core = &tEngineCore {}
 	Core.Options = options
 	Core.AssetManager = newAssetManager()
