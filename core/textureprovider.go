@@ -5,9 +5,6 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 	"io"
-	"net/http"
-	"os"
-	"strings"
 )
 
 type FTextureProvider func (args ... interface {}) (image.Image, error)
@@ -26,17 +23,9 @@ func textureProviderIoReader (args ... interface {}) (img image.Image, err error
 }
 
 func textureProviderLocalFile (args ... interface {}) (img image.Image, err error) {
-	var file *os.File
-	var fpath = args[0].(string)
-	if !strings.HasSuffix(fpath, "/") { fpath = Core.AssetManager.LocalFilePath(fpath) }
-	if file, err = os.Open(fpath); err != nil { return }
-	defer file.Close()
-	return textureProviderIoReader(file)
+	return textureProviderIoReader(Core.AssetManager.OpenLocalFile(args[0].(string)))
 }
 
 func textureProviderRemoteFile (args ... interface {}) (img image.Image, err error) {
-	var resp *http.Response
-	if resp, err = http.Get(args[0].(string)); err != nil { return }
-	defer resp.Body.Close()
-	return textureProviderIoReader(resp.Body)
+	return textureProviderIoReader(Core.AssetManager.OpenRemoteFile(args[0].(string)))
 }
