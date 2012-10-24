@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"runtime"
 
+	glfw "github.com/go-gl/glfw"
+
 	util "github.com/go3d/go-util"
 
 	ngine "github.com/go3d/go-ngine/core"
@@ -32,6 +34,34 @@ var (
 
 func AssetRootDirPath () string {
 	return util.BaseCodePath("go-ngine", "_sampleprogs", "_sharedassets")
+}
+
+func CheckCamCtlKeys () {
+	CamCtl.MoveSpeedupFactor = 1
+	if ngine.Windowing.KeyPressed(glfw.KeyLshift) {
+		CamCtl.MoveSpeedupFactor = 10
+	} else if ngine.Windowing.KeyPressed(glfw.KeyRshift) {
+		CamCtl.MoveSpeedupFactor = 100
+	} else if ngine.Windowing.KeyPressed(glfw.KeyLalt) {
+		CamCtl.MoveSpeedupFactor = 0.1
+	}
+	if ngine.Windowing.KeyPressed(glfw.KeyUp) { CamCtl.MoveForward() }
+	if ngine.Windowing.KeyPressed(glfw.KeyDown) { CamCtl.MoveBackward() }
+	if ngine.Windowing.KeyPressed('A') { CamCtl.MoveLeft() }
+	if ngine.Windowing.KeyPressed('D') { CamCtl.MoveRight() }
+	if ngine.Windowing.KeyPressed('W') { CamCtl.MoveUp() }
+	if ngine.Windowing.KeyPressed('S') { CamCtl.MoveDown() }
+	if ngine.Windowing.KeyPressed(glfw.KeyLeft) { CamCtl.TurnLeft() }
+	if ngine.Windowing.KeyPressed(glfw.KeyRight) { CamCtl.TurnRight() }
+	if ngine.Windowing.KeysPressedAny2(glfw.KeyPageup, glfw.KeyKP9) { CamCtl.TurnUp() }
+	if ngine.Windowing.KeysPressedAny2(glfw.KeyPagedown, glfw.KeyKP3) { CamCtl.TurnDown() }
+}
+
+func CheckToggleKeys () {
+	if ngine.Windowing.KeyToggled(glfw.KeyF2) { Cam.ToggleTechnique() }
+	if ngine.Windowing.KeyToggled(glfw.KeyF3) { ngine.Core.Options.ToggleGlBackfaceCulling() }
+	if ngine.Windowing.KeyToggled(glfw.KeyF4) { ngine.Core.Options.DefaultTextureParams.ToggleFilter() }
+	if ngine.Windowing.KeyToggled(glfw.KeyF5) { ngine.Core.Options.DefaultTextureParams.ToggleFilterAnisotropy() }
 }
 
 func NewMaterialFromLocalTextureImageFile (assetRootRelativeFilePath string) *ngine.TMaterial {

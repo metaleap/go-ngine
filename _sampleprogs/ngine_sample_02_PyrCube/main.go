@@ -4,7 +4,6 @@ import (
 	"math"
 
 	gl "github.com/chsc/gogl/gl42"
-	glfw "github.com/go-gl/glfw"
 
 	ngine "github.com/go3d/go-ngine/core"
 	ngine_samples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
@@ -21,42 +20,19 @@ func main () {
 }
 
 func onLoop () {
-	//	check option-toggle keys
-	if ngine.Windowing.KeyToggled(glfw.KeyF2) { ngine.Core.CurCamera.ToggleTechnique() }
-	if ngine.Windowing.KeyToggled(glfw.KeyF3) { ngine.Core.Options.ToggleGlBackfaceCulling() }
-	if ngine.Windowing.KeyToggled(glfw.KeyF4) { ngine.Core.Options.DefaultTextureParams.ToggleFilter() }
-	if ngine.Windowing.KeyToggled(glfw.KeyF5) { ngine.Core.Options.DefaultTextureParams.ToggleFilterAnisotropy() }
-
-	//	check camera-control keys
-	camCtl.MoveSpeedupFactor = 1
-	if ngine.Windowing.KeyPressed(glfw.KeyLshift) {
-		camCtl.MoveSpeedupFactor = 10
-	} else if ngine.Windowing.KeyPressed(glfw.KeyRshift) {
-		camCtl.MoveSpeedupFactor = 100
-	} else if ngine.Windowing.KeyPressed(glfw.KeyLalt) {
-		camCtl.MoveSpeedupFactor = 0.1
-	}
-	if ngine.Windowing.KeyPressed(glfw.KeyUp) { camCtl.MoveForward() }
-	if ngine.Windowing.KeyPressed(glfw.KeyDown) { camCtl.MoveBackward() }
-	if ngine.Windowing.KeyPressed('A') { camCtl.MoveLeft() }
-	if ngine.Windowing.KeyPressed('D') { camCtl.MoveRight() }
-	if ngine.Windowing.KeyPressed('W') { camCtl.MoveUp() }
-	if ngine.Windowing.KeyPressed('S') { camCtl.MoveDown() }
-	if ngine.Windowing.KeyPressed(glfw.KeyLeft) { camCtl.TurnLeft() }
-	if ngine.Windowing.KeyPressed(glfw.KeyRight) { camCtl.TurnRight() }
-	if ngine.Windowing.KeysPressedAny2(glfw.KeyPageup, glfw.KeyKP9) { camCtl.TurnUp() }
-	if ngine.Windowing.KeysPressedAny2(glfw.KeyPagedown, glfw.KeyKP3) { camCtl.TurnDown() }
+	ngine_samples.CheckToggleKeys()
+	ngine_samples.CheckCamCtlKeys()
 
 	//	animate mesh nodes
 	tri.Transform.Rot.X -= 0.0005
 	tri.Transform.Rot.Y -= 0.0005
 	tri.Transform.Pos.Set(-13.75, 2 * math.Sin(ngine.Loop.TickNow), 2)
-	tri.Transform.OnAnyChanged()
+	tri.Transform.OnPosRotChanged()
 
 	quad.Transform.Rot.Y += 0.0004
 	quad.Transform.Rot.Z += 0.0006
 	quad.Transform.Pos.Set(-8.125, 2 * math.Cos(ngine.Loop.TickNow), -2)
-	quad.Transform.OnAnyChanged()
+	quad.Transform.OnPosRotChanged()
 }
 
 func LoadSampleScene_02_PyrCube () {

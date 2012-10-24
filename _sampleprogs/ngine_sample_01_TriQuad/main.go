@@ -4,7 +4,6 @@ import (
 	"math"
 
 	gl "github.com/chsc/gogl/gl42"
-	glfw "github.com/go-gl/glfw"
 
 	ngine "github.com/go3d/go-ngine/core"
 	ngine_samples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
@@ -15,21 +14,20 @@ var (
 )
 
 func main () {
-	ngine_samples.MaxKeyHint = 1
+	ngine_samples.MaxKeyHint = 3
 	ngine_samples.SamplesMainFunc(LoadSampleScene_01_TriQuad)
 }
 
 func onLoop () {
-	if ngine.Windowing.KeyToggled(glfw.KeyF2) { ngine_samples.Cam.ToggleTechnique() }
-	if ngine.Windowing.KeyToggled(glfw.KeyF3) { ngine.Core.Options.ToggleGlBackfaceCulling() }
-	tri.Transform.Rot.X -= 0.0005
-	tri.Transform.Rot.Y -= 0.0005
+	ngine_samples.CheckToggleKeys()
+	tri.Transform.Rot.X -= 0.005
+	tri.Transform.Rot.Y -= 0.005
 	tri.Transform.Pos.Set(-3.75, 1 * math.Sin(ngine.Loop.TickNow), 1)
-	tri.Transform.OnAnyChanged()
-	quad.Transform.Rot.Y += 0.0004
-	quad.Transform.Rot.Z += 0.0006
-	quad.Transform.Pos.Set(-8.125, 1 * math.Cos(ngine.Loop.TickNow), -2)
-	quad.Transform.OnAnyChanged()	
+	tri.Transform.OnPosRotChanged()
+	quad.Transform.Rot.Y += 0.0001
+	quad.Transform.Rot.Z += 0.0001
+	quad.Transform.Pos.Set(-4.125, 1 * math.Cos(ngine.Loop.TickNow), 0)
+	quad.Transform.OnPosRotChanged()
 }
 
 func LoadSampleScene_01_TriQuad () {

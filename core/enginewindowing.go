@@ -13,6 +13,7 @@ type tEngineWindowing struct {
 
 	isGlfwInit, isGlfwWindow, togglePress bool
 	lastToggles map[int]float64
+	keyWhich int
 }
 
 func newWindowing () *tEngineWindowing {
@@ -80,6 +81,15 @@ func (me *tEngineWindowing) IifKey (key int, ifTrue, ifFalse float64) float64 {
 
 func (me *tEngineWindowing) KeyPressed (key int) bool {
 	return glfw.Key(key) == glfw.KeyPress
+}
+
+func (me *tEngineWindowing) KeyPressedWhich (keys ... int) int {
+	for _, me.keyWhich = range keys {
+		if me.KeyPressed(me.keyWhich) {
+			return me.keyWhich
+		}
+	}
+	return 0
 }
 
 func (me *tEngineWindowing) KeysPressedAll2 (k1, k2 int) bool {
