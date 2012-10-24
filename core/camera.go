@@ -5,8 +5,6 @@ import (
 
 	glutil "github.com/go3d/go-util/gl"
 	numutil "github.com/go3d/go-util/num"
-
-	nglcore "github.com/go3d/go-ngine/core/glcore"
 )
 
 type tCamera struct {
@@ -30,7 +28,7 @@ type tCamera struct {
 		cam.glMatProj = &glutil.TGlMat4 {}
 		cam.ViewPort = newViewPort(cam)
 		cam.SetPerspective(0.3, 30000, 45)
-		cam.Controller = NewController()
+		cam.Controller = newController()
 		return cam
 	}
 
@@ -72,7 +70,7 @@ type tCamera struct {
 	}
 
 	func (me *tCamera) ToggleTechnique () {
-		var allNames, curTech, name = nglcore.ShaderMan.AllNames, curTechnique.Name(), ""
+		var allNames, curTech, name = glShaderMan.AllNames, curTechnique.Name(), ""
 		var curIndex, i int
 		var tech iRenderTechnique = nil
 		for i, name = range allNames { if name == curTech { curIndex = i; break } }

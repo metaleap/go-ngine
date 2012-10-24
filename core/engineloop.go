@@ -4,8 +4,6 @@ import (
 	"log"
 	"math"
 	"runtime"
-
-	nglcore "github.com/go3d/go-ngine/core/glcore"
 )
 
 type tEngineLoop struct {
@@ -33,7 +31,7 @@ func (me *tEngineLoop) Loop () {
 	Stats.fps = 0
 	if (!me.IsLooping) {
 		me.IsLooping = true
-		nglcore.LogLastError("ngine.PreLoop")
+		glLogLastError("ngine.PreLoop")
 		log.Printf("Enter loop...")
 		for me.IsLooping {
 			Core.RenderLoop()
@@ -58,6 +56,6 @@ func (me *tEngineLoop) Loop () {
 			}
 			Windowing.OnLoop()
 		}
-		nglcore.LogLastError("ngine.PostLoop")
+		glLogLastError("ngine.PostLoop")
 	}
 }

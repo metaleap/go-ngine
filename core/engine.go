@@ -4,8 +4,6 @@ import (
 	"log"
 
 	glutil "github.com/go3d/go-util/gl"
-
-	nglcore "github.com/go3d/go-ngine/core/glcore"
 )
 
 var (
@@ -16,10 +14,10 @@ var (
 )
 
 func Dispose () {
-	nglcore.LogLastError("ngine.Pre_Dispose")
+	glLogLastError("ngine.Pre_Dispose")
 	if Core != nil { Core.Dispose() }
-	nglcore.LogLastError("ngine.Core_Dispose")
-	nglcore.Dispose()
+	glLogLastError("ngine.Core_Dispose")
+	glDispose()
 	Windowing.dispose()
 	Core, Loop, Stats = nil, nil, nil
 }
@@ -27,7 +25,7 @@ func Dispose () {
 func Init (options *tOptions, winTitle string) error {
 	var err error
 	if err = Windowing.init(options, winTitle); err == nil {
-		if err = nglcore.Init(); err == nil {
+		if err = glInit(); err == nil {
 			Loop, Stats, Core = newEngineLoop(), newEngineStats(), newEngineCore(options)
 			log.Println(glutil.GlConnInfo())
 		}

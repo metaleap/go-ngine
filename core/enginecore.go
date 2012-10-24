@@ -4,14 +4,14 @@ import (
 	gl "github.com/chsc/gogl/gl42"
 
 	glutil "github.com/go3d/go-util/gl"
-
-	nglcore "github.com/go3d/go-ngine/core/glcore"
 )
 
 var (
 	curCanvIndex, lastCanvIndex int
+	curMatKey string
 	curCam *tCamera
 	curCanvas *tRenderCanvas
+	curMat *TMaterial
 	curMesh *TMesh
 	curNode *TNode
 	curProg, tmpProg *glutil.TShaderProgram
@@ -21,7 +21,7 @@ var (
 
 type tEngineCore struct {
 	AssetManager *tAssetManager
-	Canvases []*tRenderCanvas
+	Canvases tRenderCanvases
 	CurCamera *tCamera
 	CurCanvas *tRenderCanvas
 	DefaultCanvasIndex int
@@ -42,8 +42,8 @@ func newEngineCore (options *tOptions) *tEngineCore {
 	Core.Materials = tMaterials {}
 	Core.Textures = tTextures {}
 	Core.Scenes = tScenes {}
-	defCanvas = NewCanvas(options.winWidth, options.winHeight, true)
-	Core.Canvases = [] *tRenderCanvas { defCanvas }
+	Core.Canvases = tRenderCanvases {}
+	defCanvas = Core.Canvases.Add(Core.Canvases.New(options.winWidth, options.winHeight, true))
 	Core.CurCanvas = defCanvas
 	Core.CurCamera = defCanvas.Cameras[0]
 	return Core
@@ -95,17 +95,17 @@ func (me *tEngineCore) resizeView (viewWidth, viewHeight int) {
 func (me *tEngineCore) SyncUpdates () {
 	for key, tex := range me.Textures {
 		tex.GpuSync()
-		nglcore.LogLastError("tEngineCore.SyncUpdates(texkey=%s)", key)
+		glLogLastError("tEngineCore.SyncUpdates(texkey=%s)", key)
 	}
 	for key, mesh := range me.Meshes {
 		if !mesh.glInit { mesh.initBuffer() }
 		if !mesh.glSynced { mesh.updateBuffer() }
-		nglcore.LogLastError("tEngineCore.SyncUpdates(meshkey=%s)", key)
+		glLogLastError("tEngineCore.SyncUpdates(meshkey=%s)", key)
 	}
 }
 
 func (me *tEngineCore) useProgram (name string) {
-	if tmpProg = nglcore.ShaderMan.AllProgs[name]; tmpProg != curProg {
+	if tmpProg = glShaderMan.AllProgs[name]; tmpProg != curProg {
 		curProg = tmpProg
 		gl.UseProgram(curProg.Program)
 	}

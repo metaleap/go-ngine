@@ -6,8 +6,6 @@ import (
 	gl "github.com/chsc/gogl/gl42"
 
 	glutil "github.com/go3d/go-util/gl"
-
-	nglcore "github.com/go3d/go-ngine/core/glcore"
 )
 
 var (
@@ -71,7 +69,7 @@ type TTexture struct {
 				gl.TexSubImage2D(gl.TEXTURE_2D, 0, 0, 0, me.glTexWidth, me.glTexHeight, me.glPixelDataFormat, me.glPixelDataType, me.glPixPointer)
 			} else {
 				gl.TexImage2D(gl.TEXTURE_2D, 0, gl.Int(me.glSizedInternalFormat), me.glTexWidth, me.glTexHeight, 0, me.glPixelDataFormat, me.glPixelDataType, me.glPixPointer)
-				nglcore.LogLastError("ttex.gpusync(9)")
+				glLogLastError("ttex.gpusync(9)")
 			}
 			if !me.noMipMap { gl.GenerateMipmap(gl.TEXTURE_2D) }
 		}

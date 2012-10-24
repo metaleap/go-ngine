@@ -4,8 +4,6 @@ import (
 	gl "github.com/chsc/gogl/gl42"
 
 	glutil "github.com/go3d/go-util/gl"
-
-	nglcore "github.com/go3d/go-ngine/core/glcore"
 )
 
 var (
@@ -42,7 +40,7 @@ type tTechnique_Base struct {
 }
 
 	func (me *tTechnique_Base) setProg (name string, unifs []string, attrs []string) {
-		var prog = nglcore.ShaderMan.AllProgs[name]
+		var prog = glShaderMan.AllProgs[name]
 		prog.SetUnifLocations("uMatCam", "uMatModelView", "uMatProj")
 		if len(unifs) > 0 { prog.SetUnifLocations(unifs...) }
 		prog.SetAttrLocations("aPos")

@@ -19,22 +19,40 @@ Canvas 3: screen
 
 */
 
+type tRenderCanvases []*tRenderCanvas
+
+	func (me tRenderCanvases) New (viewWidth, viewHeight int, addCam bool) *tRenderCanvas {
+		var canvas = &tRenderCanvas {}
+		canvas.viewWidth, canvas.viewHeight = viewWidth, viewHeight
+		if addCam {
+			canvas.Cameras = []*tCamera { NewCamera(canvas, Core.Options.DefaultRenderTechnique) }
+		} else {
+			canvas.Cameras = []*tCamera {}
+		}
+		return canvas
+	}
+
+	func (me *tRenderCanvases) Add (canvas *tRenderCanvas) *tRenderCanvas {
+		*me = append(*me, canvas)
+		return canvas
+	}
+
+	func (me tRenderCanvases) Index (canvas *tRenderCanvas) int {
+		for curCanvIndex, curCanvas = range me { if curCanvas == canvas { return curCanvIndex } }
+		return -1
+	}
+
+	func (me *tRenderCanvases) Remove (canvas *tRenderCanvas) {
+		if curCanvIndex = me.Index(canvas); curCanvIndex >= 0 {
+			*me = append((*me)[ : curCanvIndex], (*me)[curCanvIndex + 1 : ]...)
+		}
+	}
+
 type tRenderCanvas struct {
 	Cameras  []*tCamera
 	Disabled bool
 
 	viewWidth, viewHeight int
-}
-
-func NewCanvas(viewWidth, viewHeight int, addCam bool) *tRenderCanvas {
-	var canvas = &tRenderCanvas{}
-	canvas.viewWidth, canvas.viewHeight = viewWidth, viewHeight
-	if addCam {
-		canvas.Cameras = []*tCamera { NewCamera(canvas, Core.Options.DefaultRenderTechnique) }
-	} else {
-		canvas.Cameras = []*tCamera {}
-	}
-	return canvas
 }
 
 func (me *tRenderCanvas) Dispose() {

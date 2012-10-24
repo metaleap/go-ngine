@@ -20,7 +20,7 @@ type TController struct {
 	glMat *glutil.TGlMat4
 }
 
-func NewController () *TController {
+func newController () *TController {
 	var htarget *numutil.TVec3
 	var ctl = &TController {}
 	ctl.posNeg, ctl.Pos, ctl.Dir, ctl.UpAxis, ctl.axH, ctl.axV = &numutil.TVec3 {}, &numutil.TVec3 {}, &numutil.TVec3 { 0, 0, 1 }, &numutil.TVec3 { 0, 1, 0 }, &numutil.TVec3 {}, &numutil.TVec3 {}

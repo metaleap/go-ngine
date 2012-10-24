@@ -101,7 +101,7 @@ func generateShadersFile (srcDirPath, outFilePath, pkgName string, stripComments
 	var shaderSource shaderSrc
 	var allNames = []string {}
 	var rawSrc []byte
-	var glslSrc = "package " + pkgName + "\n\nfunc init () {\n\tvar rss = &TShaderSources { map[string]string {}, map[string]string {}, map[string]string {}, map[string]string {}, map[string]string {}, map[string]string {} }\n"
+	var glslSrc = "package " + pkgName + "\n\nfunc init () {\n\tvar rss = newGlShaderSources()\n"
 	var glslOldSrc = ""
 	var allShaders = shaderSrcSortables { shaderSrcSortable {}, shaderSrcSortable {}, shaderSrcSortable {}, shaderSrcSortable {}, shaderSrcSortable {}, shaderSrcSortable {} }
 	var iShaders = map[string]string {}
@@ -125,7 +125,7 @@ func generateShadersFile (srcDirPath, outFilePath, pkgName string, stripComments
 			glslSrc += fmt.Sprintf("\trss.%s[\"%s\"] = %#v\n", varName, shaderName, includeShaders(shaderSource.name, shaderSource.src, iShaders))
 		}
 	}
-	if glslSrc += fmt.Sprintf("\tShaderMan.AllSources = rss\n\tShaderMan.AllNames = %#v\n}\n", allNames); glslSrc != glslOldSrc {
+	if glslSrc += fmt.Sprintf("\tglShaderMan.AllSources = rss\n\tglShaderMan.AllNames = %#v\n}\n", allNames); glslSrc != glslOldSrc {
 		ioutil.WriteFile(outFilePath, []byte(glslSrc), os.ModePerm)
 	}
 }
@@ -181,7 +181,7 @@ func main () {
 	goInstPath = goInstPath [0 : strings.LastIndex(goInstPath, "/")]
 	if (strings.HasPrefix(goInstPath, ngineMatch)) {
 		nginePath = origFilePath [ : strings.Index(origFilePath, "github.com") + len(ngineMatch)]
-		generateShadersFile(filepath.Join(nginePath, "core", "glcore", "_glsl"), filepath.Join(nginePath, "core", "glcore", "-auto-generated-glsl-src.go"), "glcore", true)
+		generateShadersFile(filepath.Join(nginePath, "core", "_glsl"), filepath.Join(nginePath, "core", "-auto-generated-glsl-src.go"), "core", true)
 	}
 	cmdRawOut, err = exec.Command("go", "install", goInstPath).CombinedOutput()
 	if len(cmdRawOut) > 0 {

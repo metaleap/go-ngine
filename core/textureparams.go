@@ -5,8 +5,6 @@ import (
 
 	glutil "github.com/go3d/go-util/gl"
 	util "github.com/go3d/go-util"
-
-	nglcore "github.com/go3d/go-ngine/core/glcore"
 )
 
 type tTextureParams struct {
@@ -66,7 +64,7 @@ func (me *tTextureParams) Set (filter bool, filterAnisotropy float64) {
 	if glAniso != me.glAniso { changed, me.glAniso = true, glAniso }
 	if glMin != me.glFilterMin { changed, me.glFilterMin = true, glMin }
 	if glMag != me.glFilterMag { changed, me.glFilterMag = true, glMag }
-	if changed && nglcore.IsGlInit { me.gpuSync() }
+	if changed && glIsInit { me.gpuSync() }
 }
 
 func (me *tTextureParams) setAgain () {

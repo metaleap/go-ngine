@@ -1,4 +1,4 @@
-package glcore
+package core
 
 import (
 	"fmt"
@@ -11,18 +11,18 @@ import (
 )
 
 var (
-	IsGlInit bool
-	ShaderMan = NewShaderManager()
+	glIsInit bool
+	glShaderMan = newShaderManager()
 )
 
-func Dispose() {
-	if IsGlInit {
-		IsGlInit = false
-		ShaderMan.dispose()
+func glDispose() {
+	if glIsInit {
+		glIsInit = false
+		glShaderMan.dispose()
 	}
 }
 
-func Init() error {
+func glInit() error {
 	var minMatch = "3_2"
 	var err error
 	var vPos int
@@ -36,7 +36,7 @@ Look for their "driver downloads" pages and follow their
 instructions to find & download the newest driver version
 for: <%v>.
 `
-	if !IsGlInit {
+	if !glIsInit {
 		if err = gl.Init(); err != nil {
 			// 	check for a message such as "unable to initialize VERSION_4_0"
 			if vPos = strings.Index(err.Error(), vMatch); vPos >= 0 {
@@ -51,13 +51,13 @@ for: <%v>.
 		}
 		if err == nil {
 			glutil.SetVersion()
-			IsGlInit = true
+			glIsInit = true
 			gl.ClearColor(0, 0.05, 0.25, 1)
 			gl.Enable(gl.DEPTH_TEST)
 			gl.FrontFace(gl.CCW)
 			gl.CullFace(gl.BACK)
 			gl.Enable(gl.CULL_FACE)
-			if err = ShaderMan.compileAll(); err == nil {
+			if err = glShaderMan.compileAll(); err == nil {
 			}
 		}
 		if err == nil { err = glutil.LastError("nglcore.Init") }
@@ -65,7 +65,7 @@ for: <%v>.
 	return err
 }
 
-func LogLastError(step string, fmtArgs ...interface{}) {
+func glLogLastError(step string, fmtArgs ...interface{}) {
 	var err = glutil.LastError(step, fmtArgs...)
 	if err != nil { log.Println(err.Error()) }
 }
