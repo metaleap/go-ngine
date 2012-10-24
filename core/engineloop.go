@@ -34,7 +34,7 @@ func (me *tEngineLoop) Loop () {
 		glLogLastError("ngine.PreLoop")
 		log.Printf("Enter loop...")
 		for me.IsLooping {
-			Core.RenderLoop()
+			Core.renderLoop()
 			Stats.fps++
 			Stats.fpsAll++
 			me.TickLast = me.TickNow

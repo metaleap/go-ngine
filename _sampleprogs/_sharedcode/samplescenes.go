@@ -34,12 +34,12 @@ func AssetRootDirPath () string {
 }
 
 func NewMaterialFromLocalTextureImageFile (assetRootRelativeFilePath string) *ngine.TMaterial {
-	ngine.Core.Textures[assetRootRelativeFilePath] = ngine.Core.Textures.NewTextureLoad(false, ngine.Core.Textures.Providers().LocalFile, assetRootRelativeFilePath)
+	ngine.Core.Textures[assetRootRelativeFilePath] = ngine.Core.Textures.NewLoad(false, ngine.Core.Textures.Providers().LocalFile, assetRootRelativeFilePath)
 	return ngine.Core.Materials.New(assetRootRelativeFilePath)
 }
 
 func NewMaterialFromRemoteTextureImageFile (fileUrl string) *ngine.TMaterial {
-	ngine.Core.Textures[fileUrl] = ngine.Core.Textures.NewTextureLoad(true, ngine.Core.Textures.Providers().RemoteFile, fileUrl)
+	ngine.Core.Textures[fileUrl] = ngine.Core.Textures.NewLoad(true, ngine.Core.Textures.Providers().RemoteFile, fileUrl)
 	return ngine.Core.Materials.New(fileUrl)
 }
 

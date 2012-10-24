@@ -1,6 +1,8 @@
 package core
 
 import (
+	"runtime"
+
 	glfw "github.com/go-gl/glfw"
 
 	util "github.com/go3d/go-util"
@@ -39,7 +41,13 @@ func (me *tEngineWindowing) init (opt *tOptions, winTitle string) error {
 		}
 	}
 	if (me.isGlfwInit && !me.isGlfwWindow) {
-		glfw.OpenWindowHint(glfw.FsaaSamples, 0) // AA is a pluggable post-processing shader, because super-/multi-sampling is simply highly undesirable
+		glfw.OpenWindowHint(glfw.FsaaSamples, 0) // AA will be a pluggable post-processing shader
+		if (runtime.GOOS == "darwin") {
+			glfw.OpenWindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
+			glfw.OpenWindowHint(glfw.OpenGLForwardCompat, 1)
+			glfw.OpenWindowHint(glfw.OpenGLVersionMajor, 3)
+			glfw.OpenWindowHint(glfw.OpenGLVersionMinor, 2)
+		}
 		if err = glfw.OpenWindow(opt.winWidth, opt.winHeight, 8, 8, 8, 0, 24, 8, util.Ifi(opt.winFullScreen, glfw.Fullscreen, glfw.Windowed)); err == nil {
 			opt.winWidth, opt.winHeight = glfw.WindowSize()
 			me.isGlfwWindow = true

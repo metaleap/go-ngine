@@ -14,7 +14,11 @@ var (
 
 type tTextures map[string]*TTexture
 
-	func (me *tTextures) NewTextureLoad (loadAsync bool, loadProvider FTextureProvider, providerArgs ... interface {}) *TTexture {
+	func (me *tTextures) NewParams (filter bool, filterAnisotropy float64) *tTextureParams {
+		return newTextureParams(filter, filterAnisotropy)
+	}
+
+	func (me *tTextures) NewLoad (loadAsync bool, loadProvider FTextureProvider, providerArgs ... interface {}) *TTexture {
 		var tex = NewTexture()
 		if loadAsync {
 			tex.LoadAsync(loadProvider, providerArgs ...)

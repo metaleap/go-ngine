@@ -72,7 +72,7 @@ func (me *tEngineCore) onSecTick () {
 	if allDone { asyncTextures = map[*TTexture]bool {} }
 }
 
-func (me *tEngineCore) RenderLoop () {
+func (me *tEngineCore) renderLoop () {
 	lastCanvIndex = len(me.Canvases) - 1
 	for curCanvIndex, curCanvas = range me.Canvases {
 		if !curCanvas.Disabled {

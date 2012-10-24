@@ -15,7 +15,7 @@ type tTextureParams struct {
 	glFilterMag, glFilterMin gl.Int
 }
 
-func NewTextureParams (filter bool, filterAnisotropy float64) *tTextureParams {
+func newTextureParams (filter bool, filterAnisotropy float64) *tTextureParams {
 	var tp = &tTextureParams {}
 	tp.filter, tp.aniso = filter, filterAnisotropy
 	return tp

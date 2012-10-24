@@ -6,6 +6,11 @@ import (
 
 type tMeshes map[string]*TMesh
 
+	func (me *tMeshes) New () *TMesh {
+		var mesh = &TMesh {}
+		return mesh
+	}
+
 type TMesh struct {
 	Indices []gl.Uint
 	Normals []gl.Float
@@ -15,11 +20,6 @@ type TMesh struct {
 	glElemBuf, glNormalBuf, glVertBuf gl.Uint
 	glMode gl.Enum
 	glNumIndices, glNumVerts gl.Sizei
-}
-
-func NewMesh () *TMesh {
-	var mesh = &TMesh {}
-	return mesh
 }
 
 func (me *TMesh) Dispose () {

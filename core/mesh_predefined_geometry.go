@@ -5,7 +5,7 @@ import (
 )
 
 func (me *tMeshes) NewCube () *TMesh {
-	var mesh = NewMesh()
+	var mesh = Core.Meshes.New()
 	mesh.Verts = []gl.Float {
 		// Front face
 		-1, -1, 1,
@@ -83,7 +83,7 @@ func (me *tMeshes) NewCube () *TMesh {
 }
 
 func (me *tMeshes) NewPlane () *TMesh {
-	var mesh = NewMesh()
+	var mesh = Core.Meshes.New()
 	mesh.Verts = []gl.Float {
 		1, 0, -1,
 		-1, 0, -1,
@@ -101,7 +101,7 @@ func (me *tMeshes) NewPlane () *TMesh {
 }
 
 func (me *tMeshes) NewPyramid () *TMesh {
-	var mesh = NewMesh()
+	var mesh = Core.Meshes.New()
 	mesh.Verts = []gl.Float {
 		// Front face
 		0, 1, 0,
@@ -143,7 +143,7 @@ func (me *tMeshes) NewPyramid () *TMesh {
 }
 
 func (me *tMeshes) NewQuad () *TMesh {
-	var mesh = NewMesh()
+	var mesh = Core.Meshes.New()
 	mesh.Verts = []gl.Float {
 		1, 1, 0,
 		-1, 1, 0,
@@ -161,7 +161,7 @@ func (me *tMeshes) NewQuad () *TMesh {
 }
 
 func (me *tMeshes) NewTriangle () *TMesh {
-	var mesh = NewMesh()
+	var mesh = Core.Meshes.New()
 	mesh.Verts = []gl.Float {
 		0, 1, 0,
 		-1, -1, 0,
