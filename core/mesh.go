@@ -17,7 +17,7 @@ type TMesh struct {
 	Verts []gl.Float
 
 	glInit, glSynced bool
-	glElemBuf, glNormalBuf, glVertBuf gl.Uint
+	glElemBuf, glNormalBuf, glVertBuf, glVao gl.Uint
 	glMode gl.Enum
 	glNumIndices, glNumVerts gl.Sizei
 }
@@ -32,12 +32,14 @@ func (me *TMesh) Dispose () {
 		if me.glNormalBuf > 0 {
 			gl.DeleteBuffers(1, &me.glNormalBuf)
 		}
+		gl.DeleteVertexArrays(1, &me.glVao)
 	}
 }
 
 func (me *TMesh) initBuffer () {
 	if !me.glInit {
 		me.glSynced, me.glInit = false, true
+		gl.GenVertexArrays(1, &me.glVao)
 		gl.GenBuffers(1, &me.glVertBuf)
 		if len(me.Indices) > 0 {
 			gl.GenBuffers(1, &me.glElemBuf)
@@ -54,10 +56,12 @@ func (me *TMesh) render () {
 	gl.BindBuffer(gl.ARRAY_BUFFER, me.glVertBuf)
 	if me.glElemBuf > 0 {
 		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.glElemBuf)
+		gl.EnableVertexAttribArray(curProg.AttrLocs["aPos"])
 		gl.VertexAttribPointer(curProg.AttrLocs["aPos"], 3, gl.FLOAT, gl.FALSE, 0, gl.Pointer(nil))
 		gl.DrawElements(me.glMode, me.glNumIndices, gl.UNSIGNED_INT, gl.Pointer(nil))
 		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
 	} else {
+		gl.EnableVertexAttribArray(curProg.AttrLocs["aPos"])
 		gl.VertexAttribPointer(curProg.AttrLocs["aPos"], 3, gl.FLOAT, gl.FALSE, 0, gl.Pointer(nil))
 		gl.DrawArrays(me.glMode, 0, me.glNumVerts)
 	}

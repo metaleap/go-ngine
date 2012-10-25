@@ -98,6 +98,7 @@ type tTechnique_Unlit struct {
 	func (me *tTechnique_Unlit) OnRenderNode () {
 		if curNode.glVertTexCoordsBuf > 0 {
 			gl.BindBuffer(gl.ARRAY_BUFFER, curNode.glVertTexCoordsBuf)
+			gl.EnableVertexAttribArray(curProg.AttrLocs["aTexCoords"])
 			gl.VertexAttribPointer(curProg.AttrLocs["aTexCoords"], 2, gl.FLOAT, gl.FALSE, 0, gl.Pointer(nil))
 			gl.BindBuffer(gl.ARRAY_BUFFER, 0)
 			gl.ActiveTexture(gl.TEXTURE0)
