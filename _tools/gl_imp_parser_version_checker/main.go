@@ -26,12 +26,12 @@ var (
 	specDoc *xmlx.Document
 )
 
-func checkGoFile (filePath string) {
+func checkGoFile (filePath string, recurse bool) bool {
 	var fset = token.NewFileSet()
 	var astFile *ast.File
 	var err error
 	var hasGoglImp = false
-	if strings.Index(filePath, "_trash") >= 0 { return }
+	if strings.Index(filePath, "_trash") >= 0 { return recurse }
 	if astFile, err = parser.ParseFile(fset, filePath, nil, parser.ImportsOnly); err != nil {
 		panic(err)
 	}
@@ -43,6 +43,7 @@ func checkGoFile (filePath string) {
 		curFilePath = filePath
 		ast.Inspect(astFile, inspectNode)
 	}
+	return recurse
 }
 
 func inspectNode (node ast.Node) bool {

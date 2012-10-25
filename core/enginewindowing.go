@@ -44,7 +44,7 @@ func (me *tEngineWindowing) init (opt *tOptions, winTitle string, forceContext b
 	if (me.isGlfwInit && !me.isGlfwWindow) {
 		glfw.OpenWindowHint(glfw.FsaaSamples, 0) // AA will be a pluggable post-processing shader
 		if forceContext {
-			glfw.OpenWindowHint(glfw.OpenGLVersionMajor, 3)
+			glfw.OpenWindowHint(glfw.OpenGLVersionMajor, 4)
 			glfw.OpenWindowHint(glfw.OpenGLVersionMinor, 2)
 			glfw.OpenWindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 			if runtime.GOOS == "darwin" { glfw.OpenWindowHint(glfw.OpenGLForwardCompat, 1) }

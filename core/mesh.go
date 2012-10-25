@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	gl "github.com/chsc/gogl/gl42"
 )
 
@@ -60,7 +59,6 @@ func (me *TMesh) render () {
 		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
 	} else {
 		gl.VertexAttribPointer(curProg.AttrLocs["aPos"], 3, gl.FLOAT, gl.FALSE, 0, gl.Pointer(nil))
-		if camFirst { fmt.Printf("NV=%v --- ", me.glMode) }
 		gl.DrawArrays(me.glMode, 0, me.glNumVerts)
 	}
 	gl.BindBuffer(gl.ARRAY_BUFFER, 0)

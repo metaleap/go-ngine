@@ -20,10 +20,6 @@ type TCamera struct {
 	glMatProj *glutil.TGlMat4
 }
 
-var (
-	camFirst = true
-)
-
 	func NewCamera (parentCanvas *TRenderCanvas, technique string) *TCamera {
 		var cam = &TCamera {}
 		cam.SetTechnique(technique)
@@ -60,7 +56,6 @@ var (
 		gl.Viewport(me.ViewPort.glX, me.ViewPort.glY, me.ViewPort.glW, me.ViewPort.glH)
 		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 		curScene.RootNode.render()
-		camFirst = false
 	}
 
 	func (me *TCamera) SetPerspective (nearPlane, farPlane, fieldOfView float64) {
