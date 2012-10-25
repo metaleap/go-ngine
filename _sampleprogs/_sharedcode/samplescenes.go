@@ -87,7 +87,7 @@ func SamplesMainFunc (loader func ()) {
 	defer ngine.Dispose()
 
 	if err = ngine.Init(ngine.NewOptions(AssetRootDirPath(), 1280, 720, 0, false), "Loading Sample..."); err != nil {
-		fmt.Printf("ABORT: %v\n", err)
+		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
 		ngine.Loop.OnSecTick = SamplesOnSec
 		ngine.Stats.TrackGC = true

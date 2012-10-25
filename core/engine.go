@@ -1,11 +1,5 @@
 package core
 
-import (
-	"log"
-
-	glutil "github.com/go3d/go-util/gl"
-)
-
 var (
 	Loop *tEngineLoop
 	Core *tEngineCore
@@ -24,10 +18,16 @@ func Dispose () {
 
 func Init (options *tOptions, winTitle string) error {
 	var err error
-	if err = Windowing.init(options, winTitle); err == nil {
-		if err = glInit(); err == nil {
+	var isVerErr bool
+	var forceContext = false
+	tryInit:
+	if err = Windowing.init(options, winTitle, forceContext); err == nil {
+		if err, isVerErr = glInit(); err == nil {
 			Loop, Stats, Core = newEngineLoop(), newEngineStats(), newEngineCore(options)
-			log.Println(glutil.GlConnInfo())
+		} else if isVerErr && !forceContext {
+			forceContext = true
+			Windowing.isGlfwInit, Windowing.isGlfwWindow = false, false
+			goto tryInit
 		}
 	}
 	return err

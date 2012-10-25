@@ -34,7 +34,7 @@ func (me *tEngineWindowing) dispose () {
 	}
 }
 
-func (me *tEngineWindowing) init (opt *tOptions, winTitle string) error {
+func (me *tEngineWindowing) init (opt *tOptions, winTitle string, forceContext bool) error {
 	var err error
 	if (!me.isGlfwInit) {
 		if err = glfw.Init(); err == nil {
@@ -43,11 +43,11 @@ func (me *tEngineWindowing) init (opt *tOptions, winTitle string) error {
 	}
 	if (me.isGlfwInit && !me.isGlfwWindow) {
 		glfw.OpenWindowHint(glfw.FsaaSamples, 0) // AA will be a pluggable post-processing shader
-		if (runtime.GOOS == "darwin") {
-			glfw.OpenWindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
-			glfw.OpenWindowHint(glfw.OpenGLForwardCompat, 1)
+		if forceContext {
 			glfw.OpenWindowHint(glfw.OpenGLVersionMajor, 3)
 			glfw.OpenWindowHint(glfw.OpenGLVersionMinor, 2)
+			glfw.OpenWindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
+			if runtime.GOOS == "darwin" { glfw.OpenWindowHint(glfw.OpenGLForwardCompat, 1) }
 		}
 		if err = glfw.OpenWindow(opt.winWidth, opt.winHeight, 8, 8, 8, 0, 24, 8, util.Ifi(opt.winFullScreen, glfw.Fullscreen, glfw.Windowed)); err == nil {
 			opt.winWidth, opt.winHeight = glfw.WindowSize()
