@@ -27,6 +27,7 @@ type tEngineCore struct {
 	DefaultCanvasIndex int
 	Materials tMaterials
 	Meshes tMeshes
+	Models tModels
 	Options *tOptions
 	Scenes tScenes
 	Textures tTextures
@@ -52,7 +53,7 @@ func newEngineCore (options *tOptions) *tEngineCore {
 func (me *tEngineCore) Dispose () {
 	for _, canvas := range me.Canvases { canvas.Dispose() }
 	for _, scene := range me.Scenes { scene.Dispose() }
-	for _, mesh := range me.Meshes { mesh.Dispose() }
+	for _, mesh := range me.Meshes { mesh.GpuDelete() }
 	for _, tex := range me.Textures { tex.GpuDelete() }
 	Core = nil
 }
@@ -98,8 +99,7 @@ func (me *tEngineCore) SyncUpdates () {
 		glLogLastError("tEngineCore.SyncUpdates(texkey=%s)", key)
 	}
 	for key, mesh := range me.Meshes {
-		if !mesh.glInit { mesh.initBuffer() }
-		if !mesh.glSynced { mesh.updateBuffer() }
+		if !mesh.gpuSynced { mesh.GpuSync() }
 		glLogLastError("tEngineCore.SyncUpdates(meshkey=%s)", key)
 	}
 }

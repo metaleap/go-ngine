@@ -14,7 +14,7 @@ type tTextureProviders struct {
 }
 
 var (
-	textureProviders = &tTextureProviders { textureProviderIoReader, textureProviderLocalFile, textureProviderRemoteFile }
+	TextureProviders = &tTextureProviders { textureProviderIoReader, textureProviderLocalFile, textureProviderRemoteFile }
 )
 
 func textureProviderIoReader (args ... interface {}) (img image.Image, err error) {

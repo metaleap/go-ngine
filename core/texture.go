@@ -28,10 +28,6 @@ type tTextures map[string]*TTexture
 		return tex
 	}
 
-	func (me *tTextures) Providers () *tTextureProviders {
-		return textureProviders
-	}
-
 type TTexture struct {
 	LastError error
 	Params *tTextureParams
@@ -84,21 +80,6 @@ type TTexture struct {
 		return me.gpuSynced
 	}
 
-	func (me *TTexture) Load (provider FTextureProvider, args ... interface {}) {
-		me.load_OnImg(provider(args ...))
-	}
-
-	func (me *TTexture) LoadAsync (provider FTextureProvider, args ... interface {}) {
-		me.gpuSynced, me.img = false, nil
-		asyncTextures[me] = false
-		go func () {
-			if err := me.load_OnImg(provider(args ...)); err != nil {
-				//	mark as "done" anyway in the async queue.
-				asyncTextures[me] = true
-			}
-		} ()
-	}
-
 	func (me *TTexture) load_OnImg (img image.Image, err error) error {
 		var nuW, nuH int
 		var conv = false
@@ -119,6 +100,22 @@ type TTexture struct {
 			}
 		}
 		return err
+	}
+
+	func (me *TTexture) Load (provider FTextureProvider, args ... interface {}) {
+		me.load_OnImg(provider(args ...))
+	}
+
+	func (me *TTexture) LoadAsync (provider FTextureProvider, args ... interface {}) {
+		me.gpuSynced = false
+		me.Unload()
+		asyncTextures[me] = false
+		go func () {
+			if err := me.load_OnImg(provider(args ...)); err != nil {
+				//	mark as "done" anyway in the async queue.
+				asyncTextures[me] = true
+			}
+		} ()
 	}
 
 	func (me *TTexture) Loaded () bool {

@@ -10,12 +10,12 @@ var (
 	techs = map[string]iRenderTechnique {
 	}
 	techMakers = map[string]fTechniqueConstructor {
-		"geometry": newTechnique_Geometry,
-		"unlit": newTechnique_Unlit,
+		"rt_unlit_colored": newTechnique_UnlitColored,
+		"rt_unlit_textured": newTechnique_UnlitTextured,
 	}
 )
 
-type fTechniqueConstructor func () iRenderTechnique
+type fTechniqueConstructor func (string) iRenderTechnique
 
 type iRenderTechnique interface {
 	Name () string
@@ -29,7 +29,7 @@ type iRenderTechnique interface {
 		var t = techs[name]
 		var maker = techMakers[name]
 		if (t == nil) && (maker != nil) {
-			techs[name] = maker()
+			techs[name] = maker(name)
 			t = techs[name]
 		}
 		return t
@@ -48,54 +48,54 @@ type tTechnique_Base struct {
 		me.prog = prog
 	}
 
-type tTechnique_Geometry struct {
+type tTechnique_UnlitColored struct {
 	tTechnique_Base
 }
 
-	func newTechnique_Geometry () iRenderTechnique {
-		var tech = &tTechnique_Geometry {}
-		tech.tTechnique_Base.setProg("geometry", nil, nil)
+	func newTechnique_UnlitColored (progName string) iRenderTechnique {
+		var tech = &tTechnique_UnlitColored {}
+		tech.tTechnique_Base.setProg(progName, nil, nil)
 		return tech
 	}
 
-	func (me *tTechnique_Geometry) Name () string {
+	func (me *tTechnique_UnlitColored) Name () string {
 		return me.prog.Name
 	}
 
-	func (me *tTechnique_Geometry) OnPreRender () {
+	func (me *tTechnique_UnlitColored) OnPreRender () {
 	}
 
-	func (me *tTechnique_Geometry) OnRenderMesh () {
+	func (me *tTechnique_UnlitColored) OnRenderMesh () {
 	}
 
-	func (me *tTechnique_Geometry) OnRenderNode () {
+	func (me *tTechnique_UnlitColored) OnRenderNode () {
 	}
 
-	func (me *tTechnique_Geometry) Program () *glutil.TShaderProgram {
+	func (me *tTechnique_UnlitColored) Program () *glutil.TShaderProgram {
 		return me.prog
 	}
 
-type tTechnique_Unlit struct {
+type tTechnique_UnlitTextured struct {
 	tTechnique_Base
 }
 
-	func newTechnique_Unlit () iRenderTechnique {
-		var tech = &tTechnique_Unlit {}
-		tech.tTechnique_Base.setProg("unlit", []string { "uTex0" }, []string { "aTexCoords" })
+	func newTechnique_UnlitTextured (progName string) iRenderTechnique {
+		var tech = &tTechnique_UnlitTextured {}
+		tech.tTechnique_Base.setProg(progName, []string { "uTex0" }, []string { "aTexCoords" })
 		return tech
 	}
 
-	func (me *tTechnique_Unlit) Name () string {
+	func (me *tTechnique_UnlitTextured) Name () string {
 		return me.prog.Name
 	}
 
-	func (me *tTechnique_Unlit) OnPreRender () {
+	func (me *tTechnique_UnlitTextured) OnPreRender () {
 	}
 
-	func (me *tTechnique_Unlit) OnRenderMesh () {
+	func (me *tTechnique_UnlitTextured) OnRenderMesh () {
 	}
 
-	func (me *tTechnique_Unlit) OnRenderNode () {
+	func (me *tTechnique_UnlitTextured) OnRenderNode () {
 		if curNode.glVertTexCoordsBuf > 0 {
 			gl.BindBuffer(gl.ARRAY_BUFFER, curNode.glVertTexCoordsBuf)
 			gl.EnableVertexAttribArray(curProg.AttrLocs["aTexCoords"])
@@ -107,6 +107,6 @@ type tTechnique_Unlit struct {
 		}
 	}
 
-	func (me *tTechnique_Unlit) Program () *glutil.TShaderProgram {
+	func (me *tTechnique_UnlitTextured) Program () *glutil.TShaderProgram {
 		return me.prog
 	}

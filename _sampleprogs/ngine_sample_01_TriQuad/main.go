@@ -36,8 +36,8 @@ func LoadSampleScene_01_TriQuad () {
 	ngine.Core.Materials["cat"] = ngine_samples.NewMaterialFromLocalTextureImageFile("misc/cat.png")
 	ngine.Core.Materials["dog"] = ngine_samples.NewMaterialFromLocalTextureImageFile("misc/dog.png")
 
-	ngine.Core.Meshes["face3"] = ngine.Core.Meshes.NewTriangle()
-	ngine.Core.Meshes["face4"] = ngine.Core.Meshes.NewQuad()
+	ngine.Core.Meshes["face3"], _ = ngine.Core.Meshes.Load(ngine.MeshProviders.PrefabTri)
+	ngine.Core.Meshes["face4"], _ = ngine.Core.Meshes.Load(ngine.MeshProviders.PrefabQuad)
 
 	var scene = ngine.NewScene()
 	ngine.Core.Scenes[""] = scene
@@ -50,10 +50,10 @@ func LoadSampleScene_01_TriQuad () {
 		3, 3,
 	})
 	quad.SetMatKey("dog", []gl.Float {
-		1, 1,
-		0, 1,
-		1, 0,
 		0, 0,
+		0, 1,
+		1, 1,
+		1, 0,
 	})
 	ngine.Core.SyncUpdates()
 	ngine.Loop.AddHandler(onLoop)

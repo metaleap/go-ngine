@@ -15,7 +15,7 @@ type tOptions struct {
 func NewOptions (assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) *tOptions {
 	var opt = &tOptions {}
 	opt.DefaultTextureParams = newTextureParams(true, 6)
-	opt.AssetRootDirPath, opt.DefaultRenderTechnique = assetRootDirPath, "unlit"
+	opt.AssetRootDirPath, opt.DefaultRenderTechnique = assetRootDirPath, "rt_unlit_colored"
 	opt.winWidth, opt.winHeight, opt.winSwapInterval, opt.winFullScreen = winWidth, winHeight, winSwapInterval, winFullScreen
 	return opt
 }
