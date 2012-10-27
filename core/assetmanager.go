@@ -33,11 +33,11 @@ type tAssetManager struct {
 		return os.Open(me.ResolveLocalFilePath(absoluteOrAssetRootRelativeFilePath))
 	}
 
-	func (me *tAssetManager) OpenRemoteFile (fileUrl string) (io.ReadCloser, error) {
+	func (me *tAssetManager) OpenRemoteFile (fileUrl string) (rc io.ReadCloser, err error) {
 		var resp *http.Response
-		var err error
 		resp, err = http.Get(fileUrl)
-		return resp.Body, err
+		if resp != nil { rc = resp.Body }
+		return
 	}
 
 	func (me *tAssetManager) ResolveLocalFilePath (absoluteOrAssetRootRelativeFilePath string) string {

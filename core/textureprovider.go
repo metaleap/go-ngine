@@ -18,8 +18,8 @@ var (
 )
 
 func textureProviderIoReader (args ... interface {}) (img image.Image, err error) {
-	if cl, isCl := args[0].(io.Closer); isCl { defer cl.Close() }
-	img, _, err = image.Decode(args[0].(io.Reader))
+	if closer, isCl := args[0].(io.Closer); isCl { defer closer.Close() }
+	if reader, isR  := args[0].(io.Reader); isR { img, _, err = image.Decode(reader) }
 	return
 }
 

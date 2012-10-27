@@ -30,8 +30,8 @@ type tMeshData struct {
 		return raw
 	}
 
-	func (me *tMeshData) addFace (face tMeshFace3) {
-		me.faces = append(me.faces, face)
+	func (me *tMeshData) addFaces (faces ... tMeshFace3) {
+		me.faces = append(me.faces, faces ...)
 	}
 
 	func (me *tMeshData) addPositions (positions ... tVa3) {

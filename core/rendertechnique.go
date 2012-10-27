@@ -36,12 +36,12 @@ type iRenderTechnique interface {
 	}
 
 type tTechnique_Base struct {
-	glVao gl.Uint
+//	glVao gl.Uint
 	prog *glutil.TShaderProgram
 }
 
 	func (me *tTechnique_Base) dispose () {
-		gl.DeleteVertexArrays(1, &me.glVao)
+//		gl.DeleteVertexArrays(1, &me.glVao)
 	}
 
 	func (me *tTechnique_Base) name () string {
@@ -49,13 +49,13 @@ type tTechnique_Base struct {
 	}
 
 	func (me *tTechnique_Base) OnPreRender () {
-		gl.BindVertexArray(me.glVao)
+//		gl.BindVertexArray(me.glVao)
 	}
 
 	func (me *tTechnique_Base) setProg (name string, unifs []string, attrs []string) {
 		var prog = glShaderMan.AllProgs[name]
-		gl.GenVertexArrays(1, &me.glVao)
-		gl.BindVertexArray(me.glVao)
+//		gl.GenVertexArrays(1, &me.glVao)
+//		gl.BindVertexArray(me.glVao)
 		prog.SetUnifLocations("uMatCam", "uMatModelView", "uMatProj")
 		if len(unifs) > 0 { prog.SetUnifLocations(unifs...) }
 		prog.SetAttrLocations("aPos")
@@ -90,10 +90,15 @@ type tTechnique_UnlitTextured struct {
 	}
 
 	func (me *tTechnique_UnlitTextured) OnRenderMesh () {
-		gl.BindBuffer(gl.ARRAY_BUFFER, curMesh.glTcBuf)
-		gl.EnableVertexAttribArray(curProg.AttrLocs["aTexCoords"])
-		gl.VertexAttribPointer(curProg.AttrLocs["aTexCoords"], 2, gl.FLOAT, gl.FALSE, 0, gl.Pointer(nil))
-		gl.BindBuffer(gl.ARRAY_BUFFER, 0)
+		if curMesh.raw != nil {
+			gl.EnableVertexAttribArray(curProg.AttrLocs["aTexCoords"])
+			gl.VertexAttribPointer(curProg.AttrLocs["aTexCoords"], 2, gl.FLOAT, gl.FALSE, 8 * 4, gl.Offset(nil, 3 * 4))
+		} else {
+			gl.BindBuffer(gl.ARRAY_BUFFER, curMesh.glOldTcBuf)
+			gl.EnableVertexAttribArray(curProg.AttrLocs["aTexCoords"])
+			gl.VertexAttribPointer(curProg.AttrLocs["aTexCoords"], 2, gl.FLOAT, gl.FALSE, 0, gl.Pointer(nil))
+			gl.BindBuffer(gl.ARRAY_BUFFER, 0)
+		}
 	}
 
 	func (me *tTechnique_UnlitTextured) OnRenderNode () {
