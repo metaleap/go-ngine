@@ -40,6 +40,9 @@ func LoadSampleScene_01_TriQuad () {
 	ngine.Core.Meshes["face3"], _ = ngine.Core.Meshes.Load(ngine.MeshProviders.PrefabTri)
 	ngine.Core.Meshes["face4"], _ = ngine.Core.Meshes.Load(ngine.MeshProviders.PrefabQuad)
 
+	ngine.Core.MeshBuffers.Add("buf_tri", 3, 3, false)
+	ngine.Core.MeshBuffers.Add("buf_quad", 6, 6, false)
+
 	var scene = ngine.NewScene()
 	ngine.Core.Scenes[""] = scene
 

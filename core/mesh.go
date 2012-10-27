@@ -8,8 +8,15 @@ import (
 
 type tMeshes map[string]*TMesh
 
-	func (me *tMeshes) Load (provider FMeshProvider, args ... interface {}) (*TMesh, error) {
-		return provider(args ...)
+	func (me *tMeshes) Load (provider FMeshProvider, args ... interface {}) (mesh *TMesh, err error) {
+		var meshData *tMeshData
+		mesh = me.New()
+		if meshData, err = provider(args ...); err == nil {
+			mesh.load(meshData)
+		} else {
+			mesh = nil
+		}
+		return
 	}
 
 	func (me *tMeshes) New () *TMesh {
@@ -46,7 +53,7 @@ type TMesh struct {
 		gl.DeleteVertexArrays(1, &me.glNewVao)
 	}
 
-	func (me *TMesh) GpuSync () {
+	func (me *TMesh) GpuUpload () {
 		me.GpuDelete()
 		gl.GenVertexArrays(1, &me.glNewVao)
 		gl.GenBuffers(1, &me.glNewIbo)
@@ -63,6 +70,10 @@ type TMesh struct {
 
 		gl.BindVertexArray(0)
 		me.gpuSynced = true
+	}
+
+	func (me *TMesh) GpuUploaded () bool {
+		return me.gpuSynced
 	}
 
 	func (me *TMesh) load (meshData *tMeshData) {

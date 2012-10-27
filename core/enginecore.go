@@ -106,7 +106,7 @@ func (me *tEngineCore) SyncUpdates () {
 	}
 	for key, mesh := range me.Meshes {
 		if !mesh.gpuSynced {
-			mesh.GpuSync()
+			mesh.GpuUpload()
 			glLogLastError("tEngineCore.SyncUpdates(meshkey=%s)", key)
 		}
 	}
