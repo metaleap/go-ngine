@@ -19,9 +19,11 @@ type TMesh struct {
 	Indices []gl.Uint
 	Normals []gl.Float
 	Verts []gl.Float
+	TexCoords []gl.Float
 
+	raw *tMeshData
 	glInit, gpuSynced bool
-	glElemBuf, glNormalBuf, glVertBuf, glVao gl.Uint
+	glElemBuf, glVnBuf, glVpBuf, glTcBuf gl.Uint
 	glMode gl.Enum
 	glNumIndices, glNumVerts gl.Sizei
 }
@@ -29,29 +31,30 @@ type TMesh struct {
 func (me *TMesh) GpuDelete () {
 	if me.glInit {
 		me.gpuSynced = false
-		gl.DeleteBuffers(1, &me.glVertBuf)
+		gl.DeleteBuffers(1, &me.glVpBuf)
 		gl.DeleteBuffers(1, &me.glElemBuf)
-		gl.DeleteBuffers(1, &me.glNormalBuf)
-		gl.DeleteVertexArrays(1, &me.glVao)
-		me.glVertBuf, me.glElemBuf, me.glNormalBuf, me.glVao = 0, 0, 0, 0
+		gl.DeleteBuffers(1, &me.glVnBuf)
+		gl.DeleteBuffers(1, &me.glTcBuf)
+		me.glVpBuf, me.glElemBuf, me.glVnBuf, me.glTcBuf = 0, 0, 0, 0
 	}
 }
 
 func (me *TMesh) GpuSync () {
 	me.GpuDelete()
-	gl.GenVertexArrays(1, &me.glVao)
-	gl.GenBuffers(1, &me.glVertBuf)
+	gl.GenBuffers(1, &me.glVpBuf)
 	gl.GenBuffers(1, &me.glElemBuf)
-	gl.GenBuffers(1, &me.glNormalBuf)
+	gl.GenBuffers(1, &me.glVnBuf)
+	gl.GenBuffers(1, &me.glTcBuf)
 
-	gl.BindBuffer(gl.ARRAY_BUFFER, me.glVertBuf)
+	gl.BindBuffer(gl.ARRAY_BUFFER, me.glVpBuf)
 	gl.BufferData(gl.ARRAY_BUFFER, gl.Sizeiptr(4 * len(me.Verts)), gl.Pointer(&me.Verts[0]), gl.STATIC_DRAW)
 	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.glElemBuf)
 	gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(4 * len(me.Indices)), gl.Pointer(&me.Indices[0]), gl.STATIC_DRAW)
 	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
-	gl.BindBuffer(gl.ARRAY_BUFFER, 0)
-	gl.BindBuffer(gl.ARRAY_BUFFER, me.glNormalBuf)
+	gl.BindBuffer(gl.ARRAY_BUFFER, me.glVnBuf)
 	gl.BufferData(gl.ARRAY_BUFFER, gl.Sizeiptr(4 * len(me.Normals)), gl.Pointer(&me.Normals[0]), gl.STATIC_DRAW)
+	gl.BindBuffer(gl.ARRAY_BUFFER, me.glTcBuf)
+	gl.BufferData(gl.ARRAY_BUFFER, gl.Sizeiptr(4 * len(me.TexCoords)), gl.Pointer(&me.TexCoords[0]), gl.STATIC_DRAW)
 	gl.BindBuffer(gl.ARRAY_BUFFER, 0)
 	me.gpuSynced = true
 }
@@ -67,7 +70,7 @@ func (me *TMesh) Loaded () bool {
 func (me *TMesh) render () {
 	curMesh = me
 	curTechnique.OnRenderMesh()
-	gl.BindBuffer(gl.ARRAY_BUFFER, me.glVertBuf)
+	gl.BindBuffer(gl.ARRAY_BUFFER, me.glVpBuf)
 
 	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.glElemBuf)
 	gl.EnableVertexAttribArray(curProg.AttrLocs["aPos"])
@@ -79,5 +82,5 @@ func (me *TMesh) render () {
 }
 
 func (me *TMesh) Unload () {
-	me.Verts, me.Normals, me.Indices = nil, nil, nil
+	me.Verts, me.Normals, me.Indices, me.TexCoords = nil, nil, nil, nil
 }

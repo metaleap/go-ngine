@@ -14,18 +14,20 @@ var (
 
 type tTextures map[string]*TTexture
 
-	func (me *tTextures) NewParams (filter bool, filterAnisotropy float64) *tTextureParams {
-		return newTextureParams(filter, filterAnisotropy)
+	func (me *tTextures) Load (loadProvider FTextureProvider, providerArgs ... interface {}) *TTexture {
+		var tex = newTexture()
+		tex.Load(loadProvider, providerArgs ...)
+		return tex
 	}
 
-	func (me *tTextures) NewLoad (loadAsync bool, loadProvider FTextureProvider, providerArgs ... interface {}) *TTexture {
-		var tex = NewTexture()
-		if loadAsync {
-			tex.LoadAsync(loadProvider, providerArgs ...)
-		} else {
-			tex.Load(loadProvider, providerArgs ...)
-		}
+	func (me *tTextures) LoadAsync (loadProvider FTextureProvider, providerArgs ... interface {}) *TTexture {
+		var tex = newTexture()
+		tex.LoadAsync(loadProvider, providerArgs ...)
 		return tex
+	}
+
+	func (me *tTextures) NewParams (filter bool, filterAnisotropy float64) *tTextureParams {
+		return newTextureParams(filter, filterAnisotropy)
 	}
 
 type TTexture struct {
@@ -40,7 +42,7 @@ type TTexture struct {
 	glSizedInternalFormat, glPixelDataFormat, glPixelDataType gl.Enum
 }
 
-	func NewTexture () *TTexture {
+	func newTexture () *TTexture {
 		var tex = &TTexture {}
 		tex.Params = Core.Options.DefaultTextureParams
 		return tex

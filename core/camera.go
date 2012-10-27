@@ -64,13 +64,13 @@ type TCamera struct {
 	}
 
 	func (me *TCamera) SetTechnique (name string) {
-		if (me.technique == nil) || (me.technique.Name() != name) {
+		if (me.technique == nil) || (me.technique.name() != name) {
 			me.technique = getRenderTechnique(name)
 		}
 	}
 
 	func (me *TCamera) ToggleTechnique () {
-		var allNames, curTech, name = glShaderMan.AllNames, curTechnique.Name(), ""
+		var allNames, curTech, name = glShaderMan.AllNames, curTechnique.name(), ""
 		var curIndex, i int
 		var tech iRenderTechnique = nil
 		for i, name = range allNames { if name == curTech { curIndex = i; break } }

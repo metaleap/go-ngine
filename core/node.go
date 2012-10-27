@@ -11,7 +11,6 @@ type TNode struct {
 
 	mat *TMaterial
 	mesh *TMesh
-	glVertTexCoordsBuf gl.Uint
 	curKey, matKey, meshKey string
 	curSubNode, parentNode *TNode
 }
@@ -36,7 +35,6 @@ func (me *TNode) AddSubNodesNamed (nodeAndMeshKeys map[string]string) {
 func (me *TNode) Dispose () {
 	for _, subNode := range me.SubNodes { subNode.Dispose() }
 	me.SubNodes = map[string]*TNode {}
-	if me.glVertTexCoordsBuf > 0 { gl.DeleteBuffers(1, &me.glVertTexCoordsBuf) }
 }
 
 func (me *TNode) MatKey () string {
@@ -61,15 +59,9 @@ func (me *TNode) render () {
 	}
 }
 
-func (me *TNode) SetMatKey (newMatKey string, texCoords []gl.Float) {
+func (me *TNode) SetMatKey (newMatKey string) {
 	if newMatKey != me.matKey {
 		me.mat, me.matKey = Core.Materials[newMatKey], newMatKey
-	}
-	if (me.mat != nil) && (me.glVertTexCoordsBuf == 0) && (len(texCoords) > 0) {
-		gl.GenBuffers(1, &me.glVertTexCoordsBuf)
-		gl.BindBuffer(gl.ARRAY_BUFFER, me.glVertTexCoordsBuf)
-		gl.BufferData(gl.ARRAY_BUFFER, gl.Sizeiptr(4 * len(texCoords)), gl.Pointer(&texCoords[0]), gl.STATIC_DRAW)
-		gl.BindBuffer(gl.ARRAY_BUFFER, 0)
 	}
 }
 

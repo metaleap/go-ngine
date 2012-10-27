@@ -18,11 +18,11 @@ var (
 type fTechniqueConstructor func (string) iRenderTechnique
 
 type iRenderTechnique interface {
-	Name () string
+	dispose ()
+	name () string
 	OnPreRender ()
 	OnRenderMesh ()
 	OnRenderNode ()
-	Program () *glutil.TShaderProgram
 }
 
 	func getRenderTechnique (name string) iRenderTechnique {
@@ -36,11 +36,26 @@ type iRenderTechnique interface {
 	}
 
 type tTechnique_Base struct {
+	glVao gl.Uint
 	prog *glutil.TShaderProgram
 }
 
+	func (me *tTechnique_Base) dispose () {
+		gl.DeleteVertexArrays(1, &me.glVao)
+	}
+
+	func (me *tTechnique_Base) name () string {
+		return me.prog.Name
+	}
+
+	func (me *tTechnique_Base) OnPreRender () {
+		gl.BindVertexArray(me.glVao)
+	}
+
 	func (me *tTechnique_Base) setProg (name string, unifs []string, attrs []string) {
 		var prog = glShaderMan.AllProgs[name]
+		gl.GenVertexArrays(1, &me.glVao)
+		gl.BindVertexArray(me.glVao)
 		prog.SetUnifLocations("uMatCam", "uMatModelView", "uMatProj")
 		if len(unifs) > 0 { prog.SetUnifLocations(unifs...) }
 		prog.SetAttrLocations("aPos")
@@ -58,21 +73,10 @@ type tTechnique_UnlitColored struct {
 		return tech
 	}
 
-	func (me *tTechnique_UnlitColored) Name () string {
-		return me.prog.Name
-	}
-
-	func (me *tTechnique_UnlitColored) OnPreRender () {
-	}
-
 	func (me *tTechnique_UnlitColored) OnRenderMesh () {
 	}
 
 	func (me *tTechnique_UnlitColored) OnRenderNode () {
-	}
-
-	func (me *tTechnique_UnlitColored) Program () *glutil.TShaderProgram {
-		return me.prog
 	}
 
 type tTechnique_UnlitTextured struct {
@@ -85,28 +89,15 @@ type tTechnique_UnlitTextured struct {
 		return tech
 	}
 
-	func (me *tTechnique_UnlitTextured) Name () string {
-		return me.prog.Name
-	}
-
-	func (me *tTechnique_UnlitTextured) OnPreRender () {
-	}
-
 	func (me *tTechnique_UnlitTextured) OnRenderMesh () {
+		gl.BindBuffer(gl.ARRAY_BUFFER, curMesh.glTcBuf)
+		gl.EnableVertexAttribArray(curProg.AttrLocs["aTexCoords"])
+		gl.VertexAttribPointer(curProg.AttrLocs["aTexCoords"], 2, gl.FLOAT, gl.FALSE, 0, gl.Pointer(nil))
+		gl.BindBuffer(gl.ARRAY_BUFFER, 0)
 	}
 
 	func (me *tTechnique_UnlitTextured) OnRenderNode () {
-		if curNode.glVertTexCoordsBuf > 0 {
-			gl.BindBuffer(gl.ARRAY_BUFFER, curNode.glVertTexCoordsBuf)
-			gl.EnableVertexAttribArray(curProg.AttrLocs["aTexCoords"])
-			gl.VertexAttribPointer(curProg.AttrLocs["aTexCoords"], 2, gl.FLOAT, gl.FALSE, 0, gl.Pointer(nil))
-			gl.BindBuffer(gl.ARRAY_BUFFER, 0)
-			gl.ActiveTexture(gl.TEXTURE0)
-			gl.BindTexture(gl.TEXTURE_2D, Core.Textures[curNode.mat.texKey].glTex)
-			gl.Uniform1i(curProg.UnifLocs["uTex0"], 0)
-		}
-	}
-
-	func (me *tTechnique_UnlitTextured) Program () *glutil.TShaderProgram {
-		return me.prog
+		gl.ActiveTexture(gl.TEXTURE0)
+		gl.BindTexture(gl.TEXTURE_2D, Core.Textures[curNode.mat.texKey].glTex)
+		gl.Uniform1i(curProg.UnifLocs["uTex0"], 0)
 	}

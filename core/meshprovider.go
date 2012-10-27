@@ -88,6 +88,38 @@ func meshProviderPrefabCube (args ... interface {}) (mesh *TMesh, err error) {
 		-1, 0, 0,
 		-1, 0, 0,
 	}
+	mesh.TexCoords = []gl.Float {
+		// Front face
+		0, 0,
+		1, 0,
+		1, 1,
+		0, 1,
+		// Back face
+		1, 0,
+		1, 1,
+		0, 1,
+		0, 0,
+		// Top face
+		0, 1,
+		0, 0,
+		1, 0,
+		1, 1,
+		// Bottom face
+		1, 1,
+		0, 1,
+		0, 0,
+		1, 0,
+		// Right face
+		1, 0,
+		1, 1,
+		0, 1,
+		0, 0,
+		// Left face
+		0, 0,
+		1, 0,
+		1, 1,
+		0, 1,
+	}
 	mesh.glMode, mesh.glNumIndices, mesh.glNumVerts = gl.TRIANGLES, 36, 24
 	return
 }
@@ -106,6 +138,12 @@ func meshProviderPrefabPlane (args ... interface {}) (mesh *TMesh, err error) {
 		0, 1, 0,
 		0, 1, 0,
 		0, 1, 0,
+	}
+	mesh.TexCoords = []gl.Float {
+		0, 0,
+		10, 0,
+		0, 10,
+		10, 10,
 	}
 	mesh.glMode, mesh.glNumIndices, mesh.glNumVerts = gl.TRIANGLES, 6, 4
 	return
@@ -142,18 +180,36 @@ func meshProviderPrefabPyramid (args ... interface {}) (mesh *TMesh, err error) 
 		0, 0, 1,
 		0, 0, 1,
 		0, 0, 1,
-		// Back face
-		0, 0, -1,
-		0, 0, -1,
-		0, 0, -1,
 		// Right face
+		// 1, 0, 0,
+		// 1, 0, 0,
 		1, 0, 0,
-		1, 0, 0,
-		1, 0, 0,
+		// Back face
+		// 0, 0, -1,
+		// 0, 0, -1,
+		0, 0, -1,
 		// Left face
-		-1, 0, 0,
-		-1, 0, 0,
-		-1, 0, 0,
+		// -1, 0, 0,
+		// -1, 0, 0,
+		// -1, 0, 0,
+	}
+	mesh.TexCoords = []gl.Float {
+		// Front face
+		0, 0,
+		1, 0,
+		1, 1,
+		// Right face
+		1, 0,
+		1, 1,
+		0, 1,
+		// Back face
+		1, 0,
+		1, 1,
+		0, 1,
+		// Left face
+		0, 0,
+		1, 0,
+		1, 1,
 	}
 	mesh.glMode, mesh.glNumIndices, mesh.glNumVerts = gl.TRIANGLES, 12, 5
 	return
@@ -161,6 +217,11 @@ func meshProviderPrefabPyramid (args ... interface {}) (mesh *TMesh, err error) 
 
 func meshProviderPrefabQuad (args ... interface {}) (mesh *TMesh, err error) {
 	mesh = Core.Meshes.New()
+	mesh.raw = newMeshData()
+	mesh.raw.addPositions()
+	mesh.raw.addTexCoords()
+	mesh.raw.addNormals()
+	mesh.raw.addFace(tMeshFace3 {})
 	mesh.Verts = []gl.Float {
 		1, 1, 0,
 		-1, 1, 0,
@@ -174,12 +235,23 @@ func meshProviderPrefabQuad (args ... interface {}) (mesh *TMesh, err error) {
 		0, 0, 1,
 		0, 0, 1,
 	}
+	mesh.TexCoords = []gl.Float {
+		0, 0,
+		0, 1,
+		1, 1,
+		1, 0,
+	}
 	mesh.glMode, mesh.glNumIndices, mesh.glNumVerts = gl.TRIANGLES, 6, 4
 	return
 }
 
 func meshProviderPrefabTri (args ... interface {}) (mesh *TMesh, err error) {
 	mesh = Core.Meshes.New()
+	mesh.raw = newMeshData()
+	mesh.raw.addPositions(tVa3 { 0, 1, 0 }, tVa3 { -1, -1, 0 }, tVa3 { 1, -1, 0 })
+	mesh.raw.addTexCoords(tVa2 { 0, 0 }, tVa2 { 4, 0 }, tVa2 { 2, 2 })
+	mesh.raw.addNormals(tVa3 { 0, 0, 1 })
+	mesh.raw.addFace(tMeshFace3 { tVe { 0, 0, 0 }, tVe { 1, 1, 0 }, tVe { 2, 2, 0 } })
 	mesh.Verts = []gl.Float {
 		0, 1, 0,
 		-1, -1, 0,
@@ -189,6 +261,11 @@ func meshProviderPrefabTri (args ... interface {}) (mesh *TMesh, err error) {
 		0, 0, 1,
 		0, 0, 1,
 		0, 0, 1,
+	}
+	mesh.TexCoords = []gl.Float {
+		0, 0,
+		3, 0,
+		3, 3,
 	}
 	mesh.Indices = []gl.Uint { 0, 1, 2 }
 	mesh.glMode, mesh.glNumIndices, mesh.glNumVerts = gl.TRIANGLES, 3, 3

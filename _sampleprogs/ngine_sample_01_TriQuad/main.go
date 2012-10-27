@@ -3,8 +3,6 @@ package main
 import (
 	"math"
 
-	gl "github.com/chsc/gogl/gl42"
-
 	ngine "github.com/go3d/go-ngine/core"
 	ngine_samples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
 )
@@ -33,8 +31,11 @@ func onLoop () {
 func LoadSampleScene_01_TriQuad () {
 	ngine.Core.Options.SetGlBackfaceCulling(false)
 
-	ngine.Core.Materials["cat"] = ngine_samples.NewMaterialFromLocalTextureImageFile("misc/cat.png")
-	ngine.Core.Materials["dog"] = ngine_samples.NewMaterialFromLocalTextureImageFile("misc/dog.png")
+	ngine.Core.Textures["texcat"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/cat.png")
+	ngine.Core.Textures["texdog"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/dog.png")
+
+	ngine.Core.Materials["matcat"] = ngine.Core.Materials.New("texcat")
+	ngine.Core.Materials["matdog"] = ngine.Core.Materials.New("texdog")
 
 	ngine.Core.Meshes["face3"], _ = ngine.Core.Meshes.Load(ngine.MeshProviders.PrefabTri)
 	ngine.Core.Meshes["face4"], _ = ngine.Core.Meshes.Load(ngine.MeshProviders.PrefabQuad)
@@ -44,17 +45,8 @@ func LoadSampleScene_01_TriQuad () {
 
 	scene.RootNode.AddSubNodesNamed(map[string]string { "tri":  "face3", "quad": "face4" })
 	tri, quad = scene.RootNode.SubNodes["tri"], scene.RootNode.SubNodes["quad"]
-	tri.SetMatKey("cat", []gl.Float {
-		0, 0,
-		3, 0,
-		3, 3,
-	})
-	quad.SetMatKey("dog", []gl.Float {
-		0, 0,
-		0, 1,
-		1, 1,
-		1, 0,
-	})
+	tri.SetMatKey("matcat")
+	quad.SetMatKey("matdog")
 	ngine.Core.SyncUpdates()
 	ngine.Loop.AddHandler(onLoop)
 }

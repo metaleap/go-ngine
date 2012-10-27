@@ -51,6 +51,8 @@ func newEngineCore (options *tOptions) *tEngineCore {
 }
 
 func (me *tEngineCore) Dispose () {
+	for _, rt := range techs { rt.dispose() }
+	techs = map[string]iRenderTechnique {}
 	for _, canvas := range me.Canvases { canvas.Dispose() }
 	for _, scene := range me.Scenes { scene.Dispose() }
 	for _, mesh := range me.Meshes { mesh.GpuDelete() }
@@ -114,6 +116,6 @@ func (me *tEngineCore) useProgram (name string) {
 func (me *tEngineCore) useTechnique (technique iRenderTechnique) {
 	if technique != curTechnique {
 		curTechnique = technique
-		me.useProgram(curTechnique.Name())
+		me.useProgram(curTechnique.name())
 	}
 }

@@ -3,8 +3,6 @@ package main
 import (
 	"math"
 
-	gl "github.com/chsc/gogl/gl42"
-
 	ngine "github.com/go3d/go-ngine/core"
 	ngine_samples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
 )
@@ -38,9 +36,13 @@ func onLoop () {
 func LoadSampleScene_02_PyrCube () {
 	ngine.Core.Options.SetGlBackfaceCulling(false)
 
-	ngine.Core.Materials["cobbles"] = ngine_samples.NewMaterialFromRemoteTextureImageFile("http://dl.dropbox.com/u/136375/misc/cobbles.png")
-	ngine.Core.Materials["crate"] = ngine_samples.NewMaterialFromLocalTextureImageFile("misc/crate.jpeg")
-	ngine.Core.Materials["mosaic"] = ngine_samples.NewMaterialFromLocalTextureImageFile("misc/mosaic.jpeg")
+	ngine.Core.Textures["tex_cobbles"] = ngine.Core.Textures.LoadAsync(ngine.TextureProviders.RemoteFile, "http://dl.dropbox.com/u/136375/misc/cobbles.png")
+	ngine.Core.Textures["tex_crate"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/crate.jpeg")
+	ngine.Core.Textures["tex_mosaic"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/mosaic.jpeg")
+
+	ngine.Core.Materials["mat_cobbles"] = ngine.Core.Materials.New("tex_cobbles")
+	ngine.Core.Materials["mat_crate"] = ngine.Core.Materials.New("tex_crate")
+	ngine.Core.Materials["mat_mosaic"] = ngine.Core.Materials.New("tex_mosaic")
 
 	ngine.Core.Meshes["pyramid"], _ = ngine.Core.Meshes.Load(ngine.MeshProviders.PrefabPyramid)
 	ngine.Core.Meshes["cube"], _ = ngine.Core.Meshes.Load(ngine.MeshProviders.PrefabCube)
@@ -51,62 +53,9 @@ func LoadSampleScene_02_PyrCube () {
 	scene.RootNode.AddSubNodesNamed(map[string]string { "floor": "plane", "pyr": "pyramid", "box": "cube" })
 	floor, pyr, box = scene.RootNode.SubNodes["floor"], scene.RootNode.SubNodes["pyr"], scene.RootNode.SubNodes["box"]
 
-	floor.SetMatKey("cobbles", []gl.Float {
-		0, 0,
-		10, 0,
-		0, 10,
-		10, 10,
-	})
-	pyr.SetMatKey("mosaic", []gl.Float {
-		// Front face
-		0, 0,
-		1, 0,
-		1, 1,
-		// Right face
-		1, 0,
-		1, 1,
-		0, 1,
-		// Back face
-		1, 0,
-		1, 1,
-		0, 1,
-		// Left face
-		0, 0,
-		1, 0,
-		1, 1,
-	})
-	box.SetMatKey("crate", []gl.Float {
-		// Front face
-		0, 0,
-		1, 0,
-		1, 1,
-		0, 1,
-		// Back face
-		1, 0,
-		1, 1,
-		0, 1,
-		0, 0,
-		// Top face
-		0, 1,
-		0, 0,
-		1, 0,
-		1, 1,
-		// Bottom face
-		1, 1,
-		0, 1,
-		0, 0,
-		1, 0,
-		// Right face
-		1, 0,
-		1, 1,
-		0, 1,
-		0, 0,
-		// Left face
-		0, 0,
-		1, 0,
-		1, 1,
-		0, 1,
-	})
+	floor.SetMatKey("mat_cobbles")
+	pyr.SetMatKey("mat_mosaic")
+	box.SetMatKey("mat_crate")
 
 	floor.Transform.SetPosXYZ(0.1, 0, -8)
 	floor.Transform.SetScalingN(100)
