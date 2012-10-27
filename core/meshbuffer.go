@@ -4,15 +4,15 @@ import (
 	gl "github.com/chsc/gogl/gl42"
 )
 
-type tGpuMeshMemory struct {
+type tMeshBuffer struct {
 	NumVerts, NumIndices gl.Sizeiptr
 
 	glElemBuf, glVertBuf gl.Uint
 	glElemOffset, glVertOffset int
 }
 
-func newGpuMeshMemory (numVerts, numIndices gl.Sizeiptr) *tGpuMeshMemory {
-	var mem = &tGpuMeshMemory {}
+func newMeshBuffer (numVerts, numIndices gl.Sizeiptr) *tMeshBuffer {
+	var mem = &tMeshBuffer {}
 	mem.NumIndices, mem.NumVerts = numIndices, numVerts
 	gl.GenBuffers(1, &mem.glVertBuf)
 	gl.GenBuffers(1, &mem.glElemBuf)
@@ -25,19 +25,23 @@ func newGpuMeshMemory (numVerts, numIndices gl.Sizeiptr) *tGpuMeshMemory {
 	return mem
 }
 
-func (me *tGpuMeshMemory) dispose () {
+func (me *tMeshBuffer) dispose () {
 	gl.DeleteBuffers(1, &me.glElemBuf)
 	gl.DeleteBuffers(1, &me.glVertBuf)
 }
 
-func (me *tGpuMeshMemory) MemSizePerIndex () gl.Sizeiptr {
+func (me *tMeshBuffer) FloatsPerVertex () int {
+	const numVertPosFloats = 3
+	const numVertNormalFloats = 3
+	const numVertTexCoordFloats = 2
+	return numVertPosFloats + numVertNormalFloats + numVertTexCoordFloats
+}
+
+func (me *tMeshBuffer) MemSizePerIndex () gl.Sizeiptr {
 	return 4 * 3
 }
 
-func (me *tGpuMeshMemory) MemSizePerVertex () gl.Sizeiptr {
+func (me *tMeshBuffer) MemSizePerVertex () gl.Sizeiptr {
 	const sizePerFloat gl.Sizeiptr = 4
-	const numVertPosFloats gl.Sizeiptr = 3
-	const numVertNormalFloats gl.Sizeiptr = 3
-	const numVertTexCoordFloats = 2
-	return (sizePerFloat * numVertNormalFloats) + (sizePerFloat * numVertNormalFloats) + (sizePerFloat * numVertTexCoordFloats)
+	return sizePerFloat * gl.Sizeiptr(me.FloatsPerVertex())
 }

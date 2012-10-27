@@ -2,6 +2,8 @@ package core
 
 import (
 	gl "github.com/chsc/gogl/gl42"
+
+	glutil "github.com/go3d/go-util/gl"
 )
 
 type tMeshes map[string]*TMesh
@@ -61,6 +63,38 @@ func (me *TMesh) GpuSync () {
 
 func (me *TMesh) GpuSynced () bool {
 	return me.gpuSynced
+}
+
+func (me *TMesh) load (raw *tMeshData) {
+	var numVerts = 3 * len(raw.faces)
+	var outVerts = make([]gl.Float, Core.MeshBuffer.FloatsPerVertex() * numVerts)
+	var outElems = make([]gl.Uint, numVerts)
+	var outFaces = make([]*TMeshFace, len(raw.faces))
+	var vertsMap = map[gl.Uint]gl.Uint {}
+	var voff, ioff, vindex, vhash gl.Uint
+	var foff, ei = 0, 0
+	var face tMeshFace3
+	var ventry tVe
+	var vexists bool
+	for _, face = range raw.faces {
+		outFaces[foff] = newMeshFace()
+		for ei, ventry = range face {
+			vhash = glutil.Hash3(ventry.posIndex, ventry.texCoordIndex, ventry.normalIndex)
+			if _, vexists = vertsMap[vhash]; !vexists {
+				vindex, vertsMap[vhash] = voff, voff
+				copy(outVerts[voff : (voff + 3)], raw.positions[ventry.posIndex][0 : 3])
+				voff += 3
+				copy(outVerts[voff : (voff + 2)], raw.texCoords[ventry.texCoordIndex][0 : 2])
+				voff += 2
+				copy(outVerts[voff : (voff + 3)], raw.normals[ventry.normalIndex][0 : 3])
+				voff += 3
+			}
+			outElems[ioff] = vindex
+			outFaces[foff].entries[ei] = ioff
+			ioff++
+		}
+		foff++
+	}
 }
 
 func (me *TMesh) Loaded () bool {

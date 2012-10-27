@@ -4,6 +4,8 @@ import (
 	gl "github.com/chsc/gogl/gl42"
 )
 
+type tMeshFace3 [3]tVe
+
 type tVa2 [2]gl.Float
 
 type tVa3 [3]gl.Float
@@ -43,5 +45,3 @@ type tMeshData struct {
 	func (me *tMeshData) addTexCoords (texCoords ... tVa2) {
 		me.texCoords = append(me.texCoords, texCoords ...)
 	}
-
-type tMeshFace3 [3]tVe

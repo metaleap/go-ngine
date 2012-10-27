@@ -26,6 +26,7 @@ type tEngineCore struct {
 	CurCanvas *TRenderCanvas
 	DefaultCanvasIndex int
 	Materials tMaterials
+	MeshBuffer *tMeshBuffer
 	Meshes tMeshes
 	Models tModels
 	Options *tOptions
@@ -47,6 +48,7 @@ func newEngineCore (options *tOptions) *tEngineCore {
 	defCanvas = Core.Canvases.Add(Core.Canvases.New(options.winWidth, options.winHeight, true))
 	Core.CurCanvas = defCanvas
 	Core.CurCamera = defCanvas.Cameras[0]
+	Core.MeshBuffer = newMeshBuffer(1000, 1000)
 	return Core
 }
 
@@ -57,6 +59,7 @@ func (me *tEngineCore) Dispose () {
 	for _, scene := range me.Scenes { scene.Dispose() }
 	for _, mesh := range me.Meshes { mesh.GpuDelete() }
 	for _, tex := range me.Textures { tex.GpuDelete() }
+	me.MeshBuffer.dispose()
 	Core = nil
 }
 
