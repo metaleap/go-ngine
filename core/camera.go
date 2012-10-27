@@ -65,7 +65,7 @@ type TCamera struct {
 
 	func (me *TCamera) SetTechnique (name string) {
 		if (me.technique == nil) || (me.technique.name() != name) {
-			me.technique = getRenderTechnique(name)
+			me.technique = techs[name]
 		}
 	}
 
@@ -74,8 +74,8 @@ type TCamera struct {
 		var curIndex, i int
 		var tech iRenderTechnique = nil
 		for i, name = range allNames { if name == curTech { curIndex = i; break } }
-		if curIndex < (len(allNames) - 1) { for i = curIndex + 1; i < len(allNames); i++ { if tech = getRenderTechnique(allNames[i]); tech != nil { break } } }
-		if tech == nil { for i = 0; i < curIndex; i++ { if tech = getRenderTechnique(allNames[i]); tech != nil { break } } }
+		if curIndex < (len(allNames) - 1) { for i = curIndex + 1; i < len(allNames); i++ { if tech = techs[allNames[i]]; tech != nil { break } } }
+		if tech == nil { for i = 0; i < curIndex; i++ { if tech = techs[allNames[i]]; tech != nil { break } } }
 		if tech != nil { me.technique = tech }
 	}
 

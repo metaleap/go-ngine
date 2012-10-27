@@ -26,7 +26,7 @@ type tEngineCore struct {
 	CurCanvas *TRenderCanvas
 	DefaultCanvasIndex int
 	Materials tMaterials
-	MeshBuffer *tMeshBuffer
+	MeshBuffers *tMeshBuffers
 	Meshes tMeshes
 	Models tModels
 	Options *tOptions
@@ -36,6 +36,7 @@ type tEngineCore struct {
 
 func newEngineCore (options *tOptions) *tEngineCore {
 	var defCanvas *TRenderCanvas
+	initTechniques()
 	Core = &tEngineCore {}
 	Core.Options = options
 	Core.AssetManager = newAssetManager()
@@ -48,19 +49,17 @@ func newEngineCore (options *tOptions) *tEngineCore {
 	defCanvas = Core.Canvases.Add(Core.Canvases.New(options.winWidth, options.winHeight, true))
 	Core.CurCanvas = defCanvas
 	Core.CurCamera = defCanvas.Cameras[0]
-	Core.MeshBuffer = newMeshBuffer(1000, 1000)
+	Core.MeshBuffers = newMeshBuffers()
 	return Core
 }
 
 func (me *tEngineCore) Dispose () {
-	for _, rt := range techs { rt.dispose() }
-	techs = map[string]iRenderTechnique {}
 	for _, canvas := range me.Canvases { canvas.Dispose() }
 	for _, scene := range me.Scenes { scene.Dispose() }
 	for _, mesh := range me.Meshes { mesh.GpuDelete() }
 	for _, tex := range me.Textures { tex.GpuDelete() }
-	me.MeshBuffer.dispose()
-	Core = nil
+	me.MeshBuffers.dispose()
+	techs, Core = nil, nil
 }
 
 func (me *tEngineCore) onSecTick () {
@@ -100,12 +99,16 @@ func (me *tEngineCore) resizeView (viewWidth, viewHeight int) {
 
 func (me *tEngineCore) SyncUpdates () {
 	for key, tex := range me.Textures {
-		tex.GpuSync()
-		glLogLastError("tEngineCore.SyncUpdates(texkey=%s)", key)
+		if !tex.gpuSynced {
+			tex.GpuSync()
+			glLogLastError("tEngineCore.SyncUpdates(texkey=%s)", key)
+		}
 	}
 	for key, mesh := range me.Meshes {
-		if !mesh.gpuSynced { mesh.GpuSync() }
-		glLogLastError("tEngineCore.SyncUpdates(meshkey=%s)", key)
+		if !mesh.gpuSynced {
+			mesh.GpuSync()
+			glLogLastError("tEngineCore.SyncUpdates(meshkey=%s)", key)
+		}
 	}
 }
 
