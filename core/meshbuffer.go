@@ -8,6 +8,11 @@ import (
 	glutil "github.com/go3d/go-util/gl"
 )
 
+type tMeshBufferParams struct {
+	HugeMeshSupport, MostlyStatic bool
+	NumVerts, NumIndices gl.Sizeiptr
+}
+
 type tMeshBuffers struct {
 	bufs map[string]*tMeshBuffer
 }
@@ -18,10 +23,10 @@ type tMeshBuffers struct {
 		return meshBuffers
 	}
 
-	func (me *tMeshBuffers) Add (name string, numVerts, numIndices gl.Sizeiptr, hugeMeshSupport bool) (err error) {
+	func (me *tMeshBuffers) Add (name string, params *tMeshBufferParams) (err error) {
 		var buf = me.bufs[name]
 		if buf == nil {
-			if buf, err = newMeshBuffer(name, numVerts, numIndices, hugeMeshSupport); err == nil {
+			if buf, err = newMeshBuffer(name, params); err == nil {
 				me.bufs[name] = buf
 			} else if buf != nil {
 				buf.dispose()
@@ -51,6 +56,12 @@ type tMeshBuffers struct {
 		return sizePerFloat * gl.Sizeiptr(me.FloatsPerVertex())
 	}
 
+	func (me *tMeshBuffers) NewParams (numVerts, numIndices gl.Sizeiptr) *tMeshBufferParams {
+		var params = &tMeshBufferParams {}
+		params.MostlyStatic, params.NumIndices, params.NumVerts = true, numIndices, numVerts
+		return params
+	}
+
 	func (me *tMeshBuffers) Remove (name string) {
 		var buf = me.bufs[name]
 		if buf != nil { buf.dispose(); delete(me.bufs, name) }
@@ -58,24 +69,23 @@ type tMeshBuffers struct {
 
 type tMeshBuffer struct {
 	MemSizeIndices, MemSizeVertices uint64
-	HugeMeshSupport bool
-	NumVerts, NumIndices gl.Sizeiptr
+	Params *tMeshBufferParams
 
 	glIbo, glVbo gl.Uint
 	glVaos map[string]gl.Uint
 }
 
-	func newMeshBuffer (name string, numVerts, numIndices gl.Sizeiptr, hugeMeshSupport bool) (mem *tMeshBuffer, err error) {
+	func newMeshBuffer (name string, params *tMeshBufferParams) (mem *tMeshBuffer, err error) {
 		var glVao gl.Uint
 		mem = &tMeshBuffer {}
+		mem.Params = params
 		mem.glVaos = map[string]gl.Uint {}
-		mem.NumIndices, mem.NumVerts, mem.HugeMeshSupport = numIndices, numVerts, hugeMeshSupport
-		mem.MemSizeIndices = uint64(Core.MeshBuffers.MemSizePerIndex()) * uint64(numIndices)
-		mem.MemSizeVertices = uint64(Core.MeshBuffers.MemSizePerVertex()) * uint64(numVerts)
+		mem.MemSizeIndices = uint64(Core.MeshBuffers.MemSizePerIndex()) * uint64(params.NumIndices)
+		mem.MemSizeVertices = uint64(Core.MeshBuffers.MemSizePerVertex()) * uint64(params.NumVerts)
 		var memSizeIndices, memSizeVertices = gl.Sizeiptr(mem.MemSizeIndices), gl.Sizeiptr(mem.MemSizeVertices)
 		if (mem.MemSizeIndices > uint64(memSizeIndices)) || (mem.MemSizeVertices > uint64(memSizeVertices)) {
 			mem = nil
-			err = fmt.Errorf("newMeshBuffer(%v) -- either numIndices (%v) or numVerts (%v) is too big", name, numIndices, numVerts)
+			err = fmt.Errorf("newMeshBuffer(%v) -- either numIndices (%v) or numVerts (%v) is too big", name, params.NumIndices, params.NumVerts)
 		} else {
 			gl.GenBuffers(1, &mem.glVbo)
 			gl.GenBuffers(1, &mem.glIbo)
@@ -85,11 +95,11 @@ type tMeshBuffer struct {
 			}
 			gl.BindBuffer(gl.ARRAY_BUFFER, mem.glVbo)
 			gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, mem.glIbo)
-			gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, Core.MeshBuffers.MemSizePerVertex() * numVerts, gl.Pointer(nil), gl.DYNAMIC_DRAW)
-			gl.BufferData(gl.ARRAY_BUFFER, gl.Sizeiptr(mem.MemSizeIndices), gl.Pointer(nil), gl.DYNAMIC_DRAW)
+			gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, Core.MeshBuffers.MemSizePerVertex() * params.NumVerts, gl.Pointer(nil), glutil.IfE(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
+			gl.BufferData(gl.ARRAY_BUFFER, gl.Sizeiptr(mem.MemSizeIndices), gl.Pointer(nil), glutil.IfE(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
 			gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
 			gl.BindBuffer(gl.ARRAY_BUFFER, 0)
-			if err = glutil.LastError("newMeshBuffer(%v numVerts=%v numIndices=%v)", name, numVerts, numIndices); err != nil {
+			if err = glutil.LastError("newMeshBuffer(%v numVerts=%v numIndices=%v)", name, params.NumVerts, params.NumIndices); err != nil {
 				mem.dispose()
 				mem = nil
 			} else {
