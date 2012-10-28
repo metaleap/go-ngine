@@ -66,5 +66,5 @@ func LoadSampleScene_02_PyrCube () {
 	camCtl.EndUpdate()
 
 	ngine.Core.SyncUpdates()
-	ngine.Loop.AddHandler(onLoop)
+	ngine.Loop.OnLoop = onLoop
 }

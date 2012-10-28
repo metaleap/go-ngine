@@ -6,11 +6,10 @@ import (
 
 type tEngineStats struct {
 	FpsLastSec int
-	Frame, FrameRender, FrameSwap, FrameCoreCode, FrameUserCode, Gc *TEngineStatsTiming
+	Frame, FrameRenderBoth, FrameRenderCpu, FrameRenderGpu, FrameCoreCode, FrameUserCode, Gc *TEngineStatsTiming
 
 	fpsCounter int
 	fpsAll float64
-	isWarmup bool
 }
 
 	func newEngineStats () *tEngineStats {
@@ -25,20 +24,23 @@ type tEngineStats struct {
 
 	func (me *tEngineStats) reset () {
 		var nt = func () *TEngineStatsTiming { return &TEngineStatsTiming {} }
-		me.isWarmup, me.FpsLastSec, me.fpsCounter, me.fpsAll = true, 0, 0, 0
-		me.Frame, me.FrameRender, me.FrameSwap, me.FrameCoreCode, me.FrameUserCode, me.Gc = nt(), nt(), nt(), nt(), nt(), nt()
+		me.FpsLastSec, me.fpsCounter, me.fpsAll = 0, 0, 0
+		me.Frame, me.FrameRenderBoth, me.FrameRenderCpu, me.FrameRenderGpu, me.FrameCoreCode, me.FrameUserCode, me.Gc = nt(), nt(), nt(), nt(), nt(), nt(), nt()
 	}
 
 type TEngineStatsTiming struct {
 	max, measuredCounter, measureStartTime, thisTime, totalAccum float64
+	comb1, comb2 *TEngineStatsTiming
 }
 
 	func (me *TEngineStatsTiming) Average () float64 {
 		return me.totalAccum / me.measuredCounter
 	}
 
-	func (me *TEngineStatsTiming) Max () float64 {
-		return me.max
+	func (me *TEngineStatsTiming) combine () {
+		me.max = me.comb1.max + me.comb2.max
+		me.measuredCounter = (me.comb1.measuredCounter + me.comb2.measuredCounter) * 0.5
+		me.totalAccum = me.comb1.totalAccum + me.comb2.totalAccum
 	}
 
 	func (me *TEngineStatsTiming) begin () {
@@ -49,4 +51,8 @@ type TEngineStatsTiming struct {
 		if me.thisTime = glfw.Time() - me.measureStartTime; me.thisTime > me.max { me.max = me.thisTime }
 		me.measuredCounter++
 		me.totalAccum += me.thisTime
+	}
+
+	func (me *TEngineStatsTiming) Max () float64 {
+		return me.max
 	}

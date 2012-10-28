@@ -70,11 +70,12 @@ func PrintPostLoopSummary () {
 	}
 	fmt.Printf("Average FPS:\t\t%v\n", ngine.Stats.AverageFps())
 	printStatSummary("Frame Full Loop", ngine.Stats.Frame)
-	printStatSummary("Frame Core Render", ngine.Stats.FrameRender)
+	printStatSummary("Frame Render (CPU)", ngine.Stats.FrameRenderCpu)
+	printStatSummary("Frame Render (GPU)", ngine.Stats.FrameRenderGpu)
+	printStatSummary("Frame Render Both", ngine.Stats.FrameRenderBoth)
 	printStatSummary("Frame Core Code", ngine.Stats.FrameCoreCode)
 	printStatSummary("Frame User Code", ngine.Stats.FrameUserCode)
-	printStatSummary("Frame Buffer Swap", ngine.Stats.FrameSwap)
-	printStatSummary("Garbage Collector", ngine.Stats.Gc)
+	printStatSummary("GC (max 1x/sec)", ngine.Stats.Gc)
 }
 
 func SamplesMainFunc (loader func ()) {

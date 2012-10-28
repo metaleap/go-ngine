@@ -60,10 +60,13 @@ func (me *tEngineLoop) Loop () {
 		glfw.SetTime(0)
 		me.SecTickLast, me.TickNow = glfw.Time(), glfw.Time()
 		Stats.reset()
+		Stats.FrameRenderBoth.comb1, Stats.FrameRenderBoth.comb2 = Stats.FrameRenderCpu, Stats.FrameRenderGpu
 		glLogLastError("ngine.PreLoop")
 		log.Printf("Enter loop...")
 		for me.IsLooping {
-			Stats.FrameRender.begin(); Core.onRender(); Stats.FrameRender.end()
+			//	STEP 1. Send rendering commands to the GPU / GL pipeline
+			Stats.FrameRenderCpu.begin(); Core.onRender(); Stats.FrameRenderCpu.end()
+			//	STEP 2. While those are sent, or rendered GPU-side, do CPU-side stuff
 			Stats.fpsCounter++
 			Stats.fpsAll++
 			me.TickLast = me.TickNow
@@ -72,15 +75,14 @@ func (me *tEngineLoop) Loop () {
 			me.TickDelta = me.TickNow - me.TickLast
 			if tickNowFloor = math.Floor(me.TickNow); tickNowFloor != me.SecTickLast {
 				Stats.FpsLastSec, me.SecTickLast = Stats.fpsCounter, tickNowFloor
-				Stats.fpsCounter = 0
-				Core.onSecTick()
-				me.OnSecTick()
+				Stats.fpsCounter = 0; Core.onSecTick(); me.OnSecTick()
 				Stats.Gc.begin(); runtime.GC(); Stats.Gc.end()
-				// if Stats.isWarmup { Stats.reset(); Stats.isWarmup = false }
 			}
 			Stats.FrameCoreCode.begin(); Core.onLoop(); Stats.FrameCoreCode.end()
 			Stats.FrameUserCode.begin(); me.OnLoop(); Stats.FrameUserCode.end()
-			Stats.FrameSwap.begin(); UserIO.onLoop(); Stats.FrameSwap.end()
+			//	STEP 3. Swap buffers -- also waits GPU to finish Step 1, and for V-sync (if set).
+			Stats.FrameRenderGpu.begin(); UserIO.onLoop(); Stats.FrameRenderGpu.end()
+			Stats.FrameRenderBoth.combine()
 		}
 		glLogLastError("ngine.PostLoop")
 	}
