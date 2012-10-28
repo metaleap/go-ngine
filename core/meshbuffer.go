@@ -14,16 +14,16 @@ type tMeshBufferParams struct {
 }
 
 type tMeshBuffers struct {
-	bufs map[string]*tMeshBuffer
+	bufs map[string]*TMeshBuffer
 }
 
 	func newMeshBuffers () *tMeshBuffers {
 		var meshBuffers = &tMeshBuffers {}
-		meshBuffers.bufs = map[string]*tMeshBuffer {}
+		meshBuffers.bufs = map[string]*TMeshBuffer {}
 		return meshBuffers
 	}
 
-	func (me *tMeshBuffers) Add (name string, params *tMeshBufferParams) (buf *tMeshBuffer, err error) {
+	func (me *tMeshBuffers) Add (name string, params *tMeshBufferParams) (buf *TMeshBuffer, err error) {
 		buf = me.bufs[name]
 		if buf == nil {
 			if buf, err = newMeshBuffer(name, params); err == nil {
@@ -39,7 +39,7 @@ type tMeshBuffers struct {
 
 	func (me *tMeshBuffers) dispose () {
 		for _, buf := range me.bufs { buf.dispose() }
-		me.bufs = map[string]*tMeshBuffer {}
+		me.bufs = map[string]*TMeshBuffer {}
 	}
 
 	func (me *tMeshBuffers) FloatsPerVertex () int32 {
@@ -67,42 +67,46 @@ type tMeshBuffers struct {
 		if buf != nil { buf.dispose(); delete(me.bufs, name) }
 	}
 
-type tMeshBuffer struct {
+type TMeshBuffer struct {
 	MemSizeIndices, MemSizeVertices int32
 	Params *tMeshBufferParams
 
+	name string
+	meshes tMeshes
 	glIbo, glVbo gl.Uint
 	glVaos map[string]gl.Uint
 }
 
-	func newMeshBuffer (name string, params *tMeshBufferParams) (mem *tMeshBuffer, err error) {
+	func newMeshBuffer (name string, params *tMeshBufferParams) (buf *TMeshBuffer, err error) {
 		var glVao gl.Uint
-		mem = &tMeshBuffer {}
-		mem.Params = params
-		mem.glVaos = map[string]gl.Uint {}
-		mem.MemSizeIndices = Core.MeshBuffers.MemSizePerIndex() * params.NumIndices
-		mem.MemSizeVertices = Core.MeshBuffers.MemSizePerVertex() * params.NumVerts
-		gl.GenBuffers(1, &mem.glVbo)
-		gl.GenBuffers(1, &mem.glIbo)
+		buf = &TMeshBuffer {}
+		buf.name = name
+		buf.meshes = tMeshes {}
+		buf.Params = params
+		buf.glVaos = map[string]gl.Uint {}
+		buf.MemSizeIndices = Core.MeshBuffers.MemSizePerIndex() * params.NumIndices
+		buf.MemSizeVertices = Core.MeshBuffers.MemSizePerVertex() * params.NumVerts
+		gl.GenBuffers(1, &buf.glVbo)
+		gl.GenBuffers(1, &buf.glIbo)
 		for techName, _ := range techs {
 			gl.GenVertexArrays(1, &glVao)
-			mem.glVaos[techName] = glVao
+			buf.glVaos[techName] = glVao
 		}
-		gl.BindBuffer(gl.ARRAY_BUFFER, mem.glVbo)
-		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, mem.glIbo)
-		gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(mem.MemSizeVertices), gl.Pointer(nil), glutil.IfE(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
-		gl.BufferData(gl.ARRAY_BUFFER, gl.Sizeiptr(mem.MemSizeIndices), gl.Pointer(nil), glutil.IfE(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
-		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
+		gl.BindBuffer(gl.ARRAY_BUFFER, buf.glVbo)
+		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, buf.glIbo)
+		gl.BufferData(gl.ARRAY_BUFFER, gl.Sizeiptr(buf.MemSizeVertices), gl.Pointer(nil), glutil.IfE(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
+		gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(buf.MemSizeIndices), gl.Pointer(nil), glutil.IfE(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
 		gl.BindBuffer(gl.ARRAY_BUFFER, 0)
+		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
 		if err = glutil.LastError("newMeshBuffer(%v numVerts=%v numIndices=%v)", name, params.NumVerts, params.NumIndices); err != nil {
-			mem.dispose()
-			mem = nil
+			buf.dispose()
+			buf = nil
 		} else {
-			for techName, glVao := range mem.glVaos {
+			for techName, glVao := range buf.glVaos {
 				gl.BindVertexArray(glVao)
-				gl.BindBuffer(gl.ARRAY_BUFFER, mem.glVbo)
-				gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, mem.glIbo)
-				techs[techName].initMeshBuffer(mem)
+				gl.BindBuffer(gl.ARRAY_BUFFER, buf.glVbo)
+				gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, buf.glIbo)
+				techs[techName].initMeshBuffer(buf)
 				gl.BindVertexArray(0)
 				gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
 				gl.BindBuffer(gl.ARRAY_BUFFER, 0)
@@ -111,10 +115,39 @@ type tMeshBuffer struct {
 		return
 	}
 
-	func (me *tMeshBuffer) dispose () {
+	func (me *TMeshBuffer) Add (mesh *TMesh) (err error) {
+		if mesh.meshBuffer != nil {
+			err = fmt.Errorf("Cannot add mesh '%v' to mesh buffer '%v': already belongs to mesh buffer '%v'.", mesh.name, me.name, mesh.meshBuffer.name)
+		} else if me.meshes.Add(mesh) != nil {
+			mesh.gpuSynced = false
+			mesh.meshBuffer = me
+		} else {
+			err = fmt.Errorf("Cannot add mesh '%v' to mesh buffer '%v': already has a mesh with that name.", mesh.name, me.name)
+		}
+		return
+	}
+
+	func (me *TMeshBuffer) bindVao () {
+		gl.BindVertexArray(me.glVaos[curTechnique.name()])
+	}
+
+	func (me *TMeshBuffer) dispose () {
+		for _, mesh := range me.meshes { me.Remove(mesh) }
 		gl.DeleteBuffers(1, &me.glIbo)
 		gl.DeleteBuffers(1, &me.glVbo)
 		for _, glVao := range me.glVaos {
 			gl.DeleteVertexArrays(1, &glVao)
+		}
+	}
+
+	func (me *TMeshBuffer) offset () gl.Intptr {
+		return 0
+	}
+
+	func (me *TMeshBuffer) Remove (mesh *TMesh) {
+		if mesh.meshBuffer == me {
+			// mesh.GpuDelete()
+			mesh.meshBuffer = nil
+			delete(me.meshes, mesh.name)
 		}
 	}

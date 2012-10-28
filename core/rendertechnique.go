@@ -20,7 +20,7 @@ func initTechniques () {
 }
 
 type iRenderTechnique interface {
-	initMeshBuffer (meshBuffer *tMeshBuffer)
+	initMeshBuffer (meshBuffer *TMeshBuffer)
 	name () string
 	OnPreRender ()
 	OnRenderMesh ()
@@ -31,7 +31,7 @@ type tTechnique_Base struct {
 	prog *glutil.TShaderProgram
 }
 
-	func (me *tTechnique_Base) initMeshBuffer (meshBuffer *tMeshBuffer) {
+	func (me *tTechnique_Base) initMeshBuffer (meshBuffer *TMeshBuffer) {
 		gl.EnableVertexAttribArray(me.prog.AttrLocs["aPos"])
 		gl.VertexAttribPointer(me.prog.AttrLocs["aPos"], 3, gl.FLOAT, gl.FALSE, 8 * 4, gl.Pointer(nil))
 	}
@@ -78,15 +78,13 @@ type tTechnique_UnlitTextured struct {
 		return tech
 	}
 
-	func (me *tTechnique_UnlitTextured) initMeshBuffer (meshBuffer *tMeshBuffer) {
+	func (me *tTechnique_UnlitTextured) initMeshBuffer (meshBuffer *TMeshBuffer) {
 		me.tTechnique_Base.initMeshBuffer(meshBuffer)
 		gl.EnableVertexAttribArray(me.prog.AttrLocs["aTexCoords"])
 		gl.VertexAttribPointer(me.prog.AttrLocs["aTexCoords"], 2, gl.FLOAT, gl.FALSE, 8 * 4, gl.Offset(nil, 3 * 4))
 	}
 
 	func (me *tTechnique_UnlitTextured) OnRenderMesh () {
-		gl.EnableVertexAttribArray(curProg.AttrLocs["aTexCoords"])
-		gl.VertexAttribPointer(curProg.AttrLocs["aTexCoords"], 2, gl.FLOAT, gl.FALSE, 8 * 4, gl.Offset(nil, 3 * 4))
 	}
 
 	func (me *tTechnique_UnlitTextured) OnRenderNode () {

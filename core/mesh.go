@@ -4,13 +4,27 @@ import (
 	"fmt"
 
 	gl "github.com/chsc/gogl/gl42"
+
+	glutil "github.com/go3d/go-util/gl"
 )
 
 type tMeshes map[string]*TMesh
 
-	func (me *tMeshes) Load (provider FMeshProvider, args ... interface {}) (mesh *TMesh, err error) {
+	func (me tMeshes) Add (mesh *TMesh) *TMesh {
+		if me[mesh.name] == nil {
+			me[mesh.name] = mesh
+			return mesh
+		}
+		return nil
+	}
+
+	func (me tMeshes) AddRange (meshes ... *TMesh) {
+		for _, m := range meshes { me.Add(m) }
+	}
+
+	func (me tMeshes) Load (name string, provider FMeshProvider, args ... interface {}) (mesh *TMesh, err error) {
 		var meshData *tMeshData
-		mesh = me.New()
+		mesh = me.New(name)
 		if meshData, err = provider(args ...); err == nil {
 			mesh.load(meshData)
 		} else {
@@ -19,8 +33,9 @@ type tMeshes map[string]*TMesh
 		return
 	}
 
-	func (me *tMeshes) New () *TMesh {
+	func (me tMeshes) New (name string) *TMesh {
 		var mesh = &TMesh {}
+		mesh.name = name
 		return mesh
 	}
 
@@ -40,36 +55,36 @@ type TMeshFace struct {
 	}
 
 type TMesh struct {
-	meshBuffer *tMeshBuffer
+	name string
+	meshBuffer *TMeshBuffer
 	raw *tMeshRaw
 	gpuSynced bool
-	glNewVao, glNewVbo, glNewIbo gl.Uint
 }
 
 	func (me *TMesh) GpuDelete () {
-		me.gpuSynced = false
-		gl.DeleteBuffers(1, &me.glNewIbo)
-		gl.DeleteBuffers(1, &me.glNewVbo)
-		gl.DeleteVertexArrays(1, &me.glNewVao)
+		if me.gpuSynced {
+			me.gpuSynced = false
+		}
 	}
 
-	func (me *TMesh) GpuUpload () {
+	func (me *TMesh) GpuUpload () (err error) {
+		var sizeVerts, sizeIndices = gl.Sizeiptr(4 * len(me.raw.verts)), gl.Sizeiptr(4 * len(me.raw.indices))
 		me.GpuDelete()
-		gl.GenVertexArrays(1, &me.glNewVao)
-		gl.GenBuffers(1, &me.glNewIbo)
-		gl.GenBuffers(1, &me.glNewVbo)
 
-		gl.BindVertexArray(me.glNewVao)
-
-		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.glNewIbo)
-		gl.BindBuffer(gl.ARRAY_BUFFER, me.glNewVbo)
-		gl.BufferData(gl.ARRAY_BUFFER, gl.Sizeiptr(4 * len(me.raw.verts)), gl.Pointer(&me.raw.verts[0]), gl.STATIC_DRAW)
-		gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(4 * len(me.raw.indices)), gl.Pointer(&me.raw.indices[0]), gl.STATIC_DRAW)
-		gl.BindBuffer(gl.ARRAY_BUFFER, 0)
-		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
-
-		gl.BindVertexArray(0)
-		me.gpuSynced = true
+		if sizeVerts > gl.Sizeiptr(me.meshBuffer.MemSizeVertices) {
+			err = fmt.Errorf("Cannot upload mesh '%v': vertex size (%vB) exceeds mesh buffer's available vertex memory (%vB)", me.name, sizeVerts, me.meshBuffer.MemSizeVertices)
+		} else if sizeIndices > gl.Sizeiptr(me.meshBuffer.MemSizeIndices) {
+			err = fmt.Errorf("Cannot upload mesh '%v': index size (%vB) exceeds mesh buffer's available index memory (%vB)", me.name, sizeIndices, me.meshBuffer.MemSizeIndices)
+		} else {
+			gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.meshBuffer.glIbo)
+			gl.BindBuffer(gl.ARRAY_BUFFER, me.meshBuffer.glVbo)
+			gl.BufferSubData(gl.ARRAY_BUFFER, gl.Intptr(0), sizeVerts, gl.Pointer(&me.raw.verts[0]))
+			gl.BufferSubData(gl.ELEMENT_ARRAY_BUFFER, gl.Intptr(0), sizeIndices, gl.Pointer(&me.raw.indices[0]))
+			gl.BindBuffer(gl.ARRAY_BUFFER, 0)
+			gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
+			if err = glutil.LastError("mesh[%v].GpuUpload()", me.name); err == nil { me.gpuSynced = true }
+		}
+		return 
 	}
 
 	func (me *TMesh) GpuUploaded () bool {
@@ -117,18 +132,22 @@ type TMesh struct {
 
 	func (me *TMesh) render () {
 		curMesh = me
-		gl.BindVertexArray(me.glNewVao)
+glLogLastError("mesh.render01")
+		if curMeshBuf != me.meshBuffer { me.meshBuffer.bindVao() }
+glLogLastError("mesh.render02")
 
-		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.glNewIbo)
-		gl.BindBuffer(gl.ARRAY_BUFFER, me.glNewVbo)
-		gl.EnableVertexAttribArray(curProg.AttrLocs["aPos"])
-		gl.VertexAttribPointer(curProg.AttrLocs["aPos"], 3, gl.FLOAT, gl.FALSE, 8 * 4, gl.Pointer(nil))
+		// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.glNewIbo)
+		// gl.BindBuffer(gl.ARRAY_BUFFER, me.glNewVbo)
+		// gl.EnableVertexAttribArray(curProg.AttrLocs["aPos"])
+		// gl.VertexAttribPointer(curProg.AttrLocs["aPos"], 3, gl.FLOAT, gl.FALSE, 8 * 4, gl.Pointer(nil))
 		curTechnique.OnRenderMesh()
+glLogLastError("mesh.render03")
 		gl.DrawElements(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Pointer(nil))
-		gl.BindBuffer(gl.ARRAY_BUFFER, 0)
-		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
+glLogLastError("mesh.render04")
+		// gl.BindBuffer(gl.ARRAY_BUFFER, 0)
+		// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
 
-		gl.BindVertexArray(0)
+		// gl.BindVertexArray(0)
 	}
 
 	func (me *TMesh) Unload () {

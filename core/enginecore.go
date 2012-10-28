@@ -7,6 +7,7 @@ import (
 )
 
 var (
+	curMeshBuf *TMeshBuffer
 	curCanvIndex, lastCanvIndex int
 	curMatKey string
 	curCam *TCamera
@@ -101,18 +102,20 @@ func (me *tEngineCore) resizeView (viewWidth, viewHeight int) {
 }
 
 func (me *tEngineCore) SyncUpdates () {
+	var err error
 	for key, tex := range me.Textures {
 		if !tex.gpuSynced {
 			tex.GpuSync()
 			glLogLastError("tEngineCore.SyncUpdates(texkey=%s)", key)
 		}
 	}
-	for key, mesh := range me.Meshes {
+	for _, mesh := range me.Meshes {
 		if !mesh.gpuSynced {
-			mesh.GpuUpload()
-			glLogLastError("tEngineCore.SyncUpdates(meshkey=%s)", key)
+			if err = mesh.GpuUpload(); err != nil { logError(err) }
 		}
 	}
+	glLogLastError("tEngineCore.SyncUpdates()")
+	return
 }
 
 func (me *tEngineCore) useProgram (name string) {
