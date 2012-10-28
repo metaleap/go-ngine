@@ -65,10 +65,16 @@ func CheckToggleKeys () {
 }
 
 func PrintPostLoopSummary () {
-	fmt.Printf("Avg. FPS: %v\n", ngine.Stats.FpsOverallAverage())
-	if ngine.Stats.TrackGC {
-		fmt.Printf("GC: avg=%v max=%v\n", ngine.Stats.GcOverallAverage(), ngine.Stats.GcMaxTime)
+	var printStatSummary = func (name string, timing *ngine.TEngineStatsTiming) {
+		fmt.Printf("%v:\tAvg=%3.5f secs\tMax=%3.5f secs\n", name, timing.Average(), timing.Max())
 	}
+	fmt.Printf("Average FPS:\t\t%v\n", ngine.Stats.AverageFps())
+	printStatSummary("Frame Full Loop", ngine.Stats.Frame)
+	printStatSummary("Frame Core Render", ngine.Stats.FrameRender)
+	printStatSummary("Frame Core Code", ngine.Stats.FrameCoreCode)
+	printStatSummary("Frame User Code", ngine.Stats.FrameUserCode)
+	printStatSummary("Frame Buffer Swap", ngine.Stats.FrameSwap)
+	printStatSummary("Garbage Collector", ngine.Stats.Gc)
 }
 
 func SamplesMainFunc (loader func ()) {
@@ -80,7 +86,6 @@ func SamplesMainFunc (loader func ()) {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
 		ngine.Loop.OnSecTick = SamplesOnSec
-		ngine.Stats.TrackGC = true
 		Cam = ngine.Core.Canvases[ngine.Core.DefaultCanvasIndex].Cameras[0]
 		CamCtl = Cam.Controller
 		loader()

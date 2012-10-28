@@ -29,27 +29,27 @@ func onLoop () {
 }
 
 func LoadSampleScene_01_TriQuad () {
+	ngine.Loop.OnLoop = onLoop
 	ngine.Core.Options.SetGlBackfaceCulling(false)
 
-	ngine.Core.Textures["texcat"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/cat.png")
-	ngine.Core.Textures["texdog"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/dog.png")
+	ngine.Core.Textures["tex_cat"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/cat.png")
+	ngine.Core.Textures["tex_dog"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/dog.png")
 
-	ngine.Core.Materials["matcat"] = ngine.Core.Materials.New("texcat")
-	ngine.Core.Materials["matdog"] = ngine.Core.Materials.New("texdog")
+	ngine.Core.Materials["mat_cat"] = ngine.Core.Materials.New("tex_cat")
+	ngine.Core.Materials["mat_dog"] = ngine.Core.Materials.New("tex_dog")
 
-	ngine.Core.Meshes["face3"], _ = ngine.Core.Meshes.Load(ngine.MeshProviders.PrefabTri)
-	ngine.Core.Meshes["face4"], _ = ngine.Core.Meshes.Load(ngine.MeshProviders.PrefabQuad)
+	ngine.Core.Meshes["mesh_tri"], _ = ngine.Core.Meshes.Load(ngine.MeshProviders.PrefabTri)
+	ngine.Core.Meshes["mesh_quad"], _ = ngine.Core.Meshes.Load(ngine.MeshProviders.PrefabQuad)
 
-	ngine.Core.MeshBuffers.Add("buf_tri", 3, 3, false)
-	ngine.Core.MeshBuffers.Add("buf_quad", 6, 6, false)
+	ngine.Core.MeshBuffers.Add("buf_tri", ngine.Core.MeshBuffers.NewParams(3, 3))
+	ngine.Core.MeshBuffers.Add("buf_quad", ngine.Core.MeshBuffers.NewParams(6, 6))
 
 	var scene = ngine.NewScene()
 	ngine.Core.Scenes[""] = scene
 
-	scene.RootNode.AddSubNodesNamed(map[string]string { "tri":  "face3", "quad": "face4" })
-	tri, quad = scene.RootNode.SubNodes["tri"], scene.RootNode.SubNodes["quad"]
-	tri.SetMatKey("matcat")
-	quad.SetMatKey("matdog")
+	scene.RootNode.AddSubNodesNamed(map[string]string { "node_tri":  "mesh_tri", "node_quad": "mesh_quad" })
+	tri, quad = scene.RootNode.SubNodes["node_tri"], scene.RootNode.SubNodes["node_quad"]
+	tri.SetMatKey("mat_cat")
+	quad.SetMatKey("mat_dog")
 	ngine.Core.SyncUpdates()
-	ngine.Loop.AddHandler(onLoop)
 }

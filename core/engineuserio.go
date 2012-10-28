@@ -117,11 +117,8 @@ func (me *tEngineUserIO) KeyToggled (key int) bool {
 }
 
 func (me *tEngineUserIO) onLoop () {
-	if (glfw.Key(glfw.KeyEsc) == glfw.KeyPress) || (glfw.WindowParam(glfw.Opened) != 1) {
-		Loop.IsLooping = false
-	} else {
-		glfw.SwapBuffers()
-	}
+	glfw.SwapBuffers()
+	Loop.IsLooping = (glfw.Key(glfw.KeyEsc) == 0) && (glfw.WindowParam(glfw.Opened) == 1)
 }
 
 func (me *tEngineUserIO) SetWinTitle (newTitle string) {

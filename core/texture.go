@@ -14,20 +14,33 @@ var (
 
 type tTextures map[string]*TTexture
 
-	func (me *tTextures) Load (loadProvider FTextureProvider, providerArgs ... interface {}) *TTexture {
+	func (me tTextures) Load (loadProvider FTextureProvider, providerArgs ... interface {}) *TTexture {
 		var tex = newTexture()
 		tex.Load(loadProvider, providerArgs ...)
 		return tex
 	}
 
-	func (me *tTextures) LoadAsync (loadProvider FTextureProvider, providerArgs ... interface {}) *TTexture {
+	func (me tTextures) LoadAndSet (name string, loadProvider FTextureProvider, providerArgs ... interface {}) *TTexture {
+		return me.Set(name, me.Load(loadProvider, providerArgs ...))
+	}
+
+	func (me tTextures) LoadAsync (loadProvider FTextureProvider, providerArgs ... interface {}) *TTexture {
 		var tex = newTexture()
 		tex.LoadAsync(loadProvider, providerArgs ...)
 		return tex
 	}
 
-	func (me *tTextures) NewParams (filter bool, filterAnisotropy float64) *tTextureParams {
+	func (me tTextures) LoadAsyncAndSet (name string, loadProvider FTextureProvider, providerArgs ... interface {}) *TTexture {
+		return me.Set(name, me.LoadAsync(loadProvider, providerArgs ...))
+	}
+
+	func (me tTextures) NewParams (filter bool, filterAnisotropy float64) *tTextureParams {
 		return newTextureParams(filter, filterAnisotropy)
+	}
+
+	func (me tTextures) Set (name string, tex *TTexture) *TTexture {
+		me[name] = tex
+		return tex
 	}
 
 type TTexture struct {

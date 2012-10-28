@@ -77,7 +77,7 @@ type TMesh struct {
 	}
 
 	func (me *TMesh) load (meshData *tMeshData) {
-		var numVerts = 3 * len(meshData.faces)
+		var numVerts = 3 * int32(len(meshData.faces))
 		var vertsMap = map[tVe]gl.Uint {}
 		var offsetFloat, offsetIndex, offsetVertex, vindex gl.Uint
 		var offsetFace, ei = 0, 0

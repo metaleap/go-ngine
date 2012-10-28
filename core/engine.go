@@ -44,52 +44,43 @@ func Init (options *tOptions, winTitle string) error {
 type tEngineLoop struct {
 	IsLooping bool
 	SecTickLast, TickNow, TickLast, TickDelta float64
-	handlers []func()
-	OnSecTick func()
+	OnLoop, OnSecTick func()
 }
 
 func newEngineLoop () *tEngineLoop {
 	var loop = &tEngineLoop {}
-	loop.OnSecTick = func () {
-	}
-	loop.handlers = [] func() {}
+	loop.OnSecTick, loop.OnLoop = func () {}, func () {}
 	return loop
 }
 
-func (me *tEngineLoop) AddHandler (loopHandler func ()) {
-	me.handlers = append(me.handlers, loopHandler)
-}
-
 func (me *tEngineLoop) Loop () {
-	var onLoopHandler func()
-	me.SecTickLast, me.TickNow = me.Time(), me.Time()
-	Stats.fps = 0
+	var tickNowFloor float64
 	if (!me.IsLooping) {
 		me.IsLooping = true
+		glfw.SetTime(0)
+		me.SecTickLast, me.TickNow = glfw.Time(), glfw.Time()
+		Stats.reset()
 		glLogLastError("ngine.PreLoop")
 		log.Printf("Enter loop...")
 		for me.IsLooping {
-			Core.renderLoop()
-			Stats.fps++
+			Stats.FrameRender.begin(); Core.onRender(); Stats.FrameRender.end()
+			Stats.fpsCounter++
 			Stats.fpsAll++
 			me.TickLast = me.TickNow
-			me.TickNow = me.Time()
+			me.TickNow = glfw.Time()
+			Stats.Frame.measureStartTime = me.TickLast; Stats.Frame.end()
 			me.TickDelta = me.TickNow - me.TickLast
-			if math.Floor(me.TickNow) != me.SecTickLast {
-				runtime.GC()
-				if Stats.TrackGC {
-					if Stats.GcTime = me.Time() - me.TickNow; Stats.GcTime > Stats.GcMaxTime { Stats.GcMaxTime = Stats.GcTime }
-					Stats.gcAll += Stats.GcTime
-				}
-				Stats.totalSecs++
-				Stats.FpsLastSec, Stats.fps, me.SecTickLast = Stats.fps, 0, math.Floor(me.TickNow)
+			if tickNowFloor = math.Floor(me.TickNow); tickNowFloor != me.SecTickLast {
+				Stats.FpsLastSec, me.SecTickLast = Stats.fpsCounter, tickNowFloor
+				Stats.fpsCounter = 0
 				Core.onSecTick()
 				me.OnSecTick()
+				Stats.Gc.begin(); runtime.GC(); Stats.Gc.end()
+				// if Stats.isWarmup { Stats.reset(); Stats.isWarmup = false }
 			}
-			for _, onLoopHandler = range me.handlers {
-				onLoopHandler()
-			}
-			UserIO.onLoop()
+			Stats.FrameCoreCode.begin(); Core.onLoop(); Stats.FrameCoreCode.end()
+			Stats.FrameUserCode.begin(); me.OnLoop(); Stats.FrameUserCode.end()
+			Stats.FrameSwap.begin(); UserIO.onLoop(); Stats.FrameSwap.end()
 		}
 		glLogLastError("ngine.PostLoop")
 	}
@@ -98,25 +89,3 @@ func (me *tEngineLoop) Loop () {
 func (me *tEngineLoop) Time () float64 {
 	return glfw.Time()
 }
-
-type tEngineStats struct {
-	FpsLastSec int
-	GcTime, GcMaxTime float64
-	TrackGC bool
-
-	fps int
-	fpsAll, totalSecs int64
-	gcAll float64
-}
-
-	func newEngineStats () *tEngineStats {
-		return &tEngineStats {}
-	}
-
-	func (me *tEngineStats) FpsOverallAverage () int64 {
-		return me.fpsAll / me.totalSecs
-	}
-
-	func (me *tEngineStats) GcOverallAverage () float64 {
-		return me.gcAll / float64(me.totalSecs)
-	}

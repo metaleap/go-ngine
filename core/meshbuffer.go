@@ -9,8 +9,8 @@ import (
 )
 
 type tMeshBufferParams struct {
-	HugeMeshSupport, MostlyStatic bool
-	NumVerts, NumIndices gl.Sizeiptr
+	HugeMeshSupport, MostlyStatic, CompressTexCoords, CompressTexCoordsNeg, CompressNormals, CompressPositions bool
+	NumVerts, NumIndices int32
 }
 
 type tMeshBuffers struct {
@@ -23,8 +23,8 @@ type tMeshBuffers struct {
 		return meshBuffers
 	}
 
-	func (me *tMeshBuffers) Add (name string, params *tMeshBufferParams) (err error) {
-		var buf = me.bufs[name]
+	func (me *tMeshBuffers) Add (name string, params *tMeshBufferParams) (buf *tMeshBuffer, err error) {
+		buf = me.bufs[name]
 		if buf == nil {
 			if buf, err = newMeshBuffer(name, params); err == nil {
 				me.bufs[name] = buf
@@ -42,21 +42,21 @@ type tMeshBuffers struct {
 		me.bufs = map[string]*tMeshBuffer {}
 	}
 
-	func (me *tMeshBuffers) FloatsPerVertex () int {
-		const numVertPosFloats, numVertTexCoordFloats, numVertNormalFloats = 3, 2, 3
+	func (me *tMeshBuffers) FloatsPerVertex () int32 {
+		const numVertPosFloats, numVertTexCoordFloats, numVertNormalFloats int32 = 3, 2, 3
 		return numVertPosFloats + numVertNormalFloats + numVertTexCoordFloats
 	}
 
-	func (me *tMeshBuffers) MemSizePerIndex () gl.Sizeiptr {
+	func (me *tMeshBuffers) MemSizePerIndex () int32 {
 		return 4
 	}
 
-	func (me *tMeshBuffers) MemSizePerVertex () gl.Sizeiptr {
-		const sizePerFloat gl.Sizeiptr = 4
-		return sizePerFloat * gl.Sizeiptr(me.FloatsPerVertex())
+	func (me *tMeshBuffers) MemSizePerVertex () int32 {
+		const sizePerFloat int32 = 4
+		return sizePerFloat * me.FloatsPerVertex()
 	}
 
-	func (me *tMeshBuffers) NewParams (numVerts, numIndices gl.Sizeiptr) *tMeshBufferParams {
+	func (me *tMeshBuffers) NewParams (numVerts, numIndices int32) *tMeshBufferParams {
 		var params = &tMeshBufferParams {}
 		params.MostlyStatic, params.NumIndices, params.NumVerts = true, numIndices, numVerts
 		return params
@@ -68,7 +68,7 @@ type tMeshBuffers struct {
 	}
 
 type tMeshBuffer struct {
-	MemSizeIndices, MemSizeVertices uint64
+	MemSizeIndices, MemSizeVertices int32
 	Params *tMeshBufferParams
 
 	glIbo, glVbo gl.Uint
@@ -80,38 +80,32 @@ type tMeshBuffer struct {
 		mem = &tMeshBuffer {}
 		mem.Params = params
 		mem.glVaos = map[string]gl.Uint {}
-		mem.MemSizeIndices = uint64(Core.MeshBuffers.MemSizePerIndex()) * uint64(params.NumIndices)
-		mem.MemSizeVertices = uint64(Core.MeshBuffers.MemSizePerVertex()) * uint64(params.NumVerts)
-		var memSizeIndices, memSizeVertices = gl.Sizeiptr(mem.MemSizeIndices), gl.Sizeiptr(mem.MemSizeVertices)
-		if (mem.MemSizeIndices > uint64(memSizeIndices)) || (mem.MemSizeVertices > uint64(memSizeVertices)) {
+		mem.MemSizeIndices = Core.MeshBuffers.MemSizePerIndex() * params.NumIndices
+		mem.MemSizeVertices = Core.MeshBuffers.MemSizePerVertex() * params.NumVerts
+		gl.GenBuffers(1, &mem.glVbo)
+		gl.GenBuffers(1, &mem.glIbo)
+		for techName, _ := range techs {
+			gl.GenVertexArrays(1, &glVao)
+			mem.glVaos[techName] = glVao
+		}
+		gl.BindBuffer(gl.ARRAY_BUFFER, mem.glVbo)
+		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, mem.glIbo)
+		gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(mem.MemSizeVertices), gl.Pointer(nil), glutil.IfE(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
+		gl.BufferData(gl.ARRAY_BUFFER, gl.Sizeiptr(mem.MemSizeIndices), gl.Pointer(nil), glutil.IfE(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
+		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
+		gl.BindBuffer(gl.ARRAY_BUFFER, 0)
+		if err = glutil.LastError("newMeshBuffer(%v numVerts=%v numIndices=%v)", name, params.NumVerts, params.NumIndices); err != nil {
+			mem.dispose()
 			mem = nil
-			err = fmt.Errorf("newMeshBuffer(%v) -- either numIndices (%v) or numVerts (%v) is too big", name, params.NumIndices, params.NumVerts)
 		} else {
-			gl.GenBuffers(1, &mem.glVbo)
-			gl.GenBuffers(1, &mem.glIbo)
-			for techName, _ := range techs {
-				gl.GenVertexArrays(1, &glVao)
-				mem.glVaos[techName] = glVao
-			}
-			gl.BindBuffer(gl.ARRAY_BUFFER, mem.glVbo)
-			gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, mem.glIbo)
-			gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, Core.MeshBuffers.MemSizePerVertex() * params.NumVerts, gl.Pointer(nil), glutil.IfE(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
-			gl.BufferData(gl.ARRAY_BUFFER, gl.Sizeiptr(mem.MemSizeIndices), gl.Pointer(nil), glutil.IfE(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
-			gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
-			gl.BindBuffer(gl.ARRAY_BUFFER, 0)
-			if err = glutil.LastError("newMeshBuffer(%v numVerts=%v numIndices=%v)", name, params.NumVerts, params.NumIndices); err != nil {
-				mem.dispose()
-				mem = nil
-			} else {
-				for techName, glVao := range mem.glVaos {
-					gl.BindVertexArray(glVao)
-					gl.BindBuffer(gl.ARRAY_BUFFER, mem.glVbo)
-					gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, mem.glIbo)
-					techs[techName].initMeshBuffer(mem)
-					gl.BindVertexArray(0)
-					gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
-					gl.BindBuffer(gl.ARRAY_BUFFER, 0)
-				}
+			for techName, glVao := range mem.glVaos {
+				gl.BindVertexArray(glVao)
+				gl.BindBuffer(gl.ARRAY_BUFFER, mem.glVbo)
+				gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, mem.glIbo)
+				techs[techName].initMeshBuffer(mem)
+				gl.BindVertexArray(0)
+				gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
+				gl.BindBuffer(gl.ARRAY_BUFFER, 0)
 			}
 		}
 		return

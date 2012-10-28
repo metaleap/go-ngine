@@ -62,6 +62,19 @@ func (me *tEngineCore) Dispose () {
 	techs, Core = nil, nil
 }
 
+func (me *tEngineCore) onLoop () {
+}
+
+func (me *tEngineCore) onRender () {
+	lastCanvIndex = len(me.Canvases) - 1
+	for curCanvIndex, curCanvas = range me.Canvases {
+		if !curCanvas.Disabled {
+			me.CurCanvas = curCanvas
+			curCanvas.render()
+		}
+	}
+}
+
 func (me *tEngineCore) onSecTick () {
 	var allDone = true
 	for tex, texDone := range asyncTextures {
@@ -75,16 +88,6 @@ func (me *tEngineCore) onSecTick () {
 		}
 	}
 	if allDone { asyncTextures = map[*TTexture]bool {} }
-}
-
-func (me *tEngineCore) renderLoop () {
-	lastCanvIndex = len(me.Canvases) - 1
-	for curCanvIndex, curCanvas = range me.Canvases {
-		if !curCanvas.Disabled {
-			me.CurCanvas = curCanvas
-			curCanvas.render()
-		}
-	}
 }
 
 func (me *tEngineCore) resizeView (viewWidth, viewHeight int) {
