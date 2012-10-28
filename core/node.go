@@ -49,7 +49,7 @@ func (me *TNode) render () {
 	if (!me.Disabled) {
 		curNode = me
 		if (me.mesh != nil) {
-			curTechnique.OnRenderNode()
+			curTechnique.onRenderNode()
 			gl.UniformMatrix4fv(curProg.UnifLocs["uMatModelView"], 1, gl.FALSE, &me.Transform.glMatModelView[0])
 			me.mesh.render()
 		}

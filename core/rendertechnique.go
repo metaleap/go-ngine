@@ -22,9 +22,9 @@ func initTechniques () {
 type iRenderTechnique interface {
 	initMeshBuffer (meshBuffer *TMeshBuffer)
 	name () string
-	OnPreRender ()
-	OnRenderMesh ()
-	OnRenderNode ()
+	onPreRender ()
+	onRenderMesh ()
+	onRenderNode ()
 }
 
 type tTechnique_Base struct {
@@ -40,7 +40,13 @@ type tTechnique_Base struct {
 		return me.prog.Name
 	}
 
-	func (me *tTechnique_Base) OnPreRender () {
+	func (me *tTechnique_Base) onPreRender () {
+	}
+
+	func (me *tTechnique_Base) onRenderMesh () {
+	}
+
+	func (me *tTechnique_Base) onRenderNode () {
 	}
 
 	func (me *tTechnique_Base) setProg (name string, unifs []string, attrs []string) {
@@ -62,12 +68,6 @@ type tTechnique_UnlitColored struct {
 		return tech
 	}
 
-	func (me *tTechnique_UnlitColored) OnRenderMesh () {
-	}
-
-	func (me *tTechnique_UnlitColored) OnRenderNode () {
-	}
-
 type tTechnique_UnlitTextured struct {
 	tTechnique_Base
 }
@@ -84,10 +84,7 @@ type tTechnique_UnlitTextured struct {
 		gl.VertexAttribPointer(me.prog.AttrLocs["aTexCoords"], 2, gl.FLOAT, gl.FALSE, 8 * 4, gl.Offset(nil, 3 * 4))
 	}
 
-	func (me *tTechnique_UnlitTextured) OnRenderMesh () {
-	}
-
-	func (me *tTechnique_UnlitTextured) OnRenderNode () {
+	func (me *tTechnique_UnlitTextured) onRenderNode () {
 		gl.ActiveTexture(gl.TEXTURE0)
 		gl.BindTexture(gl.TEXTURE_2D, Core.Textures[curNode.mat.texKey].glTex)
 		gl.Uniform1i(curProg.UnifLocs["uTex0"], 0)

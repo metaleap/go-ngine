@@ -57,6 +57,7 @@ type TMeshFace struct {
 type TMesh struct {
 	name string
 	meshBuffer *TMeshBuffer
+	meshBufOffsetBaseIndex, meshBufOffsetIndices, meshBufOffsetVerts int32
 	raw *tMeshRaw
 	gpuSynced bool
 }
@@ -76,10 +77,15 @@ type TMesh struct {
 		} else if sizeIndices > gl.Sizeiptr(me.meshBuffer.MemSizeIndices) {
 			err = fmt.Errorf("Cannot upload mesh '%v': index size (%vB) exceeds mesh buffer's available index memory (%vB)", me.name, sizeIndices, me.meshBuffer.MemSizeIndices)
 		} else {
+			me.meshBufOffsetBaseIndex, me.meshBufOffsetIndices, me.meshBufOffsetVerts = me.meshBuffer.offsetBaseIndex, me.meshBuffer.offsetIndices, me.meshBuffer.offsetVerts
+			fmt.Printf("Upload %v at voff=%v ioff=%v boff=%v\n", me.name, me.meshBufOffsetVerts, me.meshBufOffsetIndices, me.meshBufOffsetBaseIndex)
 			gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.meshBuffer.glIbo)
 			gl.BindBuffer(gl.ARRAY_BUFFER, me.meshBuffer.glVbo)
-			gl.BufferSubData(gl.ARRAY_BUFFER, gl.Intptr(0), sizeVerts, gl.Pointer(&me.raw.verts[0]))
-			gl.BufferSubData(gl.ELEMENT_ARRAY_BUFFER, gl.Intptr(0), sizeIndices, gl.Pointer(&me.raw.indices[0]))
+			gl.BufferSubData(gl.ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetVerts), sizeVerts, gl.Pointer(&me.raw.verts[0]))
+			me.meshBuffer.offsetVerts += int32(sizeVerts)
+			gl.BufferSubData(gl.ELEMENT_ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetIndices), sizeIndices, gl.Pointer(&me.raw.indices[0]))
+			me.meshBuffer.offsetIndices += int32(sizeIndices)
+			me.meshBuffer.offsetBaseIndex += int32(len(me.raw.indices))
 			gl.BindBuffer(gl.ARRAY_BUFFER, 0)
 			gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
 			if err = glutil.LastError("mesh[%v].GpuUpload()", me.name); err == nil { me.gpuSynced = true }
@@ -132,22 +138,10 @@ type TMesh struct {
 
 	func (me *TMesh) render () {
 		curMesh = me
-glLogLastError("mesh.render01")
 		if curMeshBuf != me.meshBuffer { me.meshBuffer.bindVao() }
-glLogLastError("mesh.render02")
-
-		// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.glNewIbo)
-		// gl.BindBuffer(gl.ARRAY_BUFFER, me.glNewVbo)
-		// gl.EnableVertexAttribArray(curProg.AttrLocs["aPos"])
-		// gl.VertexAttribPointer(curProg.AttrLocs["aPos"], 3, gl.FLOAT, gl.FALSE, 8 * 4, gl.Pointer(nil))
-		curTechnique.OnRenderMesh()
-glLogLastError("mesh.render03")
-		gl.DrawElements(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Pointer(nil))
-glLogLastError("mesh.render04")
-		// gl.BindBuffer(gl.ARRAY_BUFFER, 0)
-		// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
-
-		// gl.BindVertexArray(0)
+		curTechnique.onRenderMesh()
+		gl.DrawElementsBaseVertex(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Offset(nil, uintptr(me.meshBufOffsetIndices)), gl.Int(me.meshBufOffsetBaseIndex))
+//		gl.DrawElements(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Pointer(nil))
 	}
 
 	func (me *TMesh) Unload () {

@@ -30,25 +30,29 @@ func onLoop () {
 
 func LoadSampleScene_01_TriQuad () {
 	var meshTri, meshQuad *ngine.TMesh
-	var bufTri, bufQuad *ngine.TMeshBuffer
+	var meshBuf *ngine.TMeshBuffer
 	var err error
 
 	ngine.Loop.OnLoop = onLoop
 	ngine.Core.Options.SetGlBackfaceCulling(false)
 
 	//	textures / materials
+
 	ngine.Core.Textures["tex_cat"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/cat.png")
 	ngine.Core.Textures["tex_dog"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/dog.png")
+
 	ngine.Core.Materials["mat_cat"] = ngine.Core.Materials.New("tex_cat")
 	ngine.Core.Materials["mat_dog"] = ngine.Core.Materials.New("tex_dog")
 
 	//	meshes / models
-	if bufTri, err = ngine.Core.MeshBuffers.Add("buf_tri", ngine.Core.MeshBuffers.NewParams(3, 3)); err != nil { panic(err) }
-	if bufQuad, err = ngine.Core.MeshBuffers.Add("buf_quad", ngine.Core.MeshBuffers.NewParams(6, 6)); err != nil { panic(err) }
+
 	if meshTri, err = ngine.Core.Meshes.Load("mesh_tri", ngine.MeshProviders.PrefabTri); err != nil { panic(err) }
 	if meshQuad, err = ngine.Core.Meshes.Load("mesh_quad", ngine.MeshProviders.PrefabQuad); err != nil { panic(err) }
 	ngine.Core.Meshes.AddRange(meshTri, meshQuad)
-	bufTri.Add(meshTri); bufQuad.Add(meshQuad)
+
+	if meshBuf, err = ngine.Core.MeshBuffers.Add("meshbuf", ngine.Core.MeshBuffers.NewParams(9, 9)); err != nil { panic(err) }
+	if err = meshBuf.Add(meshTri); err != nil { panic(err) }
+	if err = meshBuf.Add(meshQuad); err != nil { panic(err) }
 
 	//	scene
 	var scene = ngine.NewScene()

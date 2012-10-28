@@ -34,7 +34,7 @@ func onLoop () {
 func LoadSampleScene_02_PyrCube () {
 	var err error
 	var meshFloor, meshPyr, meshCube *ngine.TMesh
-	var bufFloor, bufPyr, bufCube *ngine.TMeshBuffer
+	var bufFloor, bufRest *ngine.TMeshBuffer
 
 	ngine.Loop.OnLoop = onLoop
 	ngine.Core.Options.SetGlBackfaceCulling(false)
@@ -49,13 +49,12 @@ func LoadSampleScene_02_PyrCube () {
 
 	//	meshes / models
 	if bufFloor, err = ngine.Core.MeshBuffers.Add("buf_floor", ngine.Core.MeshBuffers.NewParams(6, 6)); err != nil { panic(err) }
-	if bufPyr, err = ngine.Core.MeshBuffers.Add("buf_pyr", ngine.Core.MeshBuffers.NewParams(24, 24)); err != nil { panic(err) }
-	if bufCube, err = ngine.Core.MeshBuffers.Add("buf_cube", ngine.Core.MeshBuffers.NewParams(36, 36)); err != nil { panic(err) }
+	if bufRest, err = ngine.Core.MeshBuffers.Add("buf_rest", ngine.Core.MeshBuffers.NewParams(36 + 12, 36 + 12)); err != nil { panic(err) }
 	if meshFloor, err = ngine.Core.Meshes.Load("mesh_plane", ngine.MeshProviders.PrefabPlane); err != nil { panic(err) }
 	if meshPyr, err = ngine.Core.Meshes.Load("mesh_pyramid", ngine.MeshProviders.PrefabPyramid); err != nil { panic(err) }
 	if meshCube, err = ngine.Core.Meshes.Load("mesh_cube", ngine.MeshProviders.PrefabCube); err != nil { panic(err) }
 	ngine.Core.Meshes.AddRange(meshFloor, meshPyr, meshCube)
-	bufFloor.Add(meshFloor); bufCube.Add(meshCube); bufPyr.Add(meshPyr)
+	bufFloor.Add(meshFloor); bufRest.Add(meshCube); bufRest.Add(meshPyr)
 
 	//	scene
 	var scene = ngine.NewScene()

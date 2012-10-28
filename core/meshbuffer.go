@@ -71,6 +71,7 @@ type TMeshBuffer struct {
 	MemSizeIndices, MemSizeVertices int32
 	Params *tMeshBufferParams
 
+	offsetBaseIndex, offsetIndices, offsetVerts int32
 	name string
 	meshes tMeshes
 	glIbo, glVbo gl.Uint
@@ -128,6 +129,7 @@ type TMeshBuffer struct {
 	}
 
 	func (me *TMeshBuffer) bindVao () {
+		curMeshBuf = me
 		gl.BindVertexArray(me.glVaos[curTechnique.name()])
 	}
 
@@ -138,10 +140,6 @@ type TMeshBuffer struct {
 		for _, glVao := range me.glVaos {
 			gl.DeleteVertexArrays(1, &glVao)
 		}
-	}
-
-	func (me *TMeshBuffer) offset () gl.Intptr {
-		return 0
 	}
 
 	func (me *TMeshBuffer) Remove (mesh *TMesh) {

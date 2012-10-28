@@ -127,6 +127,7 @@ func (me *tEngineCore) useProgram (name string) {
 
 func (me *tEngineCore) useTechnique (technique iRenderTechnique) {
 	if technique != curTechnique {
+		curMeshBuf = nil
 		curTechnique = technique
 		me.useProgram(curTechnique.name())
 	}
