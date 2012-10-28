@@ -111,7 +111,7 @@ func (me *tEngineCore) SyncUpdates () {
 	}
 	for _, mesh := range me.Meshes {
 		if !mesh.gpuSynced {
-			if err = mesh.GpuUpload(); err != nil { logError(err) }
+			if err = mesh.GpuUpload(); err != nil { LogError(err) }
 		}
 	}
 	glLogLastError("tEngineCore.SyncUpdates()")

@@ -16,9 +16,7 @@ var (
 )
 
 func Dispose () {
-	glLogLastError("ngine.Pre_Dispose")
 	if Core != nil { Core.Dispose() }
-	glLogLastError("ngine.Core_Dispose")
 	glDispose()
 	UserIO.dispose()
 	Core, Loop, Stats = nil, nil, nil
@@ -39,6 +37,14 @@ func Init (options *tOptions, winTitle string) error {
 		}
 	}
 	return err
+}
+
+func LogError (err error) {
+	if err != nil { log.Println(err.Error()) }
+}
+
+func LogLastGlError (step string, fmtArgs ... interface {}) {
+	glLogLastError(step, fmtArgs ...)
 }
 
 type tEngineLoop struct {

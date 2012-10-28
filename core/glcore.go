@@ -73,10 +73,6 @@ for: <%v>.
 	return
 }
 
-func glLogLastError(step string, fmtArgs ...interface{}) {
-	logError(glutil.LastError(step, fmtArgs...))
-}
-
-func logError (err error) {
-	if err != nil { log.Println(err.Error()) }
+func glLogLastError(step string, fmtArgs ... interface {}) {
+	LogError(glutil.LastError(step, fmtArgs ...))
 }
