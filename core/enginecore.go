@@ -77,18 +77,13 @@ func (me *tEngineCore) onRender () {
 }
 
 func (me *tEngineCore) onSecTick () {
-	var allDone = true
-	for tex, texDone := range asyncTextures {
-		if !texDone {
-			if (tex.img != nil) {
-				tex.GpuSync()
-				asyncTextures[tex] = true
-			} else {
-				allDone = false
-			}
+	for tex, _ := range asyncTextures {
+		if (tex.img != nil) {
+			tex.GpuSync()
+			delete(asyncTextures, tex)
+			break
 		}
 	}
-	if allDone { asyncTextures = map[*TTexture]bool {} }
 }
 
 func (me *tEngineCore) resizeView (viewWidth, viewHeight int) {
