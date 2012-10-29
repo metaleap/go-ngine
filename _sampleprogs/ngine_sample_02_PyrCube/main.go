@@ -55,14 +55,14 @@ func LoadSampleScene_02_PyrCube () {
 	if meshCube, err = ngine.Core.Meshes.Load("mesh_cube", ngine.MeshProviders.PrefabCube); err != nil { panic(err) }
 	ngine.Core.Meshes.AddRange(meshFloor, meshPyr, meshCube)
 	bufFloor.Add(meshFloor); bufRest.Add(meshCube); bufRest.Add(meshPyr)
+	meshPyr.Models.Default().SetMatName("mat_mosaic")
+	meshCube.Models.Default().SetMatName("mat_crate")
 
 	//	scene
 	var scene = ngine.NewScene()
 	ngine.Core.Scenes[""] = scene
 	scene.RootNode.MakeSubNodes("node_floor", "mesh_plane", "", "node_pyr", "mesh_pyramid", "", "node_box", "mesh_cube", "")
 	floor, pyr, box = scene.RootNode.SubNodes["node_floor"], scene.RootNode.SubNodes["node_pyr"], scene.RootNode.SubNodes["node_box"]
-	meshPyr.Models.Default().SetMatName("mat_mosaic")
-	meshCube.Models.Default().SetMatName("mat_crate")
 
 	floor.SetMatName("mat_cobbles")
 	floor.Transform.SetPosXYZ(0.1, 0, -8)

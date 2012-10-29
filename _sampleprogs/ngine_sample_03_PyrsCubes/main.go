@@ -71,8 +71,15 @@ func LoadSampleScene_03_PyrsCubes () {
 	if bufFloor, err = ngine.Core.MeshBuffers.Add("buf_floor", ngine.Core.MeshBuffers.NewParams(6, 6)); err != nil { panic(err) }
 	if bufRest, err = ngine.Core.MeshBuffers.Add("buf_rest", ngine.Core.MeshBuffers.NewParams(36 + 12, 36 + 12)); err != nil { panic(err) }
 	if meshFloor, err = ngine.Core.Meshes.Load("mesh_plane", ngine.MeshProviders.PrefabPlane); err != nil { panic(err) }
+
 	if meshPyr, err = ngine.Core.Meshes.Load("mesh_pyramid", ngine.MeshProviders.PrefabPyramid); err != nil { panic(err) }
+	meshPyr.Models.Default().SetMatName("mat_mosaic")
+	meshPyr.Models.Default().Clone("model_pyramid_dog").SetMatName("mat_dog")
+
 	if meshCube, err = ngine.Core.Meshes.Load("mesh_cube", ngine.MeshProviders.PrefabCube); err != nil { panic(err) }
+	meshCube.Models.Default().SetMatName("mat_crate")
+	meshCube.Models.Default().Clone("model_cube_cat").SetMatName("mat_cat")
+
 	ngine.Core.Meshes.AddRange(meshFloor, meshPyr, meshCube)
 	bufFloor.Add(meshFloor); bufRest.Add(meshCube); bufRest.Add(meshPyr)
 
@@ -81,16 +88,15 @@ func LoadSampleScene_03_PyrsCubes () {
 	ngine.Core.Scenes[""] = scene
 	scene.RootNode.MakeSubNodes("node_floor", "mesh_plane", "", "node_pyr", "mesh_pyramid", "", "node_box", "mesh_cube", "")
 	floor, pyr, box = scene.RootNode.SubNodes["node_floor"], scene.RootNode.SubNodes["node_pyr"], scene.RootNode.SubNodes["node_box"]
-	meshPyr.Models.Default().SetMatName("mat_mosaic")
-	meshPyr.Models.Default().Clone("model_pyramid_dog").SetMatName("mat_dog")
-	meshCube.Models.Default().SetMatName("mat_crate")
-	meshCube.Models.Default().Clone("model_cube_cat").SetMatName("mat_cat")
 
 	for i = 0; i < len(crates); i++ {
 		if i == 0 { str = "model_cube_cat" } else { str = "" }
 		crates[i] = scene.RootNode.MakeSubNode(ngine.Key("node_box_%v", i), "mesh_cube", str)
 		f = float64(i)
 		crates[i].Transform.SetPosXYZ((f + 3) * -2, (f + 1) * 2, (f + 2) * 3)
+		if i == 2 {
+			crates[i].SetMatName("mat_dog")
+		}
 	}
 
 	for i = 0; i < len(pyramids); i++ {
