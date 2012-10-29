@@ -128,7 +128,7 @@ type TMeshBuffer struct {
 		return
 	}
 
-	func (me *TMeshBuffer) bindVao () {
+	func (me *TMeshBuffer) use () {
 		curMeshBuf = me
 		gl.BindVertexArray(me.glVaos[curTechnique.name()])
 	}

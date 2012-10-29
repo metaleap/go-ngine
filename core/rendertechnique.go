@@ -8,6 +8,7 @@ import (
 
 var (
 	techs map[string]iRenderTechnique
+	tmpMat *TMaterial
 )
 
 type fTechniqueConstructor func (string) iRenderTechnique
@@ -24,6 +25,7 @@ type iRenderTechnique interface {
 	name () string
 	onPreRender ()
 	onRenderMesh ()
+	onRenderMeshModel ()
 	onRenderNode ()
 }
 
@@ -44,6 +46,9 @@ type tTechnique_Base struct {
 	}
 
 	func (me *tTechnique_Base) onRenderMesh () {
+	}
+
+	func (me *tTechnique_Base) onRenderMeshModel () {
 	}
 
 	func (me *tTechnique_Base) onRenderNode () {
@@ -85,7 +90,11 @@ type tTechnique_UnlitTextured struct {
 	}
 
 	func (me *tTechnique_UnlitTextured) onRenderNode () {
-		gl.ActiveTexture(gl.TEXTURE0)
-		gl.BindTexture(gl.TEXTURE_2D, Core.Textures[curNode.mat.texKey].glTex)
-		gl.Uniform1i(curProg.UnifLocs["uTex0"], 0)
+		if tmpMat = curNode.Material(); tmpMat != curMat {
+			if curMat = tmpMat; curMat != nil {
+				gl.ActiveTexture(gl.TEXTURE0)
+				gl.BindTexture(gl.TEXTURE_2D, Core.Textures[curMat.texName].glTex)
+				gl.Uniform1i(curProg.UnifLocs["uTex0"], 0)
+			}
+		}
 	}

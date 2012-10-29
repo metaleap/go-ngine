@@ -58,6 +58,7 @@ func CheckCamCtlKeys () {
 }
 
 func CheckToggleKeys () {
+	if ngine.UserIO.KeyPressed(glfw.KeyEsc) { ngine.Loop.Stop() }
 	if ngine.UserIO.KeyToggled(glfw.KeyF2) { Cam.ToggleTechnique() }
 	if ngine.UserIO.KeyToggled(glfw.KeyF3) { ngine.Core.Options.ToggleGlBackfaceCulling() }
 	if ngine.UserIO.KeyToggled(glfw.KeyF4) { ngine.Core.Options.DefaultTextureParams.ToggleFilter() }
@@ -65,7 +66,7 @@ func CheckToggleKeys () {
 }
 
 func PrintPostLoopSummary () {
-	var printStatSummary = func (name string, timing *ngine.TEngineStatsTiming) {
+	var printStatSummary = func (name string, timing *ngine.TTimingStats) {
 		fmt.Printf("%v:\tAvg=%3.5f secs\tMax=%3.5f secs\n", name, timing.Average(), timing.Max())
 	}
 	fmt.Printf("Average FPS:\t\t%v\n", ngine.Stats.AverageFps())

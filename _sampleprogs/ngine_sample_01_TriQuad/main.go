@@ -57,10 +57,10 @@ func LoadSampleScene_01_TriQuad () {
 	//	scene
 	var scene = ngine.NewScene()
 	ngine.Core.Scenes[""] = scene
-	scene.RootNode.AddSubNodesNamed(map[string]string { "node_tri":  "mesh_tri", "node_quad": "mesh_quad" })
+	scene.RootNode.MakeSubNodes("node_tri", "mesh_tri", "", "node_quad", "mesh_quad", "")
 	tri, quad = scene.RootNode.SubNodes["node_tri"], scene.RootNode.SubNodes["node_quad"]
-	tri.SetMatKey("mat_cat")
-	quad.SetMatKey("mat_dog")
+	tri.SetMatName("mat_cat")
+	quad.SetMatName("mat_dog")
 
 	//	upload everything
 	ngine.Core.SyncUpdates()

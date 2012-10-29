@@ -11,47 +11,70 @@ type TNode struct {
 
 	mat *TMaterial
 	mesh *TMesh
-	curKey, matKey, meshKey string
+	model *TModel
+	curKey, matName, meshName, modelName, name string
 	curSubNode, parentNode *TNode
 }
 
-func newNode (meshKey string, parent *TNode) *TNode {
+func newNode (nodeName, meshName, modelName string, parent *TNode) *TNode {
 	var node = &TNode {}
+	node.name = nodeName
 	node.parentNode = parent
 	node.SubNodes = map[string]*TNode {}
-	node.SetMeshKey(meshKey)
+	node.SetMeshModelName(meshName, modelName)
 	node.Transform = newTransform(node)
 	return node
 }
 
-func (me *TNode) AddSubNodes (meshKeys ... string) {
-	for _, meshKey := range meshKeys { me.SubNodes[meshKey] = newNode(meshKey, me) }
+func (me *TNode) AttachSubNode (node *TNode) {
+	me.SubNodes[node.name] = node
+	node.parentNode = me
 }
 
-func (me *TNode) AddSubNodesNamed (nodeAndMeshKeys map[string]string) {
-	for nodeKey, meshKey := range nodeAndMeshKeys { me.SubNodes[nodeKey] = newNode(meshKey, me) }
+func (me *TNode) DetachFromParent () {
+	if me.parentNode != nil { me.parentNode.RemoveSubNode(me.name) }
 }
 
-func (me *TNode) Dispose () {
-	for _, subNode := range me.SubNodes { subNode.Dispose() }
-	me.SubNodes = map[string]*TNode {}
+func (me *TNode) MakeSubNode (nodeName, meshName, modelName string) *TNode {
+	me.SubNodes[nodeName] = newNode(nodeName, meshName, modelName, me)
+	return me.SubNodes[nodeName]
 }
 
-func (me *TNode) MatKey () string {
-	return me.matKey
+func (me *TNode) MakeSubNodes (nodeMeshModelNames ... string) {
+	for i := 2; i < len(nodeMeshModelNames); i += 3 {
+		me.MakeSubNode(nodeMeshModelNames[i - 2], nodeMeshModelNames[i - 1], nodeMeshModelNames[i])
+	}
 }
 
-func (me *TNode) MeshKey () string {
-	return me.meshKey
+func (me *TNode) Material () *TMaterial {
+	if me.mat != nil { return me.mat }
+	return me.model.mat
+}
+
+func (me *TNode) MatName () string {
+	return me.matName
+}
+
+func (me *TNode) MeshName () string {
+	return me.meshName
+}
+
+func (me *TNode) MeshModelName () string {
+	return me.modelName
+}
+
+func (me *TNode) RemoveSubNode (name string) {
+	if node := me.SubNodes[name]; node != nil { node.parentNode = nil }
+	delete(me.SubNodes, name)
 }
 
 func (me *TNode) render () {
 	if (!me.Disabled) {
-		curNode = me
-		if (me.mesh != nil) {
+		curNode, curMesh, curModel = me, me.mesh, me.model
+		if (me.model != nil) {
 			curTechnique.onRenderNode()
 			gl.UniformMatrix4fv(curProg.UnifLocs["uMatModelView"], 1, gl.FALSE, &me.Transform.glMatModelView[0])
-			me.mesh.render()
+			me.model.render()
 		}
 		for me.curKey, me.curSubNode = range me.SubNodes {
 			me.curSubNode.render()
@@ -59,15 +82,19 @@ func (me *TNode) render () {
 	}
 }
 
-func (me *TNode) SetMatKey (newMatKey string) {
-	if newMatKey != me.matKey {
-		me.mat, me.matKey = Core.Materials[newMatKey], newMatKey
+func (me *TNode) SetMatName (newMatName string) {
+	if newMatName != me.matName {
+		me.mat, me.matName = Core.Materials[newMatName], newMatName
 	}
 }
 
-func (me *TNode) SetMeshKey (newMeshKey string) {
-	if newMeshKey != me.meshKey {
-		me.mesh, me.meshKey = Core.Meshes[newMeshKey], newMeshKey
+func (me *TNode) SetMeshModelName (meshName, modelName string) {
+	if meshName != me.meshName {
+		me.mesh, me.meshName = Core.Meshes[meshName], meshName
+		me.model, me.modelName = me.mesh.Models.Default(), ""
+	}
+	if modelName != me.modelName {
+		me.model, me.modelName = me.mesh.Models[modelName], modelName
 	}
 }
 

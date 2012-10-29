@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"log"
 	"math"
 	"runtime"
@@ -39,6 +40,10 @@ func Init (options *tOptions, winTitle string) error {
 	return err
 }
 
+func Key (format string, fmtArgs ... interface {}) string {
+	return fmt.Sprintf(format, fmtArgs ...)
+}
+
 func LogError (err error) {
 	if err != nil { log.Println(err.Error()) }
 }
@@ -69,10 +74,10 @@ func (me *tEngineLoop) Loop () {
 		Stats.FrameRenderBoth.comb1, Stats.FrameRenderBoth.comb2 = Stats.FrameRenderCpu, Stats.FrameRenderGpu
 		glLogLastError("ngine.PreLoop")
 		log.Printf("Enter loop...")
-		for me.IsLooping {
+		for me.IsLooping && (glfw.WindowParam(glfw.Opened) == 1) {
 			//	STEP 1. Send rendering commands to the GPU / GL pipeline
 			Stats.FrameRenderCpu.begin(); Core.onRender(); Stats.FrameRenderCpu.end()
-			//	STEP 2. While those are sent, or rendered GPU-side, do CPU-side stuff
+			//	STEP 2. While those are sent (and executed GPU-side), do other non-rendering CPU-side stuff
 			Stats.fpsCounter++
 			Stats.fpsAll++
 			me.TickLast = me.TickNow
@@ -86,12 +91,17 @@ func (me *tEngineLoop) Loop () {
 			}
 			Stats.FrameCoreCode.begin(); Core.onLoop(); Stats.FrameCoreCode.end()
 			Stats.FrameUserCode.begin(); me.OnLoop(); Stats.FrameUserCode.end()
-			//	STEP 3. Swap buffers -- also waits GPU to finish Step 1, and for V-sync (if set).
-			Stats.FrameRenderGpu.begin(); UserIO.onLoop(); Stats.FrameRenderGpu.end()
+			//	STEP 3. Swap buffers -- also waits for GPU to finish commands sent in Step 1, and for V-sync (if set).
+			Stats.FrameRenderGpu.begin(); glfw.SwapBuffers(); Stats.FrameRenderGpu.end()
 			Stats.FrameRenderBoth.combine()
 		}
+		me.IsLooping = false
 		glLogLastError("ngine.PostLoop")
 	}
+}
+
+func (me *tEngineLoop) Stop () {
+	me.IsLooping = false
 }
 
 func (me *tEngineLoop) Time () float64 {

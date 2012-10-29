@@ -36,6 +36,7 @@ type tMeshes map[string]*TMesh
 	func (me tMeshes) New (name string) *TMesh {
 		var mesh = &TMesh {}
 		mesh.name = name
+		mesh.Models = tModels {}
 		return mesh
 	}
 
@@ -55,6 +56,8 @@ type TMeshFace struct {
 	}
 
 type TMesh struct {
+	Models tModels
+
 	name string
 	meshBuffer *TMeshBuffer
 	meshBufOffsetBaseIndex, meshBufOffsetIndices, meshBufOffsetVerts int32
@@ -99,12 +102,15 @@ type TMesh struct {
 
 	func (me *TMesh) load (meshData *tMeshData) {
 		var numVerts = 3 * int32(len(meshData.faces))
+		var numFinalVerts = 0
 		var vertsMap = map[tVe]gl.Uint {}
 		var offsetFloat, offsetIndex, offsetVertex, vindex gl.Uint
 		var offsetFace, ei = 0, 0
 		var face tMeshFace3
 		var ventry tVe
 		var vexists bool
+		var vreuse int
+		me.Models = tModels {}
 		me.gpuSynced = false
 		me.raw = &tMeshRaw {}
 		me.raw.verts = make([]gl.Float, Core.MeshBuffers.FloatsPerVertex() * numVerts)
@@ -122,6 +128,9 @@ type TMesh struct {
 					copy(me.raw.verts[offsetFloat : (offsetFloat + 3)], meshData.normals[ventry.normalIndex][0 : 3])
 					offsetFloat += 3
 					offsetVertex++
+					numFinalVerts++
+				} else {
+					vreuse++
 				}
 				me.raw.indices[offsetIndex] = vindex
 				me.raw.faces[offsetFace].entries[ei] = offsetIndex
@@ -129,7 +138,8 @@ type TMesh struct {
 			}
 			offsetFace++
 		}
-		fmt.Printf("meshload() gave %v faces, %v att floats for %v verts, %v indices\n", len(me.raw.faces), len(me.raw.verts), numVerts, len(me.raw.indices))
+		me.Models[""] = newModel("", me)
+		fmt.Printf("meshload(%v) gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)\n", me.name, len(me.raw.faces), len(me.raw.verts), numFinalVerts, numVerts, len(me.raw.indices), vreuse)
 	}
 
 	func (me *TMesh) Loaded () bool {
@@ -137,8 +147,7 @@ type TMesh struct {
 	}
 
 	func (me *TMesh) render () {
-		curMesh = me
-		if curMeshBuf != me.meshBuffer { me.meshBuffer.bindVao() }
+		if curMeshBuf != me.meshBuffer { me.meshBuffer.use() }
 		curTechnique.onRenderMesh()
 		gl.DrawElementsBaseVertex(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Offset(nil, uintptr(me.meshBufOffsetIndices)), gl.Int(me.meshBufOffsetBaseIndex))
 //		gl.DrawElements(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Pointer(nil))

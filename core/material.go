@@ -5,9 +5,9 @@ import (
 
 type tMaterials map[string]*TMaterial
 
-	func (me tMaterials) New (texKey string) *TMaterial {
+	func (me tMaterials) New (texName string) *TMaterial {
 		var mat = &TMaterial {}
-		mat.texKey = texKey
+		mat.texName = texName
 		return mat
 	}
 
@@ -18,5 +18,5 @@ type tMaterials map[string]*TMaterial
 	}
 
 type TMaterial struct {
-	texKey string
+	texName string
 }

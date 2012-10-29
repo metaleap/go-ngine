@@ -14,6 +14,7 @@ var (
 	curCanvas *TRenderCanvas
 	curMat *TMaterial
 	curMesh *TMesh
+	curModel *TModel
 	curNode *TNode
 	curProg, tmpProg *glutil.TShaderProgram
 	curTechnique iRenderTechnique
@@ -29,7 +30,6 @@ type tEngineCore struct {
 	Materials tMaterials
 	MeshBuffers *tMeshBuffers
 	Meshes tMeshes
-	Models tModels
 	Options *tOptions
 	Scenes tScenes
 	Textures tTextures
@@ -56,7 +56,6 @@ func newEngineCore (options *tOptions) *tEngineCore {
 
 func (me *tEngineCore) Dispose () {
 	for _, canvas := range me.Canvases { canvas.Dispose() }
-	for _, scene := range me.Scenes { scene.Dispose() }
 	for _, mesh := range me.Meshes { mesh.GpuDelete() }
 	for _, tex := range me.Textures { tex.GpuDelete() }
 	me.MeshBuffers.dispose()
