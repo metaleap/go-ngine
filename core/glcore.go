@@ -11,6 +11,7 @@ import (
 )
 
 var (
+	glBackfaceCulling = true
 	glIsInit bool
 	glShaderMan = newShaderManager()
 )
@@ -57,22 +58,31 @@ for: <%v>.
 			if glutil.SetVersion(); !glutil.VersionMatch(3, 2) {
 				err = makeVerErr(fmt.Sprintf("%v.%v", glutil.Version[0], glutil.Version[1]))
 			} else {
-				glIsInit = true
 				gl.ClearColor(0, 0.05, 0.25, 1)
 				gl.Enable(gl.DEPTH_TEST)
 				gl.FrontFace(gl.CCW)
 				gl.CullFace(gl.BACK)
-				gl.Enable(gl.CULL_FACE)
+				if glBackfaceCulling { gl.Enable(gl.CULL_FACE) }
 				log.Println(glutil.GlConnInfo())
-				if err = glShaderMan.compileAll(); err == nil {
-				}
+				if err = glShaderMan.compileAll(); err == nil {}
 			}
 		}
 		if err == nil { err = glutil.LastError("nglcore.Init") }
+		if err == nil { glIsInit = true }
 	}
 	return
 }
 
 func glLogLastError(step string, fmtArgs ... interface {}) {
 	LogError(glutil.LastError(step, fmtArgs ...))
+}
+
+func glSetBackfaceCulling (val bool) {
+	if val != glBackfaceCulling {
+		if glBackfaceCulling = val; glBackfaceCulling {
+			gl.Enable(gl.CULL_FACE)
+		} else {
+			gl.Disable(gl.CULL_FACE)
+		}
+	}
 }

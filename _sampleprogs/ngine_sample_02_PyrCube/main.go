@@ -37,12 +37,12 @@ func LoadSampleScene_02_PyrCube () {
 	var bufFloor, bufRest *ngine.TMeshBuffer
 
 	ngine.Loop.OnLoop = onLoop
-	ngine.Core.Options.SetGlBackfaceCulling(false)
+	ngine.Core.Canvases[0].Cameras[0].Options.BackfaceCulling = false
 
 	//	textures / materials
-	ngine.Core.Textures["tex_cobbles"] = ngine.Core.Textures.LoadAsync(ngine.TextureProviders.RemoteFile, "http://dl.dropbox.com/u/136375/misc/cobbles.png")
-	ngine.Core.Textures["tex_crate"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/crate.jpeg")
-	ngine.Core.Textures["tex_mosaic"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/mosaic.jpeg")
+	ngine.Core.Textures["tex_cobbles"] = ngine.Core.Textures.LoadAsync(ngine.TextureProviders.RemoteFile, "http://dl.dropbox.com/u/136375/go-ngine/assets/tex/cobbles.png")
+	ngine.Core.Textures["tex_crate"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "tex/crate.jpeg")
+	ngine.Core.Textures["tex_mosaic"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "tex/mosaic.jpeg")
 	ngine.Core.Materials["mat_cobbles"] = ngine.Core.Materials.New("tex_cobbles")
 	ngine.Core.Materials["mat_crate"] = ngine.Core.Materials.New("tex_crate")
 	ngine.Core.Materials["mat_mosaic"] = ngine.Core.Materials.New("tex_mosaic")
@@ -61,8 +61,8 @@ func LoadSampleScene_02_PyrCube () {
 	//	scene
 	var scene = ngine.NewScene()
 	ngine.Core.Scenes[""] = scene
-	scene.RootNode.MakeSubNodes("node_floor", "mesh_plane", "", "node_pyr", "mesh_pyramid", "", "node_box", "mesh_cube", "")
-	floor, pyr, box = scene.RootNode.SubNodes["node_floor"], scene.RootNode.SubNodes["node_pyr"], scene.RootNode.SubNodes["node_box"]
+	scene.RootNode.SubNodes.MakeN("node_floor", "mesh_plane", "", "node_pyr", "mesh_pyramid", "", "node_box", "mesh_cube", "")
+	floor, pyr, box = scene.RootNode.SubNodes.M["node_floor"], scene.RootNode.SubNodes.M["node_pyr"], scene.RootNode.SubNodes.M["node_box"]
 
 	floor.SetMatName("mat_cobbles")
 	floor.Transform.SetPosXYZ(0.1, 0, -8)

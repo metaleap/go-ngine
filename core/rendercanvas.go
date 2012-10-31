@@ -64,8 +64,6 @@ func (me *TRenderCanvas) Dispose() {
 func (me *TRenderCanvas) render() {
 	for _, curCam = range me.Cameras {
 		if !curCam.Disabled {
-			Core.CurCamera = curCam
-			curScene = Core.Scenes[curCam.RenderSceneKey]
 			curCam.render()
 		}
 	}

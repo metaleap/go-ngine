@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<vehicle
+	name="Trigger Nimrud"
+	type="car">
+	
+	<genparams
+		mass="1350.0"
+		dimensions="1.6, 2.3, 1.2"
+		wheelmodel="wheel.obj"
+		wheelscale="0.033" />
+	
+	<ctrlparams
+		speedrate="15.0"
+		turnspeedrate="0.0, 0.0, 10.0" />
+	
+	<drivesystem>
+		<engine powerscale="8000">
+			<powerpoint rpm="2000" power="0.4" />
+			<powerpoint rpm="5000" power="0.7" />
+			<powerpoint rpm="8500" power="1.0" />
+			<powerpoint rpm="9500" power="0.6" />
+			<powerpoint rpm="10000" power="0.0" />
+		</engine>
+		
+		<gearbox>
+			<gear absolute="0.055" />
+			<gear relative="1.33" />
+			<gear relative="1.30" />
+			<gear relative="1.27" />
+			<gear relative="1.24" />
+			<gear relative="1.21" />
+		</gearbox>
+	</drivesystem>
+	
+	<part
+		name="body"
+		pos="0.0, -0.2, 0.1"
+		orientation="1.0, 0.0, 0.0, 0.0"
+		model="nimrud.obj"
+		scale="0.445">
+		
+		<wheel drive="0.7" steer="0.6" brake1="200.0" pos="0.63, 1.28, -0.22" radius="0.3" force="40000.0" dampening="20000.0" />
+		<wheel drive="0.7" steer="0.6" brake1="200.0" pos="-0.63, 1.28, -0.22" radius="0.3" force="40000.0" dampening="20000.0" />
+		<wheel drive="1.0" steer="0.0" brake1="100.0" pos="0.63, -1.01, -0.22" radius="0.3" force="40000.0" dampening="20000.0" brake2="1000.0" />
+		<wheel drive="1.0" steer="0.0" brake1="100.0" pos="-0.63, -1.01, -0.22" radius="0.3" force="40000.0" dampening="20000.0" brake2="1000.0" />
+		
+		<clip type="body" pos="1.0, 1.5, 1.0" force="300000.0" dampening="100000.0" />
+		<clip type="body" pos="-1.0, 1.5, 1.0" force="300000.0" dampening="100000.0" />
+		<clip type="body" pos="1.0, -1.0, 1.0" force="300000.0" dampening="100000.0" />
+		<clip type="body" pos="-1.0, -1.0, 1.0" force="300000.0" dampening="100000.0" />
+		
+	</part>
+	
+</vehicle>

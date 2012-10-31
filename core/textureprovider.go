@@ -1,6 +1,8 @@
 package core
 
 import (
+	_ "github.com/ftrvxmtrx/tga"
+
 	"image"
 	_ "image/jpeg"
 	_ "image/png"

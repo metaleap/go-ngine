@@ -53,14 +53,14 @@ func LoadSampleScene_03_PyrsCubes () {
 	var str string
 
 	ngine.Loop.OnLoop = onLoop
-	ngine.Core.Options.SetGlBackfaceCulling(false)
+	ngine.Core.Canvases[0].Cameras[0].Options.BackfaceCulling = false
 
 	//	textures / materials
-	ngine.Core.Textures["tex_cobbles"] = ngine.Core.Textures.LoadAsync(ngine.TextureProviders.RemoteFile, "http://dl.dropbox.com/u/136375/misc/cobbles.png")
-	ngine.Core.Textures["tex_crate"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/crate.jpeg")
-	ngine.Core.Textures["tex_mosaic"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/mosaic.jpeg")
-	ngine.Core.Textures["tex_cat"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/cat.png")
-	ngine.Core.Textures["tex_dog"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/dog.png")
+	ngine.Core.Textures["tex_cobbles"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "tex/cobbles.png")
+	ngine.Core.Textures["tex_crate"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "tex/crate.jpeg")
+	ngine.Core.Textures["tex_mosaic"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "tex/mosaic.jpeg")
+	ngine.Core.Textures["tex_cat"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "tex/cat.png")
+	ngine.Core.Textures["tex_dog"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "tex/dog.png")
 	ngine.Core.Materials["mat_cobbles"] = ngine.Core.Materials.New("tex_cobbles")
 	ngine.Core.Materials["mat_crate"] = ngine.Core.Materials.New("tex_crate")
 	ngine.Core.Materials["mat_mosaic"] = ngine.Core.Materials.New("tex_mosaic")
@@ -86,12 +86,12 @@ func LoadSampleScene_03_PyrsCubes () {
 	//	scene
 	var scene = ngine.NewScene()
 	ngine.Core.Scenes[""] = scene
-	scene.RootNode.MakeSubNodes("node_floor", "mesh_plane", "", "node_pyr", "mesh_pyramid", "", "node_box", "mesh_cube", "")
-	floor, pyr, box = scene.RootNode.SubNodes["node_floor"], scene.RootNode.SubNodes["node_pyr"], scene.RootNode.SubNodes["node_box"]
+	scene.RootNode.SubNodes.MakeN("node_floor", "mesh_plane", "", "node_pyr", "mesh_pyramid", "", "node_box", "mesh_cube", "")
+	floor, pyr, box = /* scene.RootNode.SubNodes.Get("node_floor", "node_pyr", "node_box") */ scene.RootNode.SubNodes.M["node_floor"], scene.RootNode.SubNodes.M["node_pyr"], scene.RootNode.SubNodes.M["node_box"]
 
 	for i = 0; i < len(crates); i++ {
 		if i == 0 { str = "model_cube_cat" } else { str = "" }
-		crates[i] = scene.RootNode.MakeSubNode(ngine.Key("node_box_%v", i), "mesh_cube", str)
+		crates[i] = scene.RootNode.SubNodes.Make(ngine.Fmt("node_box_%v", i), "mesh_cube", str)
 		f = float64(i)
 		crates[i].Transform.SetPosXYZ((f + 3) * -2, (f + 1) * 2, (f + 2) * 3)
 		if i == 2 {
@@ -101,7 +101,9 @@ func LoadSampleScene_03_PyrsCubes () {
 
 	for i = 0; i < len(pyramids); i++ {
 		if i > 1 { str = "model_pyramid_dog" } else { str = "" }
-		pyramids[i] = scene.RootNode.MakeSubNode(ngine.Key("nody_pyr_%v", i), "mesh_pyramid", str)
+		pyramids[i] = scene.RootNode.SubNodes.Make(ngine.Fmt("nody_pyr_%v", i), "mesh_pyramid", str)
+		if i == 0 {
+		}
 		f = float64(len(pyramids) - i)
 		pyramids[i].Transform.SetScalingN((f + 1) * 2)
 		pyramids[i].Transform.SetPosXYZ((f + 3) * -4, (f + 2) * 3, (f + 2) * 14)

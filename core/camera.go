@@ -10,7 +10,8 @@ import (
 type TCamera struct {
 	Controller *TController
 	Disabled bool
-	RenderSceneKey string
+	Options *tCameraOptions
+	SceneName string
 	ViewPort *tCamViewPort
 
 	technique iRenderTechnique
@@ -22,6 +23,7 @@ type TCamera struct {
 
 	func NewCamera (parentCanvas *TRenderCanvas, technique string) *TCamera {
 		var cam = &TCamera {}
+		cam.Options = newCameraOptions(cam)
 		cam.SetTechnique(technique)
 		cam.canvas = parentCanvas
 		cam.matProj = &numutil.TMat4 {}
@@ -48,11 +50,12 @@ type TCamera struct {
 	}
 
 	func (me *TCamera) render () {
+		curScene = Core.Scenes[me.SceneName]
+		glSetBackfaceCulling(me.Options.BackfaceCulling)
 		Core.useTechnique(me.technique)
 		gl.UniformMatrix4fv(curProg.UnifLocs["uMatCam"], 1, gl.FALSE, &me.Controller.glMat[0])
 		gl.UniformMatrix4fv(curProg.UnifLocs["uMatProj"], 1, gl.FALSE, &me.glMatProj[0])
 		me.technique.onPreRender()
-
 		gl.Viewport(me.ViewPort.glX, me.ViewPort.glY, me.ViewPort.glW, me.ViewPort.glH)
 		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 		curScene.RootNode.render()

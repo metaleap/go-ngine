@@ -34,12 +34,12 @@ func LoadSampleScene_01_TriQuad () {
 	var err error
 
 	ngine.Loop.OnLoop = onLoop
-	ngine.Core.Options.SetGlBackfaceCulling(false)
+	ngine.Core.Canvases[0].Cameras[0].Options.BackfaceCulling = false
 
 	//	textures / materials
 
-	ngine.Core.Textures["tex_cat"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/cat.png")
-	ngine.Core.Textures["tex_dog"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "misc/dog.png")
+	ngine.Core.Textures["tex_cat"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "tex/cat.png")
+	ngine.Core.Textures["tex_dog"] = ngine.Core.Textures.Load(ngine.TextureProviders.LocalFile, "tex/dog.png")
 
 	ngine.Core.Materials["mat_cat"] = ngine.Core.Materials.New("tex_cat")
 	ngine.Core.Materials["mat_dog"] = ngine.Core.Materials.New("tex_dog")
@@ -57,8 +57,8 @@ func LoadSampleScene_01_TriQuad () {
 	//	scene
 	var scene = ngine.NewScene()
 	ngine.Core.Scenes[""] = scene
-	scene.RootNode.MakeSubNodes("node_tri", "mesh_tri", "", "node_quad", "mesh_quad", "")
-	tri, quad = scene.RootNode.SubNodes["node_tri"], scene.RootNode.SubNodes["node_quad"]
+	scene.RootNode.SubNodes.MakeN("node_tri", "mesh_tri", "", "node_quad", "mesh_quad", "")
+	tri, quad = scene.RootNode.SubNodes.M["node_tri"], scene.RootNode.SubNodes.M["node_quad"]
 	tri.SetMatName("mat_cat")
 	quad.SetMatName("mat_dog")
 

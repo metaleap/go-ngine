@@ -60,7 +60,7 @@ func CheckCamCtlKeys () {
 func CheckToggleKeys () {
 	if ngine.UserIO.KeyPressed(glfw.KeyEsc) { ngine.Loop.Stop() }
 	if ngine.UserIO.KeyToggled(glfw.KeyF2) { Cam.ToggleTechnique() }
-	if ngine.UserIO.KeyToggled(glfw.KeyF3) { ngine.Core.Options.ToggleGlBackfaceCulling() }
+	if ngine.UserIO.KeyToggled(glfw.KeyF3) { Cam.Options.ToggleGlBackfaceCulling() }
 	if ngine.UserIO.KeyToggled(glfw.KeyF4) { ngine.Core.Options.DefaultTextureParams.ToggleFilter() }
 	if ngine.UserIO.KeyToggled(glfw.KeyF5) { ngine.Core.Options.DefaultTextureParams.ToggleFilterAnisotropy() }
 }

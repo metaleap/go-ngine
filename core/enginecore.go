@@ -8,8 +8,8 @@ import (
 
 var (
 	curMeshBuf *TMeshBuffer
-	curCanvIndex, lastCanvIndex int
-	curMatKey string
+	curCanvIndex, lastCanvIndex, curIndex int
+	curMatKey, curStr string
 	curCam *TCamera
 	curCanvas *TRenderCanvas
 	curMat *TMaterial
@@ -24,8 +24,6 @@ var (
 type tEngineCore struct {
 	AssetManager *tAssetManager
 	Canvases tRenderCanvases
-	CurCamera *TCamera
-	CurCanvas *TRenderCanvas
 	DefaultCanvasIndex int
 	Materials tMaterials
 	MeshBuffers *tMeshBuffers
@@ -36,7 +34,6 @@ type tEngineCore struct {
 }
 
 func newEngineCore (options *tOptions) *tEngineCore {
-	var defCanvas *TRenderCanvas
 	initTechniques()
 	Core = &tEngineCore {}
 	Core.Options = options
@@ -47,9 +44,8 @@ func newEngineCore (options *tOptions) *tEngineCore {
 	Core.Textures = tTextures {}
 	Core.Scenes = tScenes {}
 	Core.Canvases = tRenderCanvases {}
-	defCanvas = Core.Canvases.Add(Core.Canvases.New(options.winWidth, options.winHeight, true))
-	Core.CurCanvas = defCanvas
-	Core.CurCamera = defCanvas.Cameras[0]
+	curCanvas = Core.Canvases.Add(Core.Canvases.New(options.winWidth, options.winHeight, true))
+	curCam = curCanvas.Cameras[0]
 	Core.MeshBuffers = newMeshBuffers()
 	return Core
 }
@@ -69,7 +65,6 @@ func (me *tEngineCore) onRender () {
 	lastCanvIndex = len(me.Canvases) - 1
 	for curCanvIndex, curCanvas = range me.Canvases {
 		if !curCanvas.Disabled {
-			me.CurCanvas = curCanvas
 			curCanvas.render()
 		}
 	}

@@ -134,7 +134,7 @@ type TMeshBuffer struct {
 	}
 
 	func (me *TMeshBuffer) dispose () {
-		for _, mesh := range me.meshes { me.Remove(mesh) }
+		for _, mesh := range me.meshes { mesh.meshBuffer, mesh.gpuSynced = nil, false }
 		gl.DeleteBuffers(1, &me.glIbo)
 		gl.DeleteBuffers(1, &me.glVbo)
 		for _, glVao := range me.glVaos {
@@ -144,7 +144,7 @@ type TMeshBuffer struct {
 
 	func (me *TMeshBuffer) Remove (mesh *TMesh) {
 		if mesh.meshBuffer == me {
-			// mesh.GpuDelete()
+			mesh.GpuDelete()
 			mesh.meshBuffer = nil
 			delete(me.meshes, mesh.name)
 		}
