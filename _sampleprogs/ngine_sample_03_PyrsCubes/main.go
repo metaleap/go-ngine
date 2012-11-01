@@ -44,6 +44,9 @@ func onLoop () {
 		crates[i].Transform.Rot.Z += f * 0.001
 		crates[i].Transform.OnRotChanged()
 	}
+
+	pyramids[0].Transform.SetPosX(math.Sin(ngine.Loop.TickNow) * 100)
+	pyramids[1].Transform.SetPosZ(math.Cos(ngine.Loop.TickNow) * 100)
 }
 
 func LoadSampleScene_03_PyrsCubes () {
