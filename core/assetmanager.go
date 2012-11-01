@@ -10,13 +10,6 @@ import (
 
 type FAssetFileOpener func (string) (io.ReadCloser, error)
 
-type tModelFile struct {
-}
-
-	func loadModelFile () *tModelFile {
-		return nil
-	}
-
 type tAssetManager struct {
 }
 
@@ -25,8 +18,8 @@ type tAssetManager struct {
 		return assMan
 	}
 
-	func (me *tAssetManager) LoadModelFile () *tModelFile {
-		return nil
+	func (me *tAssetManager) LoadAssets (reader io.Reader) (*TAssetProvider, error) {
+		return newAssetProvider(reader)
 	}
 
 	func (me *tAssetManager) OpenLocalFile (absoluteOrAssetRootRelativeFilePath string) (io.ReadCloser, error) {

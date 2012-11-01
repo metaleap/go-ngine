@@ -58,7 +58,7 @@ for: <%v>.
 			if glutil.SetVersion(); !glutil.VersionMatch(3, 2) {
 				err = makeVerErr(fmt.Sprintf("%v.%v", glutil.Version[0], glutil.Version[1]))
 			} else {
-				gl.ClearColor(0, 0.05, 0.25, 1)
+				gl.ClearColor(0, 0, 0, 1)
 				gl.Enable(gl.DEPTH_TEST)
 				gl.FrontFace(gl.CCW)
 				gl.CullFace(gl.BACK)

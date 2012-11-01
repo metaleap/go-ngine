@@ -6,6 +6,7 @@ import (
 
 	glfw "github.com/go-gl/glfw"
 
+	glutil "github.com/go3d/go-util/gl"
 	util "github.com/go3d/go-util"
 
 	ngine "github.com/go3d/go-ngine/core"
@@ -87,6 +88,7 @@ func SamplesMainFunc (loader func ()) {
 	if err = ngine.Init(ngine.NewOptions(AssetRootDirPath(), 1280, 720, 0, false), "Loading Sample..."); err != nil {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
+		ngine.Core.Options.SetGlClearColor(glutil.TGlVec4 { 0.75, 0.75, 0.97, 1 })
 		ngine.Loop.OnSecTick = SamplesOnSec
 		Cam = ngine.Core.Canvases[ngine.Core.DefaultCanvasIndex].Cameras[0]
 		CamCtl = Cam.Controller
