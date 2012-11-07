@@ -3,8 +3,8 @@ package core
 import (
 	gl "github.com/chsc/gogl/gl42"
 
-	glutil "github.com/go3d/go-util/gl"
-	util "github.com/go3d/go-util"
+	ugl "github.com/go3d/go-glutil"
+	util "github.com/metaleap/go-util"
 )
 
 type tTextureParams struct {
@@ -22,10 +22,10 @@ func newTextureParams (filter bool, filterAnisotropy float64) *tTextureParams {
 }
 
 func (me *tTextureParams) apply (tex *TTexture) {
-	if me.glAniso > 0 { gl.TexParameterf(gl.TEXTURE_2D, glutil.TEXTURE_MAX_ANISOTROPY_EXT, me.glAniso) }
+	if me.glAniso > 0 { gl.TexParameterf(gl.TEXTURE_2D, ugl.TEXTURE_MAX_ANISOTROPY_EXT, me.glAniso) }
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, me.glFilterMag)
 	if tex.noMipMap {
-		gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, glutil.IfI(me.filter, gl.LINEAR, gl.NEAREST))
+		gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, ugl.IfI(me.filter, gl.LINEAR, gl.NEAREST))
 	} else {
 		gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, me.glFilterMin)
 	}
@@ -53,13 +53,13 @@ func (me *tTextureParams) Set (filter bool, filterAnisotropy float64) {
 	var glAniso gl.Float
 	var glMin, glMag gl.Int
 	var changed bool
-	if glutil.MaxTextureAnisotropy() > 1 {
-		glAniso = glutil.ClampF(gl.Float(filterAnisotropy), 1, glutil.MaxTextureAnisotropy())
+	if ugl.MaxTextureAnisotropy() > 1 {
+		glAniso = ugl.ClampF(gl.Float(filterAnisotropy), 1, ugl.MaxTextureAnisotropy())
 	} else {
 		glAniso, filterAnisotropy = 0, 0
 	}
-	glMag = glutil.IfI(filter, gl.LINEAR, gl.NEAREST)
-	glMin = glutil.IfI(filter, gl.LINEAR_MIPMAP_LINEAR, gl.NEAREST_MIPMAP_NEAREST)
+	glMag = ugl.IfI(filter, gl.LINEAR, gl.NEAREST)
+	glMin = ugl.IfI(filter, gl.LINEAR_MIPMAP_LINEAR, gl.NEAREST_MIPMAP_NEAREST)
 	me.filter, me.aniso = filter, filterAnisotropy
 	if glAniso != me.glAniso { changed, me.glAniso = true, glAniso }
 	if glMin != me.glFilterMin { changed, me.glFilterMin = true, glMin }
@@ -84,5 +84,5 @@ func (me *tTextureParams) ToggleFilter () {
 }
 
 func (me *tTextureParams) ToggleFilterAnisotropy () {
-	me.Set(me.Filter(), util.Ifd(me.aniso == float64(glutil.MaxTextureAnisotropy()), 1, me.aniso + 1))
+	me.Set(me.Filter(), util.Ifd(me.aniso == float64(ugl.MaxTextureAnisotropy()), 1, me.aniso + 1))
 }

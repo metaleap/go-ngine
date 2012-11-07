@@ -3,48 +3,48 @@ package core
 import (
 	"math"
 
-	glutil "github.com/go3d/go-util/gl"
-	numutil "github.com/go3d/go-util/num"
+	ugl "github.com/go3d/go-glutil"
+	unum "github.com/metaleap/go-util/num"
 )
 
 type TController struct {
-	Pos, Dir, UpAxis *numutil.TVec3
+	Pos, Dir, UpAxis *unum.Vec3
 	MoveSpeed, MoveSpeedupFactor float64
 	TurnSpeed, TurnSpeedupFactor float64
 	MaxTurnUp, MinTurnDown float64
 
 	autoUpdate bool
 	hAngle, vAngle float64
-	posNeg, axH, axV *numutil.TVec3
-	mat, matTrans, matLook *numutil.TMat4
-	glMat *glutil.TGlMat4
+	posNeg, axH, axV *unum.Vec3
+	mat, matTrans, matLook *unum.Mat4
+	glMat *ugl.GlMat4
 }
 
 func newController () *TController {
-	var htarget *numutil.TVec3
+	var htarget *unum.Vec3
 	var ctl = &TController {}
-	ctl.posNeg, ctl.Pos, ctl.Dir, ctl.UpAxis, ctl.axH, ctl.axV = &numutil.TVec3 {}, &numutil.TVec3 {}, &numutil.TVec3 { 0, 0, 1 }, &numutil.TVec3 { 0, 1, 0 }, &numutil.TVec3 {}, &numutil.TVec3 {}
+	ctl.posNeg, ctl.Pos, ctl.Dir, ctl.UpAxis, ctl.axH, ctl.axV = &unum.Vec3 {}, &unum.Vec3 {}, &unum.Vec3 { 0, 0, 1 }, &unum.Vec3 { 0, 1, 0 }, &unum.Vec3 {}, &unum.Vec3 {}
 	ctl.MoveSpeed, ctl.MoveSpeedupFactor, ctl.TurnSpeed, ctl.TurnSpeedupFactor = 1.38, 1, 90, 1
 	ctl.autoUpdate, ctl.MaxTurnUp, ctl.MinTurnDown = true, 90, -90
-	ctl.mat, ctl.matTrans, ctl.matLook = numutil.NewMat4Identity(), numutil.NewMat4Identity(), numutil.NewMat4Identity()
-	ctl.glMat = glutil.NewGlMat4(ctl.mat)
+	ctl.mat, ctl.matTrans, ctl.matLook = unum.NewMat4Identity(), unum.NewMat4Identity(), unum.NewMat4Identity()
+	ctl.glMat = ugl.NewGlMat4(ctl.mat)
 
-	htarget = &numutil.TVec3 { ctl.Dir.X, 0, ctl.Dir.Z }
+	htarget = &unum.Vec3 { ctl.Dir.X, 0, ctl.Dir.Z }
 	htarget.Normalize()
 	if htarget.Z >= 0 {
 		if htarget.X >= 0 {
-			ctl.hAngle = 360 - numutil.RadToDeg(math.Asin(htarget.Z))
+			ctl.hAngle = 360 - unum.RadToDeg(math.Asin(htarget.Z))
 		} else {
-			ctl.hAngle = 180 + numutil.RadToDeg(math.Asin(htarget.Z))
+			ctl.hAngle = 180 + unum.RadToDeg(math.Asin(htarget.Z))
 		}
 	} else {
 		if htarget.X >= 0 {
-			ctl.hAngle = numutil.RadToDeg(math.Asin(-htarget.Z))
+			ctl.hAngle = unum.RadToDeg(math.Asin(-htarget.Z))
 		} else {
-			ctl.hAngle = 90 + numutil.RadToDeg(math.Asin(-htarget.Z))
+			ctl.hAngle = 90 + unum.RadToDeg(math.Asin(-htarget.Z))
 		}
 	}
-	ctl.vAngle = -numutil.RadToDeg(math.Asin(ctl.Dir.Y))
+	ctl.vAngle = -unum.RadToDeg(math.Asin(ctl.Dir.Y))
 	ctl.updateMatrixRot()
 	ctl.updateMatrix()
 	return ctl

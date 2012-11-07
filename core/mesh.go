@@ -5,7 +5,7 @@ import (
 
 	gl "github.com/chsc/gogl/gl42"
 
-	glutil "github.com/go3d/go-util/gl"
+	ugl "github.com/go3d/go-glutil"
 )
 
 type tMeshes map[string]*TMesh
@@ -91,7 +91,7 @@ type TMesh struct {
 			me.meshBuffer.offsetBaseIndex += int32(len(me.raw.indices))
 			gl.BindBuffer(gl.ARRAY_BUFFER, 0)
 			gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
-			if err = glutil.LastError("mesh[%v].GpuUpload()", me.name); err == nil { me.gpuSynced = true }
+			if err = ugl.LastError("mesh[%v].GpuUpload()", me.name); err == nil { me.gpuSynced = true }
 		}
 		return 
 	}

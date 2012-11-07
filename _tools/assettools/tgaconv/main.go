@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	ioutil "github.com/go3d/go-util/io"
+	uio "github.com/metaleap/go-util/io"
 
 	"github.com/ftrvxmtrx/tga"
 )
@@ -26,9 +26,9 @@ func processFile (srcFilePath string, recurse bool) bool {
 	var dirPath = filepath.Dir(outFilePath)
 	var tgaFile, pngFile *os.File
 	var img image.Image
-	if err = ioutil.EnsureDirExists(dirPath); err != nil {
+	if err = uio.EnsureDirExists(dirPath); err != nil {
 		log.Printf("ERR MkDir %v: %v\n", dirPath, err)
-	} else if ioutil.DirExists(dirPath) {
+	} else if uio.DirExists(dirPath) {
 		if tgaFile, err = os.OpenFile(srcFilePath, os.O_RDONLY, os.ModePerm); err != nil {
 			log.Printf("ERR OpenFile %v: %v\n", srcFilePath, err)
 		} else {
@@ -54,5 +54,5 @@ func processFile (srcFilePath string, recurse bool) bool {
 
 func main () {
 	flag.Parse()
-	ioutil.WalkDirectory(*fSrcDirPath, ".tga", processFile, *fRecurse)
+	uio.WalkDirectory(*fSrcDirPath, ".tga", processFile, *fRecurse)
 }

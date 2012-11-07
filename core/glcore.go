@@ -7,7 +7,7 @@ import (
 
 	gl "github.com/chsc/gogl/gl42"
 
-	glutil "github.com/go3d/go-util/gl"
+	ugl "github.com/go3d/go-glutil"
 )
 
 var (
@@ -39,7 +39,7 @@ for: <%v>.
 `
 	var makeVerErr = func (curVer string) error {
 		isVerErr = true
-		return fmt.Errorf(vMessage, strings.Replace(minMatch, "_", ".", -1), curVer, glutil.GlStr(gl.VENDOR), glutil.GlStr(gl.RENDERER))
+		return fmt.Errorf(vMessage, strings.Replace(minMatch, "_", ".", -1), curVer, ugl.GlStr(gl.VENDOR), ugl.GlStr(gl.RENDERER))
 	}
 	if !glIsInit {
 		if err = gl.Init(); err != nil {
@@ -49,32 +49,32 @@ for: <%v>.
 				if vMatch > minMatch {
 					err = nil
 				} else {
-					if vMatch > "1_0" { vMatch = glutil.GlStr(gl.VERSION) }
+					if vMatch > "1_0" { vMatch = ugl.GlStr(gl.VERSION) }
 					err = makeVerErr(strings.Replace(vMatch, "_", ".", -1))
 				}
 			}
 		}
 		if err == nil {
-			if glutil.SetVersion(); !glutil.VersionMatch(3, 2) {
-				err = makeVerErr(fmt.Sprintf("%v.%v", glutil.Version[0], glutil.Version[1]))
+			if ugl.SetVersion(); !ugl.VersionMatch(3, 2) {
+				err = makeVerErr(fmt.Sprintf("%v.%v", ugl.Version[0], ugl.Version[1]))
 			} else {
 				gl.ClearColor(0, 0, 0, 1)
 				gl.Enable(gl.DEPTH_TEST)
 				gl.FrontFace(gl.CCW)
 				gl.CullFace(gl.BACK)
 				if glBackfaceCulling { gl.Enable(gl.CULL_FACE) }
-				log.Println(glutil.GlConnInfo())
+				log.Println(ugl.GlConnInfo())
 				if err = glShaderMan.compileAll(); err == nil {}
 			}
 		}
-		if err == nil { err = glutil.LastError("nglcore.Init") }
+		if err == nil { err = ugl.LastError("nglcore.Init") }
 		if err == nil { glIsInit = true }
 	}
 	return
 }
 
 func glLogLastError(step string, fmtArgs ... interface {}) {
-	LogError(glutil.LastError(step, fmtArgs ...))
+	LogError(ugl.LastError(step, fmtArgs ...))
 }
 
 func glSetBackfaceCulling (val bool) {

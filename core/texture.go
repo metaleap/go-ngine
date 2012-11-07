@@ -5,7 +5,7 @@ import (
 
 	gl "github.com/chsc/gogl/gl42"
 
-	glutil "github.com/go3d/go-util/gl"
+	ugl "github.com/go3d/go-glutil"
 )
 
 var (
@@ -78,8 +78,8 @@ type TTexture struct {
 		gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT)
 		gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT)
 		if me.img != nil {
-			me.glPixPointer = glutil.ImageTextureProperties(me.img, &me.glTexWidth, &me.glTexHeight, &me.glTexLevels, &me.glSizedInternalFormat, &me.glPixelDataFormat, &me.glPixelDataType)
-			if glutil.IsGl42 {
+			me.glPixPointer = ugl.ImageTextureProperties(me.img, &me.glTexWidth, &me.glTexHeight, &me.glTexLevels, &me.glSizedInternalFormat, &me.glPixelDataFormat, &me.glPixelDataType)
+			if ugl.IsGl42 {
 				gl.TexStorage2D(gl.TEXTURE_2D, me.glTexLevels, me.glSizedInternalFormat, me.glTexWidth, me.glTexHeight)
 				gl.TexSubImage2D(gl.TEXTURE_2D, 0, 0, 0, me.glTexWidth, me.glTexHeight, me.glPixelDataFormat, me.glPixelDataType, me.glPixPointer)
 			} else {

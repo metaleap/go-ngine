@@ -5,7 +5,7 @@ import (
 
 	gl "github.com/chsc/gogl/gl42"
 
-	glutil "github.com/go3d/go-util/gl"
+	ugl "github.com/go3d/go-glutil"
 )
 
 type tMeshBufferParams struct {
@@ -95,11 +95,11 @@ type TMeshBuffer struct {
 		}
 		gl.BindBuffer(gl.ARRAY_BUFFER, buf.glVbo)
 		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, buf.glIbo)
-		gl.BufferData(gl.ARRAY_BUFFER, gl.Sizeiptr(buf.MemSizeVertices), gl.Pointer(nil), glutil.IfE(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
-		gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(buf.MemSizeIndices), gl.Pointer(nil), glutil.IfE(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
+		gl.BufferData(gl.ARRAY_BUFFER, gl.Sizeiptr(buf.MemSizeVertices), gl.Pointer(nil), ugl.IfE(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
+		gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(buf.MemSizeIndices), gl.Pointer(nil), ugl.IfE(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
 		gl.BindBuffer(gl.ARRAY_BUFFER, 0)
 		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
-		if err = glutil.LastError("newMeshBuffer(%v numVerts=%v numIndices=%v)", name, params.NumVerts, params.NumIndices); err != nil {
+		if err = ugl.LastError("newMeshBuffer(%v numVerts=%v numIndices=%v)", name, params.NumVerts, params.NumIndices); err != nil {
 			buf.dispose()
 			buf = nil
 		} else {

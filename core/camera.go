@@ -3,8 +3,8 @@ package core
 import (
 	gl "github.com/chsc/gogl/gl42"
 
-	glutil "github.com/go3d/go-util/gl"
-	numutil "github.com/go3d/go-util/num"
+	ugl "github.com/go3d/go-glutil"
+	unum "github.com/metaleap/go-util/num"
 )
 
 type TCamera struct {
@@ -17,8 +17,8 @@ type TCamera struct {
 	technique iRenderTechnique
 	canvas *TRenderCanvas
 	nearPlane, farPlane, fieldOfView float64
-	matProj *numutil.TMat4
-	glMatProj *glutil.TGlMat4
+	matProj *unum.Mat4
+	glMatProj *ugl.GlMat4
 }
 
 	func NewCamera (parentCanvas *TRenderCanvas, technique string) *TCamera {
@@ -26,8 +26,8 @@ type TCamera struct {
 		cam.Options = newCameraOptions(cam)
 		cam.SetTechnique(technique)
 		cam.canvas = parentCanvas
-		cam.matProj = &numutil.TMat4 {}
-		cam.glMatProj = &glutil.TGlMat4 {}
+		cam.matProj = &unum.Mat4 {}
+		cam.glMatProj = &ugl.GlMat4 {}
 		cam.ViewPort = newViewPort(cam)
 		cam.SetPerspective(0.3, 30000, 45)
 		cam.Controller = newController()

@@ -5,7 +5,7 @@ import (
 
 	glfw "github.com/go-gl/glfw"
 
-	util "github.com/go3d/go-util"
+	util "github.com/metaleap/go-util"
 )
 
 type tEngineUserIO struct {

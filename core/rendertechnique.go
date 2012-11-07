@@ -3,7 +3,7 @@ package core
 import (
 	gl "github.com/chsc/gogl/gl42"
 
-	glutil "github.com/go3d/go-util/gl"
+	ugl "github.com/go3d/go-glutil"
 )
 
 var (
@@ -30,7 +30,7 @@ type iRenderTechnique interface {
 }
 
 type tTechnique_Base struct {
-	prog *glutil.TShaderProgram
+	prog *ugl.ShaderProgram
 }
 
 	func (me *tTechnique_Base) initMeshBuffer (meshBuffer *TMeshBuffer) {

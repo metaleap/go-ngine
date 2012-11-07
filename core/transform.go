@@ -1,8 +1,8 @@
 package core
 
 import (
-	glutil "github.com/go3d/go-util/gl"
-	numutil "github.com/go3d/go-util/num"
+	ugl "github.com/go3d/go-glutil"
+	unum "github.com/metaleap/go-util/num"
 )
 
 type iTransformable interface {
@@ -12,24 +12,24 @@ type iTransformable interface {
 }
 
 type tTransform struct {
-	Pos, Rot, Scaling *numutil.TVec3
+	Pos, Rot, Scaling *unum.Vec3
 
 	owner iTransformable
-	matModelView, matRotX, matRotY, matRotZ, matScaling, matTranslation *numutil.TMat4
-	matNormal *numutil.TMat3
-	glMatModelView *glutil.TGlMat4
-	glMatNormal *glutil.TGlMat3
+	matModelView, matRotX, matRotY, matRotZ, matScaling, matTranslation *unum.Mat4
+	matNormal *unum.Mat3
+	glMatModelView *ugl.GlMat4
+	glMatNormal *ugl.GlMat3
 }
 
 func newTransform (owner iTransformable) *tTransform {
 	var t = &tTransform {}
 	t.owner = owner
-	t.Pos, t.Rot = &numutil.TVec3 {}, &numutil.TVec3 {}
-	t.Scaling = &numutil.TVec3 { 1, 1, 1 }
-	t.matModelView, t.matNormal = numutil.NewMat4Identity(), numutil.NewMat3Identity()
-	t.matRotX, t.matRotY, t.matRotZ = numutil.NewMat4RotationX(t.Rot.X), numutil.NewMat4RotationX(t.Rot.Y), numutil.NewMat4RotationX(t.Rot.Z)
-	t.matScaling, t.matTranslation = numutil.NewMat4Scaling(t.Scaling), numutil.NewMat4Translation(t.Pos)
-	t.glMatModelView, t.glMatNormal = glutil.NewGlMat4(t.matModelView), glutil.NewGlMat3(t.matNormal)
+	t.Pos, t.Rot = &unum.Vec3 {}, &unum.Vec3 {}
+	t.Scaling = &unum.Vec3 { 1, 1, 1 }
+	t.matModelView, t.matNormal = unum.NewMat4Identity(), unum.NewMat3Identity()
+	t.matRotX, t.matRotY, t.matRotZ = unum.NewMat4RotationX(t.Rot.X), unum.NewMat4RotationX(t.Rot.Y), unum.NewMat4RotationX(t.Rot.Z)
+	t.matScaling, t.matTranslation = unum.NewMat4Scaling(t.Scaling), unum.NewMat4Translation(t.Pos)
+	t.glMatModelView, t.glMatNormal = ugl.NewGlMat4(t.matModelView), ugl.NewGlMat3(t.matNormal)
 	return t
 }
 
@@ -123,7 +123,7 @@ func (me *tTransform) OnSomeChanged (scaling, pos, rotX, rotY, rotZ bool) {
 	me.updateMatrices()
 }
 
-func (me *tTransform) SetPos (pos *numutil.TVec3) {
+func (me *tTransform) SetPos (pos *unum.Vec3) {
 	me.Pos = pos
 	me.OnPosChanged()
 }
@@ -148,7 +148,7 @@ func (me *tTransform) SetPosZ (posZ float64) {
 	me.OnPosChanged()
 }
 
-func (me *tTransform) SetRot (rot *numutil.TVec3) {
+func (me *tTransform) SetRot (rot *unum.Vec3) {
 	me.Rot = rot
 	me.OnRotChanged()
 }
@@ -173,7 +173,7 @@ func (me *tTransform) SetRotZ (rad float64) {
 	me.OnRotZChanged()
 }
 
-func (me *tTransform) SetScaling (scaling *numutil.TVec3) {
+func (me *tTransform) SetScaling (scaling *unum.Vec3) {
 	me.Scaling = scaling
 	me.OnScalingChanged()
 }
@@ -188,9 +188,9 @@ func (me *tTransform) StepDelta (deltaPerSecond float64) float64 {
 }
 
 func (me *tTransform) updateMatrices () {
-	var mat *numutil.TMat4
+	var mat *unum.Mat4
 	var parent = me.owner.transformParent()
-	if parent != nil { mat = parent.transform().matModelView } else { mat = numutil.Mat4Identity }
+	if parent != nil { mat = parent.transform().matModelView } else { mat = unum.Mat4Identity }
 	me.matModelView.SetFromMultN(mat, me.matTranslation, me.matScaling, me.matRotX, me.matRotY, me.matRotZ)
 	me.glMatModelView.Load(me.matModelView)
 	me.matModelView.ToInverseMat3(me.matNormal)

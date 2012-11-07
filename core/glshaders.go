@@ -7,24 +7,24 @@ import (
 
 	gl "github.com/chsc/gogl/gl42"
 
-	glutil "github.com/go3d/go-util/gl"
+	ugl "github.com/go3d/go-glutil"
 )
 
 type tGlShaderManager struct {
 	AllNames []string
-	AllProgs map[string]*glutil.TShaderProgram
+	AllProgs map[string]*ugl.ShaderProgram
 	AllSources *tGlShaderSources
 }
 
 	func newShaderManager () *tGlShaderManager {
 		var sm = &tGlShaderManager {}
-		sm.AllProgs = map[string]*glutil.TShaderProgram {}
+		sm.AllProgs = map[string]*ugl.ShaderProgram {}
 		return sm
 	}
 
 	func (me *tGlShaderManager) dispose () {
-		var doClean = func (sprog **glutil.TShaderProgram) {
-			var sp *glutil.TShaderProgram = *sprog
+		var doClean = func (sprog **ugl.ShaderProgram) {
+			var sp *ugl.ShaderProgram = *sprog
 			if sp != nil { sp.CleanUp(); *sprog = nil }
 		}
 		for _, prog := range me.AllProgs {
@@ -40,22 +40,22 @@ type tGlShaderManager struct {
 		var timeStart = time.Now()
 		var glStatus gl.Int
 		var glShaders = []gl.Uint { 0, 0, 0, 0, 0, 0 }
-		var shaderProg *glutil.TShaderProgram
+		var shaderProg *ugl.ShaderProgram
 		var defines = map[string]interface{} { }
 		for _, shaderName = range me.AllNames {
 			for glShaderType, shaderTypeIndex = range me.AllSources.enumerate() {
 				if shaderSrc = me.AllSources.source(glShaderType, shaderName); len(shaderSrc) > 0 {
 					glShaders[shaderTypeIndex] = gl.CreateShader(glShaderType)
-					glutil.ShaderSource(shaderName, glShaders[shaderTypeIndex], shaderSrc, defines, false, "150")
+					ugl.ShaderSource(shaderName, glShaders[shaderTypeIndex], shaderSrc, defines, false, "150")
 					gl.CompileShader(glShaders[shaderTypeIndex])
-					if gl.GetShaderiv(glShaders[shaderTypeIndex], gl.COMPILE_STATUS, &glStatus); glStatus == 0 { err = fmt.Errorf("SHADER %s: %s\n", shaderName, glutil.ShaderInfoLog(glShaders[shaderTypeIndex], true)) }
+					if gl.GetShaderiv(glShaders[shaderTypeIndex], gl.COMPILE_STATUS, &glStatus); glStatus == 0 { err = fmt.Errorf("SHADER %s: %s\n", shaderName, ugl.ShaderInfoLog(glShaders[shaderTypeIndex], true)) }
 				} else {
 					glShaders[shaderTypeIndex] = 0
 				}
 				if err != nil { break }
 			}
 			if err == nil {
-				if shaderProg, err = glutil.NewShaderProgram(shaderName, glShaders[0], glShaders[1], glShaders[2], glShaders[3], glShaders[4], glShaders[5]); err == nil {
+				if shaderProg, err = ugl.NewShaderProgram(shaderName, glShaders[0], glShaders[1], glShaders[2], glShaders[3], glShaders[4], glShaders[5]); err == nil {
 					me.AllProgs[shaderName] = shaderProg
 					/*
 					if shaderName == "postfx" {

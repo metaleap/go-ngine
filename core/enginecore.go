@@ -3,7 +3,7 @@ package core
 import (
 	gl "github.com/chsc/gogl/gl42"
 
-	glutil "github.com/go3d/go-util/gl"
+	ugl "github.com/go3d/go-glutil"
 )
 
 var (
@@ -16,7 +16,7 @@ var (
 	curMesh *TMesh
 	curModel *TModel
 	curNode *TNode
-	curProg, tmpProg *glutil.TShaderProgram
+	curProg, tmpProg *ugl.ShaderProgram
 	curTechnique iRenderTechnique
 	curScene *TScene
 )

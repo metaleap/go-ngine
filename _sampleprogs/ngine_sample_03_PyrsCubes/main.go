@@ -3,7 +3,7 @@ package main
 import (
 	"math"
 
-	numutil "github.com/go3d/go-util/num"
+	unum "github.com/metaleap/go-util/num"
 
 	ngine "github.com/go3d/go-ngine/core"
 	ngine_samples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
@@ -112,10 +112,10 @@ func LoadSampleScene_03_PyrsCubes () {
 		pyramids[i].Transform.SetPosXYZ((f + 3) * -4, (f + 2) * 3, (f + 2) * 14)
 		if i > 1 {
 			if i == 2 { f = 45 } else { f = 135 }
-			pyramids[i].Transform.SetRotZ(numutil.DegToRad(f))
+			pyramids[i].Transform.SetRotZ(unum.DegToRad(f))
 		} else {
 			if i == 0 { f = 180 } else { f = 90 }
-			pyramids[i].Transform.SetRotX(numutil.DegToRad(f))
+			pyramids[i].Transform.SetRotX(unum.DegToRad(f))
 		}
 	}
 
