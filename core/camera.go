@@ -7,22 +7,22 @@ import (
 	unum "github.com/metaleap/go-util/num"
 )
 
-type TCamera struct {
-	Controller *TController
+type Camera struct {
+	Controller *Controller
 	Disabled bool
-	Options *tCameraOptions
+	Options *cameraOptions
 	SceneName string
-	ViewPort *tCamViewPort
+	ViewPort *camViewPort
 
-	technique iRenderTechnique
-	canvas *TRenderCanvas
+	technique renderTechnique
+	canvas *RenderCanvas
 	nearPlane, farPlane, fieldOfView float64
 	matProj *unum.Mat4
 	glMatProj *ugl.GlMat4
 }
 
-	func NewCamera (parentCanvas *TRenderCanvas, technique string) *TCamera {
-		var cam = &TCamera {}
+	func NewCamera (parentCanvas *RenderCanvas, technique string) *Camera {
+		var cam = &Camera {}
 		cam.Options = newCameraOptions(cam)
 		cam.SetTechnique(technique)
 		cam.canvas = parentCanvas
@@ -34,22 +34,22 @@ type TCamera struct {
 		return cam
 	}
 
-	func (me *TCamera) Dispose () {
+	func (me *Camera) Dispose () {
 	}
 
-	func (me *TCamera) FarPlane () float64 {
+	func (me *Camera) FarPlane () float64 {
 		return me.farPlane
 	}
 
-	func (me *TCamera) FieldOfView () float64 {
+	func (me *Camera) FieldOfView () float64 {
 		return me.fieldOfView
 	}
 
-	func (me *TCamera) NearPlane () float64 {
+	func (me *Camera) NearPlane () float64 {
 		return me.nearPlane
 	}
 
-	func (me *TCamera) render () {
+	func (me *Camera) render () {
 		curScene = Core.Scenes[me.SceneName]
 		glSetBackfaceCulling(me.Options.BackfaceCulling)
 		Core.useTechnique(me.technique)
@@ -61,35 +61,35 @@ type TCamera struct {
 		curScene.RootNode.render()
 	}
 
-	func (me *TCamera) SetPerspective (nearPlane, farPlane, fieldOfView float64) {
+	func (me *Camera) SetPerspective (nearPlane, farPlane, fieldOfView float64) {
 		me.nearPlane, me.farPlane, me.fieldOfView = nearPlane, farPlane, fieldOfView
 		me.updatePerspective()
 	}
 
-	func (me *TCamera) SetTechnique (name string) {
+	func (me *Camera) SetTechnique (name string) {
 		if (me.technique == nil) || (me.technique.name() != name) {
 			me.technique = techs[name]
 		}
 	}
 
-	func (me *TCamera) ToggleTechnique () {
+	func (me *Camera) ToggleTechnique () {
 		var allNames, curTech, name = glShaderMan.AllNames, curTechnique.name(), ""
 		var curIndex, i int
-		var tech iRenderTechnique = nil
+		var tech renderTechnique = nil
 		for i, name = range allNames { if name == curTech { curIndex = i; break } }
 		if curIndex < (len(allNames) - 1) { for i = curIndex + 1; i < len(allNames); i++ { if tech = techs[allNames[i]]; tech != nil { break } } }
 		if tech == nil { for i = 0; i < curIndex; i++ { if tech = techs[allNames[i]]; tech != nil { break } } }
 		if tech != nil { me.technique = tech }
 	}
 
-	func (me *TCamera) updatePerspective () {
+	func (me *Camera) updatePerspective () {
 		me.matProj.Perspective(me.fieldOfView, me.ViewPort.aspect, me.nearPlane, me.farPlane)
 		me.glMatProj.Load(me.matProj)
 	}
 
-type tCamViewPort struct {
+type camViewPort struct {
 	absolute bool
-	camera *TCamera
+	camera *Camera
 	glX, glY gl.Int
 	glW, glH gl.Sizei
 	relX, relY, relW, relH float64
@@ -97,24 +97,24 @@ type tCamViewPort struct {
 	aspect float64
 }
 
-	func newViewPort (cam *TCamera) *tCamViewPort {
-		var vp = &tCamViewPort {}
+	func newViewPort (cam *Camera) *camViewPort {
+		var vp = &camViewPort {}
 		vp.camera = cam
 		vp.SetRel(0, 0, 1, 1)
 		return vp
 	}
 
-	func (me *tCamViewPort) SetAbs (x, y, width, height int) {
+	func (me *camViewPort) SetAbs (x, y, width, height int) {
 		me.absolute, me.absX, me.absY, me.absW, me.absH = true, x, y, width, height
 		me.update()
 	}
 
-	func (me *tCamViewPort) SetRel (x, y, width, height float64) {
+	func (me *camViewPort) SetRel (x, y, width, height float64) {
 		me.absolute, me.relX, me.relY, me.relW, me.relH = false, x, y, width, height
 		me.update()
 	}
 
-	func (me *tCamViewPort) update () {
+	func (me *camViewPort) update () {
 		if !me.absolute {
 			me.absW, me.absH = int(me.relW * float64(me.camera.canvas.viewWidth)), int(me.relH * float64(me.camera.canvas.viewHeight))
 			me.absX, me.absY = int(me.relX * float64(me.camera.canvas.viewWidth)), int(me.relY * float64(me.camera.canvas.viewHeight))

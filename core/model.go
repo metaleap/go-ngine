@@ -1,25 +1,25 @@
 package core
 
-type tModels map[string]*TModel
+type models map[string]*Model
 
-	func (me tModels) Default () *TModel {
+	func (me models) Default () *Model {
 		return me[""]
 	}
 
-type TModel struct {
-	mat *TMaterial
+type Model struct {
+	mat *Material
 	matName string
-	mesh *TMesh
+	mesh *Mesh
 	name string
 }
 
-func newModel (name string, mesh *TMesh) *TModel {
-	var model = &TModel {}
+func newModel (name string, mesh *Mesh) *Model {
+	var model = &Model {}
 	model.name, model.mesh = name, mesh
 	return model
 }
 
-func (me *TModel) Clone (modelName string) (clonedModel *TModel) {
+func (me *Model) Clone (modelName string) (clonedModel *Model) {
 	if (modelName != me.name) && (me.mesh.Models[modelName] == nil) {
 		clonedModel = newModel(modelName, me.mesh)
 		me.mesh.Models[modelName] = clonedModel
@@ -27,15 +27,15 @@ func (me *TModel) Clone (modelName string) (clonedModel *TModel) {
 	return
 }
 
-func (me *TModel) MatName () string {
+func (me *Model) MatName () string {
 	return me.matName
 }
 
-func (me *TModel) render () {
+func (me *Model) render () {
 	curTechnique.onRenderMeshModel()
 	me.mesh.render()
 }
 
-func (me *TModel) SetMatName (newMatName string) {
+func (me *Model) SetMatName (newMatName string) {
 	if newMatName != me.matName { me.mat, me.matName = Core.Materials[newMatName], newMatName }
 }

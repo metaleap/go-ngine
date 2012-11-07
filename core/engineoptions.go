@@ -6,9 +6,9 @@ import (
 	ugl "github.com/go3d/go-glutil"
 )
 
-type tOptions struct {
+type engineOptions struct {
 	AssetRootDirPath, DefaultRenderTechnique string
-	DefaultTextureParams *tTextureParams
+	DefaultTextureParams *textureParams
 	GpuMemMeshes, GpuMemTextures uint
 
 	glClearColor ugl.GlVec4
@@ -16,8 +16,8 @@ type tOptions struct {
 	winHeight, winSwapInterval, winWidth int
 }
 
-func NewOptions (assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) *tOptions {
-	var opt = &tOptions {}
+func NewOptions (assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) *engineOptions {
+	var opt = &engineOptions {}
 	opt.glClearColor = ugl.GlVec4 { 0, 0, 0, 1 }
 	opt.DefaultTextureParams = newTextureParams(true, 6)
 	opt.AssetRootDirPath, opt.DefaultRenderTechnique = assetRootDirPath, "rt_unlit_colored"
@@ -26,11 +26,11 @@ func NewOptions (assetRootDirPath string, winWidth, winHeight, winSwapInterval i
 	return opt
 }
 
-func (me *tOptions) GlClearColor () ugl.GlVec4 {
+func (me *engineOptions) GlClearColor () ugl.GlVec4 {
 	return me.glClearColor
 }
 
-func (me *tOptions) SetGlClearColor (col ugl.GlVec4) {
+func (me *engineOptions) SetGlClearColor (col ugl.GlVec4) {
 	me.glClearColor = col
 	gl.ClearColor(col[0], col[1], col[2], col[3])
 }

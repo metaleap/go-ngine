@@ -7,7 +7,7 @@ import (
 	util "github.com/metaleap/go-util"
 )
 
-type tTextureParams struct {
+type textureParams struct {
 	aniso float64
 	filter bool
 
@@ -15,13 +15,13 @@ type tTextureParams struct {
 	glFilterMag, glFilterMin gl.Int
 }
 
-func newTextureParams (filter bool, filterAnisotropy float64) *tTextureParams {
-	var tp = &tTextureParams {}
+func newTextureParams (filter bool, filterAnisotropy float64) *textureParams {
+	var tp = &textureParams {}
 	tp.filter, tp.aniso = filter, filterAnisotropy
 	return tp
 }
 
-func (me *tTextureParams) apply (tex *TTexture) {
+func (me *textureParams) apply (tex *Texture) {
 	if me.glAniso > 0 { gl.TexParameterf(gl.TEXTURE_2D, ugl.TEXTURE_MAX_ANISOTROPY_EXT, me.glAniso) }
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, me.glFilterMag)
 	if tex.noMipMap {
@@ -31,15 +31,15 @@ func (me *tTextureParams) apply (tex *TTexture) {
 	}
 }
 
-func (me *tTextureParams) Filter () bool {
+func (me *textureParams) Filter () bool {
 	return me.filter
 }
 
-func (me *tTextureParams) FilterAnisotropy () float64 {
+func (me *textureParams) FilterAnisotropy () float64 {
 	return me.aniso
 }
 
-func (me *tTextureParams) gpuSync () {
+func (me *textureParams) gpuSync () {
 	for _, tex := range Core.Textures {
 		if (tex.Params == me) && tex.GpuSynced() {
 			gl.BindTexture(gl.TEXTURE_2D, tex.glTex)
@@ -49,7 +49,7 @@ func (me *tTextureParams) gpuSync () {
 	}
 }
 
-func (me *tTextureParams) Set (filter bool, filterAnisotropy float64) {
+func (me *textureParams) Set (filter bool, filterAnisotropy float64) {
 	var glAniso gl.Float
 	var glMin, glMag gl.Int
 	var changed bool
@@ -67,22 +67,22 @@ func (me *tTextureParams) Set (filter bool, filterAnisotropy float64) {
 	if changed && glIsInit { me.gpuSync() }
 }
 
-func (me *tTextureParams) setAgain () {
+func (me *textureParams) setAgain () {
 	me.Set(me.filter, me.aniso)
 }
 
-func (me *tTextureParams) SetFilter (filter bool) {
+func (me *textureParams) SetFilter (filter bool) {
 	me.Set(filter, me.FilterAnisotropy())
 }
 
-func (me *tTextureParams) SetFilterAnisotropy (filterAnisotropy float64) {
+func (me *textureParams) SetFilterAnisotropy (filterAnisotropy float64) {
 	me.Set(me.Filter(), filterAnisotropy)
 }
 
-func (me *tTextureParams) ToggleFilter () {
+func (me *textureParams) ToggleFilter () {
 	me.SetFilter(!me.Filter())
 }
 
-func (me *tTextureParams) ToggleFilterAnisotropy () {
+func (me *textureParams) ToggleFilterAnisotropy () {
 	me.Set(me.Filter(), util.Ifd(me.aniso == float64(ugl.MaxTextureAnisotropy()), 1, me.aniso + 1))
 }

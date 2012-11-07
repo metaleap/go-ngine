@@ -8,9 +8,9 @@ import (
 	ugl "github.com/go3d/go-glutil"
 )
 
-type tMeshes map[string]*TMesh
+type meshes map[string]*Mesh
 
-	func (me tMeshes) Add (mesh *TMesh) *TMesh {
+	func (me meshes) Add (mesh *Mesh) *Mesh {
 		if me[mesh.name] == nil {
 			me[mesh.name] = mesh
 			return mesh
@@ -18,12 +18,12 @@ type tMeshes map[string]*TMesh
 		return nil
 	}
 
-	func (me tMeshes) AddRange (meshes ... *TMesh) {
+	func (me meshes) AddRange (meshes ... *Mesh) {
 		for _, m := range meshes { me.Add(m) }
 	}
 
-	func (me tMeshes) Load (name string, provider FMeshProvider, args ... interface {}) (mesh *TMesh, err error) {
-		var meshData *tMeshData
+	func (me meshes) Load (name string, provider MeshProvider, args ... interface {}) (mesh *Mesh, err error) {
+		var meshData *meshData
 		mesh = me.New(name)
 		if meshData, err = provider(args ...); err == nil {
 			mesh.load(meshData)
@@ -33,45 +33,45 @@ type tMeshes map[string]*TMesh
 		return
 	}
 
-	func (me tMeshes) New (name string) *TMesh {
-		var mesh = &TMesh {}
+	func (me meshes) New (name string) *Mesh {
+		var mesh = &Mesh {}
 		mesh.name = name
-		mesh.Models = tModels {}
+		mesh.Models = models {}
 		return mesh
 	}
 
-type tMeshRaw struct {
+type meshRaw struct {
 	verts []gl.Float
 	indices []gl.Uint
-	faces []*TMeshFace
+	faces []*meshFace
 }
 
-type TMeshFace struct {
+type meshFace struct {
 	entries [3]gl.Uint
 }
 
-	func newMeshFace () *TMeshFace {
-		var face = &TMeshFace {}
+	func newMeshFace () *meshFace {
+		var face = &meshFace {}
 		return face
 	}
 
-type TMesh struct {
-	Models tModels
+type Mesh struct {
+	Models models
 
 	name string
-	meshBuffer *TMeshBuffer
+	meshBuffer *MeshBuffer
 	meshBufOffsetBaseIndex, meshBufOffsetIndices, meshBufOffsetVerts int32
-	raw *tMeshRaw
+	raw *meshRaw
 	gpuSynced bool
 }
 
-	func (me *TMesh) GpuDelete () {
+	func (me *Mesh) GpuDelete () {
 		if me.gpuSynced {
 			me.gpuSynced = false
 		}
 	}
 
-	func (me *TMesh) GpuUpload () (err error) {
+	func (me *Mesh) GpuUpload () (err error) {
 		var sizeVerts, sizeIndices = gl.Sizeiptr(4 * len(me.raw.verts)), gl.Sizeiptr(4 * len(me.raw.indices))
 		me.GpuDelete()
 
@@ -96,26 +96,26 @@ type TMesh struct {
 		return 
 	}
 
-	func (me *TMesh) GpuUploaded () bool {
+	func (me *Mesh) GpuUploaded () bool {
 		return me.gpuSynced
 	}
 
-	func (me *TMesh) load (meshData *tMeshData) {
+	func (me *Mesh) load (meshData *meshData) {
 		var numVerts = 3 * int32(len(meshData.faces))
 		var numFinalVerts = 0
-		var vertsMap = map[tVe]gl.Uint {}
+		var vertsMap = map[ve]gl.Uint {}
 		var offsetFloat, offsetIndex, offsetVertex, vindex gl.Uint
 		var offsetFace, ei = 0, 0
-		var face tMeshFace3
-		var ventry tVe
+		var face meshFace3
+		var ventry ve
 		var vexists bool
 		var vreuse int
-		me.Models = tModels {}
+		me.Models = models {}
 		me.gpuSynced = false
-		me.raw = &tMeshRaw {}
+		me.raw = &meshRaw {}
 		me.raw.verts = make([]gl.Float, Core.MeshBuffers.FloatsPerVertex() * numVerts)
 		me.raw.indices = make([]gl.Uint, numVerts)
-		me.raw.faces = make([]*TMeshFace, len(meshData.faces))
+		me.raw.faces = make([]*meshFace, len(meshData.faces))
 		for _, face = range meshData.faces {
 			me.raw.faces[offsetFace] = newMeshFace()
 			for ei, ventry = range face {
@@ -142,17 +142,17 @@ type TMesh struct {
 		fmt.Printf("meshload(%v) gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)\n", me.name, len(me.raw.faces), len(me.raw.verts), numFinalVerts, numVerts, len(me.raw.indices), vreuse)
 	}
 
-	func (me *TMesh) Loaded () bool {
+	func (me *Mesh) Loaded () bool {
 		return me.raw != nil
 	}
 
-	func (me *TMesh) render () {
+	func (me *Mesh) render () {
 		if curMeshBuf != me.meshBuffer { me.meshBuffer.use() }
 		curTechnique.onRenderMesh()
 		gl.DrawElementsBaseVertex(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Offset(nil, uintptr(me.meshBufOffsetIndices)), gl.Int(me.meshBufOffsetBaseIndex))
 //		gl.DrawElements(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Pointer(nil))
 	}
 
-	func (me *TMesh) Unload () {
+	func (me *Mesh) Unload () {
 		me.raw = nil
 	}

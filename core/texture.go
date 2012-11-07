@@ -9,43 +9,43 @@ import (
 )
 
 var (
-	asyncTextures = map[*TTexture]bool {}
+	asyncTextures = map[*Texture]bool {}
 )
 
-type tTextures map[string]*TTexture
+type textures map[string]*Texture
 
-	func (me tTextures) Load (loadProvider FTextureProvider, providerArgs ... interface {}) *TTexture {
+	func (me textures) Load (loadProvider TextureProvider, providerArgs ... interface {}) *Texture {
 		var tex = newTexture()
 		tex.Load(loadProvider, providerArgs ...)
 		return tex
 	}
 
-	func (me tTextures) LoadAndSet (name string, loadProvider FTextureProvider, providerArgs ... interface {}) *TTexture {
+	func (me textures) LoadAndSet (name string, loadProvider TextureProvider, providerArgs ... interface {}) *Texture {
 		return me.Set(name, me.Load(loadProvider, providerArgs ...))
 	}
 
-	func (me tTextures) LoadAsync (loadProvider FTextureProvider, providerArgs ... interface {}) *TTexture {
+	func (me textures) LoadAsync (loadProvider TextureProvider, providerArgs ... interface {}) *Texture {
 		var tex = newTexture()
 		tex.LoadAsync(loadProvider, providerArgs ...)
 		return tex
 	}
 
-	func (me tTextures) LoadAsyncAndSet (name string, loadProvider FTextureProvider, providerArgs ... interface {}) *TTexture {
+	func (me textures) LoadAsyncAndSet (name string, loadProvider TextureProvider, providerArgs ... interface {}) *Texture {
 		return me.Set(name, me.LoadAsync(loadProvider, providerArgs ...))
 	}
 
-	func (me tTextures) NewParams (filter bool, filterAnisotropy float64) *tTextureParams {
+	func (me textures) NewParams (filter bool, filterAnisotropy float64) *textureParams {
 		return newTextureParams(filter, filterAnisotropy)
 	}
 
-	func (me tTextures) Set (name string, tex *TTexture) *TTexture {
+	func (me textures) Set (name string, tex *Texture) *Texture {
 		me[name] = tex
 		return tex
 	}
 
-type TTexture struct {
+type Texture struct {
 	LastError error
-	Params *tTextureParams
+	Params *textureParams
 
 	img image.Image
 	gpuSynced, noMipMap bool
@@ -55,20 +55,20 @@ type TTexture struct {
 	glSizedInternalFormat, glPixelDataFormat, glPixelDataType gl.Enum
 }
 
-	func newTexture () *TTexture {
-		var tex = &TTexture {}
+	func newTexture () *Texture {
+		var tex = &Texture {}
 		tex.Params = Core.Options.DefaultTextureParams
 		return tex
 	}
 
-	func (me *TTexture) GpuDelete () {
+	func (me *Texture) GpuDelete () {
 		if me.glTex != 0 {
 			gl.DeleteTextures(1, &me.glTex)
 			me.glTex = 0
 		}
 	}
 
-	func (me *TTexture) GpuSync () {
+	func (me *Texture) GpuSync () {
 		me.gpuSynced = false
 		me.GpuDelete()
 		gl.GenTextures(1, &me.glTex)
@@ -91,11 +91,11 @@ type TTexture struct {
 		me.gpuSynced = true
 	}
 
-	func (me *TTexture) GpuSynced () bool {
+	func (me *Texture) GpuSynced () bool {
 		return me.gpuSynced
 	}
 
-	func (me *TTexture) load_OnImg (img image.Image, err error) error {
+	func (me *Texture) load_OnImg (img image.Image, err error) error {
 		var nuW, nuH int
 		var conv = false
 		var nuImage *image.RGBA
@@ -117,11 +117,11 @@ type TTexture struct {
 		return err
 	}
 
-	func (me *TTexture) Load (provider FTextureProvider, args ... interface {}) {
+	func (me *Texture) Load (provider TextureProvider, args ... interface {}) {
 		me.load_OnImg(provider(args ...))
 	}
 
-	func (me *TTexture) LoadAsync (provider FTextureProvider, args ... interface {}) {
+	func (me *Texture) LoadAsync (provider TextureProvider, args ... interface {}) {
 		me.gpuSynced = false
 		me.Unload()
 		asyncTextures[me] = false
@@ -133,14 +133,14 @@ type TTexture struct {
 		} ()
 	}
 
-	func (me *TTexture) Loaded () bool {
+	func (me *Texture) Loaded () bool {
 		return me.img != nil
 	}
 
-	func (me *TTexture) SuppressMipMaps () {
+	func (me *Texture) SuppressMipMaps () {
 		me.noMipMap = true
 	}
 
-	func (me *TTexture) Unload () {
+	func (me *Texture) Unload () {
 		me.img, me.glPixPointer = nil, gl.Pointer(nil)
 	}

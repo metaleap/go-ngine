@@ -3,20 +3,20 @@ package core
 import (
 )
 
-type tMaterials map[string]*TMaterial
+type materials map[string]*Material
 
-	func (me tMaterials) New (texName string) *TMaterial {
-		var mat = &TMaterial {}
+	func (me materials) New (texName string) *Material {
+		var mat = &Material {}
 		mat.texName = texName
 		return mat
 	}
 
-	func (me tMaterials) Set (name, texName string) *TMaterial {
+	func (me materials) Set (name, texName string) *Material {
 		var mat = me.New(texName)
 		me[name] = mat
 		return mat
 	}
 
-type TMaterial struct {
+type Material struct {
 	texName string
 }

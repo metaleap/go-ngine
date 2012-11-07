@@ -13,8 +13,8 @@ import (
 )
 
 var (
-	Cam *ngine.TCamera
-	CamCtl *ngine.TController
+	Cam *ngine.Camera
+	CamCtl *ngine.Controller
 	MaxKeyHint = len(keyHints) - 1
 
 	curKeyHint = 0
@@ -67,7 +67,7 @@ func CheckToggleKeys () {
 }
 
 func PrintPostLoopSummary () {
-	var printStatSummary = func (name string, timing *ngine.TTimingStats) {
+	var printStatSummary = func (name string, timing *ngine.TimingStats) {
 		fmt.Printf("%v:\tAvg=%3.5f secs\tMax=%3.5f secs\n", name, timing.Average(), timing.Max())
 	}
 	fmt.Printf("Average FPS:\t\t%v\n", ngine.Stats.AverageFps())

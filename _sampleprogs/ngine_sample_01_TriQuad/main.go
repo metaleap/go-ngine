@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	tri, quad *ngine.TNode
+	tri, quad *ngine.Node
 )
 
 func main () {
@@ -29,8 +29,8 @@ func onLoop () {
 }
 
 func LoadSampleScene_01_TriQuad () {
-	var meshTri, meshQuad *ngine.TMesh
-	var meshBuf *ngine.TMeshBuffer
+	var meshTri, meshQuad *ngine.Mesh
+	var meshBuf *ngine.MeshBuffer
 	var err error
 
 	ngine.Loop.OnLoop = onLoop

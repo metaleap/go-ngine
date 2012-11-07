@@ -8,19 +8,19 @@ import (
 	glfw "github.com/go-gl/glfw"
 )
 
-type tEngineLoop struct {
+type engineLoop struct {
 	IsLooping bool
 	SecTickLast, TickNow, TickLast, TickDelta float64
 	OnLoop, OnSecTick func()
 }
 
-func newEngineLoop () *tEngineLoop {
-	var loop = &tEngineLoop {}
+func newEngineLoop () *engineLoop {
+	var loop = &engineLoop {}
 	loop.OnSecTick, loop.OnLoop = func () {}, func () {}
 	return loop
 }
 
-func (me *tEngineLoop) Loop () {
+func (me *engineLoop) Loop () {
 	var tickNowFloor float64
 	if (!me.IsLooping) {
 		me.IsLooping = true
@@ -56,10 +56,10 @@ func (me *tEngineLoop) Loop () {
 	}
 }
 
-func (me *tEngineLoop) Stop () {
+func (me *engineLoop) Stop () {
 	me.IsLooping = false
 }
 
-func (me *tEngineLoop) Time () float64 {
+func (me *engineLoop) Time () float64 {
 	return glfw.Time()
 }

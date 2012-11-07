@@ -6,9 +6,9 @@ import (
 )
 
 var (
-	Loop *tEngineLoop
-	Core *tEngineCore
-	Stats *tEngineStats
+	Loop *engineLoop
+	Core *engineCore
+	Stats *engineStats
 	UserIO = newUserIO()
 )
 
@@ -19,7 +19,7 @@ func Dispose () {
 	Core, Loop, Stats = nil, nil, nil
 }
 
-func Init (options *tOptions, winTitle string) error {
+func Init (options *engineOptions, winTitle string) error {
 	var err error
 	var isVerErr bool
 	var forceContext = false

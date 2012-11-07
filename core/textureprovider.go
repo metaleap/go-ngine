@@ -9,14 +9,14 @@ import (
 	"io"
 )
 
-type FTextureProvider func (args ... interface {}) (image.Image, error)
+type TextureProvider func (args ... interface {}) (image.Image, error)
 
-type tTextureProviders struct {
-	IoReader, LocalFile, RemoteFile FTextureProvider
+type textureProviders struct {
+	IoReader, LocalFile, RemoteFile TextureProvider
 }
 
 var (
-	TextureProviders = &tTextureProviders { textureProviderIoReader, textureProviderLocalFile, textureProviderRemoteFile }
+	TextureProviders = &textureProviders { textureProviderIoReader, textureProviderLocalFile, textureProviderRemoteFile }
 )
 
 func textureProviderIoReader (args ... interface {}) (img image.Image, err error) {

@@ -7,7 +7,7 @@ import (
 	unum "github.com/metaleap/go-util/num"
 )
 
-type TController struct {
+type Controller struct {
 	Pos, Dir, UpAxis *unum.Vec3
 	MoveSpeed, MoveSpeedupFactor float64
 	TurnSpeed, TurnSpeedupFactor float64
@@ -20,9 +20,9 @@ type TController struct {
 	glMat *ugl.GlMat4
 }
 
-func newController () *TController {
+func newController () *Controller {
 	var htarget *unum.Vec3
-	var ctl = &TController {}
+	var ctl = &Controller {}
 	ctl.posNeg, ctl.Pos, ctl.Dir, ctl.UpAxis, ctl.axH, ctl.axV = &unum.Vec3 {}, &unum.Vec3 {}, &unum.Vec3 { 0, 0, 1 }, &unum.Vec3 { 0, 1, 0 }, &unum.Vec3 {}, &unum.Vec3 {}
 	ctl.MoveSpeed, ctl.MoveSpeedupFactor, ctl.TurnSpeed, ctl.TurnSpeedupFactor = 1.38, 1, 90, 1
 	ctl.autoUpdate, ctl.MaxTurnUp, ctl.MinTurnDown = true, 90, -90
@@ -50,55 +50,55 @@ func newController () *TController {
 	return ctl
 }
 
-func (me *TController) BeginUpdate () {
+func (me *Controller) BeginUpdate () {
 	me.autoUpdate = false
 }
 
-func (me *TController) EndUpdate () {
+func (me *Controller) EndUpdate () {
 	me.autoUpdate = true
 	me.updateMatrixRot()
 	me.updateMatrix()
 }
 
-func (me *TController) MoveBackward () {
+func (me *Controller) MoveBackward () {
 	me.Pos.SetFromAddMult1(me.Pos, me.Dir, me.StepSizeMove())
 	me.updateMatrix()
 }
 
-func (me *TController) MoveDown () {
+func (me *Controller) MoveDown () {
 	me.Pos.SetFromSubMult1(me.Pos, me.UpAxis, me.StepSizeMove())
 	me.updateMatrix()
 }
 
-func (me *TController) MoveForward () {
+func (me *Controller) MoveForward () {
 	me.Pos.SetFromSubMult1(me.Pos, me.Dir, me.StepSizeMove())
 	me.updateMatrix()
 }
 
-func (me *TController) MoveLeft () {
+func (me *Controller) MoveLeft () {
 	me.Pos.SetFromAddMult1(me.Pos, me.Dir.CrossNormalized(me.UpAxis), me.StepSizeMove())
 	me.updateMatrix()
 }
 
-func (me *TController) MoveRight () {
+func (me *Controller) MoveRight () {
 	me.Pos.SetFromAddMult1(me.Pos, me.UpAxis.CrossNormalized(me.Dir), me.StepSizeMove())
 	me.updateMatrix()
 }
 
-func (me *TController) MoveUp () {
+func (me *Controller) MoveUp () {
 	me.Pos.SetFromAddMult1(me.Pos, me.UpAxis, me.StepSizeMove())
 	me.updateMatrix()
 }
 
-func (me *TController) StepSizeMove () float64 {
+func (me *Controller) StepSizeMove () float64 {
 	return Loop.TickDelta * me.MoveSpeed * me.MoveSpeedupFactor
 }
 
-func (me *TController) StepSizeTurn () float64 {
+func (me *Controller) StepSizeTurn () float64 {
 	return Loop.TickDelta * me.TurnSpeed * me.TurnSpeedupFactor
 }
 
-func (me *TController) TurnDown () {
+func (me *Controller) TurnDown () {
 	if me.vAngle > me.MinTurnDown {
 		me.vAngle -= me.StepSizeTurn()
 		me.updateMatrixRot()
@@ -106,19 +106,19 @@ func (me *TController) TurnDown () {
 	}
 }
 
-func (me *TController) TurnLeft () {
+func (me *Controller) TurnLeft () {
 	me.hAngle += me.StepSizeTurn()
 	me.updateMatrixRot()
 	me.updateMatrix()
 }
 
-func (me *TController) TurnRight () {
+func (me *Controller) TurnRight () {
 	me.hAngle -= me.StepSizeTurn()
 	me.updateMatrixRot()
 	me.updateMatrix()
 }
 
-func (me *TController) TurnUp () {
+func (me *Controller) TurnUp () {
 	if me.vAngle < me.MaxTurnUp {
 		me.vAngle += me.StepSizeTurn()
 		me.updateMatrixRot()
@@ -126,7 +126,7 @@ func (me *TController) TurnUp () {
 	}
 }
 
-func (me *TController) updateMatrix () {
+func (me *Controller) updateMatrix () {
 	if me.autoUpdate {
 		me.posNeg.SetFromNeg(me.Pos)
 		me.matLook.LookAt(me.Dir, me.UpAxis)
@@ -136,7 +136,7 @@ func (me *TController) updateMatrix () {
 	}
 }
 
-func (me *TController) updateMatrixRot () {
+func (me *Controller) updateMatrixRot () {
 	if me.autoUpdate {
 		me.axV.X, me.axV.Y, me.axV.Z = 0, 1, 0
 		me.Dir.X, me.Dir.Y, me.Dir.Z = 1, 0, 0

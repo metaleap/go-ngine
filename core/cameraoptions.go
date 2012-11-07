@@ -1,16 +1,16 @@
 package core
 
-type tCameraOptions struct {
+type cameraOptions struct {
 	BackfaceCulling bool
-	cam *TCamera
+	cam *Camera
 }
 
-func newCameraOptions (cam *TCamera) *tCameraOptions {
-	var opt = &tCameraOptions {}
+func newCameraOptions (cam *Camera) *cameraOptions {
+	var opt = &cameraOptions {}
 	opt.cam = cam
 	return opt
 }
 
-func (me *tCameraOptions) ToggleGlBackfaceCulling () {
+func (me *cameraOptions) ToggleGlBackfaceCulling () {
 	me.BackfaceCulling = !me.BackfaceCulling
 }

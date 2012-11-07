@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	floor, pyr, box *ngine.TNode
+	floor, pyr, box *ngine.Node
 )
 
 func main () {
@@ -33,8 +33,8 @@ func onLoop () {
 
 func LoadSampleScene_02_PyrCube () {
 	var err error
-	var meshFloor, meshPyr, meshCube *ngine.TMesh
-	var bufFloor, bufRest *ngine.TMeshBuffer
+	var meshFloor, meshPyr, meshCube *ngine.Mesh
+	var bufFloor, bufRest *ngine.MeshBuffer
 
 	ngine.Loop.OnLoop = onLoop
 	ngine.Core.Canvases[0].Cameras[0].Options.BackfaceCulling = false

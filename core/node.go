@@ -4,63 +4,63 @@ import (
 	gl "github.com/chsc/gogl/gl42"
 )
 
-type tSubNodes struct {
-	M map[string]*TNode
-	owner *TNode
+type subNodes struct {
+	M map[string]*Node
+	owner *Node
 }
 
-	func newSubNodes (owner *TNode) *tSubNodes {
-		var nodes = &tSubNodes {}
+	func newSubNodes (owner *Node) *subNodes {
+		var nodes = &subNodes {}
 		nodes.owner = owner
-		nodes.M = map[string]*TNode {}
+		nodes.M = map[string]*Node {}
 		return nodes
 	}
 
-	func (me *tSubNodes) Add (node *TNode) {
+	func (me *subNodes) Add (node *Node) {
 		if node.parentNode != nil { node.parentNode.SubNodes.Remove(node.name) }
 		node.parentNode = me.owner
 		me.M[node.name] = node
 	}
 
-	func (me *tSubNodes) Get (names ... string) []*TNode {
-		var nodes = make([]*TNode, len(names))
+	func (me *subNodes) Get (names ... string) []*Node {
+		var nodes = make([]*Node, len(names))
 		for curIndex, curStr = range names {
 			nodes[curIndex] = me.M[curStr]
 		}
 		return nodes
 	}
 
-	func (me *tSubNodes) Make (nodeName, meshName, modelName string) (node *TNode) {
+	func (me *subNodes) Make (nodeName, meshName, modelName string) (node *Node) {
 		node = newNode(nodeName, meshName, modelName, me.owner)
 		me.Add(node)
 		return
 	}
 
-	func (me *tSubNodes) MakeN (nodeMeshModelNames ... string) {
+	func (me *subNodes) MakeN (nodeMeshModelNames ... string) {
 		for i := 2; i < len(nodeMeshModelNames); i += 3 {
 			me.Make(nodeMeshModelNames[i - 2], nodeMeshModelNames[i - 1], nodeMeshModelNames[i])
 		}
 	}
 
-	func (me *tSubNodes) Remove (name string) {
+	func (me *subNodes) Remove (name string) {
 		if node := me.M[name]; node != nil { node.parentNode = nil }
 		delete(me.M, name)
 	}
 
-type TNode struct {
+type Node struct {
 	Disabled bool
-	SubNodes *tSubNodes
-	Transform *tTransform
+	SubNodes *subNodes
+	Transform *transform
 
-	mat *TMaterial
-	mesh *TMesh
-	model *TModel
+	mat *Material
+	mesh *Mesh
+	model *Model
 	curKey, matName, meshName, modelName, name string
-	curSubNode, parentNode *TNode
+	curSubNode, parentNode *Node
 }
 
-	func newNode (nodeName, meshName, modelName string, parent *TNode) *TNode {
-		var node = &TNode {}
+	func newNode (nodeName, meshName, modelName string, parent *Node) *Node {
+		var node = &Node {}
 		node.name = nodeName
 		node.parentNode = parent
 		node.SubNodes = newSubNodes(node)
@@ -69,24 +69,24 @@ type TNode struct {
 		return node
 	}
 
-	func (me *TNode) Material () *TMaterial {
+	func (me *Node) Material () *Material {
 		if me.mat != nil { return me.mat }
 		return me.model.mat
 	}
 
-	func (me *TNode) MatName () string {
+	func (me *Node) MatName () string {
 		return me.matName
 	}
 
-	func (me *TNode) MeshName () string {
+	func (me *Node) MeshName () string {
 		return me.meshName
 	}
 
-	func (me *TNode) MeshModelName () string {
+	func (me *Node) MeshModelName () string {
 		return me.modelName
 	}
 
-	func (me *TNode) render () {
+	func (me *Node) render () {
 		if (!me.Disabled) {
 			curNode, curMesh, curModel = me, me.mesh, me.model
 			if (me.model != nil) {
@@ -100,13 +100,13 @@ type TNode struct {
 		}
 	}
 
-	func (me *TNode) SetMatName (newMatName string) {
+	func (me *Node) SetMatName (newMatName string) {
 		if newMatName != me.matName {
 			me.mat, me.matName = Core.Materials[newMatName], newMatName
 		}
 	}
 
-	func (me *TNode) SetMeshModelName (meshName, modelName string) {
+	func (me *Node) SetMeshModelName (meshName, modelName string) {
 		if meshName != me.meshName {
 			me.mesh, me.meshName = Core.Meshes[meshName], meshName
 			me.model, me.modelName = me.mesh.Models.Default(), ""
@@ -116,16 +116,16 @@ type TNode struct {
 		}
 	}
 
-	func (me *TNode) transform () *tTransform {
+	func (me *Node) transform () *transform {
 		return me.Transform
 	}
 
-	func (me *TNode) transformChildrenUpdateMatrices () {
+	func (me *Node) transformChildrenUpdateMatrices () {
 		for _, me.curSubNode = range me.SubNodes.M {
 			me.curSubNode.Transform.updateMatrices()
 		}
 	}
 
-	func (me *TNode) transformParent () iTransformable {
+	func (me *Node) transformParent () transformable {
 		return me.parentNode
 	}

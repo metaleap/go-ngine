@@ -8,22 +8,22 @@ import (
 	ugl "github.com/go3d/go-glutil"
 )
 
-type tMeshBufferParams struct {
+type meshBufferParams struct {
 	HugeMeshSupport, MostlyStatic, CompressTexCoords, CompressTexCoordsNeg, CompressNormals, CompressPositions bool
 	NumVerts, NumIndices int32
 }
 
-type tMeshBuffers struct {
-	bufs map[string]*TMeshBuffer
+type meshBuffers struct {
+	bufs map[string]*MeshBuffer
 }
 
-	func newMeshBuffers () *tMeshBuffers {
-		var meshBuffers = &tMeshBuffers {}
-		meshBuffers.bufs = map[string]*TMeshBuffer {}
+	func newMeshBuffers () *meshBuffers {
+		var meshBuffers = &meshBuffers {}
+		meshBuffers.bufs = map[string]*MeshBuffer {}
 		return meshBuffers
 	}
 
-	func (me *tMeshBuffers) Add (name string, params *tMeshBufferParams) (buf *TMeshBuffer, err error) {
+	func (me *meshBuffers) Add (name string, params *meshBufferParams) (buf *MeshBuffer, err error) {
 		buf = me.bufs[name]
 		if buf == nil {
 			if buf, err = newMeshBuffer(name, params); err == nil {
@@ -37,52 +37,52 @@ type tMeshBuffers struct {
 		return
 	}
 
-	func (me *tMeshBuffers) dispose () {
+	func (me *meshBuffers) dispose () {
 		for _, buf := range me.bufs { buf.dispose() }
-		me.bufs = map[string]*TMeshBuffer {}
+		me.bufs = map[string]*MeshBuffer {}
 	}
 
-	func (me *tMeshBuffers) FloatsPerVertex () int32 {
+	func (me *meshBuffers) FloatsPerVertex () int32 {
 		const numVertPosFloats, numVertTexCoordFloats, numVertNormalFloats int32 = 3, 2, 3
 		return numVertPosFloats + numVertNormalFloats + numVertTexCoordFloats
 	}
 
-	func (me *tMeshBuffers) MemSizePerIndex () int32 {
+	func (me *meshBuffers) MemSizePerIndex () int32 {
 		return 4
 	}
 
-	func (me *tMeshBuffers) MemSizePerVertex () int32 {
+	func (me *meshBuffers) MemSizePerVertex () int32 {
 		const sizePerFloat int32 = 4
 		return sizePerFloat * me.FloatsPerVertex()
 	}
 
-	func (me *tMeshBuffers) NewParams (numVerts, numIndices int32) *tMeshBufferParams {
-		var params = &tMeshBufferParams {}
+	func (me *meshBuffers) NewParams (numVerts, numIndices int32) *meshBufferParams {
+		var params = &meshBufferParams {}
 		params.MostlyStatic, params.NumIndices, params.NumVerts = true, numIndices, numVerts
 		return params
 	}
 
-	func (me *tMeshBuffers) Remove (name string) {
+	func (me *meshBuffers) Remove (name string) {
 		var buf = me.bufs[name]
 		if buf != nil { buf.dispose(); delete(me.bufs, name) }
 	}
 
-type TMeshBuffer struct {
+type MeshBuffer struct {
 	MemSizeIndices, MemSizeVertices int32
-	Params *tMeshBufferParams
+	Params *meshBufferParams
 
 	offsetBaseIndex, offsetIndices, offsetVerts int32
 	name string
-	meshes tMeshes
+	meshes meshes
 	glIbo, glVbo gl.Uint
 	glVaos map[string]gl.Uint
 }
 
-	func newMeshBuffer (name string, params *tMeshBufferParams) (buf *TMeshBuffer, err error) {
+	func newMeshBuffer (name string, params *meshBufferParams) (buf *MeshBuffer, err error) {
 		var glVao gl.Uint
-		buf = &TMeshBuffer {}
+		buf = &MeshBuffer {}
 		buf.name = name
-		buf.meshes = tMeshes {}
+		buf.meshes = meshes {}
 		buf.Params = params
 		buf.glVaos = map[string]gl.Uint {}
 		buf.MemSizeIndices = Core.MeshBuffers.MemSizePerIndex() * params.NumIndices
@@ -116,7 +116,7 @@ type TMeshBuffer struct {
 		return
 	}
 
-	func (me *TMeshBuffer) Add (mesh *TMesh) (err error) {
+	func (me *MeshBuffer) Add (mesh *Mesh) (err error) {
 		if mesh.meshBuffer != nil {
 			err = fmt.Errorf("Cannot add mesh '%v' to mesh buffer '%v': already belongs to mesh buffer '%v'.", mesh.name, me.name, mesh.meshBuffer.name)
 		} else if me.meshes.Add(mesh) != nil {
@@ -128,12 +128,12 @@ type TMeshBuffer struct {
 		return
 	}
 
-	func (me *TMeshBuffer) use () {
+	func (me *MeshBuffer) use () {
 		curMeshBuf = me
 		gl.BindVertexArray(me.glVaos[curTechnique.name()])
 	}
 
-	func (me *TMeshBuffer) dispose () {
+	func (me *MeshBuffer) dispose () {
 		for _, mesh := range me.meshes { mesh.meshBuffer, mesh.gpuSynced = nil, false }
 		gl.DeleteBuffers(1, &me.glIbo)
 		gl.DeleteBuffers(1, &me.glVbo)
@@ -142,7 +142,7 @@ type TMeshBuffer struct {
 		}
 	}
 
-	func (me *TMeshBuffer) Remove (mesh *TMesh) {
+	func (me *MeshBuffer) Remove (mesh *Mesh) {
 		if mesh.meshBuffer == me {
 			mesh.GpuDelete()
 			mesh.meshBuffer = nil

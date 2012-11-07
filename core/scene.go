@@ -1,13 +1,13 @@
 package core
 
-type tScenes map[string]*TScene
+type scenes map[string]*Scene
 
-type TScene struct {
-	RootNode *TNode
+type Scene struct {
+	RootNode *Node
 }
 
-func NewScene () *TScene {
-	var scene = &TScene {}
+func NewScene () *Scene {
+	var scene = &Scene {}
 	scene.RootNode = newNode("", "", "", nil)
 	return scene
 }

@@ -8,7 +8,7 @@ import (
 	util "github.com/metaleap/go-util"
 )
 
-type tEngineUserIO struct {
+type engineUserIO struct {
 	KeyToggleMinDelay float64
 
 	isGlfwInit, isGlfwWindow, togglePress bool
@@ -16,14 +16,14 @@ type tEngineUserIO struct {
 	keyWhich int
 }
 
-func newUserIO () *tEngineUserIO {
-	var userIO = &tEngineUserIO {}
+func newUserIO () *engineUserIO {
+	var userIO = &engineUserIO {}
 	userIO.lastToggles = map[int]float64 {}
 	userIO.KeyToggleMinDelay = 0.25
 	return userIO
 }
 
-func (me *tEngineUserIO) dispose () {
+func (me *engineUserIO) dispose () {
 	if (me.isGlfwWindow) {
 		me.isGlfwWindow = false
 		glfw.CloseWindow()
@@ -34,7 +34,7 @@ func (me *tEngineUserIO) dispose () {
 	}
 }
 
-func (me *tEngineUserIO) init (opt *tOptions, winTitle string, forceContext bool) error {
+func (me *engineUserIO) init (opt *engineOptions, winTitle string, forceContext bool) error {
 	var err error
 	if (!me.isGlfwInit) {
 		if err = glfw.Init(); err == nil {
@@ -74,16 +74,16 @@ func glfwOnWindowResize (width, height int) {
 	if (Core != nil) { Core.resizeView(width, height) }
 }
 
-func (me *tEngineUserIO) IifKeyF (key int, ifTrue, ifFalse float64) float64 {
+func (me *engineUserIO) IifKeyF (key int, ifTrue, ifFalse float64) float64 {
 	if me.KeyPressed(key) { return ifTrue }
 	return ifFalse
 }
 
-func (me *tEngineUserIO) KeyPressed (key int) bool {
+func (me *engineUserIO) KeyPressed (key int) bool {
 	return glfw.Key(key) == glfw.KeyPress
 }
 
-func (me *tEngineUserIO) KeyPressedWhich (keys ... int) int {
+func (me *engineUserIO) KeyPressedWhich (keys ... int) int {
 	for _, me.keyWhich = range keys {
 		if me.KeyPressed(me.keyWhich) {
 			return me.keyWhich
@@ -92,23 +92,23 @@ func (me *tEngineUserIO) KeyPressedWhich (keys ... int) int {
 	return 0
 }
 
-func (me *tEngineUserIO) KeysPressedAll2 (k1, k2 int) bool {
+func (me *engineUserIO) KeysPressedAll2 (k1, k2 int) bool {
 	return me.KeyPressed(k1) && me.KeyPressed(k2)
 }
 
-func (me *tEngineUserIO) KeysPressedAll3 (k1, k2, k3 int) bool {
+func (me *engineUserIO) KeysPressedAll3 (k1, k2, k3 int) bool {
 	return me.KeyPressed(k1) && me.KeyPressed(k2) && me.KeyPressed(k3)
 }
 
-func (me *tEngineUserIO) KeysPressedAny2 (k1, k2 int) bool {
+func (me *engineUserIO) KeysPressedAny2 (k1, k2 int) bool {
 	return me.KeyPressed(k1) || me.KeyPressed(k2)
 }
 
-func (me *tEngineUserIO) KeysPressedAny3 (k1, k2, k3 int) bool {
+func (me *engineUserIO) KeysPressedAny3 (k1, k2, k3 int) bool {
 	return me.KeyPressed(k1) || me.KeyPressed(k2) || me.KeyPressed(k3)
 }
 
-func (me *tEngineUserIO) KeyToggled (key int) bool {
+func (me *engineUserIO) KeyToggled (key int) bool {
 	if me.togglePress = me.KeyPressed(key); me.togglePress && ((Loop.TickNow - me.lastToggles[key]) > me.KeyToggleMinDelay) {
 		me.lastToggles[key] = Loop.TickNow
 		return true
@@ -116,14 +116,14 @@ func (me *tEngineUserIO) KeyToggled (key int) bool {
 	return false
 }
 
-func (me *tEngineUserIO) SetWinTitle (newTitle string) {
+func (me *engineUserIO) SetWinTitle (newTitle string) {
 	glfw.SetWindowTitle(newTitle)
 }
 
-func (me *tEngineUserIO) WinHeight () int {
+func (me *engineUserIO) WinHeight () int {
 	return Core.Options.winHeight
 }
 
-func (me *tEngineUserIO) WinWidth () int {
+func (me *engineUserIO) WinWidth () int {
 	return Core.Options.winWidth
 }

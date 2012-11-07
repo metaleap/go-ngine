@@ -10,19 +10,19 @@ import (
 	ugl "github.com/go3d/go-glutil"
 )
 
-type tGlShaderManager struct {
+type glShaderManager struct {
 	AllNames []string
 	AllProgs map[string]*ugl.ShaderProgram
-	AllSources *tGlShaderSources
+	AllSources *glShaderSources
 }
 
-	func newShaderManager () *tGlShaderManager {
-		var sm = &tGlShaderManager {}
+	func newShaderManager () *glShaderManager {
+		var sm = &glShaderManager {}
 		sm.AllProgs = map[string]*ugl.ShaderProgram {}
 		return sm
 	}
 
-	func (me *tGlShaderManager) dispose () {
+	func (me *glShaderManager) dispose () {
 		var doClean = func (sprog **ugl.ShaderProgram) {
 			var sp *ugl.ShaderProgram = *sprog
 			if sp != nil { sp.CleanUp(); *sprog = nil }
@@ -32,7 +32,7 @@ type tGlShaderManager struct {
 		}
 	}
 
-	func (me *tGlShaderManager) compileAll () error {
+	func (me *glShaderManager) compileAll () error {
 		var err error
 		var shaderName, shaderSrc string
 		var shaderTypeIndex int
@@ -76,19 +76,19 @@ type tGlShaderManager struct {
 		return err
 	}
 
-type tGlShaderSources struct {
+type glShaderSources struct {
 	Compute, Fragment, Geometry, TessCtl, TessEval, Vertex map[string]string
 }
 
-	func newGlShaderSources () *tGlShaderSources {
-		return &tGlShaderSources { map[string]string {}, map[string]string {}, map[string]string {}, map[string]string {}, map[string]string {}, map[string]string {} }
+	func newGlShaderSources () *glShaderSources {
+		return &glShaderSources { map[string]string {}, map[string]string {}, map[string]string {}, map[string]string {}, map[string]string {}, map[string]string {} }
 	}
 
-	func (me *tGlShaderSources) enumerate () map[gl.Enum]int {
+	func (me *glShaderSources) enumerate () map[gl.Enum]int {
 		return map[gl.Enum]int { 0: 0, gl.FRAGMENT_SHADER: 1, gl.GEOMETRY_SHADER: 2, gl.TESS_CONTROL_SHADER: 3, gl.TESS_EVALUATION_SHADER: 4, gl.VERTEX_SHADER: 5 }
 	}
 
-	func (me *tGlShaderSources) source (glShaderType gl.Enum, shaderName string) string {
+	func (me *glShaderSources) source (glShaderType gl.Enum, shaderName string) string {
 		switch glShaderType {
 		case gl.FRAGMENT_SHADER:
 			return me.Fragment[shaderName]

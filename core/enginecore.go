@@ -7,50 +7,50 @@ import (
 )
 
 var (
-	curMeshBuf *TMeshBuffer
+	curMeshBuf *MeshBuffer
 	curCanvIndex, lastCanvIndex, curIndex int
 	curMatKey, curStr string
-	curCam *TCamera
-	curCanvas *TRenderCanvas
-	curMat *TMaterial
-	curMesh *TMesh
-	curModel *TModel
-	curNode *TNode
+	curCam *Camera
+	curCanvas *RenderCanvas
+	curMat *Material
+	curMesh *Mesh
+	curModel *Model
+	curNode *Node
 	curProg, tmpProg *ugl.ShaderProgram
-	curTechnique iRenderTechnique
-	curScene *TScene
+	curTechnique renderTechnique
+	curScene *Scene
 )
 
-type tEngineCore struct {
-	AssetManager *tAssetManager
-	Canvases tRenderCanvases
+type engineCore struct {
+	AssetManager *assetManager
+	Canvases renderCanvases
 	DefaultCanvasIndex int
-	Materials tMaterials
-	MeshBuffers *tMeshBuffers
-	Meshes tMeshes
-	Options *tOptions
-	Scenes tScenes
-	Textures tTextures
+	Materials materials
+	MeshBuffers *meshBuffers
+	Meshes meshes
+	Options *engineOptions
+	Scenes scenes
+	Textures textures
 }
 
-func newEngineCore (options *tOptions) *tEngineCore {
+func newEngineCore (options *engineOptions) *engineCore {
 	initTechniques()
-	Core = &tEngineCore {}
+	Core = &engineCore {}
 	Core.Options = options
 	Core.AssetManager = newAssetManager()
 	Core.Options.DefaultTextureParams.setAgain()
-	Core.Meshes = tMeshes {}
-	Core.Materials = tMaterials {}
-	Core.Textures = tTextures {}
-	Core.Scenes = tScenes {}
-	Core.Canvases = tRenderCanvases {}
+	Core.Meshes = meshes {}
+	Core.Materials = materials {}
+	Core.Textures = textures {}
+	Core.Scenes = scenes {}
+	Core.Canvases = renderCanvases {}
 	curCanvas = Core.Canvases.Add(Core.Canvases.New(options.winWidth, options.winHeight, true))
 	curCam = curCanvas.Cameras[0]
 	Core.MeshBuffers = newMeshBuffers()
 	return Core
 }
 
-func (me *tEngineCore) Dispose () {
+func (me *engineCore) Dispose () {
 	for _, canvas := range me.Canvases { canvas.Dispose() }
 	for _, mesh := range me.Meshes { mesh.GpuDelete() }
 	for _, tex := range me.Textures { tex.GpuDelete() }
@@ -58,10 +58,10 @@ func (me *tEngineCore) Dispose () {
 	techs, Core = nil, nil
 }
 
-func (me *tEngineCore) onLoop () {
+func (me *engineCore) onLoop () {
 }
 
-func (me *tEngineCore) onRender () {
+func (me *engineCore) onRender () {
 	lastCanvIndex = len(me.Canvases) - 1
 	for curCanvIndex, curCanvas = range me.Canvases {
 		if !curCanvas.Disabled {
@@ -70,7 +70,7 @@ func (me *tEngineCore) onRender () {
 	}
 }
 
-func (me *tEngineCore) onSecTick () {
+func (me *engineCore) onSecTick () {
 	for tex, _ := range asyncTextures {
 		if (tex.img != nil) {
 			tex.GpuSync()
@@ -80,7 +80,7 @@ func (me *tEngineCore) onSecTick () {
 	}
 }
 
-func (me *tEngineCore) resizeView (viewWidth, viewHeight int) {
+func (me *engineCore) resizeView (viewWidth, viewHeight int) {
 	var defaultCanvas = me.Canvases[me.DefaultCanvasIndex]
 	me.Options.winWidth, me.Options.winHeight = viewWidth, viewHeight
 	defaultCanvas.viewWidth, defaultCanvas.viewHeight = viewWidth, viewHeight
@@ -90,12 +90,12 @@ func (me *tEngineCore) resizeView (viewWidth, viewHeight int) {
 	}
 }
 
-func (me *tEngineCore) SyncUpdates () {
+func (me *engineCore) SyncUpdates () {
 	var err error
 	for key, tex := range me.Textures {
 		if !tex.gpuSynced {
 			tex.GpuSync()
-			glLogLastError("tEngineCore.SyncUpdates(texkey=%s)", key)
+			glLogLastError("engineCore.SyncUpdates(texkey=%s)", key)
 		}
 	}
 	for _, mesh := range me.Meshes {
@@ -103,18 +103,18 @@ func (me *tEngineCore) SyncUpdates () {
 			if err = mesh.GpuUpload(); err != nil { LogError(err) }
 		}
 	}
-	glLogLastError("tEngineCore.SyncUpdates()")
+	glLogLastError("engineCore.SyncUpdates()")
 	return
 }
 
-func (me *tEngineCore) useProgram (name string) {
+func (me *engineCore) useProgram (name string) {
 	if tmpProg = glShaderMan.AllProgs[name]; tmpProg != curProg {
 		curProg = tmpProg
 		gl.UseProgram(curProg.Program)
 	}
 }
 
-func (me *tEngineCore) useTechnique (technique iRenderTechnique) {
+func (me *engineCore) useTechnique (technique renderTechnique) {
 	if technique != curTechnique {
 		curMeshBuf = nil
 		curTechnique = technique

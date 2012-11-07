@@ -10,9 +10,9 @@ import (
 )
 
 var (
-	floor, pyr, box *ngine.TNode
-	crates [3]*ngine.TNode
-	pyramids [4]*ngine.TNode
+	floor, pyr, box *ngine.Node
+	crates [3]*ngine.Node
+	pyramids [4]*ngine.Node
 	i int
 	f float64
 )
@@ -51,8 +51,8 @@ func onLoop () {
 
 func LoadSampleScene_03_PyrsCubes () {
 	var err error
-	var meshFloor, meshPyr, meshCube *ngine.TMesh
-	var bufFloor, bufRest *ngine.TMeshBuffer
+	var meshFloor, meshPyr, meshCube *ngine.Mesh
+	var bufFloor, bufRest *ngine.MeshBuffer
 	var str string
 
 	ngine.Loop.OnLoop = onLoop

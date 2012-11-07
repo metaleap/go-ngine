@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	floor *ngine.TNode
+	floor *ngine.Node
 )
 
 func main () {
@@ -20,8 +20,8 @@ func onLoop () {
 
 func LoadSampleScene_04_ColladaCube () {
 	var err error
-	var meshFloor *ngine.TMesh
-	var bufRest *ngine.TMeshBuffer
+	var meshFloor *ngine.Mesh
+	var bufRest *ngine.MeshBuffer
 
 	ngine.Loop.OnLoop = onLoop
 	ngine.Core.Canvases[0].Cameras[0].Options.BackfaceCulling = false

@@ -4,44 +4,44 @@ import (
 	gl "github.com/chsc/gogl/gl42"
 )
 
-type tMeshFace3 [3]tVe
+type meshFace3 [3]ve
 
-type tVa2 [2]gl.Float
+type va2 [2]gl.Float
 
-type tVa3 [3]gl.Float
+type va3 [3]gl.Float
 
-type tVe struct {
+type ve struct {
 	posIndex, texCoordIndex, normalIndex gl.Uint
 }
 
-type tMeshData struct {
-	positions []tVa3
-	texCoords []tVa2
-	normals []tVa3
-	faces []tMeshFace3
+type meshData struct {
+	positions []va3
+	texCoords []va2
+	normals []va3
+	faces []meshFace3
 }
 
-	func newMeshData () *tMeshData {
-		var raw = &tMeshData {}
-		raw.positions = []tVa3 {}
-		raw.texCoords = []tVa2 {}
-		raw.normals = []tVa3 {}
-		raw.faces = []tMeshFace3 {}
+	func newMeshData () *meshData {
+		var raw = &meshData {}
+		raw.positions = []va3 {}
+		raw.texCoords = []va2 {}
+		raw.normals = []va3 {}
+		raw.faces = []meshFace3 {}
 		return raw
 	}
 
-	func (me *tMeshData) addFaces (faces ... tMeshFace3) {
+	func (me *meshData) addFaces (faces ... meshFace3) {
 		me.faces = append(me.faces, faces ...)
 	}
 
-	func (me *tMeshData) addPositions (positions ... tVa3) {
+	func (me *meshData) addPositions (positions ... va3) {
 		me.positions = append(me.positions, positions ...)
 	}
 
-	func (me *tMeshData) addNormals (normals ... tVa3) {
+	func (me *meshData) addNormals (normals ... va3) {
 		me.normals = append(me.normals, normals ...)
 	}
 
-	func (me *tMeshData) addTexCoords (texCoords ... tVa2) {
+	func (me *meshData) addTexCoords (texCoords ... va2) {
 		me.texCoords = append(me.texCoords, texCoords ...)
 	}
