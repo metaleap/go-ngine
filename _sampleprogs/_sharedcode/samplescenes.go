@@ -34,7 +34,7 @@ var (
 )
 
 func AssetRootDirPath () string {
-	return util.BaseCodePath("go-ngine", "_sampleprogs", "_sharedassets")
+	return util.BaseCodePath("go3d", "go-ngine", "_sampleprogs", "_sharedassets")
 }
 
 func CheckCamCtlKeys () {

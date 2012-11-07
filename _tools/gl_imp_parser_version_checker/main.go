@@ -72,7 +72,7 @@ func inSlice (slice []string, val string) bool {
 
 func loadSpecXml () {
 	specDoc = xmlx.New()
-	if err := specDoc.LoadBytes(uio.ReadBinaryFile(util.BaseCodePath("go-ngine", "_tools", "gl_imp_parser_version_checker", "opengl.xml"), true), nil); err != nil {
+	if err := specDoc.LoadBytes(uio.ReadBinaryFile(util.BaseCodePath("go3d", "go-ngine", "_tools", "gl_imp_parser_version_checker", "opengl.xml"), true), nil); err != nil {
 		panic(err)
 	}
 }
@@ -83,7 +83,7 @@ func main() {
 	var ver, kind string
 	var verList []string
 	var gni *glNameInfo
-	uio.WalkDirectory(util.BaseCodePath(), ".go", checkGoFile, true)
+	uio.WalkDirectory(util.BaseCodePath("go3d"), ".go", checkGoFile, true)
 	for glName, _ := range glNames {
 		kind, ver = "", ""
 		for _, enode := range enumNodes { if enode.As("*", "name") == glName { ver, kind = enode.As("*", "version"), "enum" } }
