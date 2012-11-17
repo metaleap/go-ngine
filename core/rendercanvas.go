@@ -21,15 +21,9 @@ Canvas 3: screen
 
 type renderCanvases []*RenderCanvas
 
-	func (me renderCanvases) New (viewWidth, viewHeight int, addCam bool) *RenderCanvas {
-		var canvas = &RenderCanvas {}
-		canvas.viewWidth, canvas.viewHeight = viewWidth, viewHeight
-		if addCam {
-			canvas.Cameras = []*Camera { NewCamera(canvas, Core.Options.DefaultRenderTechnique) }
-		} else {
-			canvas.Cameras = []*Camera {}
-		}
-		return canvas
+	func (me renderCanvases) New (viewWidth, viewHeight int) (rc *RenderCanvas) {
+		rc = newRenderCanvas(viewWidth, viewHeight)
+		return
 	}
 
 	func (me *renderCanvases) Add (canvas *RenderCanvas) *RenderCanvas {
@@ -49,22 +43,33 @@ type renderCanvases []*RenderCanvas
 	}
 
 type RenderCanvas struct {
-	Cameras  []*Camera
 	Disabled bool
 
+	camIDs []string
+	cams []*Camera
 	viewWidth, viewHeight int
 }
 
+func newRenderCanvas (viewWidth, viewHeight int) (me *RenderCanvas) {
+	me = &RenderCanvas {}
+	me.viewWidth, me.viewHeight = viewWidth, viewHeight
+	return
+}
+
 func (me *RenderCanvas) Dispose() {
-	for _, cam := range me.Cameras {
-		cam.Dispose()
-	}
 }
 
 func (me *RenderCanvas) render() {
-	for _, curCam = range me.Cameras {
+	for _, curCam = range me.cams {
 		if !curCam.Disabled {
 			curCam.render()
 		}
+	}
+}
+
+func (me *RenderCanvas) SetCameraIDs (camIDs ... string) {
+	me.camIDs, me.cams = camIDs, make([]*Camera, len(camIDs))
+	for i, camID := range me.camIDs {
+		me.cams[i] = Core.Cameras[camID]
 	}
 }

@@ -2,6 +2,8 @@ package core
 
 import (
 	gl "github.com/chsc/gogl/gl42"
+
+	nga "github.com/go3d/go-ngine/assets"
 )
 
 type subNodes struct {
@@ -50,9 +52,9 @@ type subNodes struct {
 type Node struct {
 	Disabled bool
 	SubNodes *subNodes
-	Transform *transform
+	NodeTransform *transform
 
-	mat *Material
+	mat *nga.Material
 	mesh *Mesh
 	model *Model
 	curKey, matName, meshName, modelName, name string
@@ -65,11 +67,11 @@ type Node struct {
 		node.parentNode = parent
 		node.SubNodes = newSubNodes(node)
 		node.SetMeshModelName(meshName, modelName)
-		node.Transform = newTransform(node)
+		node.NodeTransform = newTransform(node)
 		return node
 	}
 
-	func (me *Node) Material () *Material {
+	func (me *Node) Material () *nga.Material {
 		if me.mat != nil { return me.mat }
 		return me.model.mat
 	}
@@ -91,7 +93,7 @@ type Node struct {
 			curNode, curMesh, curModel = me, me.mesh, me.model
 			if (me.model != nil) {
 				curTechnique.onRenderNode()
-				gl.UniformMatrix4fv(curProg.UnifLocs["uMatModelView"], 1, gl.FALSE, &me.Transform.glMatModelView[0])
+				gl.UniformMatrix4fv(curProg.UnifLocs["uMatModelView"], 1, gl.FALSE, &me.NodeTransform.glMatModelView[0])
 				me.model.render()
 			}
 			for me.curKey, me.curSubNode = range me.SubNodes.M {
@@ -102,7 +104,7 @@ type Node struct {
 
 	func (me *Node) SetMatName (newMatName string) {
 		if newMatName != me.matName {
-			me.mat, me.matName = Core.Materials[newMatName], newMatName
+			me.mat, me.matName = nga.Materials[newMatName], newMatName
 		}
 	}
 
@@ -116,16 +118,16 @@ type Node struct {
 		}
 	}
 
-	func (me *Node) transform () *transform {
-		return me.Transform
+	func (me *Node) Transform () *nga.OldTransforms {
+		return &me.NodeTransform.OldTransforms
 	}
 
-	func (me *Node) transformChildrenUpdateMatrices () {
+	func (me *Node) ChildrenUpdateMatrices () {
 		for _, me.curSubNode = range me.SubNodes.M {
-			me.curSubNode.Transform.updateMatrices()
+			me.curSubNode.NodeTransform.OldTransforms.UpdateMatrices()
 		}
 	}
 
-	func (me *Node) transformParent () transformable {
+	func (me *Node) Parent () nga.Transformable {
 		return me.parentNode
 	}

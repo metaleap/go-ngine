@@ -1,5 +1,9 @@
 package core
 
+import (
+	nga "github.com/go3d/go-ngine/assets"
+)
+
 type models map[string]*Model
 
 	func (me models) Default () *Model {
@@ -7,7 +11,7 @@ type models map[string]*Model
 	}
 
 type Model struct {
-	mat *Material
+	mat *nga.Material
 	matName string
 	mesh *Mesh
 	name string
@@ -37,5 +41,5 @@ func (me *Model) render () {
 }
 
 func (me *Model) SetMatName (newMatName string) {
-	if newMatName != me.matName { me.mat, me.matName = Core.Materials[newMatName], newMatName }
+	if newMatName != me.matName { me.mat, me.matName = nga.Materials[newMatName], newMatName }
 }

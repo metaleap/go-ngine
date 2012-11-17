@@ -6,6 +6,8 @@ import (
 	gl "github.com/chsc/gogl/gl42"
 
 	ugl "github.com/go3d/go-glutil"
+
+	nga "github.com/go3d/go-ngine/assets"
 )
 
 type meshes map[string]*Mesh
@@ -22,8 +24,8 @@ type meshes map[string]*Mesh
 		for _, m := range meshes { me.Add(m) }
 	}
 
-	func (me meshes) Load (name string, provider MeshProvider, args ... interface {}) (mesh *Mesh, err error) {
-		var meshData *meshData
+	func (me meshes) Load (name string, provider nga.MeshProvider, args ... interface {}) (mesh *Mesh, err error) {
+		var meshData *nga.MeshData
 		mesh = me.New(name)
 		if meshData, err = provider(args ...); err == nil {
 			mesh.load(meshData)
@@ -40,28 +42,13 @@ type meshes map[string]*Mesh
 		return mesh
 	}
 
-type meshRaw struct {
-	verts []gl.Float
-	indices []gl.Uint
-	faces []*meshFace
-}
-
-type meshFace struct {
-	entries [3]gl.Uint
-}
-
-	func newMeshFace () *meshFace {
-		var face = &meshFace {}
-		return face
-	}
-
 type Mesh struct {
 	Models models
 
 	name string
 	meshBuffer *MeshBuffer
 	meshBufOffsetBaseIndex, meshBufOffsetIndices, meshBufOffsetVerts int32
-	raw *meshRaw
+	raw *nga.MeshRaw
 	gpuSynced bool
 }
 
@@ -72,7 +59,7 @@ type Mesh struct {
 	}
 
 	func (me *Mesh) GpuUpload () (err error) {
-		var sizeVerts, sizeIndices = gl.Sizeiptr(4 * len(me.raw.verts)), gl.Sizeiptr(4 * len(me.raw.indices))
+		var sizeVerts, sizeIndices = gl.Sizeiptr(4 * len(me.raw.Verts)), gl.Sizeiptr(4 * len(me.raw.Indices))
 		me.GpuDelete()
 
 		if sizeVerts > gl.Sizeiptr(me.meshBuffer.MemSizeVertices) {
@@ -84,11 +71,11 @@ type Mesh struct {
 			fmt.Printf("Upload %v at voff=%v ioff=%v boff=%v\n", me.name, me.meshBufOffsetVerts, me.meshBufOffsetIndices, me.meshBufOffsetBaseIndex)
 			gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.meshBuffer.glIbo)
 			gl.BindBuffer(gl.ARRAY_BUFFER, me.meshBuffer.glVbo)
-			gl.BufferSubData(gl.ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetVerts), sizeVerts, gl.Pointer(&me.raw.verts[0]))
+			gl.BufferSubData(gl.ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetVerts), sizeVerts, gl.Pointer(&me.raw.Verts[0]))
 			me.meshBuffer.offsetVerts += int32(sizeVerts)
-			gl.BufferSubData(gl.ELEMENT_ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetIndices), sizeIndices, gl.Pointer(&me.raw.indices[0]))
+			gl.BufferSubData(gl.ELEMENT_ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetIndices), sizeIndices, gl.Pointer(&me.raw.Indices[0]))
 			me.meshBuffer.offsetIndices += int32(sizeIndices)
-			me.meshBuffer.offsetBaseIndex += int32(len(me.raw.indices))
+			me.meshBuffer.offsetBaseIndex += int32(len(me.raw.Indices))
 			gl.BindBuffer(gl.ARRAY_BUFFER, 0)
 			gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
 			if err = ugl.LastError("mesh[%v].GpuUpload()", me.name); err == nil { me.gpuSynced = true }
@@ -100,46 +87,46 @@ type Mesh struct {
 		return me.gpuSynced
 	}
 
-	func (me *Mesh) load (meshData *meshData) {
-		var numVerts = 3 * int32(len(meshData.faces))
+	func (me *Mesh) load (meshData *nga.MeshData) {
+		var numVerts = 3 * int32(len(meshData.Faces))
 		var numFinalVerts = 0
-		var vertsMap = map[ve]gl.Uint {}
-		var offsetFloat, offsetIndex, offsetVertex, vindex gl.Uint
+		var vertsMap = map[nga.Vert]uint32 {}
+		var offsetFloat, offsetIndex, offsetVertex, vindex uint32
 		var offsetFace, ei = 0, 0
-		var face meshFace3
-		var ventry ve
+		var face nga.MeshFace3
+		var ventry nga.Vert
 		var vexists bool
 		var vreuse int
 		me.Models = models {}
 		me.gpuSynced = false
-		me.raw = &meshRaw {}
-		me.raw.verts = make([]gl.Float, Core.MeshBuffers.FloatsPerVertex() * numVerts)
-		me.raw.indices = make([]gl.Uint, numVerts)
-		me.raw.faces = make([]*meshFace, len(meshData.faces))
-		for _, face = range meshData.faces {
-			me.raw.faces[offsetFace] = newMeshFace()
+		me.raw = &nga.MeshRaw {}
+		me.raw.Verts = make([]float32, Core.MeshBuffers.FloatsPerVertex() * numVerts)
+		me.raw.Indices = make([]uint32, numVerts)
+		me.raw.Faces = make([]*nga.MeshFace, len(meshData.Faces))
+		for _, face = range meshData.Faces {
+			me.raw.Faces[offsetFace] = nga.NewMeshFace()
 			for ei, ventry = range face {
 				if vindex, vexists = vertsMap[ventry]; !vexists {
 					vindex, vertsMap[ventry] = offsetVertex, offsetVertex
-					copy(me.raw.verts[offsetFloat : (offsetFloat + 3)], meshData.positions[ventry.posIndex][0 : 3])
+					copy(me.raw.Verts[offsetFloat : (offsetFloat + 3)], meshData.Positions[ventry.PosIndex][0 : 3])
 					offsetFloat += 3
-					copy(me.raw.verts[offsetFloat : (offsetFloat + 2)], meshData.texCoords[ventry.texCoordIndex][0 : 2])
+					copy(me.raw.Verts[offsetFloat : (offsetFloat + 2)], meshData.TexCoords[ventry.TexCoordIndex][0 : 2])
 					offsetFloat += 2
-					copy(me.raw.verts[offsetFloat : (offsetFloat + 3)], meshData.normals[ventry.normalIndex][0 : 3])
+					copy(me.raw.Verts[offsetFloat : (offsetFloat + 3)], meshData.Normals[ventry.NormalIndex][0 : 3])
 					offsetFloat += 3
 					offsetVertex++
 					numFinalVerts++
 				} else {
 					vreuse++
 				}
-				me.raw.indices[offsetIndex] = vindex
-				me.raw.faces[offsetFace].entries[ei] = offsetIndex
+				me.raw.Indices[offsetIndex] = vindex
+				me.raw.Faces[offsetFace].Entries[ei] = offsetIndex
 				offsetIndex++
 			}
 			offsetFace++
 		}
 		me.Models[""] = newModel("", me)
-		fmt.Printf("meshload(%v) gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)\n", me.name, len(me.raw.faces), len(me.raw.verts), numFinalVerts, numVerts, len(me.raw.indices), vreuse)
+		fmt.Printf("meshload(%v) gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)\n", me.name, len(me.raw.Faces), len(me.raw.Verts), numFinalVerts, numVerts, len(me.raw.Indices), vreuse)
 	}
 
 	func (me *Mesh) Loaded () bool {
@@ -149,8 +136,8 @@ type Mesh struct {
 	func (me *Mesh) render () {
 		if curMeshBuf != me.meshBuffer { me.meshBuffer.use() }
 		curTechnique.onRenderMesh()
-		gl.DrawElementsBaseVertex(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Offset(nil, uintptr(me.meshBufOffsetIndices)), gl.Int(me.meshBufOffsetBaseIndex))
-//		gl.DrawElements(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Pointer(nil))
+		gl.DrawElementsBaseVertex(gl.TRIANGLES, gl.Sizei(len(me.raw.Indices)), gl.UNSIGNED_INT, gl.Offset(nil, uintptr(me.meshBufOffsetIndices)), gl.Int(me.meshBufOffsetBaseIndex))
+//		gl.DrawElements(gl.TRIANGLES, gl.Sizei(len(me.raw.Indices)), gl.UNSIGNED_INT, gl.Pointer(nil))
 	}
 
 	func (me *Mesh) Unload () {

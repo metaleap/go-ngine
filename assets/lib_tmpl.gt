@@ -1,0 +1,58 @@
+package gt
+
+var (
+	All__T__Libs = Libs__T__ {}
+	__T__s = All__T__Libs.AddNew("")
+)
+
+type Libs__T__ map[string]*Lib__T__s
+
+	func (me Libs__T__) AddNew (id string) (lib *Lib__T__s) {
+		if me[id] != nil { return }
+		lib = me.New(id)
+		me[id] = lib
+		return
+	}
+
+	func (me Libs__T__) New (id string) (lib *Lib__T__s) {
+		lib = newLib__T__s(id)
+		return
+	}
+
+type Lib__T__s struct {
+	baseLib
+	M map[string]*__T__
+}
+
+	func newLib__T__s (id string) (me *Lib__T__s) {
+		me = &Lib__T__s {}
+		me.base.init(id)
+		me.M = map[string]*__T__ {}
+		return
+	}
+
+	func (me *Lib__T__s) Add (def *__T__) *__T__ {
+		if me.M[def.ID] != nil { return nil }
+		me.M[def.ID] = def
+		return def
+	}
+
+	func (me *Lib__T__s) AddNew (id string) (nd *__T__) {
+		if me.M[id] != nil { return }
+		nd = me.New(id)
+		me.M[id] = nd
+		return
+	}
+
+	func (me *Lib__T__s) Get (id string) *__T__ {
+		return me.M[id]
+	}
+
+	func (me *Lib__T__s) New (id string) (d *__T__) {
+		d = new__T__(id)
+		return
+	}
+
+	func (me *Lib__T__s) Remove (id string) {
+		delete(me.M, id)
+	}

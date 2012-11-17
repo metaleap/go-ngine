@@ -4,6 +4,8 @@ import (
 	gl "github.com/chsc/gogl/gl42"
 
 	ugl "github.com/go3d/go-glutil"
+
+	nga "github.com/go3d/go-ngine/assets"
 )
 
 var (
@@ -12,7 +14,7 @@ var (
 	curMatKey, curStr string
 	curCam *Camera
 	curCanvas *RenderCanvas
-	curMat *Material
+	curMat *nga.Material
 	curMesh *Mesh
 	curModel *Model
 	curNode *Node
@@ -23,9 +25,9 @@ var (
 
 type engineCore struct {
 	AssetManager *assetManager
+	Cameras cameras
 	Canvases renderCanvases
 	DefaultCanvasIndex int
-	Materials materials
 	MeshBuffers *meshBuffers
 	Meshes meshes
 	Options *engineOptions
@@ -40,17 +42,18 @@ func newEngineCore (options *engineOptions) *engineCore {
 	Core.AssetManager = newAssetManager()
 	Core.Options.DefaultTextureParams.setAgain()
 	Core.Meshes = meshes {}
-	Core.Materials = materials {}
 	Core.Textures = textures {}
 	Core.Scenes = scenes {}
+	Core.Cameras = cameras {}
 	Core.Canvases = renderCanvases {}
-	curCanvas = Core.Canvases.Add(Core.Canvases.New(options.winWidth, options.winHeight, true))
-	curCam = curCanvas.Cameras[0]
+	curCanvas = Core.Canvases.Add(Core.Canvases.New(options.winWidth, options.winHeight))
+	curCanvas.SetCameraIDs("")
 	Core.MeshBuffers = newMeshBuffers()
 	return Core
 }
 
 func (me *engineCore) Dispose () {
+	for _, cam := range me.Cameras { cam.Dispose() }
 	for _, canvas := range me.Canvases { canvas.Dispose() }
 	for _, mesh := range me.Meshes { mesh.GpuDelete() }
 	for _, tex := range me.Textures { tex.GpuDelete() }
@@ -84,10 +87,15 @@ func (me *engineCore) resizeView (viewWidth, viewHeight int) {
 	var defaultCanvas = me.Canvases[me.DefaultCanvasIndex]
 	me.Options.winWidth, me.Options.winHeight = viewWidth, viewHeight
 	defaultCanvas.viewWidth, defaultCanvas.viewHeight = viewWidth, viewHeight
-	for _, cam := range defaultCanvas.Cameras {
-		cam.ViewPort.update()
-		cam.updatePerspective()
+	for _, cam := range me.Cameras {
+		cam.ViewPort.Update()
+		cam.UpdatePerspective()
 	}
+}
+
+func (me *engineCore) SyncAssetDefs () {
+	me.Cameras.SyncAssetDefs()
+	curCanvas.SetCameraIDs("")
 }
 
 func (me *engineCore) SyncUpdates () {

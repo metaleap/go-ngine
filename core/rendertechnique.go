@@ -4,11 +4,13 @@ import (
 	gl "github.com/chsc/gogl/gl42"
 
 	ugl "github.com/go3d/go-glutil"
+
+	nga "github.com/go3d/go-ngine/assets"
 )
 
 var (
 	techs map[string]renderTechnique
-	tmpMat *Material
+	tmpMat *nga.Material
 )
 
 type techniqueCtor func (string) renderTechnique
@@ -93,7 +95,7 @@ type techniqueUnlitTextured struct {
 		if tmpMat = curNode.Material(); tmpMat != curMat {
 			if curMat = tmpMat; curMat != nil {
 				gl.ActiveTexture(gl.TEXTURE0)
-				gl.BindTexture(gl.TEXTURE_2D, Core.Textures[curMat.texName].glTex)
+				gl.BindTexture(gl.TEXTURE_2D, Core.Textures[curMat.TexName].glTex)
 				gl.Uniform1i(curProg.UnifLocs["uTex0"], 0)
 			}
 		}

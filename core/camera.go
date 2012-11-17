@@ -5,48 +5,57 @@ import (
 
 	ugl "github.com/go3d/go-glutil"
 	unum "github.com/metaleap/go-util/num"
+
+	nga "github.com/go3d/go-ngine/assets"
 )
 
+type cameras map[string]*Camera
+
+	func (me cameras) New (id, technique string) (cam *Camera) {
+		cam = newCamera(id, technique)
+		return
+	}
+
+	func (me cameras) Add (cam *Camera) (c *Camera) {
+		if me[cam.ID] == nil { c, me[cam.ID] = cam, cam }
+		return
+	}
+
+	func (me cameras) SyncAssetDefs () {
+		var cam *Camera
+		for cID, cDef := range nga.CameraDefs.M {
+			if cam = me[cID]; cam == nil {
+				cam = me.Add(me.New(cID, Core.Options.DefaultRenderTechnique))
+			}
+			cam.setDef(cDef)
+		}
+	}
+
 type Camera struct {
+	ViewPort *CameraViewPort
+	MatProj *unum.Mat4
+	Options *CameraOptions
 	Controller *Controller
 	Disabled bool
-	Options *cameraOptions
-	SceneName string
-	ViewPort *camViewPort
+	ID, SceneName string
 
+	def *nga.CameraDef
 	technique renderTechnique
-	canvas *RenderCanvas
-	nearPlane, farPlane, fieldOfView float64
-	matProj *unum.Mat4
 	glMatProj *ugl.GlMat4
 }
 
-	func NewCamera (parentCanvas *RenderCanvas, technique string) *Camera {
-		var cam = &Camera {}
-		cam.Options = newCameraOptions(cam)
-		cam.SetTechnique(technique)
-		cam.canvas = parentCanvas
-		cam.matProj = &unum.Mat4 {}
-		cam.glMatProj = &ugl.GlMat4 {}
-		cam.ViewPort = newViewPort(cam)
-		cam.SetPerspective(0.3, 30000, 45)
-		cam.Controller = newController()
-		return cam
+	func newCamera (id string, technique string) (me *Camera) {
+		me = &Camera { ID: id }
+		me.Options = newCameraOptions()
+		me.MatProj = &unum.Mat4 {}
+		me.glMatProj = &ugl.GlMat4 {}
+		me.SetTechnique(technique)
+		me.Controller = newController()
+		me.ViewPort = newCameraViewPort(me)
+		return
 	}
 
 	func (me *Camera) Dispose () {
-	}
-
-	func (me *Camera) FarPlane () float64 {
-		return me.farPlane
-	}
-
-	func (me *Camera) FieldOfView () float64 {
-		return me.fieldOfView
-	}
-
-	func (me *Camera) NearPlane () float64 {
-		return me.nearPlane
 	}
 
 	func (me *Camera) render () {
@@ -56,14 +65,14 @@ type Camera struct {
 		gl.UniformMatrix4fv(curProg.UnifLocs["uMatCam"], 1, gl.FALSE, &me.Controller.glMat[0])
 		gl.UniformMatrix4fv(curProg.UnifLocs["uMatProj"], 1, gl.FALSE, &me.glMatProj[0])
 		me.technique.onPreRender()
-		gl.Viewport(me.ViewPort.glX, me.ViewPort.glY, me.ViewPort.glW, me.ViewPort.glH)
+		gl.Viewport(me.ViewPort.glVpX, me.ViewPort.glVpY, me.ViewPort.glVpW, me.ViewPort.glVpH)
 		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 		curScene.RootNode.render()
 	}
 
-	func (me *Camera) SetPerspective (nearPlane, farPlane, fieldOfView float64) {
-		me.nearPlane, me.farPlane, me.fieldOfView = nearPlane, farPlane, fieldOfView
-		me.updatePerspective()
+	func (me *Camera) setDef (camDef *nga.CameraDef) {
+		me.def = camDef
+		me.UpdatePerspective()
 	}
 
 	func (me *Camera) SetTechnique (name string) {
@@ -82,43 +91,42 @@ type Camera struct {
 		if tech != nil { me.technique = tech }
 	}
 
-	func (me *Camera) updatePerspective () {
-		me.matProj.Perspective(me.fieldOfView, me.ViewPort.aspect, me.nearPlane, me.farPlane)
-		me.glMatProj.Load(me.matProj)
+	func (me *Camera) UpdatePerspective () {
+		me.MatProj.Perspective(me.def.FovOrMagX, me.def.FovOrMagY, me.ViewPort.aspect, me.def.ZnearPlane, me.def.ZfarPlane)
+		me.glMatProj.Load(me.MatProj)
 	}
 
-type camViewPort struct {
-	absolute bool
-	camera *Camera
-	glX, glY gl.Int
-	glW, glH gl.Sizei
-	relX, relY, relW, relH float64
-	absX, absY, absW, absH int
+type CameraViewPort struct {
+	Absolute bool
+	RelX, RelY, RelW, RelH float64
+	AbsX, AbsY, AbsW, AbsH int
 	aspect float64
+	cam *Camera
+	glVpX, glVpY gl.Int
+	glVpW, glVpH gl.Sizei
 }
 
-	func newViewPort (cam *Camera) *camViewPort {
-		var vp = &camViewPort {}
-		vp.camera = cam
-		vp.SetRel(0, 0, 1, 1)
-		return vp
+	func newCameraViewPort (cam *Camera) (me *CameraViewPort) {
+		me = &CameraViewPort { cam: cam }
+		me.SetRel(0, 0, 1, 1)
+		return
 	}
 
-	func (me *camViewPort) SetAbs (x, y, width, height int) {
-		me.absolute, me.absX, me.absY, me.absW, me.absH = true, x, y, width, height
-		me.update()
+	func (me *CameraViewPort) SetAbs (x, y, width, height int) {
+		me.Absolute, me.AbsX, me.AbsY, me.AbsW, me.AbsH = true, x, y, width, height
+		me.Update()
 	}
 
-	func (me *camViewPort) SetRel (x, y, width, height float64) {
-		me.absolute, me.relX, me.relY, me.relW, me.relH = false, x, y, width, height
-		me.update()
+	func (me *CameraViewPort) SetRel (x, y, width, height float64) {
+		me.Absolute, me.RelX, me.RelY, me.RelW, me.RelH = false, x, y, width, height
+		me.Update()
 	}
 
-	func (me *camViewPort) update () {
-		if !me.absolute {
-			me.absW, me.absH = int(me.relW * float64(me.camera.canvas.viewWidth)), int(me.relH * float64(me.camera.canvas.viewHeight))
-			me.absX, me.absY = int(me.relX * float64(me.camera.canvas.viewWidth)), int(me.relY * float64(me.camera.canvas.viewHeight))
+	func (me *CameraViewPort) Update () {
+		if !me.Absolute {
+			me.AbsW, me.AbsH = int(me.RelW * float64(curCanvas.viewWidth)), int(me.RelH * float64(curCanvas.viewHeight))
+			me.AbsX, me.AbsY = int(me.RelX * float64(curCanvas.viewWidth)), int(me.RelY * float64(curCanvas.viewHeight))
 		}
-		me.glX, me.glY, me.glW, me.glH = gl.Int(me.absX), gl.Int(me.absY), gl.Sizei(me.absW), gl.Sizei(me.absH)
-		me.aspect = float64(me.absW) / float64(me.absH)
+		me.glVpX, me.glVpY, me.glVpW, me.glVpH = gl.Int(me.AbsX), gl.Int(me.AbsY), gl.Sizei(me.AbsW), gl.Sizei(me.AbsH)
+		me.aspect = float64(me.AbsW) / float64(me.AbsH)
 	}
