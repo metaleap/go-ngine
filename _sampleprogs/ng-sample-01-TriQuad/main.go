@@ -4,7 +4,6 @@ import (
 	"math"
 
 	ng "github.com/go3d/go-ngine/core"
-	nga "github.com/go3d/go-ngine/assets"
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
 )
 
@@ -19,14 +18,14 @@ func main () {
 
 func onLoop () {
 	ngsamples.CheckToggleKeys()
-	tri.NodeTransform.Rot.X -= 0.005
-	tri.NodeTransform.Rot.Y -= 0.005
-	tri.NodeTransform.Pos.Set(-3.75, 1 * math.Sin(ng.Loop.TickNow), 1)
-	tri.NodeTransform.OnPosRotChanged()
-	quad.NodeTransform.Rot.Y += 0.0001
-	quad.NodeTransform.Rot.Z += 0.0001
-	quad.NodeTransform.Pos.Set(-4.125, 1 * math.Cos(ng.Loop.TickNow), 0)
-	quad.NodeTransform.OnPosRotChanged()
+	tri.Transform.Rot.X -= 0.005
+	tri.Transform.Rot.Y -= 0.005
+	tri.Transform.Pos.Set(-3.75, 1 * math.Sin(ng.Loop.TickNow), 1)
+	tri.Transform.OnPosRotChanged()
+	quad.Transform.Rot.Y += 0.0001
+	quad.Transform.Rot.Z += 0.0001
+	quad.Transform.Pos.Set(-4.125, 1 * math.Cos(ng.Loop.TickNow), 0)
+	quad.Transform.OnPosRotChanged()
 }
 
 func LoadSampleScene_01_TriQuad () {
@@ -42,8 +41,8 @@ func LoadSampleScene_01_TriQuad () {
 	ng.Core.Textures["tex_cat"] = ng.Core.Textures.Load(ng.TextureProviders.LocalFile, "tex/cat.png")
 	ng.Core.Textures["tex_dog"] = ng.Core.Textures.Load(ng.TextureProviders.LocalFile, "tex/dog.png")
 
-	nga.Materials["mat_cat"] = nga.Materials.New("tex_cat")
-	nga.Materials["mat_dog"] = nga.Materials.New("tex_dog")
+	ng.Core.Materials["mat_cat"] = ng.Core.Materials.New("tex_cat")
+	ng.Core.Materials["mat_dog"] = ng.Core.Materials.New("tex_dog")
 
 	//	meshes / models
 

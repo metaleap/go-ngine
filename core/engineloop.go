@@ -8,19 +8,21 @@ import (
 	glfw "github.com/go-gl/glfw"
 )
 
-type engineLoop struct {
+//	Consider EngineLoop a "Singleton" type, only valid use is the Loop global variable.
+//	Manages your main-thread's "game loop".
+type EngineLoop struct {
 	IsLooping bool
 	SecTickLast, TickNow, TickLast, TickDelta float64
 	OnLoop, OnSecTick func()
 }
 
-func newEngineLoop () *engineLoop {
-	var loop = &engineLoop {}
+func newEngineLoop () *EngineLoop {
+	var loop = &EngineLoop {}
 	loop.OnSecTick, loop.OnLoop = func () {}, func () {}
 	return loop
 }
 
-func (me *engineLoop) Loop () {
+func (me *EngineLoop) Loop () {
 	var tickNowFloor float64
 	if (!me.IsLooping) {
 		me.IsLooping = true
@@ -56,10 +58,10 @@ func (me *engineLoop) Loop () {
 	}
 }
 
-func (me *engineLoop) Stop () {
+func (me *EngineLoop) Stop () {
 	me.IsLooping = false
 }
 
-func (me *engineLoop) Time () float64 {
+func (me *EngineLoop) Time () float64 {
 	return glfw.Time()
 }

@@ -9,6 +9,7 @@ type meshProviders struct {
 }
 
 var (
+	//	A collection of all "mesh providers" known to go:ngine.
 	MeshProviders = &meshProviders { meshProviderPrefabCube, meshProviderPrefabPlane, meshProviderPrefabPyramid, meshProviderPrefabQuad, meshProviderPrefabTri }
 )
 

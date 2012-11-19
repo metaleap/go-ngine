@@ -6,7 +6,9 @@ import (
 	ugl "github.com/go3d/go-glutil"
 )
 
-type engineOptions struct {
+//	Consider EngineOptions a "Singleton" type, only valid use is the one instance you created for core.Init().
+//	Various "global" (rather than use-case-specific) options.
+type EngineOptions struct {
 	AssetRootDirPath, DefaultRenderTechnique string
 	DefaultTextureParams *textureParams
 	GpuMemMeshes, GpuMemTextures uint
@@ -16,8 +18,9 @@ type engineOptions struct {
 	winHeight, winSwapInterval, winWidth int
 }
 
-func NewOptions (assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) *engineOptions {
-	var opt = &engineOptions {}
+//	Allocates, initializes and returns a new core.EngineOptions instance.
+func NewEngineOptions (assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) *EngineOptions {
+	var opt = &EngineOptions {}
 	opt.glClearColor = ugl.GlVec4 { 0, 0, 0, 1 }
 	opt.DefaultTextureParams = newTextureParams(true, 6)
 	opt.AssetRootDirPath, opt.DefaultRenderTechnique = assetRootDirPath, "rt_unlit_colored"
@@ -26,11 +29,11 @@ func NewOptions (assetRootDirPath string, winWidth, winHeight, winSwapInterval i
 	return opt
 }
 
-func (me *engineOptions) GlClearColor () ugl.GlVec4 {
+func (me *EngineOptions) GlClearColor () ugl.GlVec4 {
 	return me.glClearColor
 }
 
-func (me *engineOptions) SetGlClearColor (col ugl.GlVec4) {
+func (me *EngineOptions) SetGlClearColor (col ugl.GlVec4) {
 	me.glClearColor = col
 	gl.ClearColor(col[0], col[1], col[2], col[3])
 }

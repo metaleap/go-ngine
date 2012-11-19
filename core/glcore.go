@@ -55,8 +55,8 @@ for: <%v>.
 			}
 		}
 		if err == nil {
-			if ugl.SetVersion(); !ugl.VersionMatch(3, 2) {
-				err = makeVerErr(fmt.Sprintf("%v.%v", ugl.Version[0], ugl.Version[1]))
+			if ugl.SetVersion(); !ugl.VersionMatch(3.2) {
+				err = makeVerErr(Sfmt("%v.%v", ugl.GlVersionMajorMinor[0], ugl.GlVersionMajorMinor[1]))
 			} else {
 				gl.ClearColor(0, 0, 0, 1)
 				gl.Enable(gl.DEPTH_TEST)
@@ -74,7 +74,7 @@ for: <%v>.
 }
 
 func glLogLastError(step string, fmtArgs ... interface {}) {
-	LogError(ugl.LastError(step, fmtArgs ...))
+	logError(ugl.LastError(step, fmtArgs ...))
 }
 
 func glSetBackfaceCulling (val bool) {

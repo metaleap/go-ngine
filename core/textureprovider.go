@@ -16,6 +16,8 @@ type textureProviders struct {
 }
 
 var (
+	//	A collection of all "texture providers" known to go:ngine.
+	//	Usage: core.TextureProviders.IoReader, core.TextureProviders.LocalFile, or core.TextureProviders.RemoteFile
 	TextureProviders = &textureProviders { textureProviderIoReader, textureProviderLocalFile, textureProviderRemoteFile }
 )
 

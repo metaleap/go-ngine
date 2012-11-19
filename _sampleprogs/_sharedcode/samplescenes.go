@@ -28,7 +28,7 @@ var (
 		"[A][D]  --  Camera strafe left / right",
 		"[<][>]  --  Camera turn left / right",
 		"[^][v]  --  Camera move forward / backward",
-		"[PgUp][PgDown]  --  Camera turn up / down",
+		"[PgUp][PgDn]  --  Camera turn up / down",
 		"[Alt][LShift][RShift]  --  Camera move-speed x 0.1 / 10 / 100",
 	}
 	sec = 0
@@ -86,14 +86,14 @@ func SamplesMainFunc (loader func ()) {
 	var err error
 	defer ng.Dispose()
 
-	if err = ng.Init(ng.NewOptions(AssetRootDirPath(), 1280, 720, 0, false), "Loading Sample..."); err != nil {
+	if err = ng.Init(ng.NewEngineOptions(AssetRootDirPath(), 1280, 720, 0, false), "Loading Sample..."); err != nil {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
 		ng.Core.Options.SetGlClearColor(ugl.GlVec4 { 0.75, 0.75, 0.97, 1 })
 		ng.Loop.OnSecTick = SamplesOnSec
 		camDef := nga.CameraDefs.AddNew("")
-		camDef.FovOrMagY, camDef.ZnearPlane, camDef.ZfarPlane = 37.8493, 0.3, 30000
-		ng.Core.SyncAssetDefs()
+		camDef.FovY, camDef.Znear, camDef.Zfar = 37.8493, 0.3, 30000
+		nga.SyncChanges()
 		Cam = ng.Core.Cameras[""]
 		CamCtl = Cam.Controller
 		loader()
@@ -111,5 +111,5 @@ func SamplesOnSec () {
 }
 
 func WindowTitle () string {
-	return fmt.Sprintf("%v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", ng.Stats.FpsLastSec, ng.UserIO.WinWidth(), ng.UserIO.WinHeight(), keyHints[curKeyHint], CamCtl.Pos, CamCtl.Dir)
+	return ng.Sfmt("%v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", ng.Stats.FpsLastSec, ng.UserIO.WinWidth(), ng.UserIO.WinHeight(), keyHints[curKeyHint], CamCtl.Pos, CamCtl.Dir)
 }

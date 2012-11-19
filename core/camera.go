@@ -11,21 +11,21 @@ import (
 
 type cameras map[string]*Camera
 
-	func (me cameras) New (id, technique string) (cam *Camera) {
+	func (me cameras) new (id, technique string) (cam *Camera) {
 		cam = newCamera(id, technique)
 		return
 	}
 
-	func (me cameras) Add (cam *Camera) (c *Camera) {
+	func (me cameras) add (cam *Camera) (c *Camera) {
 		if me[cam.ID] == nil { c, me[cam.ID] = cam, cam }
 		return
 	}
 
-	func (me cameras) SyncAssetDefs () {
+	func (me cameras) syncAssetChanges () {
 		var cam *Camera
 		for cID, cDef := range nga.CameraDefs.M {
 			if cam = me[cID]; cam == nil {
-				cam = me.Add(me.New(cID, Core.Options.DefaultRenderTechnique))
+				cam = me.add(me.new(cID, Core.Options.DefaultRenderTechnique))
 			}
 			cam.setDef(cDef)
 		}
@@ -72,6 +72,7 @@ type Camera struct {
 
 	func (me *Camera) setDef (camDef *nga.CameraDef) {
 		me.def = camDef
+		me.def.OnSync = func () { me.UpdatePerspective() }
 		me.UpdatePerspective()
 	}
 
@@ -92,7 +93,7 @@ type Camera struct {
 	}
 
 	func (me *Camera) UpdatePerspective () {
-		me.MatProj.Perspective(me.def.FovOrMagX, me.def.FovOrMagY, me.ViewPort.aspect, me.def.ZnearPlane, me.def.ZfarPlane)
+		me.MatProj.Perspective(me.def.FovX, me.def.FovY, me.ViewPort.aspect, me.def.Znear, me.def.Zfar)
 		me.glMatProj.Load(me.MatProj)
 	}
 

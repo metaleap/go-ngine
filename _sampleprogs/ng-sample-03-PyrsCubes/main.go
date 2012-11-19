@@ -6,7 +6,6 @@ import (
 	unum "github.com/metaleap/go-util/num"
 
 	ng "github.com/go3d/go-ngine/core"
-	nga "github.com/go3d/go-ngine/assets"
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
 )
 
@@ -27,27 +26,27 @@ func onLoop () {
 	ngsamples.CheckCamCtlKeys()
 
 	//	animate mesh nodes
-	pyr.NodeTransform.Rot.X -= 0.0005
-	pyr.NodeTransform.Rot.Y -= 0.0005
-	pyr.NodeTransform.Pos.Set(-13.75, 2 * math.Sin(ng.Loop.TickNow), 2)
-	pyr.NodeTransform.OnPosRotChanged()
+	pyr.Transform.Rot.X -= 0.0005
+	pyr.Transform.Rot.Y -= 0.0005
+	pyr.Transform.Pos.Set(-13.75, 2 * math.Sin(ng.Loop.TickNow), 2)
+	pyr.Transform.OnPosRotChanged()
 
-	box.NodeTransform.Rot.Y += 0.0004
-	box.NodeTransform.Rot.Z += 0.0006
-	box.NodeTransform.Pos.Set(-8.125, 2 * math.Cos(ng.Loop.TickNow), -2)
-	box.NodeTransform.OnPosRotChanged()
+	box.Transform.Rot.Y += 0.0004
+	box.Transform.Rot.Z += 0.0006
+	box.Transform.Pos.Set(-8.125, 2 * math.Cos(ng.Loop.TickNow), -2)
+	box.Transform.OnPosRotChanged()
 
 	for i = 0; i < len(crates); i++ {
 		f = float64(i)
 		f = (f + 1) * (f + 1)
-		crates[i].NodeTransform.Rot.X += f * 0.00001
-		crates[i].NodeTransform.Rot.Y += f * 0.0001
-		crates[i].NodeTransform.Rot.Z += f * 0.001
-		crates[i].NodeTransform.OnRotChanged()
+		crates[i].Transform.Rot.X += f * 0.00001
+		crates[i].Transform.Rot.Y += f * 0.0001
+		crates[i].Transform.Rot.Z += f * 0.001
+		crates[i].Transform.OnRotChanged()
 	}
 
-	pyramids[0].NodeTransform.SetPosX(math.Sin(ng.Loop.TickNow) * 100)
-	pyramids[1].NodeTransform.SetPosZ(math.Cos(ng.Loop.TickNow) * 1000)
+	pyramids[0].Transform.SetPosX(math.Sin(ng.Loop.TickNow) * 100)
+	pyramids[1].Transform.SetPosZ(math.Cos(ng.Loop.TickNow) * 1000)
 }
 
 func LoadSampleScene_03_PyrsCubes () {
@@ -65,11 +64,11 @@ func LoadSampleScene_03_PyrsCubes () {
 	ng.Core.Textures["tex_mosaic"] = ng.Core.Textures.Load(ng.TextureProviders.LocalFile, "tex/mosaic.jpeg")
 	ng.Core.Textures["tex_cat"] = ng.Core.Textures.Load(ng.TextureProviders.LocalFile, "tex/cat.png")
 	ng.Core.Textures["tex_dog"] = ng.Core.Textures.Load(ng.TextureProviders.LocalFile, "tex/dog.png")
-	nga.Materials["mat_cobbles"] = nga.Materials.New("tex_cobbles")
-	nga.Materials["mat_crate"] = nga.Materials.New("tex_crate")
-	nga.Materials["mat_mosaic"] = nga.Materials.New("tex_mosaic")
-	nga.Materials["mat_cat"] = nga.Materials.New("tex_cat")
-	nga.Materials["mat_dog"] = nga.Materials.New("tex_dog")
+	ng.Core.Materials["mat_cobbles"] = ng.Core.Materials.New("tex_cobbles")
+	ng.Core.Materials["mat_crate"] = ng.Core.Materials.New("tex_crate")
+	ng.Core.Materials["mat_mosaic"] = ng.Core.Materials.New("tex_mosaic")
+	ng.Core.Materials["mat_cat"] = ng.Core.Materials.New("tex_cat")
+	ng.Core.Materials["mat_dog"] = ng.Core.Materials.New("tex_dog")
 
 	//	meshes / models
 	if bufFloor, err = ng.Core.MeshBuffers.Add("buf_floor", ng.Core.MeshBuffers.NewParams(6, 6)); err != nil { panic(err) }
@@ -95,9 +94,9 @@ func LoadSampleScene_03_PyrsCubes () {
 
 	for i = 0; i < len(crates); i++ {
 		if i == 0 { str = "model_cube_cat" } else { str = "" }
-		crates[i] = scene.RootNode.SubNodes.Make(ng.Fmt("node_box_%v", i), "mesh_cube", str)
+		crates[i] = scene.RootNode.SubNodes.Make(ng.Sfmt("node_box_%v", i), "mesh_cube", str)
 		f = float64(i)
-		crates[i].NodeTransform.SetPosXYZ((f + 3) * -2, (f + 1) * 2, (f + 2) * 3)
+		crates[i].Transform.SetPosXYZ((f + 3) * -2, (f + 1) * 2, (f + 2) * 3)
 		if i == 2 {
 			crates[i].SetMatName("mat_dog")
 		}
@@ -105,28 +104,30 @@ func LoadSampleScene_03_PyrsCubes () {
 
 	for i = 0; i < len(pyramids); i++ {
 		if i > 1 { str = "model_pyramid_dog" } else { str = "" }
-		pyramids[i] = scene.RootNode.SubNodes.Make(ng.Fmt("nody_pyr_%v", i), "mesh_pyramid", str)
+		pyramids[i] = scene.RootNode.SubNodes.Make(ng.Sfmt("nody_pyr_%v", i), "mesh_pyramid", str)
 		f = float64(len(pyramids) - i)
-		pyramids[i].NodeTransform.SetScalingN((f + 1) * 2)
-		pyramids[i].NodeTransform.SetPosXYZ((f + 3) * -4, (f + 2) * 3, (f + 2) * 14)
+		pyramids[i].Transform.SetScalingN((f + 1) * 2)
+		pyramids[i].Transform.SetPosXYZ((f + 3) * -4, (f + 2) * 3, (f + 2) * 14)
 		if i > 1 {
 			if i == 2 { f = 45 } else { f = 135 }
-			pyramids[i].NodeTransform.SetRotZ(unum.DegToRad(f))
+			pyramids[i].Transform.SetRotZ(unum.DegToRad(f))
 		} else {
 			if i == 0 { f = 180 } else { f = 90 }
-			pyramids[i].NodeTransform.SetRotX(unum.DegToRad(f))
+			pyramids[i].Transform.SetRotX(unum.DegToRad(f))
 		}
 		if i == 1 {
-			pyramids[i].NodeTransform.SetScalingN(100)
-			pyramids[i].NodeTransform.Pos.Y += 100
+			pyramids[i].Transform.SetScalingN(100)
+			pyramids[i].Transform.Pos.Y += 100
 		}
 	}
 
 	floor.SetMatName("mat_cobbles")
-	floor.NodeTransform.SetPosXYZ(0.1, 0, -8)
-	floor.NodeTransform.SetScalingN(10000)
+	floor.Transform.SetPosXYZ(0.1, 0, -8)
+	floor.Transform.SetScalingN(10000)
 
-	ngsamples.CamCtl.BeginUpdate(); ngsamples.CamCtl.Pos.Y = 1.6; ngsamples.CamCtl.EndUpdate()
+	ngsamples.CamCtl.BeginUpdate()
+	ngsamples.CamCtl.Pos.X, ngsamples.CamCtl.Pos.Y, ngsamples.CamCtl.Pos.Z = 35, 1.6, 24
+	ngsamples.CamCtl.EndUpdate()
 
 	//	upload everything
 	ng.Core.SyncUpdates()

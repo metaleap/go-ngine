@@ -2,7 +2,6 @@ package main
 
 import (
 	ng "github.com/go3d/go-ngine/core"
-	nga "github.com/go3d/go-ngine/assets"
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
 )
 
@@ -29,7 +28,7 @@ func LoadSampleScene_04_ColladaCube () {
 
 	//	textures / materials
 	ng.Core.Textures["tex_cobbles"] = ng.Core.Textures.Load(ng.TextureProviders.LocalFile, "tex/cobbles.png")
-	nga.Materials["mat_cobbles"] = nga.Materials.New("tex_cobbles")
+	ng.Core.Materials["mat_cobbles"] = ng.Core.Materials.New("tex_cobbles")
 
 	//	meshes / models
 	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(100, 100)); err != nil { panic(err) }
@@ -45,8 +44,8 @@ func LoadSampleScene_04_ColladaCube () {
 	floor = scene.RootNode.SubNodes.M["node_floor"]
 
 	floor.SetMatName("mat_cobbles")
-	floor.NodeTransform.SetPosXYZ(0.1, 0, -8)
-	floor.NodeTransform.SetScalingN(100)
+	floor.Transform.SetPosXYZ(0.1, 0, -8)
+	floor.Transform.SetScalingN(100)
 
 	ngsamples.CamCtl.BeginUpdate(); ngsamples.CamCtl.Pos.Y = 1.6; ngsamples.CamCtl.EndUpdate()
 

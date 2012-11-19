@@ -2,15 +2,12 @@ package core
 
 import (
 	gl "github.com/chsc/gogl/gl42"
-
 	ugl "github.com/go3d/go-glutil"
-
-	nga "github.com/go3d/go-ngine/assets"
 )
 
 var (
 	techs map[string]renderTechnique
-	tmpMat *nga.Material
+	tmpMat *Material
 )
 
 type techniqueCtor func (string) renderTechnique
