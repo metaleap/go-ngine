@@ -1,4 +1,5 @@
-//	The *assets* package provides the (de)serializable data structures for all resource types used in a go:ngine app.
+//	The *assets* package provides the (de)serializable, logic-less base data structures for all resource types
+//	used in a go:ngine app.
 //	
 //	________
 //	
@@ -20,6 +21,8 @@
 //	________
 //	
 //	
+//	The *assets* package provides the (de)serializable, logic-less base data structures for all resource types
+//	used in a go:ngine app.
 //	These data structures only describe resource definitions and instances, but do not provide
 //	any specific logic or algorithms, such as physics or visual rendering.
 //	
@@ -33,7 +36,7 @@
 //	from the go:ngine *core* package.
 //	
 //	This *assets* package thus allows for things such as server-side procedural asset generators, networked
-//	resource streaming or simple custom asset-import/export/conversion tools, all of which shouldn*t have to
+//	resource streaming or simple custom asset-import/export/conversion tools, all of which shouldn't have to
 //	needlessly depend on the graphics, windowing etc. stacks.
 //	
 //	NOTE: there are essentially TWO distinct "modes" or use-cases in which the *assets* package is active:
@@ -46,7 +49,7 @@
 //	All "Sync"-related functions pertain to use-case #2, where the *assets* package essentially becomes the
 //	live repository for all resource definitions loaded, used, or manipulated by the *core* package at runtime.
 //	So now every image definition in *assets* may have a corresponding GPU-bound texture object in *core*, every
-//	*assets* mesh definition may be bound to a *core* MeshBuffer, etc.
+//	*assets* mesh definition may be bound to a *core* *MeshBuffer*, etc.
 //	
 //	Structure: generally speaking, all resource types are organized in a consistent fashion as follows ---
 //	users familiar with the COLLADA format will notice a stark resemblance in terminology and resource organization:
@@ -61,7 +64,7 @@
 //	associated with their ID: LibGeometryMeshDefs, LibImageDefs, LibLightDefs, LibMaterialDefs etc.
 //	
 //	4. The package also provides a pre-initialized global *FooDefs* variable for each such Lib type, in simple apps
-//	considered the "default / main / only Lib you*ll need": GeometryMeshDefs, ImageDefs, LightDefs, MaterialDefs etc.
+//	considered the "default / main / only Lib you'll need": GeometryMeshDefs, ImageDefs, LightDefs, MaterialDefs etc.
 //	
 //	5. For more complex use-cases, you can also organize multiple libs for any given resource type in the global
 //	*AllFooDefLibs* variable, essentially a *map* collection of Libs: AllGeometryMeshDefLibs (of type
