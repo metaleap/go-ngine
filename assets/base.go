@@ -15,7 +15,7 @@ type Base struct {
 }
 
 	//	You NEED to call this method if you modified this *Def* or *Inst* by setting its fields directly
-	//	(instead of using the provided *SetXyz()* methods) for your changes to be picked up by *core* (or your custom package).
+	//	(instead of using the provided *SetFoo()* methods) for your changes to be picked up by *core* (or your custom package).
 	func (me *Base) SetDirty () {
 		me.timeLastChanged = now()
 	}

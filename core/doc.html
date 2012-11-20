@@ -1,0 +1,1860 @@
+<html>
+	<head>
+		<title>Package github.com/go3d/go-ngine/core</title>
+		<meta charset="UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link type="text/css" rel="stylesheet" href="http://golang.org/doc/style.css" />
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src="http://golang.org/doc/play/playground.js"></script>
+		<script type="text/javascript" src="http://golang.org/doc/godocs.js"></script>
+	</head>
+	<body>
+		<div id="page" class="wide">
+		<div class="container">
+		<h1>Package github.com/go3d/go-ngine/core</h1>
+		<div id="nav"></div>
+		<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "github.com/go3d/go-ngine/core"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#pkg-index">Index</a></dd>
+			
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>
+The *core* package provides go:ngine client-side core functionality such as rendering and user I/O.
+</p>
+<p>
+________
+</p>
+<p>
+First off, the go:ngine 3 RULES of bugless(er) development:
+</p>
+<p>
+1. you do NOT set exported fields directly, those are provided for simplified read-access. If a field is
+meant to be modifiable, there will be a *SetFoo()* method or it will be documented explicitly as directly
+modifiable, but such instances will be rare.
+</p>
+<p>
+2. you do NOT instantiate exported struct types directly, as in &#34;new(Material)&#34; or &#34;&amp;Material {}&#34;. Many of
+those are exported only for documentation, but are to be instantiated only inside the go:ngine package.
+For types to be instantiated by package-external code (ie. your code), go:ngine packages provide constructor
+functions -- often in collections, ie. mat := Materials.New(&#34;arg&#34;) instead of, say, mat := NewMaterial(&#34;arg&#34;).
+</p>
+<p>
+3. Those 2 are *default* assumptions and modes of operation -- there are a few &#34;if you know what you&#39;re
+doing&#34; exemptions and those are (or will be) explicitly documented as such.
+</p>
+<p>
+________
+</p>
+<p>
+TODO pkg doc
+</p>
+
+			</div>
+		</div>
+		
+	
+		<h2 id="pkg-index">Index</h2>
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+		<div id="manual-nav">
+			<dl>
+			
+			
+				<dd><a href="#pkg-variables">Variables</a></dd>
+			
+			
+				
+				<dd><a href="#Dispose">func Dispose()</a></dd>
+			
+				
+				<dd><a href="#Init">func Init(options *EngineOptions, winTitle string) error</a></dd>
+			
+				
+				<dd><a href="#Sfmt">func Sfmt(format string, fmtArgs ...interface{}) string</a></dd>
+			
+			
+				
+				<dd><a href="#AssetProvider">type AssetProvider</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Camera">type Camera</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Camera.Dispose">func (me *Camera) Dispose()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Camera.SetTechnique">func (me *Camera) SetTechnique(name string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Camera.ToggleTechnique">func (me *Camera) ToggleTechnique()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Camera.UpdatePerspective">func (me *Camera) UpdatePerspective()</a></dd>
+				
+			
+				
+				<dd><a href="#CameraOptions">type CameraOptions</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#CameraOptions.ToggleGlBackfaceCulling">func (me *CameraOptions) ToggleGlBackfaceCulling()</a></dd>
+				
+			
+				
+				<dd><a href="#CameraViewPort">type CameraViewPort</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#CameraViewPort.SetAbs">func (me *CameraViewPort) SetAbs(x, y, width, height int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#CameraViewPort.SetRel">func (me *CameraViewPort) SetRel(x, y, width, height float64)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#CameraViewPort.Update">func (me *CameraViewPort) Update()</a></dd>
+				
+			
+				
+				<dd><a href="#Controller">type Controller</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.BeginUpdate">func (me *Controller) BeginUpdate()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.EndUpdate">func (me *Controller) EndUpdate()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.MoveBackward">func (me *Controller) MoveBackward()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.MoveDown">func (me *Controller) MoveDown()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.MoveForward">func (me *Controller) MoveForward()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.MoveLeft">func (me *Controller) MoveLeft()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.MoveRight">func (me *Controller) MoveRight()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.MoveUp">func (me *Controller) MoveUp()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.StepSizeMove">func (me *Controller) StepSizeMove() float64</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.StepSizeTurn">func (me *Controller) StepSizeTurn() float64</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.TurnDown">func (me *Controller) TurnDown()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.TurnLeft">func (me *Controller) TurnLeft()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.TurnRight">func (me *Controller) TurnRight()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.TurnUp">func (me *Controller) TurnUp()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.UpdateMatrix">func (me *Controller) UpdateMatrix()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.UpdateMatrixRot">func (me *Controller) UpdateMatrixRot()</a></dd>
+				
+			
+				
+				<dd><a href="#EngineCore">type EngineCore</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineCore.Dispose">func (me *EngineCore) Dispose()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineCore.SyncUpdates">func (me *EngineCore) SyncUpdates()</a></dd>
+				
+			
+				
+				<dd><a href="#EngineLoop">type EngineLoop</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineLoop.Loop">func (me *EngineLoop) Loop()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineLoop.Stop">func (me *EngineLoop) Stop()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineLoop.Time">func (me *EngineLoop) Time() float64</a></dd>
+				
+			
+				
+				<dd><a href="#EngineOptions">type EngineOptions</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewEngineOptions">func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) *EngineOptions</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineOptions.GlClearColor">func (me *EngineOptions) GlClearColor() ugl.GlVec4</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineOptions.SetGlClearColor">func (me *EngineOptions) SetGlClearColor(col ugl.GlVec4)</a></dd>
+				
+			
+				
+				<dd><a href="#EngineStats">type EngineStats</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineStats.AverageFps">func (me *EngineStats) AverageFps() float64</a></dd>
+				
+			
+				
+				<dd><a href="#EngineUserIO">type EngineUserIO</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.IifKeyF">func (me *EngineUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeyPressed">func (me *EngineUserIO) KeyPressed(key int) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeyPressedWhich">func (me *EngineUserIO) KeyPressedWhich(keys ...int) int</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeyToggled">func (me *EngineUserIO) KeyToggled(key int) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeysPressedAll2">func (me *EngineUserIO) KeysPressedAll2(k1, k2 int) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeysPressedAll3">func (me *EngineUserIO) KeysPressedAll3(k1, k2, k3 int) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeysPressedAny2">func (me *EngineUserIO) KeysPressedAny2(k1, k2 int) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeysPressedAny3">func (me *EngineUserIO) KeysPressedAny3(k1, k2, k3 int) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.SetWinTitle">func (me *EngineUserIO) SetWinTitle(newTitle string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.WinHeight">func (me *EngineUserIO) WinHeight() int</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.WinWidth">func (me *EngineUserIO) WinWidth() int</a></dd>
+				
+			
+				
+				<dd><a href="#Material">type Material</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Mesh">type Mesh</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Mesh.GpuDelete">func (me *Mesh) GpuDelete()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Mesh.GpuUpload">func (me *Mesh) GpuUpload() (err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Mesh.GpuUploaded">func (me *Mesh) GpuUploaded() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Mesh.Loaded">func (me *Mesh) Loaded() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Mesh.Unload">func (me *Mesh) Unload()</a></dd>
+				
+			
+				
+				<dd><a href="#MeshBuffer">type MeshBuffer</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshBuffer.Add">func (me *MeshBuffer) Add(mesh *Mesh) (err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshBuffer.Remove">func (me *MeshBuffer) Remove(mesh *Mesh)</a></dd>
+				
+			
+				
+				<dd><a href="#Model">type Model</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.Clone">func (me *Model) Clone(modelName string) (clonedModel *Model)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.MatName">func (me *Model) MatName() string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.SetMatName">func (me *Model) SetMatName(newMatName string)</a></dd>
+				
+			
+				
+				<dd><a href="#Node">type Node</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Node.ChildrenUpdateMatrices">func (me *Node) ChildrenUpdateMatrices()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Node.MatName">func (me *Node) MatName() string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Node.Material">func (me *Node) Material() *Material</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Node.MeshModelName">func (me *Node) MeshModelName() string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Node.MeshName">func (me *Node) MeshName() string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Node.Parent">func (me *Node) Parent() Transformable</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Node.SetMatName">func (me *Node) SetMatName(newMatName string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Node.SetMeshModelName">func (me *Node) SetMeshModelName(meshName, modelName string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Node.Transforms">func (me *Node) Transforms() *Transforms</a></dd>
+				
+			
+				
+				<dd><a href="#RenderCanvas">type RenderCanvas</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.Dispose">func (me *RenderCanvas) Dispose()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.SetCameraIDs">func (me *RenderCanvas) SetCameraIDs(camIDs ...string)</a></dd>
+				
+			
+				
+				<dd><a href="#Scene">type Scene</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewScene">func NewScene() *Scene</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Texture">type Texture</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Texture.GpuDelete">func (me *Texture) GpuDelete()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Texture.GpuSync">func (me *Texture) GpuSync()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Texture.GpuSynced">func (me *Texture) GpuSynced() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Texture.Load">func (me *Texture) Load(provider TextureProvider, args ...interface{})</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Texture.LoadAsync">func (me *Texture) LoadAsync(provider TextureProvider, args ...interface{})</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Texture.Loaded">func (me *Texture) Loaded() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Texture.SuppressMipMaps">func (me *Texture) SuppressMipMaps()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Texture.Unload">func (me *Texture) Unload()</a></dd>
+				
+			
+				
+				<dd><a href="#TextureProvider">type TextureProvider</a></dd>
+				
+				
+			
+				
+				<dd><a href="#TimingStats">type TimingStats</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#TimingStats.Average">func (me *TimingStats) Average() float64</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#TimingStats.Max">func (me *TimingStats) Max() float64</a></dd>
+				
+			
+				
+				<dd><a href="#Transformable">type Transformable</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Transforms">type Transforms</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.OnAnyChanged">func (me *Transforms) OnAnyChanged()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.OnPosChanged">func (me *Transforms) OnPosChanged()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.OnPosRotChanged">func (me *Transforms) OnPosRotChanged()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.OnPosScalingChanged">func (me *Transforms) OnPosScalingChanged()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.OnRotChanged">func (me *Transforms) OnRotChanged()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.OnRotScalingChanged">func (me *Transforms) OnRotScalingChanged()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.OnRotXChanged">func (me *Transforms) OnRotXChanged()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.OnRotYChanged">func (me *Transforms) OnRotYChanged()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.OnRotZChanged">func (me *Transforms) OnRotZChanged()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.OnScalingChanged">func (me *Transforms) OnScalingChanged()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.OnSomeChanged">func (me *Transforms) OnSomeChanged(scaling, pos, rotX, rotY, rotZ bool)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.SetPos">func (me *Transforms) SetPos(pos *unum.Vec3)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.SetPosX">func (me *Transforms) SetPosX(posX float64)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.SetPosXYZ">func (me *Transforms) SetPosXYZ(posX, posY, posZ float64)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.SetPosY">func (me *Transforms) SetPosY(posY float64)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.SetPosZ">func (me *Transforms) SetPosZ(posZ float64)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.SetRot">func (me *Transforms) SetRot(rot *unum.Vec3)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.SetRotX">func (me *Transforms) SetRotX(rad float64)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.SetRotXYZ">func (me *Transforms) SetRotXYZ(radX, radY, radZ float64)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.SetRotY">func (me *Transforms) SetRotY(rad float64)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.SetRotZ">func (me *Transforms) SetRotZ(rad float64)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.SetScaling">func (me *Transforms) SetScaling(scaling *unum.Vec3)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.SetScalingN">func (me *Transforms) SetScalingN(scaling float64)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.StepDelta">func (me *Transforms) StepDelta(deltaPerSecond float64) float64</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Transforms.UpdateMatrices">func (me *Transforms) UpdateMatrices()</a></dd>
+				
+			
+			
+		</dl>
+
+		
+
+		
+			<h4>Package files</h4>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="/target/-auto-generated-glsl-src.go">-auto-generated-glsl-src.go</a>
+			
+				<a href="/target/assetmanager.go">assetmanager.go</a>
+			
+				<a href="/target/assetprovider.go">assetprovider.go</a>
+			
+				<a href="/target/camera.go">camera.go</a>
+			
+				<a href="/target/cameraoptions.go">cameraoptions.go</a>
+			
+				<a href="/target/controller.go">controller.go</a>
+			
+				<a href="/target/doc.go">doc.go</a>
+			
+				<a href="/target/engine.go">engine.go</a>
+			
+				<a href="/target/enginecore.go">enginecore.go</a>
+			
+				<a href="/target/engineloop.go">engineloop.go</a>
+			
+				<a href="/target/engineoptions.go">engineoptions.go</a>
+			
+				<a href="/target/enginestats.go">enginestats.go</a>
+			
+				<a href="/target/engineuserio.go">engineuserio.go</a>
+			
+				<a href="/target/glcore.go">glcore.go</a>
+			
+				<a href="/target/glshaders.go">glshaders.go</a>
+			
+				<a href="/target/material.go">material.go</a>
+			
+				<a href="/target/mesh.go">mesh.go</a>
+			
+				<a href="/target/meshbuffer.go">meshbuffer.go</a>
+			
+				<a href="/target/meshprovider.go">meshprovider.go</a>
+			
+				<a href="/target/model.go">model.go</a>
+			
+				<a href="/target/node.go">node.go</a>
+			
+				<a href="/target/rendercanvas.go">rendercanvas.go</a>
+			
+				<a href="/target/rendertechnique.go">rendertechnique.go</a>
+			
+				<a href="/target/scene.go">scene.go</a>
+			
+				<a href="/target/texture.go">texture.go</a>
+			
+				<a href="/target/textureparams.go">textureparams.go</a>
+			
+				<a href="/target/textureprovider.go">textureprovider.go</a>
+			
+				<a href="/target/transform.go">transform.go</a>
+			
+			</span>
+			</p>
+		
+	
+		
+		
+			<h2 id="pkg-variables">Variables</h2>
+			
+				<pre>var (
+    <span class="comment">//	Manages your main-thread&#39;s &#34;game loop&#34;. You&#39;ll need to call it&#39;s Loop() method once after go:ngine initialization (see samples).</span>
+    Loop *EngineLoop
+
+    <span class="comment">//	The heart and brain of go:ngine --- a container for all runtime resources and responsible for rendering.</span>
+    Core *EngineCore
+
+    <span class="comment">//	Tracks various go:ngine performance counters over time.</span>
+    Stats *EngineStats
+
+    <span class="comment">//	Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window management, not the graphics themselves).</span>
+    UserIO = newUserIO()
+)</pre>
+				
+			
+				<pre>var (
+    <span class="comment">//	A collection of all &#34;mesh providers&#34; known to go:ngine.</span>
+    MeshProviders = &amp;meshProviders{meshProviderPrefabCube, meshProviderPrefabPlane, meshProviderPrefabPyramid, meshProviderPrefabQuad, meshProviderPrefabTri}
+)</pre>
+				
+			
+				<pre>var (
+    <span class="comment">//	A collection of all &#34;texture providers&#34; known to go:ngine.</span>
+    <span class="comment">//	Usage: core.TextureProviders.IoReader, core.TextureProviders.LocalFile, or core.TextureProviders.RemoteFile</span>
+    TextureProviders = &amp;textureProviders{textureProviderIoReader, textureProviderLocalFile, textureProviderRemoteFile}
+)</pre>
+				
+			
+		
+		
+			
+			
+			<h2 id="Dispose">func <a href="/target/engine.go?s=660:675#L14">Dispose</a></h2>
+			<pre>func Dispose()</pre>
+			<p>
+Call this to &#34;un-init&#34; go:ngine and to release any and all GPU or RAM resources still allocated.
+</p>
+
+			
+		
+			
+			
+			<h2 id="Init">func <a href="/target/engine.go?s=936:993#L22">Init</a></h2>
+			<pre>func Init(options *EngineOptions, winTitle string) error</pre>
+			<p>
+Initializes go:ngine; this first attempts to initialize OpenGL and then open a window to your supplied specifications with a GL 3.2-or-higher profile.
+</p>
+
+			
+		
+			
+			
+			<h2 id="Sfmt">func <a href="/target/engine.go?s=1564:1622#L45">Sfmt</a></h2>
+			<pre>func Sfmt(format string, fmtArgs ...interface{}) string</pre>
+			<p>
+A short-hand for fmt.Sprintf. Feel free to ignore.
+</p>
+
+			
+		
+		
+			
+			
+			<h2 id="AssetProvider">type <a href="/target/assetprovider.go?s=73:122#L1">AssetProvider</a></h2>
+			<pre>type AssetProvider struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Camera">type <a href="/target/camera.go?s=666:890#L24">Camera</a></h2>
+			<pre>type Camera struct {
+    ViewPort      *CameraViewPort
+    MatProj       *unum.Mat4
+    Options       *CameraOptions
+    Controller    *Controller
+    Disabled      bool
+    ID, SceneName string
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="Camera.Dispose">func (*Camera) <a href="/target/camera.go?s=1189:1217#L48">Dispose</a></h3>
+				<pre>func (me *Camera) Dispose()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.go?s=1910:1954#L69">SetTechnique</a></h3>
+				<pre>func (me *Camera) SetTechnique(name string)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Camera.ToggleTechnique">func (*Camera) <a href="/target/camera.go?s=2058:2094#L75">ToggleTechnique</a></h3>
+				<pre>func (me *Camera) ToggleTechnique()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Camera.UpdatePerspective">func (*Camera) <a href="/target/camera.go?s=2601:2639#L85">UpdatePerspective</a></h3>
+				<pre>func (me *Camera) UpdatePerspective()</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="CameraOptions">type <a href="/target/cameraoptions.go?s=14:65#L1">CameraOptions</a></h2>
+			<pre>type CameraOptions struct {
+    BackfaceCulling bool
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="CameraOptions.ToggleGlBackfaceCulling">func (*CameraOptions) <a href="/target/cameraoptions.go?s=149:200#L2">ToggleGlBackfaceCulling</a></h3>
+				<pre>func (me *CameraOptions) ToggleGlBackfaceCulling()</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="CameraViewPort">type <a href="/target/camera.go?s=2776:2954#L90">CameraViewPort</a></h2>
+			<pre>type CameraViewPort struct {
+    Absolute               bool
+    RelX, RelY, RelW, RelH float64
+    AbsX, AbsY, AbsW, AbsH int
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.go?s=3091:3149#L106">SetAbs</a></h3>
+				<pre>func (me *CameraViewPort) SetAbs(x, y, width, height int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.go?s=3249:3311#L111">SetRel</a></h3>
+				<pre>func (me *CameraViewPort) SetRel(x, y, width, height float64)</pre>
+				
+				
+				
+			
+				
+				<h3 id="CameraViewPort.Update">func (*CameraViewPort) <a href="/target/camera.go?s=3412:3447#L116">Update</a></h3>
+				<pre>func (me *CameraViewPort) Update()</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="Controller">type <a href="/target/controller.go?s=108:396#L1">Controller</a></h2>
+			<pre>type Controller struct {
+    Pos, Dir, UpAxis             *unum.Vec3
+    MoveSpeed, MoveSpeedupFactor float64
+    TurnSpeed, TurnSpeedupFactor float64
+    MaxTurnUp, MinTurnDown       float64
+    Mat, MatTrans, MatLook       *unum.Mat4
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="Controller.BeginUpdate">func (*Controller) <a href="/target/controller.go?s=1501:1537#L44">BeginUpdate</a></h3>
+				<pre>func (me *Controller) BeginUpdate()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Controller.EndUpdate">func (*Controller) <a href="/target/controller.go?s=1566:1600#L48">EndUpdate</a></h3>
+				<pre>func (me *Controller) EndUpdate()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Controller.MoveBackward">func (*Controller) <a href="/target/controller.go?s=1669:1706#L54">MoveBackward</a></h3>
+				<pre>func (me *Controller) MoveBackward()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Controller.MoveDown">func (*Controller) <a href="/target/controller.go?s=1790:1823#L59">MoveDown</a></h3>
+				<pre>func (me *Controller) MoveDown()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Controller.MoveForward">func (*Controller) <a href="/target/controller.go?s=1910:1946#L64">MoveForward</a></h3>
+				<pre>func (me *Controller) MoveForward()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Controller.MoveLeft">func (*Controller) <a href="/target/controller.go?s=2030:2063#L69">MoveLeft</a></h3>
+				<pre>func (me *Controller) MoveLeft()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Controller.MoveRight">func (*Controller) <a href="/target/controller.go?s=2174:2208#L74">MoveRight</a></h3>
+				<pre>func (me *Controller) MoveRight()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Controller.MoveUp">func (*Controller) <a href="/target/controller.go?s=2319:2350#L79">MoveUp</a></h3>
+				<pre>func (me *Controller) MoveUp()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=2437:2482#L84">StepSizeMove</a></h3>
+				<pre>func (me *Controller) StepSizeMove() float64</pre>
+				
+				
+				
+			
+				
+				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=2549:2594#L88">StepSizeTurn</a></h3>
+				<pre>func (me *Controller) StepSizeTurn() float64</pre>
+				
+				
+				
+			
+				
+				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=2661:2694#L92">TurnDown</a></h3>
+				<pre>func (me *Controller) TurnDown()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=2812:2845#L100">TurnLeft</a></h3>
+				<pre>func (me *Controller) TurnLeft()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=2924:2958#L106">TurnRight</a></h3>
+				<pre>func (me *Controller) TurnRight()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=3037:3068#L112">TurnUp</a></h3>
+				<pre>func (me *Controller) TurnUp()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Controller.UpdateMatrix">func (*Controller) <a href="/target/controller.go?s=3184:3221#L120">UpdateMatrix</a></h3>
+				<pre>func (me *Controller) UpdateMatrix()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Controller.UpdateMatrixRot">func (*Controller) <a href="/target/controller.go?s=3428:3468#L130">UpdateMatrixRot</a></h3>
+				<pre>func (me *Controller) UpdateMatrixRot()</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="EngineCore">type <a href="/target/enginecore.go?s=617:857#L16">EngineCore</a></h2>
+			<pre>type EngineCore struct {
+    AssetManager       *assetManager
+    Cameras            cameras
+    Canvases           renderCanvases
+    DefaultCanvasIndex int
+    Materials          materials
+    MeshBuffers        *meshBuffers
+    Meshes             meshes
+    Options            *EngineOptions
+    Scenes             scenes
+    Textures           textures
+}</pre>
+			<p>
+Consider EngineCore a &#34;Singleton&#34; type, only valid use is the Core global variable.
+The heart and brain of go:ngine --- a container for all runtime resources and responsible for rendering.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="EngineCore.Dispose">func (*EngineCore) <a href="/target/enginecore.go?s=1568:1600#L51">Dispose</a></h3>
+				<pre>func (me *EngineCore) Dispose()</pre>
+				
+				
+				
+			
+				
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/enginecore.go?s=2755:2791#L100">SyncUpdates</a></h3>
+				<pre>func (me *EngineCore) SyncUpdates()</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="EngineLoop">type <a href="/target/engineloop.go?s=213:332#L3">EngineLoop</a></h2>
+			<pre>type EngineLoop struct {
+    IsLooping                                 bool
+    SecTickLast, TickNow, TickLast, TickDelta float64
+    OnLoop, OnSecTick                         func()
+}</pre>
+			<p>
+Consider EngineLoop a &#34;Singleton&#34; type, only valid use is the Loop global variable.
+Manages your main-thread&#39;s &#34;game loop&#34;.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="EngineLoop.Loop">func (*EngineLoop) <a href="/target/engineloop.go?s=467:496#L15">Loop</a></h3>
+				<pre>func (me *EngineLoop) Loop()</pre>
+				
+				
+				
+			
+				
+				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/engineloop.go?s=2029:2058#L51">Stop</a></h3>
+				<pre>func (me *EngineLoop) Stop()</pre>
+				
+				
+				
+			
+				
+				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/engineloop.go?s=2086:2123#L55">Time</a></h3>
+				<pre>func (me *EngineLoop) Time() float64</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="EngineOptions">type <a href="/target/engineoptions.go?s=263:522#L1">EngineOptions</a></h2>
+			<pre>type EngineOptions struct {
+    AssetRootDirPath, DefaultRenderTechnique string
+    DefaultTextureParams                     *textureParams
+    GpuMemMeshes, GpuMemTextures             uint
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+Consider EngineOptions a &#34;Singleton&#34; type, only valid use is the one instance you created for core.Init().
+Various &#34;global&#34; (rather than use-case-specific) options.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewEngineOptions">func <a href="/target/engineoptions.go?s=597:721#L12">NewEngineOptions</a></h3>
+				<pre>func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) *EngineOptions</pre>
+				<p>
+Allocates, initializes and returns a new core.EngineOptions instance.
+</p>
+
+				
+			
+
+			
+				
+				<h3 id="EngineOptions.GlClearColor">func (*EngineOptions) <a href="/target/engineoptions.go?s=1129:1180#L22">GlClearColor</a></h3>
+				<pre>func (me *EngineOptions) GlClearColor() ugl.GlVec4</pre>
+				
+				
+				
+			
+				
+				<h3 id="EngineOptions.SetGlClearColor">func (*EngineOptions) <a href="/target/engineoptions.go?s=1210:1267#L26">SetGlClearColor</a></h3>
+				<pre>func (me *EngineOptions) SetGlClearColor(col ugl.GlVec4)</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="EngineStats">type <a href="/target/enginestats.go?s=204:2203#L1">EngineStats</a></h2>
+			<pre>type EngineStats struct {
+    <span class="comment">//	Gives the total number of frames rendered during the &#34;previous&#34; (not the current) second. Good enough for just a simple-minded FPS indicator.</span>
+    FpsLastSec int
+
+    <span class="comment">//	This TimingStats instance combines all the individual FrameFoo fields to track over time (both average and maximum) total cost per frame.</span>
+    Frame *TimingStats
+
+    <span class="comment">//	&#34;Rendering&#34; consists of a CPU-side and a GPU-side cost.</span>
+    <span class="comment">//	This TimingStats instance combines both to track over time (both average and maximum) total rendering cost per frame.</span>
+    FrameRenderBoth *TimingStats
+
+    <span class="comment">//	The CPU-side cost of rendering comprises geometry culling, and batching draw calls to the GPU.</span>
+    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) CPU-side rendering cost per frame.</span>
+    FrameRenderCpu *TimingStats
+
+    <span class="comment">//	The GPU-side cost of rendering comprises execution of all draw calls sent by the CPU-side, plus waiting for V-sync if enabled.</span>
+    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) GPU-side rendering cost per frame.</span>
+    FrameRenderGpu *TimingStats
+
+    <span class="comment">//	&#34;Core code&#34; comprises non-rendering go:ngine logic executed every frame.</span>
+    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;core code&#34; cost per frame.</span>
+    FrameCoreCode *TimingStats
+
+    <span class="comment">//	&#34;User code&#34; comprises user-specific logic executed every frame in your own EngineLoop.OnLoop() callback.</span>
+    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;user code&#34; cost per frame.</span>
+    FrameUserCode *TimingStats
+
+    <span class="comment">//	During the Loop, the Go Garbge Collector is invoked at least and at most once per second.</span>
+    <span class="comment">//	Forcing GC &#34;that often&#34; practically guarantees it will almost never have so much work to do as to</span>
+    <span class="comment">//	noticably block user interaction --- 99.9% of the time it will complete in less than 10ms (most often even under 1ms).</span>
+    <span class="comment">//	This TimingStats instance over time tracks the maximum and average time spent on that 1x-per-second GC.</span>
+    Gc *TimingStats
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+Consider EngineStats a &#34;Singleton&#34; type, only valid use is the Stats global variable.
+Tracks various go:ngine performance counters over time.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="EngineStats.AverageFps">func (*EngineStats) <a href="/target/enginestats.go?s=2310:2354#L42">AverageFps</a></h3>
+				<pre>func (me *EngineStats) AverageFps() float64</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="EngineUserIO">type <a href="/target/engineuserio.go?s=312:455#L3">EngineUserIO</a></h2>
+			<pre>type EngineUserIO struct {
+    KeyToggleMinDelay float64
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+Consider EngineUserIO a &#34;Singleton&#34; type, only valid use is the UserIO global variable.
+Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window management, not the graphics themselves).
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="EngineUserIO.IifKeyF">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2090:2164#L69">IifKeyF</a></h3>
+				<pre>func (me *EngineUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64</pre>
+				
+				
+				
+			
+				
+				<h3 id="EngineUserIO.KeyPressed">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2227:2276#L74">KeyPressed</a></h3>
+				<pre>func (me *EngineUserIO) KeyPressed(key int) bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="EngineUserIO.KeyPressedWhich">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2321:2379#L78">KeyPressedWhich</a></h3>
+				<pre>func (me *EngineUserIO) KeyPressedWhich(keys ...int) int</pre>
+				
+				
+				
+			
+				
+				<h3 id="EngineUserIO.KeyToggled">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2983:3032#L103">KeyToggled</a></h3>
+				<pre>func (me *EngineUserIO) KeyToggled(key int) bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="EngineUserIO.KeysPressedAll2">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2493:2550#L87">KeysPressedAll2</a></h3>
+				<pre>func (me *EngineUserIO) KeysPressedAll2(k1, k2 int) bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="EngineUserIO.KeysPressedAll3">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2603:2664#L91">KeysPressedAll3</a></h3>
+				<pre>func (me *EngineUserIO) KeysPressedAll3(k1, k2, k3 int) bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="EngineUserIO.KeysPressedAny2">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2738:2795#L95">KeysPressedAny2</a></h3>
+				<pre>func (me *EngineUserIO) KeysPressedAny2(k1, k2 int) bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="EngineUserIO.KeysPressedAny3">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2848:2909#L99">KeysPressedAny3</a></h3>
+				<pre>func (me *EngineUserIO) KeysPressedAny3(k1, k2, k3 int) bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="EngineUserIO.SetWinTitle">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3229:3282#L111">SetWinTitle</a></h3>
+				<pre>func (me *EngineUserIO) SetWinTitle(newTitle string)</pre>
+				
+				
+				
+			
+				
+				<h3 id="EngineUserIO.WinHeight">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3319:3359#L115">WinHeight</a></h3>
+				<pre>func (me *EngineUserIO) WinHeight() int</pre>
+				
+				
+				
+			
+				
+				<h3 id="EngineUserIO.WinWidth">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3396:3435#L119">WinWidth</a></h3>
+				<pre>func (me *EngineUserIO) WinWidth() int</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="Material">type <a href="/target/material.go?s=293:333#L7">Material</a></h2>
+			<pre>type Material struct {
+    TexName string
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Mesh">type <a href="/target/mesh.go?s=806:985#L35">Mesh</a></h2>
+			<pre>type Mesh struct {
+    Models models
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="Mesh.GpuDelete">func (*Mesh) <a href="/target/mesh.go?s=988:1016#L45">GpuDelete</a></h3>
+				<pre>func (me *Mesh) GpuDelete()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Mesh.GpuUpload">func (*Mesh) <a href="/target/mesh.go?s=1072:1112#L51">GpuUpload</a></h3>
+				<pre>func (me *Mesh) GpuUpload() (err error)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.go?s=2739:2774#L76">GpuUploaded</a></h3>
+				<pre>func (me *Mesh) GpuUploaded() bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.go?s=4483:4513#L122">Loaded</a></h3>
+				<pre>func (me *Mesh) Loaded() bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.go?s=4938:4963#L133">Unload</a></h3>
+				<pre>func (me *Mesh) Unload()</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="MeshBuffer">type <a href="/target/meshbuffer.go?s=1765:1985#L60">MeshBuffer</a></h2>
+			<pre>type MeshBuffer struct {
+    MemSizeIndices, MemSizeVertices int32
+    Params                          *meshBufferParams
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/meshbuffer.go?s=3539:3589#L109">Add</a></h3>
+				<pre>func (me *MeshBuffer) Add(mesh *Mesh) (err error)</pre>
+				
+				
+				
+			
+				
+				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/meshbuffer.go?s=4377:4418#L135">Remove</a></h3>
+				<pre>func (me *MeshBuffer) Remove(mesh *Mesh)</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="Model">type <a href="/target/model.go?s=103:180#L1">Model</a></h2>
+			<pre>type Model struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="Model.Clone">func (*Model) <a href="/target/model.go?s=308:370#L12">Clone</a></h3>
+				<pre>func (me *Model) Clone(modelName string) (clonedModel *Model)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Model.MatName">func (*Model) <a href="/target/model.go?s=541:575#L20">MatName</a></h3>
+				<pre>func (me *Model) MatName() string</pre>
+				
+				
+				
+			
+				
+				<h3 id="Model.SetMatName">func (*Model) <a href="/target/model.go?s=684:731#L29">SetMatName</a></h3>
+				<pre>func (me *Model) SetMatName(newMatName string)</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="Node">type <a href="/target/node.go?s=1131:1332#L40">Node</a></h2>
+			<pre>type Node struct {
+    Disabled  bool
+    SubNodes  *subNodes
+    Transform *Transforms
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="Node.ChildrenUpdateMatrices">func (*Node) <a href="/target/node.go?s=2853:2894#L113">ChildrenUpdateMatrices</a></h3>
+				<pre>func (me *Node) ChildrenUpdateMatrices()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Node.MatName">func (*Node) <a href="/target/node.go?s=1724:1757#L67">MatName</a></h3>
+				<pre>func (me *Node) MatName() string</pre>
+				
+				
+				
+			
+				
+				<h3 id="Node.Material">func (*Node) <a href="/target/node.go?s=1620:1657#L62">Material</a></h3>
+				<pre>func (me *Node) Material() *Material</pre>
+				
+				
+				
+			
+				
+				<h3 id="Node.MeshModelName">func (*Node) <a href="/target/node.go?s=1848:1887#L75">MeshModelName</a></h3>
+				<pre>func (me *Node) MeshModelName() string</pre>
+				
+				
+				
+			
+				
+				<h3 id="Node.MeshName">func (*Node) <a href="/target/node.go?s=1785:1819#L71">MeshName</a></h3>
+				<pre>func (me *Node) MeshName() string</pre>
+				
+				
+				
+			
+				
+				<h3 id="Node.Parent">func (*Node) <a href="/target/node.go?s=2997:3036#L119">Parent</a></h3>
+				<pre>func (me *Node) Parent() Transformable</pre>
+				
+				
+				
+			
+				
+				<h3 id="Node.SetMatName">func (*Node) <a href="/target/node.go?s=2308:2354#L93">SetMatName</a></h3>
+				<pre>func (me *Node) SetMatName(newMatName string)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Node.SetMeshModelName">func (*Node) <a href="/target/node.go?s=2461:2522#L99">SetMeshModelName</a></h3>
+				<pre>func (me *Node) SetMeshModelName(meshName, modelName string)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Node.Transforms">func (*Node) <a href="/target/node.go?s=2782:2823#L109">Transforms</a></h3>
+				<pre>func (me *Node) Transforms() *Transforms</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="RenderCanvas">type <a href="/target/rendercanvas.go?s=1022:1126#L35">RenderCanvas</a></h2>
+			<pre>type RenderCanvas struct {
+    Disabled bool
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="RenderCanvas.Dispose">func (*RenderCanvas) <a href="/target/rendercanvas.go?s=1285:1318#L49">Dispose</a></h3>
+				<pre>func (me *RenderCanvas) Dispose()</pre>
+				
+				
+				
+			
+				
+				<h3 id="RenderCanvas.SetCameraIDs">func (*RenderCanvas) <a href="/target/rendercanvas.go?s=1445:1501#L60">SetCameraIDs</a></h3>
+				<pre>func (me *RenderCanvas) SetCameraIDs(camIDs ...string)</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="Scene">type <a href="/target/scene.go?s=45:82#L1">Scene</a></h2>
+			<pre>type Scene struct {
+    RootNode *Node
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewScene">func <a href="/target/scene.go?s=84:107#L1">NewScene</a></h3>
+				<pre>func NewScene() *Scene</pre>
+				
+				
+			
+
+			
+		
+			
+			
+			<h2 id="Texture">type <a href="/target/texture.go?s=1178:1439#L36">Texture</a></h2>
+			<pre>type Texture struct {
+    LastError error
+    Params    *textureParams
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="Texture.GpuDelete">func (*Texture) <a href="/target/texture.go?s=1563:1594#L54">GpuDelete</a></h3>
+				<pre>func (me *Texture) GpuDelete()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Texture.GpuSync">func (*Texture) <a href="/target/texture.go?s=1678:1707#L61">GpuSync</a></h3>
+				<pre>func (me *Texture) GpuSync()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Texture.GpuSynced">func (*Texture) <a href="/target/texture.go?s=2779:2815#L84">GpuSynced</a></h3>
+				<pre>func (me *Texture) GpuSynced() bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="Texture.Load">func (*Texture) <a href="/target/texture.go?s=3477:3550#L110">Load</a></h3>
+				<pre>func (me *Texture) Load(provider TextureProvider, args ...interface{})</pre>
+				
+				
+				
+			
+				
+				<h3 id="Texture.LoadAsync">func (*Texture) <a href="/target/texture.go?s=3594:3672#L114">LoadAsync</a></h3>
+				<pre>func (me *Texture) LoadAsync(provider TextureProvider, args ...interface{})</pre>
+				
+				
+				
+			
+				
+				<h3 id="Texture.Loaded">func (*Texture) <a href="/target/texture.go?s=3911:3944#L126">Loaded</a></h3>
+				<pre>func (me *Texture) Loaded() bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="Texture.SuppressMipMaps">func (*Texture) <a href="/target/texture.go?s=3975:4012#L130">SuppressMipMaps</a></h3>
+				<pre>func (me *Texture) SuppressMipMaps()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Texture.Unload">func (*Texture) <a href="/target/texture.go?s=4041:4069#L134">Unload</a></h3>
+				<pre>func (me *Texture) Unload()</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="TextureProvider">type <a href="/target/textureprovider.go?s=103:173#L2">TextureProvider</a></h2>
+			<pre>type TextureProvider func(args ...interface{}) (image.Image, error)</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="TimingStats">type <a href="/target/enginestats.go?s=2699:2823#L52">TimingStats</a></h2>
+			<pre>type TimingStats struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/enginestats.go?s=2826:2867#L57">Average</a></h3>
+				<pre>func (me *TimingStats) Average() float64</pre>
+				
+				
+				
+			
+				
+				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/enginestats.go?s=3408:3445#L77">Max</a></h3>
+				<pre>func (me *TimingStats) Max() float64</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="Transformable">type <a href="/target/transform.go?s=99:210#L1">Transformable</a></h2>
+			<pre>type Transformable interface {
+    ChildrenUpdateMatrices()
+    Parent() Transformable
+    Transforms() *Transforms
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Transforms">type <a href="/target/transform.go?s=212:423#L4">Transforms</a></h2>
+			<pre>type Transforms struct {
+    Pos, Rot, Scaling                                                   *unum.Vec3
+    Owner                                                               Transformable
+    MatModelView, MatRotX, MatRotY, MatRotZ, MatScaling, MatTranslation *unum.Mat4
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="Transforms.OnAnyChanged">func (*Transforms) <a href="/target/transform.go?s=994:1031#L26">OnAnyChanged</a></h3>
+				<pre>func (me *Transforms) OnAnyChanged()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.OnPosChanged">func (*Transforms) <a href="/target/transform.go?s=1201:1238#L37">OnPosChanged</a></h3>
+				<pre>func (me *Transforms) OnPosChanged()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.OnPosRotChanged">func (*Transforms) <a href="/target/transform.go?s=1284:1324#L42">OnPosRotChanged</a></h3>
+				<pre>func (me *Transforms) OnPosRotChanged()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.OnPosScalingChanged">func (*Transforms) <a href="/target/transform.go?s=1389:1433#L48">OnPosScalingChanged</a></h3>
+				<pre>func (me *Transforms) OnPosScalingChanged()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.OnRotChanged">func (*Transforms) <a href="/target/transform.go?s=1605:1642#L60">OnRotChanged</a></h3>
+				<pre>func (me *Transforms) OnRotChanged()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.OnRotScalingChanged">func (*Transforms) <a href="/target/transform.go?s=1688:1732#L65">OnRotScalingChanged</a></h3>
+				<pre>func (me *Transforms) OnRotScalingChanged()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.OnRotXChanged">func (*Transforms) <a href="/target/transform.go?s=1877:1915#L75">OnRotXChanged</a></h3>
+				<pre>func (me *Transforms) OnRotXChanged()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.OnRotYChanged">func (*Transforms) <a href="/target/transform.go?s=2038:2076#L84">OnRotYChanged</a></h3>
+				<pre>func (me *Transforms) OnRotYChanged()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.OnRotZChanged">func (*Transforms) <a href="/target/transform.go?s=2199:2237#L93">OnRotZChanged</a></h3>
+				<pre>func (me *Transforms) OnRotZChanged()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.OnScalingChanged">func (*Transforms) <a href="/target/transform.go?s=2366:2407#L102">OnScalingChanged</a></h3>
+				<pre>func (me *Transforms) OnScalingChanged()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.OnSomeChanged">func (*Transforms) <a href="/target/transform.go?s=2457:2530#L107">OnSomeChanged</a></h3>
+				<pre>func (me *Transforms) OnSomeChanged(scaling, pos, rotX, rotY, rotZ bool)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.SetPos">func (*Transforms) <a href="/target/transform.go?s=2721:2766#L116">SetPos</a></h3>
+				<pre>func (me *Transforms) SetPos(pos *unum.Vec3)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.SetPosX">func (*Transforms) <a href="/target/transform.go?s=2805:2849#L121">SetPosX</a></h3>
+				<pre>func (me *Transforms) SetPosX(posX float64)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.SetPosXYZ">func (*Transforms) <a href="/target/transform.go?s=2891:2949#L126">SetPosXYZ</a></h3>
+				<pre>func (me *Transforms) SetPosXYZ(posX, posY, posZ float64)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.SetPosY">func (*Transforms) <a href="/target/transform.go?s=3023:3067#L131">SetPosY</a></h3>
+				<pre>func (me *Transforms) SetPosY(posY float64)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.SetPosZ">func (*Transforms) <a href="/target/transform.go?s=3109:3153#L136">SetPosZ</a></h3>
+				<pre>func (me *Transforms) SetPosZ(posZ float64)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.SetRot">func (*Transforms) <a href="/target/transform.go?s=3195:3240#L141">SetRot</a></h3>
+				<pre>func (me *Transforms) SetRot(rot *unum.Vec3)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.SetRotX">func (*Transforms) <a href="/target/transform.go?s=3279:3322#L146">SetRotX</a></h3>
+				<pre>func (me *Transforms) SetRotX(rad float64)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.SetRotXYZ">func (*Transforms) <a href="/target/transform.go?s=3364:3422#L151">SetRotXYZ</a></h3>
+				<pre>func (me *Transforms) SetRotXYZ(radX, radY, radZ float64)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.SetRotY">func (*Transforms) <a href="/target/transform.go?s=3496:3539#L156">SetRotY</a></h3>
+				<pre>func (me *Transforms) SetRotY(rad float64)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.SetRotZ">func (*Transforms) <a href="/target/transform.go?s=3581:3624#L161">SetRotZ</a></h3>
+				<pre>func (me *Transforms) SetRotZ(rad float64)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.SetScaling">func (*Transforms) <a href="/target/transform.go?s=3666:3719#L166">SetScaling</a></h3>
+				<pre>func (me *Transforms) SetScaling(scaling *unum.Vec3)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.SetScalingN">func (*Transforms) <a href="/target/transform.go?s=3770:3821#L171">SetScalingN</a></h3>
+				<pre>func (me *Transforms) SetScalingN(scaling float64)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.StepDelta">func (*Transforms) <a href="/target/transform.go?s=3920:3984#L176">StepDelta</a></h3>
+				<pre>func (me *Transforms) StepDelta(deltaPerSecond float64) float64</pre>
+				
+				
+				
+			
+				
+				<h3 id="Transforms.UpdateMatrices">func (*Transforms) <a href="/target/transform.go?s=4030:4069#L180">UpdateMatrices</a></h3>
+				<pre>func (me *Transforms) UpdateMatrices()</pre>
+				
+				
+				
+			
+		
+		</div>
+	
+
+	
+
+
+
+
+
+
+
+
+		</div></div>
+	</body>
+</html>

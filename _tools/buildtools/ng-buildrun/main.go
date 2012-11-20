@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"runtime"
 	"sort"
 	"strings"
 )
@@ -138,7 +139,8 @@ func main () {
 	var nginePath = os.Args[1]
 	var srcDirPath = filepath.Join(nginePath, "core", "_glsl")
 	var outFilePath = filepath.Join(nginePath, "core", "-auto-generated-glsl-src.go")
+	runtime.LockOSThread()
 	fmt.Printf("Merging shader files inside %v into %v... ", strings.Replace(srcDirPath, nginePath, ".", -1), strings.Replace(outFilePath, nginePath, ".", -1))
 	generateShadersFile(srcDirPath, outFilePath, "core", true)
-	fmt.Println("Done.")
+	fmt.Println("DONE.")
 }

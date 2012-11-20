@@ -10,7 +10,7 @@ type EngineStats struct {
 	//	Gives the total number of frames rendered during the "previous" (not the current) second. Good enough for just a simple-minded FPS indicator.
 	FpsLastSec int
 
-	//	This TimingStats instance combines all the individual FrameXyz fields to track over time (both average and maximum) total cost per frame.
+	//	This TimingStats instance combines all the individual FrameFoo fields to track over time (both average and maximum) total cost per frame.
 	Frame *TimingStats
 
 	//	"Rendering" consists of a CPU-side and a GPU-side cost.
