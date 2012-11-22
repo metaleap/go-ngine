@@ -26,7 +26,7 @@ type SceneInst struct {
 //#begin-gt _definstlib.gt T:Scene
 
 	func newSceneDef (id string) (me *SceneDef) {
-		me = &SceneDef {}; me.Base.init(id); me.init(); return
+		me = &SceneDef {}; me.BaseDef.init(id); me.init(); return
 	}
 
 	//	Creates and returns a new *SceneInst* instance referencing this *SceneDef* definition.
@@ -94,8 +94,8 @@ type LibSceneDefs struct {
 	//	Call this after you have made any number of changes to this *LibSceneDefs* library or its *SceneDef* definitions.
 	//	Also called by the global *SyncChanges()* function.
 	func (me *LibSceneDefs) SyncChanges () {
-		for _, def := range me.M { def.SyncChanges() }
 		me.BaseLib.Base.SyncChanges()
+		for _, def := range me.M { def.BaseDef.Base.SyncChanges() }
 	}
 
 //#end-gt

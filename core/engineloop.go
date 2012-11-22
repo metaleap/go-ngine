@@ -8,20 +8,39 @@ import (
 	glfw "github.com/go-gl/glfw"
 )
 
-//	Consider EngineLoop a "Singleton" type, only valid use is the Loop global variable.
+//	Consider EngineLoop a "Singleton" type, only valid use is the core.Loop global variable.
 //	Manages your main-thread's "game loop".
 type EngineLoop struct {
+	//	Set to true by EngineLoop.Loop(). Set to false to stop looping.
 	IsLooping bool
-	SecTickLast, TickNow, TickLast, TickDelta float64
-	OnLoop, OnSecTick func()
+
+	//	The tick-time when the EngineLoop.OnSec() callback was last invoked.
+	SecTickLast float64
+
+	//	While EngineLoop.Loop() is running, is set to the current "tick-time":
+	//	the time in seconds expired ever since EngineLoop.Loop() was last called.
+	TickNow float64
+
+	//	While EngineLoop.Loop() is running, is set to the previous tick-time.
+	TickLast float64
+
+	//	The delta between TickLast and TickNow.
+	TickDelta float64
+
+	//	While EngineLoop.Loop() is running, this callback is invoked every loop iteration (ie. once per frame).
+	OnLoop func ()
+
+	//	While EngineLoop.Loop() is running, this callback is invoked at least and at most once per second.
+	OnSec func ()
 }
 
 func newEngineLoop () *EngineLoop {
 	var loop = &EngineLoop {}
-	loop.OnSecTick, loop.OnLoop = func () {}, func () {}
+	loop.OnSec, loop.OnLoop = func () {}, func () {}
 	return loop
 }
 
+//	Initiate a rendering loop. This method returns only when the loop is stopped for whatever reason.
 func (me *EngineLoop) Loop () {
 	var tickNowFloor float64
 	if (!me.IsLooping) {
@@ -44,7 +63,7 @@ func (me *EngineLoop) Loop () {
 			me.TickDelta = me.TickNow - me.TickLast
 			if tickNowFloor = math.Floor(me.TickNow); tickNowFloor != me.SecTickLast {
 				Stats.FpsLastSec, me.SecTickLast = Stats.fpsCounter, tickNowFloor
-				Stats.fpsCounter = 0; Core.onSecTick(); me.OnSecTick()
+				Stats.fpsCounter = 0; Core.onSec(); me.OnSec()
 				Stats.Gc.begin(); runtime.GC(); Stats.Gc.end()
 			}
 			Stats.FrameCoreCode.begin(); Core.onLoop(); Stats.FrameCoreCode.end()
@@ -58,10 +77,12 @@ func (me *EngineLoop) Loop () {
 	}
 }
 
+//	Stops the currently running EngineLoop.Loop().
 func (me *EngineLoop) Stop () {
 	me.IsLooping = false
 }
 
+//	Returns the number of seconds expired ever since EngineLoop.Loop() was last called.
 func (me *EngineLoop) Time () float64 {
 	return glfw.Time()
 }

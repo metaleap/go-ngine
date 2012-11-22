@@ -1,0 +1,223 @@
+<html>
+	<head>
+		<title>Package github.com/go3d/go-ngine/_sampleprogs/_sharedcode</title>
+		<meta charset="UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link type="text/css" rel="stylesheet" href="http://golang.org/doc/style.css" />
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src="http://golang.org/doc/godocs.js"></script>
+	</head>
+	<body>
+		<div id="page" class="wide">
+		<div class="container">
+		<h1>Package github.com/go3d/go-ngine/_sampleprogs/_sharedcode</h1>
+		<div id="nav"></div>
+		2012/11/21 17:08:35 newDirectory(/target): not a package directory
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#pkg-index">Index</a></dd>
+			
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>
+Some common base functionality shared by all the go:ngine example apps in _sampleprogs.
+</p>
+
+			</div>
+		</div>
+		
+	
+		<h2 id="pkg-index">Index</h2>
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+		<div id="manual-nav">
+			<dl>
+			
+			
+				<dd><a href="#pkg-variables">Variables</a></dd>
+			
+			
+				
+				<dd><a href="#AssetRootDirPath">func AssetRootDirPath() string</a></dd>
+			
+				
+				<dd><a href="#CheckCamCtlKeys">func CheckCamCtlKeys()</a></dd>
+			
+				
+				<dd><a href="#CheckToggleKeys">func CheckToggleKeys()</a></dd>
+			
+				
+				<dd><a href="#OnSec">func OnSec()</a></dd>
+			
+				
+				<dd><a href="#PrintPostLoopSummary">func PrintPostLoopSummary()</a></dd>
+			
+				
+				<dd><a href="#SamplesMainFunc">func SamplesMainFunc(assetLoader func())</a></dd>
+			
+				
+				<dd><a href="#WindowTitle">func WindowTitle() string</a></dd>
+			
+			
+			
+		</dl>
+
+		
+
+		
+			<h4>Package files</h4>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="/target/doc.go">doc.go</a>
+			
+				<a href="/target/samplescenes.go">samplescenes.go</a>
+			
+			</span>
+			</p>
+		
+	
+		
+		
+			<h2 id="pkg-variables">Variables</h2>
+			
+				<pre>var (
+    <span class="comment">//	The primary camera</span>
+    Cam *ng.Camera
+
+    <span class="comment">//	Controller for the primary camera</span>
+    CamCtl *ng.Controller
+
+    <span class="comment">//	The maximum index for KeyHints when cycling through it in OnSec()</span>
+    MaxKeyHint = len(KeyHints) - 1
+
+    <span class="comment">//	OnSec() changes the window title every second to display FPS etc.</span>
+    <span class="comment">//	Also every 4 seconds shows the next one in a number of &#34;key hints&#34; defined here:</span>
+    KeyHints = []string{
+        &#34;[F2]  --  Toggle Render Technique&#34;,
+        &#34;[F3]  --  Toggle Backface Culling&#34;,
+        &#34;[F4]  --  Toggle Texture Filtering&#34;,
+        &#34;[F5]  --  Increase Filtering Anisotropy&#34;,
+        &#34;[W][S]  --  Camera rise / sink&#34;,
+        &#34;[A][D]  --  Camera strafe left / right&#34;,
+        &#34;[&lt;][&gt;]  --  Camera turn left / right&#34;,
+        &#34;[^][v]  --  Camera move forward / backward&#34;,
+        &#34;[PgUp][PgDn]  --  Camera turn up / down&#34;,
+        &#34;[Alt][LShift][RShift]  --  Camera move-speed x 0.1 / 10 / 100&#34;,
+    }
+)</pre>
+				
+			
+		
+		
+			
+			
+			<h2 id="AssetRootDirPath">func <a href="/target/samplescenes.go?s=1230:1261#L36">AssetRootDirPath</a></h2>
+			<pre>func AssetRootDirPath() string</pre>
+			<p>
+Returns the &#34;asset root directory&#34; path for go:ngine, in this case: $GOPATH/src/github.com/go3d/go-ngine/_sampleprogs/_sharedassets
+</p>
+
+			
+		
+			
+			
+			<h2 id="CheckCamCtlKeys">func <a href="/target/samplescenes.go?s=1472:1495#L41">CheckCamCtlKeys</a></h2>
+			<pre>func CheckCamCtlKeys()</pre>
+			<p>
+Called every frame (by the parent example app) to check the state for keys controlling CamCtl to move or rotate Cam.
+</p>
+
+			
+		
+			
+			
+			<h2 id="CheckToggleKeys">func <a href="/target/samplescenes.go?s=2495:2518#L63">CheckToggleKeys</a></h2>
+			<pre>func CheckToggleKeys()</pre>
+			<p>
+Called every frame (by the parent example app) to check &#34;toggle keys&#34; that toggle certain options.
+</p>
+
+			
+		
+			
+			
+			<h2 id="OnSec">func <a href="/target/samplescenes.go?s=4610:4623#L109">OnSec</a></h2>
+			<pre>func OnSec()</pre>
+			<p>
+Called every second by go:ngine&#39;s *core* package. Refreshes the window title and doing so, every 4 seconds shows the next one entry in KeyHints.
+</p>
+
+			
+		
+			
+			
+			<h2 id="PrintPostLoopSummary">func <a href="/target/samplescenes.go?s=3017:3045#L72">PrintPostLoopSummary</a></h2>
+			<pre>func PrintPostLoopSummary()</pre>
+			<p>
+Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent example app exits.
+</p>
+
+			
+		
+			
+			
+			<h2 id="SamplesMainFunc">func <a href="/target/samplescenes.go?s=3865:3907#L87">SamplesMainFunc</a></h2>
+			<pre>func SamplesMainFunc(assetLoader func())</pre>
+			<p>
+The *func main()* implementation for the parent example app. Initializes go:ngine, sets Cam and CamCtl, calls the specified assetLoader function, then enters the Loop.
+</p>
+
+			
+		
+			
+			
+			<h2 id="WindowTitle">func <a href="/target/samplescenes.go?s=4851:4877#L118">WindowTitle</a></h2>
+			<pre>func WindowTitle() string</pre>
+			<p>
+Returns the window title to be set by OnSec().
+</p>
+
+			
+		
+		
+		</div>
+	
+
+	
+
+
+
+
+
+
+
+
+		</div></div>
+	</body>
+</html>

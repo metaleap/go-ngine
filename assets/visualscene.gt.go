@@ -24,7 +24,7 @@ type VisualSceneInst struct {
 //#begin-gt _definstlib.gt T:VisualScene
 
 	func newVisualSceneDef (id string) (me *VisualSceneDef) {
-		me = &VisualSceneDef {}; me.Base.init(id); me.init(); return
+		me = &VisualSceneDef {}; me.BaseDef.init(id); me.init(); return
 	}
 
 	//	Creates and returns a new *VisualSceneInst* instance referencing this *VisualSceneDef* definition.
@@ -92,8 +92,8 @@ type LibVisualSceneDefs struct {
 	//	Call this after you have made any number of changes to this *LibVisualSceneDefs* library or its *VisualSceneDef* definitions.
 	//	Also called by the global *SyncChanges()* function.
 	func (me *LibVisualSceneDefs) SyncChanges () {
-		for _, def := range me.M { def.SyncChanges() }
 		me.BaseLib.Base.SyncChanges()
+		for _, def := range me.M { def.BaseDef.Base.SyncChanges() }
 	}
 
 //#end-gt

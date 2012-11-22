@@ -59,7 +59,7 @@ type Mesh struct {
 	}
 
 	func (me *Mesh) GpuUpload () (err error) {
-		var sizeVerts, sizeIndices = gl.Sizeiptr(4 * len(me.raw.Verts)), gl.Sizeiptr(4 * len(me.raw.Indices))
+		var sizeVerts, sizeIndices = gl.Sizeiptr(4 * len(me.raw.MeshVerts)), gl.Sizeiptr(4 * len(me.raw.Indices))
 		me.GpuDelete()
 
 		if sizeVerts > gl.Sizeiptr(me.meshBuffer.MemSizeVertices) {
@@ -71,7 +71,7 @@ type Mesh struct {
 			fmt.Printf("Upload %v at voff=%v ioff=%v boff=%v\n", me.name, me.meshBufOffsetVerts, me.meshBufOffsetIndices, me.meshBufOffsetBaseIndex)
 			gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.meshBuffer.glIbo)
 			gl.BindBuffer(gl.ARRAY_BUFFER, me.meshBuffer.glVbo)
-			gl.BufferSubData(gl.ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetVerts), sizeVerts, gl.Pointer(&me.raw.Verts[0]))
+			gl.BufferSubData(gl.ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetVerts), sizeVerts, gl.Pointer(&me.raw.MeshVerts[0]))
 			me.meshBuffer.offsetVerts += int32(sizeVerts)
 			gl.BufferSubData(gl.ELEMENT_ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetIndices), sizeIndices, gl.Pointer(&me.raw.Indices[0]))
 			me.meshBuffer.offsetIndices += int32(sizeIndices)
@@ -90,29 +90,29 @@ type Mesh struct {
 	func (me *Mesh) load (meshData *nga.MeshData) {
 		var numVerts = 3 * int32(len(meshData.Faces))
 		var numFinalVerts = 0
-		var vertsMap = map[nga.Vert]uint32 {}
+		var vertsMap = map[nga.MeshVert]uint32 {}
 		var offsetFloat, offsetIndex, offsetVertex, vindex uint32
 		var offsetFace, ei = 0, 0
 		var face nga.MeshFace3
-		var ventry nga.Vert
+		var ventry nga.MeshVert
 		var vexists bool
 		var vreuse int
 		me.Models = models {}
 		me.gpuSynced = false
 		me.raw = &nga.MeshRaw {}
-		me.raw.Verts = make([]float32, Core.MeshBuffers.FloatsPerVertex() * numVerts)
+		me.raw.MeshVerts = make([]float32, Core.MeshBuffers.FloatsPerVertex() * numVerts)
 		me.raw.Indices = make([]uint32, numVerts)
-		me.raw.Faces = make([]*nga.MeshFace, len(meshData.Faces))
+		me.raw.Faces = make([]*nga.MeshRawFace, len(meshData.Faces))
 		for _, face = range meshData.Faces {
-			me.raw.Faces[offsetFace] = nga.NewMeshFace()
+			me.raw.Faces[offsetFace] = nga.NewMeshRawFace()
 			for ei, ventry = range face {
 				if vindex, vexists = vertsMap[ventry]; !vexists {
 					vindex, vertsMap[ventry] = offsetVertex, offsetVertex
-					copy(me.raw.Verts[offsetFloat : (offsetFloat + 3)], meshData.Positions[ventry.PosIndex][0 : 3])
+					copy(me.raw.MeshVerts[offsetFloat : (offsetFloat + 3)], meshData.Positions[ventry.PosIndex][0 : 3])
 					offsetFloat += 3
-					copy(me.raw.Verts[offsetFloat : (offsetFloat + 2)], meshData.TexCoords[ventry.TexCoordIndex][0 : 2])
+					copy(me.raw.MeshVerts[offsetFloat : (offsetFloat + 2)], meshData.TexCoords[ventry.TexCoordIndex][0 : 2])
 					offsetFloat += 2
-					copy(me.raw.Verts[offsetFloat : (offsetFloat + 3)], meshData.Normals[ventry.NormalIndex][0 : 3])
+					copy(me.raw.MeshVerts[offsetFloat : (offsetFloat + 3)], meshData.Normals[ventry.NormalIndex][0 : 3])
 					offsetFloat += 3
 					offsetVertex++
 					numFinalVerts++
@@ -126,7 +126,7 @@ type Mesh struct {
 			offsetFace++
 		}
 		me.Models[""] = newModel("", me)
-		fmt.Printf("meshload(%v) gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)\n", me.name, len(me.raw.Faces), len(me.raw.Verts), numFinalVerts, numVerts, len(me.raw.Indices), vreuse)
+		fmt.Printf("meshload(%v) gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)\n", me.name, len(me.raw.Faces), len(me.raw.MeshVerts), numFinalVerts, numVerts, len(me.raw.Indices), vreuse)
 	}
 
 	func (me *Mesh) Loaded () bool {

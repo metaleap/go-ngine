@@ -9,9 +9,12 @@ import (
 //	Consider EngineOptions a "Singleton" type, only valid use is the one instance you created for core.Init().
 //	Various "global" (rather than use-case-specific) options.
 type EngineOptions struct {
-	AssetRootDirPath, DefaultRenderTechnique string
+	//	The base directory path for asset file paths.
+	AssetRootDirPath string
+	//	Name for the default render technique, currently "rt_unlit_colored"
+	DefaultRenderTechnique string
+	//	All textures default to these params unless they have their own params set.
 	DefaultTextureParams *textureParams
-	GpuMemMeshes, GpuMemTextures uint
 
 	glClearColor ugl.GlVec4
 	glTextureAnisotropy, winFullScreen bool
@@ -25,14 +28,15 @@ func NewEngineOptions (assetRootDirPath string, winWidth, winHeight, winSwapInte
 	opt.DefaultTextureParams = newTextureParams(true, 6)
 	opt.AssetRootDirPath, opt.DefaultRenderTechnique = assetRootDirPath, "rt_unlit_colored"
 	opt.winWidth, opt.winHeight, opt.winSwapInterval, opt.winFullScreen = winWidth, winHeight, winSwapInterval, winFullScreen
-	opt.GpuMemMeshes, opt.GpuMemTextures = 128, 256
 	return opt
 }
 
+//	Returns the current OpenGL "clear color".
 func (me *EngineOptions) GlClearColor () ugl.GlVec4 {
 	return me.glClearColor
 }
 
+//	Changes the current OpenGL "clear color"
 func (me *EngineOptions) SetGlClearColor (col ugl.GlVec4) {
 	me.glClearColor = col
 	gl.ClearColor(col[0], col[1], col[2], col[3])

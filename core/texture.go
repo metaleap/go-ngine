@@ -2,10 +2,11 @@ package core
 
 import (
 	"image"
+	"strings"
 
 	gl "github.com/chsc/gogl/gl42"
-
 	ugl "github.com/go3d/go-glutil"
+	nga "github.com/go3d/go-ngine/assets"
 )
 
 var (
@@ -14,36 +15,24 @@ var (
 
 type textures map[string]*Texture
 
-	func (me textures) Load (loadProvider TextureProvider, providerArgs ... interface {}) *Texture {
-		var tex = newTexture()
-		tex.Load(loadProvider, providerArgs ...)
-		return tex
-	}
-
-	func (me textures) LoadAndSet (name string, loadProvider TextureProvider, providerArgs ... interface {}) *Texture {
-		return me.Set(name, me.Load(loadProvider, providerArgs ...))
-	}
-
-	func (me textures) LoadAsync (loadProvider TextureProvider, providerArgs ... interface {}) *Texture {
-		var tex = newTexture()
-		tex.LoadAsync(loadProvider, providerArgs ...)
-		return tex
-	}
-
-	func (me textures) LoadAsyncAndSet (name string, loadProvider TextureProvider, providerArgs ... interface {}) *Texture {
-		return me.Set(name, me.LoadAsync(loadProvider, providerArgs ...))
+	func (me textures) add (def *nga.ImageDef) (item *Texture) {
+		item = newTexture(def)
+		me[def.ID] = item
+		return
 	}
 
 	func (me textures) NewParams (filter bool, filterAnisotropy float64) *textureParams {
 		return newTextureParams(filter, filterAnisotropy)
 	}
 
-	func (me textures) Set (name string, tex *Texture) *Texture {
-		me[name] = tex
-		return tex
+	func (me textures) syncAssetChanges () {
+		var item *Texture; var id string; var def *nga.ImageDef;
+		for id, def = range nga.ImageDefs.M { if item = me[def.ID]; item == nil { item = me.add(def) } }
+		for id, item = range me { if nga.ImageDefs.M[item.ID] == nil { delete(me, id); item.dispose() } }
 	}
 
 type Texture struct {
+	*nga.ImageDef
 	LastError error
 	Params *textureParams
 
@@ -55,10 +44,20 @@ type Texture struct {
 	glSizedInternalFormat, glPixelDataFormat, glPixelDataType gl.Enum
 }
 
-	func newTexture () *Texture {
-		var tex = &Texture {}
-		tex.Params = Core.Options.DefaultTextureParams
-		return tex
+	func newTexture (def *nga.ImageDef) (me *Texture) {
+		me = &Texture {}
+		me.ImageDef = def
+		me.ImageDef.OnSync = func () {
+			me.load()
+			me.GpuSync()
+		}
+		me.Params = Core.Options.DefaultTextureParams
+		return
+	}
+
+	func (me *Texture) dispose () {
+		me.Unload()
+		me.GpuDelete()
 	}
 
 	func (me *Texture) GpuDelete () {
@@ -117,16 +116,21 @@ type Texture struct {
 		return err
 	}
 
-	func (me *Texture) Load (provider TextureProvider, args ... interface {}) {
-		me.load_OnImg(provider(args ...))
+	func (me *Texture) load () {
+		prov, arg, remote := me.provider()
+		if remote {
+			me.loadAsync(prov, arg)
+		} else {
+			me.load_OnImg(prov(arg))
+		}
 	}
 
-	func (me *Texture) LoadAsync (provider TextureProvider, args ... interface {}) {
+	func (me *Texture) loadAsync (prov TextureProvider, arg interface{}) {
 		me.gpuSynced = false
 		me.Unload()
 		asyncTextures[me] = false
 		go func () {
-			if err := me.load_OnImg(provider(args ...)); err != nil {
+			if err := me.load_OnImg(prov(arg)); err != nil {
 				//	mark as "done" anyway in the async queue.
 				asyncTextures[me] = true
 			}
@@ -135,6 +139,23 @@ type Texture struct {
 
 	func (me *Texture) Loaded () bool {
 		return me.img != nil
+	}
+
+	func (me *Texture) provider () (prov TextureProvider, arg interface{}, remote bool) {
+		if me.ImageDef != nil {
+			if me.ImageDef.InitFrom != nil {
+				if len(me.ImageDef.InitFrom.RawData) > 0 {
+					prov, arg = TextureProviders.IoReader, me.ImageDef.InitFrom.RawData
+				} else if len(me.ImageDef.InitFrom.RefUrl) > 0 {
+					if remote = strings.Contains(me.ImageDef.InitFrom.RefUrl, "://"); remote {
+						prov, arg = TextureProviders.RemoteFile, me.ImageDef.InitFrom.RefUrl
+					} else {
+						prov, arg = TextureProviders.LocalFile, me.ImageDef.InitFrom.RefUrl
+					}
+				}
+			}
+		}
+		return
 	}
 
 	func (me *Texture) SuppressMipMaps () {

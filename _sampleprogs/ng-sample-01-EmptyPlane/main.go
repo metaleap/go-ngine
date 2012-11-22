@@ -2,6 +2,7 @@ package main
 
 import (
 	ng "github.com/go3d/go-ngine/core"
+	nga "github.com/go3d/go-ngine/assets"
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
 )
 
@@ -10,7 +11,7 @@ var (
 )
 
 func main () {
-	ngsamples.SamplesMainFunc(LoadSampleScene_04_ColladaCube)
+	ngsamples.SamplesMainFunc(LoadSampleScene_01_EmptyPlane)
 }
 
 func onLoop () {
@@ -18,7 +19,7 @@ func onLoop () {
 	ngsamples.CheckCamCtlKeys()
 }
 
-func LoadSampleScene_04_ColladaCube () {
+func LoadSampleScene_01_EmptyPlane () {
 	var err error
 	var meshFloor *ng.Mesh
 	var bufRest *ng.MeshBuffer
@@ -27,7 +28,7 @@ func LoadSampleScene_04_ColladaCube () {
 	ngsamples.Cam.Options.BackfaceCulling = false
 
 	//	textures / materials
-	ng.Core.Textures["tex_cobbles"] = ng.Core.Textures.Load(ng.TextureProviders.LocalFile, "tex/cobbles.png")
+	nga.ImageDefs.AddNew("tex_cobbles").InitFrom.RefUrl = "tex/cobbles.png"
 	ng.Core.Materials["mat_cobbles"] = ng.Core.Materials.New("tex_cobbles")
 
 	//	meshes / models

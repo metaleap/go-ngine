@@ -1,7 +1,7 @@
 package gt
 
 	func new__T__Def (id string) (me *__T__Def) {
-		me = &__T__Def {}; me.Base.init(id); me.init(); return
+		me = &__T__Def {}; me.BaseDef.init(id); me.init(); return
 	}
 
 	//	Creates and returns a new *__T__Inst* instance referencing this *__T__Def* definition.
@@ -69,6 +69,6 @@ type Lib__T__Defs struct {
 	//	Call this after you have made any number of changes to this *Lib__T__Defs* library or its *__T__Def* definitions.
 	//	Also called by the global *SyncChanges()* function.
 	func (me *Lib__T__Defs) SyncChanges () {
-		for _, def := range me.M { def.SyncChanges() }
 		me.BaseLib.Base.SyncChanges()
+		for _, def := range me.M { def.BaseDef.Base.SyncChanges() }
 	}

@@ -9,7 +9,7 @@ import (
 	"io"
 )
 
-type TextureProvider func (args ... interface {}) (image.Image, error)
+type TextureProvider func (arg interface {}) (image.Image, error)
 
 type textureProviders struct {
 	IoReader, LocalFile, RemoteFile TextureProvider
@@ -21,16 +21,24 @@ var (
 	TextureProviders = &textureProviders { textureProviderIoReader, textureProviderLocalFile, textureProviderRemoteFile }
 )
 
-func textureProviderIoReader (args ... interface {}) (img image.Image, err error) {
-	if closer, isCl := args[0].(io.Closer); isCl { defer closer.Close() }
-	if reader, isR  := args[0].(io.Reader); isR { img, _, err = image.Decode(reader) }
+func textureProviderIoReader (arg interface{}) (img image.Image, err error) {
+	if closer, isCl := arg.(io.Closer); isCl { defer closer.Close() }
+	if reader, isR  := arg.(io.Reader); isR { img, _, err = image.Decode(reader) }
 	return
 }
 
-func textureProviderLocalFile (args ... interface {}) (img image.Image, err error) {
-	return textureProviderIoReader(Core.AssetManager.OpenLocalFile(args[0].(string)))
+func textureProviderLocalFile (arg interface{}) (img image.Image, err error) {
+	var rc io.ReadCloser
+	if rc, err = Core.AssetManager.OpenLocalFile(arg.(string)); err == nil {
+		img, err = textureProviderIoReader(rc)
+	}
+	return
 }
 
-func textureProviderRemoteFile (args ... interface {}) (img image.Image, err error) {
-	return textureProviderIoReader(Core.AssetManager.OpenRemoteFile(args[0].(string)))
+func textureProviderRemoteFile (arg interface{}) (img image.Image, err error) {
+	var rc io.ReadCloser
+	if rc, err = Core.AssetManager.OpenRemoteFile(arg.(string)); err == nil {
+		img, err = textureProviderIoReader(rc)
+	}
+	return
 }

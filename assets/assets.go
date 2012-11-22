@@ -12,7 +12,6 @@ var (
 	//	This callback, set by *core* (or your custom package), gets called after SyncChanges() has finished syncing.
 	OnAfterSyncAll func ()
 
-	timelastFullSync int64
 	syncHandlers [] func ()
 )
 
@@ -32,7 +31,6 @@ func sfmt (format string, fmtArgs ... interface{}) string {
 //	Signals to *core* (or your custom package) that changes have been made that need to be picked up. Call this after you have made any number of changes to your Defs, Insts or Libs.
 func SyncChanges () {
 	OnBeforeSyncAll()
-	timelastFullSync = now()
-	for _, syncer := range syncHandlers { println("LIBSYNC:"); syncer() }
+	for _, syncer := range syncHandlers { syncer() }
 	OnAfterSyncAll()
 }

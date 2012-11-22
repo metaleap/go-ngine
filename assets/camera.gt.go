@@ -64,7 +64,7 @@ type CameraInst struct {
 //#begin-gt _definstlib.gt T:Camera
 
 	func newCameraDef (id string) (me *CameraDef) {
-		me = &CameraDef {}; me.Base.init(id); me.init(); return
+		me = &CameraDef {}; me.BaseDef.init(id); me.init(); return
 	}
 
 	//	Creates and returns a new *CameraInst* instance referencing this *CameraDef* definition.
@@ -132,8 +132,8 @@ type LibCameraDefs struct {
 	//	Call this after you have made any number of changes to this *LibCameraDefs* library or its *CameraDef* definitions.
 	//	Also called by the global *SyncChanges()* function.
 	func (me *LibCameraDefs) SyncChanges () {
-		for _, def := range me.M { def.SyncChanges() }
 		me.BaseLib.Base.SyncChanges()
+		for _, def := range me.M { def.BaseDef.Base.SyncChanges() }
 	}
 
 //#end-gt

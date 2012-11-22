@@ -6,6 +6,7 @@ import (
 	unum "github.com/metaleap/go-util/num"
 
 	ng "github.com/go3d/go-ngine/core"
+	nga "github.com/go3d/go-ngine/assets"
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
 )
 
@@ -59,11 +60,13 @@ func LoadSampleScene_03_PyrsCubes () {
 	ngsamples.Cam.Options.BackfaceCulling = false
 
 	//	textures / materials
-	ng.Core.Textures["tex_cobbles"] = ng.Core.Textures.Load(ng.TextureProviders.LocalFile, "tex/cobbles.png")
-	ng.Core.Textures["tex_crate"] = ng.Core.Textures.Load(ng.TextureProviders.LocalFile, "tex/crate.jpeg")
-	ng.Core.Textures["tex_mosaic"] = ng.Core.Textures.Load(ng.TextureProviders.LocalFile, "tex/mosaic.jpeg")
-	ng.Core.Textures["tex_cat"] = ng.Core.Textures.Load(ng.TextureProviders.LocalFile, "tex/cat.png")
-	ng.Core.Textures["tex_dog"] = ng.Core.Textures.Load(ng.TextureProviders.LocalFile, "tex/dog.png")
+
+	nga.ImageDefs.AddNew("tex_cobbles").InitFrom.RefUrl = "tex/cobbles.png"
+	nga.ImageDefs.AddNew("tex_crate").InitFrom.RefUrl = "tex/crate.jpeg"
+	nga.ImageDefs.AddNew("tex_mosaic").InitFrom.RefUrl = "tex/mosaic.jpeg"
+	nga.ImageDefs.AddNew("tex_cat").InitFrom.RefUrl = "tex/cat.png"
+	nga.ImageDefs.AddNew("tex_dog").InitFrom.RefUrl = "tex/dog.png"
+
 	ng.Core.Materials["mat_cobbles"] = ng.Core.Materials.New("tex_cobbles")
 	ng.Core.Materials["mat_crate"] = ng.Core.Materials.New("tex_crate")
 	ng.Core.Materials["mat_mosaic"] = ng.Core.Materials.New("tex_mosaic")

@@ -22,7 +22,7 @@ var (
 
 //	Call this to "un-init" go:ngine and to release any and all GPU or RAM resources still allocated.
 func Dispose () {
-	if Core != nil { Core.Dispose() }
+	if Core != nil { Core.dispose() }
 	glDispose()
 	UserIO.dispose()
 	Core, Loop, Stats = nil, nil, nil

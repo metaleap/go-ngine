@@ -11,13 +11,13 @@ type Base struct {
 	//	have synced.
 	OnSync func ()
 
-	timeLastChanged, timeLastSynced int64
+	dirty bool
 }
 
 	//	You NEED to call this method if you modified this *Def* or *Inst* by setting its fields directly
 	//	(instead of using the provided *SetFoo()* methods) for your changes to be picked up by *core* (or your custom package).
 	func (me *Base) SetDirty () {
-		me.timeLastChanged = now()
+		me.dirty = true
 	}
 
 	func (me *Base) init (id string) {
@@ -30,9 +30,9 @@ type Base struct {
 	//	Call this after you have made any number of changes to this this *Def*, *Inst* or *Lib*.
 	//	Also called by the global *SyncChanges()* function.
 	func (me *Base) SyncChanges () {
-		if me.timeLastChanged > me.timeLastSynced {
+		if me.dirty {
+			me.dirty = false
 			me.OnSync()
-			me.timeLastSynced = now()
 		}
 	}
 
@@ -41,6 +41,10 @@ type BaseDef struct {
 	//	Provides ID and syncing
 	Base
 }
+
+	func (me *BaseDef) init (id string) {
+		me.Base.init(id)
+	}
 
 //	Provides a common base for *Inst*s.
 type BaseInst struct {

@@ -5,7 +5,6 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link type="text/css" rel="stylesheet" href="http://golang.org/doc/style.css" />
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-		<script type="text/javascript" src="http://golang.org/doc/play/playground.js"></script>
 		<script type="text/javascript" src="http://golang.org/doc/godocs.js"></script>
 	</head>
 	<body>
@@ -109,9 +108,6 @@ TODO pkg doc
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Camera.Dispose">func (me *Camera) Dispose()</a></dd>
-				
-					
 					<dd>&nbsp; &nbsp; <a href="#Camera.SetTechnique">func (me *Camera) SetTechnique(name string)</a></dd>
 				
 					
@@ -199,9 +195,6 @@ TODO pkg doc
 				
 				<dd><a href="#EngineCore">type EngineCore</a></dd>
 				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineCore.Dispose">func (me *EngineCore) Dispose()</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#EngineCore.SyncUpdates">func (me *EngineCore) SyncUpdates()</a></dd>
@@ -394,12 +387,6 @@ TODO pkg doc
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Texture.GpuSynced">func (me *Texture) GpuSynced() bool</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#Texture.Load">func (me *Texture) Load(provider TextureProvider, args ...interface{})</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#Texture.LoadAsync">func (me *Texture) LoadAsync(provider TextureProvider, args ...interface{})</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Texture.Loaded">func (me *Texture) Loaded() bool</a></dd>
@@ -667,14 +654,15 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.go?s=666:890#L24">Camera</a></h2>
+			<h2 id="Camera">type <a href="/target/camera.go?s=627:843#L15">Camera</a></h2>
 			<pre>type Camera struct {
-    ViewPort      *CameraViewPort
-    MatProj       *unum.Mat4
-    Options       *CameraOptions
-    Controller    *Controller
-    Disabled      bool
-    ID, SceneName string
+    *nga.CameraDef
+    ViewPort   *CameraViewPort
+    MatProj    *unum.Mat4
+    Options    *CameraOptions
+    Controller *Controller
+    Disabled   bool
+    SceneName  string
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			
@@ -689,28 +677,21 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 
 			
 				
-				<h3 id="Camera.Dispose">func (*Camera) <a href="/target/camera.go?s=1189:1217#L48">Dispose</a></h3>
-				<pre>func (me *Camera) Dispose()</pre>
-				
-				
-				
-			
-				
-				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.go?s=1910:1954#L69">SetTechnique</a></h3>
+				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.go?s=1825:1869#L57">SetTechnique</a></h3>
 				<pre>func (me *Camera) SetTechnique(name string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.ToggleTechnique">func (*Camera) <a href="/target/camera.go?s=2058:2094#L75">ToggleTechnique</a></h3>
+				<h3 id="Camera.ToggleTechnique">func (*Camera) <a href="/target/camera.go?s=1973:2009#L63">ToggleTechnique</a></h3>
 				<pre>func (me *Camera) ToggleTechnique()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.UpdatePerspective">func (*Camera) <a href="/target/camera.go?s=2601:2639#L85">UpdatePerspective</a></h3>
+				<h3 id="Camera.UpdatePerspective">func (*Camera) <a href="/target/camera.go?s=2516:2554#L73">UpdatePerspective</a></h3>
 				<pre>func (me *Camera) UpdatePerspective()</pre>
 				
 				
@@ -744,7 +725,7 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 		
 			
 			
-			<h2 id="CameraViewPort">type <a href="/target/camera.go?s=2776:2954#L90">CameraViewPort</a></h2>
+			<h2 id="CameraViewPort">type <a href="/target/camera.go?s=2715:2893#L78">CameraViewPort</a></h2>
 			<pre>type CameraViewPort struct {
     Absolute               bool
     RelX, RelY, RelW, RelH float64
@@ -763,21 +744,21 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 
 			
 				
-				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.go?s=3091:3149#L106">SetAbs</a></h3>
+				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.go?s=3030:3088#L94">SetAbs</a></h3>
 				<pre>func (me *CameraViewPort) SetAbs(x, y, width, height int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.go?s=3249:3311#L111">SetRel</a></h3>
+				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.go?s=3188:3250#L99">SetRel</a></h3>
 				<pre>func (me *CameraViewPort) SetRel(x, y, width, height float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="CameraViewPort.Update">func (*CameraViewPort) <a href="/target/camera.go?s=3412:3447#L116">Update</a></h3>
+				<h3 id="CameraViewPort.Update">func (*CameraViewPort) <a href="/target/camera.go?s=3351:3386#L104">Update</a></h3>
 				<pre>func (me *CameraViewPort) Update()</pre>
 				
 				
@@ -921,7 +902,7 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/enginecore.go?s=617:857#L16">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/enginecore.go?s=622:862#L16">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     AssetManager       *assetManager
     Cameras            cameras
@@ -935,7 +916,7 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
     Textures           textures
 }</pre>
 			<p>
-Consider EngineCore a &#34;Singleton&#34; type, only valid use is the Core global variable.
+Consider EngineCore a &#34;Singleton&#34; type, only valid use is the core.Core global variable.
 The heart and brain of go:ngine --- a container for all runtime resources and responsible for rendering.
 </p>
 
@@ -950,14 +931,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 
 			
 				
-				<h3 id="EngineCore.Dispose">func (*EngineCore) <a href="/target/enginecore.go?s=1568:1600#L51">Dispose</a></h3>
-				<pre>func (me *EngineCore) Dispose()</pre>
-				
-				
-				
-			
-				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/enginecore.go?s=2755:2791#L100">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/enginecore.go?s=2792:2828#L99">SyncUpdates</a></h3>
 				<pre>func (me *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -966,14 +940,32 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 		
 			
 			
-			<h2 id="EngineLoop">type <a href="/target/engineloop.go?s=213:332#L3">EngineLoop</a></h2>
+			<h2 id="EngineLoop">type <a href="/target/engineloop.go?s=218:995#L3">EngineLoop</a></h2>
 			<pre>type EngineLoop struct {
-    IsLooping                                 bool
-    SecTickLast, TickNow, TickLast, TickDelta float64
-    OnLoop, OnSecTick                         func()
+    <span class="comment">//	Set to true by EngineLoop.Loop(). Set to false to stop looping.</span>
+    IsLooping bool
+
+    <span class="comment">//	The tick-time when the EngineLoop.OnSec() callback was last invoked.</span>
+    SecTickLast float64
+
+    <span class="comment">//	While EngineLoop.Loop() is running, is set to the current &#34;tick-time&#34;:</span>
+    <span class="comment">//	the time in seconds expired ever since EngineLoop.Loop() was last called.</span>
+    TickNow float64
+
+    <span class="comment">//	While EngineLoop.Loop() is running, is set to the previous tick-time.</span>
+    TickLast float64
+
+    <span class="comment">//	The delta between TickLast and TickNow.</span>
+    TickDelta float64
+
+    <span class="comment">//	While EngineLoop.Loop() is running, this callback is invoked every loop iteration (ie. once per frame).</span>
+    OnLoop func()
+
+    <span class="comment">//	While EngineLoop.Loop() is running, this callback is invoked at least and at most once per second.</span>
+    OnSec func()
 }</pre>
 			<p>
-Consider EngineLoop a &#34;Singleton&#34; type, only valid use is the Loop global variable.
+Consider EngineLoop a &#34;Singleton&#34; type, only valid use is the core.Loop global variable.
 Manages your main-thread&#39;s &#34;game loop&#34;.
 </p>
 
@@ -988,34 +980,46 @@ Manages your main-thread&#39;s &#34;game loop&#34;.
 
 			
 				
-				<h3 id="EngineLoop.Loop">func (*EngineLoop) <a href="/target/engineloop.go?s=467:496#L15">Loop</a></h3>
+				<h3 id="EngineLoop.Loop">func (*EngineLoop) <a href="/target/engineloop.go?s=1227:1256#L34">Loop</a></h3>
 				<pre>func (me *EngineLoop) Loop()</pre>
-				
+				<p>
+Initiate a rendering loop. This method returns only when the loop is stopped for whatever reason.
+</p>
+
 				
 				
 			
 				
-				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/engineloop.go?s=2029:2058#L51">Stop</a></h3>
+				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/engineloop.go?s=2831:2860#L71">Stop</a></h3>
 				<pre>func (me *EngineLoop) Stop()</pre>
-				
+				<p>
+Stops the currently running EngineLoop.Loop().
+</p>
+
 				
 				
 			
 				
-				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/engineloop.go?s=2086:2123#L55">Time</a></h3>
+				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/engineloop.go?s=2975:3012#L76">Time</a></h3>
 				<pre>func (me *EngineLoop) Time() float64</pre>
-				
+				<p>
+Returns the number of seconds expired ever since EngineLoop.Loop() was last called.
+</p>
+
 				
 				
 			
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/engineoptions.go?s=263:522#L1">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/engineoptions.go?s=263:696#L1">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
-    AssetRootDirPath, DefaultRenderTechnique string
-    DefaultTextureParams                     *textureParams
-    GpuMemMeshes, GpuMemTextures             uint
+    <span class="comment">//	The base directory path for asset file paths.</span>
+    AssetRootDirPath string
+    <span class="comment">//	Name for the default render technique, currently &#34;rt_unlit_colored&#34;</span>
+    DefaultRenderTechnique string
+    <span class="comment">//	All textures default to these params unless they have their own params set.</span>
+    DefaultTextureParams *textureParams
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
@@ -1032,7 +1036,7 @@ Various &#34;global&#34; (rather than use-case-specific) options.
 
 			
 				
-				<h3 id="NewEngineOptions">func <a href="/target/engineoptions.go?s=597:721#L12">NewEngineOptions</a></h3>
+				<h3 id="NewEngineOptions">func <a href="/target/engineoptions.go?s=771:895#L15">NewEngineOptions</a></h3>
 				<pre>func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) *EngineOptions</pre>
 				<p>
 Allocates, initializes and returns a new core.EngineOptions instance.
@@ -1043,23 +1047,29 @@ Allocates, initializes and returns a new core.EngineOptions instance.
 
 			
 				
-				<h3 id="EngineOptions.GlClearColor">func (*EngineOptions) <a href="/target/engineoptions.go?s=1129:1180#L22">GlClearColor</a></h3>
+				<h3 id="EngineOptions.GlClearColor">func (*EngineOptions) <a href="/target/engineoptions.go?s=1299:1350#L25">GlClearColor</a></h3>
 				<pre>func (me *EngineOptions) GlClearColor() ugl.GlVec4</pre>
-				
+				<p>
+Returns the current OpenGL &#34;clear color&#34;.
+</p>
+
 				
 				
 			
 				
-				<h3 id="EngineOptions.SetGlClearColor">func (*EngineOptions) <a href="/target/engineoptions.go?s=1210:1267#L26">SetGlClearColor</a></h3>
+				<h3 id="EngineOptions.SetGlClearColor">func (*EngineOptions) <a href="/target/engineoptions.go?s=1424:1481#L30">SetGlClearColor</a></h3>
 				<pre>func (me *EngineOptions) SetGlClearColor(col ugl.GlVec4)</pre>
-				
+				<p>
+Changes the current OpenGL &#34;clear color&#34;
+</p>
+
 				
 				
 			
 		
 			
 			
-			<h2 id="EngineStats">type <a href="/target/enginestats.go?s=204:2203#L1">EngineStats</a></h2>
+			<h2 id="EngineStats">type <a href="/target/enginestats.go?s=211:2210#L1">EngineStats</a></h2>
 			<pre>type EngineStats struct {
     <span class="comment">//	Gives the total number of frames rendered during the &#34;previous&#34; (not the current) second. Good enough for just a simple-minded FPS indicator.</span>
     FpsLastSec int
@@ -1095,8 +1105,8 @@ Allocates, initializes and returns a new core.EngineOptions instance.
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
-Consider EngineStats a &#34;Singleton&#34; type, only valid use is the Stats global variable.
-Tracks various go:ngine performance counters over time.
+Consider EngineStats a &#34;Singleton&#34; type, only valid use is the core.Stats global variable.
+Tracks various go:ngine performance indicators over time.
 </p>
 
 
@@ -1110,22 +1120,26 @@ Tracks various go:ngine performance counters over time.
 
 			
 				
-				<h3 id="EngineStats.AverageFps">func (*EngineStats) <a href="/target/enginestats.go?s=2310:2354#L42">AverageFps</a></h3>
+				<h3 id="EngineStats.AverageFps">func (*EngineStats) <a href="/target/enginestats.go?s=2404:2448#L43">AverageFps</a></h3>
 				<pre>func (me *EngineStats) AverageFps() float64</pre>
-				
+				<p>
+Returns the average number of frames-per-second since Loop.Loop() was last called.
+</p>
+
 				
 				
 			
 		
 			
 			
-			<h2 id="EngineUserIO">type <a href="/target/engineuserio.go?s=312:455#L3">EngineUserIO</a></h2>
+			<h2 id="EngineUserIO">type <a href="/target/engineuserio.go?s=317:546#L3">EngineUserIO</a></h2>
 			<pre>type EngineUserIO struct {
+    <span class="comment">//	Minimum delay for EngineUserIO.KeyToggled() method, in seconds. Defaults to 0.25.</span>
     KeyToggleMinDelay float64
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
-Consider EngineUserIO a &#34;Singleton&#34; type, only valid use is the UserIO global variable.
+Consider EngineUserIO a &#34;Singleton&#34; type, only valid use is the core.UserIO global variable.
 Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window management, not the graphics themselves).
 </p>
 
@@ -1140,79 +1154,112 @@ Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window m
 
 			
 				
-				<h3 id="EngineUserIO.IifKeyF">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2090:2164#L69">IifKeyF</a></h3>
+				<h3 id="EngineUserIO.IifKeyF">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2259:2333#L71">IifKeyF</a></h3>
 				<pre>func (me *EngineUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64</pre>
-				
+				<p>
+Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
+</p>
+
 				
 				
 			
 				
-				<h3 id="EngineUserIO.KeyPressed">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2227:2276#L74">KeyPressed</a></h3>
+				<h3 id="EngineUserIO.KeyPressed">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2445:2494#L77">KeyPressed</a></h3>
 				<pre>func (me *EngineUserIO) KeyPressed(key int) bool</pre>
-				
+				<p>
+Returns true if the specified key is pressed.
+</p>
+
 				
 				
 			
 				
-				<h3 id="EngineUserIO.KeyPressedWhich">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2321:2379#L78">KeyPressedWhich</a></h3>
+				<h3 id="EngineUserIO.KeyPressedWhich">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2585:2643#L82">KeyPressedWhich</a></h3>
 				<pre>func (me *EngineUserIO) KeyPressedWhich(keys ...int) int</pre>
-				
+				<p>
+Returns the first in keys that is pressed.
+</p>
+
 				
 				
 			
 				
-				<h3 id="EngineUserIO.KeyToggled">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2983:3032#L103">KeyToggled</a></h3>
+				<h3 id="EngineUserIO.KeyToggled">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3613:3662#L112">KeyToggled</a></h3>
 				<pre>func (me *EngineUserIO) KeyToggled(key int) bool</pre>
-				
+				<p>
+Returns true if the specified key has been &#34;toggled&#34;, ie. its pressed-state changed within the last me.KeyToggleMinDelay seconds.
+</p>
+
 				
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAll2">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2493:2550#L87">KeysPressedAll2</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAll2">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2809:2866#L92">KeysPressedAll2</a></h3>
 				<pre>func (me *EngineUserIO) KeysPressedAll2(k1, k2 int) bool</pre>
-				
+				<p>
+Returns true if both specified keys are pressed.
+</p>
+
 				
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAll3">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2603:2664#L91">KeysPressedAll3</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAll3">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2976:3037#L97">KeysPressedAll3</a></h3>
 				<pre>func (me *EngineUserIO) KeysPressedAll3(k1, k2, k3 int) bool</pre>
-				
+				<p>
+Returns true if all three specified keys are pressed.
+</p>
+
 				
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAny2">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2738:2795#L95">KeysPressedAny2</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAny2">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3172:3229#L102">KeysPressedAny2</a></h3>
 				<pre>func (me *EngineUserIO) KeysPressedAny2(k1, k2 int) bool</pre>
-				
+				<p>
+Returns true if any of the two specified keys is pressed.
+</p>
+
 				
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAny3">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2848:2909#L99">KeysPressedAny3</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAny3">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3345:3406#L107">KeysPressedAny3</a></h3>
 				<pre>func (me *EngineUserIO) KeysPressedAny3(k1, k2, k3 int) bool</pre>
-				
+				<p>
+Returns true if any of the three specified keys is pressed.
+</p>
+
 				
 				
 			
 				
-				<h3 id="EngineUserIO.SetWinTitle">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3229:3282#L111">SetWinTitle</a></h3>
+				<h3 id="EngineUserIO.SetWinTitle">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3897:3950#L121">SetWinTitle</a></h3>
 				<pre>func (me *EngineUserIO) SetWinTitle(newTitle string)</pre>
-				
+				<p>
+Sets the window title to newTitle.
+</p>
+
 				
 				
 			
 				
-				<h3 id="EngineUserIO.WinHeight">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3319:3359#L115">WinHeight</a></h3>
+				<h3 id="EngineUserIO.WinHeight">func (*EngineUserIO) <a href="/target/engineuserio.go?s=4034:4074#L126">WinHeight</a></h3>
 				<pre>func (me *EngineUserIO) WinHeight() int</pre>
-				
+				<p>
+Returns the height of the window in pixels.
+</p>
+
 				
 				
 			
 				
-				<h3 id="EngineUserIO.WinWidth">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3396:3435#L119">WinWidth</a></h3>
+				<h3 id="EngineUserIO.WinWidth">func (*EngineUserIO) <a href="/target/engineuserio.go?s=4157:4196#L131">WinWidth</a></h3>
 				<pre>func (me *EngineUserIO) WinWidth() int</pre>
-				
+				<p>
+Returns the width of the window in pixels.
+</p>
+
 				
 				
 			
@@ -1268,21 +1315,21 @@ Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window m
 				
 			
 				
-				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.go?s=2739:2774#L76">GpuUploaded</a></h3>
+				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.go?s=2747:2782#L76">GpuUploaded</a></h3>
 				<pre>func (me *Mesh) GpuUploaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.go?s=4483:4513#L122">Loaded</a></h3>
+				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.go?s=4525:4555#L122">Loaded</a></h3>
 				<pre>func (me *Mesh) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.go?s=4938:4963#L133">Unload</a></h3>
+				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.go?s=4980:5005#L133">Unload</a></h3>
 				<pre>func (me *Mesh) Unload()</pre>
 				
 				
@@ -1505,8 +1552,9 @@ Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window m
 		
 			
 			
-			<h2 id="Texture">type <a href="/target/texture.go?s=1178:1439#L36">Texture</a></h2>
+			<h2 id="Texture">type <a href="/target/texture.go?s=800:1076#L24">Texture</a></h2>
 			<pre>type Texture struct {
+    *nga.ImageDef
     LastError error
     Params    *textureParams
     <span class="comment">// contains filtered or unexported fields</span>
@@ -1523,56 +1571,42 @@ Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window m
 
 			
 				
-				<h3 id="Texture.GpuDelete">func (*Texture) <a href="/target/texture.go?s=1563:1594#L54">GpuDelete</a></h3>
+				<h3 id="Texture.GpuDelete">func (*Texture) <a href="/target/texture.go?s=1366:1397#L53">GpuDelete</a></h3>
 				<pre>func (me *Texture) GpuDelete()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Texture.GpuSync">func (*Texture) <a href="/target/texture.go?s=1678:1707#L61">GpuSync</a></h3>
+				<h3 id="Texture.GpuSync">func (*Texture) <a href="/target/texture.go?s=1481:1510#L60">GpuSync</a></h3>
 				<pre>func (me *Texture) GpuSync()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Texture.GpuSynced">func (*Texture) <a href="/target/texture.go?s=2779:2815#L84">GpuSynced</a></h3>
+				<h3 id="Texture.GpuSynced">func (*Texture) <a href="/target/texture.go?s=2582:2618#L83">GpuSynced</a></h3>
 				<pre>func (me *Texture) GpuSynced() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Texture.Load">func (*Texture) <a href="/target/texture.go?s=3477:3550#L110">Load</a></h3>
-				<pre>func (me *Texture) Load(provider TextureProvider, args ...interface{})</pre>
-				
-				
-				
-			
-				
-				<h3 id="Texture.LoadAsync">func (*Texture) <a href="/target/texture.go?s=3594:3672#L114">LoadAsync</a></h3>
-				<pre>func (me *Texture) LoadAsync(provider TextureProvider, args ...interface{})</pre>
-				
-				
-				
-			
-				
-				<h3 id="Texture.Loaded">func (*Texture) <a href="/target/texture.go?s=3911:3944#L126">Loaded</a></h3>
+				<h3 id="Texture.Loaded">func (*Texture) <a href="/target/texture.go?s=3733:3766#L130">Loaded</a></h3>
 				<pre>func (me *Texture) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Texture.SuppressMipMaps">func (*Texture) <a href="/target/texture.go?s=3975:4012#L130">SuppressMipMaps</a></h3>
+				<h3 id="Texture.SuppressMipMaps">func (*Texture) <a href="/target/texture.go?s=4397:4434#L151">SuppressMipMaps</a></h3>
 				<pre>func (me *Texture) SuppressMipMaps()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Texture.Unload">func (*Texture) <a href="/target/texture.go?s=4041:4069#L134">Unload</a></h3>
+				<h3 id="Texture.Unload">func (*Texture) <a href="/target/texture.go?s=4463:4491#L155">Unload</a></h3>
 				<pre>func (me *Texture) Unload()</pre>
 				
 				
@@ -1581,8 +1615,8 @@ Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window m
 		
 			
 			
-			<h2 id="TextureProvider">type <a href="/target/textureprovider.go?s=103:173#L2">TextureProvider</a></h2>
-			<pre>type TextureProvider func(args ...interface{}) (image.Image, error)</pre>
+			<h2 id="TextureProvider">type <a href="/target/textureprovider.go?s=103:168#L2">TextureProvider</a></h2>
+			<pre>type TextureProvider func(arg interface{}) (image.Image, error)</pre>
 			
 
 			
@@ -1597,11 +1631,14 @@ Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window m
 		
 			
 			
-			<h2 id="TimingStats">type <a href="/target/enginestats.go?s=2699:2823#L52">TimingStats</a></h2>
+			<h2 id="TimingStats">type <a href="/target/enginestats.go?s=2874:2998#L54">TimingStats</a></h2>
 			<pre>type TimingStats struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
-			
+			<p>
+Helps track average and maximum cost for a variety of performance indicators.
+</p>
+
 
 			
 
@@ -1613,16 +1650,22 @@ Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window m
 
 			
 				
-				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/enginestats.go?s=2826:2867#L57">Average</a></h3>
+				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/enginestats.go?s=3069:3110#L60">Average</a></h3>
 				<pre>func (me *TimingStats) Average() float64</pre>
-				
+				<p>
+Returns the average cost tracked by this performance indicator.
+</p>
+
 				
 				
 			
 				
-				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/enginestats.go?s=3408:3445#L77">Max</a></h3>
+				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/enginestats.go?s=3719:3756#L81">Max</a></h3>
 				<pre>func (me *TimingStats) Max() float64</pre>
-				
+				<p>
+Returns the maximum cost tracked by this performance indicator.
+</p>
+
 				
 				
 			

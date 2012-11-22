@@ -1,3 +1,4 @@
+//	http://go-ngine.com/blog/2012/10/19/painless-xml-parsing-in-go-plus-how-to-analyse-your-source-tree-for-package-references
 package main
 
 import (

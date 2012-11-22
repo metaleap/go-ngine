@@ -4,8 +4,8 @@ import (
 	glfw "github.com/go-gl/glfw"
 )
 
-//	Consider EngineStats a "Singleton" type, only valid use is the Stats global variable.
-//	Tracks various go:ngine performance counters over time.
+//	Consider EngineStats a "Singleton" type, only valid use is the core.Stats global variable.
+//	Tracks various go:ngine performance indicators over time.
 type EngineStats struct {
 	//	Gives the total number of frames rendered during the "previous" (not the current) second. Good enough for just a simple-minded FPS indicator.
 	FpsLastSec int
@@ -49,6 +49,7 @@ type EngineStats struct {
 		return stats
 	}
 
+	//	Returns the average number of frames-per-second since Loop.Loop() was last called.
 	func (me *EngineStats) AverageFps () float64 {
 		return me.fpsAll / glfw.Time()
 	}
@@ -59,11 +60,13 @@ type EngineStats struct {
 		me.Frame, me.FrameRenderBoth, me.FrameRenderCpu, me.FrameRenderGpu, me.FrameCoreCode, me.FrameUserCode, me.Gc = nt(), nt(), nt(), nt(), nt(), nt(), nt()
 	}
 
+//	Helps track average and maximum cost for a variety of performance indicators.
 type TimingStats struct {
 	max, measuredCounter, measureStartTime, thisTime, totalAccum float64
 	comb1, comb2 *TimingStats
 }
 
+	//	Returns the average cost tracked by this performance indicator.
 	func (me *TimingStats) Average () float64 {
 		return me.totalAccum / me.measuredCounter
 	}
@@ -84,6 +87,7 @@ type TimingStats struct {
 		me.totalAccum += me.thisTime
 	}
 
+	//	Returns the maximum cost tracked by this performance indicator.
 	func (me *TimingStats) Max () float64 {
 		return me.max
 	}

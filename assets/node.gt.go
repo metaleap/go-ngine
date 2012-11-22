@@ -34,7 +34,7 @@ type NodeInst struct {
 //#begin-gt _definstlib.gt T:Node
 
 	func newNodeDef (id string) (me *NodeDef) {
-		me = &NodeDef {}; me.Base.init(id); me.init(); return
+		me = &NodeDef {}; me.BaseDef.init(id); me.init(); return
 	}
 
 	//	Creates and returns a new *NodeInst* instance referencing this *NodeDef* definition.
@@ -102,8 +102,8 @@ type LibNodeDefs struct {
 	//	Call this after you have made any number of changes to this *LibNodeDefs* library or its *NodeDef* definitions.
 	//	Also called by the global *SyncChanges()* function.
 	func (me *LibNodeDefs) SyncChanges () {
-		for _, def := range me.M { def.SyncChanges() }
 		me.BaseLib.Base.SyncChanges()
+		for _, def := range me.M { def.BaseDef.Base.SyncChanges() }
 	}
 
 //#end-gt

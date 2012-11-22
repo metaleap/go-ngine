@@ -1,11 +1,7 @@
 package assets
 
-//	Declares the storage for the graphical representation of an object.
-type ImageDef struct {
-	BaseDef
-
-	//	Initializes an entire Image or portions of an Image from referenced or embedded data.
-	InitFrom struct {
+//	Used for the ImageDef.InitFrom field.
+type ImageInitFrom struct {
 		//	Initializes higher MIP levels if data does not exist in a file. Defaults to true.
 		AutoMip bool
 
@@ -15,11 +11,17 @@ type ImageDef struct {
 		//	The URL of a file from which to take initialization data. Can be a relative path
 		//	such as "walltextures/wall01.jpg".
 		RefUrl string
-	}
+}
+
+//	Declares the storage for the graphical representation of an object.
+type ImageDef struct {
+	BaseDef
+	//	Initializes an entire Image or portions of an Image from referenced or embedded data.
+	InitFrom *ImageInitFrom
 }
 
 	func (me *ImageDef) init () {
-		me.InitFrom.AutoMip = true
+		me.InitFrom = &ImageInitFrom { AutoMip: true }
 	}
 
 //	An instance referencing an Image definition.
@@ -36,7 +38,7 @@ type ImageInst struct {
 //#begin-gt _definstlib.gt T:Image
 
 	func newImageDef (id string) (me *ImageDef) {
-		me = &ImageDef {}; me.Base.init(id); me.init(); return
+		me = &ImageDef {}; me.BaseDef.init(id); me.init(); return
 	}
 
 	//	Creates and returns a new *ImageInst* instance referencing this *ImageDef* definition.
@@ -104,8 +106,8 @@ type LibImageDefs struct {
 	//	Call this after you have made any number of changes to this *LibImageDefs* library or its *ImageDef* definitions.
 	//	Also called by the global *SyncChanges()* function.
 	func (me *LibImageDefs) SyncChanges () {
-		for _, def := range me.M { def.SyncChanges() }
 		me.BaseLib.Base.SyncChanges()
+		for _, def := range me.M { def.BaseDef.Base.SyncChanges() }
 	}
 
 //#end-gt

@@ -14,12 +14,18 @@ import (
 )
 
 var (
+	//	The primary camera
 	Cam *ng.Camera
-	CamCtl *ng.Controller
-	MaxKeyHint = len(keyHints) - 1
 
-	curKeyHint = 0
-	keyHints = []string {
+	//	Controller for the primary camera
+	CamCtl *ng.Controller
+
+	//	The maximum index for KeyHints when cycling through it in OnSec()
+	MaxKeyHint = len(KeyHints) - 1
+
+	//	OnSec() changes the window title every second to display FPS etc.
+	//	Also every 4 seconds shows the next one in a number of "key hints" defined here:
+	KeyHints = []string {
 		"[F2]  --  Toggle Render Technique",
 		"[F3]  --  Toggle Backface Culling",
 		"[F4]  --  Toggle Texture Filtering",
@@ -31,13 +37,17 @@ var (
 		"[PgUp][PgDn]  --  Camera turn up / down",
 		"[Alt][LShift][RShift]  --  Camera move-speed x 0.1 / 10 / 100",
 	}
+
+	curKeyHint = 0
 	sec = 0
 )
 
+//	Returns the "asset root directory" path for go:ngine, in this case: $GOPATH/src/github.com/go3d/go-ngine/_sampleprogs/_sharedassets
 func AssetRootDirPath () string {
 	return util.BaseCodePathGithub("go3d", "go-ngine", "_sampleprogs", "_sharedassets")
 }
 
+//	Called every frame (by the parent example app) to check the state for keys controlling CamCtl to move or rotate Cam.
 func CheckCamCtlKeys () {
 	CamCtl.MoveSpeedupFactor = 1
 	if ng.UserIO.KeyPressed(glfw.KeyLshift) {
@@ -59,6 +69,7 @@ func CheckCamCtlKeys () {
 	if ng.UserIO.KeysPressedAny2(glfw.KeyPagedown, glfw.KeyKP3) { CamCtl.TurnDown() }
 }
 
+//	Called every frame (by the parent example app) to check "toggle keys" that toggle certain options.
 func CheckToggleKeys () {
 	if ng.UserIO.KeyPressed(glfw.KeyEsc) { ng.Loop.Stop() }
 	if ng.UserIO.KeyToggled(glfw.KeyF2) { Cam.ToggleTechnique() }
@@ -67,6 +78,7 @@ func CheckToggleKeys () {
 	if ng.UserIO.KeyToggled(glfw.KeyF5) { ng.Core.Options.DefaultTextureParams.ToggleFilterAnisotropy() }
 }
 
+//	Prints a summary of go:ngine's *Stats* performance counters when the parent example app exits.
 func PrintPostLoopSummary () {
 	var printStatSummary = func (name string, timing *ng.TimingStats) {
 		fmt.Printf("%v:\tAvg=%3.5f secs\tMax=%3.5f secs\n", name, timing.Average(), timing.Max())
@@ -81,7 +93,8 @@ func PrintPostLoopSummary () {
 	printStatSummary("GC (max 1x/sec)", ng.Stats.Gc)
 }
 
-func SamplesMainFunc (loader func ()) {
+//	The *func main()* implementation for the parent example app. Initializes go:ngine, sets Cam and CamCtl, calls the specified assetLoader function, then enters the Loop.
+func SamplesMainFunc (assetLoader func ()) {
 	runtime.LockOSThread()
 	var err error
 	defer ng.Dispose()
@@ -90,26 +103,29 @@ func SamplesMainFunc (loader func ()) {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
 		ng.Core.Options.SetGlClearColor(ugl.GlVec4 { 0.75, 0.75, 0.97, 1 })
-		ng.Loop.OnSecTick = SamplesOnSec
+		ng.Loop.OnSec = OnSec
 		camDef := nga.CameraDefs.AddNew("")
 		camDef.FovY, camDef.Znear, camDef.Zfar = 37.8493, 0.3, 30000
 		nga.SyncChanges()
 		Cam = ng.Core.Cameras[""]
 		CamCtl = Cam.Controller
-		loader()
+		assetLoader()
+		nga.SyncChanges()
 		ng.Loop.Loop()
 		PrintPostLoopSummary()
 	}
 }
 
-func SamplesOnSec () {
+//	Called every second by go:ngine's *core* package. Refreshes the window title and doing so, every 4 seconds shows the next one entry in KeyHints.
+func OnSec () {
 	if sec++; sec == 4 {
 		sec = 0
-		if curKeyHint++; (curKeyHint > MaxKeyHint) || (curKeyHint >= (len(keyHints))) { curKeyHint = 0 }
+		if curKeyHint++; (curKeyHint > MaxKeyHint) || (curKeyHint >= (len(KeyHints))) { curKeyHint = 0 }
 	}
 	ng.UserIO.SetWinTitle(WindowTitle())
 }
 
+//	Returns the window title to be set by OnSec().
 func WindowTitle () string {
-	return ng.Sfmt("%v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", ng.Stats.FpsLastSec, ng.UserIO.WinWidth(), ng.UserIO.WinHeight(), keyHints[curKeyHint], CamCtl.Pos, CamCtl.Dir)
+	return ng.Sfmt("%v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", ng.Stats.FpsLastSec, ng.UserIO.WinWidth(), ng.UserIO.WinHeight(), KeyHints[curKeyHint], CamCtl.Pos, CamCtl.Dir)
 }

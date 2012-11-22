@@ -21,7 +21,7 @@ var (
 	curScene *Scene
 )
 
-//	Consider EngineCore a "Singleton" type, only valid use is the Core global variable.
+//	Consider EngineCore a "Singleton" type, only valid use is the core.Core global variable.
 //	The heart and brain of go:ngine --- a container for all runtime resources and responsible for rendering.
 type EngineCore struct {
 	AssetManager *assetManager
@@ -51,15 +51,15 @@ func newEngineCore (options *EngineOptions) {
 	curCanvas = Core.Canvases.Add(Core.Canvases.New(options.winWidth, options.winHeight))
 	curCanvas.SetCameraIDs("")
 	Core.MeshBuffers = newMeshBuffers()
+
 	nga.OnBeforeSyncAll = func () { Core.onAssetsSyncing() }
 	nga.OnAfterSyncAll = func () { Core.onAssetsSynced() }
-	nga.CameraDefs.OnSync = func () {
-		Core.Cameras.syncAssetChanges()
-	}
+	nga.CameraDefs.OnSync = func () { Core.Cameras.syncAssetChanges() }
+	nga.ImageDefs.OnSync = func () { Core.Textures.syncAssetChanges() }
 }
 
-func (me *EngineCore) Dispose () {
-	for _, cam := range me.Cameras { cam.Dispose() }
+func (me *EngineCore) dispose () {
+	for _, cam := range me.Cameras { cam.dispose() }
 	for _, canvas := range me.Canvases { canvas.Dispose() }
 	for _, mesh := range me.Meshes { mesh.GpuDelete() }
 	for _, tex := range me.Textures { tex.GpuDelete() }
@@ -75,7 +75,6 @@ func (me *EngineCore) onAssetsSynced () {
 }
 
 func (me *EngineCore) onAssetsSyncing () {
-	// me.Cameras.SyncAssetDefs()
 }
 
 func (me *EngineCore) onRender () {
@@ -87,11 +86,11 @@ func (me *EngineCore) onRender () {
 	}
 }
 
-func (me *EngineCore) onSecTick () {
+func (me *EngineCore) onSec () {
 	for tex, _ := range asyncTextures {
 		if (tex.img != nil) {
-			tex.GpuSync()
 			delete(asyncTextures, tex)
+			tex.GpuSync()
 			break
 		}
 	}

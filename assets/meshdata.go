@@ -1,60 +1,85 @@
 package assets
 
+//	Temporary concoction.
 type MeshProvider func (args ... interface {}) (*MeshData, error)
 
-type MeshFace3 [3]Vert
+//	Represents an indexed triangle.
+type MeshFace3 [3]MeshVert
 
+//	Represents semi-processed loaded mesh data "almost ready" to core.Mesh.GpuUpload().
 type MeshRaw struct {
-	Verts []float32
+	//	Raw vertices
+	MeshVerts []float32
+	//	Vertex indices
 	Indices []uint32
-	Faces []*MeshFace
+	//	Raw face definitions
+	Faces []*MeshRawFace
 }
 
-type Vert struct {
-	PosIndex, TexCoordIndex, NormalIndex uint32
-}
-
-type VertAtt2 [2]float32
-
-type VertAtt3 [3]float32
-
-type MeshFace struct {
+//	Represents a triangle face inside a MeshRaw.
+type MeshRawFace struct {
+	//	Indices of the triangle corners
 	Entries [3]uint32
 }
 
-	func NewMeshFace () (me *MeshFace) {
-		me = &MeshFace {}
+	//	Initializes and returns a new *MeshRawFace* instance.
+	func NewMeshRawFace () (me *MeshRawFace) {
+		me = &MeshRawFace {}
 		return
 	}
 
+//	Represents an indexed vertex.
+type MeshVert struct {
+	//	Index of the vertex position
+	PosIndex uint32
+
+	//	Index of the texture-coordinate.
+	TexCoordIndex uint32
+
+	//	Index of the vertex normal.
+	NormalIndex uint32
+}
+
+//	Represents a 2-component vertex attribute (such as for example texture-coordinates)
+type MeshVertAtt2 [2]float32
+
+//	Represents a 3-component vertex attribute (such as for example vertex-normals)
+type MeshVertAtt3 [3]float32
+
+//	Represents yet-unprocessed mesh source data.
 type MeshData struct {
-	Positions []VertAtt3
-	TexCoords []VertAtt2
-	Normals []VertAtt3
+	//	Vertex positions
+	Positions []MeshVertAtt3
+	//	Vertex texture coordinates
+	TexCoords []MeshVertAtt2
+	//	Vertex normals
+	Normals []MeshVertAtt3
+	//	Indexed triangle definitions
 	Faces []MeshFace3
 }
 
+	//	Initializes and returns a new *MeshData* instance.
 	func NewMeshData () (me *MeshData) {
 		me = &MeshData {}
-		me.Positions = []VertAtt3 {}
-		me.TexCoords = []VertAtt2 {}
-		me.Normals = []VertAtt3 {}
-		me.Faces = []MeshFace3 {}
 		return
 	}
 
+	//	Adds all specified Faces to this MeshData.
 	func (me *MeshData) AddFaces (faces ... MeshFace3) {
 		me.Faces = append(me.Faces, faces ...)
 	}
 
-	func (me *MeshData) AddPositions (positions ... VertAtt3) {
+	//	Adds all specified Positions to this MeshData.
+	func (me *MeshData) AddPositions (positions ... MeshVertAtt3) {
 		me.Positions = append(me.Positions, positions ...)
 	}
 
-	func (me *MeshData) AddNormals (normals ... VertAtt3) {
+	//	Adds all the specified Normals to this MeshData.
+	func (me *MeshData) AddNormals (normals ... MeshVertAtt3) {
 		me.Normals = append(me.Normals, normals ...)
 	}
 
-	func (me *MeshData) AddTexCoords (texCoords ... VertAtt2) {
+	//	Adds all the specified TexCoords to this MeshData.
+	func (me *MeshData) AddTexCoords (texCoords ... MeshVertAtt2) {
 		me.TexCoords = append(me.TexCoords, texCoords ...)
 	}

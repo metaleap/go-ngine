@@ -5,57 +5,51 @@ import (
 
 	ugl "github.com/go3d/go-glutil"
 	unum "github.com/metaleap/go-util/num"
-
 	nga "github.com/go3d/go-ngine/assets"
 )
 
 type cameras map[string]*Camera
 
-	func (me cameras) new (id, technique string) (cam *Camera) {
-		cam = newCamera(id, technique)
-		return
-	}
-
-	func (me cameras) add (cam *Camera) (c *Camera) {
-		if me[cam.ID] == nil { c, me[cam.ID] = cam, cam }
+	func (me cameras) add (def *nga.CameraDef) (item *Camera) {
+		item = newCamera(def)
+		me[def.ID] = item
 		return
 	}
 
 	func (me cameras) syncAssetChanges () {
-		var cam *Camera
-		for cID, cDef := range nga.CameraDefs.M {
-			if cam = me[cID]; cam == nil {
-				cam = me.add(me.new(cID, Core.Options.DefaultRenderTechnique))
-			}
-			cam.setDef(cDef)
-		}
+		var item *Camera; var id string; var def *nga.CameraDef;
+		for id, def = range nga.CameraDefs.M { if item = me[def.ID]; item == nil { item = me.add(def) } }
+		for id, item = range me { if nga.CameraDefs.M[item.ID] == nil { delete(me, id); item.dispose() } }
 	}
 
 type Camera struct {
+	*nga.CameraDef
 	ViewPort *CameraViewPort
 	MatProj *unum.Mat4
 	Options *CameraOptions
 	Controller *Controller
 	Disabled bool
-	ID, SceneName string
+	SceneName string
 
-	def *nga.CameraDef
 	technique renderTechnique
 	glMatProj *ugl.GlMat4
 }
 
-	func newCamera (id string, technique string) (me *Camera) {
-		me = &Camera { ID: id }
+	func newCamera (def *nga.CameraDef) (me *Camera) {
+		me = &Camera {}
+		me.CameraDef = def
 		me.Options = newCameraOptions()
 		me.MatProj = &unum.Mat4 {}
 		me.glMatProj = &ugl.GlMat4 {}
-		me.SetTechnique(technique)
 		me.Controller = newController()
 		me.ViewPort = newCameraViewPort(me)
+		me.CameraDef.OnSync = func () { me.UpdatePerspective() }
+		me.UpdatePerspective()
+		me.SetTechnique(Core.Options.DefaultRenderTechnique)
 		return
 	}
 
-	func (me *Camera) Dispose () {
+	func (me *Camera) dispose () {
 	}
 
 	func (me *Camera) render () {
@@ -68,12 +62,6 @@ type Camera struct {
 		gl.Viewport(me.ViewPort.glVpX, me.ViewPort.glVpY, me.ViewPort.glVpW, me.ViewPort.glVpH)
 		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 		curScene.RootNode.render()
-	}
-
-	func (me *Camera) setDef (camDef *nga.CameraDef) {
-		me.def = camDef
-		me.def.OnSync = func () { me.UpdatePerspective() }
-		me.UpdatePerspective()
 	}
 
 	func (me *Camera) SetTechnique (name string) {
@@ -93,7 +81,7 @@ type Camera struct {
 	}
 
 	func (me *Camera) UpdatePerspective () {
-		me.MatProj.Perspective(me.def.FovX, me.def.FovY, me.ViewPort.aspect, me.def.Znear, me.def.Zfar)
+		me.MatProj.Perspective(me.CameraDef.FovX, me.CameraDef.FovY, me.ViewPort.aspect, me.CameraDef.Znear, me.CameraDef.Zfar)
 		me.glMatProj.Load(me.MatProj)
 	}
 
