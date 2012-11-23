@@ -40,54 +40,56 @@ type EngineStats struct {
 	Gc *TimingStats
 
 	fpsCounter int
-	fpsAll float64
+	fpsAll     float64
 }
 
-	func newEngineStats () *EngineStats {
-		var stats = &EngineStats {}
-		stats.reset()
-		return stats
-	}
+func newEngineStats() *EngineStats {
+	var stats = &EngineStats{}
+	stats.reset()
+	return stats
+}
 
-	//	Returns the average number of frames-per-second since Loop.Loop() was last called.
-	func (me *EngineStats) AverageFps () float64 {
-		return me.fpsAll / glfw.Time()
-	}
+//	Returns the average number of frames-per-second since Loop.Loop() was last called.
+func (me *EngineStats) AverageFps() float64 {
+	return me.fpsAll / glfw.Time()
+}
 
-	func (me *EngineStats) reset () {
-		var nt = func () *TimingStats { return &TimingStats {} }
-		me.FpsLastSec, me.fpsCounter, me.fpsAll = 0, 0, 0
-		me.Frame, me.FrameRenderBoth, me.FrameRenderCpu, me.FrameRenderGpu, me.FrameCoreCode, me.FrameUserCode, me.Gc = nt(), nt(), nt(), nt(), nt(), nt(), nt()
-	}
+func (me *EngineStats) reset() {
+	var nt = func() *TimingStats { return &TimingStats{} }
+	me.FpsLastSec, me.fpsCounter, me.fpsAll = 0, 0, 0
+	me.Frame, me.FrameRenderBoth, me.FrameRenderCpu, me.FrameRenderGpu, me.FrameCoreCode, me.FrameUserCode, me.Gc = nt(), nt(), nt(), nt(), nt(), nt(), nt()
+}
 
 //	Helps track average and maximum cost for a variety of performance indicators.
 type TimingStats struct {
 	max, measuredCounter, measureStartTime, thisTime, totalAccum float64
-	comb1, comb2 *TimingStats
+	comb1, comb2                                                 *TimingStats
 }
 
-	//	Returns the average cost tracked by this performance indicator.
-	func (me *TimingStats) Average () float64 {
-		return me.totalAccum / me.measuredCounter
-	}
+//	Returns the average cost tracked by this performance indicator.
+func (me *TimingStats) Average() float64 {
+	return me.totalAccum / me.measuredCounter
+}
 
-	func (me *TimingStats) combine () {
-		me.max = me.comb1.max + me.comb2.max
-		me.measuredCounter = (me.comb1.measuredCounter + me.comb2.measuredCounter) * 0.5
-		me.totalAccum = me.comb1.totalAccum + me.comb2.totalAccum
-	}
+func (me *TimingStats) combine() {
+	me.max = me.comb1.max + me.comb2.max
+	me.measuredCounter = (me.comb1.measuredCounter + me.comb2.measuredCounter) * 0.5
+	me.totalAccum = me.comb1.totalAccum + me.comb2.totalAccum
+}
 
-	func (me *TimingStats) begin () {
-		me.measureStartTime = glfw.Time()
-	}
+func (me *TimingStats) begin() {
+	me.measureStartTime = glfw.Time()
+}
 
-	func (me *TimingStats) end () {
-		if me.thisTime = glfw.Time() - me.measureStartTime; me.thisTime > me.max { me.max = me.thisTime }
-		me.measuredCounter++
-		me.totalAccum += me.thisTime
+func (me *TimingStats) end() {
+	if me.thisTime = glfw.Time() - me.measureStartTime; me.thisTime > me.max {
+		me.max = me.thisTime
 	}
+	me.measuredCounter++
+	me.totalAccum += me.thisTime
+}
 
-	//	Returns the maximum cost tracked by this performance indicator.
-	func (me *TimingStats) Max () float64 {
-		return me.max
-	}
+//	Returns the maximum cost tracked by this performance indicator.
+func (me *TimingStats) Max() float64 {
+	return me.max
+}

@@ -12,8 +12,8 @@ import (
 
 var (
 	glBackfaceCulling = true
-	glIsInit bool
-	glShaderMan = newShaderManager()
+	glIsInit          bool
+	glShaderMan       = newShaderManager()
 )
 
 func glDispose() {
@@ -37,7 +37,7 @@ Look for their "driver downloads" pages and follow their
 instructions to find & download the newest driver version
 for: <%v>.
 `
-	var makeVerErr = func (curVer string) error {
+	var makeVerErr = func(curVer string) error {
 		isVerErr = true
 		return fmt.Errorf(vMessage, strings.Replace(minMatch, "_", ".", -1), curVer, ugl.GlStr(gl.VENDOR), ugl.GlStr(gl.RENDERER))
 	}
@@ -49,7 +49,9 @@ for: <%v>.
 				if vMatch > minMatch {
 					err = nil
 				} else {
-					if vMatch > "1_0" { vMatch = ugl.GlStr(gl.VERSION) }
+					if vMatch > "1_0" {
+						vMatch = ugl.GlStr(gl.VERSION)
+					}
 					err = makeVerErr(strings.Replace(vMatch, "_", ".", -1))
 				}
 			}
@@ -62,22 +64,29 @@ for: <%v>.
 				gl.Enable(gl.DEPTH_TEST)
 				gl.FrontFace(gl.CCW)
 				gl.CullFace(gl.BACK)
-				if glBackfaceCulling { gl.Enable(gl.CULL_FACE) }
+				if glBackfaceCulling {
+					gl.Enable(gl.CULL_FACE)
+				}
 				log.Println(ugl.GlConnInfo())
-				if err = glShaderMan.compileAll(); err == nil {}
+				if err = glShaderMan.compileAll(); err == nil {
+				}
 			}
 		}
-		if err == nil { err = ugl.LastError("nglcore.Init") }
-		if err == nil { glIsInit = true }
+		if err == nil {
+			err = ugl.LastError("nglcore.Init")
+		}
+		if err == nil {
+			glIsInit = true
+		}
 	}
 	return
 }
 
-func glLogLastError(step string, fmtArgs ... interface {}) {
-	logError(ugl.LastError(step, fmtArgs ...))
+func glLogLastError(step string, fmtArgs ...interface{}) {
+	logError(ugl.LastError(step, fmtArgs...))
 }
 
-func glSetBackfaceCulling (val bool) {
+func glSetBackfaceCulling(val bool) {
 	if val != glBackfaceCulling {
 		if glBackfaceCulling = val; glBackfaceCulling {
 			gl.Enable(gl.CULL_FACE)

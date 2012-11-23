@@ -4,11 +4,11 @@ type CameraOptions struct {
 	BackfaceCulling bool
 }
 
-func newCameraOptions () (me *CameraOptions) {
-	me = &CameraOptions {}
+func newCameraOptions() (me *CameraOptions) {
+	me = &CameraOptions{}
 	return
 }
 
-func (me *CameraOptions) ToggleGlBackfaceCulling () {
+func (me *CameraOptions) ToggleGlBackfaceCulling() {
 	me.BackfaceCulling = !me.BackfaceCulling
 }

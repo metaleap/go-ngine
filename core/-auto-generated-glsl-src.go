@@ -1,6 +1,6 @@
 package core
 
-func init () {
+func init() {
 	var rss = newGlShaderSources()
 	rss.Fragment["postfx"] = "out vec4 oColor;\n\nvoid main () {\n\toColor = vec4(0.66, 0.99, 0.33, 1.0);\n}\n"
 	rss.Fragment["rt_unlit_colored"] = "smooth in vec3 vPos;\n\nout vec4 oColor;\n\nvoid main () {\n\toColor = vec4(vPos, 1.0);\n}\n"

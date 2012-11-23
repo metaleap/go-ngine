@@ -28,22 +28,22 @@ type EngineLoop struct {
 	TickDelta float64
 
 	//	While EngineLoop.Loop() is running, this callback is invoked every loop iteration (ie. once per frame).
-	OnLoop func ()
+	OnLoop func()
 
 	//	While EngineLoop.Loop() is running, this callback is invoked at least and at most once per second.
-	OnSec func ()
+	OnSec func()
 }
 
-func newEngineLoop () *EngineLoop {
-	var loop = &EngineLoop {}
-	loop.OnSec, loop.OnLoop = func () {}, func () {}
+func newEngineLoop() *EngineLoop {
+	var loop = &EngineLoop{}
+	loop.OnSec, loop.OnLoop = func() {}, func() {}
 	return loop
 }
 
 //	Initiate a rendering loop. This method returns only when the loop is stopped for whatever reason.
-func (me *EngineLoop) Loop () {
+func (me *EngineLoop) Loop() {
 	var tickNowFloor float64
-	if (!me.IsLooping) {
+	if !me.IsLooping {
 		me.IsLooping = true
 		glfw.SetTime(0)
 		me.SecTickLast, me.TickNow = glfw.Time(), glfw.Time()
@@ -53,23 +53,36 @@ func (me *EngineLoop) Loop () {
 		log.Printf("Enter loop...")
 		for me.IsLooping && (glfw.WindowParam(glfw.Opened) == 1) {
 			//	STEP 1. Send rendering commands to the GPU / GL pipeline
-			Stats.FrameRenderCpu.begin(); Core.onRender(); Stats.FrameRenderCpu.end()
+			Stats.FrameRenderCpu.begin()
+			Core.onRender()
+			Stats.FrameRenderCpu.end()
 			//	STEP 2. While those are sent (and executed GPU-side), do other non-rendering CPU-side stuff
 			Stats.fpsCounter++
 			Stats.fpsAll++
 			me.TickLast = me.TickNow
 			me.TickNow = glfw.Time()
-			Stats.Frame.measureStartTime = me.TickLast; Stats.Frame.end()
+			Stats.Frame.measureStartTime = me.TickLast
+			Stats.Frame.end()
 			me.TickDelta = me.TickNow - me.TickLast
 			if tickNowFloor = math.Floor(me.TickNow); tickNowFloor != me.SecTickLast {
 				Stats.FpsLastSec, me.SecTickLast = Stats.fpsCounter, tickNowFloor
-				Stats.fpsCounter = 0; Core.onSec(); me.OnSec()
-				Stats.Gc.begin(); runtime.GC(); Stats.Gc.end()
+				Stats.fpsCounter = 0
+				Core.onSec()
+				me.OnSec()
+				Stats.Gc.begin()
+				runtime.GC()
+				Stats.Gc.end()
 			}
-			Stats.FrameCoreCode.begin(); Core.onLoop(); Stats.FrameCoreCode.end()
-			Stats.FrameUserCode.begin(); me.OnLoop(); Stats.FrameUserCode.end()
+			Stats.FrameCoreCode.begin()
+			Core.onLoop()
+			Stats.FrameCoreCode.end()
+			Stats.FrameUserCode.begin()
+			me.OnLoop()
+			Stats.FrameUserCode.end()
 			//	STEP 3. Swap buffers -- also waits for GPU to finish commands sent in Step 1, and for V-sync (if set).
-			Stats.FrameRenderGpu.begin(); glfw.SwapBuffers(); Stats.FrameRenderGpu.end()
+			Stats.FrameRenderGpu.begin()
+			glfw.SwapBuffers()
+			Stats.FrameRenderGpu.end()
 			Stats.FrameRenderBoth.combine()
 		}
 		me.IsLooping = false
@@ -78,11 +91,11 @@ func (me *EngineLoop) Loop () {
 }
 
 //	Stops the currently running EngineLoop.Loop().
-func (me *EngineLoop) Stop () {
+func (me *EngineLoop) Stop() {
 	me.IsLooping = false
 }
 
 //	Returns the number of seconds expired ever since EngineLoop.Loop() was last called.
-func (me *EngineLoop) Time () float64 {
+func (me *EngineLoop) Time() float64 {
 	return glfw.Time()
 }

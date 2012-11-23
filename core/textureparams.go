@@ -8,21 +8,23 @@ import (
 )
 
 type textureParams struct {
-	aniso float64
+	aniso  float64
 	filter bool
 
-	glAniso gl.Float
+	glAniso                  gl.Float
 	glFilterMag, glFilterMin gl.Int
 }
 
-func newTextureParams (filter bool, filterAnisotropy float64) *textureParams {
-	var tp = &textureParams {}
+func newTextureParams(filter bool, filterAnisotropy float64) *textureParams {
+	var tp = &textureParams{}
 	tp.filter, tp.aniso = filter, filterAnisotropy
 	return tp
 }
 
-func (me *textureParams) apply (tex *Texture) {
-	if me.glAniso > 0 { gl.TexParameterf(gl.TEXTURE_2D, ugl.TEXTURE_MAX_ANISOTROPY_EXT, me.glAniso) }
+func (me *textureParams) apply(tex *Texture) {
+	if me.glAniso > 0 {
+		gl.TexParameterf(gl.TEXTURE_2D, ugl.TEXTURE_MAX_ANISOTROPY_EXT, me.glAniso)
+	}
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, me.glFilterMag)
 	if tex.noMipMap {
 		gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, ugl.IfI(me.filter, gl.LINEAR, gl.NEAREST))
@@ -31,15 +33,15 @@ func (me *textureParams) apply (tex *Texture) {
 	}
 }
 
-func (me *textureParams) Filter () bool {
+func (me *textureParams) Filter() bool {
 	return me.filter
 }
 
-func (me *textureParams) FilterAnisotropy () float64 {
+func (me *textureParams) FilterAnisotropy() float64 {
 	return me.aniso
 }
 
-func (me *textureParams) gpuSync () {
+func (me *textureParams) gpuSync() {
 	for _, tex := range Core.Textures {
 		if (tex.Params == me) && tex.GpuSynced() {
 			gl.BindTexture(gl.TEXTURE_2D, tex.glTex)
@@ -49,7 +51,7 @@ func (me *textureParams) gpuSync () {
 	}
 }
 
-func (me *textureParams) Set (filter bool, filterAnisotropy float64) {
+func (me *textureParams) Set(filter bool, filterAnisotropy float64) {
 	var glAniso gl.Float
 	var glMin, glMag gl.Int
 	var changed bool
@@ -61,28 +63,36 @@ func (me *textureParams) Set (filter bool, filterAnisotropy float64) {
 	glMag = ugl.IfI(filter, gl.LINEAR, gl.NEAREST)
 	glMin = ugl.IfI(filter, gl.LINEAR_MIPMAP_LINEAR, gl.NEAREST_MIPMAP_NEAREST)
 	me.filter, me.aniso = filter, filterAnisotropy
-	if glAniso != me.glAniso { changed, me.glAniso = true, glAniso }
-	if glMin != me.glFilterMin { changed, me.glFilterMin = true, glMin }
-	if glMag != me.glFilterMag { changed, me.glFilterMag = true, glMag }
-	if changed && glIsInit { me.gpuSync() }
+	if glAniso != me.glAniso {
+		changed, me.glAniso = true, glAniso
+	}
+	if glMin != me.glFilterMin {
+		changed, me.glFilterMin = true, glMin
+	}
+	if glMag != me.glFilterMag {
+		changed, me.glFilterMag = true, glMag
+	}
+	if changed && glIsInit {
+		me.gpuSync()
+	}
 }
 
-func (me *textureParams) setAgain () {
+func (me *textureParams) setAgain() {
 	me.Set(me.filter, me.aniso)
 }
 
-func (me *textureParams) SetFilter (filter bool) {
+func (me *textureParams) SetFilter(filter bool) {
 	me.Set(filter, me.FilterAnisotropy())
 }
 
-func (me *textureParams) SetFilterAnisotropy (filterAnisotropy float64) {
+func (me *textureParams) SetFilterAnisotropy(filterAnisotropy float64) {
 	me.Set(me.Filter(), filterAnisotropy)
 }
 
-func (me *textureParams) ToggleFilter () {
+func (me *textureParams) ToggleFilter() {
 	me.SetFilter(!me.Filter())
 }
 
-func (me *textureParams) ToggleFilterAnisotropy () {
-	me.Set(me.Filter(), util.Ifd(me.aniso == float64(ugl.MaxTextureAnisotropy()), 1, me.aniso + 1))
+func (me *textureParams) ToggleFilterAnisotropy() {
+	me.Set(me.Filter(), util.Ifd(me.aniso == float64(ugl.MaxTextureAnisotropy()), 1, me.aniso+1))
 }

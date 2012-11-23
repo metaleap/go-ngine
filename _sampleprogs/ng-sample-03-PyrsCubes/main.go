@@ -5,36 +5,36 @@ import (
 
 	unum "github.com/metaleap/go-util/num"
 
-	ng "github.com/go3d/go-ngine/core"
-	nga "github.com/go3d/go-ngine/assets"
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
+	nga "github.com/go3d/go-ngine/assets"
+	ng "github.com/go3d/go-ngine/core"
 )
 
 var (
 	floor, pyr, box *ng.Node
-	crates [3]*ng.Node
-	pyramids [4]*ng.Node
-	i int
-	f float64
+	crates          [3]*ng.Node
+	pyramids        [4]*ng.Node
+	i               int
+	f               float64
 )
 
-func main () {
+func main() {
 	ngsamples.SamplesMainFunc(LoadSampleScene_03_PyrsCubes)
 }
 
-func onLoop () {
+func onLoop() {
 	ngsamples.CheckToggleKeys()
 	ngsamples.CheckCamCtlKeys()
 
 	//	animate mesh nodes
 	pyr.Transform.Rot.X -= 0.0005
 	pyr.Transform.Rot.Y -= 0.0005
-	pyr.Transform.Pos.Set(-13.75, 2 * math.Sin(ng.Loop.TickNow), 2)
+	pyr.Transform.Pos.Set(-13.75, 2*math.Sin(ng.Loop.TickNow), 2)
 	pyr.Transform.OnPosRotChanged()
 
 	box.Transform.Rot.Y += 0.0004
 	box.Transform.Rot.Z += 0.0006
-	box.Transform.Pos.Set(-8.125, 2 * math.Cos(ng.Loop.TickNow), -2)
+	box.Transform.Pos.Set(-8.125, 2*math.Cos(ng.Loop.TickNow), -2)
 	box.Transform.OnPosRotChanged()
 
 	for i = 0; i < len(crates); i++ {
@@ -50,7 +50,7 @@ func onLoop () {
 	pyramids[1].Transform.SetPosZ(math.Cos(ng.Loop.TickNow) * 1000)
 }
 
-func LoadSampleScene_03_PyrsCubes () {
+func LoadSampleScene_03_PyrsCubes() {
 	var err error
 	var meshFloor, meshPyr, meshCube *ng.Mesh
 	var bufFloor, bufRest *ng.MeshBuffer
@@ -74,20 +74,32 @@ func LoadSampleScene_03_PyrsCubes () {
 	ng.Core.Materials["mat_dog"] = ng.Core.Materials.New("tex_dog")
 
 	//	meshes / models
-	if bufFloor, err = ng.Core.MeshBuffers.Add("buf_floor", ng.Core.MeshBuffers.NewParams(6, 6)); err != nil { panic(err) }
-	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(36 + 12, 36 + 12)); err != nil { panic(err) }
-	if meshFloor, err = ng.Core.Meshes.Load("mesh_plane", ng.MeshProviders.PrefabPlane); err != nil { panic(err) }
+	if bufFloor, err = ng.Core.MeshBuffers.Add("buf_floor", ng.Core.MeshBuffers.NewParams(6, 6)); err != nil {
+		panic(err)
+	}
+	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(36+12, 36+12)); err != nil {
+		panic(err)
+	}
+	if meshFloor, err = ng.Core.Meshes.Load("mesh_plane", ng.MeshProviders.PrefabPlane); err != nil {
+		panic(err)
+	}
 
-	if meshPyr, err = ng.Core.Meshes.Load("mesh_pyramid", ng.MeshProviders.PrefabPyramid); err != nil { panic(err) }
+	if meshPyr, err = ng.Core.Meshes.Load("mesh_pyramid", ng.MeshProviders.PrefabPyramid); err != nil {
+		panic(err)
+	}
 	meshPyr.Models.Default().SetMatName("mat_mosaic")
 	meshPyr.Models.Default().Clone("model_pyramid_dog").SetMatName("mat_dog")
 
-	if meshCube, err = ng.Core.Meshes.Load("mesh_cube", ng.MeshProviders.PrefabCube); err != nil { panic(err) }
+	if meshCube, err = ng.Core.Meshes.Load("mesh_cube", ng.MeshProviders.PrefabCube); err != nil {
+		panic(err)
+	}
 	meshCube.Models.Default().SetMatName("mat_crate")
 	meshCube.Models.Default().Clone("model_cube_cat").SetMatName("mat_cat")
 
 	ng.Core.Meshes.AddRange(meshFloor, meshPyr, meshCube)
-	bufFloor.Add(meshFloor); bufRest.Add(meshCube); bufRest.Add(meshPyr)
+	bufFloor.Add(meshFloor)
+	bufRest.Add(meshCube)
+	bufRest.Add(meshPyr)
 
 	//	scene
 	var scene = ng.NewScene()
@@ -96,26 +108,42 @@ func LoadSampleScene_03_PyrsCubes () {
 	floor, pyr, box = /* scene.RootNode.SubNodes.Get("node_floor", "node_pyr", "node_box") */ scene.RootNode.SubNodes.M["node_floor"], scene.RootNode.SubNodes.M["node_pyr"], scene.RootNode.SubNodes.M["node_box"]
 
 	for i = 0; i < len(crates); i++ {
-		if i == 0 { str = "model_cube_cat" } else { str = "" }
+		if i == 0 {
+			str = "model_cube_cat"
+		} else {
+			str = ""
+		}
 		crates[i] = scene.RootNode.SubNodes.Make(ng.Sfmt("node_box_%v", i), "mesh_cube", str)
 		f = float64(i)
-		crates[i].Transform.SetPosXYZ((f + 3) * -2, (f + 1) * 2, (f + 2) * 3)
+		crates[i].Transform.SetPosXYZ((f+3)*-2, (f+1)*2, (f+2)*3)
 		if i == 2 {
 			crates[i].SetMatName("mat_dog")
 		}
 	}
 
 	for i = 0; i < len(pyramids); i++ {
-		if i > 1 { str = "model_pyramid_dog" } else { str = "" }
+		if i > 1 {
+			str = "model_pyramid_dog"
+		} else {
+			str = ""
+		}
 		pyramids[i] = scene.RootNode.SubNodes.Make(ng.Sfmt("nody_pyr_%v", i), "mesh_pyramid", str)
 		f = float64(len(pyramids) - i)
 		pyramids[i].Transform.SetScalingN((f + 1) * 2)
-		pyramids[i].Transform.SetPosXYZ((f + 3) * -4, (f + 2) * 3, (f + 2) * 14)
+		pyramids[i].Transform.SetPosXYZ((f+3)*-4, (f+2)*3, (f+2)*14)
 		if i > 1 {
-			if i == 2 { f = 45 } else { f = 135 }
+			if i == 2 {
+				f = 45
+			} else {
+				f = 135
+			}
 			pyramids[i].Transform.SetRotZ(unum.DegToRad(f))
 		} else {
-			if i == 0 { f = 180 } else { f = 90 }
+			if i == 0 {
+				f = 180
+			} else {
+				f = 90
+			}
 			pyramids[i].Transform.SetRotX(unum.DegToRad(f))
 		}
 		if i == 1 {

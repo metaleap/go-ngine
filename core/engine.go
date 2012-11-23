@@ -21,19 +21,21 @@ var (
 )
 
 //	Call this to "un-init" go:ngine and to release any and all GPU or RAM resources still allocated.
-func Dispose () {
-	if Core != nil { Core.dispose() }
+func Dispose() {
+	if Core != nil {
+		Core.dispose()
+	}
 	glDispose()
 	UserIO.dispose()
 	Core, Loop, Stats = nil, nil, nil
 }
 
 //	Initializes go:ngine; this first attempts to initialize OpenGL and then open a window to your supplied specifications with a GL 3.2-or-higher profile.
-func Init (options *EngineOptions, winTitle string) error {
+func Init(options *EngineOptions, winTitle string) error {
 	var err error
 	var isVerErr bool
 	var forceContext = (runtime.GOOS == "darwin")
-	tryInit:
+tryInit:
 	if err = UserIO.init(options, winTitle, forceContext); err == nil {
 		if err, isVerErr = glInit(); err == nil {
 			Loop, Stats = newEngineLoop(), newEngineStats()
@@ -47,11 +49,13 @@ func Init (options *EngineOptions, winTitle string) error {
 	return err
 }
 
-func logError (err error) {
-	if err != nil { log.Println(err.Error()) }
+func logError(err error) {
+	if err != nil {
+		log.Println(err.Error())
+	}
 }
 
 //	A short-hand for fmt.Sprintf. Feel free to ignore.
-func Sfmt (format string, fmtArgs ... interface {}) string {
-	return fmt.Sprintf(format, fmtArgs ...)
+func Sfmt(format string, fmtArgs ...interface{}) string {
+	return fmt.Sprintf(format, fmtArgs...)
 }

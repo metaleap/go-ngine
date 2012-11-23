@@ -16,11 +16,11 @@ import (
 
 var (
 	fSrcDirPath = flag.String("src", "Q:\\oga\\yughues", "TGA src dir root path")
-	fRecurse = flag.Bool("rec", false, "recurse into sub-dirs")
+	fRecurse    = flag.Bool("rec", false, "recurse into sub-dirs")
 	fOutDirPath = flag.String("out", "Q:\\oga\\yughues_png", "PNG out dir root path")
 )
 
-func processFile (srcFilePath string, recurse bool) bool {
+func processFile(srcFilePath string, recurse bool) bool {
 	var outFilePath = strings.Replace(strings.Replace(srcFilePath, *fSrcDirPath, *fOutDirPath, -1), ".tga", ".png", -1)
 	var err error
 	var dirPath = filepath.Dir(outFilePath)
@@ -52,7 +52,7 @@ func processFile (srcFilePath string, recurse bool) bool {
 	return recurse
 }
 
-func main () {
+func main() {
 	flag.Parse()
 	uio.WalkDirectory(*fSrcDirPath, ".tga", processFile, *fRecurse)
 }

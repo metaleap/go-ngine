@@ -1,7 +1,7 @@
 package assets
 
 //	Temporary concoction.
-type MeshProvider func (args ... interface {}) (*MeshData, error)
+type MeshProvider func(args ...interface{}) (*MeshData, error)
 
 //	Represents an indexed triangle.
 type MeshFace3 [3]MeshVert
@@ -22,11 +22,11 @@ type MeshRawFace struct {
 	Entries [3]uint32
 }
 
-	//	Initializes and returns a new *MeshRawFace* instance.
-	func NewMeshRawFace () (me *MeshRawFace) {
-		me = &MeshRawFace {}
-		return
-	}
+//	Initializes and returns a new *MeshRawFace* instance.
+func NewMeshRawFace() (me *MeshRawFace) {
+	me = &MeshRawFace{}
+	return
+}
 
 //	Represents an indexed vertex.
 type MeshVert struct {
@@ -58,28 +58,28 @@ type MeshData struct {
 	Faces []MeshFace3
 }
 
-	//	Initializes and returns a new *MeshData* instance.
-	func NewMeshData () (me *MeshData) {
-		me = &MeshData {}
-		return
-	}
+//	Initializes and returns a new *MeshData* instance.
+func NewMeshData() (me *MeshData) {
+	me = &MeshData{}
+	return
+}
 
-	//	Adds all specified Faces to this MeshData.
-	func (me *MeshData) AddFaces (faces ... MeshFace3) {
-		me.Faces = append(me.Faces, faces ...)
-	}
+//	Adds all specified Faces to this MeshData.
+func (me *MeshData) AddFaces(faces ...MeshFace3) {
+	me.Faces = append(me.Faces, faces...)
+}
 
-	//	Adds all specified Positions to this MeshData.
-	func (me *MeshData) AddPositions (positions ... MeshVertAtt3) {
-		me.Positions = append(me.Positions, positions ...)
-	}
+//	Adds all specified Positions to this MeshData.
+func (me *MeshData) AddPositions(positions ...MeshVertAtt3) {
+	me.Positions = append(me.Positions, positions...)
+}
 
-	//	Adds all the specified Normals to this MeshData.
-	func (me *MeshData) AddNormals (normals ... MeshVertAtt3) {
-		me.Normals = append(me.Normals, normals ...)
-	}
+//	Adds all the specified Normals to this MeshData.
+func (me *MeshData) AddNormals(normals ...MeshVertAtt3) {
+	me.Normals = append(me.Normals, normals...)
+}
 
-	//	Adds all the specified TexCoords to this MeshData.
-	func (me *MeshData) AddTexCoords (texCoords ... MeshVertAtt2) {
-		me.TexCoords = append(me.TexCoords, texCoords ...)
-	}
+//	Adds all the specified TexCoords to this MeshData.
+func (me *MeshData) AddTexCoords(texCoords ...MeshVertAtt2) {
+	me.TexCoords = append(me.TexCoords, texCoords...)
+}

@@ -10,158 +10,179 @@ import (
 )
 
 var (
-	asyncTextures = map[*Texture]bool {}
+	asyncTextures = map[*Texture]bool{}
 )
 
 type textures map[string]*Texture
 
-	func (me textures) add (def *nga.ImageDef) (item *Texture) {
-		item = newTexture(def)
-		me[def.ID] = item
-		return
-	}
+func (me textures) add(def *nga.ImageDef) (item *Texture) {
+	item = newTexture(def)
+	me[def.ID] = item
+	return
+}
 
-	func (me textures) NewParams (filter bool, filterAnisotropy float64) *textureParams {
-		return newTextureParams(filter, filterAnisotropy)
-	}
+func (me textures) NewParams(filter bool, filterAnisotropy float64) *textureParams {
+	return newTextureParams(filter, filterAnisotropy)
+}
 
-	func (me textures) syncAssetChanges () {
-		var item *Texture; var id string; var def *nga.ImageDef;
-		for id, def = range nga.ImageDefs.M { if item = me[def.ID]; item == nil { item = me.add(def) } }
-		for id, item = range me { if nga.ImageDefs.M[item.ID] == nil { delete(me, id); item.dispose() } }
+func (me textures) syncAssetChanges() {
+	var item *Texture
+	var id string
+	var def *nga.ImageDef
+	for id, def = range nga.ImageDefs.M {
+		if item = me[def.ID]; item == nil {
+			item = me.add(def)
+		}
 	}
+	for id, item = range me {
+		if nga.ImageDefs.M[item.ID] == nil {
+			delete(me, id)
+			item.dispose()
+		}
+	}
+}
 
 type Texture struct {
 	*nga.ImageDef
 	LastError error
-	Params *textureParams
+	Params    *textureParams
 
-	img image.Image
-	gpuSynced, noMipMap bool
-	glTex gl.Uint
-	glTexWidth, glTexHeight, glTexLevels gl.Sizei
-	glPixPointer gl.Pointer
+	img                                                       image.Image
+	gpuSynced, noMipMap                                       bool
+	glTex                                                     gl.Uint
+	glTexWidth, glTexHeight, glTexLevels                      gl.Sizei
+	glPixPointer                                              gl.Pointer
 	glSizedInternalFormat, glPixelDataFormat, glPixelDataType gl.Enum
 }
 
-	func newTexture (def *nga.ImageDef) (me *Texture) {
-		me = &Texture {}
-		me.ImageDef = def
-		me.ImageDef.OnSync = func () {
-			me.load()
-			me.GpuSync()
-		}
-		me.Params = Core.Options.DefaultTextureParams
-		return
+func newTexture(def *nga.ImageDef) (me *Texture) {
+	me = &Texture{}
+	me.ImageDef = def
+	me.ImageDef.OnSync = func() {
+		me.load()
+		me.GpuSync()
 	}
+	me.Params = Core.Options.DefaultTextureParams
+	return
+}
 
-	func (me *Texture) dispose () {
-		me.Unload()
-		me.GpuDelete()
+func (me *Texture) dispose() {
+	me.Unload()
+	me.GpuDelete()
+}
+
+func (me *Texture) GpuDelete() {
+	if me.glTex != 0 {
+		gl.DeleteTextures(1, &me.glTex)
+		me.glTex = 0
 	}
+}
 
-	func (me *Texture) GpuDelete () {
-		if me.glTex != 0 {
-			gl.DeleteTextures(1, &me.glTex)
-			me.glTex = 0
-		}
-	}
-
-	func (me *Texture) GpuSync () {
-		me.gpuSynced = false
-		me.GpuDelete()
-		gl.GenTextures(1, &me.glTex)
-		gl.BindTexture(gl.TEXTURE_2D, me.glTex)
-		defer gl.BindTexture(gl.TEXTURE_2D, 0)
-		me.Params.apply(me)
-		gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT)
-		gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT)
-		if me.img != nil {
-			me.glPixPointer = ugl.ImageTextureProperties(me.img, &me.glTexWidth, &me.glTexHeight, &me.glTexLevels, &me.glSizedInternalFormat, &me.glPixelDataFormat, &me.glPixelDataType)
-			if ugl.IsGl42 {
-				gl.TexStorage2D(gl.TEXTURE_2D, me.glTexLevels, me.glSizedInternalFormat, me.glTexWidth, me.glTexHeight)
-				gl.TexSubImage2D(gl.TEXTURE_2D, 0, 0, 0, me.glTexWidth, me.glTexHeight, me.glPixelDataFormat, me.glPixelDataType, me.glPixPointer)
-			} else {
-				gl.TexImage2D(gl.TEXTURE_2D, 0, gl.Int(me.glSizedInternalFormat), me.glTexWidth, me.glTexHeight, 0, me.glPixelDataFormat, me.glPixelDataType, me.glPixPointer)
-				glLogLastError("ttex.gpusync(9)")
-			}
-			if !me.noMipMap { gl.GenerateMipmap(gl.TEXTURE_2D) }
-		}
-		me.gpuSynced = true
-	}
-
-	func (me *Texture) GpuSynced () bool {
-		return me.gpuSynced
-	}
-
-	func (me *Texture) load_OnImg (img image.Image, err error) error {
-		var nuW, nuH int
-		var conv = false
-		var nuImage *image.RGBA
-		me.gpuSynced, me.img = false, nil
-		if err != nil { me.LastError = err }
-		if me.Loaded() { me.Unload() }
-		if me.img = img; me.img != nil {
-			switch me.img.(type) {
-			case *image.YCbCr, *image.Paletted:
-				conv = true
-			}
-			if conv {
-				nuW, nuH = me.img.Bounds().Dx(), me.img.Bounds().Dy()
-				nuImage = image.NewRGBA(image.Rect(0, 0, nuW, nuH))
-				for x := 0; x < nuW; x++ { for y := 0; y < nuH; y++ { nuImage.Set(x, y, me.img.At(x, y)) } }
-				me.img = nuImage
-			}
-		}
-		return err
-	}
-
-	func (me *Texture) load () {
-		prov, arg, remote := me.provider()
-		if remote {
-			me.loadAsync(prov, arg)
+func (me *Texture) GpuSync() {
+	me.gpuSynced = false
+	me.GpuDelete()
+	gl.GenTextures(1, &me.glTex)
+	gl.BindTexture(gl.TEXTURE_2D, me.glTex)
+	defer gl.BindTexture(gl.TEXTURE_2D, 0)
+	me.Params.apply(me)
+	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT)
+	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT)
+	if me.img != nil {
+		me.glPixPointer = ugl.ImageTextureProperties(me.img, &me.glTexWidth, &me.glTexHeight, &me.glTexLevels, &me.glSizedInternalFormat, &me.glPixelDataFormat, &me.glPixelDataType)
+		if ugl.IsGl42 {
+			gl.TexStorage2D(gl.TEXTURE_2D, me.glTexLevels, me.glSizedInternalFormat, me.glTexWidth, me.glTexHeight)
+			gl.TexSubImage2D(gl.TEXTURE_2D, 0, 0, 0, me.glTexWidth, me.glTexHeight, me.glPixelDataFormat, me.glPixelDataType, me.glPixPointer)
 		} else {
-			me.load_OnImg(prov(arg))
+			gl.TexImage2D(gl.TEXTURE_2D, 0, gl.Int(me.glSizedInternalFormat), me.glTexWidth, me.glTexHeight, 0, me.glPixelDataFormat, me.glPixelDataType, me.glPixPointer)
+			glLogLastError("ttex.gpusync(9)")
+		}
+		if !me.noMipMap {
+			gl.GenerateMipmap(gl.TEXTURE_2D)
 		}
 	}
+	me.gpuSynced = true
+}
 
-	func (me *Texture) loadAsync (prov TextureProvider, arg interface{}) {
-		me.gpuSynced = false
+func (me *Texture) GpuSynced() bool {
+	return me.gpuSynced
+}
+
+func (me *Texture) load_OnImg(img image.Image, err error) error {
+	var nuW, nuH int
+	var conv = false
+	var nuImage *image.RGBA
+	me.gpuSynced, me.img = false, nil
+	if err != nil {
+		me.LastError = err
+	}
+	if me.Loaded() {
 		me.Unload()
-		asyncTextures[me] = false
-		go func () {
-			if err := me.load_OnImg(prov(arg)); err != nil {
-				//	mark as "done" anyway in the async queue.
-				asyncTextures[me] = true
+	}
+	if me.img = img; me.img != nil {
+		switch me.img.(type) {
+		case *image.YCbCr, *image.Paletted:
+			conv = true
+		}
+		if conv {
+			nuW, nuH = me.img.Bounds().Dx(), me.img.Bounds().Dy()
+			nuImage = image.NewRGBA(image.Rect(0, 0, nuW, nuH))
+			for x := 0; x < nuW; x++ {
+				for y := 0; y < nuH; y++ {
+					nuImage.Set(x, y, me.img.At(x, y))
+				}
 			}
-		} ()
+			me.img = nuImage
+		}
 	}
+	return err
+}
 
-	func (me *Texture) Loaded () bool {
-		return me.img != nil
+func (me *Texture) load() {
+	prov, arg, remote := me.provider()
+	if remote {
+		me.loadAsync(prov, arg)
+	} else {
+		me.load_OnImg(prov(arg))
 	}
+}
 
-	func (me *Texture) provider () (prov TextureProvider, arg interface{}, remote bool) {
-		if me.ImageDef != nil {
-			if me.ImageDef.InitFrom != nil {
-				if len(me.ImageDef.InitFrom.RawData) > 0 {
-					prov, arg = TextureProviders.IoReader, me.ImageDef.InitFrom.RawData
-				} else if len(me.ImageDef.InitFrom.RefUrl) > 0 {
-					if remote = strings.Contains(me.ImageDef.InitFrom.RefUrl, "://"); remote {
-						prov, arg = TextureProviders.RemoteFile, me.ImageDef.InitFrom.RefUrl
-					} else {
-						prov, arg = TextureProviders.LocalFile, me.ImageDef.InitFrom.RefUrl
-					}
+func (me *Texture) loadAsync(prov TextureProvider, arg interface{}) {
+	me.gpuSynced = false
+	me.Unload()
+	asyncTextures[me] = false
+	go func() {
+		if err := me.load_OnImg(prov(arg)); err != nil {
+			//	mark as "done" anyway in the async queue.
+			asyncTextures[me] = true
+		}
+	}()
+}
+
+func (me *Texture) Loaded() bool {
+	return me.img != nil
+}
+
+func (me *Texture) provider() (prov TextureProvider, arg interface{}, remote bool) {
+	if me.ImageDef != nil {
+		if me.ImageDef.InitFrom != nil {
+			if len(me.ImageDef.InitFrom.RawData) > 0 {
+				prov, arg = TextureProviders.IoReader, me.ImageDef.InitFrom.RawData
+			} else if len(me.ImageDef.InitFrom.RefUrl) > 0 {
+				if remote = strings.Contains(me.ImageDef.InitFrom.RefUrl, "://"); remote {
+					prov, arg = TextureProviders.RemoteFile, me.ImageDef.InitFrom.RefUrl
+				} else {
+					prov, arg = TextureProviders.LocalFile, me.ImageDef.InitFrom.RefUrl
 				}
 			}
 		}
-		return
 	}
+	return
+}
 
-	func (me *Texture) SuppressMipMaps () {
-		me.noMipMap = true
-	}
+func (me *Texture) SuppressMipMaps() {
+	me.noMipMap = true
+}
 
-	func (me *Texture) Unload () {
-		me.img, me.glPixPointer = nil, gl.Pointer(nil)
-	}
+func (me *Texture) Unload() {
+	me.img, me.glPixPointer = nil, gl.Pointer(nil)
+}

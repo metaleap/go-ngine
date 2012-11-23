@@ -2,24 +2,24 @@ package core
 
 type models map[string]*Model
 
-	func (me models) Default () *Model {
-		return me[""]
-	}
-
-type Model struct {
-	mat *Material
-	matName string
-	mesh *Mesh
-	name string
+func (me models) Default() *Model {
+	return me[""]
 }
 
-func newModel (name string, mesh *Mesh) *Model {
-	var model = &Model {}
+type Model struct {
+	mat     *Material
+	matName string
+	mesh    *Mesh
+	name    string
+}
+
+func newModel(name string, mesh *Mesh) *Model {
+	var model = &Model{}
 	model.name, model.mesh = name, mesh
 	return model
 }
 
-func (me *Model) Clone (modelName string) (clonedModel *Model) {
+func (me *Model) Clone(modelName string) (clonedModel *Model) {
 	if (modelName != me.name) && (me.mesh.Models[modelName] == nil) {
 		clonedModel = newModel(modelName, me.mesh)
 		me.mesh.Models[modelName] = clonedModel
@@ -27,15 +27,17 @@ func (me *Model) Clone (modelName string) (clonedModel *Model) {
 	return
 }
 
-func (me *Model) MatName () string {
+func (me *Model) MatName() string {
 	return me.matName
 }
 
-func (me *Model) render () {
+func (me *Model) render() {
 	curTechnique.onRenderMeshModel()
 	me.mesh.render()
 }
 
-func (me *Model) SetMatName (newMatName string) {
-	if newMatName != me.matName { me.mat, me.matName = Core.Materials[newMatName], newMatName }
+func (me *Model) SetMatName(newMatName string) {
+	if newMatName != me.matName {
+		me.mat, me.matName = Core.Materials[newMatName], newMatName
+	}
 }

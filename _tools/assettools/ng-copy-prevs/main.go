@@ -10,11 +10,11 @@ import (
 )
 
 var (
-	srcDirPath = "Q:\\oga\\yughues\\"
+	srcDirPath  = "Q:\\oga\\yughues\\"
 	prevDirPath = "Q:\\oga\\prevs\\"
 )
 
-func processPreview (filePath string, recurse bool) bool {
+func processPreview(filePath string, recurse bool) bool {
 	var relPath = strings.Replace(strings.Replace(filePath, srcDirPath, "", -1), string(os.PathSeparator), "_", -1)
 	var newFilePath = filepath.Join(prevDirPath, relPath)
 	if err := uio.CopyFile(filePath, newFilePath); err != nil {
@@ -23,6 +23,6 @@ func processPreview (filePath string, recurse bool) bool {
 	return false
 }
 
-func main () {
+func main() {
 	uio.WalkDirectory(srcDirPath, ".jpg", processPreview, true)
 }

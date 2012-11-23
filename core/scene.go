@@ -6,8 +6,8 @@ type Scene struct {
 	RootNode *Node
 }
 
-func NewScene () *Scene {
-	var scene = &Scene {}
+func NewScene() *Scene {
+	var scene = &Scene{}
 	scene.RootNode = newNode("", "", "", nil)
 	return scene
 }

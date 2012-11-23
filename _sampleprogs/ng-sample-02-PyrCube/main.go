@@ -3,36 +3,36 @@ package main
 import (
 	"math"
 
-	ng "github.com/go3d/go-ngine/core"
-	nga "github.com/go3d/go-ngine/assets"
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
+	nga "github.com/go3d/go-ngine/assets"
+	ng "github.com/go3d/go-ngine/core"
 )
 
 var (
 	floor, pyr, box *ng.Node
 )
 
-func main () {
+func main() {
 	ngsamples.SamplesMainFunc(LoadSampleScene_02_PyrCube)
 }
 
-func onLoop () {
+func onLoop() {
 	ngsamples.CheckToggleKeys()
 	ngsamples.CheckCamCtlKeys()
 
 	//	animate mesh nodes
 	pyr.Transform.Rot.X -= 0.0005
 	pyr.Transform.Rot.Y -= 0.0005
-	pyr.Transform.Pos.Set(-13.75, 2 * math.Sin(ng.Loop.TickNow), 2)
+	pyr.Transform.Pos.Set(-13.75, 2*math.Sin(ng.Loop.TickNow), 2)
 	pyr.Transform.OnPosRotChanged()
 
 	box.Transform.Rot.Y += 0.0004
 	box.Transform.Rot.Z += 0.0006
-	box.Transform.Pos.Set(-8.125, 2 * math.Cos(ng.Loop.TickNow), -2)
+	box.Transform.Pos.Set(-8.125, 2*math.Cos(ng.Loop.TickNow), -2)
 	box.Transform.OnPosRotChanged()
 }
 
-func LoadSampleScene_02_PyrCube () {
+func LoadSampleScene_02_PyrCube() {
 	var err error
 	var meshFloor, meshPyr, meshCube *ng.Mesh
 	var bufFloor, bufRest *ng.MeshBuffer
@@ -51,13 +51,25 @@ func LoadSampleScene_02_PyrCube () {
 	ng.Core.Materials["mat_mosaic"] = ng.Core.Materials.New("tex_mosaic")
 
 	//	meshes / models
-	if bufFloor, err = ng.Core.MeshBuffers.Add("buf_floor", ng.Core.MeshBuffers.NewParams(6, 6)); err != nil { panic(err) }
-	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(36 + 12, 36 + 12)); err != nil { panic(err) }
-	if meshFloor, err = ng.Core.Meshes.Load("mesh_plane", ng.MeshProviders.PrefabPlane); err != nil { panic(err) }
-	if meshPyr, err = ng.Core.Meshes.Load("mesh_pyramid", ng.MeshProviders.PrefabPyramid); err != nil { panic(err) }
-	if meshCube, err = ng.Core.Meshes.Load("mesh_cube", ng.MeshProviders.PrefabCube); err != nil { panic(err) }
+	if bufFloor, err = ng.Core.MeshBuffers.Add("buf_floor", ng.Core.MeshBuffers.NewParams(6, 6)); err != nil {
+		panic(err)
+	}
+	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(36+12, 36+12)); err != nil {
+		panic(err)
+	}
+	if meshFloor, err = ng.Core.Meshes.Load("mesh_plane", ng.MeshProviders.PrefabPlane); err != nil {
+		panic(err)
+	}
+	if meshPyr, err = ng.Core.Meshes.Load("mesh_pyramid", ng.MeshProviders.PrefabPyramid); err != nil {
+		panic(err)
+	}
+	if meshCube, err = ng.Core.Meshes.Load("mesh_cube", ng.MeshProviders.PrefabCube); err != nil {
+		panic(err)
+	}
 	ng.Core.Meshes.AddRange(meshFloor, meshPyr, meshCube)
-	bufFloor.Add(meshFloor); bufRest.Add(meshCube); bufRest.Add(meshPyr)
+	bufFloor.Add(meshFloor)
+	bufRest.Add(meshCube)
+	bufRest.Add(meshPyr)
 	meshPyr.Models.Default().SetMatName("mat_mosaic")
 	meshCube.Models.Default().SetMatName("mat_crate")
 
@@ -71,7 +83,9 @@ func LoadSampleScene_02_PyrCube () {
 	floor.Transform.SetPosXYZ(0.1, 0, -8)
 	floor.Transform.SetScalingN(1000)
 
-	ngsamples.CamCtl.BeginUpdate(); ngsamples.CamCtl.Pos.Y = 1.6; ngsamples.CamCtl.EndUpdate()
+	ngsamples.CamCtl.BeginUpdate()
+	ngsamples.CamCtl.Pos.Y = 1.6
+	ngsamples.CamCtl.EndUpdate()
 
 	//	upload everything
 	ng.Core.SyncUpdates()
