@@ -28,10 +28,12 @@ var (
 )
 
 func checkGoFile(filePath string, recurse bool) bool {
-	var fset = token.NewFileSet()
-	var astFile *ast.File
-	var err error
-	var hasGoglImp = false
+	var (
+		fset       = token.NewFileSet()
+		astFile    *ast.File
+		err        error
+		hasGoglImp = false
+	)
 	if strings.Index(filePath, "_trash") >= 0 {
 		return recurse
 	}
@@ -54,8 +56,10 @@ func checkGoFile(filePath string, recurse bool) bool {
 }
 
 func inspectNode(node ast.Node) bool {
-	var x, sel *ast.Ident
-	var gni *glNameInfo
+	var (
+		x, sel *ast.Ident
+		gni    *glNameInfo
+	)
 	switch selExpr := node.(type) {
 	case *ast.SelectorExpr:
 		switch xExpr := selExpr.X.(type) {
@@ -93,11 +97,12 @@ func loadSpecXml() {
 }
 
 func main() {
+	var (
+		ver, kind string
+		verList   []string
+	)
 	loadSpecXml()
-	var enumNodes, funcNodes = specDoc.SelectNodesRecursive("*", "enum"), specDoc.SelectNodesRecursive("*", "function")
-	var ver, kind string
-	var verList []string
-	var gni *glNameInfo
+	enumNodes, funcNodes := specDoc.SelectNodesRecursive("*", "enum"), specDoc.SelectNodesRecursive("*", "function")
 	uio.WalkDirectory(util.BaseCodePathGithub("go3d"), ".go", checkGoFile, true)
 	for glName, _ := range glNames {
 		kind, ver = "", ""
@@ -129,7 +134,7 @@ func main() {
 	for ver, verList = range glVersions {
 		fmt.Printf("GL v%v used %vx:\n", ver, len(verList))
 		for _, glName := range verList {
-			if gni = glNames[glName]; gni != nil {
+			if gni := glNames[glName]; gni != nil {
 				fmt.Printf("\t%v %v:\n", gni.nameKind, glName)
 				for _, filePath := range gni.filePaths {
 					fmt.Printf("\t\t%v\n", filePath)

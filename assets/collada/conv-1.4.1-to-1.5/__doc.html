@@ -1,0 +1,142 @@
+<html>
+	<head>
+		<title>Package github.com/go3d/go-ngine/assets/collada/conv-1.4.1-to-1.5</title>
+		<meta charset="UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link type="text/css" rel="stylesheet" href="http://golang.org/doc/style.css" />
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src="http://golang.org/doc/godocs.js"></script>
+	</head>
+	<body>
+		<div id="page" class="wide">
+		<div class="container">
+		<h1>Package github.com/go3d/go-ngine/assets/collada/conv-1.4.1-to-1.5</h1>
+		<div id="nav"></div>
+		<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "github.com/go3d/go-ngine/assets/collada/conv-1.4.1-to-1.5"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#pkg-index">Index</a></dd>
+			
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>
+Provides in-memory conversion of Collada 1.4.1 documents to version 1.5.
+</p>
+
+			</div>
+		</div>
+		
+	
+		<h2 id="pkg-index">Index</h2>
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+		<div id="manual-nav">
+			<dl>
+			
+			
+				<dd><a href="#pkg-variables">Variables</a></dd>
+			
+			
+				
+				<dd><a href="#Convert">func Convert(srcFile []byte) (dstFile []byte, err error)</a></dd>
+			
+			
+			
+		</dl>
+
+		
+
+		
+			<h4>Package files</h4>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="/target/convert.go">convert.go</a>
+			
+				<a href="/target/doc.go">doc.go</a>
+			
+			</span>
+			</p>
+		
+	
+		
+		
+			<h2 id="pkg-variables">Variables</h2>
+			
+				<pre>var (
+    <span class="comment">//	Set this to an image file format (BMP, JPG, PNG etc.) for Collada 1.4.1 documents</span>
+    <span class="comment">//	that have binary images hex-encoded in &lt;image&gt;&lt;data&gt; elements *without* a format attribute.</span>
+    HexFormat = &#34;&#34;
+
+    <span class="comment">//	The default logging function used by this package. Simply does a log.Printf(format, fmtArgs...)</span>
+    <span class="comment">//	Set this to nil to disable logging.</span>
+    Log = func(format string, fmtArgs ...interface{}) {
+        log.Printf(format, fmtArgs...)
+    }
+
+    <span class="comment">//	The &lt;shader&gt;/&lt;compiler&gt; element introduced in Collada 1.5 requires a &#34;platform&#34; attribute, but there was no</span>
+    <span class="comment">//	such equivalent in Collada 1.4.1. In the context of importing such 1.4.1 documents, probably any arbitrary</span>
+    <span class="comment">//	value will do for this new attribute, but this field still gives you the choice to set this to a preferred</span>
+    <span class="comment">//	value for all your &lt;shader&gt;s.</span>
+    ShaderCompilerPlatform = &#34;PC&#34;
+
+    <span class="comment">//	Conversion mode: true for strict mode, or false for lax mode.</span>
+    <span class="comment">//	If strict (slower), obsoleted elements and attributes are removed or rewritten so that the remaining document is strictly 1.5-conformant and will hopefully validate against the Collada 1.5 XML schema definition.</span>
+    <span class="comment">//	If lax (faster), obsoleted elements and attributes are not removed, for use-cases where the 1.5-based loader to consume the conversion result is known to simply ignore or discard them quietly</span>
+    <span class="comment">//	Note in practice there won&#39;t be a noticeable difference in performance or output for approximately 80% of &#34;common use-case&#34; Collada documents.</span>
+    Strict = true
+)</pre>
+				
+			
+		
+		
+			
+			
+			<h2 id="Convert">func <a href="/target/convert.go?s=2224:2280#L55">Convert</a></h2>
+			<pre>func Convert(srcFile []byte) (dstFile []byte, err error)</pre>
+			<p>
+Converts the specified Collada 1.4.1 document to Collada 1.5.
+</p>
+
+			
+		
+		
+		</div>
+	
+
+	
+
+
+
+
+
+
+
+
+		</div></div>
+	</body>
+</html>

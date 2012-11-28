@@ -29,14 +29,16 @@ func (this shaderSrcSortables) MapAll() map[string]shaderSrcSortable {
 }
 
 func collectShaders(srcDirPath string, allShaders *shaderSrcSortables, iShaders map[string]string, stripComments bool) {
-	var err error
-	var src *os.File
-	var fileInfos []os.FileInfo
-	var fileInfo os.FileInfo
-	var rawSrc []byte
-	var fileName, shaderSource string
-	var isIncShader, isVertShader, isTessCtlShader, isTessEvalShader, isGeoShader, isFragShader, isCompShader bool
-	var pos1, pos2 int
+	var (
+		err                                                                                                   error
+		src                                                                                                   *os.File
+		fileInfos                                                                                             []os.FileInfo
+		fileInfo                                                                                              os.FileInfo
+		rawSrc                                                                                                []byte
+		fileName, shaderSource                                                                                string
+		isIncShader, isVertShader, isTessCtlShader, isTessEvalShader, isGeoShader, isFragShader, isCompShader bool
+		pos1, pos2                                                                                            int
+	)
 	if src, err = os.Open(srcDirPath); err == nil {
 		fileInfos, err = src.Readdir(0)
 		src.Close()
@@ -52,10 +54,7 @@ func collectShaders(srcDirPath string, allShaders *shaderSrcSortables, iShaders 
 							shaderSource = string(rawSrc)
 							if stripComments {
 								for {
-									if pos1 = strings.Index(shaderSource, "/*"); pos1 < 0 {
-										break
-									}
-									if pos2 = strings.Index(shaderSource, "*/"); pos2 < pos1 {
+									if pos1, pos2 = strings.Index(shaderSource, "/*"), strings.Index(shaderSource, "*/"); (pos1 < 0) || (pos2 < pos1) {
 										break
 									}
 									shaderSource = shaderSource[0:pos1] + shaderSource[pos2+2:]
@@ -126,11 +125,13 @@ func generateShadersFile(srcDirPath, outFilePath, pkgName string, stripComments 
 }
 
 func includeShaders(fileName, shaderSource string, iShaders map[string]string) string {
-	var lines = strings.Split(shaderSource, "\n")
-	var linePrefix = "#pragma incl "
-	var str string
-	var i int
-	var includes []string
+	var (
+		lines      = strings.Split(shaderSource, "\n")
+		linePrefix = "#pragma incl "
+		str        string
+		i          int
+		includes   []string
+	)
 	for i, str = range lines {
 		if strings.HasPrefix(str, linePrefix) {
 			includes = strings.Split(str[len(linePrefix):], " ")
@@ -160,9 +161,11 @@ func inSlice(slice []string, val string) bool {
 }
 
 func main() {
-	var nginePath = os.Args[1]
-	var srcDirPath = filepath.Join(nginePath, "core", "_glsl")
-	var outFilePath = filepath.Join(nginePath, "core", "-auto-generated-glsl-src.go")
+	var (
+		nginePath   = os.Args[1]
+		srcDirPath  = filepath.Join(nginePath, "core", "_glsl")
+		outFilePath = filepath.Join(nginePath, "core", "-auto-generated-glsl-src.go")
+	)
 	runtime.LockOSThread()
 	fmt.Printf("Merging shader files inside %v into %v... ", strings.Replace(srcDirPath, nginePath, ".", -1), strings.Replace(outFilePath, nginePath, ".", -1))
 	generateShadersFile(srcDirPath, outFilePath, "core", true)

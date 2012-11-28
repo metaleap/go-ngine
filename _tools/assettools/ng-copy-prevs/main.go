@@ -15,8 +15,10 @@ var (
 )
 
 func processPreview(filePath string, recurse bool) bool {
-	var relPath = strings.Replace(strings.Replace(filePath, srcDirPath, "", -1), string(os.PathSeparator), "_", -1)
-	var newFilePath = filepath.Join(prevDirPath, relPath)
+	var (
+		relPath     = strings.Replace(strings.Replace(filePath, srcDirPath, "", -1), string(os.PathSeparator), "_", -1)
+		newFilePath = filepath.Join(prevDirPath, relPath)
+	)
 	if err := uio.CopyFile(filePath, newFilePath); err != nil {
 		log.Printf("ERR CopyFile(%v --> %v) %v", filePath, newFilePath, err)
 	}

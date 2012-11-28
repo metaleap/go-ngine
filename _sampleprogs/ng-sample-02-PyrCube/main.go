@@ -33,9 +33,12 @@ func onLoop() {
 }
 
 func LoadSampleScene_02_PyrCube() {
-	var err error
-	var meshFloor, meshPyr, meshCube *ng.Mesh
-	var bufFloor, bufRest *ng.MeshBuffer
+	var (
+		err                          error
+		scene                        *ng.Scene
+		meshFloor, meshPyr, meshCube *ng.Mesh
+		bufFloor, bufRest            *ng.MeshBuffer
+	)
 
 	ng.Loop.OnLoop = onLoop
 	ngsamples.Cam.Options.BackfaceCulling = false
@@ -74,7 +77,7 @@ func LoadSampleScene_02_PyrCube() {
 	meshCube.Models.Default().SetMatName("mat_crate")
 
 	//	scene
-	var scene = ng.NewScene()
+	scene = ng.NewScene()
 	ng.Core.Scenes[""] = scene
 	scene.RootNode.SubNodes.MakeN("node_floor", "mesh_plane", "", "node_pyr", "mesh_pyramid", "", "node_box", "mesh_cube", "")
 	floor, pyr, box = scene.RootNode.SubNodes.M["node_floor"], scene.RootNode.SubNodes.M["node_pyr"], scene.RootNode.SubNodes.M["node_box"]

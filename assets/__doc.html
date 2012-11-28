@@ -560,6 +560,15 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 
     <span class="comment">//	This callback, set by *core* (or your custom package), gets called after SyncChanges() has finished syncing.</span>
     OnAfterSyncAll func()
+
+    <span class="comment">//	Your default unit-in-meters for geometry, coordinates and transformations.</span>
+    <span class="comment">//	If a unit represents:</span>
+    <span class="comment">//	- a meter, set to 1;</span>
+    <span class="comment">//	- a centimeter, set to 0.01;</span>
+    <span class="comment">//	- a kilometer, set to 1000;</span>
+    <span class="comment">//	- an inch, set to 0.02539999969303608... etc.</span>
+    <span class="comment">//	The *assets* package does not support multiple different or individual per-asset units.</span>
+    UnitInMeters float64 = 1
 )</pre>
 				
 			
@@ -621,7 +630,7 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 		
 			
 			
-			<h2 id="SyncChanges">func <a href="/target/assets.go?s=761:779#L22">SyncChanges</a></h2>
+			<h2 id="SyncChanges">func <a href="/target/assets.go?s=1125:1143#L31">SyncChanges</a></h2>
 			<pre>func SyncChanges()</pre>
 			<p>
 Signals to *core* (or your custom package) that changes have been made that need to be picked up. Call this after you have made any number of changes to your Defs, Insts or Libs.

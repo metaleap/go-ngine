@@ -12,6 +12,15 @@ var (
 	//	This callback, set by *core* (or your custom package), gets called after SyncChanges() has finished syncing.
 	OnAfterSyncAll func()
 
+	//	Your default unit-in-meters for geometry, coordinates and transformations.
+	//	If a unit represents:
+	//	- a meter, set to 1;
+	//	- a centimeter, set to 0.01;
+	//	- a kilometer, set to 1000;
+	//	- an inch, set to 0.02539999969303608... etc.
+	//	The *assets* package does not support multiple different or individual per-asset units.
+	UnitInMeters float64 = 1
+
 	syncHandlers []func()
 )
 

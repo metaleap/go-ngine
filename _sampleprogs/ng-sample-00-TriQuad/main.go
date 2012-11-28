@@ -30,9 +30,12 @@ func onLoop() {
 }
 
 func LoadSampleScene_00_TriQuad() {
-	var meshTri, meshQuad *ng.Mesh
-	var meshBuf *ng.MeshBuffer
-	var err error
+	var (
+		err               error
+		scene             *ng.Scene
+		meshTri, meshQuad *ng.Mesh
+		meshBuf           *ng.MeshBuffer
+	)
 
 	ng.Loop.OnLoop = onLoop
 	ngsamples.Cam.Options.BackfaceCulling = false
@@ -66,7 +69,7 @@ func LoadSampleScene_00_TriQuad() {
 	}
 
 	//	scene
-	var scene = ng.NewScene()
+	scene = ng.NewScene()
 	ng.Core.Scenes[""] = scene
 	scene.RootNode.SubNodes.MakeN("node_tri", "mesh_tri", "", "node_quad", "mesh_quad", "")
 	tri, quad = scene.RootNode.SubNodes.M["node_tri"], scene.RootNode.SubNodes.M["node_quad"]

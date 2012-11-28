@@ -51,10 +51,13 @@ func onLoop() {
 }
 
 func LoadSampleScene_03_PyrsCubes() {
-	var err error
-	var meshFloor, meshPyr, meshCube *ng.Mesh
-	var bufFloor, bufRest *ng.MeshBuffer
-	var str string
+	var (
+		err                          error
+		scene                        *ng.Scene
+		meshFloor, meshPyr, meshCube *ng.Mesh
+		bufFloor, bufRest            *ng.MeshBuffer
+		str                          string
+	)
 
 	ng.Loop.OnLoop = onLoop
 	ngsamples.Cam.Options.BackfaceCulling = false
@@ -102,7 +105,7 @@ func LoadSampleScene_03_PyrsCubes() {
 	bufRest.Add(meshPyr)
 
 	//	scene
-	var scene = ng.NewScene()
+	scene = ng.NewScene()
 	ng.Core.Scenes[""] = scene
 	scene.RootNode.SubNodes.MakeN("node_floor", "mesh_plane", "", "node_pyr", "mesh_pyramid", "", "node_box", "mesh_cube", "")
 	floor, pyr, box = /* scene.RootNode.SubNodes.Get("node_floor", "node_pyr", "node_box") */ scene.RootNode.SubNodes.M["node_floor"], scene.RootNode.SubNodes.M["node_pyr"], scene.RootNode.SubNodes.M["node_box"]

@@ -1,0 +1,156 @@
+<html>
+	<head>
+		<title>Package github.com/go3d/go-ngine/assets/collimp</title>
+		<meta charset="UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link type="text/css" rel="stylesheet" href="http://golang.org/doc/style.css" />
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src="http://golang.org/doc/godocs.js"></script>
+	</head>
+	<body>
+		<div id="page" class="wide">
+		<div class="container">
+		<h1>Package github.com/go3d/go-ngine/assets/collimp</h1>
+		<div id="nav"></div>
+		<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "github.com/go3d/go-ngine/assets/collimp"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#pkg-index">Index</a></dd>
+			
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>
+Loads assets from Collada 1.4.1 and 1.5 documents into the data structures provided by the go:ngine *assets* package.
+</p>
+
+			</div>
+		</div>
+		
+	
+		<h2 id="pkg-index">Index</h2>
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+		<div id="manual-nav">
+			<dl>
+			
+			
+			
+				
+				<dd><a href="#ImportCollada">func ImportCollada(importBag *ImportBag)</a></dd>
+			
+			
+				
+				<dd><a href="#ImportBag">type ImportBag</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewImportBag">func NewImportBag() (bag *ImportBag)</a></dd>
+				
+				
+			
+			
+		</dl>
+
+		
+
+		
+			<h4>Package files</h4>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="/target/coll14.go">coll14.go</a>
+			
+				<a href="/target/coll15.go">coll15.go</a>
+			
+				<a href="/target/collimp.go">collimp.go</a>
+			
+				<a href="/target/doc.go">doc.go</a>
+			
+			</span>
+			</p>
+		
+	
+		
+		
+		
+			
+			
+			<h2 id="ImportCollada">func <a href="/target/collimp.go?s=726:766#L19">ImportCollada</a></h2>
+			<pre>func ImportCollada(importBag *ImportBag)</pre>
+			<p>
+Imports the Collada documents in the specified importBag, using its current options.
+importBag must not be nil, but its document fields (C14 and C15) may be.
+</p>
+
+			
+		
+		
+			
+			
+			<h2 id="ImportBag">type <a href="/target/collimp.go?s=292:490#L3">ImportBag</a></h2>
+			<pre>type ImportBag struct {
+    <span class="comment">//	The Collada 1.4.1 document to import, if any.</span>
+    C14 *c14.TxsdCollada
+    <span class="comment">//	The Collada 1.5 document to import, if any.</span>
+    C15 *c15.TxsdCollada
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+Contains the Collada documents to import, and provides options for the import.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewImportBag">func <a href="/target/collimp.go?s=492:528#L12">NewImportBag</a></h3>
+				<pre>func NewImportBag() (bag *ImportBag)</pre>
+				
+				
+			
+
+			
+		
+		</div>
+	
+
+	
+
+
+
+
+
+
+
+
+		</div></div>
+	</body>
+</html>

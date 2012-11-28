@@ -20,9 +20,12 @@ func onLoop() {
 }
 
 func LoadSampleScene_01_EmptyPlane() {
-	var err error
-	var meshFloor *ng.Mesh
-	var bufRest *ng.MeshBuffer
+	var (
+		err       error
+		scene     *ng.Scene
+		meshFloor *ng.Mesh
+		bufRest   *ng.MeshBuffer
+	)
 
 	ng.Loop.OnLoop = onLoop
 	ngsamples.Cam.Options.BackfaceCulling = false
@@ -43,7 +46,7 @@ func LoadSampleScene_01_EmptyPlane() {
 	bufRest.Add(meshFloor) // bufRest.Add(meshCube);
 
 	//	scene
-	var scene = ng.NewScene()
+	scene = ng.NewScene()
 	ng.Core.Scenes[""] = scene
 	scene.RootNode.SubNodes.MakeN("node_floor", "mesh_plane", "" /*"node_box", "mesh_cube", ""*/)
 	floor = scene.RootNode.SubNodes.M["node_floor"]

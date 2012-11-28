@@ -21,11 +21,13 @@ var (
 )
 
 func processFile(srcFilePath string, recurse bool) bool {
-	var outFilePath = strings.Replace(strings.Replace(srcFilePath, *fSrcDirPath, *fOutDirPath, -1), ".tga", ".png", -1)
-	var err error
-	var dirPath = filepath.Dir(outFilePath)
-	var tgaFile, pngFile *os.File
-	var img image.Image
+	var (
+		outFilePath      = strings.Replace(strings.Replace(srcFilePath, *fSrcDirPath, *fOutDirPath, -1), ".tga", ".png", -1)
+		dirPath          = filepath.Dir(outFilePath)
+		tgaFile, pngFile *os.File
+		img              image.Image
+		err              error
+	)
 	if err = uio.EnsureDirExists(dirPath); err != nil {
 		log.Printf("ERR MkDir %v: %v\n", dirPath, err)
 	} else if uio.DirExists(dirPath) {
