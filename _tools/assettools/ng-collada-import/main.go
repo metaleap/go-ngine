@@ -1,9 +1,8 @@
 package main
 
 import (
-// coll14 "github.com/metaleap/go-xsd-pkg/khronos.org/files/collada_schema_1_4_go"
-// coll15 "github.com/metaleap/go-xsd-pkg/khronos.org/files/collada_schema_1_5_go"
-// collimp "github.com/go3d/go-ngine/assets/collimp"
+// conv "github.com/go3d/go-ngine/assets/collada/conv-1.4.1-to-1.5"
+// imp "github.com/go3d/go-ngine/assets/collada/imp-1.5"
 )
 
 func main() {

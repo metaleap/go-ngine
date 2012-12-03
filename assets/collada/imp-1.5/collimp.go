@@ -1,7 +1,8 @@
 package collimp
 
 import (
-	c14 "github.com/metaleap/go-xsd-pkg/khronos.org/files/collada_schema_1_4_go"
+	"encoding/xml"
+	c141 "github.com/go3d/go-ngine/assets/collada/conv-1.4.1-to-1.5"
 	c15 "github.com/metaleap/go-xsd-pkg/khronos.org/files/collada_schema_1_5_go"
 )
 
@@ -11,34 +12,31 @@ var (
 
 //	Contains the Collada documents to import, and provides options for the import.
 type ImportBag struct {
-	//	The Collada 1.4.1 document to import, if any.
-	C14 *c14.TxsdCollada
-	//	The Collada 1.5 document to import, if any.
-	C15 *c15.TxsdCollada
-
+	d15                  *c15.TxsdCollada
 	curAssetUnitInMeters float64
 }
 
+//	Initializes and returns a newly created ImportBag instance.
 func NewImportBag() (bag *ImportBag) {
 	bag = &ImportBag{}
 	return
 }
 
 //	Imports the Collada documents in the specified importBag, using its current options.
-//	importBag must not be nil, but its document fields (C14 and C15) may be.
-func ImportCollada(importBag *ImportBag) {
+func ImportCollada(data []byte, importBag *ImportBag) (err error) {
 	var ()
 	bag = importBag
-	if bag.C14 != nil {
-		c14.WalkHandlers.TxsdAsset = c14_TxsdAsset
-		c14.WalkHandlers.TxsdCamera = c14_TxsdCamera
-		c14.WalkHandlers.TxsdImage = c14_TxsdImage
-		bag.C14.Walk()
+	bag.d15 = &c15.TxsdCollada{}
+	c141.Force, c141.Strict = false, false
+	if data, err = c141.Convert(data); err == nil {
+		err = xml.Unmarshal(data, bag.d15)
+		data = nil
+		if err == nil {
+			c15.WalkHandlers.TassetType = c15_TassetType
+			c15.WalkHandlers.TcameraType = c15_TcameraType
+			c15.WalkHandlers.TimageType = c15_TimageType
+			bag.d15.Walk()
+		}
 	}
-	if bag.C15 != nil {
-		c15.WalkHandlers.TassetType = c15_TassetType
-		c15.WalkHandlers.TcameraType = c15_TcameraType
-		c15.WalkHandlers.TimageType = c15_TimageType
-		bag.C15.Walk()
-	}
+	return
 }

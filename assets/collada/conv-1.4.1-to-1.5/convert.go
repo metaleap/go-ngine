@@ -8,12 +8,17 @@ import (
 	"time"
 
 	xmlx "github.com/jteeuwen/go-pkg-xmlx"
+	util "github.com/metaleap/go-util"
 	ustr "github.com/metaleap/go-util/str"
 )
 
 const ns = "http://www.collada.org/2005/11/COLLADASchema"
 
 var (
+	//	If true, conversion-logic is always run against the given input document's entire node tree;
+	//	if false, conversion is only performed if the input "COLLADA" root element's "version" attribute is not "1.5" or higher.
+	Force = false
+
 	//	Set this to an image file format (BMP, JPG, PNG etc.) for Collada 1.4.1 documents
 	//	that have binary images hex-encoded in <image><data> elements *without* a format attribute.
 	HexFormat = ""
@@ -32,10 +37,11 @@ var (
 
 	//	Conversion mode: true for strict mode, or false for lax mode.
 	//	If strict (slower), obsoleted elements and attributes are removed or rewritten so that the remaining document is strictly 1.5-conformant and will hopefully validate against the Collada 1.5 XML schema definition.
-	//	If lax (faster), obsoleted elements and attributes are not removed, for use-cases where the 1.5-based loader to consume the conversion result is known to simply ignore or discard them quietly
+	//	If lax (faster), obsoleted elements and attributes are not removed, for use-cases where the 1.5-based loader to consume the conversion result is known to simply ignore or discard them quietly.
 	//	Note in practice there won't be a noticeable difference in performance or output for approximately 80% of "common use-case" Collada documents.
 	Strict = true
 
+	skipped       = false
 	srcDoc        *xmlx.Document
 	surfaceNodes  []*xmlx.Node
 	surfaceImages map[string]string
@@ -63,15 +69,19 @@ func attValU64(xn *xmlx.Node, name string) (val uint64) {
 
 //	Converts the specified Collada 1.4.1 document to Collada 1.5.
 func Convert(srcFile []byte) (dstFile []byte, err error) {
-	srcDoc, surfaceImages, surfaceNodes = xmlx.New(), map[string]string{}, nil
+	srcDoc, surfaceImages, surfaceNodes, skipped = xmlx.New(), map[string]string{}, nil, false
 	if err = srcDoc.LoadBytes(srcFile, nil); err != nil {
 		return
 	}
 	processNode(srcDoc.Root)
-	for _, sn := range surfaceNodes {
-		delNode(sn.Parent)
+	if skipped {
+		dstFile = srcFile
+	} else {
+		for _, sn := range surfaceNodes {
+			delNode(sn.Parent)
+		}
+		dstFile = srcDoc.SaveBytes()
 	}
-	dstFile = srcDoc.SaveBytes()
 	srcDoc, surfaceImages, surfaceNodes = nil, nil, nil
 	return
 }
@@ -471,6 +481,12 @@ func subNodes(xn *xmlx.Node, name string) (sn []*xmlx.Node) {
 }
 
 func processNode(xn *xmlx.Node) {
+	if (!Force) && (xn.Name.Local == "COLLADA") {
+		if _, ver := util.ParseVersion(attVal(xn, "version")); ver >= 1.5 {
+			skipped = true
+			return
+		}
+	}
 	xn.Name.Space = ""
 	for _, att := range xn.Attributes {
 		att.Name.Space = ""

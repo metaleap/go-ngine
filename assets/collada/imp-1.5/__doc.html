@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Package github.com/go3d/go-ngine/assets/collimp</title>
+		<title>Package github.com/go3d/go-ngine/assets/collada/imp-1.5</title>
 		<meta charset="UTF-8" />
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link type="text/css" rel="stylesheet" href="http://golang.org/doc/style.css" />
@@ -10,7 +10,7 @@
 	<body>
 		<div id="page" class="wide">
 		<div class="container">
-		<h1>Package github.com/go3d/go-ngine/assets/collimp</h1>
+		<h1>Package github.com/go3d/go-ngine/assets/collada/imp-1.5</h1>
 		<div id="nav"></div>
 		<!--
 	Copyright 2009 The Go Authors. All rights reserved.
@@ -27,7 +27,7 @@
 	
 		<div id="short-nav">
 			<dl>
-			<dd><code>import "github.com/go3d/go-ngine/assets/collimp"</code></dd>
+			<dd><code>import "github.com/go3d/go-ngine/assets/collada/imp-1.5"</code></dd>
 			</dl>
 			<dl>
 			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
@@ -46,6 +46,7 @@
 				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
 				<p>
 Loads assets from Collada 1.4.1 and 1.5 documents into the data structures provided by the go:ngine *assets* package.
+Note, Collada 1.4.1 documents are insta-bootstrapped to version 1.5 in-memory.
 </p>
 
 			</div>
@@ -60,7 +61,7 @@ Loads assets from Collada 1.4.1 and 1.5 documents into the data structures provi
 			
 			
 				
-				<dd><a href="#ImportCollada">func ImportCollada(importBag *ImportBag)</a></dd>
+				<dd><a href="#ImportCollada">func ImportCollada(data []byte, importBag *ImportBag) (err error)</a></dd>
 			
 			
 				
@@ -81,8 +82,6 @@ Loads assets from Collada 1.4.1 and 1.5 documents into the data structures provi
 			<p>
 			<span style="font-size:90%">
 			
-				<a href="/target/coll14.go">coll14.go</a>
-			
 				<a href="/target/coll15.go">coll15.go</a>
 			
 				<a href="/target/collimp.go">collimp.go</a>
@@ -98,11 +97,10 @@ Loads assets from Collada 1.4.1 and 1.5 documents into the data structures provi
 		
 			
 			
-			<h2 id="ImportCollada">func <a href="/target/collimp.go?s=726:766#L19">ImportCollada</a></h2>
-			<pre>func ImportCollada(importBag *ImportBag)</pre>
+			<h2 id="ImportCollada">func <a href="/target/collimp.go?s=613:678#L16">ImportCollada</a></h2>
+			<pre>func ImportCollada(data []byte, importBag *ImportBag) (err error)</pre>
 			<p>
 Imports the Collada documents in the specified importBag, using its current options.
-importBag must not be nil, but its document fields (C14 and C15) may be.
 </p>
 
 			
@@ -110,12 +108,8 @@ importBag must not be nil, but its document fields (C14 and C15) may be.
 		
 			
 			
-			<h2 id="ImportBag">type <a href="/target/collimp.go?s=292:490#L3">ImportBag</a></h2>
+			<h2 id="ImportBag">type <a href="/target/collimp.go?s=296:390#L4">ImportBag</a></h2>
 			<pre>type ImportBag struct {
-    <span class="comment">//	The Collada 1.4.1 document to import, if any.</span>
-    C14 *c14.TxsdCollada
-    <span class="comment">//	The Collada 1.5 document to import, if any.</span>
-    C15 *c15.TxsdCollada
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
@@ -131,9 +125,12 @@ Contains the Collada documents to import, and provides options for the import.
 
 			
 				
-				<h3 id="NewImportBag">func <a href="/target/collimp.go?s=492:528#L12">NewImportBag</a></h3>
+				<h3 id="NewImportBag">func <a href="/target/collimp.go?s=455:491#L10">NewImportBag</a></h3>
 				<pre>func NewImportBag() (bag *ImportBag)</pre>
-				
+				<p>
+Initializes and returns a newly created ImportBag instance.
+</p>
+
 				
 			
 

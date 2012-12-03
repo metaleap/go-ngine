@@ -88,6 +88,10 @@ Provides in-memory conversion of Collada 1.4.1 documents to version 1.5.
 			<h2 id="pkg-variables">Variables</h2>
 			
 				<pre>var (
+    <span class="comment">//	If true, conversion-logic is always run against the given input document&#39;s entire node tree;</span>
+    <span class="comment">//	if false, conversion is only performed if the input &#34;COLLADA&#34; root element&#39;s &#34;version&#34; attribute is not &#34;1.5&#34; or higher.</span>
+    Force = false
+
     <span class="comment">//	Set this to an image file format (BMP, JPG, PNG etc.) for Collada 1.4.1 documents</span>
     <span class="comment">//	that have binary images hex-encoded in &lt;image&gt;&lt;data&gt; elements *without* a format attribute.</span>
     HexFormat = &#34;&#34;
@@ -106,7 +110,7 @@ Provides in-memory conversion of Collada 1.4.1 documents to version 1.5.
 
     <span class="comment">//	Conversion mode: true for strict mode, or false for lax mode.</span>
     <span class="comment">//	If strict (slower), obsoleted elements and attributes are removed or rewritten so that the remaining document is strictly 1.5-conformant and will hopefully validate against the Collada 1.5 XML schema definition.</span>
-    <span class="comment">//	If lax (faster), obsoleted elements and attributes are not removed, for use-cases where the 1.5-based loader to consume the conversion result is known to simply ignore or discard them quietly</span>
+    <span class="comment">//	If lax (faster), obsoleted elements and attributes are not removed, for use-cases where the 1.5-based loader to consume the conversion result is known to simply ignore or discard them quietly.</span>
     <span class="comment">//	Note in practice there won&#39;t be a noticeable difference in performance or output for approximately 80% of &#34;common use-case&#34; Collada documents.</span>
     Strict = true
 )</pre>
@@ -116,7 +120,7 @@ Provides in-memory conversion of Collada 1.4.1 documents to version 1.5.
 		
 			
 			
-			<h2 id="Convert">func <a href="/target/convert.go?s=2224:2280#L55">Convert</a></h2>
+			<h2 id="Convert">func <a href="/target/convert.go?s=2522:2578#L61">Convert</a></h2>
 			<pre>func Convert(srcFile []byte) (dstFile []byte, err error)</pre>
 			<p>
 Converts the specified Collada 1.4.1 document to Collada 1.5.
