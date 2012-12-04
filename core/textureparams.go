@@ -27,7 +27,7 @@ func (me *textureParams) apply(tex *Texture) {
 	}
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, me.glFilterMag)
 	if tex.noMipMap {
-		gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, ugl.IfI(me.filter, gl.LINEAR, gl.NEAREST))
+		gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, ugl.Ifi(me.filter, gl.LINEAR, gl.NEAREST))
 	} else {
 		gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, me.glFilterMin)
 	}
@@ -55,13 +55,13 @@ func (me *textureParams) Set(filter bool, filterAnisotropy float64) {
 	var glAniso gl.Float
 	var glMin, glMag gl.Int
 	var changed bool
-	if ugl.MaxTextureAnisotropy() > 1 {
-		glAniso = ugl.ClampF(gl.Float(filterAnisotropy), 1, ugl.MaxTextureAnisotropy())
+	if ugl.MaxTextureAnisotropy >= 1 {
+		glAniso = ugl.Clamp(gl.Float(filterAnisotropy), 1, ugl.MaxTextureAnisotropy)
 	} else {
 		glAniso, filterAnisotropy = 0, 0
 	}
-	glMag = ugl.IfI(filter, gl.LINEAR, gl.NEAREST)
-	glMin = ugl.IfI(filter, gl.LINEAR_MIPMAP_LINEAR, gl.NEAREST_MIPMAP_NEAREST)
+	glMag = ugl.Ifi(filter, gl.LINEAR, gl.NEAREST)
+	glMin = ugl.Ifi(filter, gl.LINEAR_MIPMAP_LINEAR, gl.NEAREST_MIPMAP_NEAREST)
 	me.filter, me.aniso = filter, filterAnisotropy
 	if glAniso != me.glAniso {
 		changed, me.glAniso = true, glAniso
@@ -94,5 +94,5 @@ func (me *textureParams) ToggleFilter() {
 }
 
 func (me *textureParams) ToggleFilterAnisotropy() {
-	me.Set(me.Filter(), util.Ifd(me.aniso == float64(ugl.MaxTextureAnisotropy()), 1, me.aniso+1))
+	me.Set(me.Filter(), util.Ifd(me.aniso == float64(ugl.MaxTextureAnisotropy), 1, me.aniso+1))
 }

@@ -111,7 +111,7 @@ func (me *Camera) ToggleTechnique() {
 }
 
 func (me *Camera) UpdatePerspective() {
-	me.MatProj.Perspective(me.CameraDef.FovX, me.CameraDef.FovY, me.ViewPort.aspect, me.CameraDef.Znear, me.CameraDef.Zfar)
+	me.MatProj.Perspective(me.CameraDef.FovY, me.ViewPort.aspect, me.CameraDef.Znear, me.CameraDef.Zfar)
 	me.glMatProj.Load(me.MatProj)
 }
 

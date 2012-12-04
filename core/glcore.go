@@ -43,6 +43,7 @@ for: <%v>.
 	}
 	if !glIsInit {
 		if err = gl.Init(); err != nil {
+			ugl.Init()
 			// 	check for a message such as "unable to initialize VERSION_4_0"
 			if vPos = strings.Index(err.Error(), vMatch); vPos >= 0 {
 				vMatch = err.Error()[vPos+len(vMatch):]
@@ -57,7 +58,7 @@ for: <%v>.
 			}
 		}
 		if err == nil {
-			if ugl.SetVersion(); !ugl.VersionMatch(3.2) {
+			if !ugl.VersionMatch(3.2) {
 				err = makeVerErr(Sfmt("%v.%v", ugl.GlVersionMajorMinor[0], ugl.GlVersionMajorMinor[1]))
 			} else {
 				gl.ClearColor(0, 0, 0, 1)

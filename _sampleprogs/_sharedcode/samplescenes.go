@@ -44,7 +44,7 @@ var (
 
 //	Returns the "asset root directory" path for go:ngine, in this case: $GOPATH/src/github.com/go3d/go-ngine/_sampleprogs/_sharedassets
 func AssetRootDirPath() string {
-	return util.BaseCodePathGithub("go3d", "go-ngine", "_sampleprogs", "_sharedassets")
+	return util.GopathSrcGithub("go3d", "go-ngine", "_sampleprogs", "_sharedassets")
 }
 
 //	Called every frame (by the parent example app) to check the state for keys controlling CamCtl to move or rotate Cam.

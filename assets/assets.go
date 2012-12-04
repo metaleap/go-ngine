@@ -2,7 +2,6 @@ package assets
 
 import (
 	"fmt"
-	"time"
 )
 
 var (
@@ -27,10 +26,6 @@ var (
 func init() {
 	OnBeforeSyncAll = func() {}
 	OnAfterSyncAll = func() {}
-}
-
-func now() int64 {
-	return time.Now().UnixNano()
 }
 
 func sfmt(format string, fmtArgs ...interface{}) string {

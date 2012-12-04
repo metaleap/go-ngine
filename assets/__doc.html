@@ -194,9 +194,6 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 					<dd>&nbsp; &nbsp; <a href="#CameraDef.NewInst">func (me *CameraDef) NewInst(id string) (inst *CameraInst)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#CameraDef.SetFovX">func (me *CameraDef) SetFovX(v float64)</a></dd>
-				
-					
 					<dd>&nbsp; &nbsp; <a href="#CameraDef.SetFovY">func (me *CameraDef) SetFovY(v float64)</a></dd>
 				
 					
@@ -630,7 +627,7 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 		
 			
 			
-			<h2 id="SyncChanges">func <a href="/target/assets.go?s=1125:1143#L31">SyncChanges</a></h2>
+			<h2 id="SyncChanges">func <a href="/target/assets.go?s=1065:1083#L26">SyncChanges</a></h2>
 			<pre>func SyncChanges()</pre>
 			<p>
 Signals to *core* (or your custom package) that changes have been made that need to be picked up. Call this after you have made any number of changes to your Defs, Insts or Libs.
@@ -759,12 +756,9 @@ Provides a common base for *Lib*s.
 		
 			
 			
-			<h2 id="CameraDef">type <a href="/target/camera.gt.go?s=119:819#L1">CameraDef</a></h2>
+			<h2 id="CameraDef">type <a href="/target/camera.gt.go?s=119:706#L1">CameraDef</a></h2>
 			<pre>type CameraDef struct {
     BaseDef
-
-    <span class="comment">//	Horizontal field-of-view for perspective camera. (Do not use, only vertical field-of-view supported right now.)</span>
-    FovX float64
 
     <span class="comment">//	Vertical field-of-view for perspective camera.</span>
     FovY float64
@@ -799,7 +793,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 
 			
 				
-				<h3 id="CameraDef.NewInst">func (*CameraDef) <a href="/target/camera.gt.go?s=2766:2824#L99">NewInst</a></h3>
+				<h3 id="CameraDef.NewInst">func (*CameraDef) <a href="/target/camera.gt.go?s=2659:2717#L100">NewInst</a></h3>
 				<pre>func (me *CameraDef) NewInst(id string) (inst *CameraInst)</pre>
 				<p>
 Creates and returns a new *CameraInst* instance referencing this *CameraDef* definition.
@@ -809,17 +803,7 @@ Creates and returns a new *CameraInst* instance referencing this *CameraDef* def
 				
 			
 				
-				<h3 id="CameraDef.SetFovX">func (*CameraDef) <a href="/target/camera.gt.go?s=968:1007#L23">SetFovX</a></h3>
-				<pre>func (me *CameraDef) SetFovX(v float64)</pre>
-				<p>
-Sets the *FovX* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
-</p>
-
-				
-				
-			
-				
-				<h3 id="CameraDef.SetFovY">func (*CameraDef) <a href="/target/camera.gt.go?s=1179:1218#L31">SetFovY</a></h3>
+				<h3 id="CameraDef.SetFovY">func (*CameraDef) <a href="/target/camera.gt.go?s=1072:1111#L32">SetFovY</a></h3>
 				<pre>func (me *CameraDef) SetFovY(v float64)</pre>
 				<p>
 Sets the *FovY* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
@@ -829,7 +813,7 @@ Sets the *FovY* field for this *CameraDef* and calls its *Base.SetDirty()* to re
 				
 			
 				
-				<h3 id="CameraDef.SetMagX">func (*CameraDef) <a href="/target/camera.gt.go?s=1390:1429#L39">SetMagX</a></h3>
+				<h3 id="CameraDef.SetMagX">func (*CameraDef) <a href="/target/camera.gt.go?s=1283:1322#L40">SetMagX</a></h3>
 				<pre>func (me *CameraDef) SetMagX(v float64)</pre>
 				<p>
 Sets the *MagX* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
@@ -839,7 +823,7 @@ Sets the *MagX* field for this *CameraDef* and calls its *Base.SetDirty()* to re
 				
 			
 				
-				<h3 id="CameraDef.SetMagY">func (*CameraDef) <a href="/target/camera.gt.go?s=1601:1640#L47">SetMagY</a></h3>
+				<h3 id="CameraDef.SetMagY">func (*CameraDef) <a href="/target/camera.gt.go?s=1494:1533#L48">SetMagY</a></h3>
 				<pre>func (me *CameraDef) SetMagY(v float64)</pre>
 				<p>
 Sets the *MagY* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
@@ -849,7 +833,7 @@ Sets the *MagY* field for this *CameraDef* and calls its *Base.SetDirty()* to re
 				
 			
 				
-				<h3 id="CameraDef.SetOrtho">func (*CameraDef) <a href="/target/camera.gt.go?s=1813:1850#L55">SetOrtho</a></h3>
+				<h3 id="CameraDef.SetOrtho">func (*CameraDef) <a href="/target/camera.gt.go?s=1706:1743#L56">SetOrtho</a></h3>
 				<pre>func (me *CameraDef) SetOrtho(v bool)</pre>
 				<p>
 Sets the *Ortho* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
@@ -859,7 +843,7 @@ Sets the *Ortho* field for this *CameraDef* and calls its *Base.SetDirty()* to r
 				
 			
 				
-				<h3 id="CameraDef.SetZfar">func (*CameraDef) <a href="/target/camera.gt.go?s=2024:2063#L63">SetZfar</a></h3>
+				<h3 id="CameraDef.SetZfar">func (*CameraDef) <a href="/target/camera.gt.go?s=1917:1956#L64">SetZfar</a></h3>
 				<pre>func (me *CameraDef) SetZfar(v float64)</pre>
 				<p>
 Sets the *Zfar* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
@@ -869,7 +853,7 @@ Sets the *Zfar* field for this *CameraDef* and calls its *Base.SetDirty()* to re
 				
 			
 				
-				<h3 id="CameraDef.SetZnear">func (*CameraDef) <a href="/target/camera.gt.go?s=2236:2276#L71">SetZnear</a></h3>
+				<h3 id="CameraDef.SetZnear">func (*CameraDef) <a href="/target/camera.gt.go?s=2129:2169#L72">SetZnear</a></h3>
 				<pre>func (me *CameraDef) SetZnear(v float64)</pre>
 				<p>
 Sets the *Znear* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
@@ -881,7 +865,7 @@ Sets the *Znear* field for this *CameraDef* and calls its *Base.SetDirty()* to r
 		
 			
 			
-			<h2 id="CameraInst">type <a href="/target/camera.gt.go?s=2384:2492#L79">CameraInst</a></h2>
+			<h2 id="CameraInst">type <a href="/target/camera.gt.go?s=2277:2385#L80">CameraInst</a></h2>
 			<pre>type CameraInst struct {
     BaseInst
 
@@ -991,7 +975,7 @@ An instance referencing an Image definition.
 		
 			
 			
-			<h2 id="LibCameraDefs">type <a href="/target/camera.gt.go?s=4139:4405#L145">LibCameraDefs</a></h2>
+			<h2 id="LibCameraDefs">type <a href="/target/camera.gt.go?s=4032:4298#L146">LibCameraDefs</a></h2>
 			<pre>type LibCameraDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -1014,7 +998,7 @@ use the *LibsCameraDef.New()* or *LibsCameraDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibCameraDefs.Add">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=4751:4808#L161">Add</a></h3>
+				<h3 id="LibCameraDefs.Add">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=4644:4701#L162">Add</a></h3>
 				<pre>func (me *LibCameraDefs) Add(d *CameraDef) (n *CameraDef)</pre>
 				<p>
 Adds the specified *CameraDef* definition to this *LibCameraDefs*, and returns it.
@@ -1027,7 +1011,7 @@ If this *LibCameraDefs* already contains a *CameraDef* definition with the same 
 				
 			
 				
-				<h3 id="LibCameraDefs.AddNew">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5132:5185#L172">AddNew</a></h3>
+				<h3 id="LibCameraDefs.AddNew">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5025:5078#L173">AddNew</a></h3>
 				<pre>func (me *LibCameraDefs) AddNew(id string) *CameraDef</pre>
 				<p>
 Creates a new *CameraDef* definition with the specified *ID*, adds it to this *LibCameraDefs*, and returns it.
@@ -1040,7 +1024,7 @@ If this *LibCameraDefs* already contains a *CameraDef* definition with the speci
 				
 			
 				
-				<h3 id="LibCameraDefs.New">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5342:5398#L175">New</a></h3>
+				<h3 id="LibCameraDefs.New">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5235:5291#L176">New</a></h3>
 				<pre>func (me *LibCameraDefs) New(id string) (def *CameraDef)</pre>
 				<p>
 Creates a new *CameraDef* definition with the specified *ID* and returns it, but does not add it to this *LibCameraDefs*.
@@ -1050,7 +1034,7 @@ Creates a new *CameraDef* definition with the specified *ID* and returns it, but
 				
 			
 				
-				<h3 id="LibCameraDefs.Remove">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5513:5555#L178">Remove</a></h3>
+				<h3 id="LibCameraDefs.Remove">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5406:5448#L179">Remove</a></h3>
 				<pre>func (me *LibCameraDefs) Remove(id string)</pre>
 				<p>
 Removes the *CameraDef* with the specified *ID* from this *LibCameraDefs*.
@@ -1060,7 +1044,7 @@ Removes the *CameraDef* with the specified *ID* from this *LibCameraDefs*.
 				
 			
 				
-				<h3 id="LibCameraDefs.SyncChanges">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5892:5930#L183">SyncChanges</a></h3>
+				<h3 id="LibCameraDefs.SyncChanges">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5785:5823#L184">SyncChanges</a></h3>
 				<pre>func (me *LibCameraDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibCameraDefs* that need to be picked up.
@@ -1489,7 +1473,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibsCameraDef">type <a href="/target/camera.gt.go?s=3424:3468#L124">LibsCameraDef</a></h2>
+			<h2 id="LibsCameraDef">type <a href="/target/camera.gt.go?s=3317:3361#L125">LibsCameraDef</a></h2>
 			<pre>type LibsCameraDef map[string]*LibCameraDefs</pre>
 			<p>
 The underlying type of the global *AllCameraDefLibs* variable: a *map* collection that contains
@@ -1507,7 +1491,7 @@ The underlying type of the global *AllCameraDefLibs* variable: a *map* collectio
 
 			
 				
-				<h3 id="LibsCameraDef.AddNew">func (LibsCameraDef) <a href="/target/camera.gt.go?s=3716:3778#L129">AddNew</a></h3>
+				<h3 id="LibsCameraDef.AddNew">func (LibsCameraDef) <a href="/target/camera.gt.go?s=3609:3671#L130">AddNew</a></h3>
 				<pre>func (me LibsCameraDef) AddNew(id string) (lib *LibCameraDefs)</pre>
 				<p>
 Creates a new *LibCameraDefs* library with the specified *ID*, adds it to this *LibsCameraDef*, and returns it.
@@ -2189,7 +2173,7 @@ An instance referencing a Visual Scene definition.
 	
 		
 			<tr>
-			<td class="name"><a href="collimp/">collimp</a></td>
+			<td class="name"><a href="collada/">collada</a></td>
 			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 			<td style="width: auto"></td>
 			</tr>
