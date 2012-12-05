@@ -16,16 +16,14 @@ type glShaderManager struct {
 	AllSources *glShaderSources
 }
 
-func newShaderManager() *glShaderManager {
-	var sm = &glShaderManager{}
-	sm.AllProgs = map[string]*ugl.ShaderProgram{}
-	return sm
+func newShaderManager() (me *glShaderManager) {
+	me = &glShaderManager{AllProgs: map[string]*ugl.ShaderProgram{}}
+	return
 }
 
 func (me *glShaderManager) dispose() {
-	var doClean = func(sprog **ugl.ShaderProgram) {
-		var sp *ugl.ShaderProgram = *sprog
-		if sp != nil {
+	doClean := func(sprog **ugl.ShaderProgram) {
+		if sp := *sprog; sp != nil {
 			sp.CleanUp()
 			*sprog = nil
 		}
@@ -35,17 +33,16 @@ func (me *glShaderManager) dispose() {
 	}
 }
 
-func (me *glShaderManager) compileAll() error {
-	var err error
-	var shaderName, shaderSrc string
-	var shaderTypeIndex int
-	var glShaderType gl.Enum
-	var timeStart = time.Now()
-	var glStatus gl.Int
-	var glShaders = []gl.Uint{0, 0, 0, 0, 0, 0}
-	var shaderProg *ugl.ShaderProgram
-	var defines = map[string]interface{}{}
-	for _, shaderName = range me.AllNames {
+func (me *glShaderManager) compileAll() (err error) {
+	var (
+		shaderSrc       string
+		shaderTypeIndex int
+		glShaderType    gl.Enum
+		glStatus        gl.Int
+		shaderProg      *ugl.ShaderProgram
+	)
+	timeStart, glShaders, defines := time.Now(), []gl.Uint{0, 0, 0, 0, 0, 0}, map[string]interface{}{}
+	for _, shaderName := range me.AllNames {
 		for glShaderType, shaderTypeIndex = range me.AllSources.enumerate() {
 			if shaderSrc = me.AllSources.source(glShaderType, shaderName); len(shaderSrc) > 0 {
 				glShaders[shaderTypeIndex] = gl.CreateShader(glShaderType)

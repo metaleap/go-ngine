@@ -9,11 +9,9 @@ type subNodes struct {
 	owner *Node
 }
 
-func newSubNodes(owner *Node) *subNodes {
-	var nodes = &subNodes{}
-	nodes.owner = owner
-	nodes.M = map[string]*Node{}
-	return nodes
+func newSubNodes(owner *Node) (nodes *subNodes) {
+	nodes = &subNodes{owner: owner, M: map[string]*Node{}}
+	return
 }
 
 func (me *subNodes) Add(node *Node) {
@@ -24,12 +22,12 @@ func (me *subNodes) Add(node *Node) {
 	me.M[node.name] = node
 }
 
-func (me *subNodes) Get(names ...string) []*Node {
-	var nodes = make([]*Node, len(names))
+func (me *subNodes) Get(names ...string) (nodes []*Node) {
+	nodes = make([]*Node, len(names))
 	for curIndex, curStr = range names {
 		nodes[curIndex] = me.M[curStr]
 	}
-	return nodes
+	return
 }
 
 func (me *subNodes) Make(nodeName, meshName, modelName string) (node *Node) {
@@ -63,14 +61,12 @@ type Node struct {
 	curSubNode, parentNode                     *Node
 }
 
-func newNode(nodeName, meshName, modelName string, parent *Node) *Node {
-	var node = &Node{}
-	node.name = nodeName
-	node.parentNode = parent
-	node.SubNodes = newSubNodes(node)
-	node.SetMeshModelName(meshName, modelName)
-	node.Transform = newTransforms(node)
-	return node
+func newNode(nodeName, meshName, modelName string, parent *Node) (me *Node) {
+	me = &Node{name: nodeName, parentNode: parent}
+	me.SubNodes = newSubNodes(me)
+	me.SetMeshModelName(meshName, modelName)
+	me.Transform = newTransforms(me)
+	return
 }
 
 func (me *Node) Material() *Material {

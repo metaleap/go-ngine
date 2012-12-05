@@ -22,13 +22,12 @@ type EngineOptions struct {
 }
 
 //	Allocates, initializes and returns a new core.EngineOptions instance.
-func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) *EngineOptions {
-	var opt = &EngineOptions{}
-	opt.glClearColor = ugl.GlVec4{0, 0, 0, 1}
-	opt.DefaultTextureParams = newTextureParams(true, 6)
-	opt.AssetRootDirPath, opt.DefaultRenderTechnique = assetRootDirPath, "rt_unlit_colored"
-	opt.winWidth, opt.winHeight, opt.winSwapInterval, opt.winFullScreen = winWidth, winHeight, winSwapInterval, winFullScreen
-	return opt
+func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions) {
+	me = &EngineOptions{AssetRootDirPath: assetRootDirPath, DefaultRenderTechnique: "rt_unlit_colored"}
+	me.glClearColor = ugl.GlVec4{0, 0, 0, 1}
+	me.DefaultTextureParams = newTextureParams(true, 6)
+	me.winWidth, me.winHeight, me.winSwapInterval, me.winFullScreen = winWidth, winHeight, winSwapInterval, winFullScreen
+	return
 }
 
 //	Returns the current OpenGL "clear color".

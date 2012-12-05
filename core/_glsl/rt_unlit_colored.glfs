@@ -1,4 +1,4 @@
-smooth in vec3 vPos;
+flat in vec3 vPos;
 
 out vec4 oColor;
 

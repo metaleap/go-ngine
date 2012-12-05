@@ -37,10 +37,8 @@ func (me meshes) Load(name string, provider nga.MeshProvider, args ...interface{
 	return
 }
 
-func (me meshes) New(name string) *Mesh {
-	var mesh = &Mesh{}
-	mesh.name = name
-	mesh.Models = models{}
+func (me meshes) New(name string) (mesh *Mesh) {
+	mesh = &Mesh{name: name, Models: models{}}
 	return mesh
 }
 
@@ -61,7 +59,7 @@ func (me *Mesh) GpuDelete() {
 }
 
 func (me *Mesh) GpuUpload() (err error) {
-	var sizeVerts, sizeIndices = gl.Sizeiptr(4 * len(me.raw.MeshVerts)), gl.Sizeiptr(4 * len(me.raw.Indices))
+	sizeVerts, sizeIndices := gl.Sizeiptr(4*len(me.raw.MeshVerts)), gl.Sizeiptr(4*len(me.raw.Indices))
 	me.GpuDelete()
 
 	if sizeVerts > gl.Sizeiptr(me.meshBuffer.MemSizeVertices) {
@@ -92,22 +90,23 @@ func (me *Mesh) GpuUploaded() bool {
 }
 
 func (me *Mesh) load(meshData *nga.MeshData) {
-	var numVerts = 3 * int32(len(meshData.Faces))
-	var numFinalVerts = 0
-	var vertsMap = map[nga.MeshVert]uint32{}
-	var offsetFloat, offsetIndex, offsetVertex, vindex uint32
-	var offsetFace, ei = 0, 0
-	var face nga.MeshFace3
-	var ventry nga.MeshVert
-	var vexists bool
-	var vreuse int
+	var (
+		numVerts                                       = 3 * int32(len(meshData.Faces))
+		numFinalVerts                                  = 0
+		offsetFace, ei                                 = 0, 0
+		vertsMap                                       = map[nga.MeshVert]uint32{}
+		offsetFloat, offsetIndex, offsetVertex, vindex uint32
+		vexists                                        bool
+		vreuse                                         int
+		ventry                                         nga.MeshVert
+	)
 	me.Models = models{}
 	me.gpuSynced = false
 	me.raw = &nga.MeshRaw{}
 	me.raw.MeshVerts = make([]float32, Core.MeshBuffers.FloatsPerVertex()*numVerts)
 	me.raw.Indices = make([]uint32, numVerts)
 	me.raw.Faces = make([]*nga.MeshRawFace, len(meshData.Faces))
-	for _, face = range meshData.Faces {
+	for _, face := range meshData.Faces {
 		me.raw.Faces[offsetFace] = nga.NewMeshRawFace()
 		for ei, ventry = range face {
 			if vindex, vexists = vertsMap[ventry]; !vexists {
@@ -143,7 +142,7 @@ func (me *Mesh) render() {
 	}
 	curTechnique.onRenderMesh()
 	gl.DrawElementsBaseVertex(gl.TRIANGLES, gl.Sizei(len(me.raw.Indices)), gl.UNSIGNED_INT, gl.Offset(nil, uintptr(me.meshBufOffsetIndices)), gl.Int(me.meshBufOffsetBaseIndex))
-	//		gl.DrawElements(gl.TRIANGLES, gl.Sizei(len(me.raw.Indices)), gl.UNSIGNED_INT, gl.Pointer(nil))
+	// gl.DrawElements(gl.TRIANGLES, gl.Sizei(len(me.raw.Indices)), gl.UNSIGNED_INT, gl.Pointer(nil))
 }
 
 func (me *Mesh) Unload() {

@@ -54,7 +54,7 @@ func (me *baseTechnique) onRenderNode() {
 }
 
 func (me *baseTechnique) setProg(name string, unifs []string, attrs []string) {
-	var prog = glShaderMan.AllProgs[name]
+	prog := glShaderMan.AllProgs[name]
 	prog.SetUnifLocations("uMatCam", "uMatModelView", "uMatProj")
 	if len(unifs) > 0 {
 		prog.SetUnifLocations(unifs...)
@@ -71,9 +71,9 @@ type techniqueUnlitColored struct {
 }
 
 func newTechnique_UnlitColored(progName string) renderTechnique {
-	var tech = &techniqueUnlitColored{}
-	tech.baseTechnique.setProg(progName, nil, nil)
-	return tech
+	me := &techniqueUnlitColored{}
+	me.baseTechnique.setProg(progName, nil, nil)
+	return me
 }
 
 type techniqueUnlitTextured struct {
@@ -81,9 +81,9 @@ type techniqueUnlitTextured struct {
 }
 
 func newTechnique_UnlitTextured(progName string) renderTechnique {
-	var tech = &techniqueUnlitTextured{}
-	tech.baseTechnique.setProg(progName, []string{"uTex0"}, []string{"aTexCoords"})
-	return tech
+	me := &techniqueUnlitTextured{}
+	me.baseTechnique.setProg(progName, []string{"uTex0"}, []string{"aTexCoords"})
+	return me
 }
 
 func (me *techniqueUnlitTextured) initMeshBuffer(meshBuffer *MeshBuffer) {

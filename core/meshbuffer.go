@@ -17,10 +17,10 @@ type meshBuffers struct {
 	bufs map[string]*MeshBuffer
 }
 
-func newMeshBuffers() *meshBuffers {
-	var meshBuffers = &meshBuffers{}
-	meshBuffers.bufs = map[string]*MeshBuffer{}
-	return meshBuffers
+func newMeshBuffers() (me *meshBuffers) {
+	me = &meshBuffers{}
+	me.bufs = map[string]*MeshBuffer{}
+	return
 }
 
 func (me *meshBuffers) Add(name string, params *meshBufferParams) (buf *MeshBuffer, err error) {
@@ -58,15 +58,13 @@ func (me *meshBuffers) MemSizePerVertex() int32 {
 	return sizePerFloat * me.FloatsPerVertex()
 }
 
-func (me *meshBuffers) NewParams(numVerts, numIndices int32) *meshBufferParams {
-	var params = &meshBufferParams{}
-	params.MostlyStatic, params.NumIndices, params.NumVerts = true, numIndices, numVerts
-	return params
+func (me *meshBuffers) NewParams(numVerts, numIndices int32) (params *meshBufferParams) {
+	params = &meshBufferParams{MostlyStatic: true, NumIndices: numIndices, NumVerts: numVerts}
+	return
 }
 
 func (me *meshBuffers) Remove(name string) {
-	var buf = me.bufs[name]
-	if buf != nil {
+	if buf := me.bufs[name]; buf != nil {
 		buf.dispose()
 		delete(me.bufs, name)
 	}

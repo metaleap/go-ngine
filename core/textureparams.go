@@ -15,10 +15,9 @@ type textureParams struct {
 	glFilterMag, glFilterMin gl.Int
 }
 
-func newTextureParams(filter bool, filterAnisotropy float64) *textureParams {
-	var tp = &textureParams{}
-	tp.filter, tp.aniso = filter, filterAnisotropy
-	return tp
+func newTextureParams(filter bool, filterAnisotropy float64) (me *textureParams) {
+	me = &textureParams{filter: filter, aniso: filterAnisotropy}
+	return
 }
 
 func (me *textureParams) apply(tex *Texture) {
@@ -46,22 +45,21 @@ func (me *textureParams) gpuSync() {
 		if (tex.Params == me) && tex.GpuSynced() {
 			gl.BindTexture(gl.TEXTURE_2D, tex.glTex)
 			me.apply(tex)
-		} else {
 		}
 	}
 }
 
 func (me *textureParams) Set(filter bool, filterAnisotropy float64) {
-	var glAniso gl.Float
-	var glMin, glMag gl.Int
-	var changed bool
+	var (
+		glAniso gl.Float
+		changed bool
+	)
 	if ugl.MaxTextureAnisotropy >= 1 {
 		glAniso = ugl.Clamp(gl.Float(filterAnisotropy), 1, ugl.MaxTextureAnisotropy)
 	} else {
 		glAniso, filterAnisotropy = 0, 0
 	}
-	glMag = ugl.Ifi(filter, gl.LINEAR, gl.NEAREST)
-	glMin = ugl.Ifi(filter, gl.LINEAR_MIPMAP_LINEAR, gl.NEAREST_MIPMAP_NEAREST)
+	glMag, glMin := ugl.Ifi(filter, gl.LINEAR, gl.NEAREST), ugl.Ifi(filter, gl.LINEAR_MIPMAP_LINEAR, gl.NEAREST_MIPMAP_NEAREST)
 	me.filter, me.aniso = filter, filterAnisotropy
 	if glAniso != me.glAniso {
 		changed, me.glAniso = true, glAniso

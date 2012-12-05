@@ -24,7 +24,6 @@ func NewImportBag() (bag *ImportBag) {
 
 //	Imports the Collada documents in the specified importBag, using its current options.
 func ImportCollada(data []byte, importBag *ImportBag) (err error) {
-	var ()
 	bag = importBag
 	bag.d15 = &c15.TxsdCollada{}
 	c141.Force, c141.Strict = false, false

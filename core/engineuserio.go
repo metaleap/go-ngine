@@ -19,11 +19,9 @@ type EngineUserIO struct {
 	keyWhich                              int
 }
 
-func newUserIO() *EngineUserIO {
-	var userIO = &EngineUserIO{}
-	userIO.lastToggles = map[int]float64{}
-	userIO.KeyToggleMinDelay = 0.25
-	return userIO
+func newUserIO() (me *EngineUserIO) {
+	me = &EngineUserIO{lastToggles: map[int]float64{}, KeyToggleMinDelay: 0.25}
+	return
 }
 
 func (me *EngineUserIO) dispose() {
@@ -37,8 +35,7 @@ func (me *EngineUserIO) dispose() {
 	}
 }
 
-func (me *EngineUserIO) init(opt *EngineOptions, winTitle string, forceContext bool) error {
-	var err error
+func (me *EngineUserIO) init(opt *EngineOptions, winTitle string, forceContext bool) (err error) {
 	if !me.isGlfwInit {
 		if err = glfw.Init(); err == nil {
 			me.isGlfwInit = true
@@ -67,7 +64,7 @@ func (me *EngineUserIO) init(opt *EngineOptions, winTitle string, forceContext b
 		// glfw.Disable(glfw.MouseCursor)
 		glfw.Enable(glfw.StickyKeys)
 	}
-	return err
+	return
 }
 
 func glfwOnWindowClose() int {

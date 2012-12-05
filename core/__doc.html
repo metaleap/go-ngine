@@ -92,16 +92,11 @@ TODO pkg doc
 				<dd><a href="#Dispose">func Dispose()</a></dd>
 			
 				
-				<dd><a href="#Init">func Init(options *EngineOptions, winTitle string) error</a></dd>
+				<dd><a href="#Init">func Init(options *EngineOptions, winTitle string) (err error)</a></dd>
 			
 				
 				<dd><a href="#Sfmt">func Sfmt(format string, fmtArgs ...interface{}) string</a></dd>
 			
-			
-				
-				<dd><a href="#AssetProvider">type AssetProvider</a></dd>
-				
-				
 			
 				
 				<dd><a href="#Camera">type Camera</a></dd>
@@ -218,7 +213,7 @@ TODO pkg doc
 				<dd><a href="#EngineOptions">type EngineOptions</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NewEngineOptions">func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) *EngineOptions</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NewEngineOptions">func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions)</a></dd>
 				
 				
 					
@@ -371,7 +366,7 @@ TODO pkg doc
 				<dd><a href="#Scene">type Scene</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NewScene">func NewScene() *Scene</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NewScene">func NewScene() (me *Scene)</a></dd>
 				
 				
 			
@@ -513,8 +508,6 @@ TODO pkg doc
 			
 				<a href="/target/assetmanager.go">assetmanager.go</a>
 			
-				<a href="/target/assetprovider.go">assetprovider.go</a>
-			
 				<a href="/target/camera.go">camera.go</a>
 			
 				<a href="/target/cameraoptions.go">cameraoptions.go</a>
@@ -615,8 +608,8 @@ Call this to &#34;un-init&#34; go:ngine and to release any and all GPU or RAM re
 		
 			
 			
-			<h2 id="Init">func <a href="/target/engine.go?s=938:994#L24">Init</a></h2>
-			<pre>func Init(options *EngineOptions, winTitle string) error</pre>
+			<h2 id="Init">func <a href="/target/engine.go?s=938:1000#L24">Init</a></h2>
+			<pre>func Init(options *EngineOptions, winTitle string) (err error)</pre>
 			<p>
 Initializes go:ngine; this first attempts to initialize OpenGL and then open a window to your supplied specifications with a GL 3.2-or-higher profile.
 </p>
@@ -625,7 +618,7 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="Sfmt">func <a href="/target/engine.go?s=1566:1621#L49">Sfmt</a></h2>
+			<h2 id="Sfmt">func <a href="/target/engine.go?s=1548:1603#L47">Sfmt</a></h2>
 			<pre>func Sfmt(format string, fmtArgs ...interface{}) string</pre>
 			<p>
 A short-hand for fmt.Sprintf. Feel free to ignore.
@@ -636,25 +629,7 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 		
 			
 			
-			<h2 id="AssetProvider">type <a href="/target/assetprovider.go?s=73:122#L1">AssetProvider</a></h2>
-			<pre>type AssetProvider struct {
-    <span class="comment">// contains filtered or unexported fields</span>
-}</pre>
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="Camera">type <a href="/target/camera.go?s=632:859#L26">Camera</a></h2>
+			<h2 id="Camera">type <a href="/target/camera.go?s=614:841#L27">Camera</a></h2>
 			<pre>type Camera struct {
     *nga.CameraDef
     ViewPort   *CameraViewPort
@@ -677,21 +652,21 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 
 			
 				
-				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.go?s=1807:1850#L68">SetTechnique</a></h3>
+				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.go?s=1789:1832#L69">SetTechnique</a></h3>
 				<pre>func (me *Camera) SetTechnique(name string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.ToggleTechnique">func (*Camera) <a href="/target/camera.go?s=1949:1984#L74">ToggleTechnique</a></h3>
+				<h3 id="Camera.ToggleTechnique">func (*Camera) <a href="/target/camera.go?s=1931:1966#L75">ToggleTechnique</a></h3>
 				<pre>func (me *Camera) ToggleTechnique()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.UpdatePerspective">func (*Camera) <a href="/target/camera.go?s=2525:2562#L103">UpdatePerspective</a></h3>
+				<h3 id="Camera.UpdatePerspective">func (*Camera) <a href="/target/camera.go?s=2515:2552#L106">UpdatePerspective</a></h3>
 				<pre>func (me *Camera) UpdatePerspective()</pre>
 				
 				
@@ -725,7 +700,7 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 		
 			
 			
-			<h2 id="CameraViewPort">type <a href="/target/camera.go?s=2701:2948#L108">CameraViewPort</a></h2>
+			<h2 id="CameraViewPort">type <a href="/target/camera.go?s=2691:2938#L111">CameraViewPort</a></h2>
 			<pre>type CameraViewPort struct {
     Absolute               bool
     RelX, RelY, RelW, RelH float64
@@ -744,21 +719,21 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 
 			
 				
-				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.go?s=3075:3132#L124">SetAbs</a></h3>
+				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.go?s=3065:3122#L127">SetAbs</a></h3>
 				<pre>func (me *CameraViewPort) SetAbs(x, y, width, height int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.go?s=3228:3289#L129">SetRel</a></h3>
+				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.go?s=3218:3279#L132">SetRel</a></h3>
 				<pre>func (me *CameraViewPort) SetRel(x, y, width, height float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="CameraViewPort.Update">func (*CameraViewPort) <a href="/target/camera.go?s=3386:3420#L134">Update</a></h3>
+				<h3 id="CameraViewPort.Update">func (*CameraViewPort) <a href="/target/camera.go?s=3376:3410#L137">Update</a></h3>
 				<pre>func (me *CameraViewPort) Update()</pre>
 				
 				
@@ -788,112 +763,112 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 
 			
 				
-				<h3 id="Controller.BeginUpdate">func (*Controller) <a href="/target/controller.go?s=1528:1563#L44">BeginUpdate</a></h3>
+				<h3 id="Controller.BeginUpdate">func (*Controller) <a href="/target/controller.go?s=1436:1471#L42">BeginUpdate</a></h3>
 				<pre>func (me *Controller) BeginUpdate()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Controller.EndUpdate">func (*Controller) <a href="/target/controller.go?s=1592:1625#L48">EndUpdate</a></h3>
+				<h3 id="Controller.EndUpdate">func (*Controller) <a href="/target/controller.go?s=1500:1533#L46">EndUpdate</a></h3>
 				<pre>func (me *Controller) EndUpdate()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Controller.MoveBackward">func (*Controller) <a href="/target/controller.go?s=1694:1730#L54">MoveBackward</a></h3>
+				<h3 id="Controller.MoveBackward">func (*Controller) <a href="/target/controller.go?s=1602:1638#L52">MoveBackward</a></h3>
 				<pre>func (me *Controller) MoveBackward()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Controller.MoveDown">func (*Controller) <a href="/target/controller.go?s=1814:1846#L59">MoveDown</a></h3>
+				<h3 id="Controller.MoveDown">func (*Controller) <a href="/target/controller.go?s=1722:1754#L57">MoveDown</a></h3>
 				<pre>func (me *Controller) MoveDown()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Controller.MoveForward">func (*Controller) <a href="/target/controller.go?s=1933:1968#L64">MoveForward</a></h3>
+				<h3 id="Controller.MoveForward">func (*Controller) <a href="/target/controller.go?s=1841:1876#L62">MoveForward</a></h3>
 				<pre>func (me *Controller) MoveForward()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Controller.MoveLeft">func (*Controller) <a href="/target/controller.go?s=2052:2084#L69">MoveLeft</a></h3>
+				<h3 id="Controller.MoveLeft">func (*Controller) <a href="/target/controller.go?s=1960:1992#L67">MoveLeft</a></h3>
 				<pre>func (me *Controller) MoveLeft()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Controller.MoveRight">func (*Controller) <a href="/target/controller.go?s=2195:2228#L74">MoveRight</a></h3>
+				<h3 id="Controller.MoveRight">func (*Controller) <a href="/target/controller.go?s=2103:2136#L72">MoveRight</a></h3>
 				<pre>func (me *Controller) MoveRight()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Controller.MoveUp">func (*Controller) <a href="/target/controller.go?s=2339:2369#L79">MoveUp</a></h3>
+				<h3 id="Controller.MoveUp">func (*Controller) <a href="/target/controller.go?s=2247:2277#L77">MoveUp</a></h3>
 				<pre>func (me *Controller) MoveUp()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=2456:2500#L84">StepSizeMove</a></h3>
+				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=2364:2408#L82">StepSizeMove</a></h3>
 				<pre>func (me *Controller) StepSizeMove() float64</pre>
 				
 				
 				
 			
 				
-				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=2567:2611#L88">StepSizeTurn</a></h3>
+				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=2475:2519#L86">StepSizeTurn</a></h3>
 				<pre>func (me *Controller) StepSizeTurn() float64</pre>
 				
 				
 				
 			
 				
-				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=2678:2710#L92">TurnDown</a></h3>
+				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=2586:2618#L90">TurnDown</a></h3>
 				<pre>func (me *Controller) TurnDown()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=2828:2860#L100">TurnLeft</a></h3>
+				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=2736:2768#L98">TurnLeft</a></h3>
 				<pre>func (me *Controller) TurnLeft()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=2939:2972#L106">TurnRight</a></h3>
+				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=2847:2880#L104">TurnRight</a></h3>
 				<pre>func (me *Controller) TurnRight()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=3051:3081#L112">TurnUp</a></h3>
+				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=2959:2989#L110">TurnUp</a></h3>
 				<pre>func (me *Controller) TurnUp()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Controller.UpdateMatrix">func (*Controller) <a href="/target/controller.go?s=3197:3233#L120">UpdateMatrix</a></h3>
+				<h3 id="Controller.UpdateMatrix">func (*Controller) <a href="/target/controller.go?s=3105:3141#L118">UpdateMatrix</a></h3>
 				<pre>func (me *Controller) UpdateMatrix()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Controller.UpdateMatrixRot">func (*Controller) <a href="/target/controller.go?s=3440:3479#L130">UpdateMatrixRot</a></h3>
+				<h3 id="Controller.UpdateMatrixRot">func (*Controller) <a href="/target/controller.go?s=3348:3387#L128">UpdateMatrixRot</a></h3>
 				<pre>func (me *Controller) UpdateMatrixRot()</pre>
 				
 				
@@ -931,7 +906,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/enginecore.go?s=3172:3207#L107">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/enginecore.go?s=3182:3217#L107">SyncUpdates</a></h3>
 				<pre>func (me *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -980,17 +955,20 @@ Manages your main-thread&#39;s &#34;game loop&#34;.
 
 			
 				
-				<h3 id="EngineLoop.Loop">func (*EngineLoop) <a href="/target/engineloop.go?s=1221:1249#L34">Loop</a></h3>
+				<h3 id="EngineLoop.Loop">func (*EngineLoop) <a href="/target/engineloop.go?s=1284:1312#L35">Loop</a></h3>
 				<pre>func (me *EngineLoop) Loop()</pre>
 				<p>
-Initiate a rendering loop. This method returns only when the loop is stopped for whatever reason.
+Initiates a rendering loop. This method returns only when the loop is stopped for whatever reason.
+</p>
+<p>
+(Before entering the loop, this method performs a one-off GC invokation.)
 </p>
 
 				
 				
 			
 				
-				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/engineloop.go?s=2852:2880#L84">Stop</a></h3>
+				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/engineloop.go?s=2930:2958#L86">Stop</a></h3>
 				<pre>func (me *EngineLoop) Stop()</pre>
 				<p>
 Stops the currently running EngineLoop.Loop().
@@ -1000,7 +978,7 @@ Stops the currently running EngineLoop.Loop().
 				
 			
 				
-				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/engineloop.go?s=2995:3031#L89">Time</a></h3>
+				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/engineloop.go?s=3073:3109#L91">Time</a></h3>
 				<pre>func (me *EngineLoop) Time() float64</pre>
 				<p>
 Returns the number of seconds expired ever since EngineLoop.Loop() was last called.
@@ -1036,8 +1014,8 @@ Various &#34;global&#34; (rather than use-case-specific) options.
 
 			
 				
-				<h3 id="NewEngineOptions">func <a href="/target/engineoptions.go?s=797:920#L15">NewEngineOptions</a></h3>
-				<pre>func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) *EngineOptions</pre>
+				<h3 id="NewEngineOptions">func <a href="/target/engineoptions.go?s=797:925#L15">NewEngineOptions</a></h3>
+				<pre>func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions)</pre>
 				<p>
 Allocates, initializes and returns a new core.EngineOptions instance.
 </p>
@@ -1047,7 +1025,7 @@ Allocates, initializes and returns a new core.EngineOptions instance.
 
 			
 				
-				<h3 id="EngineOptions.GlClearColor">func (*EngineOptions) <a href="/target/engineoptions.go?s=1320:1370#L25">GlClearColor</a></h3>
+				<h3 id="EngineOptions.GlClearColor">func (*EngineOptions) <a href="/target/engineoptions.go?s=1299:1349#L24">GlClearColor</a></h3>
 				<pre>func (me *EngineOptions) GlClearColor() ugl.GlVec4</pre>
 				<p>
 Returns the current OpenGL &#34;clear color&#34;.
@@ -1057,7 +1035,7 @@ Returns the current OpenGL &#34;clear color&#34;.
 				
 			
 				
-				<h3 id="EngineOptions.SetGlClearColor">func (*EngineOptions) <a href="/target/engineoptions.go?s=1444:1500#L30">SetGlClearColor</a></h3>
+				<h3 id="EngineOptions.SetGlClearColor">func (*EngineOptions) <a href="/target/engineoptions.go?s=1423:1479#L29">SetGlClearColor</a></h3>
 				<pre>func (me *EngineOptions) SetGlClearColor(col ugl.GlVec4)</pre>
 				<p>
 Changes the current OpenGL &#34;clear color&#34;
@@ -1069,7 +1047,7 @@ Changes the current OpenGL &#34;clear color&#34;
 		
 			
 			
-			<h2 id="EngineStats">type <a href="/target/enginestats.go?s=211:2214#L1">EngineStats</a></h2>
+			<h2 id="EngineStats">type <a href="/target/enginestats.go?s=211:2283#L1">EngineStats</a></h2>
 			<pre>type EngineStats struct {
     <span class="comment">//	Gives the total number of frames rendered during the &#34;previous&#34; (not the current) second. Good enough for just a simple-minded FPS indicator.</span>
     FpsLastSec int
@@ -1098,9 +1076,11 @@ Changes the current OpenGL &#34;clear color&#34;
     FrameUserCode *TimingStats
 
     <span class="comment">//	During the Loop, the Go Garbge Collector is invoked at least and at most once per second.</span>
+    <span class="comment">//	</span>
     <span class="comment">//	Forcing GC &#34;that often&#34; practically guarantees it will almost never have so much work to do as to</span>
-    <span class="comment">//	noticably block user interaction --- 99.9% of the time it will complete in less than 10ms (most often even under 1ms).</span>
-    <span class="comment">//	This TimingStats instance over time tracks the maximum and average time spent on that 1x-per-second GC.</span>
+    <span class="comment">//	noticably block user interaction --- 99.9% of the time it will complete in less than 10ms (and almost-always under 1ms).</span>
+    <span class="comment">//	</span>
+    <span class="comment">//	This TimingStats instance over time tracks the maximum and average time spent on that 1x-per-second GC invokation (but does not track any other GC invokations).</span>
     Gc *TimingStats
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -1120,7 +1100,7 @@ Tracks various go:ngine performance indicators over time.
 
 			
 				
-				<h3 id="EngineStats.AverageFps">func (*EngineStats) <a href="/target/enginestats.go?s=2399:2442#L43">AverageFps</a></h3>
+				<h3 id="EngineStats.AverageFps">func (*EngineStats) <a href="/target/enginestats.go?s=2457:2500#L45">AverageFps</a></h3>
 				<pre>func (me *EngineStats) AverageFps() float64</pre>
 				<p>
 Returns the average number of frames-per-second since Loop.Loop() was last called.
@@ -1154,7 +1134,7 @@ Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window m
 
 			
 				
-				<h3 id="EngineUserIO.IifKeyF">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2305:2378#L75">IifKeyF</a></h3>
+				<h3 id="EngineUserIO.IifKeyF">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2264:2337#L72">IifKeyF</a></h3>
 				<pre>func (me *EngineUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64</pre>
 				<p>
 Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
@@ -1164,7 +1144,7 @@ Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyPressed">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2493:2541#L83">KeyPressed</a></h3>
+				<h3 id="EngineUserIO.KeyPressed">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2452:2500#L80">KeyPressed</a></h3>
 				<pre>func (me *EngineUserIO) KeyPressed(key int) bool</pre>
 				<p>
 Returns true if the specified key is pressed.
@@ -1174,7 +1154,7 @@ Returns true if the specified key is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyPressedWhich">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2632:2688#L88">KeyPressedWhich</a></h3>
+				<h3 id="EngineUserIO.KeyPressedWhich">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2591:2647#L85">KeyPressedWhich</a></h3>
 				<pre>func (me *EngineUserIO) KeyPressedWhich(keys ...int) int</pre>
 				<p>
 Returns the first in keys that is pressed.
@@ -1184,7 +1164,7 @@ Returns the first in keys that is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyToggled">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3654:3702#L118">KeyToggled</a></h3>
+				<h3 id="EngineUserIO.KeyToggled">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3613:3661#L115">KeyToggled</a></h3>
 				<pre>func (me *EngineUserIO) KeyToggled(key int) bool</pre>
 				<p>
 Returns true if the specified key has been &#34;toggled&#34;, ie. its pressed-state changed within the last me.KeyToggleMinDelay seconds.
@@ -1194,7 +1174,7 @@ Returns true if the specified key has been &#34;toggled&#34;, ie. its pressed-st
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAll2">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2854:2910#L98">KeysPressedAll2</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAll2">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2813:2869#L95">KeysPressedAll2</a></h3>
 				<pre>func (me *EngineUserIO) KeysPressedAll2(k1, k2 int) bool</pre>
 				<p>
 Returns true if both specified keys are pressed.
@@ -1204,7 +1184,7 @@ Returns true if both specified keys are pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAll3">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3020:3080#L103">KeysPressedAll3</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAll3">func (*EngineUserIO) <a href="/target/engineuserio.go?s=2979:3039#L100">KeysPressedAll3</a></h3>
 				<pre>func (me *EngineUserIO) KeysPressedAll3(k1, k2, k3 int) bool</pre>
 				<p>
 Returns true if all three specified keys are pressed.
@@ -1214,7 +1194,7 @@ Returns true if all three specified keys are pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAny2">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3215:3271#L108">KeysPressedAny2</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAny2">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3174:3230#L105">KeysPressedAny2</a></h3>
 				<pre>func (me *EngineUserIO) KeysPressedAny2(k1, k2 int) bool</pre>
 				<p>
 Returns true if any of the two specified keys is pressed.
@@ -1224,7 +1204,7 @@ Returns true if any of the two specified keys is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAny3">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3387:3447#L113">KeysPressedAny3</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAny3">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3346:3406#L110">KeysPressedAny3</a></h3>
 				<pre>func (me *EngineUserIO) KeysPressedAny3(k1, k2, k3 int) bool</pre>
 				<p>
 Returns true if any of the three specified keys is pressed.
@@ -1234,7 +1214,7 @@ Returns true if any of the three specified keys is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.SetWinTitle">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3937:3989#L127">SetWinTitle</a></h3>
+				<h3 id="EngineUserIO.SetWinTitle">func (*EngineUserIO) <a href="/target/engineuserio.go?s=3896:3948#L124">SetWinTitle</a></h3>
 				<pre>func (me *EngineUserIO) SetWinTitle(newTitle string)</pre>
 				<p>
 Sets the window title to newTitle.
@@ -1244,7 +1224,7 @@ Sets the window title to newTitle.
 				
 			
 				
-				<h3 id="EngineUserIO.WinHeight">func (*EngineUserIO) <a href="/target/engineuserio.go?s=4073:4112#L132">WinHeight</a></h3>
+				<h3 id="EngineUserIO.WinHeight">func (*EngineUserIO) <a href="/target/engineuserio.go?s=4032:4071#L129">WinHeight</a></h3>
 				<pre>func (me *EngineUserIO) WinHeight() int</pre>
 				<p>
 Returns the height of the window in pixels.
@@ -1254,7 +1234,7 @@ Returns the height of the window in pixels.
 				
 			
 				
-				<h3 id="EngineUserIO.WinWidth">func (*EngineUserIO) <a href="/target/engineuserio.go?s=4195:4233#L137">WinWidth</a></h3>
+				<h3 id="EngineUserIO.WinWidth">func (*EngineUserIO) <a href="/target/engineuserio.go?s=4154:4192#L134">WinWidth</a></h3>
 				<pre>func (me *EngineUserIO) WinWidth() int</pre>
 				<p>
 Returns the width of the window in pixels.
@@ -1266,7 +1246,7 @@ Returns the width of the window in pixels.
 		
 			
 			
-			<h2 id="Material">type <a href="/target/material.go?s=280:320#L7">Material</a></h2>
+			<h2 id="Material">type <a href="/target/material.go?s=269:309#L6">Material</a></h2>
 			<pre>type Material struct {
     TexName string
 }</pre>
@@ -1284,7 +1264,7 @@ Returns the width of the window in pixels.
 		
 			
 			
-			<h2 id="Mesh">type <a href="/target/mesh.go?s=773:1182#L37">Mesh</a></h2>
+			<h2 id="Mesh">type <a href="/target/mesh.go?s=762:1171#L35">Mesh</a></h2>
 			<pre>type Mesh struct {
     Models models
     <span class="comment">// contains filtered or unexported fields</span>
@@ -1301,35 +1281,35 @@ Returns the width of the window in pixels.
 
 			
 				
-				<h3 id="Mesh.GpuDelete">func (*Mesh) <a href="/target/mesh.go?s=1184:1211#L47">GpuDelete</a></h3>
+				<h3 id="Mesh.GpuDelete">func (*Mesh) <a href="/target/mesh.go?s=1173:1200#L45">GpuDelete</a></h3>
 				<pre>func (me *Mesh) GpuDelete()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.GpuUpload">func (*Mesh) <a href="/target/mesh.go?s=1262:1301#L53">GpuUpload</a></h3>
+				<h3 id="Mesh.GpuUpload">func (*Mesh) <a href="/target/mesh.go?s=1251:1290#L51">GpuUpload</a></h3>
 				<pre>func (me *Mesh) GpuUpload() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.go?s=2917:2951#L80">GpuUploaded</a></h3>
+				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.go?s=2899:2933#L78">GpuUploaded</a></h3>
 				<pre>func (me *Mesh) GpuUploaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.go?s=4626:4655#L126">Loaded</a></h3>
+				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.go?s=4831:4860#L125">Loaded</a></h3>
 				<pre>func (me *Mesh) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.go?s=5075:5099#L139">Unload</a></h3>
+				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.go?s=5279:5303#L138">Unload</a></h3>
 				<pre>func (me *Mesh) Unload()</pre>
 				
 				
@@ -1338,7 +1318,7 @@ Returns the width of the window in pixels.
 		
 			
 			
-			<h2 id="MeshBuffer">type <a href="/target/meshbuffer.go?s=1804:2193#L65">MeshBuffer</a></h2>
+			<h2 id="MeshBuffer">type <a href="/target/meshbuffer.go?s=1746:2135#L63">MeshBuffer</a></h2>
 			<pre>type MeshBuffer struct {
     MemSizeIndices, MemSizeVertices int32
     Params                          *meshBufferParams
@@ -1356,14 +1336,14 @@ Returns the width of the window in pixels.
 
 			
 				
-				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/meshbuffer.go?s=3705:3754#L114">Add</a></h3>
+				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/meshbuffer.go?s=3647:3696#L112">Add</a></h3>
 				<pre>func (me *MeshBuffer) Add(mesh *Mesh) (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/meshbuffer.go?s=4520:4560#L142">Remove</a></h3>
+				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/meshbuffer.go?s=4462:4502#L140">Remove</a></h3>
 				<pre>func (me *MeshBuffer) Remove(mesh *Mesh)</pre>
 				
 				
@@ -1388,21 +1368,21 @@ Returns the width of the window in pixels.
 
 			
 				
-				<h3 id="Model.Clone">func (*Model) <a href="/target/model.go?s=312:373#L12">Clone</a></h3>
+				<h3 id="Model.Clone">func (*Model) <a href="/target/model.go?s=289:350#L11">Clone</a></h3>
 				<pre>func (me *Model) Clone(modelName string) (clonedModel *Model)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Model.MatName">func (*Model) <a href="/target/model.go?s=544:577#L20">MatName</a></h3>
+				<h3 id="Model.MatName">func (*Model) <a href="/target/model.go?s=521:554#L19">MatName</a></h3>
 				<pre>func (me *Model) MatName() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Model.SetMatName">func (*Model) <a href="/target/model.go?s=685:731#L29">SetMatName</a></h3>
+				<h3 id="Model.SetMatName">func (*Model) <a href="/target/model.go?s=662:708#L28">SetMatName</a></h3>
 				<pre>func (me *Model) SetMatName(newMatName string)</pre>
 				
 				
@@ -1411,7 +1391,7 @@ Returns the width of the window in pixels.
 		
 			
 			
-			<h2 id="Node">type <a href="/target/node.go?s=1095:1432#L44">Node</a></h2>
+			<h2 id="Node">type <a href="/target/node.go?s=1075:1412#L42">Node</a></h2>
 			<pre>type Node struct {
     Disabled  bool
     SubNodes  *subNodes
@@ -1430,63 +1410,63 @@ Returns the width of the window in pixels.
 
 			
 				
-				<h3 id="Node.ChildrenUpdateMatrices">func (*Node) <a href="/target/node.go?s=2889:2929#L119">ChildrenUpdateMatrices</a></h3>
+				<h3 id="Node.ChildrenUpdateMatrices">func (*Node) <a href="/target/node.go?s=2839:2879#L115">ChildrenUpdateMatrices</a></h3>
 				<pre>func (me *Node) ChildrenUpdateMatrices()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MatName">func (*Node) <a href="/target/node.go?s=1810:1842#L73">MatName</a></h3>
+				<h3 id="Node.MatName">func (*Node) <a href="/target/node.go?s=1760:1792#L69">MatName</a></h3>
 				<pre>func (me *Node) MatName() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Material">func (*Node) <a href="/target/node.go?s=1708:1744#L66">Material</a></h3>
+				<h3 id="Node.Material">func (*Node) <a href="/target/node.go?s=1658:1694#L62">Material</a></h3>
 				<pre>func (me *Node) Material() *Material</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MeshModelName">func (*Node) <a href="/target/node.go?s=1926:1964#L81">MeshModelName</a></h3>
+				<h3 id="Node.MeshModelName">func (*Node) <a href="/target/node.go?s=1876:1914#L77">MeshModelName</a></h3>
 				<pre>func (me *Node) MeshModelName() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MeshName">func (*Node) <a href="/target/node.go?s=1867:1900#L77">MeshName</a></h3>
+				<h3 id="Node.MeshName">func (*Node) <a href="/target/node.go?s=1817:1850#L73">MeshName</a></h3>
 				<pre>func (me *Node) MeshName() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Parent">func (*Node) <a href="/target/node.go?s=3027:3065#L125">Parent</a></h3>
+				<h3 id="Node.Parent">func (*Node) <a href="/target/node.go?s=2977:3015#L121">Parent</a></h3>
 				<pre>func (me *Node) Parent() Transformable</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMatName">func (*Node) <a href="/target/node.go?s=2364:2409#L99">SetMatName</a></h3>
+				<h3 id="Node.SetMatName">func (*Node) <a href="/target/node.go?s=2314:2359#L95">SetMatName</a></h3>
 				<pre>func (me *Node) SetMatName(newMatName string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMeshModelName">func (*Node) <a href="/target/node.go?s=2511:2571#L105">SetMeshModelName</a></h3>
+				<h3 id="Node.SetMeshModelName">func (*Node) <a href="/target/node.go?s=2461:2521#L101">SetMeshModelName</a></h3>
 				<pre>func (me *Node) SetMeshModelName(meshName, modelName string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Transforms">func (*Node) <a href="/target/node.go?s=2822:2862#L115">Transforms</a></h3>
+				<h3 id="Node.Transforms">func (*Node) <a href="/target/node.go?s=2772:2812#L111">Transforms</a></h3>
 				<pre>func (me *Node) Transforms() *Transforms</pre>
 				
 				
@@ -1542,8 +1522,8 @@ Returns the width of the window in pixels.
 
 			
 				
-				<h3 id="NewScene">func <a href="/target/scene.go?s=84:106#L1">NewScene</a></h3>
-				<pre>func NewScene() *Scene</pre>
+				<h3 id="NewScene">func <a href="/target/scene.go?s=84:111#L1">NewScene</a></h3>
+				<pre>func NewScene() (me *Scene)</pre>
 				
 				
 			
@@ -1552,7 +1532,7 @@ Returns the width of the window in pixels.
 		
 			
 			
-			<h2 id="Texture">type <a href="/target/texture.go?s=800:1289#L35">Texture</a></h2>
+			<h2 id="Texture">type <a href="/target/texture.go?s=783:1272#L36">Texture</a></h2>
 			<pre>type Texture struct {
     *nga.ImageDef
     LastError error
@@ -1571,42 +1551,42 @@ Returns the width of the window in pixels.
 
 			
 				
-				<h3 id="Texture.GpuDelete">func (*Texture) <a href="/target/texture.go?s=1560:1590#L64">GpuDelete</a></h3>
+				<h3 id="Texture.GpuDelete">func (*Texture) <a href="/target/texture.go?s=1543:1573#L65">GpuDelete</a></h3>
 				<pre>func (me *Texture) GpuDelete()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Texture.GpuSync">func (*Texture) <a href="/target/texture.go?s=1668:1696#L71">GpuSync</a></h3>
+				<h3 id="Texture.GpuSync">func (*Texture) <a href="/target/texture.go?s=1651:1679#L72">GpuSync</a></h3>
 				<pre>func (me *Texture) GpuSync()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Texture.GpuSynced">func (*Texture) <a href="/target/texture.go?s=2751:2786#L96">GpuSynced</a></h3>
+				<h3 id="Texture.GpuSynced">func (*Texture) <a href="/target/texture.go?s=2734:2769#L97">GpuSynced</a></h3>
 				<pre>func (me *Texture) GpuSynced() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Texture.Loaded">func (*Texture) <a href="/target/texture.go?s=3875:3907#L151">Loaded</a></h3>
+				<h3 id="Texture.Loaded">func (*Texture) <a href="/target/texture.go?s=3815:3847#L150">Loaded</a></h3>
 				<pre>func (me *Texture) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Texture.SuppressMipMaps">func (*Texture) <a href="/target/texture.go?s=4518:4554#L172">SuppressMipMaps</a></h3>
+				<h3 id="Texture.SuppressMipMaps">func (*Texture) <a href="/target/texture.go?s=4458:4494#L171">SuppressMipMaps</a></h3>
 				<pre>func (me *Texture) SuppressMipMaps()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Texture.Unload">func (*Texture) <a href="/target/texture.go?s=4580:4607#L176">Unload</a></h3>
+				<h3 id="Texture.Unload">func (*Texture) <a href="/target/texture.go?s=4520:4547#L175">Unload</a></h3>
 				<pre>func (me *Texture) Unload()</pre>
 				
 				
@@ -1631,7 +1611,7 @@ Returns the width of the window in pixels.
 		
 			
 			
-			<h2 id="TimingStats">type <a href="/target/enginestats.go?s=2858:3030#L54">TimingStats</a></h2>
+			<h2 id="TimingStats">type <a href="/target/enginestats.go?s=2898:3070#L56">TimingStats</a></h2>
 			<pre>type TimingStats struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -1650,7 +1630,7 @@ Helps track average and maximum cost for a variety of performance indicators.
 
 			
 				
-				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/enginestats.go?s=3099:3139#L60">Average</a></h3>
+				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/enginestats.go?s=3213:3253#L67">Average</a></h3>
 				<pre>func (me *TimingStats) Average() float64</pre>
 				<p>
 Returns the average cost tracked by this performance indicator.
@@ -1660,7 +1640,7 @@ Returns the average cost tracked by this performance indicator.
 				
 			
 				
-				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/enginestats.go?s=3731:3767#L83">Max</a></h3>
+				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/enginestats.go?s=3845:3881#L90">Max</a></h3>
 				<pre>func (me *TimingStats) Max() float64</pre>
 				<p>
 Returns the maximum cost tracked by this performance indicator.
@@ -1711,175 +1691,175 @@ Returns the maximum cost tracked by this performance indicator.
 
 			
 				
-				<h3 id="Transforms.OnAnyChanged">func (*Transforms) <a href="/target/transform.go?s=1099:1135#L26">OnAnyChanged</a></h3>
+				<h3 id="Transforms.OnAnyChanged">func (*Transforms) <a href="/target/transform.go?s=1055:1091#L25">OnAnyChanged</a></h3>
 				<pre>func (me *Transforms) OnAnyChanged()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.OnPosChanged">func (*Transforms) <a href="/target/transform.go?s=1304:1340#L37">OnPosChanged</a></h3>
+				<h3 id="Transforms.OnPosChanged">func (*Transforms) <a href="/target/transform.go?s=1260:1296#L36">OnPosChanged</a></h3>
 				<pre>func (me *Transforms) OnPosChanged()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.OnPosRotChanged">func (*Transforms) <a href="/target/transform.go?s=1386:1425#L42">OnPosRotChanged</a></h3>
+				<h3 id="Transforms.OnPosRotChanged">func (*Transforms) <a href="/target/transform.go?s=1342:1381#L41">OnPosRotChanged</a></h3>
 				<pre>func (me *Transforms) OnPosRotChanged()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.OnPosScalingChanged">func (*Transforms) <a href="/target/transform.go?s=1490:1533#L48">OnPosScalingChanged</a></h3>
+				<h3 id="Transforms.OnPosScalingChanged">func (*Transforms) <a href="/target/transform.go?s=1446:1489#L47">OnPosScalingChanged</a></h3>
 				<pre>func (me *Transforms) OnPosScalingChanged()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.OnRotChanged">func (*Transforms) <a href="/target/transform.go?s=1704:1740#L60">OnRotChanged</a></h3>
+				<h3 id="Transforms.OnRotChanged">func (*Transforms) <a href="/target/transform.go?s=1660:1696#L59">OnRotChanged</a></h3>
 				<pre>func (me *Transforms) OnRotChanged()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.OnRotScalingChanged">func (*Transforms) <a href="/target/transform.go?s=1786:1829#L65">OnRotScalingChanged</a></h3>
+				<h3 id="Transforms.OnRotScalingChanged">func (*Transforms) <a href="/target/transform.go?s=1742:1785#L64">OnRotScalingChanged</a></h3>
 				<pre>func (me *Transforms) OnRotScalingChanged()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.OnRotXChanged">func (*Transforms) <a href="/target/transform.go?s=1973:2010#L75">OnRotXChanged</a></h3>
+				<h3 id="Transforms.OnRotXChanged">func (*Transforms) <a href="/target/transform.go?s=1929:1966#L74">OnRotXChanged</a></h3>
 				<pre>func (me *Transforms) OnRotXChanged()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.OnRotYChanged">func (*Transforms) <a href="/target/transform.go?s=2132:2169#L84">OnRotYChanged</a></h3>
+				<h3 id="Transforms.OnRotYChanged">func (*Transforms) <a href="/target/transform.go?s=2088:2125#L83">OnRotYChanged</a></h3>
 				<pre>func (me *Transforms) OnRotYChanged()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.OnRotZChanged">func (*Transforms) <a href="/target/transform.go?s=2291:2328#L93">OnRotZChanged</a></h3>
+				<h3 id="Transforms.OnRotZChanged">func (*Transforms) <a href="/target/transform.go?s=2247:2284#L92">OnRotZChanged</a></h3>
 				<pre>func (me *Transforms) OnRotZChanged()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.OnScalingChanged">func (*Transforms) <a href="/target/transform.go?s=2456:2496#L102">OnScalingChanged</a></h3>
+				<h3 id="Transforms.OnScalingChanged">func (*Transforms) <a href="/target/transform.go?s=2412:2452#L101">OnScalingChanged</a></h3>
 				<pre>func (me *Transforms) OnScalingChanged()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.OnSomeChanged">func (*Transforms) <a href="/target/transform.go?s=2546:2618#L107">OnSomeChanged</a></h3>
+				<h3 id="Transforms.OnSomeChanged">func (*Transforms) <a href="/target/transform.go?s=2502:2574#L106">OnSomeChanged</a></h3>
 				<pre>func (me *Transforms) OnSomeChanged(scaling, pos, rotX, rotY, rotZ bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.SetPos">func (*Transforms) <a href="/target/transform.go?s=2824:2868#L126">SetPos</a></h3>
+				<h3 id="Transforms.SetPos">func (*Transforms) <a href="/target/transform.go?s=2780:2824#L125">SetPos</a></h3>
 				<pre>func (me *Transforms) SetPos(pos *unum.Vec3)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.SetPosX">func (*Transforms) <a href="/target/transform.go?s=2907:2950#L131">SetPosX</a></h3>
+				<h3 id="Transforms.SetPosX">func (*Transforms) <a href="/target/transform.go?s=2863:2906#L130">SetPosX</a></h3>
 				<pre>func (me *Transforms) SetPosX(posX float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.SetPosXYZ">func (*Transforms) <a href="/target/transform.go?s=2992:3049#L136">SetPosXYZ</a></h3>
+				<h3 id="Transforms.SetPosXYZ">func (*Transforms) <a href="/target/transform.go?s=2948:3005#L135">SetPosXYZ</a></h3>
 				<pre>func (me *Transforms) SetPosXYZ(posX, posY, posZ float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.SetPosY">func (*Transforms) <a href="/target/transform.go?s=3123:3166#L141">SetPosY</a></h3>
+				<h3 id="Transforms.SetPosY">func (*Transforms) <a href="/target/transform.go?s=3079:3122#L140">SetPosY</a></h3>
 				<pre>func (me *Transforms) SetPosY(posY float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.SetPosZ">func (*Transforms) <a href="/target/transform.go?s=3208:3251#L146">SetPosZ</a></h3>
+				<h3 id="Transforms.SetPosZ">func (*Transforms) <a href="/target/transform.go?s=3164:3207#L145">SetPosZ</a></h3>
 				<pre>func (me *Transforms) SetPosZ(posZ float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.SetRot">func (*Transforms) <a href="/target/transform.go?s=3293:3337#L151">SetRot</a></h3>
+				<h3 id="Transforms.SetRot">func (*Transforms) <a href="/target/transform.go?s=3249:3293#L150">SetRot</a></h3>
 				<pre>func (me *Transforms) SetRot(rot *unum.Vec3)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.SetRotX">func (*Transforms) <a href="/target/transform.go?s=3376:3418#L156">SetRotX</a></h3>
+				<h3 id="Transforms.SetRotX">func (*Transforms) <a href="/target/transform.go?s=3332:3374#L155">SetRotX</a></h3>
 				<pre>func (me *Transforms) SetRotX(rad float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.SetRotXYZ">func (*Transforms) <a href="/target/transform.go?s=3460:3517#L161">SetRotXYZ</a></h3>
+				<h3 id="Transforms.SetRotXYZ">func (*Transforms) <a href="/target/transform.go?s=3416:3473#L160">SetRotXYZ</a></h3>
 				<pre>func (me *Transforms) SetRotXYZ(radX, radY, radZ float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.SetRotY">func (*Transforms) <a href="/target/transform.go?s=3591:3633#L166">SetRotY</a></h3>
+				<h3 id="Transforms.SetRotY">func (*Transforms) <a href="/target/transform.go?s=3547:3589#L165">SetRotY</a></h3>
 				<pre>func (me *Transforms) SetRotY(rad float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.SetRotZ">func (*Transforms) <a href="/target/transform.go?s=3675:3717#L171">SetRotZ</a></h3>
+				<h3 id="Transforms.SetRotZ">func (*Transforms) <a href="/target/transform.go?s=3631:3673#L170">SetRotZ</a></h3>
 				<pre>func (me *Transforms) SetRotZ(rad float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.SetScaling">func (*Transforms) <a href="/target/transform.go?s=3759:3811#L176">SetScaling</a></h3>
+				<h3 id="Transforms.SetScaling">func (*Transforms) <a href="/target/transform.go?s=3715:3767#L175">SetScaling</a></h3>
 				<pre>func (me *Transforms) SetScaling(scaling *unum.Vec3)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.SetScalingN">func (*Transforms) <a href="/target/transform.go?s=3862:3912#L181">SetScalingN</a></h3>
+				<h3 id="Transforms.SetScalingN">func (*Transforms) <a href="/target/transform.go?s=3818:3868#L180">SetScalingN</a></h3>
 				<pre>func (me *Transforms) SetScalingN(scaling float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.StepDelta">func (*Transforms) <a href="/target/transform.go?s=4011:4074#L186">StepDelta</a></h3>
+				<h3 id="Transforms.StepDelta">func (*Transforms) <a href="/target/transform.go?s=3967:4030#L185">StepDelta</a></h3>
 				<pre>func (me *Transforms) StepDelta(deltaPerSecond float64) float64</pre>
 				
 				
 				
 			
 				
-				<h3 id="Transforms.UpdateMatrices">func (*Transforms) <a href="/target/transform.go?s=4120:4158#L190">UpdateMatrices</a></h3>
+				<h3 id="Transforms.UpdateMatrices">func (*Transforms) <a href="/target/transform.go?s=4076:4114#L189">UpdateMatrices</a></h3>
 				<pre>func (me *Transforms) UpdateMatrices()</pre>
 				
 				

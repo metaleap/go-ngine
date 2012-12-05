@@ -3,11 +3,10 @@ package main
 import (
 	"math"
 
-	unum "github.com/metaleap/go-util/num"
-
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
 	nga "github.com/go3d/go-ngine/assets"
 	ng "github.com/go3d/go-ngine/core"
+	unum "github.com/metaleap/go-util/num"
 )
 
 var (

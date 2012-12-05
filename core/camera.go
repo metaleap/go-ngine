@@ -17,10 +17,11 @@ func (me cameras) add(def *nga.CameraDef) (item *Camera) {
 }
 
 func (me cameras) syncAssetChanges() {
-	var item *Camera
-	var id string
-	var def *nga.CameraDef
-	for id, def = range nga.CameraDefs.M {
+	var (
+		item *Camera
+		id   string
+	)
+	for _, def := range nga.CameraDefs.M {
 		if item = me[def.ID]; item == nil {
 			item = me.add(def)
 		}
@@ -82,9 +83,11 @@ func (me *Camera) SetTechnique(name string) {
 }
 
 func (me *Camera) ToggleTechnique() {
-	var allNames, curTech, name = glShaderMan.AllNames, curTechnique.name(), ""
-	var curIndex, i int
-	var tech renderTechnique = nil
+	var (
+		curIndex, i int
+		tech        renderTechnique = nil
+	)
+	allNames, curTech, name := glShaderMan.AllNames, curTechnique.name(), ""
 	for i, name = range allNames {
 		if name == curTech {
 			curIndex = i

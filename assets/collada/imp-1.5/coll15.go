@@ -11,7 +11,7 @@ func c15_TassetType(obj *c15.TassetType) {
 }
 
 func c15_TcameraType(obj *c15.TcameraType) {
-	var def = nga.CameraDefs.AddNew(obj.Id.String())
+	def := nga.CameraDefs.AddNew(obj.Id.String())
 	if (obj.Optics != nil) && (obj.Optics.TechniqueCommon != nil) {
 		if o := obj.Optics.TechniqueCommon.Orthographic; o != nil {
 			def.Ortho, def.MagX, def.MagY, def.Zfar, def.Znear = true, f64(o.Xmag), f64(o.Ymag), f64(o.Zfar), f64(o.Znear)
@@ -22,7 +22,7 @@ func c15_TcameraType(obj *c15.TcameraType) {
 }
 
 func c15_TimageType(obj *c15.TimageType) {
-	var def = nga.ImageDefs.AddNew(obj.Id.String())
+	def := nga.ImageDefs.AddNew(obj.Id.String())
 	if init := obj.InitFrom; init != nil {
 		if !init.MipsGenerate {
 			def.InitFrom.AutoMip = false

@@ -13,10 +13,9 @@ type Model struct {
 	name    string
 }
 
-func newModel(name string, mesh *Mesh) *Model {
-	var model = &Model{}
-	model.name, model.mesh = name, mesh
-	return model
+func newModel(name string, mesh *Mesh) (me *Model) {
+	me = &Model{name: name, mesh: mesh}
+	return
 }
 
 func (me *Model) Clone(modelName string) (clonedModel *Model) {

@@ -13,13 +13,9 @@ type assetFileOpener func(string) (io.ReadCloser, error)
 type assetManager struct {
 }
 
-func newAssetManager() *assetManager {
-	var assMan = &assetManager{}
-	return assMan
-}
-
-func (me *assetManager) LoadAssets(reader io.Reader) (*AssetProvider, error) {
-	return newAssetProvider(reader)
+func newAssetManager() (me *assetManager) {
+	me = &assetManager{}
+	return
 }
 
 func (me *assetManager) OpenLocalFile(absoluteOrAssetRootRelativeFilePath string) (io.ReadCloser, error) {

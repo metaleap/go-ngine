@@ -24,10 +24,9 @@ func glDispose() {
 }
 
 func glInit() (err error, isVerErr bool) {
-	var minMatch = "3_2"
-	var vPos int
-	var vMatch = "VERSION_"
-	var vMessage = `Minimum required OpenGL version is %v, but your
+	const (
+		minMatch = "3_2"
+		vMessage = `Minimum required OpenGL version is %v, but your
 graphics-card driver (or your OS) currently
 only provides OpenGL version %v.
 
@@ -37,15 +36,16 @@ Look for their "driver downloads" pages and follow their
 instructions to find & download the newest driver version
 for: <%v>.
 `
-	var makeVerErr = func(curVer string) error {
+	)
+	vMatch := "VERSION_"
+	makeVerErr := func(curVer string) error {
 		isVerErr = true
 		return fmt.Errorf(vMessage, strings.Replace(minMatch, "_", ".", -1), curVer, ugl.GlStr(gl.VENDOR), ugl.GlStr(gl.RENDERER))
 	}
 	if !glIsInit {
 		if err = gl.Init(); err != nil {
-			ugl.Init()
 			// 	check for a message such as "unable to initialize VERSION_4_0"
-			if vPos = strings.Index(err.Error(), vMatch); vPos >= 0 {
+			if vPos := strings.Index(err.Error(), vMatch); vPos >= 0 {
 				vMatch = err.Error()[vPos+len(vMatch):]
 				if vMatch > minMatch {
 					err = nil
@@ -58,6 +58,7 @@ for: <%v>.
 			}
 		}
 		if err == nil {
+			ugl.Init()
 			if !ugl.VersionMatch(3.2) {
 				err = makeVerErr(Sfmt("%v.%v", ugl.GlVersionMajorMinor[0], ugl.GlVersionMajorMinor[1]))
 			} else {

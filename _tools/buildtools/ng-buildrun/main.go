@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"runtime"
 	"sort"
 	"strings"
+
+	uio "github.com/metaleap/go-util/io"
 )
 
 type shaderSrc struct {
@@ -16,42 +17,37 @@ type shaderSrc struct {
 
 type shaderSrcSortable []shaderSrc
 
-func (p shaderSrcSortable) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
-func (p shaderSrcSortable) Len() int           { return len(p) }
-func (p shaderSrcSortable) Less(i, j int) bool { return p[i].name < p[j].name }
+func (me shaderSrcSortable) Swap(i, j int)      { me[i], me[j] = me[j], me[i] }
+func (me shaderSrcSortable) Len() int           { return len(me) }
+func (me shaderSrcSortable) Less(i, j int) bool { return me[i].name < me[j].name }
 
 type shaderSrcSortables struct {
 	vert, tessCtl, tessEval, geo, frag, comp shaderSrcSortable
 }
 
-func (this shaderSrcSortables) MapAll() map[string]shaderSrcSortable {
-	return map[string]shaderSrcSortable{"Vertex": this.vert, "TessCtl": this.tessCtl, "TessEval": this.tessEval, "Geometry": this.geo, "Fragment": this.frag, "Compute": this.comp}
+func (me shaderSrcSortables) mapAll() map[string]shaderSrcSortable {
+	return map[string]shaderSrcSortable{"Vertex": me.vert, "TessCtl": me.tessCtl, "TessEval": me.tessEval, "Geometry": me.geo, "Fragment": me.frag, "Compute": me.comp}
 }
 
 func collectShaders(srcDirPath string, allShaders *shaderSrcSortables, iShaders map[string]string, stripComments bool) {
 	var (
-		err                                                                                                   error
-		src                                                                                                   *os.File
-		fileInfos                                                                                             []os.FileInfo
-		fileInfo                                                                                              os.FileInfo
-		rawSrc                                                                                                []byte
-		fileName, shaderSource                                                                                string
-		isIncShader, isVertShader, isTessCtlShader, isTessEvalShader, isGeoShader, isFragShader, isCompShader bool
-		pos1, pos2                                                                                            int
+		fileInfos                                                   []os.FileInfo
+		fileName, shaderSource                                      string
+		isInc, isVert, isTessCtl, isTessEval, isGeo, isFrag, isComp bool
+		pos1, pos2                                                  int
 	)
-	if src, err = os.Open(srcDirPath); err == nil {
+	if src, err := os.Open(srcDirPath); err == nil {
 		fileInfos, err = src.Readdir(0)
 		src.Close()
 		if err == nil {
-			for _, fileInfo = range fileInfos {
+			for _, fileInfo := range fileInfos {
 				fileName = fileInfo.Name()
 				if fileInfo.IsDir() {
 					collectShaders(filepath.Join(srcDirPath, fileName), allShaders, iShaders, stripComments)
 				} else {
-					isIncShader, isVertShader, isTessCtlShader, isTessEvalShader, isGeoShader, isFragShader, isCompShader = strings.HasSuffix(fileName, ".glsl"), strings.HasSuffix(fileName, ".glvs"), strings.HasSuffix(fileName, ".gltc"), strings.HasSuffix(fileName, ".glte"), strings.HasSuffix(fileName, ".glgs"), strings.HasSuffix(fileName, ".glfs"), strings.HasSuffix(fileName, ".glcs")
-					if isIncShader || isVertShader || isTessCtlShader || isTessEvalShader || isGeoShader || isFragShader || isCompShader {
-						if rawSrc, err = ioutil.ReadFile(filepath.Join(srcDirPath, fileName)); err == nil {
-							shaderSource = string(rawSrc)
+					isInc, isVert, isTessCtl, isTessEval, isGeo, isFrag, isComp = strings.HasSuffix(fileName, ".glsl"), strings.HasSuffix(fileName, ".glvs"), strings.HasSuffix(fileName, ".gltc"), strings.HasSuffix(fileName, ".glte"), strings.HasSuffix(fileName, ".glgs"), strings.HasSuffix(fileName, ".glfs"), strings.HasSuffix(fileName, ".glcs")
+					if isInc || isVert || isTessCtl || isTessEval || isGeo || isFrag || isComp {
+						if shaderSource = uio.ReadTextFile(filepath.Join(srcDirPath, fileName), false, ""); len(shaderSource) > 0 {
 							if stripComments {
 								for {
 									if pos1, pos2 = strings.Index(shaderSource, "/*"), strings.Index(shaderSource, "*/"); (pos1 < 0) || (pos2 < pos1) {
@@ -60,25 +56,25 @@ func collectShaders(srcDirPath string, allShaders *shaderSrcSortables, iShaders 
 									shaderSource = shaderSource[0:pos1] + shaderSource[pos2+2:]
 								}
 							}
-							if isIncShader {
+							if isInc {
 								iShaders[fileName] = shaderSource
 							}
-							if isVertShader {
+							if isVert {
 								allShaders.vert = append(allShaders.vert, shaderSrc{fileName, shaderSource})
 							}
-							if isTessCtlShader {
+							if isTessCtl {
 								allShaders.tessCtl = append(allShaders.tessCtl, shaderSrc{fileName, shaderSource})
 							}
-							if isTessEvalShader {
+							if isTessEval {
 								allShaders.tessEval = append(allShaders.tessEval, shaderSrc{fileName, shaderSource})
 							}
-							if isGeoShader {
+							if isGeo {
 								allShaders.geo = append(allShaders.geo, shaderSrc{fileName, shaderSource})
 							}
-							if isFragShader {
+							if isFrag {
 								allShaders.frag = append(allShaders.frag, shaderSrc{fileName, shaderSource})
 							}
-							if isCompShader {
+							if isComp {
 								allShaders.comp = append(allShaders.comp, shaderSrc{fileName, shaderSource})
 							}
 						}
@@ -91,18 +87,14 @@ func collectShaders(srcDirPath string, allShaders *shaderSrcSortables, iShaders 
 
 func generateShadersFile(srcDirPath, outFilePath, pkgName string, stripComments bool) bool {
 	var (
-		err                    error
 		shaderSource           shaderSrc
-		allNames               = []string{}
-		rawSrc                 []byte
-		glslSrc                = "package " + pkgName + "\n\nfunc init() {\n\tvar rss = newGlShaderSources()\n"
-		allShaders             = shaderSrcSortables{shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}}
-		iShaders               = map[string]string{}
+		allNames               []string
 		glslOldSrc, shaderName string
 	)
-	if rawSrc, err = ioutil.ReadFile(outFilePath); err == nil {
-		glslOldSrc = string(rawSrc)
-	}
+	glslSrc := "package " + pkgName + "\n\nfunc init() {\n\tvar rss = newGlShaderSources()\n"
+	allShaders := shaderSrcSortables{shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}}
+	iShaders := map[string]string{}
+	glslOldSrc = uio.ReadTextFile(outFilePath, false, "")
 	collectShaders(srcDirPath, &allShaders, iShaders, stripComments)
 	sort.Sort(allShaders.comp)
 	sort.Sort(allShaders.frag)
@@ -110,7 +102,7 @@ func generateShadersFile(srcDirPath, outFilePath, pkgName string, stripComments 
 	sort.Sort(allShaders.tessCtl)
 	sort.Sort(allShaders.tessEval)
 	sort.Sort(allShaders.vert)
-	for varName, shaderSrcItem := range allShaders.MapAll() {
+	for varName, shaderSrcItem := range allShaders.mapAll() {
 		for _, shaderSource = range shaderSrcItem {
 			if shaderName = shaderSource.name[:strings.LastIndex(shaderSource.name, ".")]; !inSlice(allNames, shaderName) {
 				allNames = append(allNames, shaderName)
@@ -119,19 +111,19 @@ func generateShadersFile(srcDirPath, outFilePath, pkgName string, stripComments 
 		}
 	}
 	if glslSrc += fmt.Sprintf("\tglShaderMan.AllSources = rss\n\tglShaderMan.AllNames = %#v\n}\n", allNames); glslSrc != glslOldSrc {
-		ioutil.WriteFile(outFilePath, []byte(glslSrc), os.ModePerm)
+		uio.WriteTextFile(outFilePath, glslSrc)
 	}
 	return true
 }
 
 func includeShaders(fileName, shaderSource string, iShaders map[string]string) string {
+	const linePrefix = "#pragma incl "
 	var (
-		lines      = strings.Split(shaderSource, "\n")
-		linePrefix = "#pragma incl "
-		str        string
-		i          int
-		includes   []string
+		str      string
+		i        int
+		includes []string
 	)
+	lines := strings.Split(shaderSource, "\n")
 	for i, str = range lines {
 		if strings.HasPrefix(str, linePrefix) {
 			includes = strings.Split(str[len(linePrefix):], " ")
@@ -161,13 +153,25 @@ func inSlice(slice []string, val string) bool {
 }
 
 func main() {
-	var (
-		nginePath   = os.Args[1]
-		srcDirPath  = filepath.Join(nginePath, "core", "_glsl")
-		outFilePath = filepath.Join(nginePath, "core", "-auto-generated-glsl-src.go")
-	)
+	var outTime, srcTime, tmpTime int64
 	runtime.LockOSThread()
-	fmt.Printf("Merging shader files inside %v into %v... ", strings.Replace(srcDirPath, nginePath, ".", -1), strings.Replace(outFilePath, nginePath, ".", -1))
-	generateShadersFile(srcDirPath, outFilePath, "core", true)
-	fmt.Println("DONE.")
+	nginePath := os.Args[1]
+	srcDirPath, outFilePath := filepath.Join(nginePath, "core", "_glsl"), filepath.Join(nginePath, "core", "-auto-generated-glsl-src.go")
+	if fileInfo, err := os.Stat(outFilePath); err == nil {
+		outTime = fileInfo.ModTime().UnixNano()
+		ff := func(filePath string, rec bool) bool {
+			if fileInfo, err = os.Stat(filePath); (err == nil) && !fileInfo.IsDir() {
+				if tmpTime = fileInfo.ModTime().UnixNano(); tmpTime > srcTime {
+					srcTime = tmpTime
+				}
+			}
+			return srcTime <= outTime
+		}
+		uio.WalkDirectory(srcDirPath, "", ff, true)
+	}
+	if srcTime > outTime {
+		fmt.Printf("Re-merging changed shader files inside %v into %v... ", strings.Replace(srcDirPath, nginePath, ".", -1), strings.Replace(outFilePath, nginePath, ".", -1))
+		generateShadersFile(srcDirPath, outFilePath, "core", true)
+		fmt.Println("DONE.")
+	}
 }

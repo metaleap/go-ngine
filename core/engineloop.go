@@ -34,16 +34,18 @@ type EngineLoop struct {
 	OnSec func()
 }
 
-func newEngineLoop() *EngineLoop {
-	var loop = &EngineLoop{}
-	loop.OnSec, loop.OnLoop = func() {}, func() {}
-	return loop
+func newEngineLoop() (me *EngineLoop) {
+	me = &EngineLoop{OnSec: func() {}, OnLoop: func() {}}
+	return
 }
 
-//	Initiate a rendering loop. This method returns only when the loop is stopped for whatever reason.
+//	Initiates a rendering loop. This method returns only when the loop is stopped for whatever reason.
+//	
+//	(Before entering the loop, this method performs a one-off GC invokation.)
 func (me *EngineLoop) Loop() {
 	var tickNowFloor float64
 	if !me.IsLooping {
+		runtime.GC()
 		me.IsLooping = true
 		glfw.SetTime(0)
 		me.SecTickLast, me.TickNow = glfw.Time(), glfw.Time()

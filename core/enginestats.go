@@ -34,19 +34,21 @@ type EngineStats struct {
 	FrameUserCode *TimingStats
 
 	//	During the Loop, the Go Garbge Collector is invoked at least and at most once per second.
+	//	
 	//	Forcing GC "that often" practically guarantees it will almost never have so much work to do as to
-	//	noticably block user interaction --- 99.9% of the time it will complete in less than 10ms (most often even under 1ms).
-	//	This TimingStats instance over time tracks the maximum and average time spent on that 1x-per-second GC.
+	//	noticably block user interaction --- 99.9% of the time it will complete in less than 10ms (and almost-always under 1ms).
+	//	
+	//	This TimingStats instance over time tracks the maximum and average time spent on that 1x-per-second GC invokation (but does not track any other GC invokations).
 	Gc *TimingStats
 
 	fpsCounter int
 	fpsAll     float64
 }
 
-func newEngineStats() *EngineStats {
-	var stats = &EngineStats{}
-	stats.reset()
-	return stats
+func newEngineStats() (me *EngineStats) {
+	me = &EngineStats{}
+	me.reset()
+	return
 }
 
 //	Returns the average number of frames-per-second since Loop.Loop() was last called.
@@ -55,15 +57,20 @@ func (me *EngineStats) AverageFps() float64 {
 }
 
 func (me *EngineStats) reset() {
-	var nt = func() *TimingStats { return &TimingStats{} }
 	me.FpsLastSec, me.fpsCounter, me.fpsAll = 0, 0, 0
-	me.Frame, me.FrameRenderBoth, me.FrameRenderCpu, me.FrameRenderGpu, me.FrameCoreCode, me.FrameUserCode, me.Gc = nt(), nt(), nt(), nt(), nt(), nt(), nt()
+	ctor := newTimingStats
+	me.Frame, me.FrameRenderBoth, me.FrameRenderCpu, me.FrameRenderGpu, me.FrameCoreCode, me.FrameUserCode, me.Gc = ctor(), ctor(), ctor(), ctor(), ctor(), ctor(), ctor()
 }
 
 //	Helps track average and maximum cost for a variety of performance indicators.
 type TimingStats struct {
 	max, measuredCounter, measureStartTime, thisTime, totalAccum float64
 	comb1, comb2                                                 *TimingStats
+}
+
+func newTimingStats() (me *TimingStats) {
+	me = &TimingStats{}
+	return
 }
 
 //	Returns the average cost tracked by this performance indicator.

@@ -23,13 +23,12 @@ type Controller struct {
 func newController() (me *Controller) {
 	me = &Controller{}
 	me.glMat = &ugl.GlMat4{}
-	var htarget *unum.Vec3
 	me.posNeg, me.Pos, me.Dir, me.UpAxis, me.axH, me.axV = &unum.Vec3{}, &unum.Vec3{}, &unum.Vec3{0, 0, 1}, &unum.Vec3{0, 1, 0}, &unum.Vec3{}, &unum.Vec3{}
 	me.MoveSpeed, me.MoveSpeedupFactor, me.TurnSpeed, me.TurnSpeedupFactor = 1.38, 1, 90, 1
 	me.autoUpdate, me.MaxTurnUp, me.MinTurnDown = true, 90, -90
 	me.Mat, me.MatTrans, me.MatLook = unum.NewMat4Identity(), unum.NewMat4Identity(), unum.NewMat4Identity()
 
-	htarget = &unum.Vec3{me.Dir.X, 0, me.Dir.Z}
+	htarget := &unum.Vec3{me.Dir.X, 0, me.Dir.Z}
 	htarget.Normalize()
 	if htarget.Z >= 0 {
 		if htarget.X >= 0 {
@@ -47,8 +46,7 @@ func newController() (me *Controller) {
 	me.vAngle = -unum.RadToDeg(math.Asin(me.Dir.Y))
 	me.UpdateMatrixRot()
 	me.UpdateMatrix()
-	// me.Controller.Init(func () {  }, func () float64 { return  })
-	return me
+	return
 }
 
 func (me *Controller) BeginUpdate() {

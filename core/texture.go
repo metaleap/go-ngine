@@ -26,10 +26,11 @@ func (me textures) NewParams(filter bool, filterAnisotropy float64) *texturePara
 }
 
 func (me textures) syncAssetChanges() {
-	var item *Texture
-	var id string
-	var def *nga.ImageDef
-	for id, def = range nga.ImageDefs.M {
+	var (
+		item *Texture
+		id   string
+	)
+	for _, def := range nga.ImageDefs.M {
 		if item = me[def.ID]; item == nil {
 			item = me.add(def)
 		}
@@ -108,9 +109,6 @@ func (me *Texture) GpuSynced() bool {
 }
 
 func (me *Texture) load_OnImg(img image.Image, err error) error {
-	var nuW, nuH int
-	var conv = false
-	var nuImage *image.RGBA
 	me.gpuSynced, me.img = false, nil
 	if err != nil {
 		me.LastError = err
@@ -119,13 +117,14 @@ func (me *Texture) load_OnImg(img image.Image, err error) error {
 		me.Unload()
 	}
 	if me.img = img; me.img != nil {
+		conv := false
 		switch me.img.(type) {
 		case *image.YCbCr, *image.Paletted:
 			conv = true
 		}
 		if conv {
-			nuW, nuH = me.img.Bounds().Dx(), me.img.Bounds().Dy()
-			nuImage = image.NewRGBA(image.Rect(0, 0, nuW, nuH))
+			nuW, nuH := me.img.Bounds().Dx(), me.img.Bounds().Dy()
+			nuImage := image.NewRGBA(image.Rect(0, 0, nuW, nuH))
 			for x := 0; x < nuW; x++ {
 				for y := 0; y < nuH; y++ {
 					nuImage.Set(x, y, me.img.At(x, y))
@@ -152,7 +151,7 @@ func (me *Texture) loadAsync(prov TextureProvider, arg interface{}) {
 	asyncTextures[me] = false
 	go func() {
 		if err := me.load_OnImg(prov(arg)); err != nil {
-			//	mark as "done" anyway in the async queue.
+			//	mark as "done anyway" in the async queue.
 			asyncTextures[me] = true
 		}
 	}()

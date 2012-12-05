@@ -2,16 +2,15 @@ package core
 
 type materials map[string]*Material
 
-func (me materials) New(texName string) *Material {
-	var mat = &Material{}
-	mat.TexName = texName
-	return mat
+func (me materials) New(texName string) (mat *Material) {
+	mat = &Material{TexName: texName}
+	return
 }
 
-func (me materials) Set(name, texName string) *Material {
-	var mat = me.New(texName)
+func (me materials) Set(name, texName string) (mat *Material) {
+	mat = me.New(texName)
 	me[name] = mat
-	return mat
+	return
 }
 
 type Material struct {

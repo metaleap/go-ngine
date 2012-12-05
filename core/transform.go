@@ -22,7 +22,6 @@ type Transforms struct {
 
 func newTransforms(owner Transformable) (me *Transforms) {
 	me = &Transforms{}
-	// me.Transforms.Init(owner, func () {  })
 	me.Owner = owner
 	me.Pos, me.Rot = &unum.Vec3{}, &unum.Vec3{}
 	me.Scaling = &unum.Vec3{1, 1, 1}
@@ -198,12 +197,9 @@ func (me *Transforms) StepDelta(deltaPerSecond float64) float64 {
 }
 
 func (me *Transforms) UpdateMatrices() {
-	var mat *unum.Mat4
-	var parent = me.Owner.Parent()
-	if parent != nil {
+	mat := unum.Mat4Identity
+	if parent := me.Owner.Parent(); parent != nil {
 		mat = parent.Transforms().MatModelView
-	} else {
-		mat = unum.Mat4Identity
 	}
 	me.MatModelView.SetFromMultN(mat, me.MatTranslation, me.MatScaling, me.MatRotX, me.MatRotY, me.MatRotZ)
 	me.glMatModelView.Load(me.MatModelView)

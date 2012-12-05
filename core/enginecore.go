@@ -95,8 +95,8 @@ func (me *EngineCore) onRender() {
 }
 
 func (me *EngineCore) onSec() {
-	for tex, _ := range asyncTextures {
-		if tex.img != nil {
+	for tex, done := range asyncTextures {
+		if done || (tex.img != nil) {
 			delete(asyncTextures, tex)
 			tex.GpuSync()
 			break
@@ -105,7 +105,7 @@ func (me *EngineCore) onSec() {
 }
 
 func (me *EngineCore) resizeView(viewWidth, viewHeight int) {
-	var defaultCanvas = me.Canvases[me.DefaultCanvasIndex]
+	defaultCanvas := me.Canvases[me.DefaultCanvasIndex]
 	me.Options.winWidth, me.Options.winHeight = viewWidth, viewHeight
 	defaultCanvas.viewWidth, defaultCanvas.viewHeight = viewWidth, viewHeight
 	for _, cam := range me.Cameras {
