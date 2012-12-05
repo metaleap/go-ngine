@@ -194,6 +194,9 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 					<dd>&nbsp; &nbsp; <a href="#CameraDef.NewInst">func (me *CameraDef) NewInst(id string) (inst *CameraInst)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#CameraDef.SetFovX">func (me *CameraDef) SetFovX(v float64)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#CameraDef.SetFovY">func (me *CameraDef) SetFovY(v float64)</a></dd>
 				
 					
@@ -214,6 +217,19 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 			
 				
 				<dd><a href="#CameraInst">type CameraInst</a></dd>
+				
+				
+			
+				
+				<dd><a href="#EffectDef">type EffectDef</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EffectDef.NewInst">func (me *EffectDef) NewInst(id string) (inst *EffectInst)</a></dd>
+				
+			
+				
+				<dd><a href="#EffectInst">type EffectInst</a></dd>
 				
 				
 			
@@ -253,6 +269,26 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#LibCameraDefs.SyncChanges">func (me *LibCameraDefs) SyncChanges()</a></dd>
+				
+			
+				
+				<dd><a href="#LibEffectDefs">type LibEffectDefs</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LibEffectDefs.Add">func (me *LibEffectDefs) Add(d *EffectDef) (n *EffectDef)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LibEffectDefs.AddNew">func (me *LibEffectDefs) AddNew(id string) *EffectDef</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LibEffectDefs.New">func (me *LibEffectDefs) New(id string) (def *EffectDef)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LibEffectDefs.Remove">func (me *LibEffectDefs) Remove(id string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LibEffectDefs.SyncChanges">func (me *LibEffectDefs) SyncChanges()</a></dd>
 				
 			
 				
@@ -361,6 +397,14 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#LibsCameraDef.AddNew">func (me LibsCameraDef) AddNew(id string) (lib *LibCameraDefs)</a></dd>
+				
+			
+				
+				<dd><a href="#LibsEffectDef">type LibsEffectDef</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LibsEffectDef.AddNew">func (me LibsEffectDef) AddNew(id string) (lib *LibEffectDefs)</a></dd>
 				
 			
 				
@@ -531,6 +575,8 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 			
 				<a href="/target/doc.go">doc.go</a>
 			
+				<a href="/target/effect.gt.go">effect.gt.go</a>
+			
 				<a href="/target/image.gt.go">image.gt.go</a>
 			
 				<a href="/target/material.gt.go">material.gt.go</a>
@@ -565,6 +611,8 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
     <span class="comment">//	- a kilometer, set to 1000;</span>
     <span class="comment">//	- an inch, set to 0.02539999969303608... etc.</span>
     <span class="comment">//	The *assets* package does not support multiple different or individual per-asset units.</span>
+    <span class="comment">//	This is ONLY used when importing assets that specify their own unit-in-meters, those will be re-scaled to this unit.</span>
+    <span class="comment">//	If you need to customize this value, do so before populating the *assets* package&#39;s libraries.</span>
     UnitInMeters float64 = 1
 )</pre>
 				
@@ -575,6 +623,15 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 
     <span class="comment">//	The &#34;default&#34; *LibCameraDefs* library for *CameraDef*s.</span>
     CameraDefs = AllCameraDefLibs.AddNew(&#34;&#34;)
+)</pre>
+				
+			
+				<pre>var (
+    <span class="comment">//	A *map* collection that contains *LibEffectDefs* libraries associated by their *ID*.</span>
+    AllEffectDefLibs = LibsEffectDef{}
+
+    <span class="comment">//	The &#34;default&#34; *LibEffectDefs* library for *EffectDef*s.</span>
+    EffectDefs = AllEffectDefLibs.AddNew(&#34;&#34;)
 )</pre>
 				
 			
@@ -627,7 +684,7 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 		
 			
 			
-			<h2 id="SyncChanges">func <a href="/target/assets.go?s=1065:1083#L26">SyncChanges</a></h2>
+			<h2 id="SyncChanges">func <a href="/target/assets.go?s=1285:1303#L28">SyncChanges</a></h2>
 			<pre>func SyncChanges()</pre>
 			<p>
 Signals to *core* (or your custom package) that changes have been made that need to be picked up. Call this after you have made any number of changes to your Defs, Insts or Libs.
@@ -756,9 +813,12 @@ Provides a common base for *Lib*s.
 		
 			
 			
-			<h2 id="CameraDef">type <a href="/target/camera.gt.go?s=119:706#L1">CameraDef</a></h2>
+			<h2 id="CameraDef">type <a href="/target/camera.gt.go?s=119:756#L1">CameraDef</a></h2>
 			<pre>type CameraDef struct {
     BaseDef
+
+    <span class="comment">//	Horizontal field-of-view for perspective camera.</span>
+    FovX float64
 
     <span class="comment">//	Vertical field-of-view for perspective camera.</span>
     FovY float64
@@ -793,7 +853,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 
 			
 				
-				<h3 id="CameraDef.NewInst">func (*CameraDef) <a href="/target/camera.gt.go?s=2659:2717#L100">NewInst</a></h3>
+				<h3 id="CameraDef.NewInst">func (*CameraDef) <a href="/target/camera.gt.go?s=2703:2761#L99">NewInst</a></h3>
 				<pre>func (me *CameraDef) NewInst(id string) (inst *CameraInst)</pre>
 				<p>
 Creates and returns a new *CameraInst* instance referencing this *CameraDef* definition.
@@ -803,7 +863,17 @@ Creates and returns a new *CameraInst* instance referencing this *CameraDef* def
 				
 			
 				
-				<h3 id="CameraDef.SetFovY">func (*CameraDef) <a href="/target/camera.gt.go?s=1072:1111#L32">SetFovY</a></h3>
+				<h3 id="CameraDef.SetFovX">func (*CameraDef) <a href="/target/camera.gt.go?s=905:944#L23">SetFovX</a></h3>
+				<pre>func (me *CameraDef) SetFovX(v float64)</pre>
+				<p>
+Sets the *FovX* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
+</p>
+
+				
+				
+			
+				
+				<h3 id="CameraDef.SetFovY">func (*CameraDef) <a href="/target/camera.gt.go?s=1116:1155#L31">SetFovY</a></h3>
 				<pre>func (me *CameraDef) SetFovY(v float64)</pre>
 				<p>
 Sets the *FovY* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
@@ -813,7 +883,7 @@ Sets the *FovY* field for this *CameraDef* and calls its *Base.SetDirty()* to re
 				
 			
 				
-				<h3 id="CameraDef.SetMagX">func (*CameraDef) <a href="/target/camera.gt.go?s=1283:1322#L40">SetMagX</a></h3>
+				<h3 id="CameraDef.SetMagX">func (*CameraDef) <a href="/target/camera.gt.go?s=1327:1366#L39">SetMagX</a></h3>
 				<pre>func (me *CameraDef) SetMagX(v float64)</pre>
 				<p>
 Sets the *MagX* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
@@ -823,7 +893,7 @@ Sets the *MagX* field for this *CameraDef* and calls its *Base.SetDirty()* to re
 				
 			
 				
-				<h3 id="CameraDef.SetMagY">func (*CameraDef) <a href="/target/camera.gt.go?s=1494:1533#L48">SetMagY</a></h3>
+				<h3 id="CameraDef.SetMagY">func (*CameraDef) <a href="/target/camera.gt.go?s=1538:1577#L47">SetMagY</a></h3>
 				<pre>func (me *CameraDef) SetMagY(v float64)</pre>
 				<p>
 Sets the *MagY* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
@@ -833,7 +903,7 @@ Sets the *MagY* field for this *CameraDef* and calls its *Base.SetDirty()* to re
 				
 			
 				
-				<h3 id="CameraDef.SetOrtho">func (*CameraDef) <a href="/target/camera.gt.go?s=1706:1743#L56">SetOrtho</a></h3>
+				<h3 id="CameraDef.SetOrtho">func (*CameraDef) <a href="/target/camera.gt.go?s=1750:1787#L55">SetOrtho</a></h3>
 				<pre>func (me *CameraDef) SetOrtho(v bool)</pre>
 				<p>
 Sets the *Ortho* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
@@ -843,7 +913,7 @@ Sets the *Ortho* field for this *CameraDef* and calls its *Base.SetDirty()* to r
 				
 			
 				
-				<h3 id="CameraDef.SetZfar">func (*CameraDef) <a href="/target/camera.gt.go?s=1917:1956#L64">SetZfar</a></h3>
+				<h3 id="CameraDef.SetZfar">func (*CameraDef) <a href="/target/camera.gt.go?s=1961:2000#L63">SetZfar</a></h3>
 				<pre>func (me *CameraDef) SetZfar(v float64)</pre>
 				<p>
 Sets the *Zfar* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
@@ -853,7 +923,7 @@ Sets the *Zfar* field for this *CameraDef* and calls its *Base.SetDirty()* to re
 				
 			
 				
-				<h3 id="CameraDef.SetZnear">func (*CameraDef) <a href="/target/camera.gt.go?s=2129:2169#L72">SetZnear</a></h3>
+				<h3 id="CameraDef.SetZnear">func (*CameraDef) <a href="/target/camera.gt.go?s=2173:2213#L71">SetZnear</a></h3>
 				<pre>func (me *CameraDef) SetZnear(v float64)</pre>
 				<p>
 Sets the *Znear* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
@@ -865,7 +935,7 @@ Sets the *Znear* field for this *CameraDef* and calls its *Base.SetDirty()* to r
 		
 			
 			
-			<h2 id="CameraInst">type <a href="/target/camera.gt.go?s=2277:2385#L80">CameraInst</a></h2>
+			<h2 id="CameraInst">type <a href="/target/camera.gt.go?s=2321:2429#L79">CameraInst</a></h2>
 			<pre>type CameraInst struct {
     BaseInst
 
@@ -874,6 +944,61 @@ Sets the *Znear* field for this *CameraDef* and calls its *Base.SetDirty()* to r
 }</pre>
 			<p>
 An instance referencing a camera definition.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="EffectDef">type <a href="/target/effect.gt.go?s=124:158#L1">EffectDef</a></h2>
+			<pre>type EffectDef struct {
+    BaseDef
+}</pre>
+			<p>
+Defines the equations necessary for the visual appearance of geometry and screen-space image processing.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="EffectDef.NewInst">func (*EffectDef) <a href="/target/effect.gt.go?s=623:681#L22">NewInst</a></h3>
+				<pre>func (me *EffectDef) NewInst(id string) (inst *EffectInst)</pre>
+				<p>
+Creates and returns a new *EffectInst* instance referencing this *EffectDef* definition.
+</p>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="EffectInst">type <a href="/target/effect.gt.go?s=241:349#L2">EffectInst</a></h2>
+			<pre>type EffectInst struct {
+    BaseInst
+
+    <span class="comment">//	The Effect definition referenced by this instance.</span>
+    Def *EffectDef
+}</pre>
+			<p>
+An instance referencing a Effect definition.
 </p>
 
 
@@ -975,7 +1100,7 @@ An instance referencing an Image definition.
 		
 			
 			
-			<h2 id="LibCameraDefs">type <a href="/target/camera.gt.go?s=4032:4298#L146">LibCameraDefs</a></h2>
+			<h2 id="LibCameraDefs">type <a href="/target/camera.gt.go?s=4076:4342#L145">LibCameraDefs</a></h2>
 			<pre>type LibCameraDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -998,7 +1123,7 @@ use the *LibsCameraDef.New()* or *LibsCameraDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibCameraDefs.Add">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=4644:4701#L162">Add</a></h3>
+				<h3 id="LibCameraDefs.Add">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=4688:4745#L161">Add</a></h3>
 				<pre>func (me *LibCameraDefs) Add(d *CameraDef) (n *CameraDef)</pre>
 				<p>
 Adds the specified *CameraDef* definition to this *LibCameraDefs*, and returns it.
@@ -1011,7 +1136,7 @@ If this *LibCameraDefs* already contains a *CameraDef* definition with the same 
 				
 			
 				
-				<h3 id="LibCameraDefs.AddNew">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5025:5078#L173">AddNew</a></h3>
+				<h3 id="LibCameraDefs.AddNew">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5069:5122#L172">AddNew</a></h3>
 				<pre>func (me *LibCameraDefs) AddNew(id string) *CameraDef</pre>
 				<p>
 Creates a new *CameraDef* definition with the specified *ID*, adds it to this *LibCameraDefs*, and returns it.
@@ -1024,7 +1149,7 @@ If this *LibCameraDefs* already contains a *CameraDef* definition with the speci
 				
 			
 				
-				<h3 id="LibCameraDefs.New">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5235:5291#L176">New</a></h3>
+				<h3 id="LibCameraDefs.New">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5279:5335#L175">New</a></h3>
 				<pre>func (me *LibCameraDefs) New(id string) (def *CameraDef)</pre>
 				<p>
 Creates a new *CameraDef* definition with the specified *ID* and returns it, but does not add it to this *LibCameraDefs*.
@@ -1034,7 +1159,7 @@ Creates a new *CameraDef* definition with the specified *ID* and returns it, but
 				
 			
 				
-				<h3 id="LibCameraDefs.Remove">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5406:5448#L179">Remove</a></h3>
+				<h3 id="LibCameraDefs.Remove">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5450:5492#L178">Remove</a></h3>
 				<pre>func (me *LibCameraDefs) Remove(id string)</pre>
 				<p>
 Removes the *CameraDef* with the specified *ID* from this *LibCameraDefs*.
@@ -1044,11 +1169,94 @@ Removes the *CameraDef* with the specified *ID* from this *LibCameraDefs*.
 				
 			
 				
-				<h3 id="LibCameraDefs.SyncChanges">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5785:5823#L184">SyncChanges</a></h3>
+				<h3 id="LibCameraDefs.SyncChanges">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5829:5867#L183">SyncChanges</a></h3>
 				<pre>func (me *LibCameraDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibCameraDefs* that need to be picked up.
 Call this after you have made any number of changes to this *LibCameraDefs* library or its *CameraDef* definitions.
+Also called by the global *SyncChanges()* function.
+</p>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="LibEffectDefs">type <a href="/target/effect.gt.go?s=1996:2262#L68">LibEffectDefs</a></h2>
+			<pre>type LibEffectDefs struct {
+    BaseLib
+    <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
+    <span class="comment">//	write to *M*, instead use the *Add()*, *AddNew()*, *Remove()* methods ONLY or bugs WILL ensue.</span>
+    M map[string]*EffectDef
+}</pre>
+			<p>
+A library that contains *EffectDef*s associated by their *ID*. To create a new *LibEffectDefs* library, ONLY
+use the *LibsEffectDef.New()* or *LibsEffectDef.AddNew()* methods.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="LibEffectDefs.Add">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=2608:2665#L84">Add</a></h3>
+				<pre>func (me *LibEffectDefs) Add(d *EffectDef) (n *EffectDef)</pre>
+				<p>
+Adds the specified *EffectDef* definition to this *LibEffectDefs*, and returns it.
+</p>
+<p>
+If this *LibEffectDefs* already contains a *EffectDef* definition with the same *ID*, does nothing and returns *nil*.
+</p>
+
+				
+				
+			
+				
+				<h3 id="LibEffectDefs.AddNew">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=2989:3042#L95">AddNew</a></h3>
+				<pre>func (me *LibEffectDefs) AddNew(id string) *EffectDef</pre>
+				<p>
+Creates a new *EffectDef* definition with the specified *ID*, adds it to this *LibEffectDefs*, and returns it.
+</p>
+<p>
+If this *LibEffectDefs* already contains a *EffectDef* definition with the specified *ID*, does nothing and returns *nil*.
+</p>
+
+				
+				
+			
+				
+				<h3 id="LibEffectDefs.New">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3199:3255#L98">New</a></h3>
+				<pre>func (me *LibEffectDefs) New(id string) (def *EffectDef)</pre>
+				<p>
+Creates a new *EffectDef* definition with the specified *ID* and returns it, but does not add it to this *LibEffectDefs*.
+</p>
+
+				
+				
+			
+				
+				<h3 id="LibEffectDefs.Remove">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3370:3412#L101">Remove</a></h3>
+				<pre>func (me *LibEffectDefs) Remove(id string)</pre>
+				<p>
+Removes the *EffectDef* with the specified *ID* from this *LibEffectDefs*.
+</p>
+
+				
+				
+			
+				
+				<h3 id="LibEffectDefs.SyncChanges">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3749:3787#L106">SyncChanges</a></h3>
+				<pre>func (me *LibEffectDefs) SyncChanges()</pre>
+				<p>
+Signals to *core* (or your custom package) that changes have been made to this *LibEffectDefs* that need to be picked up.
+Call this after you have made any number of changes to this *LibEffectDefs* library or its *EffectDef* definitions.
 Also called by the global *SyncChanges()* function.
 </p>
 
@@ -1473,7 +1681,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibsCameraDef">type <a href="/target/camera.gt.go?s=3317:3361#L125">LibsCameraDef</a></h2>
+			<h2 id="LibsCameraDef">type <a href="/target/camera.gt.go?s=3361:3405#L124">LibsCameraDef</a></h2>
 			<pre>type LibsCameraDef map[string]*LibCameraDefs</pre>
 			<p>
 The underlying type of the global *AllCameraDefLibs* variable: a *map* collection that contains
@@ -1491,13 +1699,46 @@ The underlying type of the global *AllCameraDefLibs* variable: a *map* collectio
 
 			
 				
-				<h3 id="LibsCameraDef.AddNew">func (LibsCameraDef) <a href="/target/camera.gt.go?s=3609:3671#L130">AddNew</a></h3>
+				<h3 id="LibsCameraDef.AddNew">func (LibsCameraDef) <a href="/target/camera.gt.go?s=3653:3715#L129">AddNew</a></h3>
 				<pre>func (me LibsCameraDef) AddNew(id string) (lib *LibCameraDefs)</pre>
 				<p>
 Creates a new *LibCameraDefs* library with the specified *ID*, adds it to this *LibsCameraDef*, and returns it.
 </p>
 <p>
 If this *LibsCameraDef* already contains a *LibCameraDefs* library with the specified *ID*, does nothing and returns *nil*.
+</p>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="LibsEffectDef">type <a href="/target/effect.gt.go?s=1281:1325#L47">LibsEffectDef</a></h2>
+			<pre>type LibsEffectDef map[string]*LibEffectDefs</pre>
+			<p>
+The underlying type of the global *AllEffectDefLibs* variable: a *map* collection that contains
+*LibEffectDefs* libraries associated by their *ID*.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="LibsEffectDef.AddNew">func (LibsEffectDef) <a href="/target/effect.gt.go?s=1573:1635#L52">AddNew</a></h3>
+				<pre>func (me LibsEffectDef) AddNew(id string) (lib *LibEffectDefs)</pre>
+				<p>
+Creates a new *LibEffectDefs* library with the specified *ID*, adds it to this *LibsEffectDef*, and returns it.
+</p>
+<p>
+If this *LibsEffectDef* already contains a *LibEffectDefs* library with the specified *ID*, does nothing and returns *nil*.
 </p>
 
 				

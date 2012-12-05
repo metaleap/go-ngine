@@ -61,14 +61,14 @@ Note, Collada 1.4.1 documents are insta-bootstrapped to version 1.5 in-memory.
 			
 			
 				
-				<dd><a href="#ImportCollada">func ImportCollada(data []byte, importBag *ImportBag) (err error)</a></dd>
+				<dd><a href="#ImportCollada">func ImportCollada(colladaDoc []byte, importBag *ImportBag) (err error)</a></dd>
 			
 			
 				
 				<dd><a href="#ImportBag">type ImportBag</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NewImportBag">func NewImportBag() (bag *ImportBag)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NewImportBag">func NewImportBag() (me *ImportBag)</a></dd>
 				
 				
 			
@@ -97,10 +97,10 @@ Note, Collada 1.4.1 documents are insta-bootstrapped to version 1.5 in-memory.
 		
 			
 			
-			<h2 id="ImportCollada">func <a href="/target/collimp.go?s=613:678#L16">ImportCollada</a></h2>
-			<pre>func ImportCollada(data []byte, importBag *ImportBag) (err error)</pre>
+			<h2 id="ImportCollada">func <a href="/target/collimp.go?s=926:997#L31">ImportCollada</a></h2>
+			<pre>func ImportCollada(colladaDoc []byte, importBag *ImportBag) (err error)</pre>
 			<p>
-Imports the Collada documents in the specified importBag, using its current options.
+Imports the specified Collada document, using the import options specified in importBag.
 </p>
 
 			
@@ -108,12 +108,11 @@ Imports the Collada documents in the specified importBag, using its current opti
 		
 			
 			
-			<h2 id="ImportBag">type <a href="/target/collimp.go?s=296:390#L4">ImportBag</a></h2>
+			<h2 id="ImportBag">type <a href="/target/collimp.go?s=352:377#L7">ImportBag</a></h2>
 			<pre>type ImportBag struct {
-    <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
-Contains the Collada documents to import, and provides options for the import.
+Provides options for importing Collada documents.
 </p>
 
 
@@ -125,8 +124,8 @@ Contains the Collada documents to import, and provides options for the import.
 
 			
 				
-				<h3 id="NewImportBag">func <a href="/target/collimp.go?s=455:491#L10">NewImportBag</a></h3>
-				<pre>func NewImportBag() (bag *ImportBag)</pre>
+				<h3 id="NewImportBag">func <a href="/target/collimp.go?s=442:477#L11">NewImportBag</a></h3>
+				<pre>func NewImportBag() (me *ImportBag)</pre>
 				<p>
 Initializes and returns a newly created ImportBag instance.
 </p>

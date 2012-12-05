@@ -18,6 +18,8 @@ var (
 	//	- a kilometer, set to 1000;
 	//	- an inch, set to 0.02539999969303608... etc.
 	//	The *assets* package does not support multiple different or individual per-asset units.
+	//	This is ONLY used when importing assets that specify their own unit-in-meters, those will be re-scaled to this unit.
+	//	If you need to customize this value, do so before populating the *assets* package's libraries.
 	UnitInMeters float64 = 1
 
 	syncHandlers []func()

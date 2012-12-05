@@ -7,29 +7,65 @@ import (
 	c15 "github.com/metaleap/go-xsd-pkg/khronos.org/files/collada_schema_1_5_go"
 )
 
-func c15_TassetType(obj *c15.TassetType) {
-}
-
-func c15_TcameraType(obj *c15.TcameraType) {
-	def := nga.CameraDefs.AddNew(obj.Id.String())
-	if (obj.Optics != nil) && (obj.Optics.TechniqueCommon != nil) {
-		if o := obj.Optics.TechniqueCommon.Orthographic; o != nil {
-			def.Ortho, def.MagX, def.MagY, def.Zfar, def.Znear = true, f64(o.Xmag), f64(o.Ymag), f64(o.Zfar), f64(o.Znear)
-		} else if p := obj.Optics.TechniqueCommon.Perspective; p != nil {
-			def.Ortho, def.FovX, def.FovY, def.Zfar, def.Znear = false, f64(p.Xfov), f64(p.Yfov), f64(p.Zfar), f64(p.Znear)
+func onAsset(obj *c15.TassetType, enter bool) {
+	if obj != nil {
+		if enter {
+			nu := append([]*c15.TassetType{obj}, state.assetStack...)
+			state.assetStack = nu
+		} else if len(state.assetStack) > 0 {
+			state.assetStack = state.assetStack[1:]
+		}
+		if (len(state.assetStack) > 0) && (state.assetStack[0].Unit != nil) && (state.assetStack[0].Unit.Meter != 0) {
+			state.curAssetUnitInMeters = f64(state.assetStack[0].Unit.Meter)
+		} else {
+			state.curAssetUnitInMeters = 1
 		}
 	}
 }
 
-func c15_TimageType(obj *c15.TimageType) {
-	def := nga.ImageDefs.AddNew(obj.Id.String())
-	if init := obj.InitFrom; init != nil {
-		if !init.MipsGenerate {
-			def.InitFrom.AutoMip = false
+func c15_TxsdCollada(obj *c15.TxsdCollada, enter bool) {
+	onAsset(obj.Asset, enter)
+}
+
+func c15_TcameraType(obj *c15.TcameraType, enter bool) {
+	if onAsset(obj.Asset, enter); enter {
+		def := nga.CameraDefs.AddNew(obj.Id.String())
+		if (obj.Optics != nil) && (obj.Optics.TechniqueCommon != nil) {
+			if o := obj.Optics.TechniqueCommon.Orthographic; o != nil {
+				def.Ortho, def.MagX, def.MagY, def.Zfar, def.Znear = true, f64(o.Xmag), f64(o.Ymag), f64c(o.Zfar), f64c(o.Znear)
+			} else if p := obj.Optics.TechniqueCommon.Perspective; p != nil {
+				def.Ortho, def.FovX, def.FovY, def.Zfar, def.Znear = false, f64(p.Xfov), f64(p.Yfov), f64c(p.Zfar), f64c(p.Znear)
+			}
 		}
-		def.InitFrom.RefUrl = init.Ref.String()
-		if len(init.Hex.XsdGoPkgValue) > 0 {
-			def.InitFrom.RawData, _ = hex.DecodeString(init.Hex.ToXsdtString().String())
+	}
+}
+
+func c15_TeffectType(obj *c15.TeffectType, enter bool) {
+	if onAsset(obj.Asset, enter); enter {
+		def := nga.EffectDefs.AddNew(obj.Id.String())
+		for _, np := range obj.Newparams {
+
 		}
+	}
+}
+
+func c15_TimageType(obj *c15.TimageType, enter bool) {
+	if onAsset(obj.Asset, enter); enter {
+		def := nga.ImageDefs.AddNew(obj.Id.String())
+		if init := obj.InitFrom; init != nil {
+			if !init.MipsGenerate {
+				def.InitFrom.AutoMip = false
+			}
+			def.InitFrom.RefUrl = init.Ref.String()
+			if len(init.Hex.XsdGoPkgValue) > 0 {
+				def.InitFrom.RawData, _ = hex.DecodeString(init.Hex.ToXsdtString().String())
+			}
+		}
+	}
+}
+
+func c15_TmaterialType(obj *c15.TmaterialType, enter bool) {
+	if onAsset(obj.Asset, enter); enter {
+
 	}
 }

@@ -4,7 +4,8 @@ package assets
 type CameraDef struct {
 	BaseDef
 
-	// FovX float64
+	//	Horizontal field-of-view for perspective camera.
+	FovX float64
 
 	//	Vertical field-of-view for perspective camera.
 	FovY float64
@@ -28,7 +29,6 @@ type CameraDef struct {
 func (me *CameraDef) init() {
 }
 
-/*
 //	Sets the *FovX* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
 func (me *CameraDef) SetFovX(v float64) {
 	if me.FovX != v {
@@ -36,7 +36,6 @@ func (me *CameraDef) SetFovX(v float64) {
 		me.SetDirty()
 	}
 }
-*/
 
 //	Sets the *FovY* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
 func (me *CameraDef) SetFovY(v float64) {
