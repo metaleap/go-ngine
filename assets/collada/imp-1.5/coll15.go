@@ -23,11 +23,12 @@ func onAsset(obj *c15.TassetType, enter bool) {
 	}
 }
 
-func c15_TxsdCollada(obj *c15.TxsdCollada, enter bool) {
+func c15_TxsdCollada(obj *c15.TxsdCollada, enter bool) (err error) {
 	onAsset(obj.Asset, enter)
+	return
 }
 
-func c15_TcameraType(obj *c15.TcameraType, enter bool) {
+func c15_TcameraType(obj *c15.TcameraType, enter bool) (err error) {
 	if onAsset(obj.Asset, enter); enter {
 		def := nga.CameraDefs.AddNew(obj.Id.String())
 		if (obj.Optics != nil) && (obj.Optics.TechniqueCommon != nil) {
@@ -38,18 +39,20 @@ func c15_TcameraType(obj *c15.TcameraType, enter bool) {
 			}
 		}
 	}
+	return
 }
 
-func c15_TeffectType(obj *c15.TeffectType, enter bool) {
+func c15_TeffectType(obj *c15.TeffectType, enter bool) (err error) {
 	if onAsset(obj.Asset, enter); enter {
 		def := nga.EffectDefs.AddNew(obj.Id.String())
 		for _, np := range obj.Newparams {
-
+			def.NewParams[np.Sid.String()] = imp_TfxNewparamType(np)
 		}
 	}
+	return
 }
 
-func c15_TimageType(obj *c15.TimageType, enter bool) {
+func c15_TimageType(obj *c15.TimageType, enter bool) (err error) {
 	if onAsset(obj.Asset, enter); enter {
 		def := nga.ImageDefs.AddNew(obj.Id.String())
 		if init := obj.InitFrom; init != nil {
@@ -57,15 +60,26 @@ func c15_TimageType(obj *c15.TimageType, enter bool) {
 				def.InitFrom.AutoMip = false
 			}
 			def.InitFrom.RefUrl = init.Ref.String()
-			if len(init.Hex.XsdGoPkgValue) > 0 {
-				def.InitFrom.RawData, _ = hex.DecodeString(init.Hex.ToXsdtString().String())
+			if (init.Hex != nil) && (len(init.Hex.XsdGoPkgValue) > 0) {
+				def.InitFrom.RawData, err = hex.DecodeString(init.Hex.ToXsdtString().String())
 			}
 		}
 	}
+	return
 }
 
-func c15_TmaterialType(obj *c15.TmaterialType, enter bool) {
+func c15_TmaterialType(obj *c15.TmaterialType, enter bool) (err error) {
 	if onAsset(obj.Asset, enter); enter {
 
 	}
+	return
+}
+
+func imp_TfxNewparamType(obj *c15.TfxNewparamType) (np *nga.FxNewParam) {
+	var val interface{}
+	np = nga.NewFxNewParam(obj.Modifier.String(), obj.Semantic.String())
+	for _, ann := range obj.Annotates {
+		np.Annotations[ann.Name.String()] = val
+	}
+	return
 }

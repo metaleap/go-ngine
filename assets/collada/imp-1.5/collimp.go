@@ -2,6 +2,7 @@ package collimp
 
 import (
 	"encoding/xml"
+	"log"
 
 	nga "github.com/go3d/go-ngine/assets"
 	c141 "github.com/go3d/go-ngine/assets/collada/conv-1.4.1-to-1.5"
@@ -30,6 +31,9 @@ type importState struct {
 }
 
 func f64(d xsdt.ToXsdtDouble) float64 {
+	if d == nil {
+		return 0
+	}
 	return float64(d.ToXsdtDouble())
 }
 
@@ -43,13 +47,16 @@ func ImportCollada(colladaDoc []byte, importBag *ImportBag) (err error) {
 	c141.Force, c141.Strict = false, false
 	if colladaDoc, err = c141.Convert(colladaDoc); err == nil {
 		err = xml.Unmarshal(colladaDoc, state.d15)
-		colladaDoc = nil
-		if err == nil {
+		if colladaDoc = nil; err == nil {
 			c15.WalkHandlers.TcameraType = c15_TcameraType
 			c15.WalkHandlers.TeffectType = c15_TeffectType
 			c15.WalkHandlers.TimageType = c15_TimageType
 			c15.WalkHandlers.TmaterialType = c15_TmaterialType
 			c15.WalkHandlers.TxsdCollada = c15_TxsdCollada
+			c15.WalkOnError = func(err error) {
+				log.Printf("%v\n", err)
+			}
+			c15.WalkContinueOnError = true
 			state.d15.Walk()
 		}
 	}
