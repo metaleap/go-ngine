@@ -46,7 +46,7 @@ func main() {
 	} else {
 		for _, baseDirPath := range []string{"Q:\\Dropbox\\oga\\collada", "C:\\Users\\roxor\\Dropbox\\oga\\collada"} {
 			if uio.DirExists(baseDirPath) {
-				for _, subDirName := range []string{"cube-poly", "cube-tris", "duck-poly", "duck-tris", "mgmidget", "bikexsi", "diningroom"} {
+				for _, subDirName := range []string{"cube-poly", "cube-tris", "duck-poly", "duck-tris", "mgmidget", "bikexsi", "diningroom", "berlin", "sponza"} {
 					convert(filepath.Join(baseDirPath, subDirName, "obj.dae"), filepath.Join(baseDirPath, subDirName, "obj15.dae"))
 				}
 			}

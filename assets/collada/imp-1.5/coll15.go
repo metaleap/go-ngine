@@ -78,9 +78,7 @@ func c15_TmaterialType(obj *c15.TmaterialType, enter bool) (err error) {
 
 func imp_TfxNewparamType(obj *c15.TfxNewparamType) (np *nga.FxNewParam) {
 	var (
-		val    interface{}
-		bools  []xsdt.Boolean
-		floats []xsdt.Double
+		val interface{}
 	)
 	np = nga.NewFxNewParam(obj.Modifier.String(), obj.Semantic.String())
 	for _, ann := range obj.Annotates {
@@ -90,19 +88,15 @@ func imp_TfxNewparamType(obj *c15.TfxNewparamType) (np *nga.FxNewParam) {
 			val = f64(ann.Float)
 		} else if ann.Int != nil {
 			val = i64(ann.Int)
-		} else if len(ann.Bool2) > 0 {
-			bools = ann.Bool2.ToTlistOfBoolsType().Values()
-		} else if len(ann.Bool3) > 0 {
-			bools = ann.Bool3.ToTlistOfBoolsType().Values()
-		} else if len(ann.Bool4) > 0 {
-			bools = ann.Bool4.ToTlistOfBoolsType().Values()
-		} else if len(ann.Float2) > 0 {
-			floats = ann.Float2.ToTlistOfFloatsType().Values()
+		} else if len(ann.String) > 0 {
+			val = ann.String
 		}
-		if len(bools) > 0 {
+		if bools := pickBools(ann.Bool2, ann.Bool3, ann.Bool4); len(bools) > 0 {
 			val = xsdt.ListValuesBoolean(bools)
-		} else if len(floats) > 0 {
-			val = xsdt.ListValuesFloat(floats...)
+		} else if floats := pickFloats(ann.Float2, ann.Float3, ann.Float4, ann.Float2X2, ann.Float3X3, ann.Float4X4); len(floats) > 0 {
+			val = xsdt.ListValuesDouble(floats)
+		} else if ints := pickInts(ann.Int2, ann.Int3, ann.Int4); len(ints) > 0 {
+			val = ints
 		}
 		np.Annotations[ann.Name.String()] = val
 	}
