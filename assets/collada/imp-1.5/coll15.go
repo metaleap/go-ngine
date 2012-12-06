@@ -5,6 +5,7 @@ import (
 
 	nga "github.com/go3d/go-ngine/assets"
 	c15 "github.com/metaleap/go-xsd-pkg/khronos.org/files/collada_schema_1_5_go"
+	xsdt "github.com/metaleap/go-xsd/types"
 )
 
 func onAsset(obj *c15.TassetType, enter bool) {
@@ -76,9 +77,33 @@ func c15_TmaterialType(obj *c15.TmaterialType, enter bool) (err error) {
 }
 
 func imp_TfxNewparamType(obj *c15.TfxNewparamType) (np *nga.FxNewParam) {
-	var val interface{}
+	var (
+		val    interface{}
+		bools  []xsdt.Boolean
+		floats []xsdt.Double
+	)
 	np = nga.NewFxNewParam(obj.Modifier.String(), obj.Semantic.String())
 	for _, ann := range obj.Annotates {
+		if ann.Bool != nil {
+			val = bool(*ann.Bool)
+		} else if ann.Float != nil {
+			val = f64(ann.Float)
+		} else if ann.Int != nil {
+			val = i64(ann.Int)
+		} else if len(ann.Bool2) > 0 {
+			bools = ann.Bool2.ToTlistOfBoolsType().Values()
+		} else if len(ann.Bool3) > 0 {
+			bools = ann.Bool3.ToTlistOfBoolsType().Values()
+		} else if len(ann.Bool4) > 0 {
+			bools = ann.Bool4.ToTlistOfBoolsType().Values()
+		} else if len(ann.Float2) > 0 {
+			floats = ann.Float2.ToTlistOfFloatsType().Values()
+		}
+		if len(bools) > 0 {
+			val = xsdt.ListValuesBoolean(bools)
+		} else if len(floats) > 0 {
+			val = xsdt.ListValuesFloat(floats...)
+		}
 		np.Annotations[ann.Name.String()] = val
 	}
 	return

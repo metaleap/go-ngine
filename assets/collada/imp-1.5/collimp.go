@@ -41,6 +41,13 @@ func f64c(d xsdt.ToXsdtDouble) float64 {
 	return (f64(d) * state.curAssetUnitInMeters) / nga.UnitInMeters
 }
 
+func i64(d xsdt.ToXsdtLong) int64 {
+	if d == nil {
+		return 0
+	}
+	return int64(d.ToXsdtLong())
+}
+
 //	Imports the specified Collada document, using the import options specified in importBag.
 func ImportCollada(colladaDoc []byte, importBag *ImportBag) (err error) {
 	state = &importState{curAssetUnitInMeters: 1, d15: &c15.TxsdCollada{}}
