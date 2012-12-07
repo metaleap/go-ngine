@@ -9,6 +9,7 @@ import (
 
 	conv "github.com/go3d/go-ngine/assets/collada/conv-1.4.1-to-1.5"
 	xmlx "github.com/jteeuwen/go-pkg-xmlx"
+	ugo "github.com/metaleap/go-util"
 	uio "github.com/metaleap/go-util/io"
 )
 
@@ -44,9 +45,10 @@ func main() {
 	if (len(*flagSrcFilePath) > 0) && (len(*flagDstFilePath) > 0) {
 		convert(*flagSrcFilePath, *flagDstFilePath)
 	} else {
-		for _, baseDirPath := range []string{"Q:\\Dropbox\\oga\\collada", "C:\\Users\\roxor\\Dropbox\\oga\\collada"} {
+		const dbp = "Dropbox/oga/collada"
+		for _, baseDirPath := range []string{filepath.Join("Q:", dbp), filepath.Join(ugo.UserHomeDirPath(), dbp)} {
 			if uio.DirExists(baseDirPath) {
-				for _, subDirName := range []string{"cube-poly", "cube-tris", "duck-poly", "duck-tris", "mgmidget", "bikexsi", "diningroom", "berlin", "sponza"} {
+				for _, subDirName := range []string{"cube-poly", "cube-tris", "duck-poly", "duck-tris", "mgmidget", "bikexsi", "diningroom"} {
 					convert(filepath.Join(baseDirPath, subDirName, "obj.dae"), filepath.Join(baseDirPath, subDirName, "obj15.dae"))
 				}
 			}
