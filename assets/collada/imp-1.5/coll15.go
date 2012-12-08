@@ -31,6 +31,7 @@ func c15_TxsdCollada(obj *c15.TxsdCollada, enter bool) (err error) {
 func c15_TcameraType(obj *c15.TcameraType, enter bool) (err error) {
 	if onAsset(obj.Asset, enter); enter {
 		def := nga.CameraDefs.AddNew(obj.Id.String())
+		def.Name = obj.Name.String()
 		if (obj.Optics != nil) && (obj.Optics.TechniqueCommon != nil) {
 			if o := obj.Optics.TechniqueCommon.Orthographic; o != nil {
 				def.Ortho, def.MagX, def.MagY, def.Zfar, def.Znear = true, f64(o.Xmag), f64(o.Ymag), f64c(o.Zfar), f64c(o.Znear)
@@ -45,6 +46,7 @@ func c15_TcameraType(obj *c15.TcameraType, enter bool) (err error) {
 func c15_TeffectType(obj *c15.TeffectType, enter bool) (err error) {
 	if onAsset(obj.Asset, enter); enter {
 		def := nga.EffectDefs.AddNew(obj.Id.String())
+		def.Name = obj.Name.String()
 		for _, np := range obj.Newparams {
 			def.Params[np.Sid.String()] = imp_TfxNewparamType(np)
 		}
@@ -55,6 +57,7 @@ func c15_TeffectType(obj *c15.TeffectType, enter bool) (err error) {
 func c15_TimageType(obj *c15.TimageType, enter bool) (err error) {
 	if onAsset(obj.Asset, enter); enter {
 		def := nga.ImageDefs.AddNew(obj.Id.String())
+		def.Name, def.Sid = obj.Name.String(), obj.Sid.String()
 		if init := obj.InitFrom; init != nil {
 			if !init.MipsGenerate {
 				def.InitFrom.AutoMip = false

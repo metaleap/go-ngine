@@ -33,11 +33,20 @@ func pickInts(to ...c15.ToTlistOfIntsType) []xsdt.Long {
 	return nil
 }
 
+func pickSampler(to ...*c15.TfxSamplerType) (t *c15.TfxSamplerType) {
+	for _, t = range to {
+		if t != nil {
+			return
+		}
+	}
+	return
+}
+
 func f64(d xsdt.ToXsdtDouble) float64 {
 	if d == nil {
 		return 0
 	}
-	return float64(d.ToXsdtDouble())
+	return d.ToXsdtDouble().N()
 }
 
 func f64c(d xsdt.ToXsdtDouble) float64 {
@@ -48,5 +57,5 @@ func i64(d xsdt.ToXsdtLong) int64 {
 	if d == nil {
 		return 0
 	}
-	return int64(d.ToXsdtLong())
+	return d.ToXsdtLong().N()
 }

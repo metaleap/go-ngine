@@ -25,7 +25,7 @@ func (me *EffectInst) init() {
 
 func newEffectDef(id string) (me *EffectDef) {
 	me = &EffectDef{}
-	me.BaseDef.init(id)
+	me.ID = id
 	me.init()
 	return
 }
@@ -33,7 +33,6 @@ func newEffectDef(id string) (me *EffectDef) {
 //	Creates and returns a new *EffectInst* instance referencing this *EffectDef* definition.
 func (me *EffectDef) NewInst(id string) (inst *EffectInst) {
 	inst = &EffectInst{Def: me}
-	inst.Base.init(id)
 	inst.init()
 	return
 }
@@ -86,7 +85,7 @@ type LibEffectDefs struct {
 
 func newLibEffectDefs(id string) (me *LibEffectDefs) {
 	me = &LibEffectDefs{M: map[string]*EffectDef{}}
-	me.Base.init(id)
+	me.ID = id
 	return
 }
 

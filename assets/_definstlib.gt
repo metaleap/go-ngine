@@ -2,7 +2,7 @@ package gt
 
 func new__T__Def(id string) (me *__T__Def) {
 	me = &__T__Def{}
-	me.BaseDef.init(id)
+	me.ID = id
 	me.init()
 	return
 }
@@ -10,7 +10,6 @@ func new__T__Def(id string) (me *__T__Def) {
 //	Creates and returns a new *__T__Inst* instance referencing this *__T__Def* definition.
 func (me *__T__Def) NewInst(id string) (inst *__T__Inst) {
 	inst = &__T__Inst{Def: me}
-	inst.Base.init(id)
 	inst.init()
 	return
 }
@@ -63,7 +62,7 @@ type Lib__T__Defs struct {
 
 func newLib__T__Defs(id string) (me *Lib__T__Defs) {
 	me = &Lib__T__Defs{M: map[string]*__T__Def{}}
-	me.Base.init(id)
+	me.ID = id
 	return
 }
 

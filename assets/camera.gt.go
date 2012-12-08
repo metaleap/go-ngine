@@ -100,7 +100,7 @@ func (me *CameraInst) init() {
 
 func newCameraDef(id string) (me *CameraDef) {
 	me = &CameraDef{}
-	me.BaseDef.init(id)
+	me.ID = id
 	me.init()
 	return
 }
@@ -108,7 +108,6 @@ func newCameraDef(id string) (me *CameraDef) {
 //	Creates and returns a new *CameraInst* instance referencing this *CameraDef* definition.
 func (me *CameraDef) NewInst(id string) (inst *CameraInst) {
 	inst = &CameraInst{Def: me}
-	inst.Base.init(id)
 	inst.init()
 	return
 }
@@ -161,7 +160,7 @@ type LibCameraDefs struct {
 
 func newLibCameraDefs(id string) (me *LibCameraDefs) {
 	me = &LibCameraDefs{M: map[string]*CameraDef{}}
-	me.Base.init(id)
+	me.ID = id
 	return
 }
 

@@ -23,7 +23,7 @@ func (me *MaterialInst) init() {
 
 func newMaterialDef(id string) (me *MaterialDef) {
 	me = &MaterialDef{}
-	me.BaseDef.init(id)
+	me.ID = id
 	me.init()
 	return
 }
@@ -31,7 +31,6 @@ func newMaterialDef(id string) (me *MaterialDef) {
 //	Creates and returns a new *MaterialInst* instance referencing this *MaterialDef* definition.
 func (me *MaterialDef) NewInst(id string) (inst *MaterialInst) {
 	inst = &MaterialInst{Def: me}
-	inst.Base.init(id)
 	inst.init()
 	return
 }
@@ -84,7 +83,7 @@ type LibMaterialDefs struct {
 
 func newLibMaterialDefs(id string) (me *LibMaterialDefs) {
 	me = &LibMaterialDefs{M: map[string]*MaterialDef{}}
-	me.Base.init(id)
+	me.ID = id
 	return
 }
 

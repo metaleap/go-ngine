@@ -16,6 +16,7 @@ type ImageInitFrom struct {
 //	Declares the storage for the graphical representation of an object.
 type ImageDef struct {
 	BaseDef
+	HasSid
 	//	Initializes an entire Image or portions of an Image from referenced or embedded data.
 	InitFrom *ImageInitFrom
 }
@@ -39,7 +40,7 @@ func (me *ImageInst) init() {
 
 func newImageDef(id string) (me *ImageDef) {
 	me = &ImageDef{}
-	me.BaseDef.init(id)
+	me.ID = id
 	me.init()
 	return
 }
@@ -47,7 +48,6 @@ func newImageDef(id string) (me *ImageDef) {
 //	Creates and returns a new *ImageInst* instance referencing this *ImageDef* definition.
 func (me *ImageDef) NewInst(id string) (inst *ImageInst) {
 	inst = &ImageInst{Def: me}
-	inst.Base.init(id)
 	inst.init()
 	return
 }
@@ -100,7 +100,7 @@ type LibImageDefs struct {
 
 func newLibImageDefs(id string) (me *LibImageDefs) {
 	me = &LibImageDefs{M: map[string]*ImageDef{}}
-	me.Base.init(id)
+	me.ID = id
 	return
 }
 

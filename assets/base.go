@@ -2,9 +2,6 @@ package assets
 
 //	Provides a common base for *Def*s, *Inst*s and *Lib*s.
 type Base struct {
-	//	The unique identifier of this *Def*, *Inst* or *Lib*.
-	ID string
-
 	//	This callback, set by *core* (or your custom package), gets called by the *SyncChanges()* method.
 	//	This is the ultimate point in the sync chain where *core* (or your custom package) picks up the changed
 	//	contents of this *Def*, *Inst* or *Lib*. If this is a *Lib* this gets called after all *Defs* in it
@@ -20,8 +17,7 @@ func (me *Base) SetDirty() {
 	me.dirty = true
 }
 
-func (me *Base) init(id string) {
-	me.ID = id
+func (me *Base) init() {
 	me.OnSync = func() {}
 	me.SetDirty()
 }
@@ -38,22 +34,21 @@ func (me *Base) SyncChanges() {
 
 //	Provides a common base for *Def*s.
 type BaseDef struct {
-	//	Provides ID and syncing
 	Base
-}
-
-func (me *BaseDef) init(id string) {
-	me.Base.init(id)
+	HasID
+	HasName
 }
 
 //	Provides a common base for *Inst*s.
 type BaseInst struct {
-	//	Provides ID and syncing
 	Base
+	HasName
+	HasSid
 }
 
 //	Provides a common base for *Lib*s.
 type BaseLib struct {
-	//	Provides ID and syncing
 	Base
+	HasID
+	HasName
 }

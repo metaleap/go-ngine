@@ -152,6 +152,8 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 		<div id="manual-nav">
 			<dl>
 			
+				<dd><a href="#pkg-constants">Constants</a></dd>
+			
 			
 				<dd><a href="#pkg-variables">Variables</a></dd>
 			
@@ -240,6 +242,21 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 			
 				
 				<dd><a href="#FxParamDefs">type FxParamDefs</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HasID">type HasID</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HasName">type HasName</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HasSid">type HasSid</a></dd>
 				
 				
 			
@@ -362,26 +379,6 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				
 			
 				
-				<dd><a href="#LibSceneDefs">type LibSceneDefs</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#LibSceneDefs.Add">func (me *LibSceneDefs) Add(d *SceneDef) (n *SceneDef)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#LibSceneDefs.AddNew">func (me *LibSceneDefs) AddNew(id string) *SceneDef</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#LibSceneDefs.New">func (me *LibSceneDefs) New(id string) (def *SceneDef)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#LibSceneDefs.Remove">func (me *LibSceneDefs) Remove(id string)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#LibSceneDefs.SyncChanges">func (me *LibSceneDefs) SyncChanges()</a></dd>
-				
-			
-				
 				<dd><a href="#LibVisualSceneDefs">type LibVisualSceneDefs</a></dd>
 				
 				
@@ -439,14 +436,6 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#LibsNodeDef.AddNew">func (me LibsNodeDef) AddNew(id string) (lib *LibNodeDefs)</a></dd>
-				
-			
-				
-				<dd><a href="#LibsSceneDef">type LibsSceneDef</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#LibsSceneDef.AddNew">func (me LibsSceneDef) AddNew(id string) (lib *LibSceneDefs)</a></dd>
 				
 			
 				
@@ -542,15 +531,25 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				
 			
 				
-				<dd><a href="#SceneDef">type SceneDef</a></dd>
-				
+				<dd><a href="#Sampler">type Sampler</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#SceneDef.NewInst">func (me *SceneDef) NewInst(id string) (inst *SceneInst)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NewSampler">func NewSampler() (me *Sampler)</a></dd>
+				
 				
 			
 				
-				<dd><a href="#SceneInst">type SceneInst</a></dd>
+				<dd><a href="#SamplerFiltering">type SamplerFiltering</a></dd>
+				
+				
+			
+				
+				<dd><a href="#SamplerWrapping">type SamplerWrapping</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Scene">type Scene</a></dd>
 				
 				
 			
@@ -597,7 +596,9 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 			
 				<a href="/target/node.gt.go">node.gt.go</a>
 			
-				<a href="/target/scene.gt.go">scene.gt.go</a>
+				<a href="/target/sampler.go">sampler.go</a>
+			
+				<a href="/target/scene.go">scene.go</a>
 			
 				<a href="/target/visualscene.gt.go">visualscene.gt.go</a>
 			
@@ -605,6 +606,23 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 			</p>
 		
 	
+		
+			<h2 id="pkg-constants">Constants</h2>
+			
+				<pre>const (
+    SAMPLER_FILTER_NONE        = 0
+    SAMPLER_FILTER_NEAREST     = 0x2600
+    SAMPLER_FILTER_LINEAR      = 0x2601
+    SAMPLER_FILTER_ANISOTROPIC = 1
+
+    SAMPLER_WRAP_WRAP        = 0x2901
+    SAMPLER_WRAP_MIRROR      = 0x8370
+    SAMPLER_WRAP_CLAMP       = 0x812F
+    SAMPLER_WRAP_BORDER      = 0x812D
+    SAMPLER_WRAP_MIRROR_ONCE = 0
+)</pre>
+				
+			
 		
 		
 			<h2 id="pkg-variables">Variables</h2>
@@ -675,11 +693,18 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				
 			
 				<pre>var (
-    <span class="comment">//	A *map* collection that contains *LibSceneDefs* libraries associated by their *ID*.</span>
-    AllSceneDefLibs = LibsSceneDef{}
-
-    <span class="comment">//	The &#34;default&#34; *LibSceneDefs* library for *SceneDef*s.</span>
-    SceneDefs = AllSceneDefLibs.AddNew(&#34;&#34;)
+    DefaultSamplerFiltering = &amp;SamplerFiltering{
+        Mag:           SAMPLER_FILTER_LINEAR,
+        Min:           SAMPLER_FILTER_LINEAR,
+        Mip:           SAMPLER_FILTER_LINEAR,
+        MaxAnisotropy: 1,
+    }
+    DefaultSamplerWrapping = &amp;SamplerWrapping{
+        BorderColor: ugfx.Rgba32{R: 0, G: 0, B: 0, A: 1},
+        WrapS:       SAMPLER_WRAP_WRAP,
+        WrapT:       SAMPLER_WRAP_WRAP,
+        WrapP:       SAMPLER_WRAP_WRAP,
+    }
 )</pre>
 				
 			
@@ -707,11 +732,8 @@ Signals to *core* (or your custom package) that changes have been made that need
 		
 			
 			
-			<h2 id="Base">type <a href="/target/base.go?s=74:523#L1">Base</a></h2>
+			<h2 id="Base">type <a href="/target/base.go?s=74:453#L1">Base</a></h2>
 			<pre>type Base struct {
-    <span class="comment">//	The unique identifier of this *Def*, *Inst* or *Lib*.</span>
-    ID string
-
     <span class="comment">//	This callback, set by *core* (or your custom package), gets called by the *SyncChanges()* method.</span>
     <span class="comment">//	This is the ultimate point in the sync chain where *core* (or your custom package) picks up the changed</span>
     <span class="comment">//	contents of this *Def*, *Inst* or *Lib*. If this is a *Lib* this gets called after all *Defs* in it</span>
@@ -734,7 +756,7 @@ Provides a common base for *Def*s, *Inst*s and *Lib*s.
 
 			
 				
-				<h3 id="Base.SetDirty">func (*Base) <a href="/target/base.go?s=748:774#L9">SetDirty</a></h3>
+				<h3 id="Base.SetDirty">func (*Base) <a href="/target/base.go?s=678:704#L6">SetDirty</a></h3>
 				<pre>func (me *Base) SetDirty()</pre>
 				<p>
 You NEED to call this method if you modified this *Def* or *Inst* by setting its fields directly
@@ -745,7 +767,7 @@ You NEED to call this method if you modified this *Def* or *Inst* by setting its
 				
 			
 				
-				<h3 id="Base.SyncChanges">func (*Base) <a href="/target/base.go?s=1163:1192#L22">SyncChanges</a></h3>
+				<h3 id="Base.SyncChanges">func (*Base) <a href="/target/base.go?s=1072:1101#L18">SyncChanges</a></h3>
 				<pre>func (me *Base) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *Def*, *Inst* or *Lib* that need to be picked up.
@@ -759,10 +781,11 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="BaseDef">type <a href="/target/base.go?s=1287:1344#L30">BaseDef</a></h2>
+			<h2 id="BaseDef">type <a href="/target/base.go?s=1196:1241#L26">BaseDef</a></h2>
 			<pre>type BaseDef struct {
-    <span class="comment">//	Provides ID and syncing</span>
     Base
+    HasID
+    HasName
 }</pre>
 			<p>
 Provides a common base for *Def*s.
@@ -781,10 +804,11 @@ Provides a common base for *Def*s.
 		
 			
 			
-			<h2 id="BaseInst">type <a href="/target/base.go?s=1443:1501#L40">BaseInst</a></h2>
+			<h2 id="BaseInst">type <a href="/target/base.go?s=1282:1329#L33">BaseInst</a></h2>
 			<pre>type BaseInst struct {
-    <span class="comment">//	Provides ID and syncing</span>
     Base
+    HasName
+    HasSid
 }</pre>
 			<p>
 Provides a common base for *Inst*s.
@@ -803,10 +827,11 @@ Provides a common base for *Inst*s.
 		
 			
 			
-			<h2 id="BaseLib">type <a href="/target/base.go?s=1541:1598#L46">BaseLib</a></h2>
+			<h2 id="BaseLib">type <a href="/target/base.go?s=1369:1414#L40">BaseLib</a></h2>
 			<pre>type BaseLib struct {
-    <span class="comment">//	Provides ID and syncing</span>
     Base
+    HasID
+    HasName
 }</pre>
 			<p>
 Provides a common base for *Lib*s.
@@ -865,7 +890,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 
 			
 				
-				<h3 id="CameraDef.NewInst">func (*CameraDef) <a href="/target/camera.gt.go?s=2703:2761#L99">NewInst</a></h3>
+				<h3 id="CameraDef.NewInst">func (*CameraDef) <a href="/target/camera.gt.go?s=2694:2752#L99">NewInst</a></h3>
 				<pre>func (me *CameraDef) NewInst(id string) (inst *CameraInst)</pre>
 				<p>
 Creates and returns a new *CameraInst* instance referencing this *CameraDef* definition.
@@ -991,7 +1016,7 @@ Defines the equations necessary for the visual appearance of geometry and screen
 
 			
 				
-				<h3 id="EffectDef.NewInst">func (*EffectDef) <a href="/target/effect.gt.go?s=670:728#L24">NewInst</a></h3>
+				<h3 id="EffectDef.NewInst">func (*EffectDef) <a href="/target/effect.gt.go?s=661:719#L24">NewInst</a></h3>
 				<pre>func (me *EffectDef) NewInst(id string) (inst *EffectInst)</pre>
 				<p>
 Creates and returns a new *EffectInst* instance referencing this *EffectDef* definition.
@@ -1027,9 +1052,11 @@ An instance referencing a Effect definition.
 		
 			
 			
-			<h2 id="FxParamDef">type <a href="/target/common.go?s=57:115#L1">FxParamDef</a></h2>
+			<h2 id="FxParamDef">type <a href="/target/common.go?s=57:150#L1">FxParamDef</a></h2>
 			<pre>type FxParamDef struct {
-    Modifier, Semantic, Sid string
+    HasSid
+    Modifier, Semantic string
+    Value              interface{}
 }</pre>
 			
 
@@ -1061,9 +1088,67 @@ An instance referencing a Effect definition.
 		
 			
 			
-			<h2 id="ImageDef">type <a href="/target/image.gt.go?s=477:625#L7">ImageDef</a></h2>
+			<h2 id="HasID">type <a href="/target/common.go?s=152:242#L1">HasID</a></h2>
+			<pre>type HasID struct {
+    <span class="comment">//	The unique identifier of this *Def*, *Inst* or *Lib*.</span>
+    ID string
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="HasName">type <a href="/target/common.go?s=244:353#L6">HasName</a></h2>
+			<pre>type HasName struct {
+    <span class="comment">//	The optional pretty-print name/title of this *Def*, *Inst* or *Lib*.</span>
+    Name string
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="HasSid">type <a href="/target/common.go?s=355:403#L11">HasSid</a></h2>
+			<pre>type HasSid struct {
+    <span class="comment">//	Scoped ID</span>
+    Sid string
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="ImageDef">type <a href="/target/image.gt.go?s=477:633#L7">ImageDef</a></h2>
 			<pre>type ImageDef struct {
     BaseDef
+    HasSid
     <span class="comment">//	Initializes an entire Image or portions of an Image from referenced or embedded data.</span>
     InitFrom *ImageInitFrom
 }</pre>
@@ -1082,7 +1167,7 @@ Declares the storage for the graphical representation of an object.
 
 			
 				
-				<h3 id="ImageDef.NewInst">func (*ImageDef) <a href="/target/image.gt.go?s=1124:1180#L38">NewInst</a></h3>
+				<h3 id="ImageDef.NewInst">func (*ImageDef) <a href="/target/image.gt.go?s=1123:1179#L39">NewInst</a></h3>
 				<pre>func (me *ImageDef) NewInst(id string) (inst *ImageInst)</pre>
 				<p>
 Creates and returns a new *ImageInst* instance referencing this *ImageDef* definition.
@@ -1123,7 +1208,7 @@ Used for the ImageDef.InitFrom field.
 		
 			
 			
-			<h2 id="ImageInst">type <a href="/target/image.gt.go?s=752:857#L18">ImageInst</a></h2>
+			<h2 id="ImageInst">type <a href="/target/image.gt.go?s=760:865#L19">ImageInst</a></h2>
 			<pre>type ImageInst struct {
     BaseInst
 
@@ -1147,7 +1232,7 @@ An instance referencing an Image definition.
 		
 			
 			
-			<h2 id="LibCameraDefs">type <a href="/target/camera.gt.go?s=4076:4342#L145">LibCameraDefs</a></h2>
+			<h2 id="LibCameraDefs">type <a href="/target/camera.gt.go?s=4047:4313#L144">LibCameraDefs</a></h2>
 			<pre>type LibCameraDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -1170,7 +1255,7 @@ use the *LibsCameraDef.New()* or *LibsCameraDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibCameraDefs.Add">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=4688:4745#L161">Add</a></h3>
+				<h3 id="LibCameraDefs.Add">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=4653:4710#L160">Add</a></h3>
 				<pre>func (me *LibCameraDefs) Add(d *CameraDef) (n *CameraDef)</pre>
 				<p>
 Adds the specified *CameraDef* definition to this *LibCameraDefs*, and returns it.
@@ -1183,7 +1268,7 @@ If this *LibCameraDefs* already contains a *CameraDef* definition with the same 
 				
 			
 				
-				<h3 id="LibCameraDefs.AddNew">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5069:5122#L172">AddNew</a></h3>
+				<h3 id="LibCameraDefs.AddNew">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5034:5087#L171">AddNew</a></h3>
 				<pre>func (me *LibCameraDefs) AddNew(id string) *CameraDef</pre>
 				<p>
 Creates a new *CameraDef* definition with the specified *ID*, adds it to this *LibCameraDefs*, and returns it.
@@ -1196,7 +1281,7 @@ If this *LibCameraDefs* already contains a *CameraDef* definition with the speci
 				
 			
 				
-				<h3 id="LibCameraDefs.New">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5279:5335#L175">New</a></h3>
+				<h3 id="LibCameraDefs.New">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5244:5300#L174">New</a></h3>
 				<pre>func (me *LibCameraDefs) New(id string) (def *CameraDef)</pre>
 				<p>
 Creates a new *CameraDef* definition with the specified *ID* and returns it, but does not add it to this *LibCameraDefs*.
@@ -1206,7 +1291,7 @@ Creates a new *CameraDef* definition with the specified *ID* and returns it, but
 				
 			
 				
-				<h3 id="LibCameraDefs.Remove">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5450:5492#L178">Remove</a></h3>
+				<h3 id="LibCameraDefs.Remove">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5415:5457#L177">Remove</a></h3>
 				<pre>func (me *LibCameraDefs) Remove(id string)</pre>
 				<p>
 Removes the *CameraDef* with the specified *ID* from this *LibCameraDefs*.
@@ -1216,7 +1301,7 @@ Removes the *CameraDef* with the specified *ID* from this *LibCameraDefs*.
 				
 			
 				
-				<h3 id="LibCameraDefs.SyncChanges">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5829:5867#L183">SyncChanges</a></h3>
+				<h3 id="LibCameraDefs.SyncChanges">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=5794:5832#L182">SyncChanges</a></h3>
 				<pre>func (me *LibCameraDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibCameraDefs* that need to be picked up.
@@ -1230,7 +1315,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibEffectDefs">type <a href="/target/effect.gt.go?s=2043:2309#L70">LibEffectDefs</a></h2>
+			<h2 id="LibEffectDefs">type <a href="/target/effect.gt.go?s=2014:2280#L69">LibEffectDefs</a></h2>
 			<pre>type LibEffectDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -1253,7 +1338,7 @@ use the *LibsEffectDef.New()* or *LibsEffectDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibEffectDefs.Add">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=2655:2712#L86">Add</a></h3>
+				<h3 id="LibEffectDefs.Add">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=2620:2677#L85">Add</a></h3>
 				<pre>func (me *LibEffectDefs) Add(d *EffectDef) (n *EffectDef)</pre>
 				<p>
 Adds the specified *EffectDef* definition to this *LibEffectDefs*, and returns it.
@@ -1266,7 +1351,7 @@ If this *LibEffectDefs* already contains a *EffectDef* definition with the same 
 				
 			
 				
-				<h3 id="LibEffectDefs.AddNew">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3036:3089#L97">AddNew</a></h3>
+				<h3 id="LibEffectDefs.AddNew">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3001:3054#L96">AddNew</a></h3>
 				<pre>func (me *LibEffectDefs) AddNew(id string) *EffectDef</pre>
 				<p>
 Creates a new *EffectDef* definition with the specified *ID*, adds it to this *LibEffectDefs*, and returns it.
@@ -1279,7 +1364,7 @@ If this *LibEffectDefs* already contains a *EffectDef* definition with the speci
 				
 			
 				
-				<h3 id="LibEffectDefs.New">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3246:3302#L100">New</a></h3>
+				<h3 id="LibEffectDefs.New">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3211:3267#L99">New</a></h3>
 				<pre>func (me *LibEffectDefs) New(id string) (def *EffectDef)</pre>
 				<p>
 Creates a new *EffectDef* definition with the specified *ID* and returns it, but does not add it to this *LibEffectDefs*.
@@ -1289,7 +1374,7 @@ Creates a new *EffectDef* definition with the specified *ID* and returns it, but
 				
 			
 				
-				<h3 id="LibEffectDefs.Remove">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3417:3459#L103">Remove</a></h3>
+				<h3 id="LibEffectDefs.Remove">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3382:3424#L102">Remove</a></h3>
 				<pre>func (me *LibEffectDefs) Remove(id string)</pre>
 				<p>
 Removes the *EffectDef* with the specified *ID* from this *LibEffectDefs*.
@@ -1299,7 +1384,7 @@ Removes the *EffectDef* with the specified *ID* from this *LibEffectDefs*.
 				
 			
 				
-				<h3 id="LibEffectDefs.SyncChanges">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3796:3834#L108">SyncChanges</a></h3>
+				<h3 id="LibEffectDefs.SyncChanges">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3761:3799#L107">SyncChanges</a></h3>
 				<pre>func (me *LibEffectDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibEffectDefs* that need to be picked up.
@@ -1313,7 +1398,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibImageDefs">type <a href="/target/image.gt.go?s=2469:2733#L84">LibImageDefs</a></h2>
+			<h2 id="LibImageDefs">type <a href="/target/image.gt.go?s=2448:2712#L84">LibImageDefs</a></h2>
 			<pre>type LibImageDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -1336,7 +1421,7 @@ use the *LibsImageDef.New()* or *LibsImageDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibImageDefs.Add">func (*LibImageDefs) <a href="/target/image.gt.go?s=3071:3125#L100">Add</a></h3>
+				<h3 id="LibImageDefs.Add">func (*LibImageDefs) <a href="/target/image.gt.go?s=3044:3098#L100">Add</a></h3>
 				<pre>func (me *LibImageDefs) Add(d *ImageDef) (n *ImageDef)</pre>
 				<p>
 Adds the specified *ImageDef* definition to this *LibImageDefs*, and returns it.
@@ -1349,7 +1434,7 @@ If this *LibImageDefs* already contains a *ImageDef* definition with the same *I
 				
 			
 				
-				<h3 id="LibImageDefs.AddNew">func (*LibImageDefs) <a href="/target/image.gt.go?s=3445:3496#L111">AddNew</a></h3>
+				<h3 id="LibImageDefs.AddNew">func (*LibImageDefs) <a href="/target/image.gt.go?s=3418:3469#L111">AddNew</a></h3>
 				<pre>func (me *LibImageDefs) AddNew(id string) *ImageDef</pre>
 				<p>
 Creates a new *ImageDef* definition with the specified *ID*, adds it to this *LibImageDefs*, and returns it.
@@ -1362,7 +1447,7 @@ If this *LibImageDefs* already contains a *ImageDef* definition with the specifi
 				
 			
 				
-				<h3 id="LibImageDefs.New">func (*LibImageDefs) <a href="/target/image.gt.go?s=3651:3705#L114">New</a></h3>
+				<h3 id="LibImageDefs.New">func (*LibImageDefs) <a href="/target/image.gt.go?s=3624:3678#L114">New</a></h3>
 				<pre>func (me *LibImageDefs) New(id string) (def *ImageDef)</pre>
 				<p>
 Creates a new *ImageDef* definition with the specified *ID* and returns it, but does not add it to this *LibImageDefs*.
@@ -1372,7 +1457,7 @@ Creates a new *ImageDef* definition with the specified *ID* and returns it, but 
 				
 			
 				
-				<h3 id="LibImageDefs.Remove">func (*LibImageDefs) <a href="/target/image.gt.go?s=3817:3858#L117">Remove</a></h3>
+				<h3 id="LibImageDefs.Remove">func (*LibImageDefs) <a href="/target/image.gt.go?s=3790:3831#L117">Remove</a></h3>
 				<pre>func (me *LibImageDefs) Remove(id string)</pre>
 				<p>
 Removes the *ImageDef* with the specified *ID* from this *LibImageDefs*.
@@ -1382,7 +1467,7 @@ Removes the *ImageDef* with the specified *ID* from this *LibImageDefs*.
 				
 			
 				
-				<h3 id="LibImageDefs.SyncChanges">func (*LibImageDefs) <a href="/target/image.gt.go?s=4192:4229#L122">SyncChanges</a></h3>
+				<h3 id="LibImageDefs.SyncChanges">func (*LibImageDefs) <a href="/target/image.gt.go?s=4165:4202#L122">SyncChanges</a></h3>
 				<pre>func (me *LibImageDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibImageDefs* that need to be picked up.
@@ -1396,7 +1481,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibMaterialDefs">type <a href="/target/material.gt.go?s=2078:2348#L68">LibMaterialDefs</a></h2>
+			<h2 id="LibMaterialDefs">type <a href="/target/material.gt.go?s=2049:2319#L67">LibMaterialDefs</a></h2>
 			<pre>type LibMaterialDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -1419,7 +1504,7 @@ use the *LibsMaterialDef.New()* or *LibsMaterialDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibMaterialDefs.Add">func (*LibMaterialDefs) <a href="/target/material.gt.go?s=2710:2773#L84">Add</a></h3>
+				<h3 id="LibMaterialDefs.Add">func (*LibMaterialDefs) <a href="/target/material.gt.go?s=2675:2738#L83">Add</a></h3>
 				<pre>func (me *LibMaterialDefs) Add(d *MaterialDef) (n *MaterialDef)</pre>
 				<p>
 Adds the specified *MaterialDef* definition to this *LibMaterialDefs*, and returns it.
@@ -1432,7 +1517,7 @@ If this *LibMaterialDefs* already contains a *MaterialDef* definition with the s
 				
 			
 				
-				<h3 id="LibMaterialDefs.AddNew">func (*LibMaterialDefs) <a href="/target/material.gt.go?s=3105:3162#L95">AddNew</a></h3>
+				<h3 id="LibMaterialDefs.AddNew">func (*LibMaterialDefs) <a href="/target/material.gt.go?s=3070:3127#L94">AddNew</a></h3>
 				<pre>func (me *LibMaterialDefs) AddNew(id string) *MaterialDef</pre>
 				<p>
 Creates a new *MaterialDef* definition with the specified *ID*, adds it to this *LibMaterialDefs*, and returns it.
@@ -1445,7 +1530,7 @@ If this *LibMaterialDefs* already contains a *MaterialDef* definition with the s
 				
 			
 				
-				<h3 id="LibMaterialDefs.New">func (*LibMaterialDefs) <a href="/target/material.gt.go?s=3323:3383#L98">New</a></h3>
+				<h3 id="LibMaterialDefs.New">func (*LibMaterialDefs) <a href="/target/material.gt.go?s=3288:3348#L97">New</a></h3>
 				<pre>func (me *LibMaterialDefs) New(id string) (def *MaterialDef)</pre>
 				<p>
 Creates a new *MaterialDef* definition with the specified *ID* and returns it, but does not add it to this *LibMaterialDefs*.
@@ -1455,7 +1540,7 @@ Creates a new *MaterialDef* definition with the specified *ID* and returns it, b
 				
 			
 				
-				<h3 id="LibMaterialDefs.Remove">func (*LibMaterialDefs) <a href="/target/material.gt.go?s=3504:3548#L101">Remove</a></h3>
+				<h3 id="LibMaterialDefs.Remove">func (*LibMaterialDefs) <a href="/target/material.gt.go?s=3469:3513#L100">Remove</a></h3>
 				<pre>func (me *LibMaterialDefs) Remove(id string)</pre>
 				<p>
 Removes the *MaterialDef* with the specified *ID* from this *LibMaterialDefs*.
@@ -1465,7 +1550,7 @@ Removes the *MaterialDef* with the specified *ID* from this *LibMaterialDefs*.
 				
 			
 				
-				<h3 id="LibMaterialDefs.SyncChanges">func (*LibMaterialDefs) <a href="/target/material.gt.go?s=3891:3931#L106">SyncChanges</a></h3>
+				<h3 id="LibMaterialDefs.SyncChanges">func (*LibMaterialDefs) <a href="/target/material.gt.go?s=3856:3896#L105">SyncChanges</a></h3>
 				<pre>func (me *LibMaterialDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibMaterialDefs* that need to be picked up.
@@ -1479,7 +1564,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibNodeDefs">type <a href="/target/node.gt.go?s=2335:2597#L80">LibNodeDefs</a></h2>
+			<h2 id="LibNodeDefs">type <a href="/target/node.gt.go?s=2314:2576#L80">LibNodeDefs</a></h2>
 			<pre>type LibNodeDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -1502,7 +1587,7 @@ use the *LibsNodeDef.New()* or *LibsNodeDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibNodeDefs.Add">func (*LibNodeDefs) <a href="/target/node.gt.go?s=2927:2978#L96">Add</a></h3>
+				<h3 id="LibNodeDefs.Add">func (*LibNodeDefs) <a href="/target/node.gt.go?s=2900:2951#L96">Add</a></h3>
 				<pre>func (me *LibNodeDefs) Add(d *NodeDef) (n *NodeDef)</pre>
 				<p>
 Adds the specified *NodeDef* definition to this *LibNodeDefs*, and returns it.
@@ -1515,7 +1600,7 @@ If this *LibNodeDefs* already contains a *NodeDef* definition with the same *ID*
 				
 			
 				
-				<h3 id="LibNodeDefs.AddNew">func (*LibNodeDefs) <a href="/target/node.gt.go?s=3294:3343#L107">AddNew</a></h3>
+				<h3 id="LibNodeDefs.AddNew">func (*LibNodeDefs) <a href="/target/node.gt.go?s=3267:3316#L107">AddNew</a></h3>
 				<pre>func (me *LibNodeDefs) AddNew(id string) *NodeDef</pre>
 				<p>
 Creates a new *NodeDef* definition with the specified *ID*, adds it to this *LibNodeDefs*, and returns it.
@@ -1528,7 +1613,7 @@ If this *LibNodeDefs* already contains a *NodeDef* definition with the specified
 				
 			
 				
-				<h3 id="LibNodeDefs.New">func (*LibNodeDefs) <a href="/target/node.gt.go?s=3496:3548#L110">New</a></h3>
+				<h3 id="LibNodeDefs.New">func (*LibNodeDefs) <a href="/target/node.gt.go?s=3469:3521#L110">New</a></h3>
 				<pre>func (me *LibNodeDefs) New(id string) (def *NodeDef)</pre>
 				<p>
 Creates a new *NodeDef* definition with the specified *ID* and returns it, but does not add it to this *LibNodeDefs*.
@@ -1538,7 +1623,7 @@ Creates a new *NodeDef* definition with the specified *ID* and returns it, but d
 				
 			
 				
-				<h3 id="LibNodeDefs.Remove">func (*LibNodeDefs) <a href="/target/node.gt.go?s=3657:3697#L113">Remove</a></h3>
+				<h3 id="LibNodeDefs.Remove">func (*LibNodeDefs) <a href="/target/node.gt.go?s=3630:3670#L113">Remove</a></h3>
 				<pre>func (me *LibNodeDefs) Remove(id string)</pre>
 				<p>
 Removes the *NodeDef* with the specified *ID* from this *LibNodeDefs*.
@@ -1548,7 +1633,7 @@ Removes the *NodeDef* with the specified *ID* from this *LibNodeDefs*.
 				
 			
 				
-				<h3 id="LibNodeDefs.SyncChanges">func (*LibNodeDefs) <a href="/target/node.gt.go?s=4028:4064#L118">SyncChanges</a></h3>
+				<h3 id="LibNodeDefs.SyncChanges">func (*LibNodeDefs) <a href="/target/node.gt.go?s=4001:4037#L118">SyncChanges</a></h3>
 				<pre>func (me *LibNodeDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibNodeDefs* that need to be picked up.
@@ -1562,90 +1647,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibSceneDefs">type <a href="/target/scene.gt.go?s=2136:2400#L72">LibSceneDefs</a></h2>
-			<pre>type LibSceneDefs struct {
-    BaseLib
-    <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
-    <span class="comment">//	write to *M*, instead use the *Add()*, *AddNew()*, *Remove()* methods ONLY or bugs WILL ensue.</span>
-    M map[string]*SceneDef
-}</pre>
-			<p>
-A library that contains *SceneDef*s associated by their *ID*. To create a new *LibSceneDefs* library, ONLY
-use the *LibsSceneDef.New()* or *LibsSceneDef.AddNew()* methods.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="LibSceneDefs.Add">func (*LibSceneDefs) <a href="/target/scene.gt.go?s=2738:2792#L88">Add</a></h3>
-				<pre>func (me *LibSceneDefs) Add(d *SceneDef) (n *SceneDef)</pre>
-				<p>
-Adds the specified *SceneDef* definition to this *LibSceneDefs*, and returns it.
-</p>
-<p>
-If this *LibSceneDefs* already contains a *SceneDef* definition with the same *ID*, does nothing and returns *nil*.
-</p>
-
-				
-				
-			
-				
-				<h3 id="LibSceneDefs.AddNew">func (*LibSceneDefs) <a href="/target/scene.gt.go?s=3112:3163#L99">AddNew</a></h3>
-				<pre>func (me *LibSceneDefs) AddNew(id string) *SceneDef</pre>
-				<p>
-Creates a new *SceneDef* definition with the specified *ID*, adds it to this *LibSceneDefs*, and returns it.
-</p>
-<p>
-If this *LibSceneDefs* already contains a *SceneDef* definition with the specified *ID*, does nothing and returns *nil*.
-</p>
-
-				
-				
-			
-				
-				<h3 id="LibSceneDefs.New">func (*LibSceneDefs) <a href="/target/scene.gt.go?s=3318:3372#L102">New</a></h3>
-				<pre>func (me *LibSceneDefs) New(id string) (def *SceneDef)</pre>
-				<p>
-Creates a new *SceneDef* definition with the specified *ID* and returns it, but does not add it to this *LibSceneDefs*.
-</p>
-
-				
-				
-			
-				
-				<h3 id="LibSceneDefs.Remove">func (*LibSceneDefs) <a href="/target/scene.gt.go?s=3484:3525#L105">Remove</a></h3>
-				<pre>func (me *LibSceneDefs) Remove(id string)</pre>
-				<p>
-Removes the *SceneDef* with the specified *ID* from this *LibSceneDefs*.
-</p>
-
-				
-				
-			
-				
-				<h3 id="LibSceneDefs.SyncChanges">func (*LibSceneDefs) <a href="/target/scene.gt.go?s=3859:3896#L110">SyncChanges</a></h3>
-				<pre>func (me *LibSceneDefs) SyncChanges()</pre>
-				<p>
-Signals to *core* (or your custom package) that changes have been made to this *LibSceneDefs* that need to be picked up.
-Call this after you have made any number of changes to this *LibSceneDefs* library or its *SceneDef* definitions.
-Also called by the global *SyncChanges()* function.
-</p>
-
-				
-				
-			
-		
-			
-			
-			<h2 id="LibVisualSceneDefs">type <a href="/target/visualscene.gt.go?s=2413:2689#L70">LibVisualSceneDefs</a></h2>
+			<h2 id="LibVisualSceneDefs">type <a href="/target/visualscene.gt.go?s=2384:2660#L69">LibVisualSceneDefs</a></h2>
 			<pre>type LibVisualSceneDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -1668,7 +1670,7 @@ use the *LibsVisualSceneDef.New()* or *LibsVisualSceneDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibVisualSceneDefs.Add">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=3075:3147#L86">Add</a></h3>
+				<h3 id="LibVisualSceneDefs.Add">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=3040:3112#L85">Add</a></h3>
 				<pre>func (me *LibVisualSceneDefs) Add(d *VisualSceneDef) (n *VisualSceneDef)</pre>
 				<p>
 Adds the specified *VisualSceneDef* definition to this *LibVisualSceneDefs*, and returns it.
@@ -1681,7 +1683,7 @@ If this *LibVisualSceneDefs* already contains a *VisualSceneDef* definition with
 				
 			
 				
-				<h3 id="LibVisualSceneDefs.AddNew">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=3491:3554#L97">AddNew</a></h3>
+				<h3 id="LibVisualSceneDefs.AddNew">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=3456:3519#L96">AddNew</a></h3>
 				<pre>func (me *LibVisualSceneDefs) AddNew(id string) *VisualSceneDef</pre>
 				<p>
 Creates a new *VisualSceneDef* definition with the specified *ID*, adds it to this *LibVisualSceneDefs*, and returns it.
@@ -1694,7 +1696,7 @@ If this *LibVisualSceneDefs* already contains a *VisualSceneDef* definition with
 				
 			
 				
-				<h3 id="LibVisualSceneDefs.New">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=3721:3787#L100">New</a></h3>
+				<h3 id="LibVisualSceneDefs.New">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=3686:3752#L99">New</a></h3>
 				<pre>func (me *LibVisualSceneDefs) New(id string) (def *VisualSceneDef)</pre>
 				<p>
 Creates a new *VisualSceneDef* definition with the specified *ID* and returns it, but does not add it to this *LibVisualSceneDefs*.
@@ -1704,7 +1706,7 @@ Creates a new *VisualSceneDef* definition with the specified *ID* and returns it
 				
 			
 				
-				<h3 id="LibVisualSceneDefs.Remove">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=3917:3964#L103">Remove</a></h3>
+				<h3 id="LibVisualSceneDefs.Remove">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=3882:3929#L102">Remove</a></h3>
 				<pre>func (me *LibVisualSceneDefs) Remove(id string)</pre>
 				<p>
 Removes the *VisualSceneDef* with the specified *ID* from this *LibVisualSceneDefs*.
@@ -1714,7 +1716,7 @@ Removes the *VisualSceneDef* with the specified *ID* from this *LibVisualSceneDe
 				
 			
 				
-				<h3 id="LibVisualSceneDefs.SyncChanges">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=4316:4359#L108">SyncChanges</a></h3>
+				<h3 id="LibVisualSceneDefs.SyncChanges">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=4281:4324#L107">SyncChanges</a></h3>
 				<pre>func (me *LibVisualSceneDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibVisualSceneDefs* that need to be picked up.
@@ -1728,7 +1730,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibsCameraDef">type <a href="/target/camera.gt.go?s=3361:3405#L124">LibsCameraDef</a></h2>
+			<h2 id="LibsCameraDef">type <a href="/target/camera.gt.go?s=3332:3376#L123">LibsCameraDef</a></h2>
 			<pre>type LibsCameraDef map[string]*LibCameraDefs</pre>
 			<p>
 The underlying type of the global *AllCameraDefLibs* variable: a *map* collection that contains
@@ -1746,7 +1748,7 @@ The underlying type of the global *AllCameraDefLibs* variable: a *map* collectio
 
 			
 				
-				<h3 id="LibsCameraDef.AddNew">func (LibsCameraDef) <a href="/target/camera.gt.go?s=3653:3715#L129">AddNew</a></h3>
+				<h3 id="LibsCameraDef.AddNew">func (LibsCameraDef) <a href="/target/camera.gt.go?s=3624:3686#L128">AddNew</a></h3>
 				<pre>func (me LibsCameraDef) AddNew(id string) (lib *LibCameraDefs)</pre>
 				<p>
 Creates a new *LibCameraDefs* library with the specified *ID*, adds it to this *LibsCameraDef*, and returns it.
@@ -1761,7 +1763,7 @@ If this *LibsCameraDef* already contains a *LibCameraDefs* library with the spec
 		
 			
 			
-			<h2 id="LibsEffectDef">type <a href="/target/effect.gt.go?s=1328:1372#L49">LibsEffectDef</a></h2>
+			<h2 id="LibsEffectDef">type <a href="/target/effect.gt.go?s=1299:1343#L48">LibsEffectDef</a></h2>
 			<pre>type LibsEffectDef map[string]*LibEffectDefs</pre>
 			<p>
 The underlying type of the global *AllEffectDefLibs* variable: a *map* collection that contains
@@ -1779,7 +1781,7 @@ The underlying type of the global *AllEffectDefLibs* variable: a *map* collectio
 
 			
 				
-				<h3 id="LibsEffectDef.AddNew">func (LibsEffectDef) <a href="/target/effect.gt.go?s=1620:1682#L54">AddNew</a></h3>
+				<h3 id="LibsEffectDef.AddNew">func (LibsEffectDef) <a href="/target/effect.gt.go?s=1591:1653#L53">AddNew</a></h3>
 				<pre>func (me LibsEffectDef) AddNew(id string) (lib *LibEffectDefs)</pre>
 				<p>
 Creates a new *LibEffectDefs* library with the specified *ID*, adds it to this *LibsEffectDef*, and returns it.
@@ -1794,7 +1796,7 @@ If this *LibsEffectDef* already contains a *LibEffectDefs* library with the spec
 		
 			
 			
-			<h2 id="LibsImageDef">type <a href="/target/image.gt.go?s=1769:1811#L63">LibsImageDef</a></h2>
+			<h2 id="LibsImageDef">type <a href="/target/image.gt.go?s=1748:1790#L63">LibsImageDef</a></h2>
 			<pre>type LibsImageDef map[string]*LibImageDefs</pre>
 			<p>
 The underlying type of the global *AllImageDefLibs* variable: a *map* collection that contains
@@ -1812,7 +1814,7 @@ The underlying type of the global *AllImageDefLibs* variable: a *map* collection
 
 			
 				
-				<h3 id="LibsImageDef.AddNew">func (LibsImageDef) <a href="/target/image.gt.go?s=2055:2115#L68">AddNew</a></h3>
+				<h3 id="LibsImageDef.AddNew">func (LibsImageDef) <a href="/target/image.gt.go?s=2034:2094#L68">AddNew</a></h3>
 				<pre>func (me LibsImageDef) AddNew(id string) (lib *LibImageDefs)</pre>
 				<p>
 Creates a new *LibImageDefs* library with the specified *ID*, adds it to this *LibsImageDef*, and returns it.
@@ -1827,7 +1829,7 @@ If this *LibsImageDef* already contains a *LibImageDefs* library with the specif
 		
 			
 			
-			<h2 id="LibsMaterialDef">type <a href="/target/material.gt.go?s=1333:1381#L47">LibsMaterialDef</a></h2>
+			<h2 id="LibsMaterialDef">type <a href="/target/material.gt.go?s=1304:1352#L46">LibsMaterialDef</a></h2>
 			<pre>type LibsMaterialDef map[string]*LibMaterialDefs</pre>
 			<p>
 The underlying type of the global *AllMaterialDefLibs* variable: a *map* collection that contains
@@ -1845,7 +1847,7 @@ The underlying type of the global *AllMaterialDefLibs* variable: a *map* collect
 
 			
 				
-				<h3 id="LibsMaterialDef.AddNew">func (LibsMaterialDef) <a href="/target/material.gt.go?s=1637:1703#L52">AddNew</a></h3>
+				<h3 id="LibsMaterialDef.AddNew">func (LibsMaterialDef) <a href="/target/material.gt.go?s=1608:1674#L51">AddNew</a></h3>
 				<pre>func (me LibsMaterialDef) AddNew(id string) (lib *LibMaterialDefs)</pre>
 				<p>
 Creates a new *LibMaterialDefs* library with the specified *ID*, adds it to this *LibsMaterialDef*, and returns it.
@@ -1860,7 +1862,7 @@ If this *LibsMaterialDef* already contains a *LibMaterialDefs* library with the 
 		
 			
 			
-			<h2 id="LibsNodeDef">type <a href="/target/node.gt.go?s=1650:1690#L59">LibsNodeDef</a></h2>
+			<h2 id="LibsNodeDef">type <a href="/target/node.gt.go?s=1629:1669#L59">LibsNodeDef</a></h2>
 			<pre>type LibsNodeDef map[string]*LibNodeDefs</pre>
 			<p>
 The underlying type of the global *AllNodeDefLibs* variable: a *map* collection that contains
@@ -1878,7 +1880,7 @@ The underlying type of the global *AllNodeDefLibs* variable: a *map* collection 
 
 			
 				
-				<h3 id="LibsNodeDef.AddNew">func (LibsNodeDef) <a href="/target/node.gt.go?s=1930:1988#L64">AddNew</a></h3>
+				<h3 id="LibsNodeDef.AddNew">func (LibsNodeDef) <a href="/target/node.gt.go?s=1909:1967#L64">AddNew</a></h3>
 				<pre>func (me LibsNodeDef) AddNew(id string) (lib *LibNodeDefs)</pre>
 				<p>
 Creates a new *LibNodeDefs* library with the specified *ID*, adds it to this *LibsNodeDef*, and returns it.
@@ -1893,40 +1895,7 @@ If this *LibsNodeDef* already contains a *LibNodeDefs* library with the specifie
 		
 			
 			
-			<h2 id="LibsSceneDef">type <a href="/target/scene.gt.go?s=1436:1478#L51">LibsSceneDef</a></h2>
-			<pre>type LibsSceneDef map[string]*LibSceneDefs</pre>
-			<p>
-The underlying type of the global *AllSceneDefLibs* variable: a *map* collection that contains
-*LibSceneDefs* libraries associated by their *ID*.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="LibsSceneDef.AddNew">func (LibsSceneDef) <a href="/target/scene.gt.go?s=1722:1782#L56">AddNew</a></h3>
-				<pre>func (me LibsSceneDef) AddNew(id string) (lib *LibSceneDefs)</pre>
-				<p>
-Creates a new *LibSceneDefs* library with the specified *ID*, adds it to this *LibsSceneDef*, and returns it.
-</p>
-<p>
-If this *LibsSceneDef* already contains a *LibSceneDefs* library with the specified *ID*, does nothing and returns *nil*.
-</p>
-
-				
-				
-			
-		
-			
-			
-			<h2 id="LibsVisualSceneDef">type <a href="/target/visualscene.gt.go?s=1623:1677#L49">LibsVisualSceneDef</a></h2>
+			<h2 id="LibsVisualSceneDef">type <a href="/target/visualscene.gt.go?s=1594:1648#L48">LibsVisualSceneDef</a></h2>
 			<pre>type LibsVisualSceneDef map[string]*LibVisualSceneDefs</pre>
 			<p>
 The underlying type of the global *AllVisualSceneDefLibs* variable: a *map* collection that contains
@@ -1944,7 +1913,7 @@ The underlying type of the global *AllVisualSceneDefLibs* variable: a *map* coll
 
 			
 				
-				<h3 id="LibsVisualSceneDef.AddNew">func (LibsVisualSceneDef) <a href="/target/visualscene.gt.go?s=1945:2017#L54">AddNew</a></h3>
+				<h3 id="LibsVisualSceneDef.AddNew">func (LibsVisualSceneDef) <a href="/target/visualscene.gt.go?s=1916:1988#L53">AddNew</a></h3>
 				<pre>func (me LibsVisualSceneDef) AddNew(id string) (lib *LibVisualSceneDefs)</pre>
 				<p>
 Creates a new *LibVisualSceneDefs* library with the specified *ID*, adds it to this *LibsVisualSceneDef*, and returns it.
@@ -1978,7 +1947,7 @@ Defines the equations necessary for the visual appearance of geometry and screen
 
 			
 				
-				<h3 id="MaterialDef.NewInst">func (*MaterialDef) <a href="/target/material.gt.go?s=649:711#L22">NewInst</a></h3>
+				<h3 id="MaterialDef.NewInst">func (*MaterialDef) <a href="/target/material.gt.go?s=640:702#L22">NewInst</a></h3>
 				<pre>func (me *MaterialDef) NewInst(id string) (inst *MaterialInst)</pre>
 				<p>
 Creates and returns a new *MaterialInst* instance referencing this *MaterialDef* definition.
@@ -2252,9 +2221,10 @@ Represents a 3-component vertex attribute (such as for example vertex-normals)
 		
 			
 			
-			<h2 id="NodeDef">type <a href="/target/node.gt.go?s=271:546#L1">NodeDef</a></h2>
+			<h2 id="NodeDef">type <a href="/target/node.gt.go?s=271:554#L1">NodeDef</a></h2>
 			<pre>type NodeDef struct {
     BaseDef
+    HasSid
 
     <span class="comment">//	The names of the layers to which this Node belongs.</span>
     Layers map[string]bool
@@ -2282,7 +2252,7 @@ essentially the root of a sub-graph of the entire Scene graph.
 
 			
 				
-				<h3 id="NodeDef.NewInst">func (*NodeDef) <a href="/target/node.gt.go?s=1018:1072#L34">NewInst</a></h3>
+				<h3 id="NodeDef.NewInst">func (*NodeDef) <a href="/target/node.gt.go?s=1017:1071#L35">NewInst</a></h3>
 				<pre>func (me *NodeDef) NewInst(id string) (inst *NodeInst)</pre>
 				<p>
 Creates and returns a new *NodeInst* instance referencing this *NodeDef* definition.
@@ -2294,7 +2264,7 @@ Creates and returns a new *NodeInst* instance referencing this *NodeDef* definit
 		
 			
 			
-			<h2 id="NodeInst">type <a href="/target/node.gt.go?s=656:758#L14">NodeInst</a></h2>
+			<h2 id="NodeInst">type <a href="/target/node.gt.go?s=664:766#L15">NodeInst</a></h2>
 			<pre>type NodeInst struct {
     BaseInst
 
@@ -2318,50 +2288,80 @@ An instance referencing a Node definition.
 		
 			
 			
-			<h2 id="SceneDef">type <a href="/target/scene.gt.go?s=221:338#L1">SceneDef</a></h2>
-			<pre>type SceneDef struct {
-    BaseDef
+			<h2 id="Sampler">type <a href="/target/sampler.go?s=1041:1143#L37">Sampler</a></h2>
+			<pre>type Sampler struct {
+    Image     *ImageInst
+    Filtering *SamplerFiltering
+    Wrapping  *SamplerWrapping
+}</pre>
+			
 
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewSampler">func <a href="/target/sampler.go?s=1145:1176#L43">NewSampler</a></h3>
+				<pre>func NewSampler() (me *Sampler)</pre>
+				
+				
+			
+
+			
+		
+			
+			
+			<h2 id="SamplerFiltering">type <a href="/target/sampler.go?s=787:948#L25">SamplerFiltering</a></h2>
+			<pre>type SamplerFiltering struct {
+    Mag, Min, Mip            int
+    MaxAnisotropy            uint32
+    MipMaxLevel, MipMinLevel uint8
+    MipBias                  float64
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="SamplerWrapping">type <a href="/target/sampler.go?s=950:1039#L32">SamplerWrapping</a></h2>
+			<pre>type SamplerWrapping struct {
+    BorderColor         ugfx.Rgba32
+    WrapS, WrapT, WrapP int
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Scene">type <a href="/target/scene.go?s=221:325#L1">Scene</a></h2>
+			<pre>type Scene struct {
     <span class="comment">//	The Visual Scene associated with this Scene.</span>
     VisualSceneInst *VisualSceneInst
 }</pre>
 			<p>
 Declares a complete, self-contained base of a Scene hierarchy or Scene graph. Currently just defined by a
 Visual Scene, later to be augmented by optional &#34;kinematics scenes&#34; and/or &#34;physics scenes&#34;.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="SceneDef.NewInst">func (*SceneDef) <a href="/target/scene.gt.go?s=791:847#L26">NewInst</a></h3>
-				<pre>func (me *SceneDef) NewInst(id string) (inst *SceneInst)</pre>
-				<p>
-Creates and returns a new *SceneInst* instance referencing this *SceneDef* definition.
-</p>
-
-				
-				
-			
-		
-			
-			
-			<h2 id="SceneInst">type <a href="/target/scene.gt.go?s=419:524#L6">SceneInst</a></h2>
-			<pre>type SceneInst struct {
-    BaseInst
-
-    <span class="comment">//	The Scene definition referenced by this instance.</span>
-    Def *SceneDef
-}</pre>
-			<p>
-An instance referencing a Scene definition.
 </p>
 
 
@@ -2398,7 +2398,7 @@ directed acyclic graph or tree data structure that contains nodes of visual info
 
 			
 				
-				<h3 id="VisualSceneDef.NewInst">func (*VisualSceneDef) <a href="/target/visualscene.gt.go?s=900:968#L24">NewInst</a></h3>
+				<h3 id="VisualSceneDef.NewInst">func (*VisualSceneDef) <a href="/target/visualscene.gt.go?s=891:959#L24">NewInst</a></h3>
 				<pre>func (me *VisualSceneDef) NewInst(id string) (inst *VisualSceneInst)</pre>
 				<p>
 Creates and returns a new *VisualSceneInst* instance referencing this *VisualSceneDef* definition.

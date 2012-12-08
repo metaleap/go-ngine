@@ -5,6 +5,7 @@ package assets
 //	essentially the root of a sub-graph of the entire Scene graph.
 type NodeDef struct {
 	BaseDef
+	HasSid
 
 	//	The names of the layers to which this Node belongs.
 	Layers map[string]bool
@@ -35,7 +36,7 @@ func (me *NodeInst) init() {
 
 func newNodeDef(id string) (me *NodeDef) {
 	me = &NodeDef{}
-	me.BaseDef.init(id)
+	me.ID = id
 	me.init()
 	return
 }
@@ -43,7 +44,6 @@ func newNodeDef(id string) (me *NodeDef) {
 //	Creates and returns a new *NodeInst* instance referencing this *NodeDef* definition.
 func (me *NodeDef) NewInst(id string) (inst *NodeInst) {
 	inst = &NodeInst{Def: me}
-	inst.Base.init(id)
 	inst.init()
 	return
 }
@@ -96,7 +96,7 @@ type LibNodeDefs struct {
 
 func newLibNodeDefs(id string) (me *LibNodeDefs) {
 	me = &LibNodeDefs{M: map[string]*NodeDef{}}
-	me.Base.init(id)
+	me.ID = id
 	return
 }
 

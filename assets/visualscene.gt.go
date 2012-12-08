@@ -25,7 +25,7 @@ func (me *VisualSceneInst) init() {
 
 func newVisualSceneDef(id string) (me *VisualSceneDef) {
 	me = &VisualSceneDef{}
-	me.BaseDef.init(id)
+	me.ID = id
 	me.init()
 	return
 }
@@ -33,7 +33,6 @@ func newVisualSceneDef(id string) (me *VisualSceneDef) {
 //	Creates and returns a new *VisualSceneInst* instance referencing this *VisualSceneDef* definition.
 func (me *VisualSceneDef) NewInst(id string) (inst *VisualSceneInst) {
 	inst = &VisualSceneInst{Def: me}
-	inst.Base.init(id)
 	inst.init()
 	return
 }
@@ -86,7 +85,7 @@ type LibVisualSceneDefs struct {
 
 func newLibVisualSceneDefs(id string) (me *LibVisualSceneDefs) {
 	me = &LibVisualSceneDefs{M: map[string]*VisualSceneDef{}}
-	me.Base.init(id)
+	me.ID = id
 	return
 }
 
