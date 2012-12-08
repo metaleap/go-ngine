@@ -62,6 +62,10 @@ func (me *EngineStats) reset() {
 	me.Frame, me.FrameRenderBoth, me.FrameRenderCpu, me.FrameRenderGpu, me.FrameCoreCode, me.FrameUserCode, me.Gc = ctor(), ctor(), ctor(), ctor(), ctor(), ctor(), ctor()
 }
 
+func (me *EngineStats) TotalFrames () float64 {
+	return me.fpsAll
+}
+
 //	Helps track average and maximum cost for a variety of performance indicators.
 type TimingStats struct {
 	max, measuredCounter, measureStartTime, thisTime, totalAccum float64

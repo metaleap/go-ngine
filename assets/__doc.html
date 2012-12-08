@@ -234,15 +234,12 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				
 			
 				
-				<dd><a href="#FxNewParam">type FxNewParam</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NewFxNewParam">func NewFxNewParam(modifier, semantic string) (me *FxNewParam)</a></dd>
+				<dd><a href="#FxParamDef">type FxParamDef</a></dd>
 				
 				
 			
 				
-				<dd><a href="#FxNewParams">type FxNewParams</a></dd>
+				<dd><a href="#FxParamDefs">type FxParamDefs</a></dd>
 				
 				
 			
@@ -586,6 +583,8 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 			
 				<a href="/target/camera.gt.go">camera.gt.go</a>
 			
+				<a href="/target/common.go">common.go</a>
+			
 				<a href="/target/doc.go">doc.go</a>
 			
 				<a href="/target/effect.gt.go">effect.gt.go</a>
@@ -597,8 +596,6 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				<a href="/target/meshdata.go">meshdata.go</a>
 			
 				<a href="/target/node.gt.go">node.gt.go</a>
-			
-				<a href="/target/params.go">params.go</a>
 			
 				<a href="/target/scene.gt.go">scene.gt.go</a>
 			
@@ -974,10 +971,10 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="EffectDef">type <a href="/target/effect.gt.go?s=124:181#L1">EffectDef</a></h2>
+			<h2 id="EffectDef">type <a href="/target/effect.gt.go?s=124:178#L1">EffectDef</a></h2>
 			<pre>type EffectDef struct {
     BaseDef
-    NewParams FxNewParams
+    Params FxParamDefs
 }</pre>
 			<p>
 Defines the equations necessary for the visual appearance of geometry and screen-space image processing.
@@ -994,7 +991,7 @@ Defines the equations necessary for the visual appearance of geometry and screen
 
 			
 				
-				<h3 id="EffectDef.NewInst">func (*EffectDef) <a href="/target/effect.gt.go?s=676:734#L24">NewInst</a></h3>
+				<h3 id="EffectDef.NewInst">func (*EffectDef) <a href="/target/effect.gt.go?s=670:728#L24">NewInst</a></h3>
 				<pre>func (me *EffectDef) NewInst(id string) (inst *EffectInst)</pre>
 				<p>
 Creates and returns a new *EffectInst* instance referencing this *EffectDef* definition.
@@ -1006,7 +1003,7 @@ Creates and returns a new *EffectInst* instance referencing this *EffectDef* def
 		
 			
 			
-			<h2 id="EffectInst">type <a href="/target/effect.gt.go?s=294:402#L4">EffectInst</a></h2>
+			<h2 id="EffectInst">type <a href="/target/effect.gt.go?s=288:396#L4">EffectInst</a></h2>
 			<pre>type EffectInst struct {
     BaseInst
 
@@ -1030,10 +1027,9 @@ An instance referencing a Effect definition.
 		
 			
 			
-			<h2 id="FxNewParam">type <a href="/target/params.go?s=57:153#L1">FxNewParam</a></h2>
-			<pre>type FxNewParam struct {
-    Annotations        map[string]interface{}
-    Modifier, Semantic string
+			<h2 id="FxParamDef">type <a href="/target/common.go?s=57:115#L1">FxParamDef</a></h2>
+			<pre>type FxParamDef struct {
+    Modifier, Semantic, Sid string
 }</pre>
 			
 
@@ -1044,19 +1040,13 @@ An instance referencing a Effect definition.
 			
 
 			
-				
-				<h3 id="NewFxNewParam">func <a href="/target/params.go?s=155:217#L1">NewFxNewParam</a></h3>
-				<pre>func NewFxNewParam(modifier, semantic string) (me *FxNewParam)</pre>
-				
-				
-			
 
 			
 		
 			
 			
-			<h2 id="FxNewParams">type <a href="/target/params.go?s=16:55#L1">FxNewParams</a></h2>
-			<pre>type FxNewParams map[string]*FxNewParam</pre>
+			<h2 id="FxParamDefs">type <a href="/target/common.go?s=16:55#L1">FxParamDefs</a></h2>
+			<pre>type FxParamDefs map[string]*FxParamDef</pre>
 			
 
 			
@@ -1240,7 +1230,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibEffectDefs">type <a href="/target/effect.gt.go?s=2049:2315#L70">LibEffectDefs</a></h2>
+			<h2 id="LibEffectDefs">type <a href="/target/effect.gt.go?s=2043:2309#L70">LibEffectDefs</a></h2>
 			<pre>type LibEffectDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -1263,7 +1253,7 @@ use the *LibsEffectDef.New()* or *LibsEffectDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibEffectDefs.Add">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=2661:2718#L86">Add</a></h3>
+				<h3 id="LibEffectDefs.Add">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=2655:2712#L86">Add</a></h3>
 				<pre>func (me *LibEffectDefs) Add(d *EffectDef) (n *EffectDef)</pre>
 				<p>
 Adds the specified *EffectDef* definition to this *LibEffectDefs*, and returns it.
@@ -1276,7 +1266,7 @@ If this *LibEffectDefs* already contains a *EffectDef* definition with the same 
 				
 			
 				
-				<h3 id="LibEffectDefs.AddNew">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3042:3095#L97">AddNew</a></h3>
+				<h3 id="LibEffectDefs.AddNew">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3036:3089#L97">AddNew</a></h3>
 				<pre>func (me *LibEffectDefs) AddNew(id string) *EffectDef</pre>
 				<p>
 Creates a new *EffectDef* definition with the specified *ID*, adds it to this *LibEffectDefs*, and returns it.
@@ -1289,7 +1279,7 @@ If this *LibEffectDefs* already contains a *EffectDef* definition with the speci
 				
 			
 				
-				<h3 id="LibEffectDefs.New">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3252:3308#L100">New</a></h3>
+				<h3 id="LibEffectDefs.New">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3246:3302#L100">New</a></h3>
 				<pre>func (me *LibEffectDefs) New(id string) (def *EffectDef)</pre>
 				<p>
 Creates a new *EffectDef* definition with the specified *ID* and returns it, but does not add it to this *LibEffectDefs*.
@@ -1299,7 +1289,7 @@ Creates a new *EffectDef* definition with the specified *ID* and returns it, but
 				
 			
 				
-				<h3 id="LibEffectDefs.Remove">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3423:3465#L103">Remove</a></h3>
+				<h3 id="LibEffectDefs.Remove">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3417:3459#L103">Remove</a></h3>
 				<pre>func (me *LibEffectDefs) Remove(id string)</pre>
 				<p>
 Removes the *EffectDef* with the specified *ID* from this *LibEffectDefs*.
@@ -1309,7 +1299,7 @@ Removes the *EffectDef* with the specified *ID* from this *LibEffectDefs*.
 				
 			
 				
-				<h3 id="LibEffectDefs.SyncChanges">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3802:3840#L108">SyncChanges</a></h3>
+				<h3 id="LibEffectDefs.SyncChanges">func (*LibEffectDefs) <a href="/target/effect.gt.go?s=3796:3834#L108">SyncChanges</a></h3>
 				<pre>func (me *LibEffectDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibEffectDefs* that need to be picked up.
@@ -1771,7 +1761,7 @@ If this *LibsCameraDef* already contains a *LibCameraDefs* library with the spec
 		
 			
 			
-			<h2 id="LibsEffectDef">type <a href="/target/effect.gt.go?s=1334:1378#L49">LibsEffectDef</a></h2>
+			<h2 id="LibsEffectDef">type <a href="/target/effect.gt.go?s=1328:1372#L49">LibsEffectDef</a></h2>
 			<pre>type LibsEffectDef map[string]*LibEffectDefs</pre>
 			<p>
 The underlying type of the global *AllEffectDefLibs* variable: a *map* collection that contains
@@ -1789,7 +1779,7 @@ The underlying type of the global *AllEffectDefLibs* variable: a *map* collectio
 
 			
 				
-				<h3 id="LibsEffectDef.AddNew">func (LibsEffectDef) <a href="/target/effect.gt.go?s=1626:1688#L54">AddNew</a></h3>
+				<h3 id="LibsEffectDef.AddNew">func (LibsEffectDef) <a href="/target/effect.gt.go?s=1620:1682#L54">AddNew</a></h3>
 				<pre>func (me LibsEffectDef) AddNew(id string) (lib *LibEffectDefs)</pre>
 				<p>
 Creates a new *LibEffectDefs* library with the specified *ID*, adds it to this *LibsEffectDef*, and returns it.

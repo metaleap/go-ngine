@@ -3,11 +3,11 @@ package assets
 //	Defines the equations necessary for the visual appearance of geometry and screen-space image processing.
 type EffectDef struct {
 	BaseDef
-	NewParams FxNewParams
+	Params FxParamDefs
 }
 
 func (me *EffectDef) init() {
-	me.NewParams = FxNewParams{}
+	me.Params = FxParamDefs{}
 }
 
 //	An instance referencing a Effect definition.

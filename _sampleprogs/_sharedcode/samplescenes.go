@@ -113,7 +113,7 @@ func PrintPostLoopSummary() {
 	printStatSummary := func(name string, timing *ng.TimingStats) {
 		fmt.Printf("%v:\tAvg=%3.5f secs\tMax=%3.5f secs\n", name, timing.Average(), timing.Max())
 	}
-	fmt.Printf("Average FPS:\t\t%v\n", ng.Stats.AverageFps())
+	fmt.Printf("Average FPS:\t\t%v (total %v over %6.2fsec.)\n", ng.Stats.AverageFps(), ng.Stats.TotalFrames(), ng.Loop.Time())
 	printStatSummary("Frame Full Loop", ng.Stats.Frame)
 	printStatSummary("Frame Render (CPU)", ng.Stats.FrameRenderCpu)
 	printStatSummary("Frame Render (GPU)", ng.Stats.FrameRenderGpu)
@@ -121,6 +121,7 @@ func PrintPostLoopSummary() {
 	printStatSummary("Frame Core Code", ng.Stats.FrameCoreCode)
 	printStatSummary("Frame User Code", ng.Stats.FrameUserCode)
 	printStatSummary("GC (max 1x/sec)", ng.Stats.Gc)
+	fmt.Printf("CGO calls: %v, Goroutines: %v", runtime.NumCgoCall(), runtime.NumGoroutine())
 }
 
 //	The *func main()* implementation for the parent example app. Initializes go:ngine, sets Cam and CamCtl, calls the specified assetLoader function, then enters the Loop.

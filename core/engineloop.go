@@ -88,6 +88,7 @@ func (me *EngineLoop) Loop() {
 			Stats.FrameRenderBoth.combine()
 		}
 		me.IsLooping = false
+		log.Printf("Exited loop.")
 		glLogLastError("ngine.PostLoop")
 	}
 }

@@ -230,6 +230,9 @@ TODO pkg doc
 					
 					<dd>&nbsp; &nbsp; <a href="#EngineStats.AverageFps">func (me *EngineStats) AverageFps() float64</a></dd>
 				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineStats.TotalFrames">func (me *EngineStats) TotalFrames() float64</a></dd>
+				
 			
 				
 				<dd><a href="#EngineUserIO">type EngineUserIO</a></dd>
@@ -968,7 +971,7 @@ Initiates a rendering loop. This method returns only when the loop is stopped fo
 				
 			
 				
-				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/engineloop.go?s=2930:2958#L86">Stop</a></h3>
+				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/engineloop.go?s=2959:2987#L87">Stop</a></h3>
 				<pre>func (me *EngineLoop) Stop()</pre>
 				<p>
 Stops the currently running EngineLoop.Loop().
@@ -978,7 +981,7 @@ Stops the currently running EngineLoop.Loop().
 				
 			
 				
-				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/engineloop.go?s=3073:3109#L91">Time</a></h3>
+				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/engineloop.go?s=3102:3138#L92">Time</a></h3>
 				<pre>func (me *EngineLoop) Time() float64</pre>
 				<p>
 Returns the number of seconds expired ever since EngineLoop.Loop() was last called.
@@ -1106,6 +1109,13 @@ Tracks various go:ngine performance indicators over time.
 Returns the average number of frames-per-second since Loop.Loop() was last called.
 </p>
 
+				
+				
+			
+				
+				<h3 id="EngineStats.TotalFrames">func (*EngineStats) <a href="/target/enginestats.go?s=2817:2862#L55">TotalFrames</a></h3>
+				<pre>func (me *EngineStats) TotalFrames() float64</pre>
+				
 				
 				
 			
@@ -1611,7 +1621,7 @@ Returns the width of the window in pixels.
 		
 			
 			
-			<h2 id="TimingStats">type <a href="/target/enginestats.go?s=2898:3070#L56">TimingStats</a></h2>
+			<h2 id="TimingStats">type <a href="/target/enginestats.go?s=2967:3139#L60">TimingStats</a></h2>
 			<pre>type TimingStats struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -1630,7 +1640,7 @@ Helps track average and maximum cost for a variety of performance indicators.
 
 			
 				
-				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/enginestats.go?s=3213:3253#L67">Average</a></h3>
+				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/enginestats.go?s=3282:3322#L71">Average</a></h3>
 				<pre>func (me *TimingStats) Average() float64</pre>
 				<p>
 Returns the average cost tracked by this performance indicator.
@@ -1640,7 +1650,7 @@ Returns the average cost tracked by this performance indicator.
 				
 			
 				
-				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/enginestats.go?s=3845:3881#L90">Max</a></h3>
+				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/enginestats.go?s=3914:3950#L94">Max</a></h3>
 				<pre>func (me *TimingStats) Max() float64</pre>
 				<p>
 Returns the maximum cost tracked by this performance indicator.

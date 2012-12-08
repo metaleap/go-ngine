@@ -7,7 +7,6 @@ import (
 	nga "github.com/go3d/go-ngine/assets"
 	c141 "github.com/go3d/go-ngine/assets/collada/conv-1.4.1-to-1.5"
 	c15 "github.com/metaleap/go-xsd-pkg/khronos.org/files/collada_schema_1_5_go"
-	xsdt "github.com/metaleap/go-xsd/types"
 )
 
 var (
@@ -30,24 +29,6 @@ type importState struct {
 	assetStack           []*c15.TassetType
 }
 
-func f64(d xsdt.ToXsdtDouble) float64 {
-	if d == nil {
-		return 0
-	}
-	return float64(d.ToXsdtDouble())
-}
-
-func f64c(d xsdt.ToXsdtDouble) float64 {
-	return (f64(d) * state.curAssetUnitInMeters) / nga.UnitInMeters
-}
-
-func i64(d xsdt.ToXsdtLong) int64 {
-	if d == nil {
-		return 0
-	}
-	return int64(d.ToXsdtLong())
-}
-
 //	Imports the specified Collada document, using the import options specified in importBag.
 func ImportCollada(colladaDoc []byte, importBag *ImportBag) (err error) {
 	state = &importState{curAssetUnitInMeters: 1, d15: &c15.TxsdCollada{}}
@@ -67,5 +48,10 @@ func ImportCollada(colladaDoc []byte, importBag *ImportBag) (err error) {
 			state.d15.Walk()
 		}
 	}
+	return
+}
+
+func imp_TfxNewparamType(obj *c15.TfxNewparamType) (np *nga.FxParamDef) {
+	np = &nga.FxParamDef{Modifier: obj.Modifier.String(), Semantic: obj.Semantic.String(), Sid: obj.Sid.String()}
 	return
 }
