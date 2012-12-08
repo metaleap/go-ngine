@@ -102,7 +102,7 @@ func imp_TfxNewparamType(obj *c15.TfxNewparamType) (np *nga.FxNewParam) {
 		if len(bools) > 0 {
 			val = xsdt.ListValuesBoolean(bools)
 		} else if len(floats) > 0 {
-			val = xsdt.ListValuesFloat(floats...)
+			val = xsdt.ListValuesDouble(floats)
 		}
 		np.Annotations[ann.Name.String()] = val
 	}
