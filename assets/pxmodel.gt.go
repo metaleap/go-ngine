@@ -26,6 +26,7 @@ func (me *PxModelInst) init() {
 func newPxModelDef(id string) (me *PxModelDef) {
 	me = &PxModelDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

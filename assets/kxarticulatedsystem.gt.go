@@ -136,6 +136,7 @@ func (me *KxArticulatedSystemInst) init() {
 func newKxArticulatedSystemDef(id string) (me *KxArticulatedSystemDef) {
 	me = &KxArticulatedSystemDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

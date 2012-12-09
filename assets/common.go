@@ -1,9 +1,5 @@
 package assets
 
-import (
-	ugeo "github.com/metaleap/go-util/geo"
-)
-
 const (
 	TRANSFORM_TYPE_LOOKAT    = 0
 	TRANSFORM_TYPE_MATRIX    = iota
@@ -50,7 +46,14 @@ type Asset struct {
 	Title        string
 	UpAxis       string
 	Contributors []*Contributor
-	Coverage     *ugeo.Location
+	Coverage     *AssetGeographicLocation
+}
+
+type AssetGeographicLocation struct {
+	Longitude        float64
+	Latitude         float64
+	Altitude         float64
+	AltitudeAbsolute bool
 }
 
 type BindMaterial struct {

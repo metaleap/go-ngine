@@ -42,8 +42,10 @@ func LoadSampleScene_00_TriQuad() {
 
 	//	textures / materials
 
-	nga.ImageDefs.AddNew("tex_cat").InitFrom.RefUrl = "tex/cat.png"
-	nga.ImageDefs.AddNew("tex_dog").InitFrom.RefUrl = "tex/dog.png"
+	nga.FxImageDefs.AddFromRefUrls(map[string]string{
+		"tex_cat": "tex/cat.png",
+		"tex_dog": "tex/dog.png",
+	})
 
 	ng.Core.Materials["mat_cat"] = ng.Core.Materials.New("tex_cat")
 	ng.Core.Materials["mat_dog"] = ng.Core.Materials.New("tex_dog")

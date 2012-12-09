@@ -51,6 +51,7 @@ func (me *KxModelInst) init() {
 func newKxModelDef(id string) (me *KxModelDef) {
 	me = &KxModelDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

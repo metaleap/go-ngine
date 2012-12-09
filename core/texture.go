@@ -15,7 +15,7 @@ var (
 
 type textures map[string]*Texture
 
-func (me textures) add(def *nga.ImageDef) (item *Texture) {
+func (me textures) add(def *nga.FxImageDef) (item *Texture) {
 	item = newTexture(def)
 	me[def.ID] = item
 	return
@@ -30,13 +30,13 @@ func (me textures) syncAssetChanges() {
 		item *Texture
 		id   string
 	)
-	for _, def := range nga.ImageDefs.M {
+	for _, def := range nga.FxImageDefs.M {
 		if item = me[def.ID]; item == nil {
 			item = me.add(def)
 		}
 	}
 	for id, item = range me {
-		if nga.ImageDefs.M[item.ID] == nil {
+		if nga.FxImageDefs.M[item.ID] == nil {
 			delete(me, id)
 			item.dispose()
 		}
@@ -44,7 +44,7 @@ func (me textures) syncAssetChanges() {
 }
 
 type Texture struct {
-	*nga.ImageDef
+	*nga.FxImageDef
 	LastError error
 	Params    *textureParams
 
@@ -56,10 +56,10 @@ type Texture struct {
 	glSizedInternalFormat, glPixelDataFormat, glPixelDataType gl.Enum
 }
 
-func newTexture(def *nga.ImageDef) (me *Texture) {
+func newTexture(def *nga.FxImageDef) (me *Texture) {
 	me = &Texture{}
-	me.ImageDef = def
-	me.ImageDef.OnSync = func() {
+	me.FxImageDef = def
+	me.FxImageDef.OnSync = func() {
 		me.load()
 		me.GpuSync()
 	}
@@ -162,15 +162,15 @@ func (me *Texture) Loaded() bool {
 }
 
 func (me *Texture) provider() (prov TextureProvider, arg interface{}, remote bool) {
-	if me.ImageDef != nil {
-		if me.ImageDef.InitFrom != nil {
-			if len(me.ImageDef.InitFrom.RawData) > 0 {
-				prov, arg = TextureProviders.IoReader, me.ImageDef.InitFrom.RawData
-			} else if len(me.ImageDef.InitFrom.RefUrl) > 0 {
-				if remote = strings.Contains(me.ImageDef.InitFrom.RefUrl, "://"); remote {
-					prov, arg = TextureProviders.RemoteFile, me.ImageDef.InitFrom.RefUrl
+	if me.FxImageDef != nil {
+		if me.FxImageDef.Init.From != nil {
+			if len(me.FxImageDef.Init.From.Raw.Data) > 0 {
+				prov, arg = TextureProviders.IoReader, me.FxImageDef.Init.From.Raw.Data
+			} else if len(me.FxImageDef.Init.From.RefUrl) > 0 {
+				if remote = strings.Contains(me.FxImageDef.Init.From.RefUrl, "://"); remote {
+					prov, arg = TextureProviders.RemoteFile, me.FxImageDef.Init.From.RefUrl
 				} else {
-					prov, arg = TextureProviders.LocalFile, me.ImageDef.InitFrom.RefUrl
+					prov, arg = TextureProviders.LocalFile, me.FxImageDef.Init.From.RefUrl
 				}
 			}
 		}

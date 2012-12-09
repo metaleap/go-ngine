@@ -703,7 +703,7 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 		
 			
 			
-			<h2 id="CameraViewPort">type <a href="/target/camera.go?s=2691:2938#L111">CameraViewPort</a></h2>
+			<h2 id="CameraViewPort">type <a href="/target/camera.go?s=2778:3025#L111">CameraViewPort</a></h2>
 			<pre>type CameraViewPort struct {
     Absolute               bool
     RelX, RelY, RelW, RelH float64
@@ -722,21 +722,21 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 
 			
 				
-				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.go?s=3065:3122#L127">SetAbs</a></h3>
+				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.go?s=3152:3209#L127">SetAbs</a></h3>
 				<pre>func (me *CameraViewPort) SetAbs(x, y, width, height int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.go?s=3218:3279#L132">SetRel</a></h3>
+				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.go?s=3305:3366#L132">SetRel</a></h3>
 				<pre>func (me *CameraViewPort) SetRel(x, y, width, height float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="CameraViewPort.Update">func (*CameraViewPort) <a href="/target/camera.go?s=3376:3410#L137">Update</a></h3>
+				<h3 id="CameraViewPort.Update">func (*CameraViewPort) <a href="/target/camera.go?s=3463:3497#L137">Update</a></h3>
 				<pre>func (me *CameraViewPort) Update()</pre>
 				
 				
@@ -909,7 +909,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/enginecore.go?s=3182:3217#L107">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/enginecore.go?s=3184:3219#L107">SyncUpdates</a></h3>
 				<pre>func (me *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -1542,9 +1542,9 @@ Returns the width of the window in pixels.
 		
 			
 			
-			<h2 id="Texture">type <a href="/target/texture.go?s=783:1272#L36">Texture</a></h2>
+			<h2 id="Texture">type <a href="/target/texture.go?s=789:1280#L36">Texture</a></h2>
 			<pre>type Texture struct {
-    *nga.ImageDef
+    *nga.FxImageDef
     LastError error
     Params    *textureParams
     <span class="comment">// contains filtered or unexported fields</span>
@@ -1561,42 +1561,42 @@ Returns the width of the window in pixels.
 
 			
 				
-				<h3 id="Texture.GpuDelete">func (*Texture) <a href="/target/texture.go?s=1543:1573#L65">GpuDelete</a></h3>
+				<h3 id="Texture.GpuDelete">func (*Texture) <a href="/target/texture.go?s=1557:1587#L65">GpuDelete</a></h3>
 				<pre>func (me *Texture) GpuDelete()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Texture.GpuSync">func (*Texture) <a href="/target/texture.go?s=1651:1679#L72">GpuSync</a></h3>
+				<h3 id="Texture.GpuSync">func (*Texture) <a href="/target/texture.go?s=1665:1693#L72">GpuSync</a></h3>
 				<pre>func (me *Texture) GpuSync()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Texture.GpuSynced">func (*Texture) <a href="/target/texture.go?s=2734:2769#L97">GpuSynced</a></h3>
+				<h3 id="Texture.GpuSynced">func (*Texture) <a href="/target/texture.go?s=2748:2783#L97">GpuSynced</a></h3>
 				<pre>func (me *Texture) GpuSynced() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Texture.Loaded">func (*Texture) <a href="/target/texture.go?s=3815:3847#L150">Loaded</a></h3>
+				<h3 id="Texture.Loaded">func (*Texture) <a href="/target/texture.go?s=3829:3861#L150">Loaded</a></h3>
 				<pre>func (me *Texture) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Texture.SuppressMipMaps">func (*Texture) <a href="/target/texture.go?s=4458:4494#L171">SuppressMipMaps</a></h3>
+				<h3 id="Texture.SuppressMipMaps">func (*Texture) <a href="/target/texture.go?s=4497:4533#L171">SuppressMipMaps</a></h3>
 				<pre>func (me *Texture) SuppressMipMaps()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Texture.Unload">func (*Texture) <a href="/target/texture.go?s=4520:4547#L175">Unload</a></h3>
+				<h3 id="Texture.Unload">func (*Texture) <a href="/target/texture.go?s=4559:4586#L175">Unload</a></h3>
 				<pre>func (me *Texture) Unload()</pre>
 				
 				

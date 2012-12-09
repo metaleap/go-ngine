@@ -35,6 +35,7 @@ func (me *NodeInst) init() {
 func newNodeDef(id string) (me *NodeDef) {
 	me = &NodeDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

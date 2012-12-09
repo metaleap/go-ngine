@@ -16,6 +16,7 @@ func (me *AnimationClipDef) init() {
 func newAnimationClipDef(id string) (me *AnimationClipDef) {
 	me = &AnimationClipDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

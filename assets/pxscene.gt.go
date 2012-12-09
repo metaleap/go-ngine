@@ -28,6 +28,7 @@ func (me *PxSceneInst) init() {
 func newPxSceneDef(id string) (me *PxSceneDef) {
 	me = &PxSceneDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

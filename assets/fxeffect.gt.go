@@ -46,7 +46,45 @@ type FxPass struct {
 	Evaluate    *FxPassEvaluation
 }
 
-type FxPassEvaluation struct{}
+type FxPassEvaluation struct {
+	Draw  string
+	Color struct {
+		Clear  *FxPassEvaluationClearColor
+		Target *FxPassEvaluationTarget
+	}
+	Depth struct {
+		Clear  *FxPassEvaluationClearDepth
+		Target *FxPassEvaluationTarget
+	}
+	Stencil struct {
+		Clear  *FxPassEvaluationClearStencil
+		Target *FxPassEvaluationTarget
+	}
+}
+
+type FxPassEvaluationClearColor struct {
+	ugfx.Rgba32
+	Index uint64
+}
+
+type FxPassEvaluationClearDepth struct {
+	F     float64
+	Index uint64
+}
+
+type FxPassEvaluationClearStencil struct {
+	B     byte
+	Index uint64
+}
+
+type FxPassEvaluationTarget struct {
+	Index           uint64
+	Slice           uint64
+	Mip             uint64
+	CubeFace        int
+	SamplerParamRef string
+	Image           *FxImageInst
+}
 
 type FxPassProgram struct {
 	BindAttributes []*FxPassProgramBindAttribute
@@ -139,16 +177,16 @@ type FxTechniqueCommon struct {
 type FxTechniqueCommonBlinn struct {
 	FxTechniqueCommonLambert
 	Specular  *FxColorOrTexture
-	Shininess *ParamFloat
+	Shininess *ParamScopedFloat
 }
 
 type FxTechniqueCommonConstant struct {
 	Emission          *FxColorOrTexture
 	Reflective        *FxColorOrTexture
-	Reflectivity      *ParamFloat
+	Reflectivity      *ParamScopedFloat
 	Transparent       *FxColorOrTexture
-	Transparency      *ParamFloat
-	IndexOfRefraction *ParamFloat
+	Transparency      *ParamScopedFloat
+	IndexOfRefraction *ParamScopedFloat
 }
 
 type FxTechniqueCommonLambert struct {
@@ -207,6 +245,7 @@ type FxEffectInstTechniqueHint struct {
 func newFxEffectDef(id string) (me *FxEffectDef) {
 	me = &FxEffectDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

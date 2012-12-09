@@ -27,6 +27,7 @@ func (me *PxMaterialInst) init() {
 func newPxMaterialDef(id string) (me *PxMaterialDef) {
 	me = &PxMaterialDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

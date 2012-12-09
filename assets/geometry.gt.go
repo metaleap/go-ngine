@@ -87,6 +87,7 @@ func (me *GeometryInst) init() {
 func newGeometryDef(id string) (me *GeometryDef) {
 	me = &GeometryDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

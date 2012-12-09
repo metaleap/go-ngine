@@ -41,6 +41,7 @@ type KxSceneInstJointAxis struct {
 func newKxSceneDef(id string) (me *KxSceneDef) {
 	me = &KxSceneDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

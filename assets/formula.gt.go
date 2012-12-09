@@ -29,6 +29,7 @@ func (me *FormulaInst) init() {
 func newFormulaDef(id string) (me *FormulaDef) {
 	me = &FormulaDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

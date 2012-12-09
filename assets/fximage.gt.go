@@ -1,12 +1,12 @@
 package assets
 
 const (
-	FX_CREATE_CUBE_FACE_NEGATIVE_X          = 0x8516
-	FX_CREATE_CUBE_FACE_NEGATIVE_Y          = 0x8518
-	FX_CREATE_CUBE_FACE_NEGATIVE_Z          = 0x851A
-	FX_CREATE_CUBE_FACE_POSITIVE_X          = 0x8515
-	FX_CREATE_CUBE_FACE_POSITIVE_Y          = 0x8517
-	FX_CREATE_CUBE_FACE_POSITIVE_Z          = 0x8519
+	FX_CUBE_FACE_NEGATIVE_X                 = 0x8516
+	FX_CUBE_FACE_NEGATIVE_Y                 = 0x8518
+	FX_CUBE_FACE_NEGATIVE_Z                 = 0x851A
+	FX_CUBE_FACE_POSITIVE_X                 = 0x8515
+	FX_CUBE_FACE_POSITIVE_Y                 = 0x8517
+	FX_CUBE_FACE_POSITIVE_Z                 = 0x8519
 	FX_CREATE_FORMAT_HINT_CHANNELS_RGB      = 0
 	FX_CREATE_FORMAT_HINT_CHANNELS_RGBA     = iota
 	FX_CREATE_FORMAT_HINT_CHANNELS_RGBE     = iota
@@ -109,6 +109,12 @@ type FxImageInitFrom struct {
 	NoAutoMip bool
 }
 
+func NewFxImageInitFrom(refUrl string) (me *FxImageInitFrom) {
+	me = &FxImageInitFrom{}
+	me.RefUrl = refUrl
+	return
+}
+
 type FxInitFrom struct {
 	Raw struct {
 		Data   []byte
@@ -143,11 +149,18 @@ type FxImageInst struct {
 func (me *FxImageInst) init() {
 }
 
+func (me *LibFxImageDefs) AddFromRefUrls(idRefUrls map[string]string) {
+	for imgID, refUrl := range idRefUrls {
+		me.AddNew(imgID).Init.From = NewFxImageInitFrom(refUrl)
+	}
+}
+
 //#begin-gt _definstlib.gt T:FxImage
 
 func newFxImageDef(id string) (me *FxImageDef) {
 	me = &FxImageDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

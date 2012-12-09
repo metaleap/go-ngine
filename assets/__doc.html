@@ -193,6 +193,11 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				
 			
 				
+				<dd><a href="#AssetGeographicLocation">type AssetGeographicLocation</a></dd>
+				
+				
+			
+				
 				<dd><a href="#Base">type Base</a></dd>
 				
 				
@@ -471,12 +476,20 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				
 			
 				
+				<dd><a href="#FxEffectInstTechniqueHint">type FxEffectInstTechniqueHint</a></dd>
+				
+				
+			
+				
 				<dd><a href="#FxImageDef">type FxImageDef</a></dd>
 				
 				
 			
 				
 				<dd><a href="#FxImageInitFrom">type FxImageInitFrom</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewFxImageInitFrom">func NewFxImageInitFrom(refUrl string) (me *FxImageInitFrom)</a></dd>
 				
 				
 			
@@ -527,6 +540,26 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 			
 				
 				<dd><a href="#FxPassEvaluation">type FxPassEvaluation</a></dd>
+				
+				
+			
+				
+				<dd><a href="#FxPassEvaluationClearColor">type FxPassEvaluationClearColor</a></dd>
+				
+				
+			
+				
+				<dd><a href="#FxPassEvaluationClearDepth">type FxPassEvaluationClearDepth</a></dd>
+				
+				
+			
+				
+				<dd><a href="#FxPassEvaluationClearStencil">type FxPassEvaluationClearStencil</a></dd>
+				
+				
+			
+				
+				<dd><a href="#FxPassEvaluationTarget">type FxPassEvaluationTarget</a></dd>
 				
 				
 			
@@ -1169,6 +1202,9 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#LibFxImageDefs.Add">func (me *LibFxImageDefs) Add(d *FxImageDef) (n *FxImageDef)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LibFxImageDefs.AddFromRefUrls">func (me *LibFxImageDefs) AddFromRefUrls(idRefUrls map[string]string)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#LibFxImageDefs.AddNew">func (me *LibFxImageDefs) AddNew(id string) *FxImageDef</a></dd>
@@ -1889,6 +1925,9 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				
 				<dd><a href="#ScopedFloat">type ScopedFloat</a></dd>
 				
+					
+					<dd>&nbsp; &nbsp; <a href="#Scopedf">func Scopedf(f float64) *ScopedFloat</a></dd>
+				
 				
 			
 				
@@ -2065,12 +2104,12 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				
 			
 				<pre>const (
-    FX_CREATE_CUBE_FACE_NEGATIVE_X          = 0x8516
-    FX_CREATE_CUBE_FACE_NEGATIVE_Y          = 0x8518
-    FX_CREATE_CUBE_FACE_NEGATIVE_Z          = 0x851A
-    FX_CREATE_CUBE_FACE_POSITIVE_X          = 0x8515
-    FX_CREATE_CUBE_FACE_POSITIVE_Y          = 0x8517
-    FX_CREATE_CUBE_FACE_POSITIVE_Z          = 0x8519
+    FX_CUBE_FACE_NEGATIVE_X                 = 0x8516
+    FX_CUBE_FACE_NEGATIVE_Y                 = 0x8518
+    FX_CUBE_FACE_NEGATIVE_Z                 = 0x851A
+    FX_CUBE_FACE_POSITIVE_X                 = 0x8515
+    FX_CUBE_FACE_POSITIVE_Y                 = 0x8517
+    FX_CUBE_FACE_POSITIVE_Z                 = 0x8519
     FX_CREATE_FORMAT_HINT_CHANNELS_RGB      = 0
     FX_CREATE_FORMAT_HINT_CHANNELS_RGBA     = iota
     FX_CREATE_FORMAT_HINT_CHANNELS_RGBE     = iota
@@ -2360,7 +2399,7 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 		
 			
 			
-			<h2 id="SyncChanges">func <a href="/target/assets.go?s=1285:1303#L28">SyncChanges</a></h2>
+			<h2 id="SyncChanges">func <a href="/target/assets.go?s=1354:1372#L32">SyncChanges</a></h2>
 			<pre>func SyncChanges()</pre>
 			<p>
 Signals to *core* (or your custom package) that changes have been made that need to be picked up. Call this after you have made any number of changes to your Defs, Insts or Libs.
@@ -2475,7 +2514,7 @@ Signals to *core* (or your custom package) that changes have been made that need
 		
 			
 			
-			<h2 id="Asset">type <a href="/target/common.go?s=667:904#L33">Asset</a></h2>
+			<h2 id="Asset">type <a href="/target/common.go?s=615:862#L29">Asset</a></h2>
 			<pre>type Asset struct {
     HasExtras
     Created      string
@@ -2486,7 +2525,28 @@ Signals to *core* (or your custom package) that changes have been made that need
     Title        string
     UpAxis       string
     Contributors []*Contributor
-    Coverage     *ugeo.Location
+    Coverage     *AssetGeographicLocation
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="AssetGeographicLocation">type <a href="/target/common.go?s=864:1004#L42">AssetGeographicLocation</a></h2>
+			<pre>type AssetGeographicLocation struct {
+    Longitude        float64
+    Latitude         float64
+    Altitude         float64
+    AltitudeAbsolute bool
 }</pre>
 			
 
@@ -2637,7 +2697,7 @@ Provides a common base for *Lib*s.
 		
 			
 			
-			<h2 id="BindMaterial">type <a href="/target/common.go?s=906:1049#L46">BindMaterial</a></h2>
+			<h2 id="BindMaterial">type <a href="/target/common.go?s=1006:1149#L49">BindMaterial</a></h2>
 			<pre>type BindMaterial struct {
     HasExtras
     HasTechniques
@@ -2728,7 +2788,7 @@ Provides a common base for *Lib*s.
 		
 			
 			
-			<h2 id="CameraDef">type <a href="/target/camera.gt.go?s=600:677#L26">CameraDef</a></h2>
+			<h2 id="CameraDef">type <a href="/target/camera.gt.go?s=597:674#L25">CameraDef</a></h2>
 			<pre>type CameraDef struct {
     BaseDef
     Optics CameraOptics
@@ -2770,7 +2830,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="CameraInst">type <a href="/target/camera.gt.go?s=760:868#L36">CameraInst</a></h2>
+			<h2 id="CameraInst">type <a href="/target/camera.gt.go?s=757:865#L35">CameraInst</a></h2>
 			<pre>type CameraInst struct {
     BaseInst
 
@@ -2794,11 +2854,12 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="CameraOptics">type <a href="/target/camera.gt.go?s=178:330#L4">CameraOptics</a></h2>
+			<h2 id="CameraOptics">type <a href="/target/camera.gt.go?s=178:345#L4">CameraOptics</a></h2>
 			<pre>type CameraOptics struct {
     HasExtras
     HasTechniques
     TechniqueCommon struct {
+        CameraCommon
         Orthographic *CameraOrthographic
         Perspective  *CameraPerspective
     }
@@ -2817,9 +2878,8 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="CameraOrthographic">type <a href="/target/camera.gt.go?s=332:418#L13">CameraOrthographic</a></h2>
+			<h2 id="CameraOrthographic">type <a href="/target/camera.gt.go?s=347:419#L14">CameraOrthographic</a></h2>
 			<pre>type CameraOrthographic struct {
-    CameraCommon
     MagX *ScopedFloat
     MagY *ScopedFloat
 }</pre>
@@ -2837,11 +2897,10 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="CameraPerspective">type <a href="/target/camera.gt.go?s=420:495#L19">CameraPerspective</a></h2>
+			<h2 id="CameraPerspective">type <a href="/target/camera.gt.go?s=421:492#L19">CameraPerspective</a></h2>
 			<pre>type CameraPerspective struct {
-    CameraCommon
-    FovX float64
-    FovY float64
+    FovX *ScopedFloat
+    FovY *ScopedFloat
 }</pre>
 			
 
@@ -2857,7 +2916,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="Contributor">type <a href="/target/common.go?s=1051:1232#L55">Contributor</a></h2>
+			<h2 id="Contributor">type <a href="/target/common.go?s=1151:1332#L58">Contributor</a></h2>
 			<pre>type Contributor struct {
     Author        string
     AuthorEmail   string
@@ -2983,7 +3042,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="Extra">type <a href="/target/common.go?s=1234:1309#L65">Extra</a></h2>
+			<h2 id="Extra">type <a href="/target/common.go?s=1334:1409#L68">Extra</a></h2>
 			<pre>type Extra struct {
     HasID
     HasName
@@ -3545,7 +3604,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxEffectDef">type <a href="/target/fxeffect.gt.go?s=3163:3332#L165">FxEffectDef</a></h2>
+			<h2 id="FxEffectDef">type <a href="/target/fxeffect.gt.go?s=3877:4046#L203">FxEffectDef</a></h2>
 			<pre>type FxEffectDef struct {
     BaseDef
     Annotations []*FxAnnotation
@@ -3569,10 +3628,12 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxEffectInst">type <a href="/target/fxeffect.gt.go?s=3399:3455#L179">FxEffectInst</a></h2>
+			<h2 id="FxEffectInst">type <a href="/target/fxeffect.gt.go?s=4113:4254#L217">FxEffectInst</a></h2>
 			<pre>type FxEffectInst struct {
     BaseInst
-    Def *FxEffectDef
+    Def            *FxEffectDef
+    SetParams      []*ParamInst
+    TechniqueHints []*FxEffectInstTechniqueHint
 }</pre>
 			
 
@@ -3588,7 +3649,27 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxImageDef">type <a href="/target/fximage.gt.go?s=2412:2632#L110">FxImageDef</a></h2>
+			<h2 id="FxEffectInstTechniqueHint">type <a href="/target/fxeffect.gt.go?s=4292:4384#L227">FxEffectInstTechniqueHint</a></h2>
+			<pre>type FxEffectInstTechniqueHint struct {
+    Platform string
+    Ref      string
+    Profile  string
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="FxImageDef">type <a href="/target/fximage.gt.go?s=2531:2751#L116">FxImageDef</a></h2>
 			<pre>type FxImageDef struct {
     BaseDef
     HasSid
@@ -3631,12 +3712,18 @@ An instance referencing a camera definition.
 			
 
 			
+				
+				<h3 id="NewFxImageInitFrom">func <a href="/target/fximage.gt.go?s=2320:2380#L102">NewFxImageInitFrom</a></h3>
+				<pre>func NewFxImageInitFrom(refUrl string) (me *FxImageInitFrom)</pre>
+				
+				
+			
 
 			
 		
 			
 			
-			<h2 id="FxImageInst">type <a href="/target/fximage.gt.go?s=2668:2722#L128">FxImageInst</a></h2>
+			<h2 id="FxImageInst">type <a href="/target/fximage.gt.go?s=2787:2841#L134">FxImageInst</a></h2>
 			<pre>type FxImageInst struct {
     BaseInst
     Def *FxImageDef
@@ -3655,7 +3742,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxInitFrom">type <a href="/target/fximage.gt.go?s=2320:2410#L102">FxInitFrom</a></h2>
+			<h2 id="FxInitFrom">type <a href="/target/fximage.gt.go?s=2439:2529#L108">FxInitFrom</a></h2>
 			<pre>type FxInitFrom struct {
     Raw struct {
         Data   []byte
@@ -3816,8 +3903,22 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxPassEvaluation">type <a href="/target/fxeffect.gt.go?s=939:969#L39">FxPassEvaluation</a></h2>
-			<pre>type FxPassEvaluation struct{}</pre>
+			<h2 id="FxPassEvaluation">type <a href="/target/fxeffect.gt.go?s=939:1256#L39">FxPassEvaluation</a></h2>
+			<pre>type FxPassEvaluation struct {
+    Draw  string
+    Color struct {
+        Clear  *FxPassEvaluationClearColor
+        Target *FxPassEvaluationTarget
+    }
+    Depth struct {
+        Clear  *FxPassEvaluationClearDepth
+        Target *FxPassEvaluationTarget
+    }
+    Stencil struct {
+        Clear  *FxPassEvaluationClearStencil
+        Target *FxPassEvaluationTarget
+    }
+}</pre>
 			
 
 			
@@ -3832,7 +3933,87 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxPassProgram">type <a href="/target/fxeffect.gt.go?s=971:1129#L41">FxPassProgram</a></h2>
+			<h2 id="FxPassEvaluationClearColor">type <a href="/target/fxeffect.gt.go?s=1258:1327#L55">FxPassEvaluationClearColor</a></h2>
+			<pre>type FxPassEvaluationClearColor struct {
+    ugfx.Rgba32
+    Index uint64
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="FxPassEvaluationClearDepth">type <a href="/target/fxeffect.gt.go?s=1329:1400#L60">FxPassEvaluationClearDepth</a></h2>
+			<pre>type FxPassEvaluationClearDepth struct {
+    F     float64
+    Index uint64
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="FxPassEvaluationClearStencil">type <a href="/target/fxeffect.gt.go?s=1402:1472#L65">FxPassEvaluationClearStencil</a></h2>
+			<pre>type FxPassEvaluationClearStencil struct {
+    B     byte
+    Index uint64
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="FxPassEvaluationTarget">type <a href="/target/fxeffect.gt.go?s=1474:1659#L70">FxPassEvaluationTarget</a></h2>
+			<pre>type FxPassEvaluationTarget struct {
+    Index           uint64
+    Slice           uint64
+    Mip             uint64
+    CubeFace        int
+    SamplerParamRef string
+    Image           *FxImageInst
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="FxPassProgram">type <a href="/target/fxeffect.gt.go?s=1661:1819#L79">FxPassProgram</a></h2>
 			<pre>type FxPassProgram struct {
     BindAttributes []*FxPassProgramBindAttribute
     BindUniforms   []*FxPassProgramBindUniform
@@ -3852,7 +4033,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxPassProgramBindAttribute">type <a href="/target/fxeffect.gt.go?s=1131:1207#L47">FxPassProgramBindAttribute</a></h2>
+			<h2 id="FxPassProgramBindAttribute">type <a href="/target/fxeffect.gt.go?s=1821:1897#L85">FxPassProgramBindAttribute</a></h2>
 			<pre>type FxPassProgramBindAttribute struct {
     Symbol   string
     Semantic string
@@ -3871,7 +4052,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxPassProgramBindUniform">type <a href="/target/fxeffect.gt.go?s=1209:1305#L52">FxPassProgramBindUniform</a></h2>
+			<h2 id="FxPassProgramBindUniform">type <a href="/target/fxeffect.gt.go?s=1899:1995#L90">FxPassProgramBindUniform</a></h2>
 			<pre>type FxPassProgramBindUniform struct {
     Symbol   string
     ParamRef string
@@ -3891,7 +4072,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxPassProgramShader">type <a href="/target/fxeffect.gt.go?s=1307:1439#L58">FxPassProgramShader</a></h2>
+			<h2 id="FxPassProgramShader">type <a href="/target/fxeffect.gt.go?s=1997:2129#L96">FxPassProgramShader</a></h2>
 			<pre>type FxPassProgramShader struct {
     HasExtras
     Stage   int
@@ -3914,7 +4095,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxPassProgramShaderSources">type <a href="/target/fxeffect.gt.go?s=1441:1521#L67">FxPassProgramShaderSources</a></h2>
+			<h2 id="FxPassProgramShaderSources">type <a href="/target/fxeffect.gt.go?s=2131:2211#L105">FxPassProgramShaderSources</a></h2>
 			<pre>type FxPassProgramShaderSources struct {
     S           string
     IsImportRef bool
@@ -3933,7 +4114,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxPassState">type <a href="/target/fxeffect.gt.go?s=1523:1605#L72">FxPassState</a></h2>
+			<h2 id="FxPassState">type <a href="/target/fxeffect.gt.go?s=2213:2295#L110">FxPassState</a></h2>
 			<pre>type FxPassState struct {
     Value    interface{}
     ParamRef string
@@ -3953,7 +4134,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxProfile">type <a href="/target/fxeffect.gt.go?s=1607:1683#L78">FxProfile</a></h2>
+			<h2 id="FxProfile">type <a href="/target/fxeffect.gt.go?s=2297:2373#L116">FxProfile</a></h2>
 			<pre>type FxProfile struct {
     HasID
     HasAsset
@@ -3974,7 +4155,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxProfileCommon">type <a href="/target/fxeffect.gt.go?s=1685:1756#L85">FxProfileCommon</a></h2>
+			<h2 id="FxProfileCommon">type <a href="/target/fxeffect.gt.go?s=2375:2446#L123">FxProfileCommon</a></h2>
 			<pre>type FxProfileCommon struct {
     FxProfile
     Technique FxTechniqueCommon
@@ -3989,7 +4170,7 @@ An instance referencing a camera definition.
 
 			
 				
-				<h3 id="NewFxProfileCommon">func <a href="/target/fxeffect.gt.go?s=1758:1805#L90">NewFxProfileCommon</a></h3>
+				<h3 id="NewFxProfileCommon">func <a href="/target/fxeffect.gt.go?s=2448:2495#L128">NewFxProfileCommon</a></h3>
 				<pre>func NewFxProfileCommon() (me *FxProfileCommon)</pre>
 				
 				
@@ -3999,7 +4180,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxProfileGlSl">type <a href="/target/fxeffect.gt.go?s=1874:2012#L96">FxProfileGlSl</a></h2>
+			<h2 id="FxProfileGlSl">type <a href="/target/fxeffect.gt.go?s=2564:2702#L134">FxProfileGlSl</a></h2>
 			<pre>type FxProfileGlSl struct {
     FxProfile
     Platform      string
@@ -4016,7 +4197,7 @@ An instance referencing a camera definition.
 
 			
 				
-				<h3 id="NewFxProfileGlSl">func <a href="/target/fxeffect.gt.go?s=2086:2129#L108">NewFxProfileGlSl</a></h3>
+				<h3 id="NewFxProfileGlSl">func <a href="/target/fxeffect.gt.go?s=2776:2819#L146">NewFxProfileGlSl</a></h3>
 				<pre>func NewFxProfileGlSl() (me *FxProfileGlSl)</pre>
 				
 				
@@ -4026,7 +4207,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxProfileGlSlCodeInclude">type <a href="/target/fxeffect.gt.go?s=2014:2084#L103">FxProfileGlSlCodeInclude</a></h2>
+			<h2 id="FxProfileGlSlCodeInclude">type <a href="/target/fxeffect.gt.go?s=2704:2774#L141">FxProfileGlSlCodeInclude</a></h2>
 			<pre>type FxProfileGlSlCodeInclude struct {
     ScopedString
     IsInclude bool
@@ -4112,7 +4293,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxTechnique">type <a href="/target/fxeffect.gt.go?s=2196:2259#L114">FxTechnique</a></h2>
+			<h2 id="FxTechnique">type <a href="/target/fxeffect.gt.go?s=2886:2949#L152">FxTechnique</a></h2>
 			<pre>type FxTechnique struct {
     HasID
     HasSid
@@ -4133,7 +4314,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxTechniqueCommon">type <a href="/target/fxeffect.gt.go?s=2261:2448#L121">FxTechniqueCommon</a></h2>
+			<h2 id="FxTechniqueCommon">type <a href="/target/fxeffect.gt.go?s=2951:3138#L159">FxTechniqueCommon</a></h2>
 			<pre>type FxTechniqueCommon struct {
     FxTechnique
     Blinn    *FxTechniqueCommonBlinn
@@ -4155,11 +4336,11 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxTechniqueCommonBlinn">type <a href="/target/fxeffect.gt.go?s=2450:2566#L129">FxTechniqueCommonBlinn</a></h2>
+			<h2 id="FxTechniqueCommonBlinn">type <a href="/target/fxeffect.gt.go?s=3140:3262#L167">FxTechniqueCommonBlinn</a></h2>
 			<pre>type FxTechniqueCommonBlinn struct {
     FxTechniqueCommonLambert
     Specular  *FxColorOrTexture
-    Shininess *ParamFloat
+    Shininess *ParamScopedFloat
 }</pre>
 			
 
@@ -4175,14 +4356,14 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxTechniqueCommonConstant">type <a href="/target/fxeffect.gt.go?s=2568:2813#L135">FxTechniqueCommonConstant</a></h2>
+			<h2 id="FxTechniqueCommonConstant">type <a href="/target/fxeffect.gt.go?s=3264:3527#L173">FxTechniqueCommonConstant</a></h2>
 			<pre>type FxTechniqueCommonConstant struct {
     Emission          *FxColorOrTexture
     Reflective        *FxColorOrTexture
-    Reflectivity      *ParamFloat
+    Reflectivity      *ParamScopedFloat
     Transparent       *FxColorOrTexture
-    Transparency      *ParamFloat
-    IndexOfRefraction *ParamFloat
+    Transparency      *ParamScopedFloat
+    IndexOfRefraction *ParamScopedFloat
 }</pre>
 			
 
@@ -4198,7 +4379,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxTechniqueCommonLambert">type <a href="/target/fxeffect.gt.go?s=2815:2936#L144">FxTechniqueCommonLambert</a></h2>
+			<h2 id="FxTechniqueCommonLambert">type <a href="/target/fxeffect.gt.go?s=3529:3650#L182">FxTechniqueCommonLambert</a></h2>
 			<pre>type FxTechniqueCommonLambert struct {
     FxTechniqueCommonConstant
     Ambient *FxColorOrTexture
@@ -4218,7 +4399,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxTechniqueCommonPhong">type <a href="/target/fxeffect.gt.go?s=2938:3000#L150">FxTechniqueCommonPhong</a></h2>
+			<h2 id="FxTechniqueCommonPhong">type <a href="/target/fxeffect.gt.go?s=3652:3714#L188">FxTechniqueCommonPhong</a></h2>
 			<pre>type FxTechniqueCommonPhong struct {
     FxTechniqueCommonBlinn
 }</pre>
@@ -4236,7 +4417,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxTechniqueGlsl">type <a href="/target/fxeffect.gt.go?s=3002:3098#L154">FxTechniqueGlsl</a></h2>
+			<h2 id="FxTechniqueGlsl">type <a href="/target/fxeffect.gt.go?s=3716:3812#L192">FxTechniqueGlsl</a></h2>
 			<pre>type FxTechniqueGlsl struct {
     FxTechnique
     Annotations []*FxAnnotation
@@ -4256,7 +4437,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="FxTexture">type <a href="/target/fxeffect.gt.go?s=3100:3161#L160">FxTexture</a></h2>
+			<h2 id="FxTexture">type <a href="/target/fxeffect.gt.go?s=3814:3875#L198">FxTexture</a></h2>
 			<pre>type FxTexture struct {
     Sampler2D string
     TexCoord  string
@@ -5066,7 +5247,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="HasAsset">type <a href="/target/common.go?s=274:312#L6">HasAsset</a></h2>
+			<h2 id="HasAsset">type <a href="/target/common.go?s=222:260#L2">HasAsset</a></h2>
 			<pre>type HasAsset struct {
     Asset *Asset
 }</pre>
@@ -5084,7 +5265,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="HasExtras">type <a href="/target/common.go?s=314:356#L10">HasExtras</a></h2>
+			<h2 id="HasExtras">type <a href="/target/common.go?s=262:304#L6">HasExtras</a></h2>
 			<pre>type HasExtras struct {
     Extras []*Extra
 }</pre>
@@ -5102,7 +5283,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="HasID">type <a href="/target/common.go?s=358:448#L14">HasID</a></h2>
+			<h2 id="HasID">type <a href="/target/common.go?s=306:396#L10">HasID</a></h2>
 			<pre>type HasID struct {
     <span class="comment">//	The unique identifier of this *Def*, *Inst* or *Lib*.</span>
     ID string
@@ -5121,7 +5302,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="HasName">type <a href="/target/common.go?s=450:559#L19">HasName</a></h2>
+			<h2 id="HasName">type <a href="/target/common.go?s=398:507#L15">HasName</a></h2>
 			<pre>type HasName struct {
     <span class="comment">//	The optional pretty-print name/title of this *Def*, *Inst* or *Lib*.</span>
     Name string
@@ -5140,7 +5321,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="HasSid">type <a href="/target/common.go?s=561:609#L24">HasSid</a></h2>
+			<h2 id="HasSid">type <a href="/target/common.go?s=509:557#L20">HasSid</a></h2>
 			<pre>type HasSid struct {
     <span class="comment">//	Scoped ID</span>
     Sid string
@@ -5159,7 +5340,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="HasTechniques">type <a href="/target/common.go?s=611:665#L29">HasTechniques</a></h2>
+			<h2 id="HasTechniques">type <a href="/target/common.go?s=559:613#L25">HasTechniques</a></h2>
 			<pre>type HasTechniques struct {
     Techniques []*Technique
 }</pre>
@@ -5177,7 +5358,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="IndexedInputs">type <a href="/target/common.go?s=1311:1414#L73">IndexedInputs</a></h2>
+			<h2 id="IndexedInputs">type <a href="/target/common.go?s=1411:1514#L76">IndexedInputs</a></h2>
 			<pre>type IndexedInputs struct {
     Count   uint64
     Inputs  []*InputShared
@@ -5198,7 +5379,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="Input">type <a href="/target/common.go?s=1416:1471#L80">Input</a></h2>
+			<h2 id="Input">type <a href="/target/common.go?s=1516:1571#L83">Input</a></h2>
 			<pre>type Input struct {
     Semantic string
     Source   string
@@ -5217,7 +5398,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="InputShared">type <a href="/target/common.go?s=1473:1537#L85">InputShared</a></h2>
+			<h2 id="InputShared">type <a href="/target/common.go?s=1573:1637#L88">InputShared</a></h2>
 			<pre>type InputShared struct {
     Input
     Offset uint64
@@ -5870,7 +6051,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="Layers">type <a href="/target/common.go?s=1539:1566#L91">Layers</a></h2>
+			<h2 id="Layers">type <a href="/target/common.go?s=1639:1666#L94">Layers</a></h2>
 			<pre>type Layers map[string]bool</pre>
 			
 
@@ -5886,7 +6067,7 @@ An instance referencing a camera definition.
 		
 			
 			
-			<h2 id="LibAnimationClipDefs">type <a href="/target/animationclip.gt.go?s=2021:2301#L61">LibAnimationClipDefs</a></h2>
+			<h2 id="LibAnimationClipDefs">type <a href="/target/animationclip.gt.go?s=2037:2317#L62">LibAnimationClipDefs</a></h2>
 			<pre>type LibAnimationClipDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -5909,7 +6090,7 @@ use the *LibsAnimationClipDef.New()* or *LibsAnimationClipDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibAnimationClipDefs.Add">func (*LibAnimationClipDefs) <a href="/target/animationclip.gt.go?s=2697:2775#L77">Add</a></h3>
+				<h3 id="LibAnimationClipDefs.Add">func (*LibAnimationClipDefs) <a href="/target/animationclip.gt.go?s=2713:2791#L78">Add</a></h3>
 				<pre>func (me *LibAnimationClipDefs) Add(d *AnimationClipDef) (n *AnimationClipDef)</pre>
 				<p>
 Adds the specified *AnimationClipDef* definition to this *LibAnimationClipDefs*, and returns it.
@@ -5922,7 +6103,7 @@ If this *LibAnimationClipDefs* already contains a *AnimationClipDef* definition 
 				
 			
 				
-				<h3 id="LibAnimationClipDefs.AddNew">func (*LibAnimationClipDefs) <a href="/target/animationclip.gt.go?s=3127:3194#L88">AddNew</a></h3>
+				<h3 id="LibAnimationClipDefs.AddNew">func (*LibAnimationClipDefs) <a href="/target/animationclip.gt.go?s=3143:3210#L89">AddNew</a></h3>
 				<pre>func (me *LibAnimationClipDefs) AddNew(id string) *AnimationClipDef</pre>
 				<p>
 Creates a new *AnimationClipDef* definition with the specified *ID*, adds it to this *LibAnimationClipDefs*, and returns it.
@@ -5935,7 +6116,7 @@ If this *LibAnimationClipDefs* already contains a *AnimationClipDef* definition 
 				
 			
 				
-				<h3 id="LibAnimationClipDefs.New">func (*LibAnimationClipDefs) <a href="/target/animationclip.gt.go?s=3365:3435#L91">New</a></h3>
+				<h3 id="LibAnimationClipDefs.New">func (*LibAnimationClipDefs) <a href="/target/animationclip.gt.go?s=3381:3451#L92">New</a></h3>
 				<pre>func (me *LibAnimationClipDefs) New(id string) (def *AnimationClipDef)</pre>
 				<p>
 Creates a new *AnimationClipDef* definition with the specified *ID* and returns it, but does not add it to this *LibAnimationClipDefs*.
@@ -5945,7 +6126,7 @@ Creates a new *AnimationClipDef* definition with the specified *ID* and returns 
 				
 			
 				
-				<h3 id="LibAnimationClipDefs.Remove">func (*LibAnimationClipDefs) <a href="/target/animationclip.gt.go?s=3571:3620#L94">Remove</a></h3>
+				<h3 id="LibAnimationClipDefs.Remove">func (*LibAnimationClipDefs) <a href="/target/animationclip.gt.go?s=3587:3636#L95">Remove</a></h3>
 				<pre>func (me *LibAnimationClipDefs) Remove(id string)</pre>
 				<p>
 Removes the *AnimationClipDef* with the specified *ID* from this *LibAnimationClipDefs*.
@@ -5955,7 +6136,7 @@ Removes the *AnimationClipDef* with the specified *ID* from this *LibAnimationCl
 				
 			
 				
-				<h3 id="LibAnimationClipDefs.SyncChanges">func (*LibAnimationClipDefs) <a href="/target/animationclip.gt.go?s=3978:4023#L99">SyncChanges</a></h3>
+				<h3 id="LibAnimationClipDefs.SyncChanges">func (*LibAnimationClipDefs) <a href="/target/animationclip.gt.go?s=3994:4039#L100">SyncChanges</a></h3>
 				<pre>func (me *LibAnimationClipDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibAnimationClipDefs* that need to be picked up.
@@ -5969,7 +6150,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibAnimationDefs">type <a href="/target/animation.gt.go?s=2197:2469#L83">LibAnimationDefs</a></h2>
+			<h2 id="LibAnimationDefs">type <a href="/target/animation.gt.go?s=2213:2485#L84">LibAnimationDefs</a></h2>
 			<pre>type LibAnimationDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -5992,7 +6173,7 @@ use the *LibsAnimationDef.New()* or *LibsAnimationDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibAnimationDefs.Add">func (*LibAnimationDefs) <a href="/target/animation.gt.go?s=2833:2899#L99">Add</a></h3>
+				<h3 id="LibAnimationDefs.Add">func (*LibAnimationDefs) <a href="/target/animation.gt.go?s=2849:2915#L100">Add</a></h3>
 				<pre>func (me *LibAnimationDefs) Add(d *AnimationDef) (n *AnimationDef)</pre>
 				<p>
 Adds the specified *AnimationDef* definition to this *LibAnimationDefs*, and returns it.
@@ -6005,7 +6186,7 @@ If this *LibAnimationDefs* already contains a *AnimationDef* definition with the
 				
 			
 				
-				<h3 id="LibAnimationDefs.AddNew">func (*LibAnimationDefs) <a href="/target/animation.gt.go?s=3235:3294#L110">AddNew</a></h3>
+				<h3 id="LibAnimationDefs.AddNew">func (*LibAnimationDefs) <a href="/target/animation.gt.go?s=3251:3310#L111">AddNew</a></h3>
 				<pre>func (me *LibAnimationDefs) AddNew(id string) *AnimationDef</pre>
 				<p>
 Creates a new *AnimationDef* definition with the specified *ID*, adds it to this *LibAnimationDefs*, and returns it.
@@ -6018,7 +6199,7 @@ If this *LibAnimationDefs* already contains a *AnimationDef* definition with the
 				
 			
 				
-				<h3 id="LibAnimationDefs.New">func (*LibAnimationDefs) <a href="/target/animation.gt.go?s=3457:3519#L113">New</a></h3>
+				<h3 id="LibAnimationDefs.New">func (*LibAnimationDefs) <a href="/target/animation.gt.go?s=3473:3535#L114">New</a></h3>
 				<pre>func (me *LibAnimationDefs) New(id string) (def *AnimationDef)</pre>
 				<p>
 Creates a new *AnimationDef* definition with the specified *ID* and returns it, but does not add it to this *LibAnimationDefs*.
@@ -6028,7 +6209,7 @@ Creates a new *AnimationDef* definition with the specified *ID* and returns it, 
 				
 			
 				
-				<h3 id="LibAnimationDefs.Remove">func (*LibAnimationDefs) <a href="/target/animation.gt.go?s=3643:3688#L116">Remove</a></h3>
+				<h3 id="LibAnimationDefs.Remove">func (*LibAnimationDefs) <a href="/target/animation.gt.go?s=3659:3704#L117">Remove</a></h3>
 				<pre>func (me *LibAnimationDefs) Remove(id string)</pre>
 				<p>
 Removes the *AnimationDef* with the specified *ID* from this *LibAnimationDefs*.
@@ -6038,7 +6219,7 @@ Removes the *AnimationDef* with the specified *ID* from this *LibAnimationDefs*.
 				
 			
 				
-				<h3 id="LibAnimationDefs.SyncChanges">func (*LibAnimationDefs) <a href="/target/animation.gt.go?s=4034:4075#L121">SyncChanges</a></h3>
+				<h3 id="LibAnimationDefs.SyncChanges">func (*LibAnimationDefs) <a href="/target/animation.gt.go?s=4050:4091#L122">SyncChanges</a></h3>
 				<pre>func (me *LibAnimationDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibAnimationDefs* that need to be picked up.
@@ -6052,7 +6233,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibCameraDefs">type <a href="/target/camera.gt.go?s=2492:2758#L103">LibCameraDefs</a></h2>
+			<h2 id="LibCameraDefs">type <a href="/target/camera.gt.go?s=2505:2771#L103">LibCameraDefs</a></h2>
 			<pre>type LibCameraDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -6075,7 +6256,7 @@ use the *LibsCameraDef.New()* or *LibsCameraDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibCameraDefs.Add">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=3098:3155#L119">Add</a></h3>
+				<h3 id="LibCameraDefs.Add">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=3111:3168#L119">Add</a></h3>
 				<pre>func (me *LibCameraDefs) Add(d *CameraDef) (n *CameraDef)</pre>
 				<p>
 Adds the specified *CameraDef* definition to this *LibCameraDefs*, and returns it.
@@ -6088,7 +6269,7 @@ If this *LibCameraDefs* already contains a *CameraDef* definition with the same 
 				
 			
 				
-				<h3 id="LibCameraDefs.AddNew">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=3479:3532#L130">AddNew</a></h3>
+				<h3 id="LibCameraDefs.AddNew">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=3492:3545#L130">AddNew</a></h3>
 				<pre>func (me *LibCameraDefs) AddNew(id string) *CameraDef</pre>
 				<p>
 Creates a new *CameraDef* definition with the specified *ID*, adds it to this *LibCameraDefs*, and returns it.
@@ -6101,7 +6282,7 @@ If this *LibCameraDefs* already contains a *CameraDef* definition with the speci
 				
 			
 				
-				<h3 id="LibCameraDefs.New">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=3689:3745#L133">New</a></h3>
+				<h3 id="LibCameraDefs.New">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=3702:3758#L133">New</a></h3>
 				<pre>func (me *LibCameraDefs) New(id string) (def *CameraDef)</pre>
 				<p>
 Creates a new *CameraDef* definition with the specified *ID* and returns it, but does not add it to this *LibCameraDefs*.
@@ -6111,7 +6292,7 @@ Creates a new *CameraDef* definition with the specified *ID* and returns it, but
 				
 			
 				
-				<h3 id="LibCameraDefs.Remove">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=3860:3902#L136">Remove</a></h3>
+				<h3 id="LibCameraDefs.Remove">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=3873:3915#L136">Remove</a></h3>
 				<pre>func (me *LibCameraDefs) Remove(id string)</pre>
 				<p>
 Removes the *CameraDef* with the specified *ID* from this *LibCameraDefs*.
@@ -6121,7 +6302,7 @@ Removes the *CameraDef* with the specified *ID* from this *LibCameraDefs*.
 				
 			
 				
-				<h3 id="LibCameraDefs.SyncChanges">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=4239:4277#L141">SyncChanges</a></h3>
+				<h3 id="LibCameraDefs.SyncChanges">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=4252:4290#L141">SyncChanges</a></h3>
 				<pre>func (me *LibCameraDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibCameraDefs* that need to be picked up.
@@ -6135,7 +6316,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibControllerDefs">type <a href="/target/controller.gt.go?s=2560:2834#L100">LibControllerDefs</a></h2>
+			<h2 id="LibControllerDefs">type <a href="/target/controller.gt.go?s=2576:2850#L101">LibControllerDefs</a></h2>
 			<pre>type LibControllerDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -6158,7 +6339,7 @@ use the *LibsControllerDef.New()* or *LibsControllerDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibControllerDefs.Add">func (*LibControllerDefs) <a href="/target/controller.gt.go?s=3206:3275#L116">Add</a></h3>
+				<h3 id="LibControllerDefs.Add">func (*LibControllerDefs) <a href="/target/controller.gt.go?s=3222:3291#L117">Add</a></h3>
 				<pre>func (me *LibControllerDefs) Add(d *ControllerDef) (n *ControllerDef)</pre>
 				<p>
 Adds the specified *ControllerDef* definition to this *LibControllerDefs*, and returns it.
@@ -6171,7 +6352,7 @@ If this *LibControllerDefs* already contains a *ControllerDef* definition with t
 				
 			
 				
-				<h3 id="LibControllerDefs.AddNew">func (*LibControllerDefs) <a href="/target/controller.gt.go?s=3615:3676#L127">AddNew</a></h3>
+				<h3 id="LibControllerDefs.AddNew">func (*LibControllerDefs) <a href="/target/controller.gt.go?s=3631:3692#L128">AddNew</a></h3>
 				<pre>func (me *LibControllerDefs) AddNew(id string) *ControllerDef</pre>
 				<p>
 Creates a new *ControllerDef* definition with the specified *ID*, adds it to this *LibControllerDefs*, and returns it.
@@ -6184,7 +6365,7 @@ If this *LibControllerDefs* already contains a *ControllerDef* definition with t
 				
 			
 				
-				<h3 id="LibControllerDefs.New">func (*LibControllerDefs) <a href="/target/controller.gt.go?s=3841:3905#L130">New</a></h3>
+				<h3 id="LibControllerDefs.New">func (*LibControllerDefs) <a href="/target/controller.gt.go?s=3857:3921#L131">New</a></h3>
 				<pre>func (me *LibControllerDefs) New(id string) (def *ControllerDef)</pre>
 				<p>
 Creates a new *ControllerDef* definition with the specified *ID* and returns it, but does not add it to this *LibControllerDefs*.
@@ -6194,7 +6375,7 @@ Creates a new *ControllerDef* definition with the specified *ID* and returns it,
 				
 			
 				
-				<h3 id="LibControllerDefs.Remove">func (*LibControllerDefs) <a href="/target/controller.gt.go?s=4032:4078#L133">Remove</a></h3>
+				<h3 id="LibControllerDefs.Remove">func (*LibControllerDefs) <a href="/target/controller.gt.go?s=4048:4094#L134">Remove</a></h3>
 				<pre>func (me *LibControllerDefs) Remove(id string)</pre>
 				<p>
 Removes the *ControllerDef* with the specified *ID* from this *LibControllerDefs*.
@@ -6204,7 +6385,7 @@ Removes the *ControllerDef* with the specified *ID* from this *LibControllerDefs
 				
 			
 				
-				<h3 id="LibControllerDefs.SyncChanges">func (*LibControllerDefs) <a href="/target/controller.gt.go?s=4427:4469#L138">SyncChanges</a></h3>
+				<h3 id="LibControllerDefs.SyncChanges">func (*LibControllerDefs) <a href="/target/controller.gt.go?s=4443:4485#L139">SyncChanges</a></h3>
 				<pre>func (me *LibControllerDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibControllerDefs* that need to be picked up.
@@ -6218,7 +6399,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibFormulaDefs">type <a href="/target/formula.gt.go?s=1986:2254#L74">LibFormulaDefs</a></h2>
+			<h2 id="LibFormulaDefs">type <a href="/target/formula.gt.go?s=2002:2270#L75">LibFormulaDefs</a></h2>
 			<pre>type LibFormulaDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -6241,7 +6422,7 @@ use the *LibsFormulaDef.New()* or *LibsFormulaDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibFormulaDefs.Add">func (*LibFormulaDefs) <a href="/target/formula.gt.go?s=2602:2662#L90">Add</a></h3>
+				<h3 id="LibFormulaDefs.Add">func (*LibFormulaDefs) <a href="/target/formula.gt.go?s=2618:2678#L91">Add</a></h3>
 				<pre>func (me *LibFormulaDefs) Add(d *FormulaDef) (n *FormulaDef)</pre>
 				<p>
 Adds the specified *FormulaDef* definition to this *LibFormulaDefs*, and returns it.
@@ -6254,7 +6435,7 @@ If this *LibFormulaDefs* already contains a *FormulaDef* definition with the sam
 				
 			
 				
-				<h3 id="LibFormulaDefs.AddNew">func (*LibFormulaDefs) <a href="/target/formula.gt.go?s=2990:3045#L101">AddNew</a></h3>
+				<h3 id="LibFormulaDefs.AddNew">func (*LibFormulaDefs) <a href="/target/formula.gt.go?s=3006:3061#L102">AddNew</a></h3>
 				<pre>func (me *LibFormulaDefs) AddNew(id string) *FormulaDef</pre>
 				<p>
 Creates a new *FormulaDef* definition with the specified *ID*, adds it to this *LibFormulaDefs*, and returns it.
@@ -6267,7 +6448,7 @@ If this *LibFormulaDefs* already contains a *FormulaDef* definition with the spe
 				
 			
 				
-				<h3 id="LibFormulaDefs.New">func (*LibFormulaDefs) <a href="/target/formula.gt.go?s=3204:3262#L104">New</a></h3>
+				<h3 id="LibFormulaDefs.New">func (*LibFormulaDefs) <a href="/target/formula.gt.go?s=3220:3278#L105">New</a></h3>
 				<pre>func (me *LibFormulaDefs) New(id string) (def *FormulaDef)</pre>
 				<p>
 Creates a new *FormulaDef* definition with the specified *ID* and returns it, but does not add it to this *LibFormulaDefs*.
@@ -6277,7 +6458,7 @@ Creates a new *FormulaDef* definition with the specified *ID* and returns it, bu
 				
 			
 				
-				<h3 id="LibFormulaDefs.Remove">func (*LibFormulaDefs) <a href="/target/formula.gt.go?s=3380:3423#L107">Remove</a></h3>
+				<h3 id="LibFormulaDefs.Remove">func (*LibFormulaDefs) <a href="/target/formula.gt.go?s=3396:3439#L108">Remove</a></h3>
 				<pre>func (me *LibFormulaDefs) Remove(id string)</pre>
 				<p>
 Removes the *FormulaDef* with the specified *ID* from this *LibFormulaDefs*.
@@ -6287,7 +6468,7 @@ Removes the *FormulaDef* with the specified *ID* from this *LibFormulaDefs*.
 				
 			
 				
-				<h3 id="LibFormulaDefs.SyncChanges">func (*LibFormulaDefs) <a href="/target/formula.gt.go?s=3763:3802#L112">SyncChanges</a></h3>
+				<h3 id="LibFormulaDefs.SyncChanges">func (*LibFormulaDefs) <a href="/target/formula.gt.go?s=3779:3818#L113">SyncChanges</a></h3>
 				<pre>func (me *LibFormulaDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibFormulaDefs* that need to be picked up.
@@ -6301,7 +6482,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibFxEffectDefs">type <a href="/target/fxeffect.gt.go?s=5149:5419#L244">LibFxEffectDefs</a></h2>
+			<h2 id="LibFxEffectDefs">type <a href="/target/fxeffect.gt.go?s=6058:6328#L291">LibFxEffectDefs</a></h2>
 			<pre>type LibFxEffectDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -6324,7 +6505,7 @@ use the *LibsFxEffectDef.New()* or *LibsFxEffectDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibFxEffectDefs.Add">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=5775:5838#L260">Add</a></h3>
+				<h3 id="LibFxEffectDefs.Add">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=6684:6747#L307">Add</a></h3>
 				<pre>func (me *LibFxEffectDefs) Add(d *FxEffectDef) (n *FxEffectDef)</pre>
 				<p>
 Adds the specified *FxEffectDef* definition to this *LibFxEffectDefs*, and returns it.
@@ -6337,7 +6518,7 @@ If this *LibFxEffectDefs* already contains a *FxEffectDef* definition with the s
 				
 			
 				
-				<h3 id="LibFxEffectDefs.AddNew">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=6170:6227#L271">AddNew</a></h3>
+				<h3 id="LibFxEffectDefs.AddNew">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=7079:7136#L318">AddNew</a></h3>
 				<pre>func (me *LibFxEffectDefs) AddNew(id string) *FxEffectDef</pre>
 				<p>
 Creates a new *FxEffectDef* definition with the specified *ID*, adds it to this *LibFxEffectDefs*, and returns it.
@@ -6350,7 +6531,7 @@ If this *LibFxEffectDefs* already contains a *FxEffectDef* definition with the s
 				
 			
 				
-				<h3 id="LibFxEffectDefs.New">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=6388:6448#L274">New</a></h3>
+				<h3 id="LibFxEffectDefs.New">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=7297:7357#L321">New</a></h3>
 				<pre>func (me *LibFxEffectDefs) New(id string) (def *FxEffectDef)</pre>
 				<p>
 Creates a new *FxEffectDef* definition with the specified *ID* and returns it, but does not add it to this *LibFxEffectDefs*.
@@ -6360,7 +6541,7 @@ Creates a new *FxEffectDef* definition with the specified *ID* and returns it, b
 				
 			
 				
-				<h3 id="LibFxEffectDefs.Remove">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=6569:6613#L277">Remove</a></h3>
+				<h3 id="LibFxEffectDefs.Remove">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=7478:7522#L324">Remove</a></h3>
 				<pre>func (me *LibFxEffectDefs) Remove(id string)</pre>
 				<p>
 Removes the *FxEffectDef* with the specified *ID* from this *LibFxEffectDefs*.
@@ -6370,7 +6551,7 @@ Removes the *FxEffectDef* with the specified *ID* from this *LibFxEffectDefs*.
 				
 			
 				
-				<h3 id="LibFxEffectDefs.SyncChanges">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=6956:6996#L282">SyncChanges</a></h3>
+				<h3 id="LibFxEffectDefs.SyncChanges">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=7865:7905#L329">SyncChanges</a></h3>
 				<pre>func (me *LibFxEffectDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibFxEffectDefs* that need to be picked up.
@@ -6384,7 +6565,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibFxImageDefs">type <a href="/target/fximage.gt.go?s=4381:4649#L193">LibFxImageDefs</a></h2>
+			<h2 id="LibFxImageDefs">type <a href="/target/fximage.gt.go?s=4692:4960#L206">LibFxImageDefs</a></h2>
 			<pre>type LibFxImageDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -6407,7 +6588,7 @@ use the *LibsFxImageDef.New()* or *LibsFxImageDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibFxImageDefs.Add">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=4997:5057#L209">Add</a></h3>
+				<h3 id="LibFxImageDefs.Add">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=5308:5368#L222">Add</a></h3>
 				<pre>func (me *LibFxImageDefs) Add(d *FxImageDef) (n *FxImageDef)</pre>
 				<p>
 Adds the specified *FxImageDef* definition to this *LibFxImageDefs*, and returns it.
@@ -6420,7 +6601,14 @@ If this *LibFxImageDefs* already contains a *FxImageDef* definition with the sam
 				
 			
 				
-				<h3 id="LibFxImageDefs.AddNew">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=5385:5440#L220">AddNew</a></h3>
+				<h3 id="LibFxImageDefs.AddFromRefUrls">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=2878:2947#L142">AddFromRefUrls</a></h3>
+				<pre>func (me *LibFxImageDefs) AddFromRefUrls(idRefUrls map[string]string)</pre>
+				
+				
+				
+			
+				
+				<h3 id="LibFxImageDefs.AddNew">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=5696:5751#L233">AddNew</a></h3>
 				<pre>func (me *LibFxImageDefs) AddNew(id string) *FxImageDef</pre>
 				<p>
 Creates a new *FxImageDef* definition with the specified *ID*, adds it to this *LibFxImageDefs*, and returns it.
@@ -6433,7 +6621,7 @@ If this *LibFxImageDefs* already contains a *FxImageDef* definition with the spe
 				
 			
 				
-				<h3 id="LibFxImageDefs.New">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=5599:5657#L223">New</a></h3>
+				<h3 id="LibFxImageDefs.New">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=5910:5968#L236">New</a></h3>
 				<pre>func (me *LibFxImageDefs) New(id string) (def *FxImageDef)</pre>
 				<p>
 Creates a new *FxImageDef* definition with the specified *ID* and returns it, but does not add it to this *LibFxImageDefs*.
@@ -6443,7 +6631,7 @@ Creates a new *FxImageDef* definition with the specified *ID* and returns it, bu
 				
 			
 				
-				<h3 id="LibFxImageDefs.Remove">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=5775:5818#L226">Remove</a></h3>
+				<h3 id="LibFxImageDefs.Remove">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=6086:6129#L239">Remove</a></h3>
 				<pre>func (me *LibFxImageDefs) Remove(id string)</pre>
 				<p>
 Removes the *FxImageDef* with the specified *ID* from this *LibFxImageDefs*.
@@ -6453,7 +6641,7 @@ Removes the *FxImageDef* with the specified *ID* from this *LibFxImageDefs*.
 				
 			
 				
-				<h3 id="LibFxImageDefs.SyncChanges">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=6158:6197#L231">SyncChanges</a></h3>
+				<h3 id="LibFxImageDefs.SyncChanges">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=6469:6508#L244">SyncChanges</a></h3>
 				<pre>func (me *LibFxImageDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibFxImageDefs* that need to be picked up.
@@ -6467,7 +6655,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibFxMaterialDefs">type <a href="/target/fxmaterial.gt.go?s=2250:2524#L80">LibFxMaterialDefs</a></h2>
+			<h2 id="LibFxMaterialDefs">type <a href="/target/fxmaterial.gt.go?s=2266:2540#L81">LibFxMaterialDefs</a></h2>
 			<pre>type LibFxMaterialDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -6490,7 +6678,7 @@ use the *LibsFxMaterialDef.New()* or *LibsFxMaterialDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibFxMaterialDefs.Add">func (*LibFxMaterialDefs) <a href="/target/fxmaterial.gt.go?s=2896:2965#L96">Add</a></h3>
+				<h3 id="LibFxMaterialDefs.Add">func (*LibFxMaterialDefs) <a href="/target/fxmaterial.gt.go?s=2912:2981#L97">Add</a></h3>
 				<pre>func (me *LibFxMaterialDefs) Add(d *FxMaterialDef) (n *FxMaterialDef)</pre>
 				<p>
 Adds the specified *FxMaterialDef* definition to this *LibFxMaterialDefs*, and returns it.
@@ -6503,7 +6691,7 @@ If this *LibFxMaterialDefs* already contains a *FxMaterialDef* definition with t
 				
 			
 				
-				<h3 id="LibFxMaterialDefs.AddNew">func (*LibFxMaterialDefs) <a href="/target/fxmaterial.gt.go?s=3305:3366#L107">AddNew</a></h3>
+				<h3 id="LibFxMaterialDefs.AddNew">func (*LibFxMaterialDefs) <a href="/target/fxmaterial.gt.go?s=3321:3382#L108">AddNew</a></h3>
 				<pre>func (me *LibFxMaterialDefs) AddNew(id string) *FxMaterialDef</pre>
 				<p>
 Creates a new *FxMaterialDef* definition with the specified *ID*, adds it to this *LibFxMaterialDefs*, and returns it.
@@ -6516,7 +6704,7 @@ If this *LibFxMaterialDefs* already contains a *FxMaterialDef* definition with t
 				
 			
 				
-				<h3 id="LibFxMaterialDefs.New">func (*LibFxMaterialDefs) <a href="/target/fxmaterial.gt.go?s=3531:3595#L110">New</a></h3>
+				<h3 id="LibFxMaterialDefs.New">func (*LibFxMaterialDefs) <a href="/target/fxmaterial.gt.go?s=3547:3611#L111">New</a></h3>
 				<pre>func (me *LibFxMaterialDefs) New(id string) (def *FxMaterialDef)</pre>
 				<p>
 Creates a new *FxMaterialDef* definition with the specified *ID* and returns it, but does not add it to this *LibFxMaterialDefs*.
@@ -6526,7 +6714,7 @@ Creates a new *FxMaterialDef* definition with the specified *ID* and returns it,
 				
 			
 				
-				<h3 id="LibFxMaterialDefs.Remove">func (*LibFxMaterialDefs) <a href="/target/fxmaterial.gt.go?s=3722:3768#L113">Remove</a></h3>
+				<h3 id="LibFxMaterialDefs.Remove">func (*LibFxMaterialDefs) <a href="/target/fxmaterial.gt.go?s=3738:3784#L114">Remove</a></h3>
 				<pre>func (me *LibFxMaterialDefs) Remove(id string)</pre>
 				<p>
 Removes the *FxMaterialDef* with the specified *ID* from this *LibFxMaterialDefs*.
@@ -6536,7 +6724,7 @@ Removes the *FxMaterialDef* with the specified *ID* from this *LibFxMaterialDefs
 				
 			
 				
-				<h3 id="LibFxMaterialDefs.SyncChanges">func (*LibFxMaterialDefs) <a href="/target/fxmaterial.gt.go?s=4117:4159#L118">SyncChanges</a></h3>
+				<h3 id="LibFxMaterialDefs.SyncChanges">func (*LibFxMaterialDefs) <a href="/target/fxmaterial.gt.go?s=4133:4175#L119">SyncChanges</a></h3>
 				<pre>func (me *LibFxMaterialDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibFxMaterialDefs* that need to be picked up.
@@ -6550,7 +6738,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibGeometryDefs">type <a href="/target/geometry.gt.go?s=3153:3423#L132">LibGeometryDefs</a></h2>
+			<h2 id="LibGeometryDefs">type <a href="/target/geometry.gt.go?s=3169:3439#L133">LibGeometryDefs</a></h2>
 			<pre>type LibGeometryDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -6573,7 +6761,7 @@ use the *LibsGeometryDef.New()* or *LibsGeometryDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibGeometryDefs.Add">func (*LibGeometryDefs) <a href="/target/geometry.gt.go?s=3779:3842#L148">Add</a></h3>
+				<h3 id="LibGeometryDefs.Add">func (*LibGeometryDefs) <a href="/target/geometry.gt.go?s=3795:3858#L149">Add</a></h3>
 				<pre>func (me *LibGeometryDefs) Add(d *GeometryDef) (n *GeometryDef)</pre>
 				<p>
 Adds the specified *GeometryDef* definition to this *LibGeometryDefs*, and returns it.
@@ -6586,7 +6774,7 @@ If this *LibGeometryDefs* already contains a *GeometryDef* definition with the s
 				
 			
 				
-				<h3 id="LibGeometryDefs.AddNew">func (*LibGeometryDefs) <a href="/target/geometry.gt.go?s=4174:4231#L159">AddNew</a></h3>
+				<h3 id="LibGeometryDefs.AddNew">func (*LibGeometryDefs) <a href="/target/geometry.gt.go?s=4190:4247#L160">AddNew</a></h3>
 				<pre>func (me *LibGeometryDefs) AddNew(id string) *GeometryDef</pre>
 				<p>
 Creates a new *GeometryDef* definition with the specified *ID*, adds it to this *LibGeometryDefs*, and returns it.
@@ -6599,7 +6787,7 @@ If this *LibGeometryDefs* already contains a *GeometryDef* definition with the s
 				
 			
 				
-				<h3 id="LibGeometryDefs.New">func (*LibGeometryDefs) <a href="/target/geometry.gt.go?s=4392:4452#L162">New</a></h3>
+				<h3 id="LibGeometryDefs.New">func (*LibGeometryDefs) <a href="/target/geometry.gt.go?s=4408:4468#L163">New</a></h3>
 				<pre>func (me *LibGeometryDefs) New(id string) (def *GeometryDef)</pre>
 				<p>
 Creates a new *GeometryDef* definition with the specified *ID* and returns it, but does not add it to this *LibGeometryDefs*.
@@ -6609,7 +6797,7 @@ Creates a new *GeometryDef* definition with the specified *ID* and returns it, b
 				
 			
 				
-				<h3 id="LibGeometryDefs.Remove">func (*LibGeometryDefs) <a href="/target/geometry.gt.go?s=4573:4617#L165">Remove</a></h3>
+				<h3 id="LibGeometryDefs.Remove">func (*LibGeometryDefs) <a href="/target/geometry.gt.go?s=4589:4633#L166">Remove</a></h3>
 				<pre>func (me *LibGeometryDefs) Remove(id string)</pre>
 				<p>
 Removes the *GeometryDef* with the specified *ID* from this *LibGeometryDefs*.
@@ -6619,7 +6807,7 @@ Removes the *GeometryDef* with the specified *ID* from this *LibGeometryDefs*.
 				
 			
 				
-				<h3 id="LibGeometryDefs.SyncChanges">func (*LibGeometryDefs) <a href="/target/geometry.gt.go?s=4960:5000#L170">SyncChanges</a></h3>
+				<h3 id="LibGeometryDefs.SyncChanges">func (*LibGeometryDefs) <a href="/target/geometry.gt.go?s=4976:5016#L171">SyncChanges</a></h3>
 				<pre>func (me *LibGeometryDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibGeometryDefs* that need to be picked up.
@@ -6633,7 +6821,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibKxArticulatedSystemDefs">type <a href="/target/kxarticulatedsystem.gt.go?s=4806:5098#L181">LibKxArticulatedSystemDefs</a></h2>
+			<h2 id="LibKxArticulatedSystemDefs">type <a href="/target/kxarticulatedsystem.gt.go?s=4822:5114#L182">LibKxArticulatedSystemDefs</a></h2>
 			<pre>type LibKxArticulatedSystemDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -6656,7 +6844,7 @@ use the *LibsKxArticulatedSystemDef.New()* or *LibsKxArticulatedSystemDef.AddNew
 
 			
 				
-				<h3 id="LibKxArticulatedSystemDefs.Add">func (*LibKxArticulatedSystemDefs) <a href="/target/kxarticulatedsystem.gt.go?s=5542:5638#L197">Add</a></h3>
+				<h3 id="LibKxArticulatedSystemDefs.Add">func (*LibKxArticulatedSystemDefs) <a href="/target/kxarticulatedsystem.gt.go?s=5558:5654#L198">Add</a></h3>
 				<pre>func (me *LibKxArticulatedSystemDefs) Add(d *KxArticulatedSystemDef) (n *KxArticulatedSystemDef)</pre>
 				<p>
 Adds the specified *KxArticulatedSystemDef* definition to this *LibKxArticulatedSystemDefs*, and returns it.
@@ -6669,7 +6857,7 @@ If this *LibKxArticulatedSystemDefs* already contains a *KxArticulatedSystemDef*
 				
 			
 				
-				<h3 id="LibKxArticulatedSystemDefs.AddNew">func (*LibKxArticulatedSystemDefs) <a href="/target/kxarticulatedsystem.gt.go?s=6014:6093#L208">AddNew</a></h3>
+				<h3 id="LibKxArticulatedSystemDefs.AddNew">func (*LibKxArticulatedSystemDefs) <a href="/target/kxarticulatedsystem.gt.go?s=6030:6109#L209">AddNew</a></h3>
 				<pre>func (me *LibKxArticulatedSystemDefs) AddNew(id string) *KxArticulatedSystemDef</pre>
 				<p>
 Creates a new *KxArticulatedSystemDef* definition with the specified *ID*, adds it to this *LibKxArticulatedSystemDefs*, and returns it.
@@ -6682,7 +6870,7 @@ If this *LibKxArticulatedSystemDefs* already contains a *KxArticulatedSystemDef*
 				
 			
 				
-				<h3 id="LibKxArticulatedSystemDefs.New">func (*LibKxArticulatedSystemDefs) <a href="/target/kxarticulatedsystem.gt.go?s=6276:6358#L211">New</a></h3>
+				<h3 id="LibKxArticulatedSystemDefs.New">func (*LibKxArticulatedSystemDefs) <a href="/target/kxarticulatedsystem.gt.go?s=6292:6374#L212">New</a></h3>
 				<pre>func (me *LibKxArticulatedSystemDefs) New(id string) (def *KxArticulatedSystemDef)</pre>
 				<p>
 Creates a new *KxArticulatedSystemDef* definition with the specified *ID* and returns it, but does not add it to this *LibKxArticulatedSystemDefs*.
@@ -6692,7 +6880,7 @@ Creates a new *KxArticulatedSystemDef* definition with the specified *ID* and re
 				
 			
 				
-				<h3 id="LibKxArticulatedSystemDefs.Remove">func (*LibKxArticulatedSystemDefs) <a href="/target/kxarticulatedsystem.gt.go?s=6512:6567#L214">Remove</a></h3>
+				<h3 id="LibKxArticulatedSystemDefs.Remove">func (*LibKxArticulatedSystemDefs) <a href="/target/kxarticulatedsystem.gt.go?s=6528:6583#L215">Remove</a></h3>
 				<pre>func (me *LibKxArticulatedSystemDefs) Remove(id string)</pre>
 				<p>
 Removes the *KxArticulatedSystemDef* with the specified *ID* from this *LibKxArticulatedSystemDefs*.
@@ -6702,7 +6890,7 @@ Removes the *KxArticulatedSystemDef* with the specified *ID* from this *LibKxArt
 				
 			
 				
-				<h3 id="LibKxArticulatedSystemDefs.SyncChanges">func (*LibKxArticulatedSystemDefs) <a href="/target/kxarticulatedsystem.gt.go?s=6943:6994#L219">SyncChanges</a></h3>
+				<h3 id="LibKxArticulatedSystemDefs.SyncChanges">func (*LibKxArticulatedSystemDefs) <a href="/target/kxarticulatedsystem.gt.go?s=6959:7010#L220">SyncChanges</a></h3>
 				<pre>func (me *LibKxArticulatedSystemDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibKxArticulatedSystemDefs* that need to be picked up.
@@ -6716,7 +6904,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibKxJointDefs">type <a href="/target/kxjoint.gt.go?s=2080:2348#L89">LibKxJointDefs</a></h2>
+			<h2 id="LibKxJointDefs">type <a href="/target/kxjoint.gt.go?s=2096:2364#L90">LibKxJointDefs</a></h2>
 			<pre>type LibKxJointDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -6739,7 +6927,7 @@ use the *LibsKxJointDef.New()* or *LibsKxJointDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibKxJointDefs.Add">func (*LibKxJointDefs) <a href="/target/kxjoint.gt.go?s=2696:2756#L105">Add</a></h3>
+				<h3 id="LibKxJointDefs.Add">func (*LibKxJointDefs) <a href="/target/kxjoint.gt.go?s=2712:2772#L106">Add</a></h3>
 				<pre>func (me *LibKxJointDefs) Add(d *KxJointDef) (n *KxJointDef)</pre>
 				<p>
 Adds the specified *KxJointDef* definition to this *LibKxJointDefs*, and returns it.
@@ -6752,7 +6940,7 @@ If this *LibKxJointDefs* already contains a *KxJointDef* definition with the sam
 				
 			
 				
-				<h3 id="LibKxJointDefs.AddNew">func (*LibKxJointDefs) <a href="/target/kxjoint.gt.go?s=3084:3139#L116">AddNew</a></h3>
+				<h3 id="LibKxJointDefs.AddNew">func (*LibKxJointDefs) <a href="/target/kxjoint.gt.go?s=3100:3155#L117">AddNew</a></h3>
 				<pre>func (me *LibKxJointDefs) AddNew(id string) *KxJointDef</pre>
 				<p>
 Creates a new *KxJointDef* definition with the specified *ID*, adds it to this *LibKxJointDefs*, and returns it.
@@ -6765,7 +6953,7 @@ If this *LibKxJointDefs* already contains a *KxJointDef* definition with the spe
 				
 			
 				
-				<h3 id="LibKxJointDefs.New">func (*LibKxJointDefs) <a href="/target/kxjoint.gt.go?s=3298:3356#L119">New</a></h3>
+				<h3 id="LibKxJointDefs.New">func (*LibKxJointDefs) <a href="/target/kxjoint.gt.go?s=3314:3372#L120">New</a></h3>
 				<pre>func (me *LibKxJointDefs) New(id string) (def *KxJointDef)</pre>
 				<p>
 Creates a new *KxJointDef* definition with the specified *ID* and returns it, but does not add it to this *LibKxJointDefs*.
@@ -6775,7 +6963,7 @@ Creates a new *KxJointDef* definition with the specified *ID* and returns it, bu
 				
 			
 				
-				<h3 id="LibKxJointDefs.Remove">func (*LibKxJointDefs) <a href="/target/kxjoint.gt.go?s=3474:3517#L122">Remove</a></h3>
+				<h3 id="LibKxJointDefs.Remove">func (*LibKxJointDefs) <a href="/target/kxjoint.gt.go?s=3490:3533#L123">Remove</a></h3>
 				<pre>func (me *LibKxJointDefs) Remove(id string)</pre>
 				<p>
 Removes the *KxJointDef* with the specified *ID* from this *LibKxJointDefs*.
@@ -6785,7 +6973,7 @@ Removes the *KxJointDef* with the specified *ID* from this *LibKxJointDefs*.
 				
 			
 				
-				<h3 id="LibKxJointDefs.SyncChanges">func (*LibKxJointDefs) <a href="/target/kxjoint.gt.go?s=3857:3896#L127">SyncChanges</a></h3>
+				<h3 id="LibKxJointDefs.SyncChanges">func (*LibKxJointDefs) <a href="/target/kxjoint.gt.go?s=3873:3912#L128">SyncChanges</a></h3>
 				<pre>func (me *LibKxJointDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibKxJointDefs* that need to be picked up.
@@ -6799,7 +6987,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibKxModelDefs">type <a href="/target/kxmodel.gt.go?s=2336:2604#L96">LibKxModelDefs</a></h2>
+			<h2 id="LibKxModelDefs">type <a href="/target/kxmodel.gt.go?s=2352:2620#L97">LibKxModelDefs</a></h2>
 			<pre>type LibKxModelDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -6822,7 +7010,7 @@ use the *LibsKxModelDef.New()* or *LibsKxModelDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibKxModelDefs.Add">func (*LibKxModelDefs) <a href="/target/kxmodel.gt.go?s=2952:3012#L112">Add</a></h3>
+				<h3 id="LibKxModelDefs.Add">func (*LibKxModelDefs) <a href="/target/kxmodel.gt.go?s=2968:3028#L113">Add</a></h3>
 				<pre>func (me *LibKxModelDefs) Add(d *KxModelDef) (n *KxModelDef)</pre>
 				<p>
 Adds the specified *KxModelDef* definition to this *LibKxModelDefs*, and returns it.
@@ -6835,7 +7023,7 @@ If this *LibKxModelDefs* already contains a *KxModelDef* definition with the sam
 				
 			
 				
-				<h3 id="LibKxModelDefs.AddNew">func (*LibKxModelDefs) <a href="/target/kxmodel.gt.go?s=3340:3395#L123">AddNew</a></h3>
+				<h3 id="LibKxModelDefs.AddNew">func (*LibKxModelDefs) <a href="/target/kxmodel.gt.go?s=3356:3411#L124">AddNew</a></h3>
 				<pre>func (me *LibKxModelDefs) AddNew(id string) *KxModelDef</pre>
 				<p>
 Creates a new *KxModelDef* definition with the specified *ID*, adds it to this *LibKxModelDefs*, and returns it.
@@ -6848,7 +7036,7 @@ If this *LibKxModelDefs* already contains a *KxModelDef* definition with the spe
 				
 			
 				
-				<h3 id="LibKxModelDefs.New">func (*LibKxModelDefs) <a href="/target/kxmodel.gt.go?s=3554:3612#L126">New</a></h3>
+				<h3 id="LibKxModelDefs.New">func (*LibKxModelDefs) <a href="/target/kxmodel.gt.go?s=3570:3628#L127">New</a></h3>
 				<pre>func (me *LibKxModelDefs) New(id string) (def *KxModelDef)</pre>
 				<p>
 Creates a new *KxModelDef* definition with the specified *ID* and returns it, but does not add it to this *LibKxModelDefs*.
@@ -6858,7 +7046,7 @@ Creates a new *KxModelDef* definition with the specified *ID* and returns it, bu
 				
 			
 				
-				<h3 id="LibKxModelDefs.Remove">func (*LibKxModelDefs) <a href="/target/kxmodel.gt.go?s=3730:3773#L129">Remove</a></h3>
+				<h3 id="LibKxModelDefs.Remove">func (*LibKxModelDefs) <a href="/target/kxmodel.gt.go?s=3746:3789#L130">Remove</a></h3>
 				<pre>func (me *LibKxModelDefs) Remove(id string)</pre>
 				<p>
 Removes the *KxModelDef* with the specified *ID* from this *LibKxModelDefs*.
@@ -6868,7 +7056,7 @@ Removes the *KxModelDef* with the specified *ID* from this *LibKxModelDefs*.
 				
 			
 				
-				<h3 id="LibKxModelDefs.SyncChanges">func (*LibKxModelDefs) <a href="/target/kxmodel.gt.go?s=4113:4152#L134">SyncChanges</a></h3>
+				<h3 id="LibKxModelDefs.SyncChanges">func (*LibKxModelDefs) <a href="/target/kxmodel.gt.go?s=4129:4168#L135">SyncChanges</a></h3>
 				<pre>func (me *LibKxModelDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibKxModelDefs* that need to be picked up.
@@ -6882,7 +7070,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibKxSceneDefs">type <a href="/target/kxscene.gt.go?s=2248:2516#L86">LibKxSceneDefs</a></h2>
+			<h2 id="LibKxSceneDefs">type <a href="/target/kxscene.gt.go?s=2264:2532#L87">LibKxSceneDefs</a></h2>
 			<pre>type LibKxSceneDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -6905,7 +7093,7 @@ use the *LibsKxSceneDef.New()* or *LibsKxSceneDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibKxSceneDefs.Add">func (*LibKxSceneDefs) <a href="/target/kxscene.gt.go?s=2864:2924#L102">Add</a></h3>
+				<h3 id="LibKxSceneDefs.Add">func (*LibKxSceneDefs) <a href="/target/kxscene.gt.go?s=2880:2940#L103">Add</a></h3>
 				<pre>func (me *LibKxSceneDefs) Add(d *KxSceneDef) (n *KxSceneDef)</pre>
 				<p>
 Adds the specified *KxSceneDef* definition to this *LibKxSceneDefs*, and returns it.
@@ -6918,7 +7106,7 @@ If this *LibKxSceneDefs* already contains a *KxSceneDef* definition with the sam
 				
 			
 				
-				<h3 id="LibKxSceneDefs.AddNew">func (*LibKxSceneDefs) <a href="/target/kxscene.gt.go?s=3252:3307#L113">AddNew</a></h3>
+				<h3 id="LibKxSceneDefs.AddNew">func (*LibKxSceneDefs) <a href="/target/kxscene.gt.go?s=3268:3323#L114">AddNew</a></h3>
 				<pre>func (me *LibKxSceneDefs) AddNew(id string) *KxSceneDef</pre>
 				<p>
 Creates a new *KxSceneDef* definition with the specified *ID*, adds it to this *LibKxSceneDefs*, and returns it.
@@ -6931,7 +7119,7 @@ If this *LibKxSceneDefs* already contains a *KxSceneDef* definition with the spe
 				
 			
 				
-				<h3 id="LibKxSceneDefs.New">func (*LibKxSceneDefs) <a href="/target/kxscene.gt.go?s=3466:3524#L116">New</a></h3>
+				<h3 id="LibKxSceneDefs.New">func (*LibKxSceneDefs) <a href="/target/kxscene.gt.go?s=3482:3540#L117">New</a></h3>
 				<pre>func (me *LibKxSceneDefs) New(id string) (def *KxSceneDef)</pre>
 				<p>
 Creates a new *KxSceneDef* definition with the specified *ID* and returns it, but does not add it to this *LibKxSceneDefs*.
@@ -6941,7 +7129,7 @@ Creates a new *KxSceneDef* definition with the specified *ID* and returns it, bu
 				
 			
 				
-				<h3 id="LibKxSceneDefs.Remove">func (*LibKxSceneDefs) <a href="/target/kxscene.gt.go?s=3642:3685#L119">Remove</a></h3>
+				<h3 id="LibKxSceneDefs.Remove">func (*LibKxSceneDefs) <a href="/target/kxscene.gt.go?s=3658:3701#L120">Remove</a></h3>
 				<pre>func (me *LibKxSceneDefs) Remove(id string)</pre>
 				<p>
 Removes the *KxSceneDef* with the specified *ID* from this *LibKxSceneDefs*.
@@ -6951,7 +7139,7 @@ Removes the *KxSceneDef* with the specified *ID* from this *LibKxSceneDefs*.
 				
 			
 				
-				<h3 id="LibKxSceneDefs.SyncChanges">func (*LibKxSceneDefs) <a href="/target/kxscene.gt.go?s=4025:4064#L124">SyncChanges</a></h3>
+				<h3 id="LibKxSceneDefs.SyncChanges">func (*LibKxSceneDefs) <a href="/target/kxscene.gt.go?s=4041:4080#L125">SyncChanges</a></h3>
 				<pre>func (me *LibKxSceneDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibKxSceneDefs* that need to be picked up.
@@ -6965,7 +7153,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibLightDefs">type <a href="/target/light.gt.go?s=2340:2604#L104">LibLightDefs</a></h2>
+			<h2 id="LibLightDefs">type <a href="/target/light.gt.go?s=2356:2620#L105">LibLightDefs</a></h2>
 			<pre>type LibLightDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -6988,7 +7176,7 @@ use the *LibsLightDef.New()* or *LibsLightDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibLightDefs.Add">func (*LibLightDefs) <a href="/target/light.gt.go?s=2936:2990#L120">Add</a></h3>
+				<h3 id="LibLightDefs.Add">func (*LibLightDefs) <a href="/target/light.gt.go?s=2952:3006#L121">Add</a></h3>
 				<pre>func (me *LibLightDefs) Add(d *LightDef) (n *LightDef)</pre>
 				<p>
 Adds the specified *LightDef* definition to this *LibLightDefs*, and returns it.
@@ -7001,7 +7189,7 @@ If this *LibLightDefs* already contains a *LightDef* definition with the same *I
 				
 			
 				
-				<h3 id="LibLightDefs.AddNew">func (*LibLightDefs) <a href="/target/light.gt.go?s=3310:3361#L131">AddNew</a></h3>
+				<h3 id="LibLightDefs.AddNew">func (*LibLightDefs) <a href="/target/light.gt.go?s=3326:3377#L132">AddNew</a></h3>
 				<pre>func (me *LibLightDefs) AddNew(id string) *LightDef</pre>
 				<p>
 Creates a new *LightDef* definition with the specified *ID*, adds it to this *LibLightDefs*, and returns it.
@@ -7014,7 +7202,7 @@ If this *LibLightDefs* already contains a *LightDef* definition with the specifi
 				
 			
 				
-				<h3 id="LibLightDefs.New">func (*LibLightDefs) <a href="/target/light.gt.go?s=3516:3570#L134">New</a></h3>
+				<h3 id="LibLightDefs.New">func (*LibLightDefs) <a href="/target/light.gt.go?s=3532:3586#L135">New</a></h3>
 				<pre>func (me *LibLightDefs) New(id string) (def *LightDef)</pre>
 				<p>
 Creates a new *LightDef* definition with the specified *ID* and returns it, but does not add it to this *LibLightDefs*.
@@ -7024,7 +7212,7 @@ Creates a new *LightDef* definition with the specified *ID* and returns it, but 
 				
 			
 				
-				<h3 id="LibLightDefs.Remove">func (*LibLightDefs) <a href="/target/light.gt.go?s=3682:3723#L137">Remove</a></h3>
+				<h3 id="LibLightDefs.Remove">func (*LibLightDefs) <a href="/target/light.gt.go?s=3698:3739#L138">Remove</a></h3>
 				<pre>func (me *LibLightDefs) Remove(id string)</pre>
 				<p>
 Removes the *LightDef* with the specified *ID* from this *LibLightDefs*.
@@ -7034,7 +7222,7 @@ Removes the *LightDef* with the specified *ID* from this *LibLightDefs*.
 				
 			
 				
-				<h3 id="LibLightDefs.SyncChanges">func (*LibLightDefs) <a href="/target/light.gt.go?s=4057:4094#L142">SyncChanges</a></h3>
+				<h3 id="LibLightDefs.SyncChanges">func (*LibLightDefs) <a href="/target/light.gt.go?s=4073:4110#L143">SyncChanges</a></h3>
 				<pre>func (me *LibLightDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibLightDefs* that need to be picked up.
@@ -7048,7 +7236,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibNodeDefs">type <a href="/target/node.gt.go?s=1969:2231#L80">LibNodeDefs</a></h2>
+			<h2 id="LibNodeDefs">type <a href="/target/node.gt.go?s=1985:2247#L81">LibNodeDefs</a></h2>
 			<pre>type LibNodeDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -7071,7 +7259,7 @@ use the *LibsNodeDef.New()* or *LibsNodeDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibNodeDefs.Add">func (*LibNodeDefs) <a href="/target/node.gt.go?s=2555:2606#L96">Add</a></h3>
+				<h3 id="LibNodeDefs.Add">func (*LibNodeDefs) <a href="/target/node.gt.go?s=2571:2622#L97">Add</a></h3>
 				<pre>func (me *LibNodeDefs) Add(d *NodeDef) (n *NodeDef)</pre>
 				<p>
 Adds the specified *NodeDef* definition to this *LibNodeDefs*, and returns it.
@@ -7084,7 +7272,7 @@ If this *LibNodeDefs* already contains a *NodeDef* definition with the same *ID*
 				
 			
 				
-				<h3 id="LibNodeDefs.AddNew">func (*LibNodeDefs) <a href="/target/node.gt.go?s=2922:2971#L107">AddNew</a></h3>
+				<h3 id="LibNodeDefs.AddNew">func (*LibNodeDefs) <a href="/target/node.gt.go?s=2938:2987#L108">AddNew</a></h3>
 				<pre>func (me *LibNodeDefs) AddNew(id string) *NodeDef</pre>
 				<p>
 Creates a new *NodeDef* definition with the specified *ID*, adds it to this *LibNodeDefs*, and returns it.
@@ -7097,7 +7285,7 @@ If this *LibNodeDefs* already contains a *NodeDef* definition with the specified
 				
 			
 				
-				<h3 id="LibNodeDefs.New">func (*LibNodeDefs) <a href="/target/node.gt.go?s=3124:3176#L110">New</a></h3>
+				<h3 id="LibNodeDefs.New">func (*LibNodeDefs) <a href="/target/node.gt.go?s=3140:3192#L111">New</a></h3>
 				<pre>func (me *LibNodeDefs) New(id string) (def *NodeDef)</pre>
 				<p>
 Creates a new *NodeDef* definition with the specified *ID* and returns it, but does not add it to this *LibNodeDefs*.
@@ -7107,7 +7295,7 @@ Creates a new *NodeDef* definition with the specified *ID* and returns it, but d
 				
 			
 				
-				<h3 id="LibNodeDefs.Remove">func (*LibNodeDefs) <a href="/target/node.gt.go?s=3285:3325#L113">Remove</a></h3>
+				<h3 id="LibNodeDefs.Remove">func (*LibNodeDefs) <a href="/target/node.gt.go?s=3301:3341#L114">Remove</a></h3>
 				<pre>func (me *LibNodeDefs) Remove(id string)</pre>
 				<p>
 Removes the *NodeDef* with the specified *ID* from this *LibNodeDefs*.
@@ -7117,7 +7305,7 @@ Removes the *NodeDef* with the specified *ID* from this *LibNodeDefs*.
 				
 			
 				
-				<h3 id="LibNodeDefs.SyncChanges">func (*LibNodeDefs) <a href="/target/node.gt.go?s=3656:3692#L118">SyncChanges</a></h3>
+				<h3 id="LibNodeDefs.SyncChanges">func (*LibNodeDefs) <a href="/target/node.gt.go?s=3672:3708#L119">SyncChanges</a></h3>
 				<pre>func (me *LibNodeDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibNodeDefs* that need to be picked up.
@@ -7131,7 +7319,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibPxForceFieldDefs">type <a href="/target/pxforcefield.gt.go?s=2010:2288#L66">LibPxForceFieldDefs</a></h2>
+			<h2 id="LibPxForceFieldDefs">type <a href="/target/pxforcefield.gt.go?s=2026:2304#L67">LibPxForceFieldDefs</a></h2>
 			<pre>type LibPxForceFieldDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -7154,7 +7342,7 @@ use the *LibsPxForceFieldDef.New()* or *LibsPxForceFieldDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibPxForceFieldDefs.Add">func (*LibPxForceFieldDefs) <a href="/target/pxforcefield.gt.go?s=2676:2751#L82">Add</a></h3>
+				<h3 id="LibPxForceFieldDefs.Add">func (*LibPxForceFieldDefs) <a href="/target/pxforcefield.gt.go?s=2692:2767#L83">Add</a></h3>
 				<pre>func (me *LibPxForceFieldDefs) Add(d *PxForceFieldDef) (n *PxForceFieldDef)</pre>
 				<p>
 Adds the specified *PxForceFieldDef* definition to this *LibPxForceFieldDefs*, and returns it.
@@ -7167,7 +7355,7 @@ If this *LibPxForceFieldDefs* already contains a *PxForceFieldDef* definition wi
 				
 			
 				
-				<h3 id="LibPxForceFieldDefs.AddNew">func (*LibPxForceFieldDefs) <a href="/target/pxforcefield.gt.go?s=3099:3164#L93">AddNew</a></h3>
+				<h3 id="LibPxForceFieldDefs.AddNew">func (*LibPxForceFieldDefs) <a href="/target/pxforcefield.gt.go?s=3115:3180#L94">AddNew</a></h3>
 				<pre>func (me *LibPxForceFieldDefs) AddNew(id string) *PxForceFieldDef</pre>
 				<p>
 Creates a new *PxForceFieldDef* definition with the specified *ID*, adds it to this *LibPxForceFieldDefs*, and returns it.
@@ -7180,7 +7368,7 @@ If this *LibPxForceFieldDefs* already contains a *PxForceFieldDef* definition wi
 				
 			
 				
-				<h3 id="LibPxForceFieldDefs.New">func (*LibPxForceFieldDefs) <a href="/target/pxforcefield.gt.go?s=3333:3401#L96">New</a></h3>
+				<h3 id="LibPxForceFieldDefs.New">func (*LibPxForceFieldDefs) <a href="/target/pxforcefield.gt.go?s=3349:3417#L97">New</a></h3>
 				<pre>func (me *LibPxForceFieldDefs) New(id string) (def *PxForceFieldDef)</pre>
 				<p>
 Creates a new *PxForceFieldDef* definition with the specified *ID* and returns it, but does not add it to this *LibPxForceFieldDefs*.
@@ -7190,7 +7378,7 @@ Creates a new *PxForceFieldDef* definition with the specified *ID* and returns i
 				
 			
 				
-				<h3 id="LibPxForceFieldDefs.Remove">func (*LibPxForceFieldDefs) <a href="/target/pxforcefield.gt.go?s=3534:3582#L99">Remove</a></h3>
+				<h3 id="LibPxForceFieldDefs.Remove">func (*LibPxForceFieldDefs) <a href="/target/pxforcefield.gt.go?s=3550:3598#L100">Remove</a></h3>
 				<pre>func (me *LibPxForceFieldDefs) Remove(id string)</pre>
 				<p>
 Removes the *PxForceFieldDef* with the specified *ID* from this *LibPxForceFieldDefs*.
@@ -7200,7 +7388,7 @@ Removes the *PxForceFieldDef* with the specified *ID* from this *LibPxForceField
 				
 			
 				
-				<h3 id="LibPxForceFieldDefs.SyncChanges">func (*LibPxForceFieldDefs) <a href="/target/pxforcefield.gt.go?s=3937:3981#L104">SyncChanges</a></h3>
+				<h3 id="LibPxForceFieldDefs.SyncChanges">func (*LibPxForceFieldDefs) <a href="/target/pxforcefield.gt.go?s=3953:3997#L105">SyncChanges</a></h3>
 				<pre>func (me *LibPxForceFieldDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibPxForceFieldDefs* that need to be picked up.
@@ -7214,7 +7402,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibPxMaterialDefs">type <a href="/target/pxmaterial.gt.go?s=2052:2326#L72">LibPxMaterialDefs</a></h2>
+			<h2 id="LibPxMaterialDefs">type <a href="/target/pxmaterial.gt.go?s=2068:2342#L73">LibPxMaterialDefs</a></h2>
 			<pre>type LibPxMaterialDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -7237,7 +7425,7 @@ use the *LibsPxMaterialDef.New()* or *LibsPxMaterialDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibPxMaterialDefs.Add">func (*LibPxMaterialDefs) <a href="/target/pxmaterial.gt.go?s=2698:2767#L88">Add</a></h3>
+				<h3 id="LibPxMaterialDefs.Add">func (*LibPxMaterialDefs) <a href="/target/pxmaterial.gt.go?s=2714:2783#L89">Add</a></h3>
 				<pre>func (me *LibPxMaterialDefs) Add(d *PxMaterialDef) (n *PxMaterialDef)</pre>
 				<p>
 Adds the specified *PxMaterialDef* definition to this *LibPxMaterialDefs*, and returns it.
@@ -7250,7 +7438,7 @@ If this *LibPxMaterialDefs* already contains a *PxMaterialDef* definition with t
 				
 			
 				
-				<h3 id="LibPxMaterialDefs.AddNew">func (*LibPxMaterialDefs) <a href="/target/pxmaterial.gt.go?s=3107:3168#L99">AddNew</a></h3>
+				<h3 id="LibPxMaterialDefs.AddNew">func (*LibPxMaterialDefs) <a href="/target/pxmaterial.gt.go?s=3123:3184#L100">AddNew</a></h3>
 				<pre>func (me *LibPxMaterialDefs) AddNew(id string) *PxMaterialDef</pre>
 				<p>
 Creates a new *PxMaterialDef* definition with the specified *ID*, adds it to this *LibPxMaterialDefs*, and returns it.
@@ -7263,7 +7451,7 @@ If this *LibPxMaterialDefs* already contains a *PxMaterialDef* definition with t
 				
 			
 				
-				<h3 id="LibPxMaterialDefs.New">func (*LibPxMaterialDefs) <a href="/target/pxmaterial.gt.go?s=3333:3397#L102">New</a></h3>
+				<h3 id="LibPxMaterialDefs.New">func (*LibPxMaterialDefs) <a href="/target/pxmaterial.gt.go?s=3349:3413#L103">New</a></h3>
 				<pre>func (me *LibPxMaterialDefs) New(id string) (def *PxMaterialDef)</pre>
 				<p>
 Creates a new *PxMaterialDef* definition with the specified *ID* and returns it, but does not add it to this *LibPxMaterialDefs*.
@@ -7273,7 +7461,7 @@ Creates a new *PxMaterialDef* definition with the specified *ID* and returns it,
 				
 			
 				
-				<h3 id="LibPxMaterialDefs.Remove">func (*LibPxMaterialDefs) <a href="/target/pxmaterial.gt.go?s=3524:3570#L105">Remove</a></h3>
+				<h3 id="LibPxMaterialDefs.Remove">func (*LibPxMaterialDefs) <a href="/target/pxmaterial.gt.go?s=3540:3586#L106">Remove</a></h3>
 				<pre>func (me *LibPxMaterialDefs) Remove(id string)</pre>
 				<p>
 Removes the *PxMaterialDef* with the specified *ID* from this *LibPxMaterialDefs*.
@@ -7283,7 +7471,7 @@ Removes the *PxMaterialDef* with the specified *ID* from this *LibPxMaterialDefs
 				
 			
 				
-				<h3 id="LibPxMaterialDefs.SyncChanges">func (*LibPxMaterialDefs) <a href="/target/pxmaterial.gt.go?s=3919:3961#L110">SyncChanges</a></h3>
+				<h3 id="LibPxMaterialDefs.SyncChanges">func (*LibPxMaterialDefs) <a href="/target/pxmaterial.gt.go?s=3935:3977#L111">SyncChanges</a></h3>
 				<pre>func (me *LibPxMaterialDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibPxMaterialDefs* that need to be picked up.
@@ -7297,7 +7485,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibPxModelDefs">type <a href="/target/pxmodel.gt.go?s=2015:2283#L71">LibPxModelDefs</a></h2>
+			<h2 id="LibPxModelDefs">type <a href="/target/pxmodel.gt.go?s=2031:2299#L72">LibPxModelDefs</a></h2>
 			<pre>type LibPxModelDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -7320,7 +7508,7 @@ use the *LibsPxModelDef.New()* or *LibsPxModelDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibPxModelDefs.Add">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=2631:2691#L87">Add</a></h3>
+				<h3 id="LibPxModelDefs.Add">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=2647:2707#L88">Add</a></h3>
 				<pre>func (me *LibPxModelDefs) Add(d *PxModelDef) (n *PxModelDef)</pre>
 				<p>
 Adds the specified *PxModelDef* definition to this *LibPxModelDefs*, and returns it.
@@ -7333,7 +7521,7 @@ If this *LibPxModelDefs* already contains a *PxModelDef* definition with the sam
 				
 			
 				
-				<h3 id="LibPxModelDefs.AddNew">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=3019:3074#L98">AddNew</a></h3>
+				<h3 id="LibPxModelDefs.AddNew">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=3035:3090#L99">AddNew</a></h3>
 				<pre>func (me *LibPxModelDefs) AddNew(id string) *PxModelDef</pre>
 				<p>
 Creates a new *PxModelDef* definition with the specified *ID*, adds it to this *LibPxModelDefs*, and returns it.
@@ -7346,7 +7534,7 @@ If this *LibPxModelDefs* already contains a *PxModelDef* definition with the spe
 				
 			
 				
-				<h3 id="LibPxModelDefs.New">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=3233:3291#L101">New</a></h3>
+				<h3 id="LibPxModelDefs.New">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=3249:3307#L102">New</a></h3>
 				<pre>func (me *LibPxModelDefs) New(id string) (def *PxModelDef)</pre>
 				<p>
 Creates a new *PxModelDef* definition with the specified *ID* and returns it, but does not add it to this *LibPxModelDefs*.
@@ -7356,7 +7544,7 @@ Creates a new *PxModelDef* definition with the specified *ID* and returns it, bu
 				
 			
 				
-				<h3 id="LibPxModelDefs.Remove">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=3409:3452#L104">Remove</a></h3>
+				<h3 id="LibPxModelDefs.Remove">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=3425:3468#L105">Remove</a></h3>
 				<pre>func (me *LibPxModelDefs) Remove(id string)</pre>
 				<p>
 Removes the *PxModelDef* with the specified *ID* from this *LibPxModelDefs*.
@@ -7366,7 +7554,7 @@ Removes the *PxModelDef* with the specified *ID* from this *LibPxModelDefs*.
 				
 			
 				
-				<h3 id="LibPxModelDefs.SyncChanges">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=3792:3831#L109">SyncChanges</a></h3>
+				<h3 id="LibPxModelDefs.SyncChanges">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=3808:3847#L110">SyncChanges</a></h3>
 				<pre>func (me *LibPxModelDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibPxModelDefs* that need to be picked up.
@@ -7380,7 +7568,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibPxSceneDefs">type <a href="/target/pxscene.gt.go?s=1961:2229#L73">LibPxSceneDefs</a></h2>
+			<h2 id="LibPxSceneDefs">type <a href="/target/pxscene.gt.go?s=1977:2245#L74">LibPxSceneDefs</a></h2>
 			<pre>type LibPxSceneDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -7403,7 +7591,7 @@ use the *LibsPxSceneDef.New()* or *LibsPxSceneDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibPxSceneDefs.Add">func (*LibPxSceneDefs) <a href="/target/pxscene.gt.go?s=2577:2637#L89">Add</a></h3>
+				<h3 id="LibPxSceneDefs.Add">func (*LibPxSceneDefs) <a href="/target/pxscene.gt.go?s=2593:2653#L90">Add</a></h3>
 				<pre>func (me *LibPxSceneDefs) Add(d *PxSceneDef) (n *PxSceneDef)</pre>
 				<p>
 Adds the specified *PxSceneDef* definition to this *LibPxSceneDefs*, and returns it.
@@ -7416,7 +7604,7 @@ If this *LibPxSceneDefs* already contains a *PxSceneDef* definition with the sam
 				
 			
 				
-				<h3 id="LibPxSceneDefs.AddNew">func (*LibPxSceneDefs) <a href="/target/pxscene.gt.go?s=2965:3020#L100">AddNew</a></h3>
+				<h3 id="LibPxSceneDefs.AddNew">func (*LibPxSceneDefs) <a href="/target/pxscene.gt.go?s=2981:3036#L101">AddNew</a></h3>
 				<pre>func (me *LibPxSceneDefs) AddNew(id string) *PxSceneDef</pre>
 				<p>
 Creates a new *PxSceneDef* definition with the specified *ID*, adds it to this *LibPxSceneDefs*, and returns it.
@@ -7429,7 +7617,7 @@ If this *LibPxSceneDefs* already contains a *PxSceneDef* definition with the spe
 				
 			
 				
-				<h3 id="LibPxSceneDefs.New">func (*LibPxSceneDefs) <a href="/target/pxscene.gt.go?s=3179:3237#L103">New</a></h3>
+				<h3 id="LibPxSceneDefs.New">func (*LibPxSceneDefs) <a href="/target/pxscene.gt.go?s=3195:3253#L104">New</a></h3>
 				<pre>func (me *LibPxSceneDefs) New(id string) (def *PxSceneDef)</pre>
 				<p>
 Creates a new *PxSceneDef* definition with the specified *ID* and returns it, but does not add it to this *LibPxSceneDefs*.
@@ -7439,7 +7627,7 @@ Creates a new *PxSceneDef* definition with the specified *ID* and returns it, bu
 				
 			
 				
-				<h3 id="LibPxSceneDefs.Remove">func (*LibPxSceneDefs) <a href="/target/pxscene.gt.go?s=3355:3398#L106">Remove</a></h3>
+				<h3 id="LibPxSceneDefs.Remove">func (*LibPxSceneDefs) <a href="/target/pxscene.gt.go?s=3371:3414#L107">Remove</a></h3>
 				<pre>func (me *LibPxSceneDefs) Remove(id string)</pre>
 				<p>
 Removes the *PxSceneDef* with the specified *ID* from this *LibPxSceneDefs*.
@@ -7449,7 +7637,7 @@ Removes the *PxSceneDef* with the specified *ID* from this *LibPxSceneDefs*.
 				
 			
 				
-				<h3 id="LibPxSceneDefs.SyncChanges">func (*LibPxSceneDefs) <a href="/target/pxscene.gt.go?s=3738:3777#L111">SyncChanges</a></h3>
+				<h3 id="LibPxSceneDefs.SyncChanges">func (*LibPxSceneDefs) <a href="/target/pxscene.gt.go?s=3754:3793#L112">SyncChanges</a></h3>
 				<pre>func (me *LibPxSceneDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibPxSceneDefs* that need to be picked up.
@@ -7463,7 +7651,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibVisualSceneDefs">type <a href="/target/visualscene.gt.go?s=2604:2880#L99">LibVisualSceneDefs</a></h2>
+			<h2 id="LibVisualSceneDefs">type <a href="/target/visualscene.gt.go?s=2620:2896#L100">LibVisualSceneDefs</a></h2>
 			<pre>type LibVisualSceneDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -7486,7 +7674,7 @@ use the *LibsVisualSceneDef.New()* or *LibsVisualSceneDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibVisualSceneDefs.Add">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=3260:3332#L115">Add</a></h3>
+				<h3 id="LibVisualSceneDefs.Add">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=3276:3348#L116">Add</a></h3>
 				<pre>func (me *LibVisualSceneDefs) Add(d *VisualSceneDef) (n *VisualSceneDef)</pre>
 				<p>
 Adds the specified *VisualSceneDef* definition to this *LibVisualSceneDefs*, and returns it.
@@ -7499,7 +7687,7 @@ If this *LibVisualSceneDefs* already contains a *VisualSceneDef* definition with
 				
 			
 				
-				<h3 id="LibVisualSceneDefs.AddNew">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=3676:3739#L126">AddNew</a></h3>
+				<h3 id="LibVisualSceneDefs.AddNew">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=3692:3755#L127">AddNew</a></h3>
 				<pre>func (me *LibVisualSceneDefs) AddNew(id string) *VisualSceneDef</pre>
 				<p>
 Creates a new *VisualSceneDef* definition with the specified *ID*, adds it to this *LibVisualSceneDefs*, and returns it.
@@ -7512,7 +7700,7 @@ If this *LibVisualSceneDefs* already contains a *VisualSceneDef* definition with
 				
 			
 				
-				<h3 id="LibVisualSceneDefs.New">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=3906:3972#L129">New</a></h3>
+				<h3 id="LibVisualSceneDefs.New">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=3922:3988#L130">New</a></h3>
 				<pre>func (me *LibVisualSceneDefs) New(id string) (def *VisualSceneDef)</pre>
 				<p>
 Creates a new *VisualSceneDef* definition with the specified *ID* and returns it, but does not add it to this *LibVisualSceneDefs*.
@@ -7522,7 +7710,7 @@ Creates a new *VisualSceneDef* definition with the specified *ID* and returns it
 				
 			
 				
-				<h3 id="LibVisualSceneDefs.Remove">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=4102:4149#L132">Remove</a></h3>
+				<h3 id="LibVisualSceneDefs.Remove">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=4118:4165#L133">Remove</a></h3>
 				<pre>func (me *LibVisualSceneDefs) Remove(id string)</pre>
 				<p>
 Removes the *VisualSceneDef* with the specified *ID* from this *LibVisualSceneDefs*.
@@ -7532,7 +7720,7 @@ Removes the *VisualSceneDef* with the specified *ID* from this *LibVisualSceneDe
 				
 			
 				
-				<h3 id="LibVisualSceneDefs.SyncChanges">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=4501:4544#L137">SyncChanges</a></h3>
+				<h3 id="LibVisualSceneDefs.SyncChanges">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=4517:4560#L138">SyncChanges</a></h3>
 				<pre>func (me *LibVisualSceneDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibVisualSceneDefs* that need to be picked up.
@@ -7546,7 +7734,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibsAnimationClipDef">type <a href="/target/animationclip.gt.go?s=1201:1259#L40">LibsAnimationClipDef</a></h2>
+			<h2 id="LibsAnimationClipDef">type <a href="/target/animationclip.gt.go?s=1217:1275#L41">LibsAnimationClipDef</a></h2>
 			<pre>type LibsAnimationClipDef map[string]*LibAnimationClipDefs</pre>
 			<p>
 The underlying type of the global *AllAnimationClipDefLibs* variable: a *map* collection that contains
@@ -7564,7 +7752,7 @@ The underlying type of the global *AllAnimationClipDefLibs* variable: a *map* co
 
 			
 				
-				<h3 id="LibsAnimationClipDef.AddNew">func (LibsAnimationClipDef) <a href="/target/animationclip.gt.go?s=1535:1611#L45">AddNew</a></h3>
+				<h3 id="LibsAnimationClipDef.AddNew">func (LibsAnimationClipDef) <a href="/target/animationclip.gt.go?s=1551:1627#L46">AddNew</a></h3>
 				<pre>func (me LibsAnimationClipDef) AddNew(id string) (lib *LibAnimationClipDefs)</pre>
 				<p>
 Creates a new *LibAnimationClipDefs* library with the specified *ID*, adds it to this *LibsAnimationClipDef*, and returns it.
@@ -7579,7 +7767,7 @@ If this *LibsAnimationClipDef* already contains a *LibAnimationClipDefs* library
 		
 			
 			
-			<h2 id="LibsAnimationDef">type <a href="/target/animation.gt.go?s=1437:1487#L62">LibsAnimationDef</a></h2>
+			<h2 id="LibsAnimationDef">type <a href="/target/animation.gt.go?s=1453:1503#L63">LibsAnimationDef</a></h2>
 			<pre>type LibsAnimationDef map[string]*LibAnimationDefs</pre>
 			<p>
 The underlying type of the global *AllAnimationDefLibs* variable: a *map* collection that contains
@@ -7597,7 +7785,7 @@ The underlying type of the global *AllAnimationDefLibs* variable: a *map* collec
 
 			
 				
-				<h3 id="LibsAnimationDef.AddNew">func (LibsAnimationDef) <a href="/target/animation.gt.go?s=1747:1815#L67">AddNew</a></h3>
+				<h3 id="LibsAnimationDef.AddNew">func (LibsAnimationDef) <a href="/target/animation.gt.go?s=1763:1831#L68">AddNew</a></h3>
 				<pre>func (me LibsAnimationDef) AddNew(id string) (lib *LibAnimationDefs)</pre>
 				<p>
 Creates a new *LibAnimationDefs* library with the specified *ID*, adds it to this *LibsAnimationDef*, and returns it.
@@ -7612,7 +7800,7 @@ If this *LibsAnimationDef* already contains a *LibAnimationDefs* library with th
 		
 			
 			
-			<h2 id="LibsCameraDef">type <a href="/target/camera.gt.go?s=1777:1821#L82">LibsCameraDef</a></h2>
+			<h2 id="LibsCameraDef">type <a href="/target/camera.gt.go?s=1790:1834#L82">LibsCameraDef</a></h2>
 			<pre>type LibsCameraDef map[string]*LibCameraDefs</pre>
 			<p>
 The underlying type of the global *AllCameraDefLibs* variable: a *map* collection that contains
@@ -7630,7 +7818,7 @@ The underlying type of the global *AllCameraDefLibs* variable: a *map* collectio
 
 			
 				
-				<h3 id="LibsCameraDef.AddNew">func (LibsCameraDef) <a href="/target/camera.gt.go?s=2069:2131#L87">AddNew</a></h3>
+				<h3 id="LibsCameraDef.AddNew">func (LibsCameraDef) <a href="/target/camera.gt.go?s=2082:2144#L87">AddNew</a></h3>
 				<pre>func (me LibsCameraDef) AddNew(id string) (lib *LibCameraDefs)</pre>
 				<p>
 Creates a new *LibCameraDefs* library with the specified *ID*, adds it to this *LibsCameraDef*, and returns it.
@@ -7645,7 +7833,7 @@ If this *LibsCameraDef* already contains a *LibCameraDefs* library with the spec
 		
 			
 			
-			<h2 id="LibsControllerDef">type <a href="/target/controller.gt.go?s=1785:1837#L79">LibsControllerDef</a></h2>
+			<h2 id="LibsControllerDef">type <a href="/target/controller.gt.go?s=1801:1853#L80">LibsControllerDef</a></h2>
 			<pre>type LibsControllerDef map[string]*LibControllerDefs</pre>
 			<p>
 The underlying type of the global *AllControllerDefLibs* variable: a *map* collection that contains
@@ -7663,7 +7851,7 @@ The underlying type of the global *AllControllerDefLibs* variable: a *map* colle
 
 			
 				
-				<h3 id="LibsControllerDef.AddNew">func (LibsControllerDef) <a href="/target/controller.gt.go?s=2101:2171#L84">AddNew</a></h3>
+				<h3 id="LibsControllerDef.AddNew">func (LibsControllerDef) <a href="/target/controller.gt.go?s=2117:2187#L85">AddNew</a></h3>
 				<pre>func (me LibsControllerDef) AddNew(id string) (lib *LibControllerDefs)</pre>
 				<p>
 Creates a new *LibControllerDefs* library with the specified *ID*, adds it to this *LibsControllerDef*, and returns it.
@@ -7678,7 +7866,7 @@ If this *LibsControllerDef* already contains a *LibControllerDefs* library with 
 		
 			
 			
-			<h2 id="LibsFormulaDef">type <a href="/target/formula.gt.go?s=1256:1302#L53">LibsFormulaDef</a></h2>
+			<h2 id="LibsFormulaDef">type <a href="/target/formula.gt.go?s=1272:1318#L54">LibsFormulaDef</a></h2>
 			<pre>type LibsFormulaDef map[string]*LibFormulaDefs</pre>
 			<p>
 The underlying type of the global *AllFormulaDefLibs* variable: a *map* collection that contains
@@ -7696,7 +7884,7 @@ The underlying type of the global *AllFormulaDefLibs* variable: a *map* collecti
 
 			
 				
-				<h3 id="LibsFormulaDef.AddNew">func (LibsFormulaDef) <a href="/target/formula.gt.go?s=1554:1618#L58">AddNew</a></h3>
+				<h3 id="LibsFormulaDef.AddNew">func (LibsFormulaDef) <a href="/target/formula.gt.go?s=1570:1634#L59">AddNew</a></h3>
 				<pre>func (me LibsFormulaDef) AddNew(id string) (lib *LibFormulaDefs)</pre>
 				<p>
 Creates a new *LibFormulaDefs* library with the specified *ID*, adds it to this *LibsFormulaDef*, and returns it.
@@ -7711,7 +7899,7 @@ If this *LibsFormulaDef* already contains a *LibFormulaDefs* library with the sp
 		
 			
 			
-			<h2 id="LibsFxEffectDef">type <a href="/target/fxeffect.gt.go?s=4404:4452#L223">LibsFxEffectDef</a></h2>
+			<h2 id="LibsFxEffectDef">type <a href="/target/fxeffect.gt.go?s=5313:5361#L270">LibsFxEffectDef</a></h2>
 			<pre>type LibsFxEffectDef map[string]*LibFxEffectDefs</pre>
 			<p>
 The underlying type of the global *AllFxEffectDefLibs* variable: a *map* collection that contains
@@ -7729,7 +7917,7 @@ The underlying type of the global *AllFxEffectDefLibs* variable: a *map* collect
 
 			
 				
-				<h3 id="LibsFxEffectDef.AddNew">func (LibsFxEffectDef) <a href="/target/fxeffect.gt.go?s=4708:4774#L228">AddNew</a></h3>
+				<h3 id="LibsFxEffectDef.AddNew">func (LibsFxEffectDef) <a href="/target/fxeffect.gt.go?s=5617:5683#L275">AddNew</a></h3>
 				<pre>func (me LibsFxEffectDef) AddNew(id string) (lib *LibFxEffectDefs)</pre>
 				<p>
 Creates a new *LibFxEffectDefs* library with the specified *ID*, adds it to this *LibsFxEffectDef*, and returns it.
@@ -7744,7 +7932,7 @@ If this *LibsFxEffectDef* already contains a *LibFxEffectDefs* library with the 
 		
 			
 			
-			<h2 id="LibsFxImageDef">type <a href="/target/fximage.gt.go?s=3651:3697#L172">LibsFxImageDef</a></h2>
+			<h2 id="LibsFxImageDef">type <a href="/target/fximage.gt.go?s=3962:4008#L185">LibsFxImageDef</a></h2>
 			<pre>type LibsFxImageDef map[string]*LibFxImageDefs</pre>
 			<p>
 The underlying type of the global *AllFxImageDefLibs* variable: a *map* collection that contains
@@ -7762,7 +7950,7 @@ The underlying type of the global *AllFxImageDefLibs* variable: a *map* collecti
 
 			
 				
-				<h3 id="LibsFxImageDef.AddNew">func (LibsFxImageDef) <a href="/target/fximage.gt.go?s=3949:4013#L177">AddNew</a></h3>
+				<h3 id="LibsFxImageDef.AddNew">func (LibsFxImageDef) <a href="/target/fximage.gt.go?s=4260:4324#L190">AddNew</a></h3>
 				<pre>func (me LibsFxImageDef) AddNew(id string) (lib *LibFxImageDefs)</pre>
 				<p>
 Creates a new *LibFxImageDefs* library with the specified *ID*, adds it to this *LibsFxImageDef*, and returns it.
@@ -7777,7 +7965,7 @@ If this *LibsFxImageDef* already contains a *LibFxImageDefs* library with the sp
 		
 			
 			
-			<h2 id="LibsFxMaterialDef">type <a href="/target/fxmaterial.gt.go?s=1475:1527#L59">LibsFxMaterialDef</a></h2>
+			<h2 id="LibsFxMaterialDef">type <a href="/target/fxmaterial.gt.go?s=1491:1543#L60">LibsFxMaterialDef</a></h2>
 			<pre>type LibsFxMaterialDef map[string]*LibFxMaterialDefs</pre>
 			<p>
 The underlying type of the global *AllFxMaterialDefLibs* variable: a *map* collection that contains
@@ -7795,7 +7983,7 @@ The underlying type of the global *AllFxMaterialDefLibs* variable: a *map* colle
 
 			
 				
-				<h3 id="LibsFxMaterialDef.AddNew">func (LibsFxMaterialDef) <a href="/target/fxmaterial.gt.go?s=1791:1861#L64">AddNew</a></h3>
+				<h3 id="LibsFxMaterialDef.AddNew">func (LibsFxMaterialDef) <a href="/target/fxmaterial.gt.go?s=1807:1877#L65">AddNew</a></h3>
 				<pre>func (me LibsFxMaterialDef) AddNew(id string) (lib *LibFxMaterialDefs)</pre>
 				<p>
 Creates a new *LibFxMaterialDefs* library with the specified *ID*, adds it to this *LibsFxMaterialDef*, and returns it.
@@ -7810,7 +7998,7 @@ If this *LibsFxMaterialDef* already contains a *LibFxMaterialDefs* library with 
 		
 			
 			
-			<h2 id="LibsGeometryDef">type <a href="/target/geometry.gt.go?s=2408:2456#L111">LibsGeometryDef</a></h2>
+			<h2 id="LibsGeometryDef">type <a href="/target/geometry.gt.go?s=2424:2472#L112">LibsGeometryDef</a></h2>
 			<pre>type LibsGeometryDef map[string]*LibGeometryDefs</pre>
 			<p>
 The underlying type of the global *AllGeometryDefLibs* variable: a *map* collection that contains
@@ -7828,7 +8016,7 @@ The underlying type of the global *AllGeometryDefLibs* variable: a *map* collect
 
 			
 				
-				<h3 id="LibsGeometryDef.AddNew">func (LibsGeometryDef) <a href="/target/geometry.gt.go?s=2712:2778#L116">AddNew</a></h3>
+				<h3 id="LibsGeometryDef.AddNew">func (LibsGeometryDef) <a href="/target/geometry.gt.go?s=2728:2794#L117">AddNew</a></h3>
 				<pre>func (me LibsGeometryDef) AddNew(id string) (lib *LibGeometryDefs)</pre>
 				<p>
 Creates a new *LibGeometryDefs* library with the specified *ID*, adds it to this *LibsGeometryDef*, and returns it.
@@ -7843,7 +8031,7 @@ If this *LibsGeometryDef* already contains a *LibGeometryDefs* library with the 
 		
 			
 			
-			<h2 id="LibsKxArticulatedSystemDef">type <a href="/target/kxarticulatedsystem.gt.go?s=3896:3966#L160">LibsKxArticulatedSystemDef</a></h2>
+			<h2 id="LibsKxArticulatedSystemDef">type <a href="/target/kxarticulatedsystem.gt.go?s=3912:3982#L161">LibsKxArticulatedSystemDef</a></h2>
 			<pre>type LibsKxArticulatedSystemDef map[string]*LibKxArticulatedSystemDefs</pre>
 			<p>
 The underlying type of the global *AllKxArticulatedSystemDefLibs* variable: a *map* collection that contains
@@ -7861,7 +8049,7 @@ The underlying type of the global *AllKxArticulatedSystemDefLibs* variable: a *m
 
 			
 				
-				<h3 id="LibsKxArticulatedSystemDef.AddNew">func (LibsKxArticulatedSystemDef) <a href="/target/kxarticulatedsystem.gt.go?s=4266:4354#L165">AddNew</a></h3>
+				<h3 id="LibsKxArticulatedSystemDef.AddNew">func (LibsKxArticulatedSystemDef) <a href="/target/kxarticulatedsystem.gt.go?s=4282:4370#L166">AddNew</a></h3>
 				<pre>func (me LibsKxArticulatedSystemDef) AddNew(id string) (lib *LibKxArticulatedSystemDefs)</pre>
 				<p>
 Creates a new *LibKxArticulatedSystemDefs* library with the specified *ID*, adds it to this *LibsKxArticulatedSystemDef*, and returns it.
@@ -7876,7 +8064,7 @@ If this *LibsKxArticulatedSystemDef* already contains a *LibKxArticulatedSystemD
 		
 			
 			
-			<h2 id="LibsKxJointDef">type <a href="/target/kxjoint.gt.go?s=1350:1396#L68">LibsKxJointDef</a></h2>
+			<h2 id="LibsKxJointDef">type <a href="/target/kxjoint.gt.go?s=1366:1412#L69">LibsKxJointDef</a></h2>
 			<pre>type LibsKxJointDef map[string]*LibKxJointDefs</pre>
 			<p>
 The underlying type of the global *AllKxJointDefLibs* variable: a *map* collection that contains
@@ -7894,7 +8082,7 @@ The underlying type of the global *AllKxJointDefLibs* variable: a *map* collecti
 
 			
 				
-				<h3 id="LibsKxJointDef.AddNew">func (LibsKxJointDef) <a href="/target/kxjoint.gt.go?s=1648:1712#L73">AddNew</a></h3>
+				<h3 id="LibsKxJointDef.AddNew">func (LibsKxJointDef) <a href="/target/kxjoint.gt.go?s=1664:1728#L74">AddNew</a></h3>
 				<pre>func (me LibsKxJointDef) AddNew(id string) (lib *LibKxJointDefs)</pre>
 				<p>
 Creates a new *LibKxJointDefs* library with the specified *ID*, adds it to this *LibsKxJointDef*, and returns it.
@@ -7909,7 +8097,7 @@ If this *LibsKxJointDef* already contains a *LibKxJointDefs* library with the sp
 		
 			
 			
-			<h2 id="LibsKxModelDef">type <a href="/target/kxmodel.gt.go?s=1606:1652#L75">LibsKxModelDef</a></h2>
+			<h2 id="LibsKxModelDef">type <a href="/target/kxmodel.gt.go?s=1622:1668#L76">LibsKxModelDef</a></h2>
 			<pre>type LibsKxModelDef map[string]*LibKxModelDefs</pre>
 			<p>
 The underlying type of the global *AllKxModelDefLibs* variable: a *map* collection that contains
@@ -7927,7 +8115,7 @@ The underlying type of the global *AllKxModelDefLibs* variable: a *map* collecti
 
 			
 				
-				<h3 id="LibsKxModelDef.AddNew">func (LibsKxModelDef) <a href="/target/kxmodel.gt.go?s=1904:1968#L80">AddNew</a></h3>
+				<h3 id="LibsKxModelDef.AddNew">func (LibsKxModelDef) <a href="/target/kxmodel.gt.go?s=1920:1984#L81">AddNew</a></h3>
 				<pre>func (me LibsKxModelDef) AddNew(id string) (lib *LibKxModelDefs)</pre>
 				<p>
 Creates a new *LibKxModelDefs* library with the specified *ID*, adds it to this *LibsKxModelDef*, and returns it.
@@ -7942,7 +8130,7 @@ If this *LibsKxModelDef* already contains a *LibKxModelDefs* library with the sp
 		
 			
 			
-			<h2 id="LibsKxSceneDef">type <a href="/target/kxscene.gt.go?s=1518:1564#L65">LibsKxSceneDef</a></h2>
+			<h2 id="LibsKxSceneDef">type <a href="/target/kxscene.gt.go?s=1534:1580#L66">LibsKxSceneDef</a></h2>
 			<pre>type LibsKxSceneDef map[string]*LibKxSceneDefs</pre>
 			<p>
 The underlying type of the global *AllKxSceneDefLibs* variable: a *map* collection that contains
@@ -7960,7 +8148,7 @@ The underlying type of the global *AllKxSceneDefLibs* variable: a *map* collecti
 
 			
 				
-				<h3 id="LibsKxSceneDef.AddNew">func (LibsKxSceneDef) <a href="/target/kxscene.gt.go?s=1816:1880#L70">AddNew</a></h3>
+				<h3 id="LibsKxSceneDef.AddNew">func (LibsKxSceneDef) <a href="/target/kxscene.gt.go?s=1832:1896#L71">AddNew</a></h3>
 				<pre>func (me LibsKxSceneDef) AddNew(id string) (lib *LibKxSceneDefs)</pre>
 				<p>
 Creates a new *LibKxSceneDefs* library with the specified *ID*, adds it to this *LibsKxSceneDef*, and returns it.
@@ -7975,7 +8163,7 @@ If this *LibsKxSceneDef* already contains a *LibKxSceneDefs* library with the sp
 		
 			
 			
-			<h2 id="LibsLightDef">type <a href="/target/light.gt.go?s=1640:1682#L83">LibsLightDef</a></h2>
+			<h2 id="LibsLightDef">type <a href="/target/light.gt.go?s=1656:1698#L84">LibsLightDef</a></h2>
 			<pre>type LibsLightDef map[string]*LibLightDefs</pre>
 			<p>
 The underlying type of the global *AllLightDefLibs* variable: a *map* collection that contains
@@ -7993,7 +8181,7 @@ The underlying type of the global *AllLightDefLibs* variable: a *map* collection
 
 			
 				
-				<h3 id="LibsLightDef.AddNew">func (LibsLightDef) <a href="/target/light.gt.go?s=1926:1986#L88">AddNew</a></h3>
+				<h3 id="LibsLightDef.AddNew">func (LibsLightDef) <a href="/target/light.gt.go?s=1942:2002#L89">AddNew</a></h3>
 				<pre>func (me LibsLightDef) AddNew(id string) (lib *LibLightDefs)</pre>
 				<p>
 Creates a new *LibLightDefs* library with the specified *ID*, adds it to this *LibsLightDef*, and returns it.
@@ -8008,7 +8196,7 @@ If this *LibsLightDef* already contains a *LibLightDefs* library with the specif
 		
 			
 			
-			<h2 id="LibsNodeDef">type <a href="/target/node.gt.go?s=1284:1324#L59">LibsNodeDef</a></h2>
+			<h2 id="LibsNodeDef">type <a href="/target/node.gt.go?s=1300:1340#L60">LibsNodeDef</a></h2>
 			<pre>type LibsNodeDef map[string]*LibNodeDefs</pre>
 			<p>
 The underlying type of the global *AllNodeDefLibs* variable: a *map* collection that contains
@@ -8026,7 +8214,7 @@ The underlying type of the global *AllNodeDefLibs* variable: a *map* collection 
 
 			
 				
-				<h3 id="LibsNodeDef.AddNew">func (LibsNodeDef) <a href="/target/node.gt.go?s=1564:1622#L64">AddNew</a></h3>
+				<h3 id="LibsNodeDef.AddNew">func (LibsNodeDef) <a href="/target/node.gt.go?s=1580:1638#L65">AddNew</a></h3>
 				<pre>func (me LibsNodeDef) AddNew(id string) (lib *LibNodeDefs)</pre>
 				<p>
 Creates a new *LibNodeDefs* library with the specified *ID*, adds it to this *LibsNodeDef*, and returns it.
@@ -8041,7 +8229,7 @@ If this *LibsNodeDef* already contains a *LibNodeDefs* library with the specifie
 		
 			
 			
-			<h2 id="LibsPxForceFieldDef">type <a href="/target/pxforcefield.gt.go?s=1205:1261#L45">LibsPxForceFieldDef</a></h2>
+			<h2 id="LibsPxForceFieldDef">type <a href="/target/pxforcefield.gt.go?s=1221:1277#L46">LibsPxForceFieldDef</a></h2>
 			<pre>type LibsPxForceFieldDef map[string]*LibPxForceFieldDefs</pre>
 			<p>
 The underlying type of the global *AllPxForceFieldDefLibs* variable: a *map* collection that contains
@@ -8059,7 +8247,7 @@ The underlying type of the global *AllPxForceFieldDefLibs* variable: a *map* col
 
 			
 				
-				<h3 id="LibsPxForceFieldDef.AddNew">func (LibsPxForceFieldDef) <a href="/target/pxforcefield.gt.go?s=1533:1607#L50">AddNew</a></h3>
+				<h3 id="LibsPxForceFieldDef.AddNew">func (LibsPxForceFieldDef) <a href="/target/pxforcefield.gt.go?s=1549:1623#L51">AddNew</a></h3>
 				<pre>func (me LibsPxForceFieldDef) AddNew(id string) (lib *LibPxForceFieldDefs)</pre>
 				<p>
 Creates a new *LibPxForceFieldDefs* library with the specified *ID*, adds it to this *LibsPxForceFieldDef*, and returns it.
@@ -8074,7 +8262,7 @@ If this *LibsPxForceFieldDef* already contains a *LibPxForceFieldDefs* library w
 		
 			
 			
-			<h2 id="LibsPxMaterialDef">type <a href="/target/pxmaterial.gt.go?s=1277:1329#L51">LibsPxMaterialDef</a></h2>
+			<h2 id="LibsPxMaterialDef">type <a href="/target/pxmaterial.gt.go?s=1293:1345#L52">LibsPxMaterialDef</a></h2>
 			<pre>type LibsPxMaterialDef map[string]*LibPxMaterialDefs</pre>
 			<p>
 The underlying type of the global *AllPxMaterialDefLibs* variable: a *map* collection that contains
@@ -8092,7 +8280,7 @@ The underlying type of the global *AllPxMaterialDefLibs* variable: a *map* colle
 
 			
 				
-				<h3 id="LibsPxMaterialDef.AddNew">func (LibsPxMaterialDef) <a href="/target/pxmaterial.gt.go?s=1593:1663#L56">AddNew</a></h3>
+				<h3 id="LibsPxMaterialDef.AddNew">func (LibsPxMaterialDef) <a href="/target/pxmaterial.gt.go?s=1609:1679#L57">AddNew</a></h3>
 				<pre>func (me LibsPxMaterialDef) AddNew(id string) (lib *LibPxMaterialDefs)</pre>
 				<p>
 Creates a new *LibPxMaterialDefs* library with the specified *ID*, adds it to this *LibsPxMaterialDef*, and returns it.
@@ -8107,7 +8295,7 @@ If this *LibsPxMaterialDef* already contains a *LibPxMaterialDefs* library with 
 		
 			
 			
-			<h2 id="LibsPxModelDef">type <a href="/target/pxmodel.gt.go?s=1285:1331#L50">LibsPxModelDef</a></h2>
+			<h2 id="LibsPxModelDef">type <a href="/target/pxmodel.gt.go?s=1301:1347#L51">LibsPxModelDef</a></h2>
 			<pre>type LibsPxModelDef map[string]*LibPxModelDefs</pre>
 			<p>
 The underlying type of the global *AllPxModelDefLibs* variable: a *map* collection that contains
@@ -8125,7 +8313,7 @@ The underlying type of the global *AllPxModelDefLibs* variable: a *map* collecti
 
 			
 				
-				<h3 id="LibsPxModelDef.AddNew">func (LibsPxModelDef) <a href="/target/pxmodel.gt.go?s=1583:1647#L55">AddNew</a></h3>
+				<h3 id="LibsPxModelDef.AddNew">func (LibsPxModelDef) <a href="/target/pxmodel.gt.go?s=1599:1663#L56">AddNew</a></h3>
 				<pre>func (me LibsPxModelDef) AddNew(id string) (lib *LibPxModelDefs)</pre>
 				<p>
 Creates a new *LibPxModelDefs* library with the specified *ID*, adds it to this *LibsPxModelDef*, and returns it.
@@ -8140,7 +8328,7 @@ If this *LibsPxModelDef* already contains a *LibPxModelDefs* library with the sp
 		
 			
 			
-			<h2 id="LibsPxSceneDef">type <a href="/target/pxscene.gt.go?s=1231:1277#L52">LibsPxSceneDef</a></h2>
+			<h2 id="LibsPxSceneDef">type <a href="/target/pxscene.gt.go?s=1247:1293#L53">LibsPxSceneDef</a></h2>
 			<pre>type LibsPxSceneDef map[string]*LibPxSceneDefs</pre>
 			<p>
 The underlying type of the global *AllPxSceneDefLibs* variable: a *map* collection that contains
@@ -8158,7 +8346,7 @@ The underlying type of the global *AllPxSceneDefLibs* variable: a *map* collecti
 
 			
 				
-				<h3 id="LibsPxSceneDef.AddNew">func (LibsPxSceneDef) <a href="/target/pxscene.gt.go?s=1529:1593#L57">AddNew</a></h3>
+				<h3 id="LibsPxSceneDef.AddNew">func (LibsPxSceneDef) <a href="/target/pxscene.gt.go?s=1545:1609#L58">AddNew</a></h3>
 				<pre>func (me LibsPxSceneDef) AddNew(id string) (lib *LibPxSceneDefs)</pre>
 				<p>
 Creates a new *LibPxSceneDefs* library with the specified *ID*, adds it to this *LibsPxSceneDef*, and returns it.
@@ -8173,7 +8361,7 @@ If this *LibsPxSceneDef* already contains a *LibPxSceneDefs* library with the sp
 		
 			
 			
-			<h2 id="LibsVisualSceneDef">type <a href="/target/visualscene.gt.go?s=1814:1868#L78">LibsVisualSceneDef</a></h2>
+			<h2 id="LibsVisualSceneDef">type <a href="/target/visualscene.gt.go?s=1830:1884#L79">LibsVisualSceneDef</a></h2>
 			<pre>type LibsVisualSceneDef map[string]*LibVisualSceneDefs</pre>
 			<p>
 The underlying type of the global *AllVisualSceneDefLibs* variable: a *map* collection that contains
@@ -8191,7 +8379,7 @@ The underlying type of the global *AllVisualSceneDefLibs* variable: a *map* coll
 
 			
 				
-				<h3 id="LibsVisualSceneDef.AddNew">func (LibsVisualSceneDef) <a href="/target/visualscene.gt.go?s=2136:2208#L83">AddNew</a></h3>
+				<h3 id="LibsVisualSceneDef.AddNew">func (LibsVisualSceneDef) <a href="/target/visualscene.gt.go?s=2152:2224#L84">AddNew</a></h3>
 				<pre>func (me LibsVisualSceneDef) AddNew(id string) (lib *LibVisualSceneDefs)</pre>
 				<p>
 Creates a new *LibVisualSceneDefs* library with the specified *ID*, adds it to this *LibsVisualSceneDef*, and returns it.
@@ -8735,7 +8923,7 @@ Represents a 3-component vertex attribute (such as for example vertex-normals)
 		
 			
 			
-			<h2 id="Param">type <a href="/target/common.go?s=1568:1640#L93">Param</a></h2>
+			<h2 id="Param">type <a href="/target/common.go?s=1668:1740#L96">Param</a></h2>
 			<pre>type Param struct {
     HasName
     HasSid
@@ -8775,7 +8963,7 @@ Represents a 3-component vertex attribute (such as for example vertex-normals)
 		
 			
 			
-			<h2 id="ParamDef">type <a href="/target/common.go?s=1642:1693#L100">ParamDef</a></h2>
+			<h2 id="ParamDef">type <a href="/target/common.go?s=1742:1793#L103">ParamDef</a></h2>
 			<pre>type ParamDef struct {
     HasSid
     Value interface{}
@@ -8794,7 +8982,7 @@ Represents a 3-component vertex attribute (such as for example vertex-normals)
 		
 			
 			
-			<h2 id="ParamDefs">type <a href="/target/common.go?s=1695:1730#L105">ParamDefs</a></h2>
+			<h2 id="ParamDefs">type <a href="/target/common.go?s=1795:1830#L108">ParamDefs</a></h2>
 			<pre>type ParamDefs map[string]*ParamDef</pre>
 			
 
@@ -8848,7 +9036,7 @@ Represents a 3-component vertex attribute (such as for example vertex-normals)
 		
 			
 			
-			<h2 id="ParamInst">type <a href="/target/common.go?s=1732:1790#L107">ParamInst</a></h2>
+			<h2 id="ParamInst">type <a href="/target/common.go?s=1832:1890#L110">ParamInst</a></h2>
 			<pre>type ParamInst struct {
     Ref   string
     Value interface{}
@@ -9411,6 +9599,12 @@ Visual Scene, later to be augmented by optional &#34;kinematics scenes&#34; and/
 			
 
 			
+				
+				<h3 id="Scopedf">func <a href="/target/assets.go?s=1103:1139#L27">Scopedf</a></h3>
+				<pre>func Scopedf(f float64) *ScopedFloat</pre>
+				
+				
+			
 
 			
 		
@@ -9542,7 +9736,7 @@ Visual Scene, later to be augmented by optional &#34;kinematics scenes&#34; and/
 		
 			
 			
-			<h2 id="Technique">type <a href="/target/common.go?s=1792:1854#L112">Technique</a></h2>
+			<h2 id="Technique">type <a href="/target/common.go?s=1892:1954#L115">Technique</a></h2>
 			<pre>type Technique struct {
     Profile string
     Data    interface{}
@@ -9561,7 +9755,7 @@ Visual Scene, later to be augmented by optional &#34;kinematics scenes&#34; and/
 		
 			
 			
-			<h2 id="Transform">type <a href="/target/common.go?s=1856:1915#L117">Transform</a></h2>
+			<h2 id="Transform">type <a href="/target/common.go?s=1956:2015#L120">Transform</a></h2>
 			<pre>type Transform struct {
     HasSid
     Type int

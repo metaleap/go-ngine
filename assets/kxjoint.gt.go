@@ -44,6 +44,7 @@ func (me *KxJointInst) init() {
 func newKxJointDef(id string) (me *KxJointDef) {
 	me = &KxJointDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

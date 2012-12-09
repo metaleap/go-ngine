@@ -135,7 +135,8 @@ func SamplesMainFunc(assetLoader func()) {
 		ng.Core.Options.SetGlClearColor(ugl.GlVec4{0.75, 0.75, 0.97, 1})
 		ng.Loop.OnSec = OnSec
 		camDef := nga.CameraDefs.AddNew("")
-		camDef.FovY, camDef.Znear, camDef.Zfar = 37.8493, 0.3, 30000
+		camDef.Optics.TechniqueCommon.Znear.F, camDef.Optics.TechniqueCommon.Zfar.F = 0.3, 30000
+		camDef.Optics.TechniqueCommon.Perspective = &nga.CameraPerspective{FovY: nga.Scopedf(37.8493)}
 		nga.SyncChanges()
 		Cam = ng.Core.Cameras[""]
 		CamCtl = Cam.Controller

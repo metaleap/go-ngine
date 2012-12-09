@@ -55,6 +55,7 @@ func (me *ControllerInst) init() {
 func newControllerDef(id string) (me *ControllerDef) {
 	me = &ControllerDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

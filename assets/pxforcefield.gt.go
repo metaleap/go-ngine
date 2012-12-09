@@ -21,6 +21,7 @@ func (me *PxForceFieldInst) init() {
 func newPxForceFieldDef(id string) (me *PxForceFieldDef) {
 	me = &PxForceFieldDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

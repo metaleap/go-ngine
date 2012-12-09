@@ -31,7 +31,9 @@ func LoadSampleScene_01_EmptyPlane() {
 	ngsamples.Cam.Options.BackfaceCulling = false
 
 	//	textures / materials
-	nga.ImageDefs.AddNew("tex_cobbles").InitFrom.RefUrl = "tex/cobbles.png"
+	nga.FxImageDefs.AddFromRefUrls(map[string]string{
+		"tex_cobbles": "tex/cobbles.png",
+	})
 	ng.Core.Materials["mat_cobbles"] = ng.Core.Materials.New("tex_cobbles")
 
 	//	meshes / models

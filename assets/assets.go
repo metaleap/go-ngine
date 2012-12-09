@@ -34,6 +34,10 @@ func sfmt(format string, fmtArgs ...interface{}) string {
 	return fmt.Sprintf(format, fmtArgs...)
 }
 
+func Scopedf(f float64) *ScopedFloat {
+	return &ScopedFloat{F: f}
+}
+
 //	Signals to *core* (or your custom package) that changes have been made that need to be picked up. Call this after you have made any number of changes to your Defs, Insts or Libs.
 func SyncChanges() {
 	OnBeforeSyncAll()

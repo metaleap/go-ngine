@@ -59,6 +59,7 @@ func (me *LightInst) init() {
 func newLightDef(id string) (me *LightDef) {
 	me = &LightDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

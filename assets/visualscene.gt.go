@@ -54,6 +54,7 @@ func (me *VisualSceneInst) init() {
 func newVisualSceneDef(id string) (me *VisualSceneDef) {
 	me = &VisualSceneDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

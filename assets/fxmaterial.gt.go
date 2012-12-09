@@ -35,6 +35,7 @@ type FxMaterialInstBindVertexInput struct {
 func newFxMaterialDef(id string) (me *FxMaterialDef) {
 	me = &FxMaterialDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

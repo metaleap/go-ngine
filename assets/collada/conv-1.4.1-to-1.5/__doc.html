@@ -62,7 +62,10 @@ Provides in-memory conversion of Collada 1.4.1 documents to version 1.5.
 			
 			
 				
-				<dd><a href="#Convert">func Convert(srcFile []byte) (dstFile []byte, err error)</a></dd>
+				<dd><a href="#ConvertBytes">func ConvertBytes(srcFile []byte) (dstFile []byte, err error)</a></dd>
+			
+				
+				<dd><a href="#ConvertDoc">func ConvertDoc(srcFile []byte) (doc *xmlx.Document, err error)</a></dd>
 			
 			
 			
@@ -120,8 +123,18 @@ Provides in-memory conversion of Collada 1.4.1 documents to version 1.5.
 		
 			
 			
-			<h2 id="Convert">func <a href="/target/convert.go?s=2522:2578#L61">Convert</a></h2>
-			<pre>func Convert(srcFile []byte) (dstFile []byte, err error)</pre>
+			<h2 id="ConvertBytes">func <a href="/target/convert.go?s=3071:3132#L87">ConvertBytes</a></h2>
+			<pre>func ConvertBytes(srcFile []byte) (dstFile []byte, err error)</pre>
+			<p>
+Converts the specified Collada 1.4.1 document to Collada 1.5.
+</p>
+
+			
+		
+			
+			
+			<h2 id="ConvertDoc">func <a href="/target/convert.go?s=3260:3323#L93">ConvertDoc</a></h2>
+			<pre>func ConvertDoc(srcFile []byte) (doc *xmlx.Document, err error)</pre>
 			<p>
 Converts the specified Collada 1.4.1 document to Collada 1.5.
 </p>

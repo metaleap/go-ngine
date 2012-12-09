@@ -3,6 +3,7 @@ package gt
 func new__T__Def(id string) (me *__T__Def) {
 	me = &__T__Def{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

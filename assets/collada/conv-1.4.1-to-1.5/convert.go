@@ -67,22 +67,41 @@ func attValU64(xn *xmlx.Node, name string) (val uint64) {
 	return
 }
 
-//	Converts the specified Collada 1.4.1 document to Collada 1.5.
-func Convert(srcFile []byte) (dstFile []byte, err error) {
-	srcDoc, surfaceImages, surfaceNodes, skipped = xmlx.New(), map[string]string{}, nil, false
-	if err = srcDoc.LoadBytes(srcFile, nil); err != nil {
+func convert(srcFile []byte, retDoc, retBytes bool) (doc *xmlx.Document, dstFile []byte, err error) {
+	doc, surfaceImages, surfaceNodes, skipped = xmlx.New(), map[string]string{}, nil, false
+	if err = doc.LoadBytes(srcFile, nil); err != nil {
+		doc = nil
 		return
 	}
-	processNode(srcDoc.Root)
+	processNode(doc.Root)
 	if skipped {
-		dstFile = srcFile
+		if retBytes {
+			dstFile = srcFile
+		}
 	} else {
 		for _, sn := range surfaceNodes {
 			delNode(sn.Parent)
 		}
-		dstFile = srcDoc.SaveBytes()
+		if retBytes {
+			dstFile = doc.SaveBytes()
+		}
 	}
-	srcDoc, surfaceImages, surfaceNodes = nil, nil, nil
+	if !retDoc {
+		doc = nil
+	}
+	surfaceImages, surfaceNodes = nil, nil
+	return
+}
+
+//	Converts the specified Collada 1.4.1 document to Collada 1.5.
+func ConvertBytes(srcFile []byte) (dstFile []byte, err error) {
+	_, dstFile, err = convert(srcFile, false, true)
+	return
+}
+
+//	Converts the specified Collada 1.4.1 document to Collada 1.5.
+func ConvertDoc(srcFile []byte) (doc *xmlx.Document, err error) {
+	doc, _, err = convert(srcFile, true, false)
 	return
 }
 

@@ -15,21 +15,20 @@ type CameraOptics struct {
 	HasExtras
 	HasTechniques
 	TechniqueCommon struct {
+		CameraCommon
 		Orthographic *CameraOrthographic
 		Perspective  *CameraPerspective
 	}
 }
 
 type CameraOrthographic struct {
-	CameraCommon
 	MagX *ScopedFloat
 	MagY *ScopedFloat
 }
 
 type CameraPerspective struct {
-	CameraCommon
-	FovX float64
-	FovY float64
+	FovX *ScopedFloat
+	FovY *ScopedFloat
 }
 
 //	Defines a perspective or orthographic camera. Only perspective cameras are supported at this point.
@@ -58,6 +57,7 @@ func (me *CameraInst) init() {
 func newCameraDef(id string) (me *CameraDef) {
 	me = &CameraDef{}
 	me.ID = id
+	me.Base.init()
 	me.init()
 	return
 }

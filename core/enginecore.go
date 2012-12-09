@@ -55,7 +55,7 @@ func newEngineCore(options *EngineOptions) {
 	nga.OnBeforeSyncAll = func() { Core.onAssetsSyncing() }
 	nga.OnAfterSyncAll = func() { Core.onAssetsSynced() }
 	nga.CameraDefs.OnSync = func() { Core.Cameras.syncAssetChanges() }
-	nga.ImageDefs.OnSync = func() { Core.Textures.syncAssetChanges() }
+	nga.FxImageDefs.OnSync = func() { Core.Textures.syncAssetChanges() }
 }
 
 func (me *EngineCore) dispose() {

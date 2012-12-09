@@ -63,11 +63,13 @@ func LoadSampleScene_03_PyrsCubes() {
 
 	//	textures / materials
 
-	nga.ImageDefs.AddNew("tex_cobbles").InitFrom.RefUrl = "tex/cobbles.png"
-	nga.ImageDefs.AddNew("tex_crate").InitFrom.RefUrl = "tex/crate.jpeg"
-	nga.ImageDefs.AddNew("tex_mosaic").InitFrom.RefUrl = "tex/mosaic.jpeg"
-	nga.ImageDefs.AddNew("tex_cat").InitFrom.RefUrl = "tex/cat.png"
-	nga.ImageDefs.AddNew("tex_dog").InitFrom.RefUrl = "tex/dog.png"
+	nga.FxImageDefs.AddFromRefUrls(map[string]string{
+		"tex_cobbles": "tex/cobbles.png",
+		"tex_crate":   "tex/crate.jpeg",
+		"tex_mosaic":  "tex/mosaic.jpeg",
+		"tex_cat":     "tex/cat.png",
+		"tex_dog":     "tex/dog.png",
+	})
 
 	ng.Core.Materials["mat_cobbles"] = ng.Core.Materials.New("tex_cobbles")
 	ng.Core.Materials["mat_crate"] = ng.Core.Materials.New("tex_crate")
