@@ -23,12 +23,7 @@ type ControllerSkin struct {
 		HasExtras
 		Inputs []*Input
 	}
-	VertexWeights struct {
-		Count  uint64
-		Inputs []*InputShared
-		VCount []int64
-		V      []int64
-	}
+	VertexWeights IndexedInputs
 }
 
 func NewControllerSkin() (me *ControllerSkin) {
@@ -47,8 +42,9 @@ func (me *ControllerDef) init() {
 
 type ControllerInst struct {
 	BaseInst
-
-	Def *ControllerDef
+	Def          *ControllerDef
+	BindMaterial *BindMaterial
+	Skeletons    []string
 }
 
 func (me *ControllerInst) init() {

@@ -10,6 +10,7 @@ type SourceAccessor struct {
 
 type Source struct {
 	BaseDef
+	HasTechniques
 	Data struct {
 		Bools   *ListBools
 		Floats  *ListFloats
@@ -22,7 +23,6 @@ type Source struct {
 	TechniqueCommon struct {
 		Accessor *SourceAccessor
 	}
-	Techniques []*Technique
 }
 
 type Sources map[string]*Source

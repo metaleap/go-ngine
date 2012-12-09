@@ -3,12 +3,12 @@ package assets
 type FormulaDef struct {
 	BaseDef
 	HasSid
+	HasTechniques
 	ParamDefs       ParamDefs
 	Target          ParamFloat
 	TechniqueCommon struct {
 		Data interface{}
 	}
-	Techniques []*Technique
 }
 
 func (me *FormulaDef) init() {

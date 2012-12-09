@@ -10,15 +10,17 @@ const (
 	GEOMETRY_PRIMITIVE_TYPE_TRISTRIPS   = 0x0005
 )
 
-type GeometryBrep struct {
+type GeometryControlVertices struct {
 	HasExtras
+	Inputs []*Input
 }
 
 type GeometryMesh struct {
 	HasExtras
-	Sources    Sources
-	Vertices   *GeometryVertices
-	Primitives []*GeometryPrimitives
+	ConvexHullOf string
+	Sources      Sources
+	Vertices     *GeometryVertices
+	Primitives   []*GeometryPrimitives
 }
 
 func NewGeometryMesh() (me *GeometryMesh) {
@@ -29,21 +31,24 @@ func NewGeometryMesh() (me *GeometryMesh) {
 type GeometryPrimitives struct {
 	HasExtras
 	HasName
-	Count    uint64
-	Material string
-	Inputs   []*InputShared
-	Indices  []int64
-	Type     int
+	Count     uint64
+	Material  string
+	Inputs    []*InputShared
+	Indices   []int64
+	Type      int
+	PolyHoles []*GeometryPolygonHole
+}
+
+type GeometryPolygonHole struct {
+	Indices []int64
+	Holes   [][]uint64
 }
 
 type GeometrySpline struct {
 	HasExtras
 	Closed          bool
 	Sources         Sources
-	ControlVertices struct {
-		HasExtras
-		Inputs []*Input
-	}
+	ControlVertices GeometryControlVertices
 }
 
 type GeometryVertices struct {
@@ -70,8 +75,8 @@ func (me *GeometryDef) init() {
 
 type GeometryInst struct {
 	BaseInst
-
-	Def *GeometryDef
+	Def          *GeometryDef
+	BindMaterial *BindMaterial
 }
 
 func (me *GeometryInst) init() {

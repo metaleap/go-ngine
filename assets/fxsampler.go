@@ -10,6 +10,13 @@ const (
 	FX_SAMPLER_FILTER_LINEAR      = 0x2601
 	FX_SAMPLER_FILTER_ANISOTROPIC = 1
 
+	FX_SAMPLER_TYPE_1D    = 0x8B5D
+	FX_SAMPLER_TYPE_2D    = 0x8B5E
+	FX_SAMPLER_TYPE_3D    = 0x8B5F
+	FX_SAMPLER_TYPE_CUBE  = 0x8B60
+	FX_SAMPLER_TYPE_DEPTH = 0
+	FX_SAMPLER_TYPE_RECT  = 1
+
 	FX_SAMPLER_WRAP_WRAP        = 0x2901
 	FX_SAMPLER_WRAP_MIRROR      = 0x8370
 	FX_SAMPLER_WRAP_CLAMP       = 0x812F
@@ -45,9 +52,10 @@ type FxSamplerWrapping struct {
 }
 
 type FxSampler struct {
-	Image     *ImageInst
+	Image     *FxImageInst
 	Filtering *FxSamplerFiltering
 	Wrapping  *FxSamplerWrapping
+	Type      int
 }
 
 func NewFxSampler() (me *FxSampler) {

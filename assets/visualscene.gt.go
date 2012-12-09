@@ -1,7 +1,40 @@
 package assets
 
+type VisualSceneEvaluation struct {
+	BaseDef
+	HasSid
+	Disabled       bool
+	RenderFxPasses []*VisualSceneRendering
+}
+
+type VisualSceneRendering struct {
+	HasName
+	HasSid
+	HasExtras
+	CameraNode   string
+	Layers       Layers
+	MaterialInst *VisualSceneRenderingMaterialInst
+}
+
+func NewVisualSceneRendering() (me *VisualSceneRendering) {
+	me = &VisualSceneRendering{Layers: Layers{}}
+	return
+}
+
+type VisualSceneRenderingMaterialInst struct {
+	HasExtras
+	Def               *FxMaterialDef
+	Bindings          []*FxMaterialInstBind
+	OverrideTechnique struct {
+		Ref  string
+		Pass string
+	}
+}
+
 type VisualSceneDef struct {
 	BaseDef
+	Nodes       []*NodeDef
+	Evaluations []*VisualSceneEvaluation
 }
 
 func (me *VisualSceneDef) init() {

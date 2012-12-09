@@ -1,31 +1,29 @@
 package assets
 
-//	A Node embodies the hierarchical relationship of elements in a Scene by declaring a point of
-//	interest in a Scene. A Node denotes one point on a branch of the Scene graph. The Node is
-//	essentially the root of a sub-graph of the entire Scene graph.
 type NodeDef struct {
 	BaseDef
 	HasSid
-
-	//	The names of the layers to which this Node belongs.
-	Layers map[string]bool
-
-	//	Allows the Node to recursively define hierarchy.
-	NodeDefs []*NodeDef
-
-	//	Allows the Node to instantiate a hierarchy of other Nodes.
-	NodeInsts []*NodeInst
+	IsJoint    bool
+	Layers     Layers
+	Transforms []*Transform
+	Insts      struct {
+		Camera     []*CameraInst
+		Controller []*ControllerInst
+		Geometry   []*GeometryInst
+		Light      []*LightInst
+	}
+	Nodes struct {
+		Defs  []*NodeDef
+		Insts []*NodeInst
+	}
 }
 
 func (me *NodeDef) init() {
-	me.Layers = map[string]bool{}
+	me.Layers = Layers{}
 }
 
-//	An instance referencing a Node definition.
 type NodeInst struct {
 	BaseInst
-
-	//	The Node definition referenced by this instance.
 	Def *NodeDef
 }
 

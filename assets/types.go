@@ -1,5 +1,9 @@
 package assets
 
+import (
+	unum "github.com/metaleap/go-util/num"
+)
+
 type Bool2 [2]bool
 
 type Bool3 [3]bool
@@ -78,6 +82,11 @@ type ParamFloat struct {
 	Ref string
 }
 
+type ParamFloat2 struct {
+	F   Float2
+	Ref string
+}
+
 type ParamInt struct {
 	I   int64
 	Ref string
@@ -98,7 +107,27 @@ type ParamUint struct {
 	Ref string
 }
 
+type ScopedBool struct {
+	HasSid
+	B bool
+}
+
 type ScopedFloat struct {
 	HasSid
 	F float64
+}
+
+type ScopedFloat3 struct {
+	HasSid
+	F Float3
+}
+
+type ScopedString struct {
+	HasSid
+	S string
+}
+
+type ScopedVec3 struct {
+	HasSid
+	V unum.Vec3
 }

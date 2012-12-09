@@ -1,29 +1,42 @@
 package assets
 
+type CameraImager struct {
+	HasTechniques
+	HasExtras
+}
+
+type CameraCommon struct {
+	AspectRatio *ScopedFloat
+	Zfar        ScopedFloat
+	Znear       ScopedFloat
+}
+
+type CameraOptics struct {
+	HasExtras
+	HasTechniques
+	TechniqueCommon struct {
+		Orthographic *CameraOrthographic
+		Perspective  *CameraPerspective
+	}
+}
+
+type CameraOrthographic struct {
+	CameraCommon
+	MagX *ScopedFloat
+	MagY *ScopedFloat
+}
+
+type CameraPerspective struct {
+	CameraCommon
+	FovX float64
+	FovY float64
+}
+
 //	Defines a perspective or orthographic camera. Only perspective cameras are supported at this point.
 type CameraDef struct {
 	BaseDef
-
-	//	Horizontal field-of-view for perspective camera.
-	FovX float64
-
-	//	Vertical field-of-view for perspective camera.
-	FovY float64
-
-	//	Horizontal magnification for orthographic camera.
-	MagX float64
-
-	//	Verticial magnification for orthographic camera.
-	MagY float64
-
-	//	The distance of the lens to the far-plane. Camera cannot see anything behind the far-plane.
-	Zfar float64
-
-	//	The distance of the lens to the near-plane. Camera cannot see anything in front of the near-plane.
-	Znear float64
-
-	//	Specifies whether this camera is an orthographic (rather than a perspective) camera.
-	Ortho bool
+	Optics CameraOptics
+	Imager *CameraImager
 }
 
 func (me *CameraDef) init() {

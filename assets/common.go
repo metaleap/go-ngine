@@ -1,5 +1,18 @@
 package assets
 
+import (
+	ugeo "github.com/metaleap/go-util/geo"
+)
+
+const (
+	TRANSFORM_TYPE_LOOKAT    = 0
+	TRANSFORM_TYPE_MATRIX    = iota
+	TRANSFORM_TYPE_ROTATE    = iota
+	TRANSFORM_TYPE_SKEW      = iota
+	TRANSFORM_TYPE_SCALE     = iota
+	TRANSFORM_TYPE_TRANSLATE = iota
+)
+
 type HasAsset struct {
 	Asset *Asset
 }
@@ -23,6 +36,10 @@ type HasSid struct {
 	Sid string
 }
 
+type HasTechniques struct {
+	Techniques []*Technique
+}
+
 type Asset struct {
 	HasExtras
 	Created      string
@@ -33,7 +50,16 @@ type Asset struct {
 	Title        string
 	UpAxis       string
 	Contributors []*Contributor
-	Coverage     *GeographicLocation
+	Coverage     *ugeo.Location
+}
+
+type BindMaterial struct {
+	HasExtras
+	HasTechniques
+	Params          []*Param
+	TechniqueCommon struct {
+		MaterialInsts []*FxMaterialInst
+	}
 }
 
 type Contributor struct {
@@ -50,28 +76,15 @@ type Extra struct {
 	HasID
 	HasName
 	HasAsset
-	Type       string
-	Techniques []*Technique
+	HasTechniques
+	Type string
 }
 
-type FxAnnotation struct {
-	HasName
-	Value interface{}
-}
-
-type FxParamDef struct {
-	ParamDef
-	Annotations        []*FxAnnotation
-	Modifier, Semantic string
-}
-
-type FxParamDefs map[string]*FxParamDef
-
-type GeographicLocation struct {
-	Longitude        float64
-	Latitude         float64
-	Altitude         float64
-	AltitudeAbsolute bool
+type IndexedInputs struct {
+	Count   uint64
+	Inputs  []*InputShared
+	Vcount  []int64
+	Indices []int64
 }
 
 type Input struct {
@@ -84,6 +97,8 @@ type InputShared struct {
 	Offset uint64
 	Set    uint64
 }
+
+type Layers map[string]bool
 
 type Param struct {
 	HasName
@@ -107,4 +122,10 @@ type ParamInst struct {
 type Technique struct {
 	Profile string
 	Data    interface{}
+}
+
+type Transform struct {
+	HasSid
+	Type int
+	F    []float64
 }
