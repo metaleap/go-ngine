@@ -45,12 +45,14 @@ func newImageDef(id string) (me *ImageDef) {
 	return
 }
 
+/*
 //	Creates and returns a new *ImageInst* instance referencing this *ImageDef* definition.
 func (me *ImageDef) NewInst(id string) (inst *ImageInst) {
 	inst = &ImageInst{Def: me}
 	inst.init()
 	return
 }
+*/
 
 var (
 	//	A *map* collection that contains *LibImageDefs* libraries associated by their *ID*.

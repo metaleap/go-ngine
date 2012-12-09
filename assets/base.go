@@ -17,6 +17,20 @@ func (me *Base) SetDirty() {
 	me.dirty = true
 }
 
+func (me *Base) SetFieldB(field *bool, val bool) {
+	if *field != val {
+		*field = val
+		me.SetDirty()
+	}
+}
+
+func (me *Base) SetFieldF(field *float64, val float64) {
+	if *field != val {
+		*field = val
+		me.SetDirty()
+	}
+}
+
 func (me *Base) init() {
 	me.OnSync = func() {}
 	me.SetDirty()
@@ -37,6 +51,8 @@ type BaseDef struct {
 	Base
 	HasID
 	HasName
+	HasAsset
+	HasExtras
 }
 
 //	Provides a common base for *Inst*s.
@@ -44,6 +60,7 @@ type BaseInst struct {
 	Base
 	HasName
 	HasSid
+	HasExtras
 }
 
 //	Provides a common base for *Lib*s.

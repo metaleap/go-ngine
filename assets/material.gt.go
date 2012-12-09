@@ -28,12 +28,14 @@ func newMaterialDef(id string) (me *MaterialDef) {
 	return
 }
 
+/*
 //	Creates and returns a new *MaterialInst* instance referencing this *MaterialDef* definition.
 func (me *MaterialDef) NewInst(id string) (inst *MaterialInst) {
 	inst = &MaterialInst{Def: me}
 	inst.init()
 	return
 }
+*/
 
 var (
 	//	A *map* collection that contains *LibMaterialDefs* libraries associated by their *ID*.

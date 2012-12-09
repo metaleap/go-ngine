@@ -29,62 +29,6 @@ type CameraDef struct {
 func (me *CameraDef) init() {
 }
 
-//	Sets the *FovX* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
-func (me *CameraDef) SetFovX(v float64) {
-	if me.FovX != v {
-		me.FovX = v
-		me.SetDirty()
-	}
-}
-
-//	Sets the *FovY* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
-func (me *CameraDef) SetFovY(v float64) {
-	if me.FovY != v {
-		me.FovY = v
-		me.SetDirty()
-	}
-}
-
-//	Sets the *MagX* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
-func (me *CameraDef) SetMagX(v float64) {
-	if me.MagX != v {
-		me.MagX = v
-		me.SetDirty()
-	}
-}
-
-//	Sets the *MagY* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
-func (me *CameraDef) SetMagY(v float64) {
-	if me.MagY != v {
-		me.MagY = v
-		me.SetDirty()
-	}
-}
-
-//	Sets the *Ortho* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
-func (me *CameraDef) SetOrtho(v bool) {
-	if me.Ortho != v {
-		me.Ortho = v
-		me.SetDirty()
-	}
-}
-
-//	Sets the *Zfar* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
-func (me *CameraDef) SetZfar(v float64) {
-	if me.Zfar != v {
-		me.Zfar = v
-		me.SetDirty()
-	}
-}
-
-//	Sets the *Znear* field for this *CameraDef* and calls its *Base.SetDirty()* to register the change for syncing.
-func (me *CameraDef) SetZnear(v float64) {
-	if me.Znear != v {
-		me.Znear = v
-		me.SetDirty()
-	}
-}
-
 //	An instance referencing a camera definition.
 type CameraInst struct {
 	BaseInst
@@ -105,12 +49,14 @@ func newCameraDef(id string) (me *CameraDef) {
 	return
 }
 
+/*
 //	Creates and returns a new *CameraInst* instance referencing this *CameraDef* definition.
 func (me *CameraDef) NewInst(id string) (inst *CameraInst) {
 	inst = &CameraInst{Def: me}
 	inst.init()
 	return
 }
+*/
 
 var (
 	//	A *map* collection that contains *LibCameraDefs* libraries associated by their *ID*.

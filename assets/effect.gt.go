@@ -3,7 +3,8 @@ package assets
 //	Defines the equations necessary for the visual appearance of geometry and screen-space image processing.
 type EffectDef struct {
 	BaseDef
-	Params FxParamDefs
+	Annotations []*FxAnnotation
+	Params      FxParamDefs
 }
 
 func (me *EffectDef) init() {
@@ -30,12 +31,14 @@ func newEffectDef(id string) (me *EffectDef) {
 	return
 }
 
+/*
 //	Creates and returns a new *EffectInst* instance referencing this *EffectDef* definition.
 func (me *EffectDef) NewInst(id string) (inst *EffectInst) {
 	inst = &EffectInst{Def: me}
 	inst.init()
 	return
 }
+*/
 
 var (
 	//	A *map* collection that contains *LibEffectDefs* libraries associated by their *ID*.

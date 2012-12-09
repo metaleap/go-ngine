@@ -1,8 +1,5 @@
 package assets
 
-//	Embodies the entire set of information that can be visualized from the contents of the *Lib* libraries.
-//	The hierarchical structure of the Visual Scene is organized into a scene graph. A scene graph is a
-//	directed acyclic graph or tree data structure that contains nodes of visual information and related data.
 type VisualSceneDef struct {
 	BaseDef
 }
@@ -10,11 +7,9 @@ type VisualSceneDef struct {
 func (me *VisualSceneDef) init() {
 }
 
-//	An instance referencing a Visual Scene definition.
 type VisualSceneInst struct {
 	BaseInst
 
-	//	The Visual Scene definition referenced by this instance.
 	Def *VisualSceneDef
 }
 
@@ -30,12 +25,14 @@ func newVisualSceneDef(id string) (me *VisualSceneDef) {
 	return
 }
 
+/*
 //	Creates and returns a new *VisualSceneInst* instance referencing this *VisualSceneDef* definition.
 func (me *VisualSceneDef) NewInst(id string) (inst *VisualSceneInst) {
 	inst = &VisualSceneInst{Def: me}
 	inst.init()
 	return
 }
+*/
 
 var (
 	//	A *map* collection that contains *LibVisualSceneDefs* libraries associated by their *ID*.

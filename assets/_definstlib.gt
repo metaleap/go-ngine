@@ -7,12 +7,14 @@ func new__T__Def(id string) (me *__T__Def) {
 	return
 }
 
+/*
 //	Creates and returns a new *__T__Inst* instance referencing this *__T__Def* definition.
 func (me *__T__Def) NewInst(id string) (inst *__T__Inst) {
 	inst = &__T__Inst{Def: me}
 	inst.init()
 	return
 }
+*/
 
 var (
 	//	A *map* collection that contains *Lib__T__Defs* libraries associated by their *ID*.

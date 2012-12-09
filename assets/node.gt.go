@@ -41,12 +41,14 @@ func newNodeDef(id string) (me *NodeDef) {
 	return
 }
 
+/*
 //	Creates and returns a new *NodeInst* instance referencing this *NodeDef* definition.
 func (me *NodeDef) NewInst(id string) (inst *NodeInst) {
 	inst = &NodeInst{Def: me}
 	inst.init()
 	return
 }
+*/
 
 var (
 	//	A *map* collection that contains *LibNodeDefs* libraries associated by their *ID*.
