@@ -26,8 +26,6 @@ func (me *AnimationDef) init() {
 
 type AnimationInst struct {
 	BaseInst
-
-	Def *AnimationDef
 }
 
 func (me *AnimationInst) init() {

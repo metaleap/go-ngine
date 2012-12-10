@@ -226,7 +226,6 @@ func (me *FxEffectDef) init() {
 
 type FxEffectInst struct {
 	BaseInst
-	Def            *FxEffectDef
 	SetParams      []*ParamInst
 	TechniqueHints []*FxEffectInstTechniqueHint
 }

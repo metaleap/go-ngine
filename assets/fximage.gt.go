@@ -143,7 +143,6 @@ func (me *FxImageDef) init() {
 
 type FxImageInst struct {
 	BaseInst
-	Def *FxImageDef
 }
 
 func (me *FxImageInst) init() {

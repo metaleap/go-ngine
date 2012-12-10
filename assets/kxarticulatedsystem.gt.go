@@ -121,7 +121,6 @@ func (me *KxArticulatedSystemDef) init() {
 
 type KxArticulatedSystemInst struct {
 	BaseInst
-	Def       *KxArticulatedSystemDef
 	Bindings  []*KxBind
 	SetParams []*ParamInst
 	NewParams ParamDefs

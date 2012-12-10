@@ -32,8 +32,6 @@ func (me *KxJointDef) init() {
 
 type KxJointInst struct {
 	BaseInst
-
-	Def *KxJointDef
 }
 
 func (me *KxJointInst) init() {

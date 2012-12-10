@@ -61,6 +61,7 @@ type BaseInst struct {
 	HasName
 	HasSid
 	HasExtras
+	DefRef string
 }
 
 //	Provides a common base for *Lib*s.

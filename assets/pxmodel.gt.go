@@ -11,7 +11,6 @@ func (me *PxModelDef) init() {
 
 type PxModelInst struct {
 	BaseInst
-	Def              *PxModelDef
 	Parent           string
 	ForceFields      []*PxForceFieldInst
 	RigidBodies      []*PxRigidBodyInst

@@ -23,7 +23,6 @@ func NewVisualSceneRendering() (me *VisualSceneRendering) {
 
 type VisualSceneRenderingMaterialInst struct {
 	HasExtras
-	Def               *FxMaterialDef
 	Bindings          []*FxMaterialInstBind
 	OverrideTechnique struct {
 		Ref  string
@@ -42,8 +41,6 @@ func (me *VisualSceneDef) init() {
 
 type VisualSceneInst struct {
 	BaseInst
-
-	Def *VisualSceneDef
 }
 
 func (me *VisualSceneInst) init() {

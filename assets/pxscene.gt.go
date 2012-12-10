@@ -16,8 +16,6 @@ func (me *PxSceneDef) init() {
 
 type PxSceneInst struct {
 	BaseInst
-
-	Def *PxSceneDef
 }
 
 func (me *PxSceneInst) init() {

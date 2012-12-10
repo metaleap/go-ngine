@@ -1,19 +1,19 @@
 package assets
 
 type KxAttachment struct {
-	Joint string
+	Joint      string
 	Transforms []*Transform
-	Link *KxLink
+	Link       *KxLink
 }
 
 type KxLink struct {
 	HasSid
 	HasName
-	Transforms []*Transform
+	Transforms  []*Transform
 	Attachments struct {
-		Full []*KxAttachment
+		Full  []*KxAttachment
 		Start []*KxAttachment
-		End []*KxAttachment
+		End   []*KxAttachment
 	}
 }
 
@@ -22,28 +22,27 @@ type KxModelDef struct {
 	HasTechniques
 	TechniqueCommon struct {
 		NewParams ParamDefs
-		Links []*KxLink
-		Formulas struct {
-			Defs []*FormulaDef
+		Links     []*KxLink
+		Formulas  struct {
+			Defs  []*FormulaDef
 			Insts []*FormulaInst
 		}
 	}
 }
 
 func (me *KxModelDef) init() {
-	me.TechniqueCommon.NewParams = ParamDefs {}
+	me.TechniqueCommon.NewParams = ParamDefs{}
 }
 
 type KxModelInst struct {
 	BaseInst
-	Def *KxModelDef
-	Bindings []*KxBind
+	Bindings  []*KxBind
 	NewParams ParamDefs
 	SetParams []*ParamInst
 }
 
 func (me *KxModelInst) init() {
-	me.NewParams = ParamDefs {}
+	me.NewParams = ParamDefs{}
 }
 
 //#begin-gt _definstlib.gt T:KxModel

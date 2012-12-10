@@ -73,7 +73,9 @@ func convert(srcFile []byte, retDoc, retBytes bool) (doc *xmlx.Document, dstFile
 		doc = nil
 		return
 	}
+	srcDoc = doc
 	processNode(doc.Root)
+	srcDoc = nil
 	if skipped {
 		if retBytes {
 			dstFile = srcFile

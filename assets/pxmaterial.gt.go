@@ -15,8 +15,6 @@ func (me *PxMaterialDef) init() {
 
 type PxMaterialInst struct {
 	BaseInst
-
-	Def *PxMaterialDef
 }
 
 func (me *PxMaterialInst) init() {

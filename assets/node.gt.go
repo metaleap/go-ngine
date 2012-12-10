@@ -24,7 +24,6 @@ func (me *NodeDef) init() {
 
 type NodeInst struct {
 	BaseInst
-	Def *NodeDef
 }
 
 func (me *NodeInst) init() {

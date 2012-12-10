@@ -17,7 +17,6 @@ func (me *FormulaDef) init() {
 
 type FormulaInst struct {
 	BaseInst
-	Def        *FormulaDef
 	ParamInsts []*ParamInst
 }
 

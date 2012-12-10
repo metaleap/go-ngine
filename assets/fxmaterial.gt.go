@@ -10,7 +10,6 @@ func (me *FxMaterialDef) init() {
 
 type FxMaterialInst struct {
 	BaseInst
-	Def              *FxMaterialDef
 	Symbol           string
 	Binds            []*FxMaterialInstBind
 	BindVertexInputs []*FxMaterialInstBindVertexInput

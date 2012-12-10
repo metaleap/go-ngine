@@ -42,8 +42,6 @@ func (me *PxRigidConstraintDef) init() {
 
 type PxRigidConstraintInst struct {
 	BaseInst
-
-	Def *PxRigidConstraintDef
 }
 
 func (me *PxRigidConstraintInst) init() {

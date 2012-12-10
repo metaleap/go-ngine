@@ -9,6 +9,12 @@ const (
 	TRANSFORM_TYPE_TRANSLATE = iota
 )
 
+type SceneGraph struct {
+	HasAsset
+	HasExtras
+	Scene *Scene
+}
+
 type HasAsset struct {
 	Asset *Asset
 }
@@ -45,8 +51,18 @@ type Asset struct {
 	Subject      string
 	Title        string
 	UpAxis       string
-	Contributors []*Contributor
+	Contributors []*AssetContributor
 	Coverage     *AssetGeographicLocation
+}
+
+type AssetContributor struct {
+	Author        string
+	AuthorEmail   string
+	AuthorWebsite string
+	AuthoringTool string
+	Comments      string
+	Copyright     string
+	SourceData    string
 }
 
 type AssetGeographicLocation struct {
@@ -63,16 +79,6 @@ type BindMaterial struct {
 	TechniqueCommon struct {
 		MaterialInsts []*FxMaterialInst
 	}
-}
-
-type Contributor struct {
-	Author        string
-	AuthorEmail   string
-	AuthorWebsite string
-	AuthoringTool string
-	Comments      string
-	Copyright     string
-	SourceData    string
 }
 
 type Extra struct {

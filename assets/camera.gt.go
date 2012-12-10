@@ -41,12 +41,8 @@ type CameraDef struct {
 func (me *CameraDef) init() {
 }
 
-//	An instance referencing a camera definition.
 type CameraInst struct {
 	BaseInst
-
-	//	The camera definition referenced by this instance.
-	Def *CameraDef
 }
 
 func (me *CameraInst) init() {

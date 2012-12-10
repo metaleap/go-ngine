@@ -53,10 +53,9 @@ func (me *PxRigidBodyDef) init() {
 
 type PxRigidBodyInst struct {
 	BaseInst
-	Def             *PxRigidBodyDef
-	Name            string
-	Body            string
-	Target          string
+	Name   string
+	Body   string
+	Target string
 	HasTechniques
 	TechniqueCommon struct {
 		PxRigidBodyCommon

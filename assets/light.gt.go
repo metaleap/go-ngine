@@ -48,7 +48,6 @@ func (me *LightDef) init() {
 
 type LightInst struct {
 	BaseInst
-	Def *LightDef
 }
 
 func (me *LightInst) init() {

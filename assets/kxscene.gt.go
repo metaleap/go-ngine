@@ -11,7 +11,6 @@ func (me *KxSceneDef) init() {
 
 type KxSceneInst struct {
 	BaseInst
-	Def           *KxSceneDef
 	NewParams     ParamDefs
 	SetParams     []*ParamInst
 	ModelBindings []*KxSceneInstBindModel

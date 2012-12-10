@@ -42,7 +42,6 @@ func (me *ControllerDef) init() {
 
 type ControllerInst struct {
 	BaseInst
-	Def          *ControllerDef
 	BindMaterial *BindMaterial
 	Skeletons    []string
 }

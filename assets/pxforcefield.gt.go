@@ -10,7 +10,6 @@ func (me *PxForceFieldDef) init() {
 
 type PxForceFieldInst struct {
 	BaseInst
-	Def *PxForceFieldDef
 }
 
 func (me *PxForceFieldInst) init() {
