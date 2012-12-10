@@ -46,6 +46,11 @@ type FxPass struct {
 	Evaluate    *FxPassEvaluation
 }
 
+func NewFxPass() (me *FxPass) {
+	me = &FxPass{States: map[string]*FxPassState{}}
+	return
+}
+
 type FxPassEvaluation struct {
 	Draw  string
 	Color struct {

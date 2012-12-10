@@ -24,6 +24,7 @@ func (me *NodeDef) Init() {
 
 type NodeInst struct {
 	BaseInst
+	ProxyRef string
 }
 
 func (me *NodeInst) init() {

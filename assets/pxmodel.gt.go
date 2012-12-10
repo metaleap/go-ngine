@@ -2,8 +2,9 @@ package assets
 
 type PxModelDef struct {
 	BaseDef
-	RigidBodies []*PxRigidBodyDef
-	Insts       []*PxModelInst
+	RigidBodies      []*PxRigidBodyDef
+	RigidConstraints []*PxRigidConstraintDef
+	Insts            []*PxModelInst
 }
 
 func (me *PxModelDef) Init() {
@@ -11,7 +12,7 @@ func (me *PxModelDef) Init() {
 
 type PxModelInst struct {
 	BaseInst
-	Parent           string
+	ParentRef        string
 	ForceFields      []*PxForceFieldInst
 	RigidBodies      []*PxRigidBodyInst
 	RigidConstraints []*PxRigidConstraintInst

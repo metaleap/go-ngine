@@ -12,13 +12,15 @@ type Source struct {
 	BaseDef
 	HasTechniques
 	Data struct {
-		Bools   *ListBools
-		Floats  *ListFloats
-		IdRefs  *ListStrings
-		Ints    *ListInts
-		Names   *ListStrings
-		SidRefs *ListStrings
-		Tokens  *ListStrings
+		HasID
+		HasName
+		Bools   []bool
+		Floats  []float64
+		IdRefs  []string
+		Ints    []int64
+		Names   []string
+		SidRefs []string
+		Tokens  []string
 	}
 	TechniqueCommon struct {
 		Accessor *SourceAccessor

@@ -121,8 +121,13 @@ func load_%s(xn *xmlx.Node, obj *nga.%s) {
 						canDirty = true
 					}
 				}
-				if canDirty && strings.HasSuffix(n, "Def") {
-					srcInits += "\tobj.Init()\n"
+				if canDirty {
+					if strings.HasSuffix(n, "Def") {
+						srcInits += "\tobj.Init()\n"
+					}
+					if strings.HasSuffix(n, "Inst") {
+						srcInits += "\tsetInstDefRef(xn, &obj.BaseInst)\n"
+					}
 				}
 				for _, h := range has {
 					if _, ok = t.FieldByName("Has" + h); ok {

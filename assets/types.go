@@ -48,6 +48,7 @@ type Int4 [4]int64
 
 type Int4x4 [16]int64
 
+/*
 type ListBools struct {
 	HasID
 	HasName
@@ -71,6 +72,7 @@ type ListStrings struct {
 	HasName
 	S []string
 }
+*/
 
 type ParamBool struct {
 	B   bool

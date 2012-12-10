@@ -36,10 +36,10 @@ type LightDef struct {
 	BaseDef
 	HasTechniques
 	TechniqueCommon struct {
-		Ambient          *LightAmbient
-		LightDirectional *LightDirectional
-		Point            *LightPoint
-		Spot             *LightSpot
+		Ambient     *LightAmbient
+		Directional *LightDirectional
+		Point       *LightPoint
+		Spot        *LightSpot
 	}
 }
 

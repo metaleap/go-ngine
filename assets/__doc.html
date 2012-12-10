@@ -541,6 +541,9 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				
 				<dd><a href="#FxPass">type FxPass</a></dd>
 				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewFxPass">func NewFxPass() (me *FxPass)</a></dd>
+				
 				
 			
 				
@@ -1703,26 +1706,6 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				
 			
 				
-				<dd><a href="#ListBools">type ListBools</a></dd>
-				
-				
-			
-				
-				<dd><a href="#ListFloats">type ListFloats</a></dd>
-				
-				
-			
-				
-				<dd><a href="#ListInts">type ListInts</a></dd>
-				
-				
-			
-				
-				<dd><a href="#ListStrings">type ListStrings</a></dd>
-				
-				
-			
-				
 				<dd><a href="#MeshData">type MeshData</a></dd>
 				
 					
@@ -2445,308 +2428,305 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				
 			
 				<pre>var Functions = map[string]reflect.Value{
-    &#34;NewVisualSceneRendering&#34;:              reflect.ValueOf(NewVisualSceneRendering),
-    &#34;NewFxProfileCommon&#34;:                   reflect.ValueOf(NewFxProfileCommon),
-    &#34;NewFxProfileGlSl&#34;:                     reflect.ValueOf(NewFxProfileGlSl),
-    &#34;NewKxArticulatedSystemMotionAxis&#34;:     reflect.ValueOf(NewKxArticulatedSystemMotionAxis),
-    &#34;NewKxArticulatedSystemKinematicsAxis&#34;: reflect.ValueOf(NewKxArticulatedSystemKinematicsAxis),
-    &#34;NewKxArticulatedSystemEffector&#34;:       reflect.ValueOf(NewKxArticulatedSystemEffector),
-    &#34;NewFxImageInitFrom&#34;:                   reflect.ValueOf(NewFxImageInitFrom),
-    &#34;Scopedf&#34;:                              reflect.ValueOf(Scopedf),
-    &#34;SyncChanges&#34;:                          reflect.ValueOf(SyncChanges),
-    &#34;NewFxSampler&#34;:                         reflect.ValueOf(NewFxSampler),
     &#34;NewGeometryBrepNurbs&#34;:                 reflect.ValueOf(NewGeometryBrepNurbs),
     &#34;NewGeometryBrep&#34;:                      reflect.ValueOf(NewGeometryBrep),
     &#34;NewGeometryBrepNurbsSurface&#34;:          reflect.ValueOf(NewGeometryBrepNurbsSurface),
-    &#34;NewMeshData&#34;:                          reflect.ValueOf(NewMeshData),
-    &#34;NewMeshRawFace&#34;:                       reflect.ValueOf(NewMeshRawFace),
-    &#34;NewControllerMorph&#34;:                   reflect.ValueOf(NewControllerMorph),
-    &#34;NewControllerSkin&#34;:                    reflect.ValueOf(NewControllerSkin),
+    &#34;NewKxArticulatedSystemMotionAxis&#34;:     reflect.ValueOf(NewKxArticulatedSystemMotionAxis),
+    &#34;NewKxArticulatedSystemKinematicsAxis&#34;: reflect.ValueOf(NewKxArticulatedSystemKinematicsAxis),
+    &#34;NewKxArticulatedSystemEffector&#34;:       reflect.ValueOf(NewKxArticulatedSystemEffector),
     &#34;NewGeometrySpline&#34;:                    reflect.ValueOf(NewGeometrySpline),
     &#34;NewGeometryMesh&#34;:                      reflect.ValueOf(NewGeometryMesh),
+    &#34;NewVisualSceneRendering&#34;:              reflect.ValueOf(NewVisualSceneRendering),
+    &#34;NewFxProfileCommon&#34;:                   reflect.ValueOf(NewFxProfileCommon),
+    &#34;NewFxProfileGlSl&#34;:                     reflect.ValueOf(NewFxProfileGlSl),
+    &#34;NewFxPass&#34;:                            reflect.ValueOf(NewFxPass),
+    &#34;NewFxSampler&#34;:                         reflect.ValueOf(NewFxSampler),
+    &#34;NewControllerSkin&#34;:                    reflect.ValueOf(NewControllerSkin),
+    &#34;NewControllerMorph&#34;:                   reflect.ValueOf(NewControllerMorph),
+    &#34;NewMeshData&#34;:                          reflect.ValueOf(NewMeshData),
+    &#34;NewMeshRawFace&#34;:                       reflect.ValueOf(NewMeshRawFace),
+    &#34;Scopedf&#34;:                              reflect.ValueOf(Scopedf),
+    &#34;SyncChanges&#34;:                          reflect.ValueOf(SyncChanges),
+    &#34;NewFxImageInitFrom&#34;:                   reflect.ValueOf(NewFxImageInitFrom),
 }</pre>
 				
 			
 				<pre>var Types = map[string]reflect.Type{
-    &#34;FxSamplerFiltering&#34;:                 reflect.TypeOf((*FxSamplerFiltering)(nil)).Elem(),
-    &#34;FxSamplerWrapping&#34;:                  reflect.TypeOf((*FxSamplerWrapping)(nil)).Elem(),
-    &#34;FxSampler&#34;:                          reflect.TypeOf((*FxSampler)(nil)).Elem(),
-    &#34;LibNodeDefs&#34;:                        reflect.TypeOf((*LibNodeDefs)(nil)).Elem(),
-    &#34;LibsNodeDef&#34;:                        reflect.TypeOf((*LibsNodeDef)(nil)).Elem(),
-    &#34;NodeInst&#34;:                           reflect.TypeOf((*NodeInst)(nil)).Elem(),
-    &#34;NodeDef&#34;:                            reflect.TypeOf((*NodeDef)(nil)).Elem(),
-    &#34;LibAnimationDefs&#34;:                   reflect.TypeOf((*LibAnimationDefs)(nil)).Elem(),
-    &#34;AnimationChannel&#34;:                   reflect.TypeOf((*AnimationChannel)(nil)).Elem(),
-    &#34;AnimationInst&#34;:                      reflect.TypeOf((*AnimationInst)(nil)).Elem(),
-    &#34;LibsAnimationDef&#34;:                   reflect.TypeOf((*LibsAnimationDef)(nil)).Elem(),
-    &#34;AnimationSampler&#34;:                   reflect.TypeOf((*AnimationSampler)(nil)).Elem(),
-    &#34;AnimationDef&#34;:                       reflect.TypeOf((*AnimationDef)(nil)).Elem(),
-    &#34;LibFxMaterialDefs&#34;:                  reflect.TypeOf((*LibFxMaterialDefs)(nil)).Elem(),
-    &#34;FxMaterialInst&#34;:                     reflect.TypeOf((*FxMaterialInst)(nil)).Elem(),
-    &#34;FxMaterialDef&#34;:                      reflect.TypeOf((*FxMaterialDef)(nil)).Elem(),
-    &#34;FxMaterialInstBindVertexInput&#34;:      reflect.TypeOf((*FxMaterialInstBindVertexInput)(nil)).Elem(),
-    &#34;LibsFxMaterialDef&#34;:                  reflect.TypeOf((*LibsFxMaterialDef)(nil)).Elem(),
-    &#34;FxMaterialInstBind&#34;:                 reflect.TypeOf((*FxMaterialInstBind)(nil)).Elem(),
-    &#34;GeometryBrepCircle&#34;:                 reflect.TypeOf((*GeometryBrepCircle)(nil)).Elem(),
-    &#34;GeometryBrepParabola&#34;:               reflect.TypeOf((*GeometryBrepParabola)(nil)).Elem(),
-    &#34;GeometryBrepCapsule&#34;:                reflect.TypeOf((*GeometryBrepCapsule)(nil)).Elem(),
-    &#34;GeometryBrepCurve&#34;:                  reflect.TypeOf((*GeometryBrepCurve)(nil)).Elem(),
-    &#34;GeometryBrepOrientation&#34;:            reflect.TypeOf((*GeometryBrepOrientation)(nil)).Elem(),
-    &#34;GeometryBrepSolids&#34;:                 reflect.TypeOf((*GeometryBrepSolids)(nil)).Elem(),
-    &#34;GeometryBrepCurves&#34;:                 reflect.TypeOf((*GeometryBrepCurves)(nil)).Elem(),
-    &#34;GeometryBrepWires&#34;:                  reflect.TypeOf((*GeometryBrepWires)(nil)).Elem(),
-    &#34;GeometryBrepSurface&#34;:                reflect.TypeOf((*GeometryBrepSurface)(nil)).Elem(),
-    &#34;GeometryBrepSurfaceCurves&#34;:          reflect.TypeOf((*GeometryBrepSurfaceCurves)(nil)).Elem(),
-    &#34;GeometryBrepLine&#34;:                   reflect.TypeOf((*GeometryBrepLine)(nil)).Elem(),
-    &#34;GeometryBrepBox&#34;:                    reflect.TypeOf((*GeometryBrepBox)(nil)).Elem(),
-    &#34;GeometryBrepHyperbola&#34;:              reflect.TypeOf((*GeometryBrepHyperbola)(nil)).Elem(),
-    &#34;GeometryBrepSphere&#34;:                 reflect.TypeOf((*GeometryBrepSphere)(nil)).Elem(),
-    &#34;GeometryBrepShells&#34;:                 reflect.TypeOf((*GeometryBrepShells)(nil)).Elem(),
-    &#34;GeometryBrepPlane&#34;:                  reflect.TypeOf((*GeometryBrepPlane)(nil)).Elem(),
-    &#34;GeometryBrepSurfaces&#34;:               reflect.TypeOf((*GeometryBrepSurfaces)(nil)).Elem(),
-    &#34;GeometryBrepFaces&#34;:                  reflect.TypeOf((*GeometryBrepFaces)(nil)).Elem(),
-    &#34;GeometryBrep&#34;:                       reflect.TypeOf((*GeometryBrep)(nil)).Elem(),
-    &#34;GeometryBrepNurbsSurface&#34;:           reflect.TypeOf((*GeometryBrepNurbsSurface)(nil)).Elem(),
-    &#34;GeometryBrepCylinder&#34;:               reflect.TypeOf((*GeometryBrepCylinder)(nil)).Elem(),
-    &#34;GeometryBrepSweptSurface&#34;:           reflect.TypeOf((*GeometryBrepSweptSurface)(nil)).Elem(),
-    &#34;GeometryBrepNurbs&#34;:                  reflect.TypeOf((*GeometryBrepNurbs)(nil)).Elem(),
-    &#34;GeometryBrepPcurves&#34;:                reflect.TypeOf((*GeometryBrepPcurves)(nil)).Elem(),
-    &#34;GeometryBrepTorus&#34;:                  reflect.TypeOf((*GeometryBrepTorus)(nil)).Elem(),
-    &#34;GeometryBrepEllipse&#34;:                reflect.TypeOf((*GeometryBrepEllipse)(nil)).Elem(),
-    &#34;GeometryBrepEdges&#34;:                  reflect.TypeOf((*GeometryBrepEdges)(nil)).Elem(),
-    &#34;GeometryBrepCone&#34;:                   reflect.TypeOf((*GeometryBrepCone)(nil)).Elem(),
-    &#34;LightAttenuation&#34;:                   reflect.TypeOf((*LightAttenuation)(nil)).Elem(),
-    &#34;LightDef&#34;:                           reflect.TypeOf((*LightDef)(nil)).Elem(),
-    &#34;LightPoint&#34;:                         reflect.TypeOf((*LightPoint)(nil)).Elem(),
-    &#34;LightDirectional&#34;:                   reflect.TypeOf((*LightDirectional)(nil)).Elem(),
-    &#34;LibsLightDef&#34;:                       reflect.TypeOf((*LibsLightDef)(nil)).Elem(),
-    &#34;LibLightDefs&#34;:                       reflect.TypeOf((*LibLightDefs)(nil)).Elem(),
-    &#34;LightInst&#34;:                          reflect.TypeOf((*LightInst)(nil)).Elem(),
-    &#34;LightAmbient&#34;:                       reflect.TypeOf((*LightAmbient)(nil)).Elem(),
-    &#34;LightSpot&#34;:                          reflect.TypeOf((*LightSpot)(nil)).Elem(),
-    &#34;LightBase&#34;:                          reflect.TypeOf((*LightBase)(nil)).Elem(),
-    &#34;LibPxModelDefs&#34;:                     reflect.TypeOf((*LibPxModelDefs)(nil)).Elem(),
-    &#34;PxModelInst&#34;:                        reflect.TypeOf((*PxModelInst)(nil)).Elem(),
-    &#34;PxModelDef&#34;:                         reflect.TypeOf((*PxModelDef)(nil)).Elem(),
-    &#34;LibsPxModelDef&#34;:                     reflect.TypeOf((*LibsPxModelDef)(nil)).Elem(),
-    &#34;LibsKxJointDef&#34;:                     reflect.TypeOf((*LibsKxJointDef)(nil)).Elem(),
-    &#34;KxJointDef&#34;:                         reflect.TypeOf((*KxJointDef)(nil)).Elem(),
-    &#34;KxJointLimits&#34;:                      reflect.TypeOf((*KxJointLimits)(nil)).Elem(),
-    &#34;KxJointInst&#34;:                        reflect.TypeOf((*KxJointInst)(nil)).Elem(),
-    &#34;KxJoint&#34;:                            reflect.TypeOf((*KxJoint)(nil)).Elem(),
-    &#34;LibKxJointDefs&#34;:                     reflect.TypeOf((*LibKxJointDefs)(nil)).Elem(),
-    &#34;MeshVertAtt3&#34;:                       reflect.TypeOf((*MeshVertAtt3)(nil)).Elem(),
-    &#34;MeshData&#34;:                           reflect.TypeOf((*MeshData)(nil)).Elem(),
-    &#34;MeshFace3&#34;:                          reflect.TypeOf((*MeshFace3)(nil)).Elem(),
-    &#34;MeshVert&#34;:                           reflect.TypeOf((*MeshVert)(nil)).Elem(),
-    &#34;MeshRawFace&#34;:                        reflect.TypeOf((*MeshRawFace)(nil)).Elem(),
-    &#34;MeshProvider&#34;:                       reflect.TypeOf((*MeshProvider)(nil)).Elem(),
-    &#34;MeshRaw&#34;:                            reflect.TypeOf((*MeshRaw)(nil)).Elem(),
-    &#34;MeshVertAtt2&#34;:                       reflect.TypeOf((*MeshVertAtt2)(nil)).Elem(),
-    &#34;LibsControllerDef&#34;:                  reflect.TypeOf((*LibsControllerDef)(nil)).Elem(),
-    &#34;ControllerDef&#34;:                      reflect.TypeOf((*ControllerDef)(nil)).Elem(),
-    &#34;LibControllerDefs&#34;:                  reflect.TypeOf((*LibControllerDefs)(nil)).Elem(),
-    &#34;ControllerInst&#34;:                     reflect.TypeOf((*ControllerInst)(nil)).Elem(),
-    &#34;ControllerSkin&#34;:                     reflect.TypeOf((*ControllerSkin)(nil)).Elem(),
-    &#34;ControllerMorph&#34;:                    reflect.TypeOf((*ControllerMorph)(nil)).Elem(),
-    &#34;GeometrySpline&#34;:                     reflect.TypeOf((*GeometrySpline)(nil)).Elem(),
-    &#34;GeometryDef&#34;:                        reflect.TypeOf((*GeometryDef)(nil)).Elem(),
-    &#34;GeometryMesh&#34;:                       reflect.TypeOf((*GeometryMesh)(nil)).Elem(),
-    &#34;GeometryVertices&#34;:                   reflect.TypeOf((*GeometryVertices)(nil)).Elem(),
-    &#34;GeometryPolygonHole&#34;:                reflect.TypeOf((*GeometryPolygonHole)(nil)).Elem(),
-    &#34;LibsGeometryDef&#34;:                    reflect.TypeOf((*LibsGeometryDef)(nil)).Elem(),
-    &#34;GeometryInst&#34;:                       reflect.TypeOf((*GeometryInst)(nil)).Elem(),
+    &#34;LibNodeDefs&#34;:               reflect.TypeOf((*LibNodeDefs)(nil)).Elem(),
+    &#34;NodeInst&#34;:                  reflect.TypeOf((*NodeInst)(nil)).Elem(),
+    &#34;LibsNodeDef&#34;:               reflect.TypeOf((*LibsNodeDef)(nil)).Elem(),
+    &#34;NodeDef&#34;:                   reflect.TypeOf((*NodeDef)(nil)).Elem(),
+    &#34;GeometryBrepLine&#34;:          reflect.TypeOf((*GeometryBrepLine)(nil)).Elem(),
+    &#34;GeometryBrep&#34;:              reflect.TypeOf((*GeometryBrep)(nil)).Elem(),
+    &#34;GeometryBrepSurfaces&#34;:      reflect.TypeOf((*GeometryBrepSurfaces)(nil)).Elem(),
+    &#34;GeometryBrepSurfaceCurves&#34;: reflect.TypeOf((*GeometryBrepSurfaceCurves)(nil)).Elem(),
+    &#34;GeometryBrepSolids&#34;:        reflect.TypeOf((*GeometryBrepSolids)(nil)).Elem(),
+    &#34;GeometryBrepNurbsSurface&#34;:  reflect.TypeOf((*GeometryBrepNurbsSurface)(nil)).Elem(),
+    &#34;GeometryBrepPcurves&#34;:       reflect.TypeOf((*GeometryBrepPcurves)(nil)).Elem(),
+    &#34;GeometryBrepCurve&#34;:         reflect.TypeOf((*GeometryBrepCurve)(nil)).Elem(),
+    &#34;GeometryBrepBox&#34;:           reflect.TypeOf((*GeometryBrepBox)(nil)).Elem(),
+    &#34;GeometryBrepSweptSurface&#34;:  reflect.TypeOf((*GeometryBrepSweptSurface)(nil)).Elem(),
+    &#34;GeometryBrepEdges&#34;:         reflect.TypeOf((*GeometryBrepEdges)(nil)).Elem(),
+    &#34;GeometryBrepWires&#34;:         reflect.TypeOf((*GeometryBrepWires)(nil)).Elem(),
+    &#34;GeometryBrepNurbs&#34;:         reflect.TypeOf((*GeometryBrepNurbs)(nil)).Elem(),
+    &#34;GeometryBrepHyperbola&#34;:     reflect.TypeOf((*GeometryBrepHyperbola)(nil)).Elem(),
+    &#34;GeometryBrepCapsule&#34;:       reflect.TypeOf((*GeometryBrepCapsule)(nil)).Elem(),
+    &#34;GeometryBrepEllipse&#34;:       reflect.TypeOf((*GeometryBrepEllipse)(nil)).Elem(),
+    &#34;GeometryBrepCylinder&#34;:      reflect.TypeOf((*GeometryBrepCylinder)(nil)).Elem(),
+    &#34;GeometryBrepParabola&#34;:      reflect.TypeOf((*GeometryBrepParabola)(nil)).Elem(),
+    &#34;GeometryBrepPlane&#34;:         reflect.TypeOf((*GeometryBrepPlane)(nil)).Elem(),
+    &#34;GeometryBrepShells&#34;:        reflect.TypeOf((*GeometryBrepShells)(nil)).Elem(),
+    &#34;GeometryBrepSurface&#34;:       reflect.TypeOf((*GeometryBrepSurface)(nil)).Elem(),
+    &#34;GeometryBrepCircle&#34;:        reflect.TypeOf((*GeometryBrepCircle)(nil)).Elem(),
+    &#34;GeometryBrepOrientation&#34;:   reflect.TypeOf((*GeometryBrepOrientation)(nil)).Elem(),
+    &#34;GeometryBrepTorus&#34;:         reflect.TypeOf((*GeometryBrepTorus)(nil)).Elem(),
+    &#34;GeometryBrepCurves&#34;:        reflect.TypeOf((*GeometryBrepCurves)(nil)).Elem(),
+    &#34;GeometryBrepCone&#34;:          reflect.TypeOf((*GeometryBrepCone)(nil)).Elem(),
+    &#34;GeometryBrepSphere&#34;:        reflect.TypeOf((*GeometryBrepSphere)(nil)).Elem(),
+    &#34;GeometryBrepFaces&#34;:         reflect.TypeOf((*GeometryBrepFaces)(nil)).Elem(),
+    &#34;KxArticulatedSystemMotion&#34;: reflect.TypeOf((*KxArticulatedSystemMotion)(nil)).Elem(),
+    &#34;KxBind&#34;:                    reflect.TypeOf((*KxBind)(nil)).Elem(),
+    &#34;KxArticulatedSystemKinematicsAxis&#34;:  reflect.TypeOf((*KxArticulatedSystemKinematicsAxis)(nil)).Elem(),
+    &#34;KxArticulatedSystemKinematics&#34;:      reflect.TypeOf((*KxArticulatedSystemKinematics)(nil)).Elem(),
+    &#34;KxArticulatedSystemMotionAxis&#34;:      reflect.TypeOf((*KxArticulatedSystemMotionAxis)(nil)).Elem(),
+    &#34;KxArticulatedSystemInst&#34;:            reflect.TypeOf((*KxArticulatedSystemInst)(nil)).Elem(),
+    &#34;KxArticulatedSystemAxisLimits&#34;:      reflect.TypeOf((*KxArticulatedSystemAxisLimits)(nil)).Elem(),
+    &#34;LibsKxArticulatedSystemDef&#34;:         reflect.TypeOf((*LibsKxArticulatedSystemDef)(nil)).Elem(),
+    &#34;KxArticulatedSystemAxisIndex&#34;:       reflect.TypeOf((*KxArticulatedSystemAxisIndex)(nil)).Elem(),
+    &#34;KxArticulatedSystemEffector&#34;:        reflect.TypeOf((*KxArticulatedSystemEffector)(nil)).Elem(),
+    &#34;KxArticulatedSystemKinematicsFrame&#34;: reflect.TypeOf((*KxArticulatedSystemKinematicsFrame)(nil)).Elem(),
+    &#34;KxArticulatedSystemDef&#34;:             reflect.TypeOf((*KxArticulatedSystemDef)(nil)).Elem(),
+    &#34;LibKxArticulatedSystemDefs&#34;:         reflect.TypeOf((*LibKxArticulatedSystemDefs)(nil)).Elem(),
     &#34;GeometryPrimitives&#34;:                 reflect.TypeOf((*GeometryPrimitives)(nil)).Elem(),
+    &#34;GeometryDef&#34;:                        reflect.TypeOf((*GeometryDef)(nil)).Elem(),
     &#34;LibGeometryDefs&#34;:                    reflect.TypeOf((*LibGeometryDefs)(nil)).Elem(),
     &#34;GeometryControlVertices&#34;:            reflect.TypeOf((*GeometryControlVertices)(nil)).Elem(),
-    &#34;FormulaInst&#34;:                        reflect.TypeOf((*FormulaInst)(nil)).Elem(),
-    &#34;FormulaDef&#34;:                         reflect.TypeOf((*FormulaDef)(nil)).Elem(),
-    &#34;LibsFormulaDef&#34;:                     reflect.TypeOf((*LibsFormulaDef)(nil)).Elem(),
-    &#34;LibFormulaDefs&#34;:                     reflect.TypeOf((*LibFormulaDefs)(nil)).Elem(),
-    &#34;LibsVisualSceneDef&#34;:                 reflect.TypeOf((*LibsVisualSceneDef)(nil)).Elem(),
-    &#34;VisualSceneDef&#34;:                     reflect.TypeOf((*VisualSceneDef)(nil)).Elem(),
+    &#34;GeometryVertices&#34;:                   reflect.TypeOf((*GeometryVertices)(nil)).Elem(),
+    &#34;LibsGeometryDef&#34;:                    reflect.TypeOf((*LibsGeometryDef)(nil)).Elem(),
+    &#34;GeometryInst&#34;:                       reflect.TypeOf((*GeometryInst)(nil)).Elem(),
+    &#34;GeometryMesh&#34;:                       reflect.TypeOf((*GeometryMesh)(nil)).Elem(),
+    &#34;GeometryPolygonHole&#34;:                reflect.TypeOf((*GeometryPolygonHole)(nil)).Elem(),
+    &#34;GeometrySpline&#34;:                     reflect.TypeOf((*GeometrySpline)(nil)).Elem(),
     &#34;VisualSceneInst&#34;:                    reflect.TypeOf((*VisualSceneInst)(nil)).Elem(),
     &#34;LibVisualSceneDefs&#34;:                 reflect.TypeOf((*LibVisualSceneDefs)(nil)).Elem(),
+    &#34;VisualSceneEvaluation&#34;:              reflect.TypeOf((*VisualSceneEvaluation)(nil)).Elem(),
     &#34;VisualSceneRenderingMaterialInst&#34;:   reflect.TypeOf((*VisualSceneRenderingMaterialInst)(nil)).Elem(),
     &#34;VisualSceneRendering&#34;:               reflect.TypeOf((*VisualSceneRendering)(nil)).Elem(),
-    &#34;VisualSceneEvaluation&#34;:              reflect.TypeOf((*VisualSceneEvaluation)(nil)).Elem(),
-    &#34;BindMaterial&#34;:                       reflect.TypeOf((*BindMaterial)(nil)).Elem(),
+    &#34;LibsVisualSceneDef&#34;:                 reflect.TypeOf((*LibsVisualSceneDef)(nil)).Elem(),
+    &#34;VisualSceneDef&#34;:                     reflect.TypeOf((*VisualSceneDef)(nil)).Elem(),
+    &#34;BaseInst&#34;:                           reflect.TypeOf((*BaseInst)(nil)).Elem(),
+    &#34;BaseDef&#34;:                            reflect.TypeOf((*BaseDef)(nil)).Elem(),
+    &#34;BaseLib&#34;:                            reflect.TypeOf((*BaseLib)(nil)).Elem(),
+    &#34;Base&#34;:                               reflect.TypeOf((*Base)(nil)).Elem(),
+    &#34;Scene&#34;:                              reflect.TypeOf((*Scene)(nil)).Elem(),
+    &#34;KxSceneInst&#34;:                        reflect.TypeOf((*KxSceneInst)(nil)).Elem(),
+    &#34;KxSceneInstJointAxis&#34;:               reflect.TypeOf((*KxSceneInstJointAxis)(nil)).Elem(),
+    &#34;LibKxSceneDefs&#34;:                     reflect.TypeOf((*LibKxSceneDefs)(nil)).Elem(),
+    &#34;LibsKxSceneDef&#34;:                     reflect.TypeOf((*LibsKxSceneDef)(nil)).Elem(),
+    &#34;KxSceneInstBindModel&#34;:               reflect.TypeOf((*KxSceneInstBindModel)(nil)).Elem(),
+    &#34;KxSceneDef&#34;:                         reflect.TypeOf((*KxSceneDef)(nil)).Elem(),
+    &#34;LightAmbient&#34;:                       reflect.TypeOf((*LightAmbient)(nil)).Elem(),
+    &#34;LibsLightDef&#34;:                       reflect.TypeOf((*LibsLightDef)(nil)).Elem(),
+    &#34;LightInst&#34;:                          reflect.TypeOf((*LightInst)(nil)).Elem(),
+    &#34;LightDirectional&#34;:                   reflect.TypeOf((*LightDirectional)(nil)).Elem(),
+    &#34;LightAttenuation&#34;:                   reflect.TypeOf((*LightAttenuation)(nil)).Elem(),
+    &#34;LightPoint&#34;:                         reflect.TypeOf((*LightPoint)(nil)).Elem(),
+    &#34;LightDef&#34;:                           reflect.TypeOf((*LightDef)(nil)).Elem(),
+    &#34;LibLightDefs&#34;:                       reflect.TypeOf((*LibLightDefs)(nil)).Elem(),
+    &#34;LightBase&#34;:                          reflect.TypeOf((*LightBase)(nil)).Elem(),
+    &#34;LightSpot&#34;:                          reflect.TypeOf((*LightSpot)(nil)).Elem(),
+    &#34;HasExtras&#34;:                          reflect.TypeOf((*HasExtras)(nil)).Elem(),
+    &#34;Input&#34;:                              reflect.TypeOf((*Input)(nil)).Elem(),
+    &#34;ParamInst&#34;:                          reflect.TypeOf((*ParamInst)(nil)).Elem(),
+    &#34;Transform&#34;:                          reflect.TypeOf((*Transform)(nil)).Elem(),
+    &#34;IndexedInputs&#34;:                      reflect.TypeOf((*IndexedInputs)(nil)).Elem(),
+    &#34;AssetGeographicLocation&#34;:            reflect.TypeOf((*AssetGeographicLocation)(nil)).Elem(),
     &#34;AssetContributor&#34;:                   reflect.TypeOf((*AssetContributor)(nil)).Elem(),
+    &#34;Asset&#34;:                              reflect.TypeOf((*Asset)(nil)).Elem(),
+    &#34;Extra&#34;:                              reflect.TypeOf((*Extra)(nil)).Elem(),
+    &#34;HasSid&#34;:                             reflect.TypeOf((*HasSid)(nil)).Elem(),
+    &#34;HasID&#34;:                              reflect.TypeOf((*HasID)(nil)).Elem(),
+    &#34;BindMaterial&#34;:                       reflect.TypeOf((*BindMaterial)(nil)).Elem(),
+    &#34;HasAsset&#34;:                           reflect.TypeOf((*HasAsset)(nil)).Elem(),
+    &#34;ParamDefs&#34;:                          reflect.TypeOf((*ParamDefs)(nil)).Elem(),
     &#34;ParamDef&#34;:                           reflect.TypeOf((*ParamDef)(nil)).Elem(),
+    &#34;Param&#34;:                              reflect.TypeOf((*Param)(nil)).Elem(),
+    &#34;HasName&#34;:                            reflect.TypeOf((*HasName)(nil)).Elem(),
     &#34;Technique&#34;:                          reflect.TypeOf((*Technique)(nil)).Elem(),
     &#34;HasTechniques&#34;:                      reflect.TypeOf((*HasTechniques)(nil)).Elem(),
-    &#34;AssetGeographicLocation&#34;:            reflect.TypeOf((*AssetGeographicLocation)(nil)).Elem(),
-    &#34;Extra&#34;:                              reflect.TypeOf((*Extra)(nil)).Elem(),
-    &#34;InputShared&#34;:                        reflect.TypeOf((*InputShared)(nil)).Elem(),
-    &#34;Transform&#34;:                          reflect.TypeOf((*Transform)(nil)).Elem(),
-    &#34;Param&#34;:                              reflect.TypeOf((*Param)(nil)).Elem(),
-    &#34;ParamInst&#34;:                          reflect.TypeOf((*ParamInst)(nil)).Elem(),
-    &#34;HasAsset&#34;:                           reflect.TypeOf((*HasAsset)(nil)).Elem(),
-    &#34;HasName&#34;:                            reflect.TypeOf((*HasName)(nil)).Elem(),
-    &#34;IndexedInputs&#34;:                      reflect.TypeOf((*IndexedInputs)(nil)).Elem(),
-    &#34;HasID&#34;:                              reflect.TypeOf((*HasID)(nil)).Elem(),
     &#34;Layers&#34;:                             reflect.TypeOf((*Layers)(nil)).Elem(),
-    &#34;HasExtras&#34;:                          reflect.TypeOf((*HasExtras)(nil)).Elem(),
-    &#34;Asset&#34;:                              reflect.TypeOf((*Asset)(nil)).Elem(),
-    &#34;ParamDefs&#34;:                          reflect.TypeOf((*ParamDefs)(nil)).Elem(),
-    &#34;HasSid&#34;:                             reflect.TypeOf((*HasSid)(nil)).Elem(),
-    &#34;Input&#34;:                              reflect.TypeOf((*Input)(nil)).Elem(),
-    &#34;LibsAnimationClipDef&#34;:               reflect.TypeOf((*LibsAnimationClipDef)(nil)).Elem(),
-    &#34;LibAnimationClipDefs&#34;:               reflect.TypeOf((*LibAnimationClipDefs)(nil)).Elem(),
-    &#34;AnimationClipDef&#34;:                   reflect.TypeOf((*AnimationClipDef)(nil)).Elem(),
-    &#34;ParamInt&#34;:                           reflect.TypeOf((*ParamInt)(nil)).Elem(),
-    &#34;Float4x2&#34;:                           reflect.TypeOf((*Float4x2)(nil)).Elem(),
-    &#34;ParamScopedFloat&#34;:                   reflect.TypeOf((*ParamScopedFloat)(nil)).Elem(),
-    &#34;ListStrings&#34;:                        reflect.TypeOf((*ListStrings)(nil)).Elem(),
-    &#34;ScopedVec3&#34;:                         reflect.TypeOf((*ScopedVec3)(nil)).Elem(),
-    &#34;Bool4&#34;:                              reflect.TypeOf((*Bool4)(nil)).Elem(),
-    &#34;ListBools&#34;:                          reflect.TypeOf((*ListBools)(nil)).Elem(),
-    &#34;ScopedString&#34;:                       reflect.TypeOf((*ScopedString)(nil)).Elem(),
-    &#34;Int2x2&#34;:                             reflect.TypeOf((*Int2x2)(nil)).Elem(),
-    &#34;ParamString&#34;:                        reflect.TypeOf((*ParamString)(nil)).Elem(),
-    &#34;Float2&#34;:                             reflect.TypeOf((*Float2)(nil)).Elem(),
-    &#34;ParamBool&#34;:                          reflect.TypeOf((*ParamBool)(nil)).Elem(),
-    &#34;Float4x3&#34;:                           reflect.TypeOf((*Float4x3)(nil)).Elem(),
-    &#34;Bool3&#34;:                              reflect.TypeOf((*Bool3)(nil)).Elem(),
-    &#34;Float3x4&#34;:                           reflect.TypeOf((*Float3x4)(nil)).Elem(),
-    &#34;Int3&#34;:                               reflect.TypeOf((*Int3)(nil)).Elem(),
-    &#34;ParamFloat2&#34;:                        reflect.TypeOf((*ParamFloat2)(nil)).Elem(),
-    &#34;ListInts&#34;:                           reflect.TypeOf((*ListInts)(nil)).Elem(),
-    &#34;Float4x4&#34;:                           reflect.TypeOf((*Float4x4)(nil)).Elem(),
-    &#34;ParamUint&#34;:                          reflect.TypeOf((*ParamUint)(nil)).Elem(),
-    &#34;ScopedFloat3&#34;:                       reflect.TypeOf((*ScopedFloat3)(nil)).Elem(),
-    &#34;Int4&#34;:                               reflect.TypeOf((*Int4)(nil)).Elem(),
-    &#34;Float3x3&#34;:                           reflect.TypeOf((*Float3x3)(nil)).Elem(),
-    &#34;Int2&#34;:                               reflect.TypeOf((*Int2)(nil)).Elem(),
-    &#34;Float4&#34;:                             reflect.TypeOf((*Float4)(nil)).Elem(),
-    &#34;ScopedFloat&#34;:                        reflect.TypeOf((*ScopedFloat)(nil)).Elem(),
-    &#34;Float2x3&#34;:                           reflect.TypeOf((*Float2x3)(nil)).Elem(),
-    &#34;Float3x2&#34;:                           reflect.TypeOf((*Float3x2)(nil)).Elem(),
-    &#34;Float7&#34;:                             reflect.TypeOf((*Float7)(nil)).Elem(),
-    &#34;ListFloats&#34;:                         reflect.TypeOf((*ListFloats)(nil)).Elem(),
-    &#34;Float2x2&#34;:                           reflect.TypeOf((*Float2x2)(nil)).Elem(),
-    &#34;Bool2&#34;:                              reflect.TypeOf((*Bool2)(nil)).Elem(),
-    &#34;ScopedBool&#34;:                         reflect.TypeOf((*ScopedBool)(nil)).Elem(),
-    &#34;Int4x4&#34;:                             reflect.TypeOf((*Int4x4)(nil)).Elem(),
-    &#34;ParamFloat&#34;:                         reflect.TypeOf((*ParamFloat)(nil)).Elem(),
-    &#34;Float3&#34;:                             reflect.TypeOf((*Float3)(nil)).Elem(),
-    &#34;Float2x4&#34;:                           reflect.TypeOf((*Float2x4)(nil)).Elem(),
-    &#34;Int3x3&#34;:                             reflect.TypeOf((*Int3x3)(nil)).Elem(),
-    &#34;Scene&#34;:                              reflect.TypeOf((*Scene)(nil)).Elem(),
-    &#34;PxRigidBodyDef&#34;:                     reflect.TypeOf((*PxRigidBodyDef)(nil)).Elem(),
-    &#34;PxCylinder&#34;:                         reflect.TypeOf((*PxCylinder)(nil)).Elem(),
-    &#34;PxShape&#34;:                            reflect.TypeOf((*PxShape)(nil)).Elem(),
-    &#34;PxRigidBodyCommon&#34;:                  reflect.TypeOf((*PxRigidBodyCommon)(nil)).Elem(),
-    &#34;PxRigidBodyInst&#34;:                    reflect.TypeOf((*PxRigidBodyInst)(nil)).Elem(),
-    &#34;FxEffectInstTechniqueHint&#34;:          reflect.TypeOf((*FxEffectInstTechniqueHint)(nil)).Elem(),
-    &#34;FxPassEvaluationClearDepth&#34;:         reflect.TypeOf((*FxPassEvaluationClearDepth)(nil)).Elem(),
+    &#34;InputShared&#34;:                        reflect.TypeOf((*InputShared)(nil)).Elem(),
+    &#34;PxRigidConstraintDef&#34;:               reflect.TypeOf((*PxRigidConstraintDef)(nil)).Elem(),
+    &#34;PxRigidConstraintLimit&#34;:             reflect.TypeOf((*PxRigidConstraintLimit)(nil)).Elem(),
+    &#34;PxRigidConstraintAttachment&#34;:        reflect.TypeOf((*PxRigidConstraintAttachment)(nil)).Elem(),
+    &#34;PxRigidConstraintInst&#34;:              reflect.TypeOf((*PxRigidConstraintInst)(nil)).Elem(),
+    &#34;PxRigidConstraintSpring&#34;:            reflect.TypeOf((*PxRigidConstraintSpring)(nil)).Elem(),
+    &#34;LibAnimationDefs&#34;:                   reflect.TypeOf((*LibAnimationDefs)(nil)).Elem(),
+    &#34;AnimationSampler&#34;:                   reflect.TypeOf((*AnimationSampler)(nil)).Elem(),
+    &#34;AnimationInst&#34;:                      reflect.TypeOf((*AnimationInst)(nil)).Elem(),
+    &#34;LibsAnimationDef&#34;:                   reflect.TypeOf((*LibsAnimationDef)(nil)).Elem(),
+    &#34;AnimationDef&#34;:                       reflect.TypeOf((*AnimationDef)(nil)).Elem(),
+    &#34;AnimationChannel&#34;:                   reflect.TypeOf((*AnimationChannel)(nil)).Elem(),
+    &#34;LibPxModelDefs&#34;:                     reflect.TypeOf((*LibPxModelDefs)(nil)).Elem(),
+    &#34;PxModelDef&#34;:                         reflect.TypeOf((*PxModelDef)(nil)).Elem(),
+    &#34;PxModelInst&#34;:                        reflect.TypeOf((*PxModelInst)(nil)).Elem(),
+    &#34;LibsPxModelDef&#34;:                     reflect.TypeOf((*LibsPxModelDef)(nil)).Elem(),
+    &#34;FxTechnique&#34;:                        reflect.TypeOf((*FxTechnique)(nil)).Elem(),
+    &#34;FxTechniqueCommonLambert&#34;:           reflect.TypeOf((*FxTechniqueCommonLambert)(nil)).Elem(),
+    &#34;FxTechniqueCommon&#34;:                  reflect.TypeOf((*FxTechniqueCommon)(nil)).Elem(),
+    &#34;FxPassEvaluationTarget&#34;:             reflect.TypeOf((*FxPassEvaluationTarget)(nil)).Elem(),
+    &#34;FxProfileGlSl&#34;:                      reflect.TypeOf((*FxProfileGlSl)(nil)).Elem(),
+    &#34;FxPassProgram&#34;:                      reflect.TypeOf((*FxPassProgram)(nil)).Elem(),
+    &#34;FxProfileCommon&#34;:                    reflect.TypeOf((*FxProfileCommon)(nil)).Elem(),
+    &#34;FxTechniqueGlsl&#34;:                    reflect.TypeOf((*FxTechniqueGlsl)(nil)).Elem(),
+    &#34;FxPassEvaluationClearStencil&#34;:       reflect.TypeOf((*FxPassEvaluationClearStencil)(nil)).Elem(),
+    &#34;FxProfile&#34;:                          reflect.TypeOf((*FxProfile)(nil)).Elem(),
+    &#34;FxPassProgramBindUniform&#34;:           reflect.TypeOf((*FxPassProgramBindUniform)(nil)).Elem(),
+    &#34;FxPassEvaluation&#34;:                   reflect.TypeOf((*FxPassEvaluation)(nil)).Elem(),
+    &#34;FxPassProgramShaderSources&#34;:         reflect.TypeOf((*FxPassProgramShaderSources)(nil)).Elem(),
+    &#34;FxTexture&#34;:                          reflect.TypeOf((*FxTexture)(nil)).Elem(),
+    &#34;FxPassProgramShader&#34;:                reflect.TypeOf((*FxPassProgramShader)(nil)).Elem(),
+    &#34;FxTechniqueCommonConstant&#34;:          reflect.TypeOf((*FxTechniqueCommonConstant)(nil)).Elem(),
     &#34;FxTechniqueCommonPhong&#34;:             reflect.TypeOf((*FxTechniqueCommonPhong)(nil)).Elem(),
     &#34;FxEffectDef&#34;:                        reflect.TypeOf((*FxEffectDef)(nil)).Elem(),
     &#34;FxParamDef&#34;:                         reflect.TypeOf((*FxParamDef)(nil)).Elem(),
-    &#34;FxPassEvaluation&#34;:                   reflect.TypeOf((*FxPassEvaluation)(nil)).Elem(),
-    &#34;LibFxEffectDefs&#34;:                    reflect.TypeOf((*LibFxEffectDefs)(nil)).Elem(),
-    &#34;FxPassEvaluationTarget&#34;:             reflect.TypeOf((*FxPassEvaluationTarget)(nil)).Elem(),
-    &#34;FxPassState&#34;:                        reflect.TypeOf((*FxPassState)(nil)).Elem(),
-    &#34;FxProfileCommon&#34;:                    reflect.TypeOf((*FxProfileCommon)(nil)).Elem(),
-    &#34;FxTechniqueCommon&#34;:                  reflect.TypeOf((*FxTechniqueCommon)(nil)).Elem(),
-    &#34;FxAnnotation&#34;:                       reflect.TypeOf((*FxAnnotation)(nil)).Elem(),
-    &#34;FxTexture&#34;:                          reflect.TypeOf((*FxTexture)(nil)).Elem(),
-    &#34;FxProfile&#34;:                          reflect.TypeOf((*FxProfile)(nil)).Elem(),
-    &#34;FxPassProgramShaderSources&#34;:         reflect.TypeOf((*FxPassProgramShaderSources)(nil)).Elem(),
-    &#34;FxEffectInst&#34;:                       reflect.TypeOf((*FxEffectInst)(nil)).Elem(),
-    &#34;FxPassProgramBindUniform&#34;:           reflect.TypeOf((*FxPassProgramBindUniform)(nil)).Elem(),
-    &#34;FxTechnique&#34;:                        reflect.TypeOf((*FxTechnique)(nil)).Elem(),
-    &#34;FxPassEvaluationClearStencil&#34;:       reflect.TypeOf((*FxPassEvaluationClearStencil)(nil)).Elem(),
+    &#34;FxTechniqueCommonBlinn&#34;:             reflect.TypeOf((*FxTechniqueCommonBlinn)(nil)).Elem(),
     &#34;FxPass&#34;:                             reflect.TypeOf((*FxPass)(nil)).Elem(),
-    &#34;LibsFxEffectDef&#34;:                    reflect.TypeOf((*LibsFxEffectDef)(nil)).Elem(),
-    &#34;FxProfileGlSlCodeInclude&#34;:           reflect.TypeOf((*FxProfileGlSlCodeInclude)(nil)).Elem(),
-    &#34;FxTechniqueGlsl&#34;:                    reflect.TypeOf((*FxTechniqueGlsl)(nil)).Elem(),
-    &#34;FxTechniqueCommonLambert&#34;:           reflect.TypeOf((*FxTechniqueCommonLambert)(nil)).Elem(),
-    &#34;FxTechniqueCommonConstant&#34;:          reflect.TypeOf((*FxTechniqueCommonConstant)(nil)).Elem(),
+    &#34;LibFxEffectDefs&#34;:                    reflect.TypeOf((*LibFxEffectDefs)(nil)).Elem(),
     &#34;FxPassEvaluationClearColor&#34;:         reflect.TypeOf((*FxPassEvaluationClearColor)(nil)).Elem(),
+    &#34;FxPassState&#34;:                        reflect.TypeOf((*FxPassState)(nil)).Elem(),
+    &#34;FxProfileGlSlCodeInclude&#34;:           reflect.TypeOf((*FxProfileGlSlCodeInclude)(nil)).Elem(),
+    &#34;FxColorOrTexture&#34;:                   reflect.TypeOf((*FxColorOrTexture)(nil)).Elem(),
+    &#34;FxEffectInstTechniqueHint&#34;:          reflect.TypeOf((*FxEffectInstTechniqueHint)(nil)).Elem(),
+    &#34;LibsFxEffectDef&#34;:                    reflect.TypeOf((*LibsFxEffectDef)(nil)).Elem(),
+    &#34;FxAnnotation&#34;:                       reflect.TypeOf((*FxAnnotation)(nil)).Elem(),
+    &#34;FxPassEvaluationClearDepth&#34;:         reflect.TypeOf((*FxPassEvaluationClearDepth)(nil)).Elem(),
     &#34;FxParamDefs&#34;:                        reflect.TypeOf((*FxParamDefs)(nil)).Elem(),
     &#34;FxPassProgramBindAttribute&#34;:         reflect.TypeOf((*FxPassProgramBindAttribute)(nil)).Elem(),
-    &#34;FxPassProgram&#34;:                      reflect.TypeOf((*FxPassProgram)(nil)).Elem(),
-    &#34;FxProfileGlSl&#34;:                      reflect.TypeOf((*FxProfileGlSl)(nil)).Elem(),
-    &#34;FxTechniqueCommonBlinn&#34;:             reflect.TypeOf((*FxTechniqueCommonBlinn)(nil)).Elem(),
-    &#34;FxColorOrTexture&#34;:                   reflect.TypeOf((*FxColorOrTexture)(nil)).Elem(),
-    &#34;FxPassProgramShader&#34;:                reflect.TypeOf((*FxPassProgramShader)(nil)).Elem(),
-    &#34;KxArticulatedSystemMotion&#34;:          reflect.TypeOf((*KxArticulatedSystemMotion)(nil)).Elem(),
-    &#34;KxArticulatedSystemDef&#34;:             reflect.TypeOf((*KxArticulatedSystemDef)(nil)).Elem(),
-    &#34;KxArticulatedSystemEffector&#34;:        reflect.TypeOf((*KxArticulatedSystemEffector)(nil)).Elem(),
-    &#34;LibKxArticulatedSystemDefs&#34;:         reflect.TypeOf((*LibKxArticulatedSystemDefs)(nil)).Elem(),
-    &#34;KxArticulatedSystemKinematics&#34;:      reflect.TypeOf((*KxArticulatedSystemKinematics)(nil)).Elem(),
-    &#34;KxArticulatedSystemAxisLimits&#34;:      reflect.TypeOf((*KxArticulatedSystemAxisLimits)(nil)).Elem(),
-    &#34;KxArticulatedSystemKinematicsFrame&#34;: reflect.TypeOf((*KxArticulatedSystemKinematicsFrame)(nil)).Elem(),
-    &#34;KxArticulatedSystemInst&#34;:            reflect.TypeOf((*KxArticulatedSystemInst)(nil)).Elem(),
-    &#34;KxArticulatedSystemAxisIndex&#34;:       reflect.TypeOf((*KxArticulatedSystemAxisIndex)(nil)).Elem(),
-    &#34;KxArticulatedSystemKinematicsAxis&#34;:  reflect.TypeOf((*KxArticulatedSystemKinematicsAxis)(nil)).Elem(),
-    &#34;KxArticulatedSystemMotionAxis&#34;:      reflect.TypeOf((*KxArticulatedSystemMotionAxis)(nil)).Elem(),
-    &#34;LibsKxArticulatedSystemDef&#34;:         reflect.TypeOf((*LibsKxArticulatedSystemDef)(nil)).Elem(),
-    &#34;KxBind&#34;:                             reflect.TypeOf((*KxBind)(nil)).Elem(),
-    &#34;FxImageInitFrom&#34;:                    reflect.TypeOf((*FxImageInitFrom)(nil)).Elem(),
-    &#34;FxCreateCommon&#34;:                     reflect.TypeOf((*FxCreateCommon)(nil)).Elem(),
-    &#34;FxCreate3D&#34;:                         reflect.TypeOf((*FxCreate3D)(nil)).Elem(),
-    &#34;FxCreate2D&#34;:                         reflect.TypeOf((*FxCreate2D)(nil)).Elem(),
-    &#34;FxCreateFormatHint&#34;:                 reflect.TypeOf((*FxCreateFormatHint)(nil)).Elem(),
-    &#34;FxImageInst&#34;:                        reflect.TypeOf((*FxImageInst)(nil)).Elem(),
-    &#34;LibsFxImageDef&#34;:                     reflect.TypeOf((*LibsFxImageDef)(nil)).Elem(),
-    &#34;FxInitFrom&#34;:                         reflect.TypeOf((*FxInitFrom)(nil)).Elem(),
-    &#34;LibFxImageDefs&#34;:                     reflect.TypeOf((*LibFxImageDefs)(nil)).Elem(),
-    &#34;FxCreate2DSizeRatio&#34;:                reflect.TypeOf((*FxCreate2DSizeRatio)(nil)).Elem(),
-    &#34;FxCreateInitFrom&#34;:                   reflect.TypeOf((*FxCreateInitFrom)(nil)).Elem(),
-    &#34;FxImageDef&#34;:                         reflect.TypeOf((*FxImageDef)(nil)).Elem(),
-    &#34;FxCreate2DSizeExact&#34;:                reflect.TypeOf((*FxCreate2DSizeExact)(nil)).Elem(),
-    &#34;FxCreateCube&#34;:                       reflect.TypeOf((*FxCreateCube)(nil)).Elem(),
-    &#34;FxCreateCubeInitFrom&#34;:               reflect.TypeOf((*FxCreateCubeInitFrom)(nil)).Elem(),
-    &#34;FxCreateFormat&#34;:                     reflect.TypeOf((*FxCreateFormat)(nil)).Elem(),
-    &#34;FxCreate3DInitFrom&#34;:                 reflect.TypeOf((*FxCreate3DInitFrom)(nil)).Elem(),
-    &#34;FxCreateMips&#34;:                       reflect.TypeOf((*FxCreateMips)(nil)).Elem(),
-    &#34;LibKxModelDefs&#34;:                     reflect.TypeOf((*LibKxModelDefs)(nil)).Elem(),
-    &#34;KxModelInst&#34;:                        reflect.TypeOf((*KxModelInst)(nil)).Elem(),
-    &#34;LibsKxModelDef&#34;:                     reflect.TypeOf((*LibsKxModelDef)(nil)).Elem(),
-    &#34;KxAttachment&#34;:                       reflect.TypeOf((*KxAttachment)(nil)).Elem(),
+    &#34;FxEffectInst&#34;:                       reflect.TypeOf((*FxEffectInst)(nil)).Elem(),
+    &#34;FxSamplerWrapping&#34;:                  reflect.TypeOf((*FxSamplerWrapping)(nil)).Elem(),
+    &#34;FxSampler&#34;:                          reflect.TypeOf((*FxSampler)(nil)).Elem(),
+    &#34;FxSamplerFiltering&#34;:                 reflect.TypeOf((*FxSamplerFiltering)(nil)).Elem(),
     &#34;KxLink&#34;:                             reflect.TypeOf((*KxLink)(nil)).Elem(),
     &#34;KxModelDef&#34;:                         reflect.TypeOf((*KxModelDef)(nil)).Elem(),
+    &#34;LibKxModelDefs&#34;:                     reflect.TypeOf((*LibKxModelDefs)(nil)).Elem(),
+    &#34;KxModelInst&#34;:                        reflect.TypeOf((*KxModelInst)(nil)).Elem(),
+    &#34;KxAttachment&#34;:                       reflect.TypeOf((*KxAttachment)(nil)).Elem(),
+    &#34;LibsKxModelDef&#34;:                     reflect.TypeOf((*LibsKxModelDef)(nil)).Elem(),
+    &#34;LibsControllerDef&#34;:                  reflect.TypeOf((*LibsControllerDef)(nil)).Elem(),
+    &#34;ControllerDef&#34;:                      reflect.TypeOf((*ControllerDef)(nil)).Elem(),
+    &#34;ControllerSkin&#34;:                     reflect.TypeOf((*ControllerSkin)(nil)).Elem(),
+    &#34;ControllerMorph&#34;:                    reflect.TypeOf((*ControllerMorph)(nil)).Elem(),
+    &#34;ControllerInst&#34;:                     reflect.TypeOf((*ControllerInst)(nil)).Elem(),
+    &#34;LibControllerDefs&#34;:                  reflect.TypeOf((*LibControllerDefs)(nil)).Elem(),
+    &#34;LibsPxMaterialDef&#34;:                  reflect.TypeOf((*LibsPxMaterialDef)(nil)).Elem(),
     &#34;PxMaterialInst&#34;:                     reflect.TypeOf((*PxMaterialInst)(nil)).Elem(),
     &#34;LibPxMaterialDefs&#34;:                  reflect.TypeOf((*LibPxMaterialDefs)(nil)).Elem(),
-    &#34;LibsPxMaterialDef&#34;:                  reflect.TypeOf((*LibsPxMaterialDef)(nil)).Elem(),
     &#34;PxMaterialDef&#34;:                      reflect.TypeOf((*PxMaterialDef)(nil)).Elem(),
-    &#34;Sources&#34;:                            reflect.TypeOf((*Sources)(nil)).Elem(),
-    &#34;SourceAccessor&#34;:                     reflect.TypeOf((*SourceAccessor)(nil)).Elem(),
-    &#34;Source&#34;:                             reflect.TypeOf((*Source)(nil)).Elem(),
-    &#34;LibsKxSceneDef&#34;:                     reflect.TypeOf((*LibsKxSceneDef)(nil)).Elem(),
-    &#34;LibKxSceneDefs&#34;:                     reflect.TypeOf((*LibKxSceneDefs)(nil)).Elem(),
-    &#34;KxSceneDef&#34;:                         reflect.TypeOf((*KxSceneDef)(nil)).Elem(),
-    &#34;KxSceneInst&#34;:                        reflect.TypeOf((*KxSceneInst)(nil)).Elem(),
-    &#34;KxSceneInstBindModel&#34;:               reflect.TypeOf((*KxSceneInstBindModel)(nil)).Elem(),
-    &#34;KxSceneInstJointAxis&#34;:               reflect.TypeOf((*KxSceneInstJointAxis)(nil)).Elem(),
-    &#34;CameraOrthographic&#34;:                 reflect.TypeOf((*CameraOrthographic)(nil)).Elem(),
-    &#34;CameraCommon&#34;:                       reflect.TypeOf((*CameraCommon)(nil)).Elem(),
-    &#34;CameraOptics&#34;:                       reflect.TypeOf((*CameraOptics)(nil)).Elem(),
-    &#34;LibsCameraDef&#34;:                      reflect.TypeOf((*LibsCameraDef)(nil)).Elem(),
-    &#34;CameraDef&#34;:                          reflect.TypeOf((*CameraDef)(nil)).Elem(),
-    &#34;CameraPerspective&#34;:                  reflect.TypeOf((*CameraPerspective)(nil)).Elem(),
-    &#34;CameraImager&#34;:                       reflect.TypeOf((*CameraImager)(nil)).Elem(),
-    &#34;CameraInst&#34;:                         reflect.TypeOf((*CameraInst)(nil)).Elem(),
-    &#34;LibCameraDefs&#34;:                      reflect.TypeOf((*LibCameraDefs)(nil)).Elem(),
-    &#34;LibsPxForceFieldDef&#34;:                reflect.TypeOf((*LibsPxForceFieldDef)(nil)).Elem(),
-    &#34;PxForceFieldDef&#34;:                    reflect.TypeOf((*PxForceFieldDef)(nil)).Elem(),
-    &#34;PxForceFieldInst&#34;:                   reflect.TypeOf((*PxForceFieldInst)(nil)).Elem(),
-    &#34;LibPxForceFieldDefs&#34;:                reflect.TypeOf((*LibPxForceFieldDefs)(nil)).Elem(),
+    &#34;MeshRaw&#34;:                            reflect.TypeOf((*MeshRaw)(nil)).Elem(),
+    &#34;MeshVert&#34;:                           reflect.TypeOf((*MeshVert)(nil)).Elem(),
+    &#34;MeshFace3&#34;:                          reflect.TypeOf((*MeshFace3)(nil)).Elem(),
+    &#34;MeshVertAtt3&#34;:                       reflect.TypeOf((*MeshVertAtt3)(nil)).Elem(),
+    &#34;MeshProvider&#34;:                       reflect.TypeOf((*MeshProvider)(nil)).Elem(),
+    &#34;MeshData&#34;:                           reflect.TypeOf((*MeshData)(nil)).Elem(),
+    &#34;MeshRawFace&#34;:                        reflect.TypeOf((*MeshRawFace)(nil)).Elem(),
+    &#34;MeshVertAtt2&#34;:                       reflect.TypeOf((*MeshVertAtt2)(nil)).Elem(),
+    &#34;PxRigidBodyInst&#34;:                    reflect.TypeOf((*PxRigidBodyInst)(nil)).Elem(),
+    &#34;PxCylinder&#34;:                         reflect.TypeOf((*PxCylinder)(nil)).Elem(),
+    &#34;PxRigidBodyDef&#34;:                     reflect.TypeOf((*PxRigidBodyDef)(nil)).Elem(),
+    &#34;PxRigidBodyCommon&#34;:                  reflect.TypeOf((*PxRigidBodyCommon)(nil)).Elem(),
+    &#34;PxShape&#34;:                            reflect.TypeOf((*PxShape)(nil)).Elem(),
+    &#34;LibsAnimationClipDef&#34;:               reflect.TypeOf((*LibsAnimationClipDef)(nil)).Elem(),
+    &#34;AnimationClipDef&#34;:                   reflect.TypeOf((*AnimationClipDef)(nil)).Elem(),
+    &#34;LibAnimationClipDefs&#34;:               reflect.TypeOf((*LibAnimationClipDefs)(nil)).Elem(),
+    &#34;FxImageInitFrom&#34;:                    reflect.TypeOf((*FxImageInitFrom)(nil)).Elem(),
+    &#34;FxInitFrom&#34;:                         reflect.TypeOf((*FxInitFrom)(nil)).Elem(),
+    &#34;FxCreate2DSizeRatio&#34;:                reflect.TypeOf((*FxCreate2DSizeRatio)(nil)).Elem(),
+    &#34;LibsFxImageDef&#34;:                     reflect.TypeOf((*LibsFxImageDef)(nil)).Elem(),
+    &#34;FxCreateInitFrom&#34;:                   reflect.TypeOf((*FxCreateInitFrom)(nil)).Elem(),
+    &#34;FxImageInst&#34;:                        reflect.TypeOf((*FxImageInst)(nil)).Elem(),
+    &#34;LibFxImageDefs&#34;:                     reflect.TypeOf((*LibFxImageDefs)(nil)).Elem(),
+    &#34;FxCreateFormatHint&#34;:                 reflect.TypeOf((*FxCreateFormatHint)(nil)).Elem(),
+    &#34;FxImageDef&#34;:                         reflect.TypeOf((*FxImageDef)(nil)).Elem(),
+    &#34;FxCreate2DSizeExact&#34;:                reflect.TypeOf((*FxCreate2DSizeExact)(nil)).Elem(),
+    &#34;FxCreateMips&#34;:                       reflect.TypeOf((*FxCreateMips)(nil)).Elem(),
+    &#34;FxCreateCommon&#34;:                     reflect.TypeOf((*FxCreateCommon)(nil)).Elem(),
+    &#34;FxCreate2D&#34;:                         reflect.TypeOf((*FxCreate2D)(nil)).Elem(),
+    &#34;FxCreateCube&#34;:                       reflect.TypeOf((*FxCreateCube)(nil)).Elem(),
+    &#34;FxCreate3DInitFrom&#34;:                 reflect.TypeOf((*FxCreate3DInitFrom)(nil)).Elem(),
+    &#34;FxCreate3D&#34;:                         reflect.TypeOf((*FxCreate3D)(nil)).Elem(),
+    &#34;FxCreateCubeInitFrom&#34;:               reflect.TypeOf((*FxCreateCubeInitFrom)(nil)).Elem(),
+    &#34;FxCreateFormat&#34;:                     reflect.TypeOf((*FxCreateFormat)(nil)).Elem(),
     &#34;PxSceneDef&#34;:                         reflect.TypeOf((*PxSceneDef)(nil)).Elem(),
+    &#34;PxSceneInst&#34;:                        reflect.TypeOf((*PxSceneInst)(nil)).Elem(),
     &#34;LibsPxSceneDef&#34;:                     reflect.TypeOf((*LibsPxSceneDef)(nil)).Elem(),
     &#34;LibPxSceneDefs&#34;:                     reflect.TypeOf((*LibPxSceneDefs)(nil)).Elem(),
-    &#34;PxSceneInst&#34;:                        reflect.TypeOf((*PxSceneInst)(nil)).Elem(),
-    &#34;BaseInst&#34;:                           reflect.TypeOf((*BaseInst)(nil)).Elem(),
-    &#34;BaseLib&#34;:                            reflect.TypeOf((*BaseLib)(nil)).Elem(),
-    &#34;Base&#34;:                               reflect.TypeOf((*Base)(nil)).Elem(),
-    &#34;BaseDef&#34;:                            reflect.TypeOf((*BaseDef)(nil)).Elem(),
-    &#34;PxRigidConstraintLimit&#34;:             reflect.TypeOf((*PxRigidConstraintLimit)(nil)).Elem(),
-    &#34;PxRigidConstraintInst&#34;:              reflect.TypeOf((*PxRigidConstraintInst)(nil)).Elem(),
-    &#34;PxRigidConstraintSpring&#34;:            reflect.TypeOf((*PxRigidConstraintSpring)(nil)).Elem(),
-    &#34;PxRigidConstraintDef&#34;:               reflect.TypeOf((*PxRigidConstraintDef)(nil)).Elem(),
-    &#34;PxRigidConstraintAttachment&#34;:        reflect.TypeOf((*PxRigidConstraintAttachment)(nil)).Elem(),
+    &#34;CameraImager&#34;:                       reflect.TypeOf((*CameraImager)(nil)).Elem(),
+    &#34;CameraOrthographic&#34;:                 reflect.TypeOf((*CameraOrthographic)(nil)).Elem(),
+    &#34;LibCameraDefs&#34;:                      reflect.TypeOf((*LibCameraDefs)(nil)).Elem(),
+    &#34;CameraOptics&#34;:                       reflect.TypeOf((*CameraOptics)(nil)).Elem(),
+    &#34;CameraPerspective&#34;:                  reflect.TypeOf((*CameraPerspective)(nil)).Elem(),
+    &#34;CameraCommon&#34;:                       reflect.TypeOf((*CameraCommon)(nil)).Elem(),
+    &#34;CameraDef&#34;:                          reflect.TypeOf((*CameraDef)(nil)).Elem(),
+    &#34;LibsCameraDef&#34;:                      reflect.TypeOf((*LibsCameraDef)(nil)).Elem(),
+    &#34;CameraInst&#34;:                         reflect.TypeOf((*CameraInst)(nil)).Elem(),
+    &#34;PxForceFieldInst&#34;:                   reflect.TypeOf((*PxForceFieldInst)(nil)).Elem(),
+    &#34;LibsPxForceFieldDef&#34;:                reflect.TypeOf((*LibsPxForceFieldDef)(nil)).Elem(),
+    &#34;PxForceFieldDef&#34;:                    reflect.TypeOf((*PxForceFieldDef)(nil)).Elem(),
+    &#34;LibPxForceFieldDefs&#34;:                reflect.TypeOf((*LibPxForceFieldDefs)(nil)).Elem(),
+    &#34;SourceAccessor&#34;:                     reflect.TypeOf((*SourceAccessor)(nil)).Elem(),
+    &#34;Sources&#34;:                            reflect.TypeOf((*Sources)(nil)).Elem(),
+    &#34;Source&#34;:                             reflect.TypeOf((*Source)(nil)).Elem(),
+    &#34;KxJoint&#34;:                            reflect.TypeOf((*KxJoint)(nil)).Elem(),
+    &#34;LibsKxJointDef&#34;:                     reflect.TypeOf((*LibsKxJointDef)(nil)).Elem(),
+    &#34;KxJointLimits&#34;:                      reflect.TypeOf((*KxJointLimits)(nil)).Elem(),
+    &#34;KxJointInst&#34;:                        reflect.TypeOf((*KxJointInst)(nil)).Elem(),
+    &#34;LibKxJointDefs&#34;:                     reflect.TypeOf((*LibKxJointDefs)(nil)).Elem(),
+    &#34;KxJointDef&#34;:                         reflect.TypeOf((*KxJointDef)(nil)).Elem(),
+    &#34;FxMaterialDef&#34;:                      reflect.TypeOf((*FxMaterialDef)(nil)).Elem(),
+    &#34;FxMaterialInst&#34;:                     reflect.TypeOf((*FxMaterialInst)(nil)).Elem(),
+    &#34;FxMaterialInstBindVertexInput&#34;:      reflect.TypeOf((*FxMaterialInstBindVertexInput)(nil)).Elem(),
+    &#34;FxMaterialInstBind&#34;:                 reflect.TypeOf((*FxMaterialInstBind)(nil)).Elem(),
+    &#34;LibsFxMaterialDef&#34;:                  reflect.TypeOf((*LibsFxMaterialDef)(nil)).Elem(),
+    &#34;LibFxMaterialDefs&#34;:                  reflect.TypeOf((*LibFxMaterialDefs)(nil)).Elem(),
+    &#34;LibFormulaDefs&#34;:                     reflect.TypeOf((*LibFormulaDefs)(nil)).Elem(),
+    &#34;FormulaInst&#34;:                        reflect.TypeOf((*FormulaInst)(nil)).Elem(),
+    &#34;FormulaDef&#34;:                         reflect.TypeOf((*FormulaDef)(nil)).Elem(),
+    &#34;LibsFormulaDef&#34;:                     reflect.TypeOf((*LibsFormulaDef)(nil)).Elem(),
+    &#34;Int4x4&#34;:                             reflect.TypeOf((*Int4x4)(nil)).Elem(),
+    &#34;Bool2&#34;:                              reflect.TypeOf((*Bool2)(nil)).Elem(),
+    &#34;Float4x2&#34;:                           reflect.TypeOf((*Float4x2)(nil)).Elem(),
+    &#34;Float3x2&#34;:                           reflect.TypeOf((*Float3x2)(nil)).Elem(),
+    &#34;ScopedVec3&#34;:                         reflect.TypeOf((*ScopedVec3)(nil)).Elem(),
+    &#34;Float2x4&#34;:                           reflect.TypeOf((*Float2x4)(nil)).Elem(),
+    &#34;Float7&#34;:                             reflect.TypeOf((*Float7)(nil)).Elem(),
+    &#34;Bool4&#34;:                              reflect.TypeOf((*Bool4)(nil)).Elem(),
+    &#34;ScopedFloat&#34;:                        reflect.TypeOf((*ScopedFloat)(nil)).Elem(),
+    &#34;Bool3&#34;:                              reflect.TypeOf((*Bool3)(nil)).Elem(),
+    &#34;Float4x3&#34;:                           reflect.TypeOf((*Float4x3)(nil)).Elem(),
+    &#34;Float3&#34;:                             reflect.TypeOf((*Float3)(nil)).Elem(),
+    &#34;ParamString&#34;:                        reflect.TypeOf((*ParamString)(nil)).Elem(),
+    &#34;Int3x3&#34;:                             reflect.TypeOf((*Int3x3)(nil)).Elem(),
+    &#34;Float4&#34;:                             reflect.TypeOf((*Float4)(nil)).Elem(),
+    &#34;Int4&#34;:                               reflect.TypeOf((*Int4)(nil)).Elem(),
+    &#34;Int2&#34;:                               reflect.TypeOf((*Int2)(nil)).Elem(),
+    &#34;Float3x4&#34;:                           reflect.TypeOf((*Float3x4)(nil)).Elem(),
+    &#34;ParamInt&#34;:                           reflect.TypeOf((*ParamInt)(nil)).Elem(),
+    &#34;ParamFloat2&#34;:                        reflect.TypeOf((*ParamFloat2)(nil)).Elem(),
+    &#34;Int3&#34;:                               reflect.TypeOf((*Int3)(nil)).Elem(),
+    &#34;Float2&#34;:                             reflect.TypeOf((*Float2)(nil)).Elem(),
+    &#34;ScopedBool&#34;:                         reflect.TypeOf((*ScopedBool)(nil)).Elem(),
+    &#34;ParamUint&#34;:                          reflect.TypeOf((*ParamUint)(nil)).Elem(),
+    &#34;ParamBool&#34;:                          reflect.TypeOf((*ParamBool)(nil)).Elem(),
+    &#34;Float3x3&#34;:                           reflect.TypeOf((*Float3x3)(nil)).Elem(),
+    &#34;Float2x2&#34;:                           reflect.TypeOf((*Float2x2)(nil)).Elem(),
+    &#34;Float2x3&#34;:                           reflect.TypeOf((*Float2x3)(nil)).Elem(),
+    &#34;Float4x4&#34;:                           reflect.TypeOf((*Float4x4)(nil)).Elem(),
+    &#34;ScopedFloat3&#34;:                       reflect.TypeOf((*ScopedFloat3)(nil)).Elem(),
+    &#34;ScopedString&#34;:                       reflect.TypeOf((*ScopedString)(nil)).Elem(),
+    &#34;Int2x2&#34;:                             reflect.TypeOf((*Int2x2)(nil)).Elem(),
+    &#34;ParamScopedFloat&#34;:                   reflect.TypeOf((*ParamScopedFloat)(nil)).Elem(),
+    &#34;ParamFloat&#34;:                         reflect.TypeOf((*ParamFloat)(nil)).Elem(),
 }</pre>
 				
 			
@@ -3985,7 +3965,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxEffectDef">type <a href="/target/fxeffect.gt.go?s=3877:4046#L203">FxEffectDef</a></h2>
+			<h2 id="FxEffectDef">type <a href="/target/fxeffect.gt.go?s=3969:4138#L208">FxEffectDef</a></h2>
 			<pre>type FxEffectDef struct {
     BaseDef
     Annotations []*FxAnnotation
@@ -4007,7 +3987,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 
 			
 				
-				<h3 id="FxEffectDef.Init">func (*FxEffectDef) <a href="/target/fxeffect.gt.go?s=4048:4077#L213">Init</a></h3>
+				<h3 id="FxEffectDef.Init">func (*FxEffectDef) <a href="/target/fxeffect.gt.go?s=4140:4169#L218">Init</a></h3>
 				<pre>func (me *FxEffectDef) Init()</pre>
 				
 				
@@ -4016,7 +3996,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxEffectInst">type <a href="/target/fxeffect.gt.go?s=4113:4225#L217">FxEffectInst</a></h2>
+			<h2 id="FxEffectInst">type <a href="/target/fxeffect.gt.go?s=4205:4317#L222">FxEffectInst</a></h2>
 			<pre>type FxEffectInst struct {
     BaseInst
     SetParams      []*ParamInst
@@ -4036,7 +4016,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxEffectInstTechniqueHint">type <a href="/target/fxeffect.gt.go?s=4263:4355#L226">FxEffectInstTechniqueHint</a></h2>
+			<h2 id="FxEffectInstTechniqueHint">type <a href="/target/fxeffect.gt.go?s=4355:4447#L231">FxEffectInstTechniqueHint</a></h2>
 			<pre>type FxEffectInstTechniqueHint struct {
     Platform string
     Ref      string
@@ -4295,12 +4275,18 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 			
 
 			
+				
+				<h3 id="NewFxPass">func <a href="/target/fxeffect.gt.go?s=939:968#L39">NewFxPass</a></h3>
+				<pre>func NewFxPass() (me *FxPass)</pre>
+				
+				
+			
 
 			
 		
 			
 			
-			<h2 id="FxPassEvaluation">type <a href="/target/fxeffect.gt.go?s=939:1256#L39">FxPassEvaluation</a></h2>
+			<h2 id="FxPassEvaluation">type <a href="/target/fxeffect.gt.go?s=1031:1348#L44">FxPassEvaluation</a></h2>
 			<pre>type FxPassEvaluation struct {
     Draw  string
     Color struct {
@@ -4330,7 +4316,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxPassEvaluationClearColor">type <a href="/target/fxeffect.gt.go?s=1258:1327#L55">FxPassEvaluationClearColor</a></h2>
+			<h2 id="FxPassEvaluationClearColor">type <a href="/target/fxeffect.gt.go?s=1350:1419#L60">FxPassEvaluationClearColor</a></h2>
 			<pre>type FxPassEvaluationClearColor struct {
     ugfx.Rgba32
     Index uint64
@@ -4349,7 +4335,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxPassEvaluationClearDepth">type <a href="/target/fxeffect.gt.go?s=1329:1400#L60">FxPassEvaluationClearDepth</a></h2>
+			<h2 id="FxPassEvaluationClearDepth">type <a href="/target/fxeffect.gt.go?s=1421:1492#L65">FxPassEvaluationClearDepth</a></h2>
 			<pre>type FxPassEvaluationClearDepth struct {
     F     float64
     Index uint64
@@ -4368,7 +4354,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxPassEvaluationClearStencil">type <a href="/target/fxeffect.gt.go?s=1402:1472#L65">FxPassEvaluationClearStencil</a></h2>
+			<h2 id="FxPassEvaluationClearStencil">type <a href="/target/fxeffect.gt.go?s=1494:1564#L70">FxPassEvaluationClearStencil</a></h2>
 			<pre>type FxPassEvaluationClearStencil struct {
     B     byte
     Index uint64
@@ -4387,7 +4373,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxPassEvaluationTarget">type <a href="/target/fxeffect.gt.go?s=1474:1659#L70">FxPassEvaluationTarget</a></h2>
+			<h2 id="FxPassEvaluationTarget">type <a href="/target/fxeffect.gt.go?s=1566:1751#L75">FxPassEvaluationTarget</a></h2>
 			<pre>type FxPassEvaluationTarget struct {
     Index           uint64
     Slice           uint64
@@ -4410,7 +4396,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxPassProgram">type <a href="/target/fxeffect.gt.go?s=1661:1819#L79">FxPassProgram</a></h2>
+			<h2 id="FxPassProgram">type <a href="/target/fxeffect.gt.go?s=1753:1911#L84">FxPassProgram</a></h2>
 			<pre>type FxPassProgram struct {
     BindAttributes []*FxPassProgramBindAttribute
     BindUniforms   []*FxPassProgramBindUniform
@@ -4430,7 +4416,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxPassProgramBindAttribute">type <a href="/target/fxeffect.gt.go?s=1821:1897#L85">FxPassProgramBindAttribute</a></h2>
+			<h2 id="FxPassProgramBindAttribute">type <a href="/target/fxeffect.gt.go?s=1913:1989#L90">FxPassProgramBindAttribute</a></h2>
 			<pre>type FxPassProgramBindAttribute struct {
     Symbol   string
     Semantic string
@@ -4449,7 +4435,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxPassProgramBindUniform">type <a href="/target/fxeffect.gt.go?s=1899:1995#L90">FxPassProgramBindUniform</a></h2>
+			<h2 id="FxPassProgramBindUniform">type <a href="/target/fxeffect.gt.go?s=1991:2087#L95">FxPassProgramBindUniform</a></h2>
 			<pre>type FxPassProgramBindUniform struct {
     Symbol   string
     ParamRef string
@@ -4469,7 +4455,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxPassProgramShader">type <a href="/target/fxeffect.gt.go?s=1997:2129#L96">FxPassProgramShader</a></h2>
+			<h2 id="FxPassProgramShader">type <a href="/target/fxeffect.gt.go?s=2089:2221#L101">FxPassProgramShader</a></h2>
 			<pre>type FxPassProgramShader struct {
     HasExtras
     Stage   int
@@ -4492,7 +4478,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxPassProgramShaderSources">type <a href="/target/fxeffect.gt.go?s=2131:2211#L105">FxPassProgramShaderSources</a></h2>
+			<h2 id="FxPassProgramShaderSources">type <a href="/target/fxeffect.gt.go?s=2223:2303#L110">FxPassProgramShaderSources</a></h2>
 			<pre>type FxPassProgramShaderSources struct {
     S           string
     IsImportRef bool
@@ -4511,7 +4497,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxPassState">type <a href="/target/fxeffect.gt.go?s=2213:2295#L110">FxPassState</a></h2>
+			<h2 id="FxPassState">type <a href="/target/fxeffect.gt.go?s=2305:2387#L115">FxPassState</a></h2>
 			<pre>type FxPassState struct {
     Value    interface{}
     ParamRef string
@@ -4531,7 +4517,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxProfile">type <a href="/target/fxeffect.gt.go?s=2297:2373#L116">FxProfile</a></h2>
+			<h2 id="FxProfile">type <a href="/target/fxeffect.gt.go?s=2389:2465#L121">FxProfile</a></h2>
 			<pre>type FxProfile struct {
     HasID
     HasAsset
@@ -4552,7 +4538,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxProfileCommon">type <a href="/target/fxeffect.gt.go?s=2375:2446#L123">FxProfileCommon</a></h2>
+			<h2 id="FxProfileCommon">type <a href="/target/fxeffect.gt.go?s=2467:2538#L128">FxProfileCommon</a></h2>
 			<pre>type FxProfileCommon struct {
     FxProfile
     Technique FxTechniqueCommon
@@ -4567,7 +4553,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 
 			
 				
-				<h3 id="NewFxProfileCommon">func <a href="/target/fxeffect.gt.go?s=2448:2495#L128">NewFxProfileCommon</a></h3>
+				<h3 id="NewFxProfileCommon">func <a href="/target/fxeffect.gt.go?s=2540:2587#L133">NewFxProfileCommon</a></h3>
 				<pre>func NewFxProfileCommon() (me *FxProfileCommon)</pre>
 				
 				
@@ -4577,7 +4563,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxProfileGlSl">type <a href="/target/fxeffect.gt.go?s=2564:2702#L134">FxProfileGlSl</a></h2>
+			<h2 id="FxProfileGlSl">type <a href="/target/fxeffect.gt.go?s=2656:2794#L139">FxProfileGlSl</a></h2>
 			<pre>type FxProfileGlSl struct {
     FxProfile
     Platform      string
@@ -4594,7 +4580,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 
 			
 				
-				<h3 id="NewFxProfileGlSl">func <a href="/target/fxeffect.gt.go?s=2776:2819#L146">NewFxProfileGlSl</a></h3>
+				<h3 id="NewFxProfileGlSl">func <a href="/target/fxeffect.gt.go?s=2868:2911#L151">NewFxProfileGlSl</a></h3>
 				<pre>func NewFxProfileGlSl() (me *FxProfileGlSl)</pre>
 				
 				
@@ -4604,7 +4590,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxProfileGlSlCodeInclude">type <a href="/target/fxeffect.gt.go?s=2704:2774#L141">FxProfileGlSlCodeInclude</a></h2>
+			<h2 id="FxProfileGlSlCodeInclude">type <a href="/target/fxeffect.gt.go?s=2796:2866#L146">FxProfileGlSlCodeInclude</a></h2>
 			<pre>type FxProfileGlSlCodeInclude struct {
     ScopedString
     IsInclude bool
@@ -4690,7 +4676,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxTechnique">type <a href="/target/fxeffect.gt.go?s=2886:2949#L152">FxTechnique</a></h2>
+			<h2 id="FxTechnique">type <a href="/target/fxeffect.gt.go?s=2978:3041#L157">FxTechnique</a></h2>
 			<pre>type FxTechnique struct {
     HasID
     HasSid
@@ -4711,7 +4697,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxTechniqueCommon">type <a href="/target/fxeffect.gt.go?s=2951:3138#L159">FxTechniqueCommon</a></h2>
+			<h2 id="FxTechniqueCommon">type <a href="/target/fxeffect.gt.go?s=3043:3230#L164">FxTechniqueCommon</a></h2>
 			<pre>type FxTechniqueCommon struct {
     FxTechnique
     Blinn    *FxTechniqueCommonBlinn
@@ -4733,7 +4719,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxTechniqueCommonBlinn">type <a href="/target/fxeffect.gt.go?s=3140:3262#L167">FxTechniqueCommonBlinn</a></h2>
+			<h2 id="FxTechniqueCommonBlinn">type <a href="/target/fxeffect.gt.go?s=3232:3354#L172">FxTechniqueCommonBlinn</a></h2>
 			<pre>type FxTechniqueCommonBlinn struct {
     FxTechniqueCommonLambert
     Specular  *FxColorOrTexture
@@ -4753,7 +4739,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxTechniqueCommonConstant">type <a href="/target/fxeffect.gt.go?s=3264:3527#L173">FxTechniqueCommonConstant</a></h2>
+			<h2 id="FxTechniqueCommonConstant">type <a href="/target/fxeffect.gt.go?s=3356:3619#L178">FxTechniqueCommonConstant</a></h2>
 			<pre>type FxTechniqueCommonConstant struct {
     Emission          *FxColorOrTexture
     Reflective        *FxColorOrTexture
@@ -4776,7 +4762,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxTechniqueCommonLambert">type <a href="/target/fxeffect.gt.go?s=3529:3650#L182">FxTechniqueCommonLambert</a></h2>
+			<h2 id="FxTechniqueCommonLambert">type <a href="/target/fxeffect.gt.go?s=3621:3742#L187">FxTechniqueCommonLambert</a></h2>
 			<pre>type FxTechniqueCommonLambert struct {
     FxTechniqueCommonConstant
     Ambient *FxColorOrTexture
@@ -4796,7 +4782,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxTechniqueCommonPhong">type <a href="/target/fxeffect.gt.go?s=3652:3714#L188">FxTechniqueCommonPhong</a></h2>
+			<h2 id="FxTechniqueCommonPhong">type <a href="/target/fxeffect.gt.go?s=3744:3806#L193">FxTechniqueCommonPhong</a></h2>
 			<pre>type FxTechniqueCommonPhong struct {
     FxTechniqueCommonBlinn
 }</pre>
@@ -4814,7 +4800,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxTechniqueGlsl">type <a href="/target/fxeffect.gt.go?s=3716:3812#L192">FxTechniqueGlsl</a></h2>
+			<h2 id="FxTechniqueGlsl">type <a href="/target/fxeffect.gt.go?s=3808:3904#L197">FxTechniqueGlsl</a></h2>
 			<pre>type FxTechniqueGlsl struct {
     FxTechnique
     Annotations []*FxAnnotation
@@ -4834,7 +4820,7 @@ Defines a perspective or orthographic camera. Only perspective cameras are suppo
 		
 			
 			
-			<h2 id="FxTexture">type <a href="/target/fxeffect.gt.go?s=3814:3875#L198">FxTexture</a></h2>
+			<h2 id="FxTexture">type <a href="/target/fxeffect.gt.go?s=3906:3967#L203">FxTexture</a></h2>
 			<pre>type FxTexture struct {
     Sampler2D string
     TexCoord  string
@@ -6908,7 +6894,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibFxEffectDefs">type <a href="/target/fxeffect.gt.go?s=6029:6299#L290">LibFxEffectDefs</a></h2>
+			<h2 id="LibFxEffectDefs">type <a href="/target/fxeffect.gt.go?s=6121:6391#L295">LibFxEffectDefs</a></h2>
 			<pre>type LibFxEffectDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -6931,7 +6917,7 @@ use the *LibsFxEffectDef.New()* or *LibsFxEffectDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibFxEffectDefs.Add">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=6655:6718#L306">Add</a></h3>
+				<h3 id="LibFxEffectDefs.Add">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=6747:6810#L311">Add</a></h3>
 				<pre>func (me *LibFxEffectDefs) Add(d *FxEffectDef) (n *FxEffectDef)</pre>
 				<p>
 Adds the specified *FxEffectDef* definition to this *LibFxEffectDefs*, and returns it.
@@ -6944,7 +6930,7 @@ If this *LibFxEffectDefs* already contains a *FxEffectDef* definition with the s
 				
 			
 				
-				<h3 id="LibFxEffectDefs.AddNew">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=7050:7107#L317">AddNew</a></h3>
+				<h3 id="LibFxEffectDefs.AddNew">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=7142:7199#L322">AddNew</a></h3>
 				<pre>func (me *LibFxEffectDefs) AddNew(id string) *FxEffectDef</pre>
 				<p>
 Creates a new *FxEffectDef* definition with the specified *ID*, adds it to this *LibFxEffectDefs*, and returns it.
@@ -6957,7 +6943,7 @@ If this *LibFxEffectDefs* already contains a *FxEffectDef* definition with the s
 				
 			
 				
-				<h3 id="LibFxEffectDefs.New">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=7268:7328#L320">New</a></h3>
+				<h3 id="LibFxEffectDefs.New">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=7360:7420#L325">New</a></h3>
 				<pre>func (me *LibFxEffectDefs) New(id string) (def *FxEffectDef)</pre>
 				<p>
 Creates a new *FxEffectDef* definition with the specified *ID* and returns it, but does not add it to this *LibFxEffectDefs*.
@@ -6967,7 +6953,7 @@ Creates a new *FxEffectDef* definition with the specified *ID* and returns it, b
 				
 			
 				
-				<h3 id="LibFxEffectDefs.Remove">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=7449:7493#L323">Remove</a></h3>
+				<h3 id="LibFxEffectDefs.Remove">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=7541:7585#L328">Remove</a></h3>
 				<pre>func (me *LibFxEffectDefs) Remove(id string)</pre>
 				<p>
 Removes the *FxEffectDef* with the specified *ID* from this *LibFxEffectDefs*.
@@ -6977,7 +6963,7 @@ Removes the *FxEffectDef* with the specified *ID* from this *LibFxEffectDefs*.
 				
 			
 				
-				<h3 id="LibFxEffectDefs.SyncChanges">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=7836:7876#L328">SyncChanges</a></h3>
+				<h3 id="LibFxEffectDefs.SyncChanges">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=7928:7968#L333">SyncChanges</a></h3>
 				<pre>func (me *LibFxEffectDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibFxEffectDefs* that need to be picked up.
@@ -7579,7 +7565,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibLightDefs">type <a href="/target/light.gt.go?s=2341:2605#L104">LibLightDefs</a></h2>
+			<h2 id="LibLightDefs">type <a href="/target/light.gt.go?s=2321:2585#L104">LibLightDefs</a></h2>
 			<pre>type LibLightDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -7602,7 +7588,7 @@ use the *LibsLightDef.New()* or *LibsLightDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibLightDefs.Add">func (*LibLightDefs) <a href="/target/light.gt.go?s=2937:2991#L120">Add</a></h3>
+				<h3 id="LibLightDefs.Add">func (*LibLightDefs) <a href="/target/light.gt.go?s=2917:2971#L120">Add</a></h3>
 				<pre>func (me *LibLightDefs) Add(d *LightDef) (n *LightDef)</pre>
 				<p>
 Adds the specified *LightDef* definition to this *LibLightDefs*, and returns it.
@@ -7615,7 +7601,7 @@ If this *LibLightDefs* already contains a *LightDef* definition with the same *I
 				
 			
 				
-				<h3 id="LibLightDefs.AddNew">func (*LibLightDefs) <a href="/target/light.gt.go?s=3311:3362#L131">AddNew</a></h3>
+				<h3 id="LibLightDefs.AddNew">func (*LibLightDefs) <a href="/target/light.gt.go?s=3291:3342#L131">AddNew</a></h3>
 				<pre>func (me *LibLightDefs) AddNew(id string) *LightDef</pre>
 				<p>
 Creates a new *LightDef* definition with the specified *ID*, adds it to this *LibLightDefs*, and returns it.
@@ -7628,7 +7614,7 @@ If this *LibLightDefs* already contains a *LightDef* definition with the specifi
 				
 			
 				
-				<h3 id="LibLightDefs.New">func (*LibLightDefs) <a href="/target/light.gt.go?s=3517:3571#L134">New</a></h3>
+				<h3 id="LibLightDefs.New">func (*LibLightDefs) <a href="/target/light.gt.go?s=3497:3551#L134">New</a></h3>
 				<pre>func (me *LibLightDefs) New(id string) (def *LightDef)</pre>
 				<p>
 Creates a new *LightDef* definition with the specified *ID* and returns it, but does not add it to this *LibLightDefs*.
@@ -7638,7 +7624,7 @@ Creates a new *LightDef* definition with the specified *ID* and returns it, but 
 				
 			
 				
-				<h3 id="LibLightDefs.Remove">func (*LibLightDefs) <a href="/target/light.gt.go?s=3683:3724#L137">Remove</a></h3>
+				<h3 id="LibLightDefs.Remove">func (*LibLightDefs) <a href="/target/light.gt.go?s=3663:3704#L137">Remove</a></h3>
 				<pre>func (me *LibLightDefs) Remove(id string)</pre>
 				<p>
 Removes the *LightDef* with the specified *ID* from this *LibLightDefs*.
@@ -7648,7 +7634,7 @@ Removes the *LightDef* with the specified *ID* from this *LibLightDefs*.
 				
 			
 				
-				<h3 id="LibLightDefs.SyncChanges">func (*LibLightDefs) <a href="/target/light.gt.go?s=4058:4095#L142">SyncChanges</a></h3>
+				<h3 id="LibLightDefs.SyncChanges">func (*LibLightDefs) <a href="/target/light.gt.go?s=4038:4075#L142">SyncChanges</a></h3>
 				<pre>func (me *LibLightDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibLightDefs* that need to be picked up.
@@ -7911,7 +7897,7 @@ Also called by the global *SyncChanges()* function.
 		
 			
 			
-			<h2 id="LibPxModelDefs">type <a href="/target/pxmodel.gt.go?s=2001:2269#L71">LibPxModelDefs</a></h2>
+			<h2 id="LibPxModelDefs">type <a href="/target/pxmodel.gt.go?s=2053:2321#L72">LibPxModelDefs</a></h2>
 			<pre>type LibPxModelDefs struct {
     BaseLib
     <span class="comment">//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT</span>
@@ -7934,7 +7920,7 @@ use the *LibsPxModelDef.New()* or *LibsPxModelDef.AddNew()* methods.
 
 			
 				
-				<h3 id="LibPxModelDefs.Add">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=2617:2677#L87">Add</a></h3>
+				<h3 id="LibPxModelDefs.Add">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=2669:2729#L88">Add</a></h3>
 				<pre>func (me *LibPxModelDefs) Add(d *PxModelDef) (n *PxModelDef)</pre>
 				<p>
 Adds the specified *PxModelDef* definition to this *LibPxModelDefs*, and returns it.
@@ -7947,7 +7933,7 @@ If this *LibPxModelDefs* already contains a *PxModelDef* definition with the sam
 				
 			
 				
-				<h3 id="LibPxModelDefs.AddNew">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=3005:3060#L98">AddNew</a></h3>
+				<h3 id="LibPxModelDefs.AddNew">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=3057:3112#L99">AddNew</a></h3>
 				<pre>func (me *LibPxModelDefs) AddNew(id string) *PxModelDef</pre>
 				<p>
 Creates a new *PxModelDef* definition with the specified *ID*, adds it to this *LibPxModelDefs*, and returns it.
@@ -7960,7 +7946,7 @@ If this *LibPxModelDefs* already contains a *PxModelDef* definition with the spe
 				
 			
 				
-				<h3 id="LibPxModelDefs.New">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=3219:3277#L101">New</a></h3>
+				<h3 id="LibPxModelDefs.New">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=3271:3329#L102">New</a></h3>
 				<pre>func (me *LibPxModelDefs) New(id string) (def *PxModelDef)</pre>
 				<p>
 Creates a new *PxModelDef* definition with the specified *ID* and returns it, but does not add it to this *LibPxModelDefs*.
@@ -7970,7 +7956,7 @@ Creates a new *PxModelDef* definition with the specified *ID* and returns it, bu
 				
 			
 				
-				<h3 id="LibPxModelDefs.Remove">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=3395:3438#L104">Remove</a></h3>
+				<h3 id="LibPxModelDefs.Remove">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=3447:3490#L105">Remove</a></h3>
 				<pre>func (me *LibPxModelDefs) Remove(id string)</pre>
 				<p>
 Removes the *PxModelDef* with the specified *ID* from this *LibPxModelDefs*.
@@ -7980,7 +7966,7 @@ Removes the *PxModelDef* with the specified *ID* from this *LibPxModelDefs*.
 				
 			
 				
-				<h3 id="LibPxModelDefs.SyncChanges">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=3778:3817#L109">SyncChanges</a></h3>
+				<h3 id="LibPxModelDefs.SyncChanges">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=3830:3869#L110">SyncChanges</a></h3>
 				<pre>func (me *LibPxModelDefs) SyncChanges()</pre>
 				<p>
 Signals to *core* (or your custom package) that changes have been made to this *LibPxModelDefs* that need to be picked up.
@@ -8325,7 +8311,7 @@ If this *LibsFormulaDef* already contains a *LibFormulaDefs* library with the sp
 		
 			
 			
-			<h2 id="LibsFxEffectDef">type <a href="/target/fxeffect.gt.go?s=5284:5332#L269">LibsFxEffectDef</a></h2>
+			<h2 id="LibsFxEffectDef">type <a href="/target/fxeffect.gt.go?s=5376:5424#L274">LibsFxEffectDef</a></h2>
 			<pre>type LibsFxEffectDef map[string]*LibFxEffectDefs</pre>
 			<p>
 The underlying type of the global *AllFxEffectDefLibs* variable: a *map* collection that contains
@@ -8343,7 +8329,7 @@ The underlying type of the global *AllFxEffectDefLibs* variable: a *map* collect
 
 			
 				
-				<h3 id="LibsFxEffectDef.AddNew">func (LibsFxEffectDef) <a href="/target/fxeffect.gt.go?s=5588:5654#L274">AddNew</a></h3>
+				<h3 id="LibsFxEffectDef.AddNew">func (LibsFxEffectDef) <a href="/target/fxeffect.gt.go?s=5680:5746#L279">AddNew</a></h3>
 				<pre>func (me LibsFxEffectDef) AddNew(id string) (lib *LibFxEffectDefs)</pre>
 				<p>
 Creates a new *LibFxEffectDefs* library with the specified *ID*, adds it to this *LibsFxEffectDef*, and returns it.
@@ -8589,7 +8575,7 @@ If this *LibsKxSceneDef* already contains a *LibKxSceneDefs* library with the sp
 		
 			
 			
-			<h2 id="LibsLightDef">type <a href="/target/light.gt.go?s=1641:1683#L83">LibsLightDef</a></h2>
+			<h2 id="LibsLightDef">type <a href="/target/light.gt.go?s=1621:1663#L83">LibsLightDef</a></h2>
 			<pre>type LibsLightDef map[string]*LibLightDefs</pre>
 			<p>
 The underlying type of the global *AllLightDefLibs* variable: a *map* collection that contains
@@ -8607,7 +8593,7 @@ The underlying type of the global *AllLightDefLibs* variable: a *map* collection
 
 			
 				
-				<h3 id="LibsLightDef.AddNew">func (LibsLightDef) <a href="/target/light.gt.go?s=1927:1987#L88">AddNew</a></h3>
+				<h3 id="LibsLightDef.AddNew">func (LibsLightDef) <a href="/target/light.gt.go?s=1907:1967#L88">AddNew</a></h3>
 				<pre>func (me LibsLightDef) AddNew(id string) (lib *LibLightDefs)</pre>
 				<p>
 Creates a new *LibLightDefs* library with the specified *ID*, adds it to this *LibsLightDef*, and returns it.
@@ -8721,7 +8707,7 @@ If this *LibsPxMaterialDef* already contains a *LibPxMaterialDefs* library with 
 		
 			
 			
-			<h2 id="LibsPxModelDef">type <a href="/target/pxmodel.gt.go?s=1271:1317#L50">LibsPxModelDef</a></h2>
+			<h2 id="LibsPxModelDef">type <a href="/target/pxmodel.gt.go?s=1323:1369#L51">LibsPxModelDef</a></h2>
 			<pre>type LibsPxModelDef map[string]*LibPxModelDefs</pre>
 			<p>
 The underlying type of the global *AllPxModelDefLibs* variable: a *map* collection that contains
@@ -8739,7 +8725,7 @@ The underlying type of the global *AllPxModelDefLibs* variable: a *map* collecti
 
 			
 				
-				<h3 id="LibsPxModelDef.AddNew">func (LibsPxModelDef) <a href="/target/pxmodel.gt.go?s=1569:1633#L55">AddNew</a></h3>
+				<h3 id="LibsPxModelDef.AddNew">func (LibsPxModelDef) <a href="/target/pxmodel.gt.go?s=1621:1685#L56">AddNew</a></h3>
 				<pre>func (me LibsPxModelDef) AddNew(id string) (lib *LibPxModelDefs)</pre>
 				<p>
 Creates a new *LibPxModelDefs* library with the specified *ID*, adds it to this *LibsPxModelDef*, and returns it.
@@ -8876,15 +8862,15 @@ If this *LibsVisualSceneDef* already contains a *LibVisualSceneDefs* library wit
 		
 			
 			
-			<h2 id="LightDef">type <a href="/target/light.gt.go?s=459:667#L25">LightDef</a></h2>
+			<h2 id="LightDef">type <a href="/target/light.gt.go?s=459:647#L25">LightDef</a></h2>
 			<pre>type LightDef struct {
     BaseDef
     HasTechniques
     TechniqueCommon struct {
-        Ambient          *LightAmbient
-        LightDirectional *LightDirectional
-        Point            *LightPoint
-        Spot             *LightSpot
+        Ambient     *LightAmbient
+        Directional *LightDirectional
+        Point       *LightPoint
+        Spot        *LightSpot
     }
 }</pre>
 			
@@ -8899,7 +8885,7 @@ If this *LibsVisualSceneDef* already contains a *LibVisualSceneDefs* library wit
 
 			
 				
-				<h3 id="LightDef.Init">func (*LightDef) <a href="/target/light.gt.go?s=669:695#L36">Init</a></h3>
+				<h3 id="LightDef.Init">func (*LightDef) <a href="/target/light.gt.go?s=649:675#L36">Init</a></h3>
 				<pre>func (me *LightDef) Init()</pre>
 				
 				
@@ -8926,7 +8912,7 @@ If this *LibsVisualSceneDef* already contains a *LibVisualSceneDefs* library wit
 		
 			
 			
-			<h2 id="LightInst">type <a href="/target/light.gt.go?s=701:736#L39">LightInst</a></h2>
+			<h2 id="LightInst">type <a href="/target/light.gt.go?s=681:716#L39">LightInst</a></h2>
 			<pre>type LightInst struct {
     BaseInst
 }</pre>
@@ -8971,86 +8957,6 @@ If this *LibsVisualSceneDef* already contains a *LibVisualSceneDefs* library wit
         Angle    *ScopedFloat
         Exponent *ScopedFloat
     }
-}</pre>
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="ListBools">type <a href="/target/types.go?s=588:639#L41">ListBools</a></h2>
-			<pre>type ListBools struct {
-    HasID
-    HasName
-    B []bool
-}</pre>
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="ListFloats">type <a href="/target/types.go?s=641:696#L47">ListFloats</a></h2>
-			<pre>type ListFloats struct {
-    HasID
-    HasName
-    F []float64
-}</pre>
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="ListInts">type <a href="/target/types.go?s=698:749#L53">ListInts</a></h2>
-			<pre>type ListInts struct {
-    HasID
-    HasName
-    I []int64
-}</pre>
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="ListStrings">type <a href="/target/types.go?s=751:806#L59">ListStrings</a></h2>
-			<pre>type ListStrings struct {
-    HasID
-    HasName
-    S []string
 }</pre>
 			
 
@@ -9382,7 +9288,7 @@ Represents a 3-component vertex attribute (such as for example vertex-normals)
 		
 			
 			
-			<h2 id="ParamBool">type <a href="/target/types.go?s=808:855#L65">ParamBool</a></h2>
+			<h2 id="ParamBool">type <a href="/target/types.go?s=814:861#L67">ParamBool</a></h2>
 			<pre>type ParamBool struct {
     B   bool
     Ref string
@@ -9436,7 +9342,7 @@ Represents a 3-component vertex attribute (such as for example vertex-normals)
 		
 			
 			
-			<h2 id="ParamFloat">type <a href="/target/types.go?s=857:908#L70">ParamFloat</a></h2>
+			<h2 id="ParamFloat">type <a href="/target/types.go?s=863:914#L72">ParamFloat</a></h2>
 			<pre>type ParamFloat struct {
     F   float64
     Ref string
@@ -9455,7 +9361,7 @@ Represents a 3-component vertex attribute (such as for example vertex-normals)
 		
 			
 			
-			<h2 id="ParamFloat2">type <a href="/target/types.go?s=910:961#L75">ParamFloat2</a></h2>
+			<h2 id="ParamFloat2">type <a href="/target/types.go?s=916:967#L77">ParamFloat2</a></h2>
 			<pre>type ParamFloat2 struct {
     F   Float2
     Ref string
@@ -9493,7 +9399,7 @@ Represents a 3-component vertex attribute (such as for example vertex-normals)
 		
 			
 			
-			<h2 id="ParamInt">type <a href="/target/types.go?s=963:1010#L80">ParamInt</a></h2>
+			<h2 id="ParamInt">type <a href="/target/types.go?s=969:1016#L82">ParamInt</a></h2>
 			<pre>type ParamInt struct {
     I   int64
     Ref string
@@ -9512,7 +9418,7 @@ Represents a 3-component vertex attribute (such as for example vertex-normals)
 		
 			
 			
-			<h2 id="ParamScopedFloat">type <a href="/target/types.go?s=1012:1073#L85">ParamScopedFloat</a></h2>
+			<h2 id="ParamScopedFloat">type <a href="/target/types.go?s=1018:1079#L87">ParamScopedFloat</a></h2>
 			<pre>type ParamScopedFloat struct {
     F   ScopedFloat
     Ref string
@@ -9531,7 +9437,7 @@ Represents a 3-component vertex attribute (such as for example vertex-normals)
 		
 			
 			
-			<h2 id="ParamString">type <a href="/target/types.go?s=1075:1126#L90">ParamString</a></h2>
+			<h2 id="ParamString">type <a href="/target/types.go?s=1081:1132#L92">ParamString</a></h2>
 			<pre>type ParamString struct {
     S   string
     Ref string
@@ -9550,7 +9456,7 @@ Represents a 3-component vertex attribute (such as for example vertex-normals)
 		
 			
 			
-			<h2 id="ParamUint">type <a href="/target/types.go?s=1128:1177#L95">ParamUint</a></h2>
+			<h2 id="ParamUint">type <a href="/target/types.go?s=1134:1183#L97">ParamUint</a></h2>
 			<pre>type ParamUint struct {
     U   uint64
     Ref string
@@ -9681,11 +9587,12 @@ Represents a 3-component vertex attribute (such as for example vertex-normals)
 		
 			
 			
-			<h2 id="PxModelDef">type <a href="/target/pxmodel.gt.go?s=16:110#L1">PxModelDef</a></h2>
+			<h2 id="PxModelDef">type <a href="/target/pxmodel.gt.go?s=16:162#L1">PxModelDef</a></h2>
 			<pre>type PxModelDef struct {
     BaseDef
-    RigidBodies []*PxRigidBodyDef
-    Insts       []*PxModelInst
+    RigidBodies      []*PxRigidBodyDef
+    RigidConstraints []*PxRigidConstraintDef
+    Insts            []*PxModelInst
 }</pre>
 			
 
@@ -9699,7 +9606,7 @@ Represents a 3-component vertex attribute (such as for example vertex-normals)
 
 			
 				
-				<h3 id="PxModelDef.Init">func (*PxModelDef) <a href="/target/pxmodel.gt.go?s=112:140#L1">Init</a></h3>
+				<h3 id="PxModelDef.Init">func (*PxModelDef) <a href="/target/pxmodel.gt.go?s=164:192#L1">Init</a></h3>
 				<pre>func (me *PxModelDef) Init()</pre>
 				
 				
@@ -9708,7 +9615,7 @@ Represents a 3-component vertex attribute (such as for example vertex-normals)
 		
 			
 			
-			<h2 id="PxModelInst">type <a href="/target/pxmodel.gt.go?s=146:326#L2">PxModelInst</a></h2>
+			<h2 id="PxModelInst">type <a href="/target/pxmodel.gt.go?s=198:378#L3">PxModelInst</a></h2>
 			<pre>type PxModelInst struct {
     BaseInst
     Parent           string
@@ -10037,7 +9944,7 @@ Visual Scene, later to be augmented by optional &#34;kinematics scenes&#34; and/
 		
 			
 			
-			<h2 id="ScopedBool">type <a href="/target/types.go?s=1179:1221#L100">ScopedBool</a></h2>
+			<h2 id="ScopedBool">type <a href="/target/types.go?s=1185:1227#L102">ScopedBool</a></h2>
 			<pre>type ScopedBool struct {
     HasSid
     B bool
@@ -10056,7 +9963,7 @@ Visual Scene, later to be augmented by optional &#34;kinematics scenes&#34; and/
 		
 			
 			
-			<h2 id="ScopedFloat">type <a href="/target/types.go?s=1223:1269#L105">ScopedFloat</a></h2>
+			<h2 id="ScopedFloat">type <a href="/target/types.go?s=1229:1275#L107">ScopedFloat</a></h2>
 			<pre>type ScopedFloat struct {
     HasSid
     F float64
@@ -10081,7 +9988,7 @@ Visual Scene, later to be augmented by optional &#34;kinematics scenes&#34; and/
 		
 			
 			
-			<h2 id="ScopedFloat3">type <a href="/target/types.go?s=1271:1317#L110">ScopedFloat3</a></h2>
+			<h2 id="ScopedFloat3">type <a href="/target/types.go?s=1277:1323#L112">ScopedFloat3</a></h2>
 			<pre>type ScopedFloat3 struct {
     HasSid
     F Float3
@@ -10100,7 +10007,7 @@ Visual Scene, later to be augmented by optional &#34;kinematics scenes&#34; and/
 		
 			
 			
-			<h2 id="ScopedString">type <a href="/target/types.go?s=1319:1365#L115">ScopedString</a></h2>
+			<h2 id="ScopedString">type <a href="/target/types.go?s=1325:1371#L117">ScopedString</a></h2>
 			<pre>type ScopedString struct {
     HasSid
     S string
@@ -10119,7 +10026,7 @@ Visual Scene, later to be augmented by optional &#34;kinematics scenes&#34; and/
 		
 			
 			
-			<h2 id="ScopedVec3">type <a href="/target/types.go?s=1367:1414#L120">ScopedVec3</a></h2>
+			<h2 id="ScopedVec3">type <a href="/target/types.go?s=1373:1420#L122">ScopedVec3</a></h2>
 			<pre>type ScopedVec3 struct {
     HasSid
     V unum.Vec3
@@ -10138,18 +10045,20 @@ Visual Scene, later to be augmented by optional &#34;kinematics scenes&#34; and/
 		
 			
 			
-			<h2 id="Source">type <a href="/target/source.go?s=125:400#L1">Source</a></h2>
+			<h2 id="Source">type <a href="/target/source.go?s=125:394#L1">Source</a></h2>
 			<pre>type Source struct {
     BaseDef
     HasTechniques
     Data struct {
-        Bools   *ListBools
-        Floats  *ListFloats
-        IdRefs  *ListStrings
-        Ints    *ListInts
-        Names   *ListStrings
-        SidRefs *ListStrings
-        Tokens  *ListStrings
+        HasID
+        HasName
+        Bools   []bool
+        Floats  []float64
+        IdRefs  []string
+        Ints    []int64
+        Names   []string
+        SidRefs []string
+        Tokens  []string
     }
     TechniqueCommon struct {
         Accessor *SourceAccessor
@@ -10191,7 +10100,7 @@ Visual Scene, later to be augmented by optional &#34;kinematics scenes&#34; and/
 		
 			
 			
-			<h2 id="Sources">type <a href="/target/source.go?s=402:433#L18">Sources</a></h2>
+			<h2 id="Sources">type <a href="/target/source.go?s=396:427#L20">Sources</a></h2>
 			<pre>type Sources map[string]*Source</pre>
 			
 
