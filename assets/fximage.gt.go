@@ -130,15 +130,13 @@ type FxImageDef struct {
 		Is     bool
 		Shared bool
 	}
-	Init struct {
-		Create2D   *FxCreate2D
-		Create3D   *FxCreate3D
-		CreateCube *FxCreateCube
-		From       *FxImageInitFrom
-	}
+	Create2D   *FxCreate2D
+	Create3D   *FxCreate3D
+	CreateCube *FxCreateCube
+	InitFrom   *FxImageInitFrom
 }
 
-func (me *FxImageDef) init() {
+func (me *FxImageDef) Init() {
 }
 
 type FxImageInst struct {
@@ -150,7 +148,7 @@ func (me *FxImageInst) init() {
 
 func (me *LibFxImageDefs) AddFromRefUrls(idRefUrls map[string]string) {
 	for imgID, refUrl := range idRefUrls {
-		me.AddNew(imgID).Init.From = NewFxImageInitFrom(refUrl)
+		me.AddNew(imgID).InitFrom = NewFxImageInitFrom(refUrl)
 	}
 }
 
@@ -160,7 +158,7 @@ func newFxImageDef(id string) (me *FxImageDef) {
 	me = &FxImageDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -168,7 +166,7 @@ func newFxImageDef(id string) (me *FxImageDef) {
 //	Creates and returns a new *FxImageInst* instance referencing this *FxImageDef* definition.
 func (me *FxImageDef) NewInst(id string) (inst *FxImageInst) {
 	inst = &FxImageInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

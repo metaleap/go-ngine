@@ -37,7 +37,7 @@ type ControllerDef struct {
 	Skin  *ControllerSkin
 }
 
-func (me *ControllerDef) init() {
+func (me *ControllerDef) Init() {
 }
 
 type ControllerInst struct {
@@ -55,7 +55,7 @@ func newControllerDef(id string) (me *ControllerDef) {
 	me = &ControllerDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -63,7 +63,7 @@ func newControllerDef(id string) (me *ControllerDef) {
 //	Creates and returns a new *ControllerInst* instance referencing this *ControllerDef* definition.
 func (me *ControllerDef) NewInst(id string) (inst *ControllerInst) {
 	inst = &ControllerInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

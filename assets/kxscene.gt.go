@@ -6,7 +6,7 @@ type KxSceneDef struct {
 	ArticulatedSystems []*KxArticulatedSystemInst
 }
 
-func (me *KxSceneDef) init() {
+func (me *KxSceneDef) Init() {
 }
 
 type KxSceneInst struct {
@@ -41,7 +41,7 @@ func newKxSceneDef(id string) (me *KxSceneDef) {
 	me = &KxSceneDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -49,7 +49,7 @@ func newKxSceneDef(id string) (me *KxSceneDef) {
 //	Creates and returns a new *KxSceneInst* instance referencing this *KxSceneDef* definition.
 func (me *KxSceneDef) NewInst(id string) (inst *KxSceneInst) {
 	inst = &KxSceneInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

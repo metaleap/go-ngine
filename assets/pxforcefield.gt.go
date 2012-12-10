@@ -5,7 +5,7 @@ type PxForceFieldDef struct {
 	HasTechniques
 }
 
-func (me *PxForceFieldDef) init() {
+func (me *PxForceFieldDef) Init() {
 }
 
 type PxForceFieldInst struct {
@@ -21,7 +21,7 @@ func newPxForceFieldDef(id string) (me *PxForceFieldDef) {
 	me = &PxForceFieldDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -29,7 +29,7 @@ func newPxForceFieldDef(id string) (me *PxForceFieldDef) {
 //	Creates and returns a new *PxForceFieldInst* instance referencing this *PxForceFieldDef* definition.
 func (me *PxForceFieldDef) NewInst(id string) (inst *PxForceFieldInst) {
 	inst = &PxForceFieldInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

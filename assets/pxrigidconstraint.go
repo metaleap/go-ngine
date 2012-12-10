@@ -37,7 +37,7 @@ type PxRigidConstraintDef struct {
 	}
 }
 
-func (me *PxRigidConstraintDef) init() {
+func (me *PxRigidConstraintDef) Init() {
 }
 
 type PxRigidConstraintInst struct {

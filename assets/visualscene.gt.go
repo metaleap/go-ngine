@@ -36,7 +36,7 @@ type VisualSceneDef struct {
 	Evaluations []*VisualSceneEvaluation
 }
 
-func (me *VisualSceneDef) init() {
+func (me *VisualSceneDef) Init() {
 }
 
 type VisualSceneInst struct {
@@ -52,7 +52,7 @@ func newVisualSceneDef(id string) (me *VisualSceneDef) {
 	me = &VisualSceneDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -60,7 +60,7 @@ func newVisualSceneDef(id string) (me *VisualSceneDef) {
 //	Creates and returns a new *VisualSceneInst* instance referencing this *VisualSceneDef* definition.
 func (me *VisualSceneDef) NewInst(id string) (inst *VisualSceneInst) {
 	inst = &VisualSceneInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

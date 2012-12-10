@@ -20,7 +20,7 @@ type AnimationDef struct {
 	Sources       Sources
 }
 
-func (me *AnimationDef) init() {
+func (me *AnimationDef) Init() {
 	me.Sources = Sources{}
 }
 
@@ -37,7 +37,7 @@ func newAnimationDef(id string) (me *AnimationDef) {
 	me = &AnimationDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -45,7 +45,7 @@ func newAnimationDef(id string) (me *AnimationDef) {
 //	Creates and returns a new *AnimationInst* instance referencing this *AnimationDef* definition.
 func (me *AnimationDef) NewInst(id string) (inst *AnimationInst) {
 	inst = &AnimationInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

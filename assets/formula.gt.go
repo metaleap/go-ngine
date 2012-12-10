@@ -11,7 +11,7 @@ type FormulaDef struct {
 	}
 }
 
-func (me *FormulaDef) init() {
+func (me *FormulaDef) Init() {
 	me.ParamDefs = ParamDefs{}
 }
 
@@ -29,7 +29,7 @@ func newFormulaDef(id string) (me *FormulaDef) {
 	me = &FormulaDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -37,7 +37,7 @@ func newFormulaDef(id string) (me *FormulaDef) {
 //	Creates and returns a new *FormulaInst* instance referencing this *FormulaDef* definition.
 func (me *FormulaDef) NewInst(id string) (inst *FormulaInst) {
 	inst = &FormulaInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

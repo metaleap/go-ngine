@@ -116,7 +116,7 @@ type KxArticulatedSystemDef struct {
 	Motion     *KxArticulatedSystemMotion
 }
 
-func (me *KxArticulatedSystemDef) init() {
+func (me *KxArticulatedSystemDef) Init() {
 }
 
 type KxArticulatedSystemInst struct {
@@ -136,7 +136,7 @@ func newKxArticulatedSystemDef(id string) (me *KxArticulatedSystemDef) {
 	me = &KxArticulatedSystemDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -144,7 +144,7 @@ func newKxArticulatedSystemDef(id string) (me *KxArticulatedSystemDef) {
 //	Creates and returns a new *KxArticulatedSystemInst* instance referencing this *KxArticulatedSystemDef* definition.
 func (me *KxArticulatedSystemDef) NewInst(id string) (inst *KxArticulatedSystemInst) {
 	inst = &KxArticulatedSystemInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

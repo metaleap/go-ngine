@@ -8,7 +8,7 @@ type AnimationClipDef struct {
 	Formulas   []*FormulaInst
 }
 
-func (me *AnimationClipDef) init() {
+func (me *AnimationClipDef) Init() {
 }
 
 //#begin-gt _definstlib.gt T:AnimationClip
@@ -17,7 +17,7 @@ func newAnimationClipDef(id string) (me *AnimationClipDef) {
 	me = &AnimationClipDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -25,7 +25,7 @@ func newAnimationClipDef(id string) (me *AnimationClipDef) {
 //	Creates and returns a new *AnimationClipInst* instance referencing this *AnimationClipDef* definition.
 func (me *AnimationClipDef) NewInst(id string) (inst *AnimationClipInst) {
 	inst = &AnimationClipInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

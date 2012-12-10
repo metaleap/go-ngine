@@ -163,14 +163,14 @@ func (me *Texture) Loaded() bool {
 
 func (me *Texture) provider() (prov TextureProvider, arg interface{}, remote bool) {
 	if me.FxImageDef != nil {
-		if me.FxImageDef.Init.From != nil {
-			if len(me.FxImageDef.Init.From.Raw.Data) > 0 {
-				prov, arg = TextureProviders.IoReader, me.FxImageDef.Init.From.Raw.Data
-			} else if len(me.FxImageDef.Init.From.RefUrl) > 0 {
-				if remote = strings.Contains(me.FxImageDef.Init.From.RefUrl, "://"); remote {
-					prov, arg = TextureProviders.RemoteFile, me.FxImageDef.Init.From.RefUrl
+		if initFrom := me.FxImageDef.InitFrom; initFrom != nil {
+			if len(initFrom.Raw.Data) > 0 {
+				prov, arg = TextureProviders.IoReader, initFrom.Raw.Data
+			} else if len(initFrom.RefUrl) > 0 {
+				if remote = strings.Contains(initFrom.RefUrl, "://"); remote {
+					prov, arg = TextureProviders.RemoteFile, initFrom.RefUrl
 				} else {
-					prov, arg = TextureProviders.LocalFile, me.FxImageDef.Init.From.RefUrl
+					prov, arg = TextureProviders.LocalFile, initFrom.RefUrl
 				}
 			}
 		}

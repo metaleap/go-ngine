@@ -48,7 +48,7 @@ type PxRigidBodyDef struct {
 	TechniqueCommon PxRigidBodyCommon
 }
 
-func (me *PxRigidBodyDef) init() {
+func (me *PxRigidBodyDef) Init() {
 }
 
 type PxRigidBodyInst struct {

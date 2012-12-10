@@ -11,7 +11,7 @@ type PxSceneDef struct {
 	}
 }
 
-func (me *PxSceneDef) init() {
+func (me *PxSceneDef) Init() {
 }
 
 type PxSceneInst struct {
@@ -27,7 +27,7 @@ func newPxSceneDef(id string) (me *PxSceneDef) {
 	me = &PxSceneDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -35,7 +35,7 @@ func newPxSceneDef(id string) (me *PxSceneDef) {
 //	Creates and returns a new *PxSceneInst* instance referencing this *PxSceneDef* definition.
 func (me *PxSceneDef) NewInst(id string) (inst *PxSceneInst) {
 	inst = &PxSceneInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

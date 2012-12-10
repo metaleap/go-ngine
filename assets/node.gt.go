@@ -18,7 +18,7 @@ type NodeDef struct {
 	}
 }
 
-func (me *NodeDef) init() {
+func (me *NodeDef) Init() {
 	me.Layers = Layers{}
 }
 
@@ -35,7 +35,7 @@ func newNodeDef(id string) (me *NodeDef) {
 	me = &NodeDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -43,7 +43,7 @@ func newNodeDef(id string) (me *NodeDef) {
 //	Creates and returns a new *NodeInst* instance referencing this *NodeDef* definition.
 func (me *NodeDef) NewInst(id string) (inst *NodeInst) {
 	inst = &NodeInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

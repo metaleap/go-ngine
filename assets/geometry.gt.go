@@ -70,7 +70,7 @@ type GeometryDef struct {
 	Spline *GeometrySpline
 }
 
-func (me *GeometryDef) init() {
+func (me *GeometryDef) Init() {
 }
 
 type GeometryInst struct {
@@ -87,7 +87,7 @@ func newGeometryDef(id string) (me *GeometryDef) {
 	me = &GeometryDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -95,7 +95,7 @@ func newGeometryDef(id string) (me *GeometryDef) {
 //	Creates and returns a new *GeometryInst* instance referencing this *GeometryDef* definition.
 func (me *GeometryDef) NewInst(id string) (inst *GeometryInst) {
 	inst = &GeometryInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

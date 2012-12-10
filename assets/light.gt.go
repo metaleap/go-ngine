@@ -43,7 +43,7 @@ type LightDef struct {
 	}
 }
 
-func (me *LightDef) init() {
+func (me *LightDef) Init() {
 }
 
 type LightInst struct {
@@ -59,7 +59,7 @@ func newLightDef(id string) (me *LightDef) {
 	me = &LightDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -67,7 +67,7 @@ func newLightDef(id string) (me *LightDef) {
 //	Creates and returns a new *LightInst* instance referencing this *LightDef* definition.
 func (me *LightDef) NewInst(id string) (inst *LightInst) {
 	inst = &LightInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

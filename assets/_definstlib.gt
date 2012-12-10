@@ -4,7 +4,7 @@ func new__T__Def(id string) (me *__T__Def) {
 	me = &__T__Def{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -12,7 +12,7 @@ func new__T__Def(id string) (me *__T__Def) {
 //	Creates and returns a new *__T__Inst* instance referencing this *__T__Def* definition.
 func (me *__T__Def) NewInst(id string) (inst *__T__Inst) {
 	inst = &__T__Inst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

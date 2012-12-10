@@ -30,7 +30,7 @@ type KxModelDef struct {
 	}
 }
 
-func (me *KxModelDef) init() {
+func (me *KxModelDef) Init() {
 	me.TechniqueCommon.NewParams = ParamDefs{}
 }
 
@@ -51,7 +51,7 @@ func newKxModelDef(id string) (me *KxModelDef) {
 	me = &KxModelDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -59,7 +59,7 @@ func newKxModelDef(id string) (me *KxModelDef) {
 //	Creates and returns a new *KxModelInst* instance referencing this *KxModelDef* definition.
 func (me *KxModelDef) NewInst(id string) (inst *KxModelInst) {
 	inst = &KxModelInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

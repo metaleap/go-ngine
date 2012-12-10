@@ -27,7 +27,7 @@ type KxJointDef struct {
 	All []*KxJoint
 }
 
-func (me *KxJointDef) init() {
+func (me *KxJointDef) Init() {
 }
 
 type KxJointInst struct {
@@ -43,7 +43,7 @@ func newKxJointDef(id string) (me *KxJointDef) {
 	me = &KxJointDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -51,7 +51,7 @@ func newKxJointDef(id string) (me *KxJointDef) {
 //	Creates and returns a new *KxJointInst* instance referencing this *KxJointDef* definition.
 func (me *KxJointDef) NewInst(id string) (inst *KxJointInst) {
 	inst = &KxJointInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

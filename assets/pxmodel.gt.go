@@ -6,7 +6,7 @@ type PxModelDef struct {
 	Insts       []*PxModelInst
 }
 
-func (me *PxModelDef) init() {
+func (me *PxModelDef) Init() {
 }
 
 type PxModelInst struct {
@@ -26,7 +26,7 @@ func newPxModelDef(id string) (me *PxModelDef) {
 	me = &PxModelDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -34,7 +34,7 @@ func newPxModelDef(id string) (me *PxModelDef) {
 //	Creates and returns a new *PxModelInst* instance referencing this *PxModelDef* definition.
 func (me *PxModelDef) NewInst(id string) (inst *PxModelInst) {
 	inst = &PxModelInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

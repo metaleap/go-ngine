@@ -220,7 +220,7 @@ type FxEffectDef struct {
 	}
 }
 
-func (me *FxEffectDef) init() {
+func (me *FxEffectDef) Init() {
 	me.NewParams = FxParamDefs{}
 }
 
@@ -245,7 +245,7 @@ func newFxEffectDef(id string) (me *FxEffectDef) {
 	me = &FxEffectDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -253,7 +253,7 @@ func newFxEffectDef(id string) (me *FxEffectDef) {
 //	Creates and returns a new *FxEffectInst* instance referencing this *FxEffectDef* definition.
 func (me *FxEffectDef) NewInst(id string) (inst *FxEffectInst) {
 	inst = &FxEffectInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

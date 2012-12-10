@@ -5,7 +5,7 @@ type FxMaterialDef struct {
 	Effect FxEffectInst
 }
 
-func (me *FxMaterialDef) init() {
+func (me *FxMaterialDef) Init() {
 }
 
 type FxMaterialInst struct {
@@ -26,7 +26,7 @@ type FxMaterialInstBind struct {
 type FxMaterialInstBindVertexInput struct {
 	Semantic      string
 	InputSemantic string
-	InputSet      uint64
+	InputSet      *uint64
 }
 
 //#begin-gt _definstlib.gt T:FxMaterial
@@ -35,7 +35,7 @@ func newFxMaterialDef(id string) (me *FxMaterialDef) {
 	me = &FxMaterialDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -43,7 +43,7 @@ func newFxMaterialDef(id string) (me *FxMaterialDef) {
 //	Creates and returns a new *FxMaterialInst* instance referencing this *FxMaterialDef* definition.
 func (me *FxMaterialDef) NewInst(id string) (inst *FxMaterialInst) {
 	inst = &FxMaterialInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

@@ -9,12 +9,6 @@ const (
 	TRANSFORM_TYPE_TRANSLATE = iota
 )
 
-type SceneGraph struct {
-	HasAsset
-	HasExtras
-	Scene *Scene
-}
-
 type HasAsset struct {
 	Asset *Asset
 }

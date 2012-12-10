@@ -10,7 +10,7 @@ type PxMaterialDef struct {
 	}
 }
 
-func (me *PxMaterialDef) init() {
+func (me *PxMaterialDef) Init() {
 }
 
 type PxMaterialInst struct {
@@ -26,7 +26,7 @@ func newPxMaterialDef(id string) (me *PxMaterialDef) {
 	me = &PxMaterialDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -34,7 +34,7 @@ func newPxMaterialDef(id string) (me *PxMaterialDef) {
 //	Creates and returns a new *PxMaterialInst* instance referencing this *PxMaterialDef* definition.
 func (me *PxMaterialDef) NewInst(id string) (inst *PxMaterialInst) {
 	inst = &PxMaterialInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

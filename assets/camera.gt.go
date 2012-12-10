@@ -38,7 +38,7 @@ type CameraDef struct {
 	Imager *CameraImager
 }
 
-func (me *CameraDef) init() {
+func (me *CameraDef) Init() {
 }
 
 type CameraInst struct {
@@ -54,7 +54,7 @@ func newCameraDef(id string) (me *CameraDef) {
 	me = &CameraDef{}
 	me.ID = id
 	me.Base.init()
-	me.init()
+	me.Init()
 	return
 }
 
@@ -62,7 +62,7 @@ func newCameraDef(id string) (me *CameraDef) {
 //	Creates and returns a new *CameraInst* instance referencing this *CameraDef* definition.
 func (me *CameraDef) NewInst(id string) (inst *CameraInst) {
 	inst = &CameraInst{Def: me}
-	inst.init()
+	inst.Init()
 	return
 }
 */

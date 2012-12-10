@@ -60,15 +60,20 @@ Note, Collada 1.4.1 documents are insta-bootstrapped to version 1.5 in-memory.
 			
 			
 			
-				
-				<dd><a href="#ImportCollada">func ImportCollada(colladaDoc []byte, importBag *ImportBag) (err error)</a></dd>
-			
 			
 				
 				<dd><a href="#ImportBag">type ImportBag</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#NewImportBag">func NewImportBag() (me *ImportBag)</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Root">type Root</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#ImportCollada">func ImportCollada(colladaDoc []byte, importBag *ImportBag) (root *Root, err error)</a></dd>
 				
 				
 			
@@ -86,7 +91,13 @@ Note, Collada 1.4.1 documents are insta-bootstrapped to version 1.5 in-memory.
 			
 				<a href="/target/imp.go">imp.go</a>
 			
-				<a href="/target/imps.go">imps.go</a>
+				<a href="/target/impinits.go">impinits.go</a>
+			
+				<a href="/target/implibs.go">implibs.go</a>
+			
+				<a href="/target/imploads.go">imploads.go</a>
+			
+				<a href="/target/impobjs.go">impobjs.go</a>
 			
 			</span>
 			</p>
@@ -95,20 +106,10 @@ Note, Collada 1.4.1 documents are insta-bootstrapped to version 1.5 in-memory.
 		
 		
 		
-			
-			
-			<h2 id="ImportCollada">func <a href="/target/imp.go?s=831:902#L30">ImportCollada</a></h2>
-			<pre>func ImportCollada(colladaDoc []byte, importBag *ImportBag) (err error)</pre>
-			<p>
-Imports the specified Collada document, using the import options specified in importBag.
-</p>
-
-			
-		
 		
 			
 			
-			<h2 id="ImportBag">type <a href="/target/imp.go?s=300:325#L6">ImportBag</a></h2>
+			<h2 id="ImportBag">type <a href="/target/imp.go?s=369:394#L12">ImportBag</a></h2>
 			<pre>type ImportBag struct {
 }</pre>
 			<p>
@@ -124,10 +125,39 @@ Provides options for importing Collada documents.
 
 			
 				
-				<h3 id="NewImportBag">func <a href="/target/imp.go?s=390:425#L10">NewImportBag</a></h3>
+				<h3 id="NewImportBag">func <a href="/target/imp.go?s=459:494#L16">NewImportBag</a></h3>
 				<pre>func NewImportBag() (me *ImportBag)</pre>
 				<p>
 Initializes and returns a newly created ImportBag instance.
+</p>
+
+				
+			
+
+			
+		
+			
+			
+			<h2 id="Root">type <a href="/target/imp.go?s=218:285#L1">Root</a></h2>
+			<pre>type Root struct {
+    nga.HasAsset
+    nga.HasExtras
+    Scene *nga.Scene
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="ImportCollada">func <a href="/target/imp.go?s=1241:1324#L51">ImportCollada</a></h3>
+				<pre>func ImportCollada(colladaDoc []byte, importBag *ImportBag) (root *Root, err error)</pre>
+				<p>
+Imports the specified Collada document, using the import options specified in importBag.
 </p>
 
 				
