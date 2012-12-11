@@ -17,7 +17,7 @@ type PxMaterialInst struct {
 	BaseInst
 }
 
-func (me *PxMaterialInst) init() {
+func (me *PxMaterialInst) Init() {
 }
 
 //#begin-gt _definstlib.gt T:PxMaterial

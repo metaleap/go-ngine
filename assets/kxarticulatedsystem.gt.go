@@ -31,15 +31,16 @@ type KxArticulatedSystemAxisLimits struct {
 type KxArticulatedSystemEffector struct {
 	HasSid
 	HasName
+	HasParamDefs
+	HasParamInsts
 	Bindings     []*KxBind
-	NewParams    ParamDefs
-	SetParams    []*ParamInst
 	Speed        *ParamFloat2
 	Acceleration *ParamFloat2
 }
 
 func NewKxArticulatedSystemEffector() (me *KxArticulatedSystemEffector) {
-	me = &KxArticulatedSystemEffector{NewParams: ParamDefs{}}
+	me = &KxArticulatedSystemEffector{}
+	me.NewParams = ParamDefs{}
 	return
 }
 
@@ -60,11 +61,11 @@ type KxArticulatedSystemKinematics struct {
 type KxArticulatedSystemKinematicsAxis struct {
 	HasSid
 	HasName
-	Axis      string
-	NewParams ParamDefs
-	Inactive  bool
+	HasParamDefs
+	JointAxis string
+	Active    ParamBool
 	Indices   []*KxArticulatedSystemAxisIndex
-	Locked    bool
+	Locked    ParamBool
 	Limits    *KxArticulatedSystemAxisLimits
 	Formulas  struct {
 		Defs  []*FormulaDef
@@ -73,7 +74,8 @@ type KxArticulatedSystemKinematicsAxis struct {
 }
 
 func NewKxArticulatedSystemKinematicsAxis() (me *KxArticulatedSystemKinematicsAxis) {
-	me = &KxArticulatedSystemKinematicsAxis{NewParams: ParamDefs{}}
+	me = &KxArticulatedSystemKinematicsAxis{Active: ParamBool{true, ""}}
+	me.NewParams = ParamDefs{}
 	return
 }
 
@@ -95,10 +97,10 @@ type KxArticulatedSystemMotion struct {
 type KxArticulatedSystemMotionAxis struct {
 	HasSid
 	HasName
+	HasParamDefs
+	HasParamInsts
 	Axis         string
 	Bindings     []*KxBind
-	NewParams    ParamDefs
-	SetParams    []*ParamInst
 	Speed        *ParamFloat
 	Acceleration *ParamFloat
 	Deceleration *ParamFloat
@@ -106,7 +108,8 @@ type KxArticulatedSystemMotionAxis struct {
 }
 
 func NewKxArticulatedSystemMotionAxis() (me *KxArticulatedSystemMotionAxis) {
-	me = &KxArticulatedSystemMotionAxis{NewParams: ParamDefs{}}
+	me = &KxArticulatedSystemMotionAxis{}
+	me.NewParams = ParamDefs{}
 	return
 }
 
@@ -121,12 +124,12 @@ func (me *KxArticulatedSystemDef) Init() {
 
 type KxArticulatedSystemInst struct {
 	BaseInst
-	Bindings  []*KxBind
-	SetParams []*ParamInst
-	NewParams ParamDefs
+	HasParamDefs
+	HasParamInsts
+	Bindings []*KxBind
 }
 
-func (me *KxArticulatedSystemInst) init() {
+func (me *KxArticulatedSystemInst) Init() {
 	me.NewParams = ParamDefs{}
 }
 

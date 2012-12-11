@@ -28,7 +28,7 @@ type AnimationInst struct {
 	BaseInst
 }
 
-func (me *AnimationInst) init() {
+func (me *AnimationInst) Init() {
 }
 
 //#begin-gt _definstlib.gt T:Animation

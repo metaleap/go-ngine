@@ -54,15 +54,19 @@ func logFmt(format string, fmtArgs ...interface{}) {
 }
 
 func attVal(xn *xmlx.Node, name string) (val string) {
-	if val = xn.As("", name); len(val) == 0 {
-		val = xn.As(ns, name)
+	if val = xn.As(ns, name); len(val) == 0 {
+		if val = xn.As("", name); len(val) == 0 {
+			val = xn.As("*", name)
+		}
 	}
 	return
 }
 
 func attValU64(xn *xmlx.Node, name string) (val uint64) {
-	if val = xn.Au64("", name); val == 0 {
-		val = xn.Au64(ns, name)
+	if val = xn.Au64(ns, name); val == 0 {
+		if val = xn.Au64("", name); val == 0 {
+			val = xn.Au64("*", name)
+		}
 	}
 	return
 }
@@ -488,15 +492,19 @@ func setAttr(xn *xmlx.Node, name, value string, onlySetIfEmpty bool) {
 }
 
 func subNode(xn *xmlx.Node, name string) (sn *xmlx.Node) {
-	if sn = xn.SelectNode("", name); sn == nil {
-		sn = xn.SelectNode(ns, name)
+	if sn = xn.SelectNode(ns, name); sn == nil {
+		if sn = xn.SelectNode("", name); sn == nil {
+			sn = xn.SelectNode("*", name)
+		}
 	}
 	return
 }
 
 func subNodes(xn *xmlx.Node, name string) (sn []*xmlx.Node) {
-	if sn = xn.SelectNodes("", name); len(sn) == 0 {
-		sn = xn.SelectNodes(ns, name)
+	if sn = xn.SelectNodes(ns, name); len(sn) == 0 {
+		if sn = xn.SelectNodes("", name); len(sn) == 0 {
+			sn = xn.SelectNodes("*", name)
+		}
 	}
 	return
 }

@@ -50,7 +50,7 @@ type LightInst struct {
 	BaseInst
 }
 
-func (me *LightInst) init() {
+func (me *LightInst) Init() {
 }
 
 //#begin-gt _definstlib.gt T:Light

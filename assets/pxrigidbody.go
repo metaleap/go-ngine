@@ -64,5 +64,5 @@ type PxRigidBodyInst struct {
 	}
 }
 
-func (me *PxRigidBodyInst) init() {
+func (me *PxRigidBodyInst) Init() {
 }

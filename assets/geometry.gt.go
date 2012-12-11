@@ -78,7 +78,7 @@ type GeometryInst struct {
 	BindMaterial *BindMaterial
 }
 
-func (me *GeometryInst) init() {
+func (me *GeometryInst) Init() {
 }
 
 //#begin-gt _definstlib.gt T:Geometry

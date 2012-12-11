@@ -51,8 +51,8 @@ func libs_%s(xn *xmlx.Node) {
 		def *nga.%sDef
 		id  string
 	)
-	for _, ln := range xsns(xn, "library_%s") {
-		id = xna(ln, "id")
+	for _, ln := range xcns(xn, "library_%s") {
+		id = xa(ln, "id")
 		if lib = nga.All%sDefLibs[id]; lib == nil {
 			lib = nga.All%sDefLibs.AddNew(id)
 		}
@@ -68,7 +68,7 @@ func libs_%s(xn *xmlx.Node) {
 		srcImpObj = `
 func obj_%s(xn *xmlx.Node, n string) (obj *nga.%s) {
 	if (xn != nil) && (len(n) > 0) {
-		xn = xsn(xn, n)
+		xn = xcn(xn, n)
 	}
 	if xn != nil {
 		obj = init_%s(xn)
@@ -86,7 +86,7 @@ func init_%s(xn *xmlx.Node) (obj *nga.%s) {
 `
 		srcImpN = `
 func objs_%s(xn *xmlx.Node, n string) (objs []*nga.%s) {
-	xns := xsns(xn, n)
+	xns := xcns(xn, n)
 	objs = make([]*nga.%s, len(xns))
 	for i, xn := range xns {
 		objs[i] = obj_%s(xn, "")
@@ -105,7 +105,7 @@ func load_%s(xn *xmlx.Node, obj *nga.%s) {
 		ok, canDirty                         bool
 		srcLibs, srcInits, srcObjs, srcLoads string
 	)
-	has := []string{"Asset", "Extras", "ID", "Name", "Sid", "Techniques"}
+	has := []string{"Asset", "Extras", "FxParamDefs", "ID", "Name", "ParamDefs", "ParamInsts", "Sid", "Techniques"}
 	flag.Parse()
 	for n, t := range nga.Types {
 		if canDirty = false; !(strings.HasPrefix(n, "Lib") || strings.HasPrefix(n, "Mesh") || strings.HasPrefix(n, "Base") || strings.HasSuffix(n, "Base") || strings.HasPrefix(n, "Has")) {
@@ -122,7 +122,7 @@ func load_%s(xn *xmlx.Node, obj *nga.%s) {
 					}
 				}
 				if canDirty {
-					if strings.HasSuffix(n, "Def") {
+					if strings.HasSuffix(n, "Def") || strings.HasSuffix(n, "Inst") {
 						srcInits += "\tobj.Init()\n"
 					}
 					if strings.HasSuffix(n, "Inst") {

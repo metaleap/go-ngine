@@ -143,7 +143,7 @@ type FxImageInst struct {
 	BaseInst
 }
 
-func (me *FxImageInst) init() {
+func (me *FxImageInst) Init() {
 }
 
 func (me *LibFxImageDefs) AddFromRefUrls(idRefUrls map[string]string) {

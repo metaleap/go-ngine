@@ -18,7 +18,7 @@ type PxModelInst struct {
 	RigidConstraints []*PxRigidConstraintInst
 }
 
-func (me *PxModelInst) init() {
+func (me *PxModelInst) Init() {
 }
 
 //#begin-gt _definstlib.gt T:PxModel

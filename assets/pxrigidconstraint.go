@@ -44,5 +44,5 @@ type PxRigidConstraintInst struct {
 	BaseInst
 }
 
-func (me *PxRigidConstraintInst) init() {
+func (me *PxRigidConstraintInst) Init() {
 }

@@ -12,7 +12,7 @@ type PxForceFieldInst struct {
 	BaseInst
 }
 
-func (me *PxForceFieldInst) init() {
+func (me *PxForceFieldInst) Init() {
 }
 
 //#begin-gt _definstlib.gt T:PxForceField

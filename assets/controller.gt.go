@@ -46,7 +46,7 @@ type ControllerInst struct {
 	Skeletons    []string
 }
 
-func (me *ControllerInst) init() {
+func (me *ControllerInst) Init() {
 }
 
 //#begin-gt _definstlib.gt T:Controller

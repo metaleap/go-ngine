@@ -15,7 +15,7 @@ type FxMaterialInst struct {
 	BindVertexInputs []*FxMaterialInstBindVertexInput
 }
 
-func (me *FxMaterialInst) init() {
+func (me *FxMaterialInst) Init() {
 }
 
 type FxMaterialInstBind struct {

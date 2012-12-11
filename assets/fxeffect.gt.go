@@ -132,7 +132,7 @@ type FxProfile struct {
 	HasID
 	HasAsset
 	HasExtras
-	NewParams FxParamDefs
+	HasFxParamDefs
 }
 
 type FxProfileCommon struct {
@@ -153,15 +153,15 @@ type FxProfileGlSl struct {
 	Techniques    []*FxTechniqueGlsl
 }
 
-type FxProfileGlSlCodeInclude struct {
-	ScopedString
-	IsInclude bool
-}
-
 func NewFxProfileGlSl() (me *FxProfileGlSl) {
 	me = &FxProfileGlSl{}
 	me.NewParams = FxParamDefs{}
 	return
+}
+
+type FxProfileGlSlCodeInclude struct {
+	ScopedString
+	IsInclude bool
 }
 
 type FxTechnique struct {
@@ -217,8 +217,8 @@ type FxTexture struct {
 
 type FxEffectDef struct {
 	BaseDef
+	HasFxParamDefs
 	Annotations []*FxAnnotation
-	NewParams   FxParamDefs
 	Profiles    struct {
 		GlSl   []*FxProfileGlSl
 		Common []*FxProfileCommon
@@ -231,11 +231,11 @@ func (me *FxEffectDef) Init() {
 
 type FxEffectInst struct {
 	BaseInst
-	SetParams      []*ParamInst
+	HasParamInsts
 	TechniqueHints []*FxEffectInstTechniqueHint
 }
 
-func (me *FxEffectInst) init() {
+func (me *FxEffectInst) Init() {
 }
 
 type FxEffectInstTechniqueHint struct {

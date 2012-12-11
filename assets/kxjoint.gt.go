@@ -34,7 +34,7 @@ type KxJointInst struct {
 	BaseInst
 }
 
-func (me *KxJointInst) init() {
+func (me *KxJointInst) Init() {
 }
 
 //#begin-gt _definstlib.gt T:KxJoint

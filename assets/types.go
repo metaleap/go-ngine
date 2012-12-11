@@ -99,7 +99,7 @@ type ParamScopedFloat struct {
 	Ref string
 }
 
-type ParamString struct {
+type ParamSidRef struct {
 	S   string
 	Ref string
 }

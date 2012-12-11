@@ -17,6 +17,10 @@ type HasExtras struct {
 	Extras []*Extra
 }
 
+type HasFxParamDefs struct {
+	NewParams FxParamDefs
+}
+
 type HasID struct {
 	//	The unique identifier of this *Def*, *Inst* or *Lib*.
 	ID string
@@ -25,6 +29,14 @@ type HasID struct {
 type HasName struct {
 	//	The optional pretty-print name/title of this *Def*, *Inst* or *Lib*.
 	Name string
+}
+
+type HasParamDefs struct {
+	NewParams ParamDefs
+}
+
+type HasParamInsts struct {
+	SetParams []*ParamInst
 }
 
 type HasSid struct {

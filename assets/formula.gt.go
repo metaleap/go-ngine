@@ -3,8 +3,8 @@ package assets
 type FormulaDef struct {
 	BaseDef
 	HasSid
+	HasParamDefs
 	HasTechniques
-	ParamDefs       ParamDefs
 	Target          ParamFloat
 	TechniqueCommon struct {
 		Data interface{}
@@ -12,7 +12,7 @@ type FormulaDef struct {
 }
 
 func (me *FormulaDef) Init() {
-	me.ParamDefs = ParamDefs{}
+	me.NewParams = ParamDefs{}
 }
 
 type FormulaInst struct {
@@ -20,7 +20,7 @@ type FormulaInst struct {
 	ParamInsts []*ParamInst
 }
 
-func (me *FormulaInst) init() {
+func (me *FormulaInst) Init() {
 }
 
 //#begin-gt _definstlib.gt T:Formula

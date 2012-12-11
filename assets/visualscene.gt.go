@@ -43,7 +43,7 @@ type VisualSceneInst struct {
 	BaseInst
 }
 
-func (me *VisualSceneInst) init() {
+func (me *VisualSceneInst) Init() {
 }
 
 //#begin-gt _definstlib.gt T:VisualScene

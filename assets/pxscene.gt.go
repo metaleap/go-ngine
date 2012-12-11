@@ -18,7 +18,7 @@ type PxSceneInst struct {
 	BaseInst
 }
 
-func (me *PxSceneInst) init() {
+func (me *PxSceneInst) Init() {
 }
 
 //#begin-gt _definstlib.gt T:PxScene

@@ -21,9 +21,9 @@ type KxModelDef struct {
 	BaseDef
 	HasTechniques
 	TechniqueCommon struct {
-		NewParams ParamDefs
-		Links     []*KxLink
-		Formulas  struct {
+		HasParamDefs
+		Links    []*KxLink
+		Formulas struct {
 			Defs  []*FormulaDef
 			Insts []*FormulaInst
 		}
@@ -36,12 +36,12 @@ func (me *KxModelDef) Init() {
 
 type KxModelInst struct {
 	BaseInst
-	Bindings  []*KxBind
-	NewParams ParamDefs
-	SetParams []*ParamInst
+	HasParamDefs
+	HasParamInsts
+	Bindings []*KxBind
 }
 
-func (me *KxModelInst) init() {
+func (me *KxModelInst) Init() {
 	me.NewParams = ParamDefs{}
 }
 

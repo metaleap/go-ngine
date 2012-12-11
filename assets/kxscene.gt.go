@@ -11,13 +11,13 @@ func (me *KxSceneDef) Init() {
 
 type KxSceneInst struct {
 	BaseInst
-	NewParams     ParamDefs
-	SetParams     []*ParamInst
-	ModelBindings []*KxSceneInstBindModel
-	JointAxes     []*KxSceneInstJointAxis
+	HasParamDefs
+	HasParamInsts
+	ModelBindings     []*KxSceneInstBindModel
+	JointAxisBindings []*KxSceneInstBindJointAxis
 }
 
-func (me *KxSceneInst) init() {
+func (me *KxSceneInst) Init() {
 	me.NewParams = ParamDefs{}
 }
 
@@ -29,9 +29,9 @@ type KxSceneInstBindModel struct {
 	}
 }
 
-type KxSceneInstJointAxis struct {
+type KxSceneInstBindJointAxis struct {
 	Target string
-	Axis   ParamString
+	Axis   ParamSidRef
 	Value  ParamFloat
 }
 

@@ -27,7 +27,7 @@ type NodeInst struct {
 	ProxyRef string
 }
 
-func (me *NodeInst) init() {
+func (me *NodeInst) Init() {
 }
 
 //#begin-gt _definstlib.gt T:Node

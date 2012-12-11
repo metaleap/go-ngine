@@ -45,7 +45,7 @@ type CameraInst struct {
 	BaseInst
 }
 
-func (me *CameraInst) init() {
+func (me *CameraInst) Init() {
 }
 
 //#begin-gt _definstlib.gt T:Camera
