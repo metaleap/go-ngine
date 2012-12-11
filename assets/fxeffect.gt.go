@@ -111,10 +111,7 @@ type FxPassProgramBindUniform struct {
 type FxPassProgramShader struct {
 	HasExtras
 	Stage   int
-	Sources struct {
-		Entry string
-		All   []FxPassProgramShaderSources
-	}
+	Sources []FxPassProgramShaderSources
 }
 
 type FxPassProgramShaderSources struct {
@@ -123,9 +120,9 @@ type FxPassProgramShaderSources struct {
 }
 
 type FxPassState struct {
-	Value    interface{}
+	Value    string
 	ParamRef string
-	Index    int64
+	Index    float64
 }
 
 type FxProfile struct {

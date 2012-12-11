@@ -13,7 +13,7 @@ func libs_animation_clips(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_animation_clips") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllAnimationClipDefLibs[id]; lib == nil {
 			lib = nga.AllAnimationClipDefLibs.AddNew(id)
 		}
@@ -33,7 +33,7 @@ func libs_animations(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_animations") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllAnimationDefLibs[id]; lib == nil {
 			lib = nga.AllAnimationDefLibs.AddNew(id)
 		}
@@ -53,7 +53,7 @@ func libs_cameras(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_cameras") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllCameraDefLibs[id]; lib == nil {
 			lib = nga.AllCameraDefLibs.AddNew(id)
 		}
@@ -73,7 +73,7 @@ func libs_controllers(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_controllers") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllControllerDefLibs[id]; lib == nil {
 			lib = nga.AllControllerDefLibs.AddNew(id)
 		}
@@ -93,7 +93,7 @@ func libs_formulas(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_formulas") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllFormulaDefLibs[id]; lib == nil {
 			lib = nga.AllFormulaDefLibs.AddNew(id)
 		}
@@ -113,7 +113,7 @@ func libs_geometries(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_geometries") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllGeometryDefLibs[id]; lib == nil {
 			lib = nga.AllGeometryDefLibs.AddNew(id)
 		}
@@ -133,7 +133,7 @@ func libs_lights(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_lights") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllLightDefLibs[id]; lib == nil {
 			lib = nga.AllLightDefLibs.AddNew(id)
 		}
@@ -153,7 +153,7 @@ func libs_nodes(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_nodes") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllNodeDefLibs[id]; lib == nil {
 			lib = nga.AllNodeDefLibs.AddNew(id)
 		}
@@ -173,7 +173,7 @@ func libs_visual_scenes(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_visual_scenes") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllVisualSceneDefLibs[id]; lib == nil {
 			lib = nga.AllVisualSceneDefLibs.AddNew(id)
 		}
@@ -193,7 +193,7 @@ func libs_force_fields(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_force_fields") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllPxForceFieldDefLibs[id]; lib == nil {
 			lib = nga.AllPxForceFieldDefLibs.AddNew(id)
 		}
@@ -213,7 +213,7 @@ func libs_physics_materials(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_physics_materials") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllPxMaterialDefLibs[id]; lib == nil {
 			lib = nga.AllPxMaterialDefLibs.AddNew(id)
 		}
@@ -233,7 +233,7 @@ func libs_physics_models(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_physics_models") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllPxModelDefLibs[id]; lib == nil {
 			lib = nga.AllPxModelDefLibs.AddNew(id)
 		}
@@ -253,7 +253,7 @@ func libs_physics_scenes(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_physics_scenes") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllPxSceneDefLibs[id]; lib == nil {
 			lib = nga.AllPxSceneDefLibs.AddNew(id)
 		}
@@ -273,7 +273,7 @@ func libs_effects(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_effects") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllFxEffectDefLibs[id]; lib == nil {
 			lib = nga.AllFxEffectDefLibs.AddNew(id)
 		}
@@ -293,7 +293,7 @@ func libs_images(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_images") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllFxImageDefLibs[id]; lib == nil {
 			lib = nga.AllFxImageDefLibs.AddNew(id)
 		}
@@ -313,7 +313,7 @@ func libs_materials(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_materials") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllFxMaterialDefLibs[id]; lib == nil {
 			lib = nga.AllFxMaterialDefLibs.AddNew(id)
 		}
@@ -333,7 +333,7 @@ func libs_articulated_systems(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_articulated_systems") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllKxArticulatedSystemDefLibs[id]; lib == nil {
 			lib = nga.AllKxArticulatedSystemDefLibs.AddNew(id)
 		}
@@ -353,7 +353,7 @@ func libs_joints(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_joints") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllKxJointDefLibs[id]; lib == nil {
 			lib = nga.AllKxJointDefLibs.AddNew(id)
 		}
@@ -373,7 +373,7 @@ func libs_kinematics_models(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_kinematics_models") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllKxModelDefLibs[id]; lib == nil {
 			lib = nga.AllKxModelDefLibs.AddNew(id)
 		}
@@ -393,7 +393,7 @@ func libs_kinematics_scenes(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_kinematics_scenes") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.AllKxSceneDefLibs[id]; lib == nil {
 			lib = nga.AllKxSceneDefLibs.AddNew(id)
 		}

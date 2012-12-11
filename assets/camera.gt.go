@@ -5,17 +5,13 @@ type CameraImager struct {
 	HasExtras
 }
 
-type CameraCommon struct {
-	AspectRatio *ScopedFloat
-	Zfar        ScopedFloat
-	Znear       ScopedFloat
-}
-
 type CameraOptics struct {
 	HasExtras
 	HasTechniques
-	TechniqueCommon struct {
-		CameraCommon
+	TC struct {
+		AspectRatio  *ScopedFloat
+		Zfar         ScopedFloat
+		Znear        ScopedFloat
 		Orthographic *CameraOrthographic
 		Perspective  *CameraPerspective
 	}

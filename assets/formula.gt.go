@@ -5,9 +5,9 @@ type FormulaDef struct {
 	HasSid
 	HasParamDefs
 	HasTechniques
-	Target          ParamFloat
-	TechniqueCommon struct {
-		Data interface{}
+	Target ParamFloat
+	TC     struct {
+		Formula interface{}
 	}
 }
 
@@ -17,7 +17,7 @@ func (me *FormulaDef) Init() {
 
 type FormulaInst struct {
 	BaseInst
-	ParamInsts []*ParamInst
+	HasParamInsts
 }
 
 func (me *FormulaInst) Init() {

@@ -8,6 +8,7 @@ import (
 	nga "github.com/go3d/go-ngine/assets"
 	ugo "github.com/metaleap/go-util"
 	ugfx "github.com/metaleap/go-util/gfx"
+	unum "github.com/metaleap/go-util/num"
 	xsdt "github.com/metaleap/go-xsd/types"
 )
 
@@ -59,11 +60,15 @@ func has_FxParamDefs(xn *xmlx.Node, obj *nga.HasFxParamDefs) {
 }
 
 func has_ID(xn *xmlx.Node, obj *nga.HasID) {
-	obj.ID = xa(xn, "id")
+	obj.ID = xas(xn, "id")
+}
+
+func has_Inputs(xn *xmlx.Node, obj *nga.HasInputs) {
+	obj.Inputs = objs_Input(xn, "input")
 }
 
 func has_Name(xn *xmlx.Node, obj *nga.HasName) {
-	obj.Name = xa(xn, "name")
+	obj.Name = xas(xn, "name")
 }
 
 func has_ParamDefs(xn *xmlx.Node, obj *nga.HasParamDefs) {
@@ -79,7 +84,15 @@ func has_ParamInsts(xn *xmlx.Node, obj *nga.HasParamInsts) {
 }
 
 func has_Sid(xn *xmlx.Node, obj *nga.HasSid) {
-	obj.Sid = xa(xn, "sid")
+	obj.Sid = xas(xn, "sid")
+}
+
+func has_Sources(xn *xmlx.Node, obj *nga.HasSources) {
+	for _, src := range objs_Source(xn, "source") {
+		if src != nil {
+			obj.Sources[src.ID] = src
+		}
+	}
 }
 
 func has_Techniques(xn *xmlx.Node, obj *nga.HasTechniques) {
@@ -135,30 +148,49 @@ func list_Strings(xn *xmlx.Node) []string {
 	return xsdt.ListValues(xn.Value)
 }
 
+func list_StringsN(xn *xmlx.Node, name string) (sl []string) {
+	cns := xcns(xn, name)
+	sl = make([]string, len(cns))
+	for i, cn := range cns {
+		sl[i] = cn.Value
+	}
+	return
+}
+
+func listcn_Bools(xn *xmlx.Node, name string) (sl []bool) {
+	if cn := xcn(xn, name); cn != nil {
+		sl = list_Bools(cn)
+	}
+	return
+}
+
+func listcn_Floats(xn *xmlx.Node, name string) (sl []float64) {
+	if cn := xcn(xn, name); cn != nil {
+		sl = list_Floats(cn)
+	}
+	return
+}
+
+func listcn_Ints(xn *xmlx.Node, name string) (sl []int64) {
+	if cn := xcn(xn, name); cn != nil {
+		sl = list_Ints(cn)
+	}
+	return
+}
+
+func listcn_Strings(xn *xmlx.Node, name string) (sl []string) {
+	if cn := xcn(xn, name); cn != nil {
+		sl = list_Strings(cn)
+	}
+	return
+}
+
 func node_TechCommon(xn *xmlx.Node) *xmlx.Node {
 	return xcn(xn, "technique_common")
 }
 
 func setInstDefRef(xn *xmlx.Node, inst *nga.BaseInst) {
-	inst.DefRef = xa1(xn, "url", "target", "body", "constraint")
-}
-
-func xa(xn *xmlx.Node, name string) (v string) {
-	if v = xn.As(xmlns, name); len(v) == 0 {
-		if v = xn.As("", name); len(v) == 0 {
-			v = xn.As("*", name)
-		}
-	}
-	return
-}
-
-func xa1(xn *xmlx.Node, names ...string) (v string) {
-	for _, n := range names {
-		if v = xa(xn, n); len(v) > 0 {
-			return
-		}
-	}
-	return
+	inst.DefRef = xas1(xn, "url", "body", "constraint", "target")
 }
 
 func xab(xn *xmlx.Node, name string) bool {
@@ -171,6 +203,47 @@ func xabp(xn *xmlx.Node, name string) (b *bool) {
 			*b = xab(xn, name)
 			break
 		}
+	}
+	return
+}
+
+func xaf64(xn *xmlx.Node, name string) (v float64) {
+	if v = xn.F64(xmlns, name); v == 0 {
+		if v = xn.F64("", name); v == 0 {
+			v = xn.F64("*", name)
+		}
+	}
+	return
+}
+
+func xaf64d(xn *xmlx.Node, name string, def float64) (v float64) {
+	if v = xaf64(xn, name); v == 0 {
+		v = def
+	}
+	return
+}
+
+func xas(xn *xmlx.Node, name string) (v string) {
+	if v = xn.As(xmlns, name); len(v) == 0 {
+		if v = xn.As("", name); len(v) == 0 {
+			v = xn.As("*", name)
+		}
+	}
+	return
+}
+
+func xas1(xn *xmlx.Node, names ...string) (v string) {
+	for _, n := range names {
+		if v = xas(xn, n); len(v) > 0 {
+			return
+		}
+	}
+	return
+}
+
+func xasd(xn *xmlx.Node, name string, def string) (v string) {
+	if v = xas(xn, name); len(v) == 0 {
+		v = def
 	}
 	return
 }
@@ -216,10 +289,19 @@ func xcn1(xn *xmlx.Node, names ...string) (cn *xmlx.Node) {
 	return
 }
 
-func xcns(xn *xmlx.Node, name string) (cns []*xmlx.Node) {
-	if cns = xn.SelectNodes(xmlns, name); len(cns) == 0 {
-		if cns = xn.SelectNodes("", name); len(cns) == 0 {
-			cns = xn.SelectNodes("*", name)
+func xcns(xn *xmlx.Node, names ...string) (cns []*xmlx.Node) {
+	if len(names) == 1 {
+		if cns = xn.SelectNodes(xmlns, names[0]); len(cns) == 0 {
+			if cns = xn.SelectNodes("", names[0]); len(cns) == 0 {
+				cns = xn.SelectNodes("*", names[0])
+			}
+		}
+	} else {
+		var scns []*xmlx.Node
+		for _, n := range names {
+			if scns = xcns(xn, n); len(scns) > 0 {
+				cns = append(cns, scns...)
+			}
 		}
 	}
 	return
@@ -248,6 +330,13 @@ func xs(xn *xmlx.Node, name string) (v string) {
 		if v = xn.S("", name); len(v) == 0 {
 			v = xn.S("*", name)
 		}
+	}
+	return
+}
+
+func xsd(xn *xmlx.Node, name string, def string) (v string) {
+	if v = xs(xn, name); len(v) == 0 {
+		v = def
 	}
 	return
 }
@@ -375,4 +464,12 @@ func xv(xn *xmlx.Node) (val interface{}) {
 		}
 	}
 	return
+}
+
+func xv3(xn *xmlx.Node, name string) *unum.Vec3 {
+	var f3 [3]float64
+	arr_Floats(xn, 3, func(i int, f float64) {
+		f3[i] = f
+	})
+	return &unum.Vec3{f3[0], f3[1], f3[2]}
 }

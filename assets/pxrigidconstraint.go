@@ -21,9 +21,9 @@ type PxRigidConstraintDef struct {
 	BaseDef
 	HasSid
 	HasTechniques
-	RefAttachment   PxRigidConstraintAttachment
-	Attachment      PxRigidConstraintAttachment
-	TechniqueCommon struct {
+	RefAttachment PxRigidConstraintAttachment
+	Attachment    PxRigidConstraintAttachment
+	TC            struct {
 		Disabled       ScopedBool
 		Interpenetrate ScopedBool
 		Limits         struct {

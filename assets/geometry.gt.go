@@ -17,24 +17,23 @@ type GeometryControlVertices struct {
 
 type GeometryMesh struct {
 	HasExtras
+	HasSources
 	ConvexHullOf string
-	Sources      Sources
 	Vertices     *GeometryVertices
 	Primitives   []*GeometryPrimitives
 }
 
 func NewGeometryMesh() (me *GeometryMesh) {
-	me = &GeometryMesh{Sources: Sources{}}
+	me = &GeometryMesh{}
+	me.Sources = Sources{}
 	return
 }
 
 type GeometryPrimitives struct {
 	HasExtras
 	HasName
-	Count     uint64
+	IndexedInputs
 	Material  string
-	Inputs    []*InputShared
-	Indices   []int64
 	Type      int
 	PolyHoles []*GeometryPolygonHole
 }
@@ -46,9 +45,15 @@ type GeometryPolygonHole struct {
 
 type GeometrySpline struct {
 	HasExtras
+	HasSources
 	Closed          bool
-	Sources         Sources
 	ControlVertices GeometryControlVertices
+}
+
+func NewGeometrySpline() (me *GeometrySpline) {
+	me = &GeometrySpline{}
+	me.Sources = Sources{}
+	return
 }
 
 type GeometryVertices struct {
@@ -56,11 +61,6 @@ type GeometryVertices struct {
 	HasName
 	HasExtras
 	Inputs []*Input
-}
-
-func NewGeometrySpline() (me *GeometrySpline) {
-	me = &GeometrySpline{Sources: Sources{}}
-	return
 }
 
 type GeometryDef struct {

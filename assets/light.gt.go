@@ -35,7 +35,7 @@ type LightSpot struct {
 type LightDef struct {
 	BaseDef
 	HasTechniques
-	TechniqueCommon struct {
+	TC struct {
 		Ambient     *LightAmbient
 		Directional *LightDirectional
 		Point       *LightPoint

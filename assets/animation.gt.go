@@ -7,17 +7,17 @@ type AnimationChannel struct {
 
 type AnimationSampler struct {
 	HasID
+	HasInputs
 	PreBehavior  string
 	PostBehavior string
-	Inputs       []*Input
 }
 
 type AnimationDef struct {
 	BaseDef
+	HasSources
 	AnimationDefs []*AnimationDef
 	Channels      []*AnimationChannel
 	Samplers      []*AnimationSampler
-	Sources       Sources
 }
 
 func (me *AnimationDef) Init() {

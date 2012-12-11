@@ -1,32 +1,32 @@
 package assets
 
 const (
+	FX_CREATE_FORMAT_HINT_CHANNELS_DEPTH    = 0
+	FX_CREATE_FORMAT_HINT_CHANNELS_LUM      = iota
+	FX_CREATE_FORMAT_HINT_CHANNELS_LUMA     = iota
+	FX_CREATE_FORMAT_HINT_CHANNELS_RGB      = iota
+	FX_CREATE_FORMAT_HINT_CHANNELS_RGBA     = iota
+	FX_CREATE_FORMAT_HINT_CHANNELS_RGBE     = iota
+	FX_CREATE_FORMAT_HINT_PRECISION_DEFAULT = 0
+	FX_CREATE_FORMAT_HINT_PRECISION_HIGH    = iota
+	FX_CREATE_FORMAT_HINT_PRECISION_LOW     = iota
+	FX_CREATE_FORMAT_HINT_PRECISION_MAX     = iota
+	FX_CREATE_FORMAT_HINT_PRECISION_MID     = iota
+	FX_CREATE_FORMAT_HINT_RANGE_FLOAT       = 0
+	FX_CREATE_FORMAT_HINT_RANGE_SINT        = iota
+	FX_CREATE_FORMAT_HINT_RANGE_SNORM       = iota
+	FX_CREATE_FORMAT_HINT_RANGE_UINT        = iota
+	FX_CREATE_FORMAT_HINT_RANGE_UNORM       = iota
 	FX_CUBE_FACE_NEGATIVE_X                 = 0x8516
 	FX_CUBE_FACE_NEGATIVE_Y                 = 0x8518
 	FX_CUBE_FACE_NEGATIVE_Z                 = 0x851A
 	FX_CUBE_FACE_POSITIVE_X                 = 0x8515
 	FX_CUBE_FACE_POSITIVE_Y                 = 0x8517
 	FX_CUBE_FACE_POSITIVE_Z                 = 0x8519
-	FX_CREATE_FORMAT_HINT_CHANNELS_RGB      = 0
-	FX_CREATE_FORMAT_HINT_CHANNELS_RGBA     = iota
-	FX_CREATE_FORMAT_HINT_CHANNELS_RGBE     = iota
-	FX_CREATE_FORMAT_HINT_CHANNELS_LUM      = iota
-	FX_CREATE_FORMAT_HINT_CHANNELS_LUMA     = iota
-	FX_CREATE_FORMAT_HINT_CHANNELS_DEPTH    = iota
-	FX_CREATE_FORMAT_HINT_RANGE_SNORM       = 0
-	FX_CREATE_FORMAT_HINT_RANGE_UNORM       = iota
-	FX_CREATE_FORMAT_HINT_RANGE_SINT        = iota
-	FX_CREATE_FORMAT_HINT_RANGE_UINT        = iota
-	FX_CREATE_FORMAT_HINT_RANGE_FLOAT       = iota
-	FX_CREATE_FORMAT_HINT_PRECISION_DEFAULT = 0
-	FX_CREATE_FORMAT_HINT_PRECISION_LOW     = iota
-	FX_CREATE_FORMAT_HINT_PRECISION_MID     = iota
-	FX_CREATE_FORMAT_HINT_PRECISION_HIGH    = iota
-	FX_CREATE_FORMAT_HINT_PRECISION_MAX     = iota
 )
 
 type FxCreate2D struct {
-	FxCreateCommon
+	FxCreate
 	Size struct {
 		Exact *FxCreate2DSizeExact
 		Ratio *FxCreate2DSizeRatio
@@ -47,7 +47,7 @@ type FxCreate2DSizeRatio struct {
 }
 
 type FxCreate3D struct {
-	FxCreateCommon
+	FxCreate
 	Size struct {
 		Width  uint64
 		Height uint64
@@ -62,13 +62,13 @@ type FxCreate3DInitFrom struct {
 	Depth uint64
 }
 
-type FxCreateCommon struct {
+type FxCreate struct {
 	ArrayLength uint64
 	Format      *FxCreateFormat
 }
 
 type FxCreateCube struct {
-	FxCreateCommon
+	FxCreate
 	Size struct {
 		Width uint64
 	}

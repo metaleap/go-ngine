@@ -36,9 +36,9 @@ var (
 	ShaderCompilerPlatform = "PC"
 
 	//	Conversion mode: true for strict mode, or false for lax mode.
-	//	If strict (slower), obsoleted elements and attributes are removed or rewritten so that the remaining document is strictly 1.5-conformant and will hopefully validate against the Collada 1.5 XML schema definition.
-	//	If lax (faster), obsoleted elements and attributes are not removed, for use-cases where the 1.5-based loader to consume the conversion result is known to simply ignore or discard them quietly.
-	//	Note in practice there won't be a noticeable difference in performance or output for approximately 80% of "common use-case" Collada documents.
+	//	If strict, obsoleted elements and attributes are removed or rewritten so that the remaining document is (in theory) strictly 1.5-conformant and will (ideally) validate against the Collada 1.5 XML schema definition.
+	//	If lax, obsoleted elements and attributes are not removed, for use-cases where your 1.5 loader consuming the conversion result is known to simply ignore or discard them quietly.
+	//	Note in practice there won't be any noticeable difference in performance or output for approximately 95% of "common use-case" Collada documents...
 	Strict = true
 
 	skipped       = false

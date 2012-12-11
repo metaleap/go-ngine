@@ -46,8 +46,8 @@ func NewKxArticulatedSystemEffector() (me *KxArticulatedSystemEffector) {
 
 type KxArticulatedSystemKinematics struct {
 	HasTechniques
-	Models          []*KxModelInst
-	TechniqueCommon struct {
+	Models []*KxModelInst
+	TC     struct {
 		AxisInfos []*KxArticulatedSystemKinematicsAxis
 		Frame     struct {
 			Origin KxArticulatedSystemKinematicsFrame
@@ -88,7 +88,7 @@ type KxArticulatedSystemKinematicsFrame struct {
 type KxArticulatedSystemMotion struct {
 	HasTechniques
 	ArticulatedSystem *KxArticulatedSystemInst
-	TechniqueCommon   struct {
+	TC                struct {
 		AxisInfos    []*KxArticulatedSystemMotionAxis
 		EffectorInfo []*KxArticulatedSystemEffector
 	}

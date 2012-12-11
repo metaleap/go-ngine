@@ -45,7 +45,7 @@ type PxRigidBodyDef struct {
 	BaseDef
 	HasSid
 	HasTechniques
-	TechniqueCommon PxRigidBodyCommon
+	TC PxRigidBodyCommon
 }
 
 func (me *PxRigidBodyDef) Init() {
@@ -53,11 +53,9 @@ func (me *PxRigidBodyDef) Init() {
 
 type PxRigidBodyInst struct {
 	BaseInst
-	Name   string
-	Body   string
-	Target string
+	TargetNode string
 	HasTechniques
-	TechniqueCommon struct {
+	TC struct {
 		PxRigidBodyCommon
 		AngularVelocity unum.Vec3
 		Velocity        unum.Vec3

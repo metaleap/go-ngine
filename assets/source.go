@@ -22,7 +22,7 @@ type Source struct {
 		SidRefs []string
 		Tokens  []string
 	}
-	TechniqueCommon struct {
+	TC struct {
 		Accessor *SourceAccessor
 	}
 }

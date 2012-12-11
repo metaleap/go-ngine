@@ -52,7 +52,7 @@ func libs_%s(xn *xmlx.Node) {
 		id  string
 	)
 	for _, ln := range xcns(xn, "library_%s") {
-		id = xa(ln, "id")
+		id = xas(ln, "id")
 		if lib = nga.All%sDefLibs[id]; lib == nil {
 			lib = nga.All%sDefLibs.AddNew(id)
 		}
@@ -105,7 +105,7 @@ func load_%s(xn *xmlx.Node, obj *nga.%s) {
 		ok, canDirty                         bool
 		srcLibs, srcInits, srcObjs, srcLoads string
 	)
-	has := []string{"Asset", "Extras", "FxParamDefs", "ID", "Name", "ParamDefs", "ParamInsts", "Sid", "Techniques"}
+	has := []string{"Asset", "Extras", "FxParamDefs", "ID", "Inputs", "Name", "ParamDefs", "ParamInsts", "Sid", "Sources", "Techniques"}
 	flag.Parse()
 	for n, t := range nga.Types {
 		if canDirty = false; !(strings.HasPrefix(n, "Lib") || strings.HasPrefix(n, "Mesh") || strings.HasPrefix(n, "Base") || strings.HasSuffix(n, "Base") || strings.HasPrefix(n, "Has")) {

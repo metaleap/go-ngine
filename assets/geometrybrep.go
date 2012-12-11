@@ -6,10 +6,10 @@ import (
 
 type GeometryBrep struct {
 	HasExtras
+	HasSources
 	Curves        *GeometryBrepCurves
 	SurfaceCurves *GeometryBrepSurfaceCurves
 	Surfaces      *GeometryBrepSurfaces
-	Sources       Sources
 	Vertices      *GeometryVertices
 	Edges         *GeometryBrepEdges
 	Wires         *GeometryBrepWires
@@ -20,7 +20,8 @@ type GeometryBrep struct {
 }
 
 func NewGeometryBrep() (me *GeometryBrep) {
-	me = &GeometryBrep{Sources: Sources{}}
+	me = &GeometryBrep{}
+	me.Sources = Sources{}
 	return
 }
 
@@ -75,9 +76,7 @@ type GeometryBrepEdges struct {
 	HasID
 	HasName
 	HasExtras
-	Count   uint64
-	Indices []int64
-	Inputs  []*InputShared
+	IndexedInputs
 }
 
 type GeometryBrepEllipse struct {
@@ -89,7 +88,7 @@ type GeometryBrepFaces struct {
 	HasID
 	HasName
 	HasExtras
-	IndexedInputs
+	IndexedInputsV
 }
 
 type GeometryBrepHyperbola struct {
@@ -105,29 +104,31 @@ type GeometryBrepLine struct {
 
 type GeometryBrepNurbs struct {
 	HasExtras
+	HasSources
 	Degree          uint64
 	Closed          bool
 	ControlVertices GeometryControlVertices
-	Sources         Sources
 }
 
 func NewGeometryBrepNurbs() (me *GeometryBrepNurbs) {
-	me = &GeometryBrepNurbs{Sources: Sources{}}
+	me = &GeometryBrepNurbs{}
+	me.Sources = Sources{}
 	return
 }
 
 type GeometryBrepNurbsSurface struct {
 	HasExtras
+	HasSources
 	U, V struct {
 		Degree uint64
 		Closed bool
 	}
 	ControlVertices GeometryControlVertices
-	Sources         Sources
 }
 
 func NewGeometryBrepNurbsSurface() (me *GeometryBrepNurbsSurface) {
-	me = &GeometryBrepNurbsSurface{Sources: Sources{}}
+	me = &GeometryBrepNurbsSurface{}
+	me.Sources = Sources{}
 	return
 }
 
@@ -145,7 +146,7 @@ type GeometryBrepPcurves struct {
 	HasID
 	HasName
 	HasExtras
-	IndexedInputs
+	IndexedInputsV
 }
 
 type GeometryBrepPlane struct {
@@ -157,14 +158,14 @@ type GeometryBrepShells struct {
 	HasID
 	HasName
 	HasExtras
-	IndexedInputs
+	IndexedInputsV
 }
 
 type GeometryBrepSolids struct {
 	HasID
 	HasName
 	HasExtras
-	IndexedInputs
+	IndexedInputsV
 }
 
 type GeometryBrepSphere struct {
@@ -217,5 +218,5 @@ type GeometryBrepWires struct {
 	HasID
 	HasName
 	HasExtras
-	IndexedInputs
+	IndexedInputsV
 }

@@ -20,7 +20,7 @@ type KxLink struct {
 type KxModelDef struct {
 	BaseDef
 	HasTechniques
-	TechniqueCommon struct {
+	TC struct {
 		HasParamDefs
 		Links    []*KxLink
 		Formulas struct {
@@ -31,7 +31,7 @@ type KxModelDef struct {
 }
 
 func (me *KxModelDef) Init() {
-	me.TechniqueCommon.NewParams = ParamDefs{}
+	me.TC.NewParams = ParamDefs{}
 }
 
 type KxModelInst struct {

@@ -3,9 +3,9 @@ package assets
 type PxSceneDef struct {
 	BaseDef
 	HasTechniques
-	ForceFields     []*PxForceFieldInst
-	Models          []*PxModelInst
-	TechniqueCommon struct {
+	ForceFields []*PxForceFieldInst
+	Models      []*PxModelInst
+	TC          struct {
 		Gravity  *ScopedVec3
 		TimeStep *ScopedFloat
 	}

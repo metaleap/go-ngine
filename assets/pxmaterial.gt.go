@@ -3,7 +3,7 @@ package assets
 type PxMaterialDef struct {
 	BaseDef
 	HasTechniques
-	TechniqueCommon struct {
+	TC struct {
 		DynamicFriction ScopedFloat
 		Restitution     ScopedFloat
 		StaticFriction  ScopedFloat

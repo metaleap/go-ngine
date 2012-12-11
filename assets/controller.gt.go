@@ -1,33 +1,34 @@
 package assets
 
+type ControllerInputs struct {
+	HasExtras
+	HasInputs
+}
+
 type ControllerMorph struct {
+	HasSources
 	Relative bool
 	Source   string
-	Sources  Sources
-	Targets  struct {
-		HasExtras
-		Inputs []*Input
-	}
+	Targets  ControllerInputs
 }
 
 func NewControllerMorph() (me *ControllerMorph) {
-	me = &ControllerMorph{Sources: Sources{}}
+	me = &ControllerMorph{}
+	me.Sources = Sources{}
 	return
 }
 
 type ControllerSkin struct {
+	HasSources
 	Source          string
 	BindShapeMatrix *Float4x4
-	Sources         Sources
-	Joints          struct {
-		HasExtras
-		Inputs []*Input
-	}
-	VertexWeights IndexedInputs
+	Joints          ControllerInputs
+	VertexWeights   IndexedInputsV
 }
 
 func NewControllerSkin() (me *ControllerSkin) {
-	me = &ControllerSkin{Sources: Sources{}}
+	me = &ControllerSkin{}
+	me.Sources = Sources{}
 	return
 }
 

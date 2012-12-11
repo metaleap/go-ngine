@@ -26,6 +26,10 @@ type HasID struct {
 	ID string
 }
 
+type HasInputs struct {
+	Inputs []*Input
+}
+
 type HasName struct {
 	//	The optional pretty-print name/title of this *Def*, *Inst* or *Lib*.
 	Name string
@@ -44,21 +48,35 @@ type HasSid struct {
 	Sid string
 }
 
+type HasSources struct {
+	Sources Sources
+}
+
 type HasTechniques struct {
 	Techniques []*Technique
 }
 
 type Asset struct {
 	HasExtras
-	Created      string
-	Modified     string
-	Keywords     string
-	Revision     string
-	Subject      string
-	Title        string
-	UpAxis       string
+	Created  string
+	Modified string
+	Keywords string
+	Revision string
+	Subject  string
+	Title    string
+	UpAxis   string
+	Unit     struct {
+		Meter float64
+		Name  string
+	}
 	Contributors []*AssetContributor
 	Coverage     *AssetGeographicLocation
+}
+
+func NewAsset() (me *Asset) {
+	me = &Asset{}
+	me.Unit.Meter, me.Unit.Name = 1, "meter"
+	return
 }
 
 type AssetContributor struct {
@@ -81,9 +99,9 @@ type AssetGeographicLocation struct {
 type BindMaterial struct {
 	HasExtras
 	HasTechniques
-	Params          []*Param
-	TechniqueCommon struct {
-		MaterialInsts []*FxMaterialInst
+	Params []*Param
+	TC     struct {
+		Materials []*FxMaterialInst
 	}
 }
 
@@ -98,8 +116,12 @@ type Extra struct {
 type IndexedInputs struct {
 	Count   uint64
 	Inputs  []*InputShared
-	Vcount  []int64
 	Indices []int64
+}
+
+type IndexedInputsV struct {
+	IndexedInputs
+	Vcount []int64
 }
 
 type Input struct {
@@ -110,7 +132,7 @@ type Input struct {
 type InputShared struct {
 	Input
 	Offset uint64
-	Set    uint64
+	Set    *uint64
 }
 
 type Layers map[string]bool
