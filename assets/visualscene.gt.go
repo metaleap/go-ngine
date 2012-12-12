@@ -3,8 +3,8 @@ package assets
 type VisualSceneEvaluation struct {
 	BaseDef
 	HasSid
-	Disabled       bool
-	RenderFxPasses []*VisualSceneRendering
+	Disabled     bool
+	RenderPasses []*VisualSceneRendering
 }
 
 type VisualSceneRendering struct {
@@ -23,7 +23,7 @@ func NewVisualSceneRendering() (me *VisualSceneRendering) {
 
 type VisualSceneRenderingMaterialInst struct {
 	HasExtras
-	Bindings          []*FxMaterialInstBind
+	Bindings          []*FxMaterialBinding
 	OverrideTechnique struct {
 		Ref  string
 		Pass string

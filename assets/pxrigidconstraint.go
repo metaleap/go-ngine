@@ -24,7 +24,7 @@ type PxRigidConstraintDef struct {
 	RefAttachment PxRigidConstraintAttachment
 	Attachment    PxRigidConstraintAttachment
 	TC            struct {
-		Disabled       ScopedBool
+		Enabled        ScopedBool
 		Interpenetrate ScopedBool
 		Limits         struct {
 			SwingConeAndTwist *PxRigidConstraintLimit
@@ -38,6 +38,7 @@ type PxRigidConstraintDef struct {
 }
 
 func (me *PxRigidConstraintDef) Init() {
+	me.TC.Enabled.B = true
 }
 
 type PxRigidConstraintInst struct {

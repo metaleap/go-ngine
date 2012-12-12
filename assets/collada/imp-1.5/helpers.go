@@ -43,6 +43,62 @@ func arr_Ints(xn *xmlx.Node, l int, s func(int, int64)) {
 	}
 }
 
+func arr_Uints(xn *xmlx.Node, l int, s func(int, uint64)) {
+	for i, n := range list_Uints(xn) {
+		if i >= l {
+			break
+		}
+		s(i, n)
+	}
+}
+
+func get_CubeFace(xn *xmlx.Node) (cf int) {
+	switch strings.ToUpper(xas(xn, "face")) {
+	case "NEGATIVE_X":
+		cf = nga.FX_CUBE_FACE_NEGATIVE_X
+	case "POSITIVE_Y":
+		cf = nga.FX_CUBE_FACE_POSITIVE_Y
+	case "NEGATIVE_Y":
+		cf = nga.FX_CUBE_FACE_NEGATIVE_Y
+	case "POSITIVE_Z":
+		cf = nga.FX_CUBE_FACE_POSITIVE_Z
+	case "NEGATIVE_Z":
+		cf = nga.FX_CUBE_FACE_NEGATIVE_Z
+	default:
+		cf = nga.FX_CUBE_FACE_POSITIVE_X
+	}
+	return
+}
+
+func get_LightColor(xn *xmlx.Node, oc *nga.Float3) {
+	if c := obj_Float3(xn, "color"); c != nil {
+		*oc = *c
+	}
+}
+
+func get_ParamRef(xn *xmlx.Node, name string) (v string) {
+	if len(name) > 0 {
+		xn = xcn(xn, name)
+	}
+	if xn != nil {
+		if v = xas(xn, "ref"); len(v) == 0 {
+			v = xn.Value
+		}
+	}
+	return
+}
+
+func get_Transforms(xn *xmlx.Node) (ts []*nga.Transform) {
+	for _, cn := range xn.Children {
+		if cn.Type == xmlx.NT_ELEMENT {
+			if t := obj_Transform(cn, ""); (t != nil) && (t.Type > 0) {
+				ts = append(ts, t)
+			}
+		}
+	}
+	return
+}
+
 func has_Asset(xn *xmlx.Node, obj *nga.HasAsset) {
 	obj.Asset = obj_Asset(xn, "asset")
 }
@@ -157,6 +213,17 @@ func list_StringsN(xn *xmlx.Node, name string) (sl []string) {
 	return
 }
 
+func list_Uints(xn *xmlx.Node) (sl []uint64) {
+	var v xsdt.UnsignedLong
+	vals := xsdt.ListValues(xn.Value)
+	sl = make([]uint64, len(vals))
+	for i, s := range vals {
+		v.Set(s)
+		sl[i] = v.N()
+	}
+	return
+}
+
 func listcn_Bools(xn *xmlx.Node, name string) (sl []bool) {
 	if cn := xcn(xn, name); cn != nil {
 		sl = list_Bools(cn)
@@ -181,6 +248,13 @@ func listcn_Ints(xn *xmlx.Node, name string) (sl []int64) {
 func listcn_Strings(xn *xmlx.Node, name string) (sl []string) {
 	if cn := xcn(xn, name); cn != nil {
 		sl = list_Strings(cn)
+	}
+	return
+}
+
+func listcn_Uints(xn *xmlx.Node, name string) (sl []uint64) {
+	if cn := xcn(xn, name); cn != nil {
+		sl = list_Uints(cn)
 	}
 	return
 }
@@ -271,6 +345,16 @@ func xb(xn *xmlx.Node, name string) bool {
 	return xn.B(xmlns, name) || xn.B("", name) || xn.B("*", name)
 }
 
+func xbp(xn *xmlx.Node, name string) (v *bool) {
+	for _, cn := range xn.Children {
+		if cn.Name.Local == name {
+			*v = xb(xn, name)
+			return
+		}
+	}
+	return
+}
+
 func xcn(xn *xmlx.Node, name string) (cn *xmlx.Node) {
 	if cn = xn.SelectNode(xmlns, name); cn == nil {
 		if cn = xn.SelectNode("", name); cn == nil {
@@ -316,12 +400,40 @@ func xf64(xn *xmlx.Node, name string) (v float64) {
 	return
 }
 
+func xf64p(xn *xmlx.Node, name string) (v *float64) {
+	for _, cn := range xn.Children {
+		if cn.Name.Local == name {
+			*v = xf64(xn, name)
+			return
+		}
+	}
+	return
+}
+
 func xi64(xn *xmlx.Node, name string) (v int64) {
 	if v = xn.I64(xmlns, name); v == 0 {
 		if v = xn.I64("", name); v == 0 {
 			v = xn.I64("*", name)
 		}
 	}
+	return
+}
+
+func xi64p(xn *xmlx.Node, name string) (v *int64) {
+	for _, cn := range xn.Children {
+		if cn.Name.Local == name {
+			*v = xi64(xn, name)
+			return
+		}
+	}
+	return
+}
+
+func xm4(xn *xmlx.Node, name string) (mat *unum.Mat4) {
+	mat = unum.NewMat4Identity()
+	arr_Floats(xn, 16, func(i int, f float64) {
+		mat[i] = f
+	})
 	return
 }
 

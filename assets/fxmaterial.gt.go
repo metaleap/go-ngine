@@ -10,20 +10,20 @@ func (me *FxMaterialDef) Init() {
 
 type FxMaterialInst struct {
 	BaseInst
-	Symbol           string
-	Binds            []*FxMaterialInstBind
-	BindVertexInputs []*FxMaterialInstBindVertexInput
+	Symbol              string
+	Bindings            []*FxMaterialBinding
+	VertexInputBindings []*FxVertexInputBinding
 }
 
 func (me *FxMaterialInst) Init() {
 }
 
-type FxMaterialInstBind struct {
+type FxMaterialBinding struct {
 	Semantic string
 	Target   string
 }
 
-type FxMaterialInstBindVertexInput struct {
+type FxVertexInputBinding struct {
 	Semantic      string
 	InputSemantic string
 	InputSet      *uint64

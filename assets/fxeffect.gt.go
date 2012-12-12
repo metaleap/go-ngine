@@ -91,6 +91,11 @@ type FxPassEvaluationTarget struct {
 	Image           *FxImageInst
 }
 
+func NewFxPassEvaluationTarget() (me *FxPassEvaluationTarget) {
+	me = &FxPassEvaluationTarget{Index: 1}
+	return
+}
+
 type FxPassProgram struct {
 	BindAttributes []*FxPassProgramBindAttribute
 	BindUniforms   []*FxPassProgramBindUniform
@@ -208,6 +213,7 @@ type FxTechniqueGlsl struct {
 }
 
 type FxTexture struct {
+	HasExtras
 	Sampler2D string
 	TexCoord  string
 }

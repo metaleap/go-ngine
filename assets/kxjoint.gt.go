@@ -1,7 +1,7 @@
 package assets
 
 const (
-	KX_JOINT_TYPE_PRISMATIC = 0
+	KX_JOINT_TYPE_PRISMATIC = 1
 	KX_JOINT_TYPE_REVOLUTE  = iota
 )
 

@@ -7,14 +7,14 @@ import (
 type GeometryBrep struct {
 	HasExtras
 	HasSources
+	Vertices      GeometryVertices
 	Curves        *GeometryBrepCurves
 	SurfaceCurves *GeometryBrepSurfaceCurves
 	Surfaces      *GeometryBrepSurfaces
-	Vertices      *GeometryVertices
 	Edges         *GeometryBrepEdges
 	Wires         *GeometryBrepWires
 	Faces         *GeometryBrepFaces
-	Pcurves       *GeometryBrepCurves
+	Pcurves       *GeometryBrepPcurves
 	Shells        *GeometryBrepShells
 	Solids        *GeometryBrepSolids
 }

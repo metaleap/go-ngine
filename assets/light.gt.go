@@ -5,9 +5,9 @@ type LightAmbient struct {
 }
 
 type LightAttenuation struct {
-	Constant  *ScopedFloat
-	Linear    *ScopedFloat
-	Quadratic *ScopedFloat
+	Constant  ScopedFloat
+	Linear    ScopedFloat
+	Quadratic ScopedFloat
 }
 
 type LightBase struct {
@@ -27,9 +27,15 @@ type LightSpot struct {
 	LightBase
 	Attenuation LightAttenuation
 	Falloff     struct {
-		Angle    *ScopedFloat
-		Exponent *ScopedFloat
+		Angle    ScopedFloat
+		Exponent ScopedFloat
 	}
+}
+
+func NewLightSpot() (me *LightSpot) {
+	me = &LightSpot{}
+	me.Falloff.Angle.F = 180
+	return
 }
 
 type LightDef struct {

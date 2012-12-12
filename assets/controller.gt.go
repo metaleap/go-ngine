@@ -1,5 +1,9 @@
 package assets
 
+import (
+	unum "github.com/metaleap/go-util/num"
+)
+
 type ControllerInputs struct {
 	HasExtras
 	HasInputs
@@ -20,14 +24,15 @@ func NewControllerMorph() (me *ControllerMorph) {
 
 type ControllerSkin struct {
 	HasSources
-	Source          string
-	BindShapeMatrix *Float4x4
-	Joints          ControllerInputs
+	BindShapeMatrix unum.Mat4
 	VertexWeights   IndexedInputsV
+	Joints          ControllerInputs
+	Source          string
 }
 
 func NewControllerSkin() (me *ControllerSkin) {
 	me = &ControllerSkin{}
+	me.BindShapeMatrix.Identity()
 	me.Sources = Sources{}
 	return
 }

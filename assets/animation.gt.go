@@ -1,5 +1,14 @@
 package assets
 
+const (
+	ANIM_SAMPLER_BEHAVIOR_UNDEFINED      = 0
+	ANIM_SAMPLER_BEHAVIOR_CONSTANT       = iota
+	ANIM_SAMPLER_BEHAVIOR_CYCLE          = iota
+	ANIM_SAMPLER_BEHAVIOR_CYCLE_RELATIVE = iota
+	ANIM_SAMPLER_BEHAVIOR_GRADIENT       = iota
+	ANIM_SAMPLER_BEHAVIOR_OSCILLATE      = iota
+)
+
 type AnimationChannel struct {
 	Source string
 	Target string
@@ -8,8 +17,8 @@ type AnimationChannel struct {
 type AnimationSampler struct {
 	HasID
 	HasInputs
-	PreBehavior  string
-	PostBehavior string
+	PreBehavior  int
+	PostBehavior int
 }
 
 type AnimationDef struct {

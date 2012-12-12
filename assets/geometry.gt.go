@@ -12,7 +12,7 @@ const (
 
 type GeometryControlVertices struct {
 	HasExtras
-	Inputs []*Input
+	HasInputs
 }
 
 type GeometryMesh struct {
@@ -39,7 +39,7 @@ type GeometryPrimitives struct {
 }
 
 type GeometryPolygonHole struct {
-	Indices []int64
+	Indices []uint64
 	Holes   [][]uint64
 }
 
@@ -60,7 +60,7 @@ type GeometryVertices struct {
 	HasID
 	HasName
 	HasExtras
-	Inputs []*Input
+	HasInputs
 }
 
 type GeometryDef struct {

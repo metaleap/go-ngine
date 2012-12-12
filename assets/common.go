@@ -1,7 +1,11 @@
 package assets
 
+import (
+	xmlx "github.com/jteeuwen/go-pkg-xmlx"
+)
+
 const (
-	TRANSFORM_TYPE_LOOKAT    = 0
+	TRANSFORM_TYPE_LOOKAT    = 1
 	TRANSFORM_TYPE_MATRIX    = iota
 	TRANSFORM_TYPE_ROTATE    = iota
 	TRANSFORM_TYPE_SKEW      = iota
@@ -116,7 +120,7 @@ type Extra struct {
 type IndexedInputs struct {
 	Count   uint64
 	Inputs  []*InputShared
-	Indices []int64
+	Indices []uint64
 }
 
 type IndexedInputsV struct {
@@ -152,13 +156,14 @@ type ParamDef struct {
 type ParamDefs map[string]*ParamDef
 
 type ParamInst struct {
-	Ref   string
-	Value interface{}
+	Ref               string
+	IsConnectParamRef bool
+	Value             interface{}
 }
 
 type Technique struct {
 	Profile string
-	Data    interface{}
+	Data    []*xmlx.Node
 }
 
 type Transform struct {

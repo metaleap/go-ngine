@@ -1,5 +1,9 @@
 package assets
 
+import (
+	xmlx "github.com/jteeuwen/go-pkg-xmlx"
+)
+
 type FormulaDef struct {
 	BaseDef
 	HasSid
@@ -7,7 +11,7 @@ type FormulaDef struct {
 	HasTechniques
 	Target ParamFloat
 	TC     struct {
-		Formula interface{}
+		MathML []*xmlx.Node
 	}
 }
 

@@ -11,7 +11,7 @@ type PxCylinder struct {
 
 type PxShape struct {
 	HasExtras
-	Hollow   *ScopedBool
+	Hollow   ScopedBool
 	Mass     *ScopedFloat
 	Density  *ScopedFloat
 	Material struct {
@@ -30,7 +30,7 @@ type PxShape struct {
 }
 
 type PxRigidBodyCommon struct {
-	Dynamic   *ScopedBool
+	Dynamic   ScopedBool
 	Mass      *ScopedFloat
 	MassFrame []*Transform
 	Inertia   *ScopedFloat3

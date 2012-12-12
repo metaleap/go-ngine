@@ -8,14 +8,9 @@ const (
 )
 
 type KxBind struct {
-	Symbol string
-	Value  struct {
-		ParamRef string
-		F        *float64
-		I        *int64
-		B        *bool
-		SidRef   string
-	}
+	Symbol   string
+	ParamRef string
+	Value    interface{}
 }
 
 type KxArticulatedSystemAxisIndex struct {
@@ -36,6 +31,8 @@ type KxArticulatedSystemEffector struct {
 	Bindings     []*KxBind
 	Speed        *ParamFloat2
 	Acceleration *ParamFloat2
+	Deceleration *ParamFloat2
+	Jerk         *ParamFloat2
 }
 
 func NewKxArticulatedSystemEffector() (me *KxArticulatedSystemEffector) {
@@ -89,8 +86,8 @@ type KxArticulatedSystemMotion struct {
 	HasTechniques
 	ArticulatedSystem *KxArticulatedSystemInst
 	TC                struct {
-		AxisInfos    []*KxArticulatedSystemMotionAxis
-		EffectorInfo []*KxArticulatedSystemEffector
+		AxisInfos     []*KxArticulatedSystemMotionAxis
+		EffectorInfos []*KxArticulatedSystemEffector
 	}
 }
 
