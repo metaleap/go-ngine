@@ -41,7 +41,7 @@ func (me *KxJointInst) Init() {
 
 func newKxJointDef(id string) (me *KxJointDef) {
 	me = &KxJointDef{}
-	me.ID = id
+	me.Id = id
 	me.Base.init()
 	me.Init()
 	return
@@ -57,7 +57,7 @@ func (me *KxJointDef) NewInst(id string) (inst *KxJointInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibKxJointDefs* libraries associated by their *ID*.
+	//	A *map* collection that contains *LibKxJointDefs* libraries associated by their *Id*.
 	AllKxJointDefLibs = LibsKxJointDef{}
 
 	//	The "default" *LibKxJointDefs* library for *KxJointDef*s.
@@ -73,12 +73,12 @@ func init() {
 }
 
 //	The underlying type of the global *AllKxJointDefLibs* variable: a *map* collection that contains
-//	*LibKxJointDefs* libraries associated by their *ID*.
+//	*LibKxJointDefs* libraries associated by their *Id*.
 type LibsKxJointDef map[string]*LibKxJointDefs
 
-//	Creates a new *LibKxJointDefs* library with the specified *ID*, adds it to this *LibsKxJointDef*, and returns it.
+//	Creates a new *LibKxJointDefs* library with the specified *Id*, adds it to this *LibsKxJointDef*, and returns it.
 //	
-//	If this *LibsKxJointDef* already contains a *LibKxJointDefs* library with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibsKxJointDef* already contains a *LibKxJointDefs* library with the specified *Id*, does nothing and returns *nil*.
 func (me LibsKxJointDef) AddNew(id string) (lib *LibKxJointDefs) {
 	if me[id] != nil {
 		return
@@ -93,7 +93,7 @@ func (me LibsKxJointDef) new(id string) (lib *LibKxJointDefs) {
 	return
 }
 
-//	A library that contains *KxJointDef*s associated by their *ID*. To create a new *LibKxJointDefs* library, ONLY
+//	A library that contains *KxJointDef*s associated by their *Id*. To create a new *LibKxJointDefs* library, ONLY
 //	use the *LibsKxJointDef.New()* or *LibsKxJointDef.AddNew()* methods.
 type LibKxJointDefs struct {
 	BaseLib
@@ -104,30 +104,30 @@ type LibKxJointDefs struct {
 
 func newLibKxJointDefs(id string) (me *LibKxJointDefs) {
 	me = &LibKxJointDefs{M: map[string]*KxJointDef{}}
-	me.ID = id
+	me.Id = id
 	return
 }
 
 //	Adds the specified *KxJointDef* definition to this *LibKxJointDefs*, and returns it.
 //	
-//	If this *LibKxJointDefs* already contains a *KxJointDef* definition with the same *ID*, does nothing and returns *nil*.
+//	If this *LibKxJointDefs* already contains a *KxJointDef* definition with the same *Id*, does nothing and returns *nil*.
 func (me *LibKxJointDefs) Add(d *KxJointDef) (n *KxJointDef) {
-	if me.M[d.ID] == nil {
-		n, me.M[d.ID] = d, d
+	if me.M[d.Id] == nil {
+		n, me.M[d.Id] = d, d
 		me.SetDirty()
 	}
 	return
 }
 
-//	Creates a new *KxJointDef* definition with the specified *ID*, adds it to this *LibKxJointDefs*, and returns it.
+//	Creates a new *KxJointDef* definition with the specified *Id*, adds it to this *LibKxJointDefs*, and returns it.
 //	
-//	If this *LibKxJointDefs* already contains a *KxJointDef* definition with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibKxJointDefs* already contains a *KxJointDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibKxJointDefs) AddNew(id string) *KxJointDef { return me.Add(me.New(id)) }
 
-//	Creates a new *KxJointDef* definition with the specified *ID* and returns it, but does not add it to this *LibKxJointDefs*.
+//	Creates a new *KxJointDef* definition with the specified *Id* and returns it, but does not add it to this *LibKxJointDefs*.
 func (me *LibKxJointDefs) New(id string) (def *KxJointDef) { def = newKxJointDef(id); return }
 
-//	Removes the *KxJointDef* with the specified *ID* from this *LibKxJointDefs*.
+//	Removes the *KxJointDef* with the specified *Id* from this *LibKxJointDefs*.
 func (me *LibKxJointDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 //	Signals to *core* (or your custom package) that changes have been made to this *LibKxJointDefs* that need to be picked up.

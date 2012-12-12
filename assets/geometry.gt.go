@@ -57,7 +57,7 @@ func NewGeometrySpline() (me *GeometrySpline) {
 }
 
 type GeometryVertices struct {
-	HasID
+	HasId
 	HasName
 	HasExtras
 	HasInputs
@@ -85,7 +85,7 @@ func (me *GeometryInst) Init() {
 
 func newGeometryDef(id string) (me *GeometryDef) {
 	me = &GeometryDef{}
-	me.ID = id
+	me.Id = id
 	me.Base.init()
 	me.Init()
 	return
@@ -101,7 +101,7 @@ func (me *GeometryDef) NewInst(id string) (inst *GeometryInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibGeometryDefs* libraries associated by their *ID*.
+	//	A *map* collection that contains *LibGeometryDefs* libraries associated by their *Id*.
 	AllGeometryDefLibs = LibsGeometryDef{}
 
 	//	The "default" *LibGeometryDefs* library for *GeometryDef*s.
@@ -117,12 +117,12 @@ func init() {
 }
 
 //	The underlying type of the global *AllGeometryDefLibs* variable: a *map* collection that contains
-//	*LibGeometryDefs* libraries associated by their *ID*.
+//	*LibGeometryDefs* libraries associated by their *Id*.
 type LibsGeometryDef map[string]*LibGeometryDefs
 
-//	Creates a new *LibGeometryDefs* library with the specified *ID*, adds it to this *LibsGeometryDef*, and returns it.
+//	Creates a new *LibGeometryDefs* library with the specified *Id*, adds it to this *LibsGeometryDef*, and returns it.
 //	
-//	If this *LibsGeometryDef* already contains a *LibGeometryDefs* library with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibsGeometryDef* already contains a *LibGeometryDefs* library with the specified *Id*, does nothing and returns *nil*.
 func (me LibsGeometryDef) AddNew(id string) (lib *LibGeometryDefs) {
 	if me[id] != nil {
 		return
@@ -137,7 +137,7 @@ func (me LibsGeometryDef) new(id string) (lib *LibGeometryDefs) {
 	return
 }
 
-//	A library that contains *GeometryDef*s associated by their *ID*. To create a new *LibGeometryDefs* library, ONLY
+//	A library that contains *GeometryDef*s associated by their *Id*. To create a new *LibGeometryDefs* library, ONLY
 //	use the *LibsGeometryDef.New()* or *LibsGeometryDef.AddNew()* methods.
 type LibGeometryDefs struct {
 	BaseLib
@@ -148,30 +148,30 @@ type LibGeometryDefs struct {
 
 func newLibGeometryDefs(id string) (me *LibGeometryDefs) {
 	me = &LibGeometryDefs{M: map[string]*GeometryDef{}}
-	me.ID = id
+	me.Id = id
 	return
 }
 
 //	Adds the specified *GeometryDef* definition to this *LibGeometryDefs*, and returns it.
 //	
-//	If this *LibGeometryDefs* already contains a *GeometryDef* definition with the same *ID*, does nothing and returns *nil*.
+//	If this *LibGeometryDefs* already contains a *GeometryDef* definition with the same *Id*, does nothing and returns *nil*.
 func (me *LibGeometryDefs) Add(d *GeometryDef) (n *GeometryDef) {
-	if me.M[d.ID] == nil {
-		n, me.M[d.ID] = d, d
+	if me.M[d.Id] == nil {
+		n, me.M[d.Id] = d, d
 		me.SetDirty()
 	}
 	return
 }
 
-//	Creates a new *GeometryDef* definition with the specified *ID*, adds it to this *LibGeometryDefs*, and returns it.
+//	Creates a new *GeometryDef* definition with the specified *Id*, adds it to this *LibGeometryDefs*, and returns it.
 //	
-//	If this *LibGeometryDefs* already contains a *GeometryDef* definition with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibGeometryDefs* already contains a *GeometryDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibGeometryDefs) AddNew(id string) *GeometryDef { return me.Add(me.New(id)) }
 
-//	Creates a new *GeometryDef* definition with the specified *ID* and returns it, but does not add it to this *LibGeometryDefs*.
+//	Creates a new *GeometryDef* definition with the specified *Id* and returns it, but does not add it to this *LibGeometryDefs*.
 func (me *LibGeometryDefs) New(id string) (def *GeometryDef) { def = newGeometryDef(id); return }
 
-//	Removes the *GeometryDef* with the specified *ID* from this *LibGeometryDefs*.
+//	Removes the *GeometryDef* with the specified *Id* from this *LibGeometryDefs*.
 func (me *LibGeometryDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 //	Signals to *core* (or your custom package) that changes have been made to this *LibGeometryDefs* that need to be picked up.

@@ -156,7 +156,7 @@ func (me *LibFxImageDefs) AddFromRefUrls(idRefUrls map[string]string) {
 
 func newFxImageDef(id string) (me *FxImageDef) {
 	me = &FxImageDef{}
-	me.ID = id
+	me.Id = id
 	me.Base.init()
 	me.Init()
 	return
@@ -172,7 +172,7 @@ func (me *FxImageDef) NewInst(id string) (inst *FxImageInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibFxImageDefs* libraries associated by their *ID*.
+	//	A *map* collection that contains *LibFxImageDefs* libraries associated by their *Id*.
 	AllFxImageDefLibs = LibsFxImageDef{}
 
 	//	The "default" *LibFxImageDefs* library for *FxImageDef*s.
@@ -188,12 +188,12 @@ func init() {
 }
 
 //	The underlying type of the global *AllFxImageDefLibs* variable: a *map* collection that contains
-//	*LibFxImageDefs* libraries associated by their *ID*.
+//	*LibFxImageDefs* libraries associated by their *Id*.
 type LibsFxImageDef map[string]*LibFxImageDefs
 
-//	Creates a new *LibFxImageDefs* library with the specified *ID*, adds it to this *LibsFxImageDef*, and returns it.
+//	Creates a new *LibFxImageDefs* library with the specified *Id*, adds it to this *LibsFxImageDef*, and returns it.
 //	
-//	If this *LibsFxImageDef* already contains a *LibFxImageDefs* library with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibsFxImageDef* already contains a *LibFxImageDefs* library with the specified *Id*, does nothing and returns *nil*.
 func (me LibsFxImageDef) AddNew(id string) (lib *LibFxImageDefs) {
 	if me[id] != nil {
 		return
@@ -208,7 +208,7 @@ func (me LibsFxImageDef) new(id string) (lib *LibFxImageDefs) {
 	return
 }
 
-//	A library that contains *FxImageDef*s associated by their *ID*. To create a new *LibFxImageDefs* library, ONLY
+//	A library that contains *FxImageDef*s associated by their *Id*. To create a new *LibFxImageDefs* library, ONLY
 //	use the *LibsFxImageDef.New()* or *LibsFxImageDef.AddNew()* methods.
 type LibFxImageDefs struct {
 	BaseLib
@@ -219,30 +219,30 @@ type LibFxImageDefs struct {
 
 func newLibFxImageDefs(id string) (me *LibFxImageDefs) {
 	me = &LibFxImageDefs{M: map[string]*FxImageDef{}}
-	me.ID = id
+	me.Id = id
 	return
 }
 
 //	Adds the specified *FxImageDef* definition to this *LibFxImageDefs*, and returns it.
 //	
-//	If this *LibFxImageDefs* already contains a *FxImageDef* definition with the same *ID*, does nothing and returns *nil*.
+//	If this *LibFxImageDefs* already contains a *FxImageDef* definition with the same *Id*, does nothing and returns *nil*.
 func (me *LibFxImageDefs) Add(d *FxImageDef) (n *FxImageDef) {
-	if me.M[d.ID] == nil {
-		n, me.M[d.ID] = d, d
+	if me.M[d.Id] == nil {
+		n, me.M[d.Id] = d, d
 		me.SetDirty()
 	}
 	return
 }
 
-//	Creates a new *FxImageDef* definition with the specified *ID*, adds it to this *LibFxImageDefs*, and returns it.
+//	Creates a new *FxImageDef* definition with the specified *Id*, adds it to this *LibFxImageDefs*, and returns it.
 //	
-//	If this *LibFxImageDefs* already contains a *FxImageDef* definition with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibFxImageDefs* already contains a *FxImageDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibFxImageDefs) AddNew(id string) *FxImageDef { return me.Add(me.New(id)) }
 
-//	Creates a new *FxImageDef* definition with the specified *ID* and returns it, but does not add it to this *LibFxImageDefs*.
+//	Creates a new *FxImageDef* definition with the specified *Id* and returns it, but does not add it to this *LibFxImageDefs*.
 func (me *LibFxImageDefs) New(id string) (def *FxImageDef) { def = newFxImageDef(id); return }
 
-//	Removes the *FxImageDef* with the specified *ID* from this *LibFxImageDefs*.
+//	Removes the *FxImageDef* with the specified *Id* from this *LibFxImageDefs*.
 func (me *LibFxImageDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 //	Signals to *core* (or your custom package) that changes have been made to this *LibFxImageDefs* that need to be picked up.

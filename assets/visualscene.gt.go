@@ -50,7 +50,7 @@ func (me *VisualSceneInst) Init() {
 
 func newVisualSceneDef(id string) (me *VisualSceneDef) {
 	me = &VisualSceneDef{}
-	me.ID = id
+	me.Id = id
 	me.Base.init()
 	me.Init()
 	return
@@ -66,7 +66,7 @@ func (me *VisualSceneDef) NewInst(id string) (inst *VisualSceneInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibVisualSceneDefs* libraries associated by their *ID*.
+	//	A *map* collection that contains *LibVisualSceneDefs* libraries associated by their *Id*.
 	AllVisualSceneDefLibs = LibsVisualSceneDef{}
 
 	//	The "default" *LibVisualSceneDefs* library for *VisualSceneDef*s.
@@ -82,12 +82,12 @@ func init() {
 }
 
 //	The underlying type of the global *AllVisualSceneDefLibs* variable: a *map* collection that contains
-//	*LibVisualSceneDefs* libraries associated by their *ID*.
+//	*LibVisualSceneDefs* libraries associated by their *Id*.
 type LibsVisualSceneDef map[string]*LibVisualSceneDefs
 
-//	Creates a new *LibVisualSceneDefs* library with the specified *ID*, adds it to this *LibsVisualSceneDef*, and returns it.
+//	Creates a new *LibVisualSceneDefs* library with the specified *Id*, adds it to this *LibsVisualSceneDef*, and returns it.
 //	
-//	If this *LibsVisualSceneDef* already contains a *LibVisualSceneDefs* library with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibsVisualSceneDef* already contains a *LibVisualSceneDefs* library with the specified *Id*, does nothing and returns *nil*.
 func (me LibsVisualSceneDef) AddNew(id string) (lib *LibVisualSceneDefs) {
 	if me[id] != nil {
 		return
@@ -102,7 +102,7 @@ func (me LibsVisualSceneDef) new(id string) (lib *LibVisualSceneDefs) {
 	return
 }
 
-//	A library that contains *VisualSceneDef*s associated by their *ID*. To create a new *LibVisualSceneDefs* library, ONLY
+//	A library that contains *VisualSceneDef*s associated by their *Id*. To create a new *LibVisualSceneDefs* library, ONLY
 //	use the *LibsVisualSceneDef.New()* or *LibsVisualSceneDef.AddNew()* methods.
 type LibVisualSceneDefs struct {
 	BaseLib
@@ -113,30 +113,30 @@ type LibVisualSceneDefs struct {
 
 func newLibVisualSceneDefs(id string) (me *LibVisualSceneDefs) {
 	me = &LibVisualSceneDefs{M: map[string]*VisualSceneDef{}}
-	me.ID = id
+	me.Id = id
 	return
 }
 
 //	Adds the specified *VisualSceneDef* definition to this *LibVisualSceneDefs*, and returns it.
 //	
-//	If this *LibVisualSceneDefs* already contains a *VisualSceneDef* definition with the same *ID*, does nothing and returns *nil*.
+//	If this *LibVisualSceneDefs* already contains a *VisualSceneDef* definition with the same *Id*, does nothing and returns *nil*.
 func (me *LibVisualSceneDefs) Add(d *VisualSceneDef) (n *VisualSceneDef) {
-	if me.M[d.ID] == nil {
-		n, me.M[d.ID] = d, d
+	if me.M[d.Id] == nil {
+		n, me.M[d.Id] = d, d
 		me.SetDirty()
 	}
 	return
 }
 
-//	Creates a new *VisualSceneDef* definition with the specified *ID*, adds it to this *LibVisualSceneDefs*, and returns it.
+//	Creates a new *VisualSceneDef* definition with the specified *Id*, adds it to this *LibVisualSceneDefs*, and returns it.
 //	
-//	If this *LibVisualSceneDefs* already contains a *VisualSceneDef* definition with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibVisualSceneDefs* already contains a *VisualSceneDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibVisualSceneDefs) AddNew(id string) *VisualSceneDef { return me.Add(me.New(id)) }
 
-//	Creates a new *VisualSceneDef* definition with the specified *ID* and returns it, but does not add it to this *LibVisualSceneDefs*.
+//	Creates a new *VisualSceneDef* definition with the specified *Id* and returns it, but does not add it to this *LibVisualSceneDefs*.
 func (me *LibVisualSceneDefs) New(id string) (def *VisualSceneDef) { def = newVisualSceneDef(id); return }
 
-//	Removes the *VisualSceneDef* with the specified *ID* from this *LibVisualSceneDefs*.
+//	Removes the *VisualSceneDef* with the specified *Id* from this *LibVisualSceneDefs*.
 func (me *LibVisualSceneDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 //	Signals to *core* (or your custom package) that changes have been made to this *LibVisualSceneDefs* that need to be picked up.

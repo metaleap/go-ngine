@@ -49,7 +49,7 @@ func (me *KxModelInst) Init() {
 
 func newKxModelDef(id string) (me *KxModelDef) {
 	me = &KxModelDef{}
-	me.ID = id
+	me.Id = id
 	me.Base.init()
 	me.Init()
 	return
@@ -65,7 +65,7 @@ func (me *KxModelDef) NewInst(id string) (inst *KxModelInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibKxModelDefs* libraries associated by their *ID*.
+	//	A *map* collection that contains *LibKxModelDefs* libraries associated by their *Id*.
 	AllKxModelDefLibs = LibsKxModelDef{}
 
 	//	The "default" *LibKxModelDefs* library for *KxModelDef*s.
@@ -81,12 +81,12 @@ func init() {
 }
 
 //	The underlying type of the global *AllKxModelDefLibs* variable: a *map* collection that contains
-//	*LibKxModelDefs* libraries associated by their *ID*.
+//	*LibKxModelDefs* libraries associated by their *Id*.
 type LibsKxModelDef map[string]*LibKxModelDefs
 
-//	Creates a new *LibKxModelDefs* library with the specified *ID*, adds it to this *LibsKxModelDef*, and returns it.
+//	Creates a new *LibKxModelDefs* library with the specified *Id*, adds it to this *LibsKxModelDef*, and returns it.
 //	
-//	If this *LibsKxModelDef* already contains a *LibKxModelDefs* library with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibsKxModelDef* already contains a *LibKxModelDefs* library with the specified *Id*, does nothing and returns *nil*.
 func (me LibsKxModelDef) AddNew(id string) (lib *LibKxModelDefs) {
 	if me[id] != nil {
 		return
@@ -101,7 +101,7 @@ func (me LibsKxModelDef) new(id string) (lib *LibKxModelDefs) {
 	return
 }
 
-//	A library that contains *KxModelDef*s associated by their *ID*. To create a new *LibKxModelDefs* library, ONLY
+//	A library that contains *KxModelDef*s associated by their *Id*. To create a new *LibKxModelDefs* library, ONLY
 //	use the *LibsKxModelDef.New()* or *LibsKxModelDef.AddNew()* methods.
 type LibKxModelDefs struct {
 	BaseLib
@@ -112,30 +112,30 @@ type LibKxModelDefs struct {
 
 func newLibKxModelDefs(id string) (me *LibKxModelDefs) {
 	me = &LibKxModelDefs{M: map[string]*KxModelDef{}}
-	me.ID = id
+	me.Id = id
 	return
 }
 
 //	Adds the specified *KxModelDef* definition to this *LibKxModelDefs*, and returns it.
 //	
-//	If this *LibKxModelDefs* already contains a *KxModelDef* definition with the same *ID*, does nothing and returns *nil*.
+//	If this *LibKxModelDefs* already contains a *KxModelDef* definition with the same *Id*, does nothing and returns *nil*.
 func (me *LibKxModelDefs) Add(d *KxModelDef) (n *KxModelDef) {
-	if me.M[d.ID] == nil {
-		n, me.M[d.ID] = d, d
+	if me.M[d.Id] == nil {
+		n, me.M[d.Id] = d, d
 		me.SetDirty()
 	}
 	return
 }
 
-//	Creates a new *KxModelDef* definition with the specified *ID*, adds it to this *LibKxModelDefs*, and returns it.
+//	Creates a new *KxModelDef* definition with the specified *Id*, adds it to this *LibKxModelDefs*, and returns it.
 //	
-//	If this *LibKxModelDefs* already contains a *KxModelDef* definition with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibKxModelDefs* already contains a *KxModelDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibKxModelDefs) AddNew(id string) *KxModelDef { return me.Add(me.New(id)) }
 
-//	Creates a new *KxModelDef* definition with the specified *ID* and returns it, but does not add it to this *LibKxModelDefs*.
+//	Creates a new *KxModelDef* definition with the specified *Id* and returns it, but does not add it to this *LibKxModelDefs*.
 func (me *LibKxModelDefs) New(id string) (def *KxModelDef) { def = newKxModelDef(id); return }
 
-//	Removes the *KxModelDef* with the specified *ID* from this *LibKxModelDefs*.
+//	Removes the *KxModelDef* with the specified *Id* from this *LibKxModelDefs*.
 func (me *LibKxModelDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 //	Signals to *core* (or your custom package) that changes have been made to this *LibKxModelDefs* that need to be picked up.

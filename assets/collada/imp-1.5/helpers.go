@@ -115,8 +115,8 @@ func has_FxParamDefs(xn *xmlx.Node, obj *nga.HasFxParamDefs) {
 	}
 }
 
-func has_ID(xn *xmlx.Node, obj *nga.HasID) {
-	obj.ID = xas(xn, "id")
+func has_Id(xn *xmlx.Node, obj *nga.HasId) {
+	obj.Id = xas(xn, "id")
 }
 
 func has_Inputs(xn *xmlx.Node, obj *nga.HasInputs) {
@@ -146,7 +146,7 @@ func has_Sid(xn *xmlx.Node, obj *nga.HasSid) {
 func has_Sources(xn *xmlx.Node, obj *nga.HasSources) {
 	for _, src := range objs_Source(xn, "source") {
 		if src != nil {
-			obj.Sources[src.ID] = src
+			obj.Sources[src.Id] = src
 		}
 	}
 }
@@ -264,7 +264,7 @@ func node_TechCommon(xn *xmlx.Node) *xmlx.Node {
 }
 
 func setInstDefRef(xn *xmlx.Node, inst *nga.BaseInst) {
-	inst.DefRef = xas1(xn, "url", "body", "constraint", "target")
+	inst.DefRef.Set(xas1(xn, "url", "body", "constraint", "target"))
 }
 
 func xab(xn *xmlx.Node, name string) bool {
@@ -570,6 +570,10 @@ func xv(xn *xmlx.Node) (val interface{}) {
 				if v := obj_Int4(xn, ""); v != nil {
 					val = *v
 				}
+			case "sampler_image":
+				val = obj_FxSamplerImage(xn, "")
+			case "sampler_states":
+				val = obj_FxSamplerStates(xn, "")
 			default:
 				val = xn.Value
 			}

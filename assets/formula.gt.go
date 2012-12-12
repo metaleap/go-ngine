@@ -31,7 +31,7 @@ func (me *FormulaInst) Init() {
 
 func newFormulaDef(id string) (me *FormulaDef) {
 	me = &FormulaDef{}
-	me.ID = id
+	me.Id = id
 	me.Base.init()
 	me.Init()
 	return
@@ -47,7 +47,7 @@ func (me *FormulaDef) NewInst(id string) (inst *FormulaInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibFormulaDefs* libraries associated by their *ID*.
+	//	A *map* collection that contains *LibFormulaDefs* libraries associated by their *Id*.
 	AllFormulaDefLibs = LibsFormulaDef{}
 
 	//	The "default" *LibFormulaDefs* library for *FormulaDef*s.
@@ -63,12 +63,12 @@ func init() {
 }
 
 //	The underlying type of the global *AllFormulaDefLibs* variable: a *map* collection that contains
-//	*LibFormulaDefs* libraries associated by their *ID*.
+//	*LibFormulaDefs* libraries associated by their *Id*.
 type LibsFormulaDef map[string]*LibFormulaDefs
 
-//	Creates a new *LibFormulaDefs* library with the specified *ID*, adds it to this *LibsFormulaDef*, and returns it.
+//	Creates a new *LibFormulaDefs* library with the specified *Id*, adds it to this *LibsFormulaDef*, and returns it.
 //	
-//	If this *LibsFormulaDef* already contains a *LibFormulaDefs* library with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibsFormulaDef* already contains a *LibFormulaDefs* library with the specified *Id*, does nothing and returns *nil*.
 func (me LibsFormulaDef) AddNew(id string) (lib *LibFormulaDefs) {
 	if me[id] != nil {
 		return
@@ -83,7 +83,7 @@ func (me LibsFormulaDef) new(id string) (lib *LibFormulaDefs) {
 	return
 }
 
-//	A library that contains *FormulaDef*s associated by their *ID*. To create a new *LibFormulaDefs* library, ONLY
+//	A library that contains *FormulaDef*s associated by their *Id*. To create a new *LibFormulaDefs* library, ONLY
 //	use the *LibsFormulaDef.New()* or *LibsFormulaDef.AddNew()* methods.
 type LibFormulaDefs struct {
 	BaseLib
@@ -94,30 +94,30 @@ type LibFormulaDefs struct {
 
 func newLibFormulaDefs(id string) (me *LibFormulaDefs) {
 	me = &LibFormulaDefs{M: map[string]*FormulaDef{}}
-	me.ID = id
+	me.Id = id
 	return
 }
 
 //	Adds the specified *FormulaDef* definition to this *LibFormulaDefs*, and returns it.
 //	
-//	If this *LibFormulaDefs* already contains a *FormulaDef* definition with the same *ID*, does nothing and returns *nil*.
+//	If this *LibFormulaDefs* already contains a *FormulaDef* definition with the same *Id*, does nothing and returns *nil*.
 func (me *LibFormulaDefs) Add(d *FormulaDef) (n *FormulaDef) {
-	if me.M[d.ID] == nil {
-		n, me.M[d.ID] = d, d
+	if me.M[d.Id] == nil {
+		n, me.M[d.Id] = d, d
 		me.SetDirty()
 	}
 	return
 }
 
-//	Creates a new *FormulaDef* definition with the specified *ID*, adds it to this *LibFormulaDefs*, and returns it.
+//	Creates a new *FormulaDef* definition with the specified *Id*, adds it to this *LibFormulaDefs*, and returns it.
 //	
-//	If this *LibFormulaDefs* already contains a *FormulaDef* definition with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibFormulaDefs* already contains a *FormulaDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibFormulaDefs) AddNew(id string) *FormulaDef { return me.Add(me.New(id)) }
 
-//	Creates a new *FormulaDef* definition with the specified *ID* and returns it, but does not add it to this *LibFormulaDefs*.
+//	Creates a new *FormulaDef* definition with the specified *Id* and returns it, but does not add it to this *LibFormulaDefs*.
 func (me *LibFormulaDefs) New(id string) (def *FormulaDef) { def = newFormulaDef(id); return }
 
-//	Removes the *FormulaDef* with the specified *ID* from this *LibFormulaDefs*.
+//	Removes the *FormulaDef* with the specified *Id* from this *LibFormulaDefs*.
 func (me *LibFormulaDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 //	Signals to *core* (or your custom package) that changes have been made to this *LibFormulaDefs* that need to be picked up.

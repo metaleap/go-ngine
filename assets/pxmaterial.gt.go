@@ -24,7 +24,7 @@ func (me *PxMaterialInst) Init() {
 
 func newPxMaterialDef(id string) (me *PxMaterialDef) {
 	me = &PxMaterialDef{}
-	me.ID = id
+	me.Id = id
 	me.Base.init()
 	me.Init()
 	return
@@ -40,7 +40,7 @@ func (me *PxMaterialDef) NewInst(id string) (inst *PxMaterialInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibPxMaterialDefs* libraries associated by their *ID*.
+	//	A *map* collection that contains *LibPxMaterialDefs* libraries associated by their *Id*.
 	AllPxMaterialDefLibs = LibsPxMaterialDef{}
 
 	//	The "default" *LibPxMaterialDefs* library for *PxMaterialDef*s.
@@ -56,12 +56,12 @@ func init() {
 }
 
 //	The underlying type of the global *AllPxMaterialDefLibs* variable: a *map* collection that contains
-//	*LibPxMaterialDefs* libraries associated by their *ID*.
+//	*LibPxMaterialDefs* libraries associated by their *Id*.
 type LibsPxMaterialDef map[string]*LibPxMaterialDefs
 
-//	Creates a new *LibPxMaterialDefs* library with the specified *ID*, adds it to this *LibsPxMaterialDef*, and returns it.
+//	Creates a new *LibPxMaterialDefs* library with the specified *Id*, adds it to this *LibsPxMaterialDef*, and returns it.
 //	
-//	If this *LibsPxMaterialDef* already contains a *LibPxMaterialDefs* library with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibsPxMaterialDef* already contains a *LibPxMaterialDefs* library with the specified *Id*, does nothing and returns *nil*.
 func (me LibsPxMaterialDef) AddNew(id string) (lib *LibPxMaterialDefs) {
 	if me[id] != nil {
 		return
@@ -76,7 +76,7 @@ func (me LibsPxMaterialDef) new(id string) (lib *LibPxMaterialDefs) {
 	return
 }
 
-//	A library that contains *PxMaterialDef*s associated by their *ID*. To create a new *LibPxMaterialDefs* library, ONLY
+//	A library that contains *PxMaterialDef*s associated by their *Id*. To create a new *LibPxMaterialDefs* library, ONLY
 //	use the *LibsPxMaterialDef.New()* or *LibsPxMaterialDef.AddNew()* methods.
 type LibPxMaterialDefs struct {
 	BaseLib
@@ -87,30 +87,30 @@ type LibPxMaterialDefs struct {
 
 func newLibPxMaterialDefs(id string) (me *LibPxMaterialDefs) {
 	me = &LibPxMaterialDefs{M: map[string]*PxMaterialDef{}}
-	me.ID = id
+	me.Id = id
 	return
 }
 
 //	Adds the specified *PxMaterialDef* definition to this *LibPxMaterialDefs*, and returns it.
 //	
-//	If this *LibPxMaterialDefs* already contains a *PxMaterialDef* definition with the same *ID*, does nothing and returns *nil*.
+//	If this *LibPxMaterialDefs* already contains a *PxMaterialDef* definition with the same *Id*, does nothing and returns *nil*.
 func (me *LibPxMaterialDefs) Add(d *PxMaterialDef) (n *PxMaterialDef) {
-	if me.M[d.ID] == nil {
-		n, me.M[d.ID] = d, d
+	if me.M[d.Id] == nil {
+		n, me.M[d.Id] = d, d
 		me.SetDirty()
 	}
 	return
 }
 
-//	Creates a new *PxMaterialDef* definition with the specified *ID*, adds it to this *LibPxMaterialDefs*, and returns it.
+//	Creates a new *PxMaterialDef* definition with the specified *Id*, adds it to this *LibPxMaterialDefs*, and returns it.
 //	
-//	If this *LibPxMaterialDefs* already contains a *PxMaterialDef* definition with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibPxMaterialDefs* already contains a *PxMaterialDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibPxMaterialDefs) AddNew(id string) *PxMaterialDef { return me.Add(me.New(id)) }
 
-//	Creates a new *PxMaterialDef* definition with the specified *ID* and returns it, but does not add it to this *LibPxMaterialDefs*.
+//	Creates a new *PxMaterialDef* definition with the specified *Id* and returns it, but does not add it to this *LibPxMaterialDefs*.
 func (me *LibPxMaterialDefs) New(id string) (def *PxMaterialDef) { def = newPxMaterialDef(id); return }
 
-//	Removes the *PxMaterialDef* with the specified *ID* from this *LibPxMaterialDefs*.
+//	Removes the *PxMaterialDef* with the specified *Id* from this *LibPxMaterialDefs*.
 func (me *LibPxMaterialDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 //	Signals to *core* (or your custom package) that changes have been made to this *LibPxMaterialDefs* that need to be picked up.

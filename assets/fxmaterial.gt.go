@@ -33,7 +33,7 @@ type FxVertexInputBinding struct {
 
 func newFxMaterialDef(id string) (me *FxMaterialDef) {
 	me = &FxMaterialDef{}
-	me.ID = id
+	me.Id = id
 	me.Base.init()
 	me.Init()
 	return
@@ -49,7 +49,7 @@ func (me *FxMaterialDef) NewInst(id string) (inst *FxMaterialInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibFxMaterialDefs* libraries associated by their *ID*.
+	//	A *map* collection that contains *LibFxMaterialDefs* libraries associated by their *Id*.
 	AllFxMaterialDefLibs = LibsFxMaterialDef{}
 
 	//	The "default" *LibFxMaterialDefs* library for *FxMaterialDef*s.
@@ -65,12 +65,12 @@ func init() {
 }
 
 //	The underlying type of the global *AllFxMaterialDefLibs* variable: a *map* collection that contains
-//	*LibFxMaterialDefs* libraries associated by their *ID*.
+//	*LibFxMaterialDefs* libraries associated by their *Id*.
 type LibsFxMaterialDef map[string]*LibFxMaterialDefs
 
-//	Creates a new *LibFxMaterialDefs* library with the specified *ID*, adds it to this *LibsFxMaterialDef*, and returns it.
+//	Creates a new *LibFxMaterialDefs* library with the specified *Id*, adds it to this *LibsFxMaterialDef*, and returns it.
 //	
-//	If this *LibsFxMaterialDef* already contains a *LibFxMaterialDefs* library with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibsFxMaterialDef* already contains a *LibFxMaterialDefs* library with the specified *Id*, does nothing and returns *nil*.
 func (me LibsFxMaterialDef) AddNew(id string) (lib *LibFxMaterialDefs) {
 	if me[id] != nil {
 		return
@@ -85,7 +85,7 @@ func (me LibsFxMaterialDef) new(id string) (lib *LibFxMaterialDefs) {
 	return
 }
 
-//	A library that contains *FxMaterialDef*s associated by their *ID*. To create a new *LibFxMaterialDefs* library, ONLY
+//	A library that contains *FxMaterialDef*s associated by their *Id*. To create a new *LibFxMaterialDefs* library, ONLY
 //	use the *LibsFxMaterialDef.New()* or *LibsFxMaterialDef.AddNew()* methods.
 type LibFxMaterialDefs struct {
 	BaseLib
@@ -96,30 +96,30 @@ type LibFxMaterialDefs struct {
 
 func newLibFxMaterialDefs(id string) (me *LibFxMaterialDefs) {
 	me = &LibFxMaterialDefs{M: map[string]*FxMaterialDef{}}
-	me.ID = id
+	me.Id = id
 	return
 }
 
 //	Adds the specified *FxMaterialDef* definition to this *LibFxMaterialDefs*, and returns it.
 //	
-//	If this *LibFxMaterialDefs* already contains a *FxMaterialDef* definition with the same *ID*, does nothing and returns *nil*.
+//	If this *LibFxMaterialDefs* already contains a *FxMaterialDef* definition with the same *Id*, does nothing and returns *nil*.
 func (me *LibFxMaterialDefs) Add(d *FxMaterialDef) (n *FxMaterialDef) {
-	if me.M[d.ID] == nil {
-		n, me.M[d.ID] = d, d
+	if me.M[d.Id] == nil {
+		n, me.M[d.Id] = d, d
 		me.SetDirty()
 	}
 	return
 }
 
-//	Creates a new *FxMaterialDef* definition with the specified *ID*, adds it to this *LibFxMaterialDefs*, and returns it.
+//	Creates a new *FxMaterialDef* definition with the specified *Id*, adds it to this *LibFxMaterialDefs*, and returns it.
 //	
-//	If this *LibFxMaterialDefs* already contains a *FxMaterialDef* definition with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibFxMaterialDefs* already contains a *FxMaterialDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibFxMaterialDefs) AddNew(id string) *FxMaterialDef { return me.Add(me.New(id)) }
 
-//	Creates a new *FxMaterialDef* definition with the specified *ID* and returns it, but does not add it to this *LibFxMaterialDefs*.
+//	Creates a new *FxMaterialDef* definition with the specified *Id* and returns it, but does not add it to this *LibFxMaterialDefs*.
 func (me *LibFxMaterialDefs) New(id string) (def *FxMaterialDef) { def = newFxMaterialDef(id); return }
 
-//	Removes the *FxMaterialDef* with the specified *ID* from this *LibFxMaterialDefs*.
+//	Removes the *FxMaterialDef* with the specified *Id* from this *LibFxMaterialDefs*.
 func (me *LibFxMaterialDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 //	Signals to *core* (or your custom package) that changes have been made to this *LibFxMaterialDefs* that need to be picked up.

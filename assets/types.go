@@ -50,25 +50,25 @@ type Int4x4 [16]int64
 
 /*
 type ListBools struct {
-	HasID
+	HasId
 	HasName
 	B []bool
 }
 
 type ListFloats struct {
-	HasID
+	HasId
 	HasName
 	F []float64
 }
 
 type ListInts struct {
-	HasID
+	HasId
 	HasName
 	I []int64
 }
 
 type ListStrings struct {
-	HasID
+	HasId
 	HasName
 	S []string
 }

@@ -49,8 +49,8 @@ func load_Source(xn *xmlx.Node, obj *nga.Source) {
 	if tcn := node_TechCommon(xn); tcn != nil {
 		obj.TC.Accessor = obj_SourceAccessor(tcn, "accessor")
 	}
-	if od, dn := &obj.Data, xcn1(xn, "bool_array", "float_array", "IDREF_array", "int_array", "Name_array", "SIDREF_array", "token_array"); dn != nil {
-		has_ID(dn, &od.HasID)
+	if od, dn := &obj.Array, xcn1(xn, "bool_array", "float_array", "IDREF_array", "int_array", "Name_array", "SIDREF_array", "token_array"); dn != nil {
+		has_Id(dn, &od.HasId)
 		has_Name(dn, &od.HasName)
 		switch dn.Name.Local {
 		case "bool_array":
@@ -125,7 +125,7 @@ func load_Float4(xn *xmlx.Node, obj *nga.Float4) {
 func load_SourceAccessor(xn *xmlx.Node, obj *nga.SourceAccessor) {
 	obj.Count = xau64(xn, "count")
 	obj.Offset = xau64(xn, "offset")
-	obj.Source = xas(xn, "source")
+	obj.Source.Set(xas(xn, "source"))
 	if u := xau64p(xn, "stride"); u != nil {
 		obj.Stride = *u
 	} else {
@@ -358,10 +358,8 @@ func load_FxPassProgramShader(xn *xmlx.Node, obj *nga.FxPassProgramShader) {
 		pss := nga.FxPassProgramShaderSources{}
 		arr := make([]nga.FxPassProgramShaderSources, 0, len(sn.Children))
 		for _, scn := range sn.Children {
-			if pss.IsImportRef = (scn.Name.Local == "import"); pss.IsImportRef {
+			if pss.S, pss.IsImportRef = scn.Value, (scn.Name.Local == "import"); pss.IsImportRef {
 				pss.S = xas(scn, "ref")
-			} else {
-				pss.S = scn.Value
 			}
 			arr = append(arr, pss)
 		}
@@ -743,8 +741,8 @@ func load_ParamDefs(xn *xmlx.Node, obj *nga.ParamDefs) {
 }
 
 func load_AnimationChannel(xn *xmlx.Node, obj *nga.AnimationChannel) {
-	obj.Source = xas(xn, "source")
-	obj.Target = xas(xn, "target")
+	obj.Source.Set(xas(xn, "source"))
+	obj.Target.Set(xas(xn, "target"))
 }
 
 func load_LightAmbient(xn *xmlx.Node, obj *nga.LightAmbient) {
@@ -1376,14 +1374,14 @@ func load_PxForceFieldInst(xn *xmlx.Node, obj *nga.PxForceFieldInst) {
 func load_KxArticulatedSystemKinematics(xn *xmlx.Node, obj *nga.KxArticulatedSystemKinematics) {
 	obj.Models = objs_KxModelInst(xn, "instance_kinematics_model")
 	if tcn := node_TechCommon(xn); tcn != nil {
-		obj.TC.AxisInfos = objs_KxArticulatedSystemKinematicsAxis(xn, "axis_info")
-		obj.TC.Frame.Object = obj_KxArticulatedSystemKinematicsFrame(xn, "frame_object")
-		obj.TC.Frame.Tcp = obj_KxArticulatedSystemKinematicsFrame(xn, "frame_tcp")
-		f := obj_KxArticulatedSystemKinematicsFrame(xn, "frame_tip")
+		obj.TC.AxisInfos = objs_KxArticulatedSystemKinematicsAxis(tcn, "axis_info")
+		obj.TC.Frame.Object = obj_KxArticulatedSystemKinematicsFrame(tcn, "frame_object")
+		obj.TC.Frame.Tcp = obj_KxArticulatedSystemKinematicsFrame(tcn, "frame_tcp")
+		f := obj_KxArticulatedSystemKinematicsFrame(tcn, "frame_tip")
 		if f != nil {
 			obj.TC.Frame.Tip = *f
 		}
-		if f = obj_KxArticulatedSystemKinematicsFrame(xn, "frame_origin"); f != nil {
+		if f = obj_KxArticulatedSystemKinematicsFrame(tcn, "frame_origin"); f != nil {
 			obj.TC.Frame.Origin = *f
 		}
 	}
@@ -1473,7 +1471,7 @@ func load_PxMaterialDef(xn *xmlx.Node, obj *nga.PxMaterialDef) {
 	var sf *nga.ScopedFloat
 	if tcn := node_TechCommon(xn); tcn != nil {
 		for n, f := range map[string]*nga.ScopedFloat{"dynamic_friction": &obj.TC.DynamicFriction, "restitution": &obj.TC.Restitution, "static_friction": &obj.TC.StaticFriction} {
-			if sf = obj_ScopedFloat(xn, n); sf != nil {
+			if sf = obj_ScopedFloat(tcn, n); sf != nil {
 				*f = *sf
 			}
 		}
@@ -1578,7 +1576,6 @@ func load_Float2x4(xn *xmlx.Node, obj *nga.Float2x4) {
 
 func load_ParamInst(xn *xmlx.Node, obj *nga.ParamInst) {
 	obj.Ref = xas(xn, "ref")
-	//	connect_param
 	for _, cn := range xn.Children {
 		if cn.Type == xmlx.NT_ELEMENT {
 			if cn.Name.Local == "connect_param" {
@@ -1593,27 +1590,57 @@ func load_ParamInst(xn *xmlx.Node, obj *nga.ParamInst) {
 }
 
 func load_FxTechniqueGlsl(xn *xmlx.Node, obj *nga.FxTechniqueGlsl) {
-
+	if ft := obj_FxTechnique(xn, ""); ft != nil {
+		obj.FxTechnique = *ft
+	}
+	obj.Annotations = objs_FxAnnotation(xn, "annotate")
+	obj.Passes = objs_FxPass(xn, "pass")
 }
 
 func load_KxLink(xn *xmlx.Node, obj *nga.KxLink) {
-
+	obj.Transforms = get_Transforms(xn)
+	for n, a := range map[string]*[]*nga.KxAttachment{"attachment_full": &obj.Attachments.Full, "attachment_start": &obj.Attachments.Start, "attachment_end": &obj.Attachments.End} {
+		*a = objs_KxAttachment(xn, n)
+	}
 }
 
 func load_FxProfileGlSl(xn *xmlx.Node, obj *nga.FxProfileGlSl) {
-
+	if fp := obj_FxProfile(xn, ""); fp != nil {
+		obj.FxProfile = *fp
+	}
+	obj.Platform = xasd(xn, "platform", obj.Platform)
+	obj.Techniques = objs_FxTechniqueGlsl(xn, "technique")
+	var ci *nga.FxProfileGlSlCodeInclude
+	for _, cn := range xcns(xn, "code", "include") {
+		if ci = obj_FxProfileGlSlCodeInclude(cn, ""); ci != nil {
+			obj.CodesIncludes = append(obj.CodesIncludes, *ci)
+		}
+	}
 }
 
 func load_FxCreateCube(xn *xmlx.Node, obj *nga.FxCreateCube) {
-
+	if c := obj_FxCreate(xn, ""); c != nil {
+		obj.FxCreate = *c
+	}
+	if m := obj_FxCreateMips(xn, "mips"); m != nil {
+		obj.Mips = *m
+	}
+	obj.InitFrom = objs_FxCreateCubeInitFrom(xn, "init_from")
+	if sn := xcn(xn, "size"); sn != nil {
+		obj.Size.Width = xau64(sn, "width")
+	}
 }
 
 func load_FxCreate3DInitFrom(xn *xmlx.Node, obj *nga.FxCreate3DInitFrom) {
-
+	if ci := obj_FxCreateInitFrom(xn, ""); ci != nil {
+		obj.FxCreateInitFrom = *ci
+	}
+	obj.Depth = xau64(xn, "depth")
 }
 
 func load_KxSceneDef(xn *xmlx.Node, obj *nga.KxSceneDef) {
-
+	obj.ArticulatedSystems = objs_KxArticulatedSystemInst(xn, "instance_articulated_systems")
+	obj.Models = objs_KxModelInst(xn, "instance_kinematics_model")
 }
 
 func load_ControllerInputs(xn *xmlx.Node, obj *nga.ControllerInputs) {
@@ -1633,11 +1660,9 @@ func load_IndexedInputsV(xn *xmlx.Node, obj *nga.IndexedInputsV) {
 }
 
 func load_FxTechnique(xn *xmlx.Node, obj *nga.FxTechnique) {
-
 }
 
 func load_GeometryBrepShells(xn *xmlx.Node, obj *nga.GeometryBrepShells) {
-
 }
 
 func load_LightSpot(xn *xmlx.Node, obj *nga.LightSpot) {
@@ -1655,7 +1680,14 @@ func load_LightSpot(xn *xmlx.Node, obj *nga.LightSpot) {
 }
 
 func load_FxCreate2D(xn *xmlx.Node, obj *nga.FxCreate2D) {
-
+	if c := obj_FxCreate(xn, ""); c != nil {
+		obj.FxCreate = *c
+	}
+	obj.Mips = obj_FxCreateMips(xn, "mips")
+	obj.InitFrom = objs_FxCreateInitFrom(xn, "init_from")
+	obj.Size.Exact = obj_FxCreate2DSizeExact(xn, "size_exact")
+	obj.Size.Ratio = obj_FxCreate2DSizeRatio(xn, "size_ratio")
+	obj.Unnormalized = (xcns(xn, "unnormalized") != nil)
 }
 
 func load_ParamBool(xn *xmlx.Node, obj *nga.ParamBool) {
@@ -1664,15 +1696,25 @@ func load_ParamBool(xn *xmlx.Node, obj *nga.ParamBool) {
 }
 
 func load_GeometryBrepFaces(xn *xmlx.Node, obj *nga.GeometryBrepFaces) {
-
+	if iiv := obj_IndexedInputsV(xn, ""); iiv != nil {
+		obj.IndexedInputsV = *iiv
+	}
 }
 
 func load_KxAttachment(xn *xmlx.Node, obj *nga.KxAttachment) {
-
+	obj.Joint = xas(xn, "joint")
+	obj.Transforms = get_Transforms(xn)
+	obj.Link = obj_KxLink(xn, "link")
 }
 
 func load_AssetContributor(xn *xmlx.Node, obj *nga.AssetContributor) {
-
+	obj.Author = xs(xn, "author")
+	obj.AuthorEmail = xs(xn, "author_email")
+	obj.AuthorWebsite = xs(xn, "author_website")
+	obj.AuthoringTool = xs(xn, "authoring_tool")
+	obj.Comments = xs(xn, "comments")
+	obj.Copyright = xs(xn, "copyright")
+	obj.SourceData = xs(xn, "source_data")
 }
 
 func load_ParamSidRef(xn *xmlx.Node, obj *nga.ParamSidRef) {
@@ -1681,12 +1723,52 @@ func load_ParamSidRef(xn *xmlx.Node, obj *nga.ParamSidRef) {
 }
 
 func load_FxSampler(xn *xmlx.Node, obj *nga.FxSampler) {
-
+	switch xn.Name.Local {
+	case "sampler1D":
+		obj.Type = nga.FX_SAMPLER_TYPE_1D
+	case "sampler2D":
+		obj.Type = nga.FX_SAMPLER_TYPE_2D
+	case "sampler3D":
+		obj.Type = nga.FX_SAMPLER_TYPE_3D
+	case "samplerCUBE":
+		obj.Type = nga.FX_SAMPLER_TYPE_CUBE
+	case "samplerDEPTH":
+		obj.Type = nga.FX_SAMPLER_TYPE_DEPTH
+	case "samplerRECT":
+		obj.Type = nga.FX_SAMPLER_TYPE_RECT
+	}
+	if obj.Type > 0 {
+		obj.Filtering = obj_FxSamplerFiltering(xn, "")
+		obj.Wrapping = obj_FxSamplerWrapping(xn, "")
+		obj.Image = obj_FxImageInst(xn, "instance_image")
+	}
 }
 
 func load_Scene(xn *xmlx.Node, obj *nga.Scene) {
-
+	obj.Kinematics = obj_KxSceneInst(xn, "instance_kinematics_scene")
+	obj.Visual = obj_VisualSceneInst(xn, "instance_visual_scene")
+	obj.Physics = objs_PxSceneInst(xn, "instance_physics_scene")
 }
 
 func load_FxPassProgramShaderSources(xn *xmlx.Node, obj *nga.FxPassProgramShaderSources) {
+}
+
+func load_FxSamplerImage(xn *xmlx.Node, obj *nga.FxSamplerImage) {
+	if ii := obj_FxImageInst(xn, ""); ii != nil {
+		obj.FxImageInst = *ii
+	}
+}
+
+func load_FxSamplerStates(xn *xmlx.Node, obj *nga.FxSamplerStates) {
+	if s := obj_FxSampler(xn, ""); s != nil {
+		obj.FxSampler = *s
+	}
+}
+
+func load_RefId(xn *xmlx.Node, obj *nga.RefId) {
+	panic("load_RefId() should never be called in theory?!")
+}
+
+func load_RefSid(xn *xmlx.Node, obj *nga.RefSid) {
+	panic("load_RefSid() should never be called in theory?!")
 }

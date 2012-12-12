@@ -14,8 +14,8 @@ const (
 	FX_SAMPLER_TYPE_2D    = 0x8B5E
 	FX_SAMPLER_TYPE_3D    = 0x8B5F
 	FX_SAMPLER_TYPE_CUBE  = 0x8B60
-	FX_SAMPLER_TYPE_DEPTH = 0
-	FX_SAMPLER_TYPE_RECT  = 1
+	FX_SAMPLER_TYPE_DEPTH = 80
+	FX_SAMPLER_TYPE_RECT  = 81
 
 	FX_SAMPLER_WRAP_WRAP        = 0x2901
 	FX_SAMPLER_WRAP_MIRROR      = 0x8370
@@ -39,19 +39,8 @@ var (
 	}
 )
 
-type FxSamplerFiltering struct {
-	FilterMag, FilterMin, FilterMip int
-	MaxAnisotropy                   uint32
-	MipMaxLevel, MipMinLevel        uint8
-	MipBias                         float64
-}
-
-type FxSamplerWrapping struct {
-	BorderColor         ugfx.Rgba32
-	WrapS, WrapT, WrapP int
-}
-
 type FxSampler struct {
+	HasExtras
 	Image     *FxImageInst
 	Filtering *FxSamplerFiltering
 	Wrapping  *FxSamplerWrapping
@@ -61,4 +50,30 @@ type FxSampler struct {
 func NewFxSampler() (me *FxSampler) {
 	me = &FxSampler{Filtering: DefaultFxSamplerFiltering, Wrapping: DefaultFxSamplerWrapping}
 	return
+}
+
+type FxSamplerImage struct {
+	FxImageInst
+}
+
+type FxSamplerFiltering struct {
+	FilterMag, FilterMin, FilterMip int
+	MaxAnisotropy                   uint32
+	MipMaxLevel, MipMinLevel        uint8
+	MipBias                         float64
+}
+
+type FxSamplerStates struct {
+	FxSampler
+}
+
+func NewFxSamplerStates() (me *FxSamplerStates) {
+	me = &FxSamplerStates{}
+	me.FxSampler = *NewFxSampler()
+	return
+}
+
+type FxSamplerWrapping struct {
+	BorderColor         ugfx.Rgba32
+	WrapS, WrapT, WrapP int
 }

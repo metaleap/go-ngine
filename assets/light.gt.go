@@ -1,6 +1,9 @@
 package assets
 
+//	Describes an ambient light source.
 type LightAmbient struct {
+	//	Declares the parameters required to describe an ambient light source. An
+	//	ambient light is one that lights everything evenly, regardless of location or orientation.
 	LightBase
 }
 
@@ -63,7 +66,7 @@ func (me *LightInst) Init() {
 
 func newLightDef(id string) (me *LightDef) {
 	me = &LightDef{}
-	me.ID = id
+	me.Id = id
 	me.Base.init()
 	me.Init()
 	return
@@ -79,7 +82,7 @@ func (me *LightDef) NewInst(id string) (inst *LightInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibLightDefs* libraries associated by their *ID*.
+	//	A *map* collection that contains *LibLightDefs* libraries associated by their *Id*.
 	AllLightDefLibs = LibsLightDef{}
 
 	//	The "default" *LibLightDefs* library for *LightDef*s.
@@ -95,12 +98,12 @@ func init() {
 }
 
 //	The underlying type of the global *AllLightDefLibs* variable: a *map* collection that contains
-//	*LibLightDefs* libraries associated by their *ID*.
+//	*LibLightDefs* libraries associated by their *Id*.
 type LibsLightDef map[string]*LibLightDefs
 
-//	Creates a new *LibLightDefs* library with the specified *ID*, adds it to this *LibsLightDef*, and returns it.
+//	Creates a new *LibLightDefs* library with the specified *Id*, adds it to this *LibsLightDef*, and returns it.
 //	
-//	If this *LibsLightDef* already contains a *LibLightDefs* library with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibsLightDef* already contains a *LibLightDefs* library with the specified *Id*, does nothing and returns *nil*.
 func (me LibsLightDef) AddNew(id string) (lib *LibLightDefs) {
 	if me[id] != nil {
 		return
@@ -115,7 +118,7 @@ func (me LibsLightDef) new(id string) (lib *LibLightDefs) {
 	return
 }
 
-//	A library that contains *LightDef*s associated by their *ID*. To create a new *LibLightDefs* library, ONLY
+//	A library that contains *LightDef*s associated by their *Id*. To create a new *LibLightDefs* library, ONLY
 //	use the *LibsLightDef.New()* or *LibsLightDef.AddNew()* methods.
 type LibLightDefs struct {
 	BaseLib
@@ -126,30 +129,30 @@ type LibLightDefs struct {
 
 func newLibLightDefs(id string) (me *LibLightDefs) {
 	me = &LibLightDefs{M: map[string]*LightDef{}}
-	me.ID = id
+	me.Id = id
 	return
 }
 
 //	Adds the specified *LightDef* definition to this *LibLightDefs*, and returns it.
 //	
-//	If this *LibLightDefs* already contains a *LightDef* definition with the same *ID*, does nothing and returns *nil*.
+//	If this *LibLightDefs* already contains a *LightDef* definition with the same *Id*, does nothing and returns *nil*.
 func (me *LibLightDefs) Add(d *LightDef) (n *LightDef) {
-	if me.M[d.ID] == nil {
-		n, me.M[d.ID] = d, d
+	if me.M[d.Id] == nil {
+		n, me.M[d.Id] = d, d
 		me.SetDirty()
 	}
 	return
 }
 
-//	Creates a new *LightDef* definition with the specified *ID*, adds it to this *LibLightDefs*, and returns it.
+//	Creates a new *LightDef* definition with the specified *Id*, adds it to this *LibLightDefs*, and returns it.
 //	
-//	If this *LibLightDefs* already contains a *LightDef* definition with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibLightDefs* already contains a *LightDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibLightDefs) AddNew(id string) *LightDef { return me.Add(me.New(id)) }
 
-//	Creates a new *LightDef* definition with the specified *ID* and returns it, but does not add it to this *LibLightDefs*.
+//	Creates a new *LightDef* definition with the specified *Id* and returns it, but does not add it to this *LibLightDefs*.
 func (me *LibLightDefs) New(id string) (def *LightDef) { def = newLightDef(id); return }
 
-//	Removes the *LightDef* with the specified *ID* from this *LibLightDefs*.
+//	Removes the *LightDef* with the specified *Id* from this *LibLightDefs*.
 func (me *LibLightDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 //	Signals to *core* (or your custom package) that changes have been made to this *LibLightDefs* that need to be picked up.

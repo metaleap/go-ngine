@@ -1,42 +1,82 @@
 package assets
 
 const (
-	ANIM_SAMPLER_BEHAVIOR_UNDEFINED      = 0
-	ANIM_SAMPLER_BEHAVIOR_CONSTANT       = iota
-	ANIM_SAMPLER_BEHAVIOR_CYCLE          = iota
+	//	The before and after behaviors are not defined.
+	ANIM_SAMPLER_BEHAVIOR_UNDEFINED = 0
+
+	//	The value for the first (PreBehavior) or last (PostBehavior) is returned.
+	ANIM_SAMPLER_BEHAVIOR_CONSTANT = iota
+
+	//	The key is mapped in the [first_key , last_key] interval so that the animation cycles.
+	ANIM_SAMPLER_BEHAVIOR_CYCLE = iota
+
+	//	The animation continues indefinitely.
 	ANIM_SAMPLER_BEHAVIOR_CYCLE_RELATIVE = iota
-	ANIM_SAMPLER_BEHAVIOR_GRADIENT       = iota
-	ANIM_SAMPLER_BEHAVIOR_OSCILLATE      = iota
+
+	//	The value follows the line given by the last two keys in the sample.
+	ANIM_SAMPLER_BEHAVIOR_GRADIENT = iota
+
+	//	The key is mapped in the [first_key , last_key] interval so that the animation oscillates.
+	ANIM_SAMPLER_BEHAVIOR_OSCILLATE = iota
 )
 
+//	Declares an output channel of an animation.
 type AnimationChannel struct {
-	Source string
-	Target string
+	//	Refers to the Id of the source animation sampler.
+	Source RefId
+
+	//	Refers to the Sid of the element bound to the output of the sampler.
+	Target RefSid
 }
 
+//	Declares an interpolation sampling function for an animation.
 type AnimationSampler struct {
-	HasID
+	//	Unique identifier
+	HasId
+
+	//	These Inputs describe sampling points, referring to Sources.
+	//	At least one of the Inputs must have its Semantic set to INTERPOLATION.
 	HasInputs
-	PreBehavior  int
+
+	//	Indicates what the sampled value should be before the first key.
+	//	Valid values are the ANIM_SAMPLER_BEHAVIOR_* enumerated constants.
+	PreBehavior int
+
+	//	Indicates what the sampled value should be after the last key.
+	//	Valid values are the ANIM_SAMPLER_BEHAVIOR_* enumerated constants.
 	PostBehavior int
 }
 
+//	Categorizes the declaration of animation information.
 type AnimationDef struct {
+	//	Id, Name, Asset, Extras
 	BaseDef
+
+	//	Describes a stream of values from an array data source.
 	HasSources
+
+	//	Allows the formation of a hierarchy of related animations.
 	AnimationDefs []*AnimationDef
-	Channels      []*AnimationChannel
-	Samplers      []*AnimationSampler
+
+	//	Describes output channels for the animation.
+	Channels []*AnimationChannel
+
+	//	Describes the interpolation sampling functions for the animation.
+	Samplers []*AnimationSampler
 }
 
+//	Initialization
 func (me *AnimationDef) Init() {
 	me.Sources = Sources{}
 }
 
+//	Instantiates an Animation resource.
 type AnimationInst struct {
+	//	Sid, Name, Extras, DefRef
 	BaseInst
 }
 
+//	Initialization
 func (me *AnimationInst) Init() {
 }
 
@@ -44,7 +84,7 @@ func (me *AnimationInst) Init() {
 
 func newAnimationDef(id string) (me *AnimationDef) {
 	me = &AnimationDef{}
-	me.ID = id
+	me.Id = id
 	me.Base.init()
 	me.Init()
 	return
@@ -60,7 +100,7 @@ func (me *AnimationDef) NewInst(id string) (inst *AnimationInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibAnimationDefs* libraries associated by their *ID*.
+	//	A *map* collection that contains *LibAnimationDefs* libraries associated by their *Id*.
 	AllAnimationDefLibs = LibsAnimationDef{}
 
 	//	The "default" *LibAnimationDefs* library for *AnimationDef*s.
@@ -76,12 +116,12 @@ func init() {
 }
 
 //	The underlying type of the global *AllAnimationDefLibs* variable: a *map* collection that contains
-//	*LibAnimationDefs* libraries associated by their *ID*.
+//	*LibAnimationDefs* libraries associated by their *Id*.
 type LibsAnimationDef map[string]*LibAnimationDefs
 
-//	Creates a new *LibAnimationDefs* library with the specified *ID*, adds it to this *LibsAnimationDef*, and returns it.
+//	Creates a new *LibAnimationDefs* library with the specified *Id*, adds it to this *LibsAnimationDef*, and returns it.
 //	
-//	If this *LibsAnimationDef* already contains a *LibAnimationDefs* library with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibsAnimationDef* already contains a *LibAnimationDefs* library with the specified *Id*, does nothing and returns *nil*.
 func (me LibsAnimationDef) AddNew(id string) (lib *LibAnimationDefs) {
 	if me[id] != nil {
 		return
@@ -96,7 +136,7 @@ func (me LibsAnimationDef) new(id string) (lib *LibAnimationDefs) {
 	return
 }
 
-//	A library that contains *AnimationDef*s associated by their *ID*. To create a new *LibAnimationDefs* library, ONLY
+//	A library that contains *AnimationDef*s associated by their *Id*. To create a new *LibAnimationDefs* library, ONLY
 //	use the *LibsAnimationDef.New()* or *LibsAnimationDef.AddNew()* methods.
 type LibAnimationDefs struct {
 	BaseLib
@@ -107,30 +147,30 @@ type LibAnimationDefs struct {
 
 func newLibAnimationDefs(id string) (me *LibAnimationDefs) {
 	me = &LibAnimationDefs{M: map[string]*AnimationDef{}}
-	me.ID = id
+	me.Id = id
 	return
 }
 
 //	Adds the specified *AnimationDef* definition to this *LibAnimationDefs*, and returns it.
 //	
-//	If this *LibAnimationDefs* already contains a *AnimationDef* definition with the same *ID*, does nothing and returns *nil*.
+//	If this *LibAnimationDefs* already contains a *AnimationDef* definition with the same *Id*, does nothing and returns *nil*.
 func (me *LibAnimationDefs) Add(d *AnimationDef) (n *AnimationDef) {
-	if me.M[d.ID] == nil {
-		n, me.M[d.ID] = d, d
+	if me.M[d.Id] == nil {
+		n, me.M[d.Id] = d, d
 		me.SetDirty()
 	}
 	return
 }
 
-//	Creates a new *AnimationDef* definition with the specified *ID*, adds it to this *LibAnimationDefs*, and returns it.
+//	Creates a new *AnimationDef* definition with the specified *Id*, adds it to this *LibAnimationDefs*, and returns it.
 //	
-//	If this *LibAnimationDefs* already contains a *AnimationDef* definition with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibAnimationDefs* already contains a *AnimationDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibAnimationDefs) AddNew(id string) *AnimationDef { return me.Add(me.New(id)) }
 
-//	Creates a new *AnimationDef* definition with the specified *ID* and returns it, but does not add it to this *LibAnimationDefs*.
+//	Creates a new *AnimationDef* definition with the specified *Id* and returns it, but does not add it to this *LibAnimationDefs*.
 func (me *LibAnimationDefs) New(id string) (def *AnimationDef) { def = newAnimationDef(id); return }
 
-//	Removes the *AnimationDef* with the specified *ID* from this *LibAnimationDefs*.
+//	Removes the *AnimationDef* with the specified *Id* from this *LibAnimationDefs*.
 func (me *LibAnimationDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 //	Signals to *core* (or your custom package) that changes have been made to this *LibAnimationDefs* that need to be picked up.

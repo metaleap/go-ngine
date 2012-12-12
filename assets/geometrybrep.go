@@ -73,7 +73,7 @@ type GeometryBrepCylinder struct {
 }
 
 type GeometryBrepEdges struct {
-	HasID
+	HasId
 	HasName
 	HasExtras
 	IndexedInputs
@@ -85,7 +85,7 @@ type GeometryBrepEllipse struct {
 }
 
 type GeometryBrepFaces struct {
-	HasID
+	HasId
 	HasName
 	HasExtras
 	IndexedInputsV
@@ -143,7 +143,7 @@ type GeometryBrepParabola struct {
 }
 
 type GeometryBrepPcurves struct {
-	HasID
+	HasId
 	HasName
 	HasExtras
 	IndexedInputsV
@@ -155,14 +155,14 @@ type GeometryBrepPlane struct {
 }
 
 type GeometryBrepShells struct {
-	HasID
+	HasId
 	HasName
 	HasExtras
 	IndexedInputsV
 }
 
 type GeometryBrepSolids struct {
-	HasID
+	HasId
 	HasName
 	HasExtras
 	IndexedInputsV
@@ -215,7 +215,7 @@ type GeometryBrepTorus struct {
 }
 
 type GeometryBrepWires struct {
-	HasID
+	HasId
 	HasName
 	HasExtras
 	IndexedInputsV

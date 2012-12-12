@@ -59,7 +59,7 @@ func (me *ControllerInst) Init() {
 
 func newControllerDef(id string) (me *ControllerDef) {
 	me = &ControllerDef{}
-	me.ID = id
+	me.Id = id
 	me.Base.init()
 	me.Init()
 	return
@@ -75,7 +75,7 @@ func (me *ControllerDef) NewInst(id string) (inst *ControllerInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibControllerDefs* libraries associated by their *ID*.
+	//	A *map* collection that contains *LibControllerDefs* libraries associated by their *Id*.
 	AllControllerDefLibs = LibsControllerDef{}
 
 	//	The "default" *LibControllerDefs* library for *ControllerDef*s.
@@ -91,12 +91,12 @@ func init() {
 }
 
 //	The underlying type of the global *AllControllerDefLibs* variable: a *map* collection that contains
-//	*LibControllerDefs* libraries associated by their *ID*.
+//	*LibControllerDefs* libraries associated by their *Id*.
 type LibsControllerDef map[string]*LibControllerDefs
 
-//	Creates a new *LibControllerDefs* library with the specified *ID*, adds it to this *LibsControllerDef*, and returns it.
+//	Creates a new *LibControllerDefs* library with the specified *Id*, adds it to this *LibsControllerDef*, and returns it.
 //	
-//	If this *LibsControllerDef* already contains a *LibControllerDefs* library with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibsControllerDef* already contains a *LibControllerDefs* library with the specified *Id*, does nothing and returns *nil*.
 func (me LibsControllerDef) AddNew(id string) (lib *LibControllerDefs) {
 	if me[id] != nil {
 		return
@@ -111,7 +111,7 @@ func (me LibsControllerDef) new(id string) (lib *LibControllerDefs) {
 	return
 }
 
-//	A library that contains *ControllerDef*s associated by their *ID*. To create a new *LibControllerDefs* library, ONLY
+//	A library that contains *ControllerDef*s associated by their *Id*. To create a new *LibControllerDefs* library, ONLY
 //	use the *LibsControllerDef.New()* or *LibsControllerDef.AddNew()* methods.
 type LibControllerDefs struct {
 	BaseLib
@@ -122,30 +122,30 @@ type LibControllerDefs struct {
 
 func newLibControllerDefs(id string) (me *LibControllerDefs) {
 	me = &LibControllerDefs{M: map[string]*ControllerDef{}}
-	me.ID = id
+	me.Id = id
 	return
 }
 
 //	Adds the specified *ControllerDef* definition to this *LibControllerDefs*, and returns it.
 //	
-//	If this *LibControllerDefs* already contains a *ControllerDef* definition with the same *ID*, does nothing and returns *nil*.
+//	If this *LibControllerDefs* already contains a *ControllerDef* definition with the same *Id*, does nothing and returns *nil*.
 func (me *LibControllerDefs) Add(d *ControllerDef) (n *ControllerDef) {
-	if me.M[d.ID] == nil {
-		n, me.M[d.ID] = d, d
+	if me.M[d.Id] == nil {
+		n, me.M[d.Id] = d, d
 		me.SetDirty()
 	}
 	return
 }
 
-//	Creates a new *ControllerDef* definition with the specified *ID*, adds it to this *LibControllerDefs*, and returns it.
+//	Creates a new *ControllerDef* definition with the specified *Id*, adds it to this *LibControllerDefs*, and returns it.
 //	
-//	If this *LibControllerDefs* already contains a *ControllerDef* definition with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibControllerDefs* already contains a *ControllerDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibControllerDefs) AddNew(id string) *ControllerDef { return me.Add(me.New(id)) }
 
-//	Creates a new *ControllerDef* definition with the specified *ID* and returns it, but does not add it to this *LibControllerDefs*.
+//	Creates a new *ControllerDef* definition with the specified *Id* and returns it, but does not add it to this *LibControllerDefs*.
 func (me *LibControllerDefs) New(id string) (def *ControllerDef) { def = newControllerDef(id); return }
 
-//	Removes the *ControllerDef* with the specified *ID* from this *LibControllerDefs*.
+//	Removes the *ControllerDef* with the specified *Id* from this *LibControllerDefs*.
 func (me *LibControllerDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 //	Signals to *core* (or your custom package) that changes have been made to this *LibControllerDefs* that need to be picked up.

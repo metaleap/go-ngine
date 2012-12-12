@@ -34,7 +34,7 @@ func (me *NodeInst) Init() {
 
 func newNodeDef(id string) (me *NodeDef) {
 	me = &NodeDef{}
-	me.ID = id
+	me.Id = id
 	me.Base.init()
 	me.Init()
 	return
@@ -50,7 +50,7 @@ func (me *NodeDef) NewInst(id string) (inst *NodeInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibNodeDefs* libraries associated by their *ID*.
+	//	A *map* collection that contains *LibNodeDefs* libraries associated by their *Id*.
 	AllNodeDefLibs = LibsNodeDef{}
 
 	//	The "default" *LibNodeDefs* library for *NodeDef*s.
@@ -66,12 +66,12 @@ func init() {
 }
 
 //	The underlying type of the global *AllNodeDefLibs* variable: a *map* collection that contains
-//	*LibNodeDefs* libraries associated by their *ID*.
+//	*LibNodeDefs* libraries associated by their *Id*.
 type LibsNodeDef map[string]*LibNodeDefs
 
-//	Creates a new *LibNodeDefs* library with the specified *ID*, adds it to this *LibsNodeDef*, and returns it.
+//	Creates a new *LibNodeDefs* library with the specified *Id*, adds it to this *LibsNodeDef*, and returns it.
 //	
-//	If this *LibsNodeDef* already contains a *LibNodeDefs* library with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibsNodeDef* already contains a *LibNodeDefs* library with the specified *Id*, does nothing and returns *nil*.
 func (me LibsNodeDef) AddNew(id string) (lib *LibNodeDefs) {
 	if me[id] != nil {
 		return
@@ -86,7 +86,7 @@ func (me LibsNodeDef) new(id string) (lib *LibNodeDefs) {
 	return
 }
 
-//	A library that contains *NodeDef*s associated by their *ID*. To create a new *LibNodeDefs* library, ONLY
+//	A library that contains *NodeDef*s associated by their *Id*. To create a new *LibNodeDefs* library, ONLY
 //	use the *LibsNodeDef.New()* or *LibsNodeDef.AddNew()* methods.
 type LibNodeDefs struct {
 	BaseLib
@@ -97,30 +97,30 @@ type LibNodeDefs struct {
 
 func newLibNodeDefs(id string) (me *LibNodeDefs) {
 	me = &LibNodeDefs{M: map[string]*NodeDef{}}
-	me.ID = id
+	me.Id = id
 	return
 }
 
 //	Adds the specified *NodeDef* definition to this *LibNodeDefs*, and returns it.
 //	
-//	If this *LibNodeDefs* already contains a *NodeDef* definition with the same *ID*, does nothing and returns *nil*.
+//	If this *LibNodeDefs* already contains a *NodeDef* definition with the same *Id*, does nothing and returns *nil*.
 func (me *LibNodeDefs) Add(d *NodeDef) (n *NodeDef) {
-	if me.M[d.ID] == nil {
-		n, me.M[d.ID] = d, d
+	if me.M[d.Id] == nil {
+		n, me.M[d.Id] = d, d
 		me.SetDirty()
 	}
 	return
 }
 
-//	Creates a new *NodeDef* definition with the specified *ID*, adds it to this *LibNodeDefs*, and returns it.
+//	Creates a new *NodeDef* definition with the specified *Id*, adds it to this *LibNodeDefs*, and returns it.
 //	
-//	If this *LibNodeDefs* already contains a *NodeDef* definition with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibNodeDefs* already contains a *NodeDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibNodeDefs) AddNew(id string) *NodeDef { return me.Add(me.New(id)) }
 
-//	Creates a new *NodeDef* definition with the specified *ID* and returns it, but does not add it to this *LibNodeDefs*.
+//	Creates a new *NodeDef* definition with the specified *Id* and returns it, but does not add it to this *LibNodeDefs*.
 func (me *LibNodeDefs) New(id string) (def *NodeDef) { def = newNodeDef(id); return }
 
-//	Removes the *NodeDef* with the specified *ID* from this *LibNodeDefs*.
+//	Removes the *NodeDef* with the specified *Id* from this *LibNodeDefs*.
 func (me *LibNodeDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 //	Signals to *core* (or your custom package) that changes have been made to this *LibNodeDefs* that need to be picked up.

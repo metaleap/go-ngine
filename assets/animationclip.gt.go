@@ -1,13 +1,24 @@
 package assets
 
+//	Defines a section of a set of animation curves and/or formulas to be used together as an animation clip.
 type AnimationClipDef struct {
+	//	Id, Name, Asset, Extras
 	BaseDef
-	Start      float64
-	End        float64
+
+	//	The time in seconds of the beginning of the clip.
+	Start float64
+
+	//	The time in seconds of the end of the clip.
+	End float64
+
+	//	The animation instances contributing to this animation clip.
 	Animations []*AnimationInst
-	Formulas   []*FormulaInst
+
+	//	Any formulas used in this animation clip.
+	Formulas []*FormulaInst
 }
 
+//	Initialization
 func (me *AnimationClipDef) Init() {
 }
 
@@ -15,7 +26,7 @@ func (me *AnimationClipDef) Init() {
 
 func newAnimationClipDef(id string) (me *AnimationClipDef) {
 	me = &AnimationClipDef{}
-	me.ID = id
+	me.Id = id
 	me.Base.init()
 	me.Init()
 	return
@@ -31,7 +42,7 @@ func (me *AnimationClipDef) NewInst(id string) (inst *AnimationClipInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibAnimationClipDefs* libraries associated by their *ID*.
+	//	A *map* collection that contains *LibAnimationClipDefs* libraries associated by their *Id*.
 	AllAnimationClipDefLibs = LibsAnimationClipDef{}
 
 	//	The "default" *LibAnimationClipDefs* library for *AnimationClipDef*s.
@@ -47,12 +58,12 @@ func init() {
 }
 
 //	The underlying type of the global *AllAnimationClipDefLibs* variable: a *map* collection that contains
-//	*LibAnimationClipDefs* libraries associated by their *ID*.
+//	*LibAnimationClipDefs* libraries associated by their *Id*.
 type LibsAnimationClipDef map[string]*LibAnimationClipDefs
 
-//	Creates a new *LibAnimationClipDefs* library with the specified *ID*, adds it to this *LibsAnimationClipDef*, and returns it.
+//	Creates a new *LibAnimationClipDefs* library with the specified *Id*, adds it to this *LibsAnimationClipDef*, and returns it.
 //	
-//	If this *LibsAnimationClipDef* already contains a *LibAnimationClipDefs* library with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibsAnimationClipDef* already contains a *LibAnimationClipDefs* library with the specified *Id*, does nothing and returns *nil*.
 func (me LibsAnimationClipDef) AddNew(id string) (lib *LibAnimationClipDefs) {
 	if me[id] != nil {
 		return
@@ -67,7 +78,7 @@ func (me LibsAnimationClipDef) new(id string) (lib *LibAnimationClipDefs) {
 	return
 }
 
-//	A library that contains *AnimationClipDef*s associated by their *ID*. To create a new *LibAnimationClipDefs* library, ONLY
+//	A library that contains *AnimationClipDef*s associated by their *Id*. To create a new *LibAnimationClipDefs* library, ONLY
 //	use the *LibsAnimationClipDef.New()* or *LibsAnimationClipDef.AddNew()* methods.
 type LibAnimationClipDefs struct {
 	BaseLib
@@ -78,30 +89,30 @@ type LibAnimationClipDefs struct {
 
 func newLibAnimationClipDefs(id string) (me *LibAnimationClipDefs) {
 	me = &LibAnimationClipDefs{M: map[string]*AnimationClipDef{}}
-	me.ID = id
+	me.Id = id
 	return
 }
 
 //	Adds the specified *AnimationClipDef* definition to this *LibAnimationClipDefs*, and returns it.
 //	
-//	If this *LibAnimationClipDefs* already contains a *AnimationClipDef* definition with the same *ID*, does nothing and returns *nil*.
+//	If this *LibAnimationClipDefs* already contains a *AnimationClipDef* definition with the same *Id*, does nothing and returns *nil*.
 func (me *LibAnimationClipDefs) Add(d *AnimationClipDef) (n *AnimationClipDef) {
-	if me.M[d.ID] == nil {
-		n, me.M[d.ID] = d, d
+	if me.M[d.Id] == nil {
+		n, me.M[d.Id] = d, d
 		me.SetDirty()
 	}
 	return
 }
 
-//	Creates a new *AnimationClipDef* definition with the specified *ID*, adds it to this *LibAnimationClipDefs*, and returns it.
+//	Creates a new *AnimationClipDef* definition with the specified *Id*, adds it to this *LibAnimationClipDefs*, and returns it.
 //	
-//	If this *LibAnimationClipDefs* already contains a *AnimationClipDef* definition with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibAnimationClipDefs* already contains a *AnimationClipDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibAnimationClipDefs) AddNew(id string) *AnimationClipDef { return me.Add(me.New(id)) }
 
-//	Creates a new *AnimationClipDef* definition with the specified *ID* and returns it, but does not add it to this *LibAnimationClipDefs*.
+//	Creates a new *AnimationClipDef* definition with the specified *Id* and returns it, but does not add it to this *LibAnimationClipDefs*.
 func (me *LibAnimationClipDefs) New(id string) (def *AnimationClipDef) { def = newAnimationClipDef(id); return }
 
-//	Removes the *AnimationClipDef* with the specified *ID* from this *LibAnimationClipDefs*.
+//	Removes the *AnimationClipDef* with the specified *Id* from this *LibAnimationClipDefs*.
 func (me *LibAnimationClipDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 //	Signals to *core* (or your custom package) that changes have been made to this *LibAnimationClipDefs* that need to be picked up.

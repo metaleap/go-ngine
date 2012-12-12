@@ -1,46 +1,71 @@
 package assets
 
+//	Represents the image sensor of a camera (for example, film or CCD).
 type CameraImager struct {
-	HasTechniques
+	//	Custom-profile/foreign-technique meta-data
 	HasExtras
+	//	Custom-profile/foreign-technique support
+	HasTechniques
 }
 
+//	Represents the apparatus on a camera that projects the image onto the image sensor.
 type CameraOptics struct {
+	//	Custom-profile/foreign-technique meta-data
 	HasExtras
+	//	Custom-profile/foreign-technique support
 	HasTechniques
+	//	Common-technique profile.
 	TC struct {
-		AspectRatio  *ScopedFloat
-		Zfar         ScopedFloat
-		Znear        ScopedFloat
+		//	Aspect ratio of the field of view.
+		AspectRatio *ScopedFloat
+		//	Distance to the far clipping plane.
+		Zfar ScopedFloat
+		//	Distance to the near clipping plane.
+		Znear ScopedFloat
+		//	Orthographic projection type. To use Perspective instead, also set this to nil.
 		Orthographic *CameraOrthographic
-		Perspective  *CameraPerspective
+		//	Perspective projection type. To use Orthographic instead, also set this to nil.
+		Perspective *CameraPerspective
 	}
 }
 
+//	Describes the field of view of an orthographic camera.
 type CameraOrthographic struct {
+	//	Horizontal magnification of the view.
 	MagX *ScopedFloat
+	//	Vertical magnification of the view.
 	MagY *ScopedFloat
 }
 
+//	Describes the field of view of a perspective camera.
 type CameraPerspective struct {
+	//	Horizontal field of view in degrees.
 	FovX *ScopedFloat
+	//	Vertical field of view in degrees.
 	FovY *ScopedFloat
 }
 
-//	Defines a perspective or orthographic camera. Only perspective cameras are supported at this point.
+//	Declares a view of the visual scene hierarchy or scene graph.
 type CameraDef struct {
+	//	Id, Name, Asset, Extras
 	BaseDef
+	//	Describes the field of view and viewing frustum using canonical parameters.
 	Optics CameraOptics
+	//	Represents the image sensor of a camera.
 	Imager *CameraImager
 }
 
+//	Initialization
 func (me *CameraDef) Init() {
 }
 
+//	Instantiates a camera resource.
 type CameraInst struct {
+	//	Sid, Name, Extras, DefRef
 	BaseInst
 }
 
+//	Initialization
 func (me *CameraInst) Init() {
 }
 
@@ -48,7 +73,7 @@ func (me *CameraInst) Init() {
 
 func newCameraDef(id string) (me *CameraDef) {
 	me = &CameraDef{}
-	me.ID = id
+	me.Id = id
 	me.Base.init()
 	me.Init()
 	return
@@ -64,7 +89,7 @@ func (me *CameraDef) NewInst(id string) (inst *CameraInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibCameraDefs* libraries associated by their *ID*.
+	//	A *map* collection that contains *LibCameraDefs* libraries associated by their *Id*.
 	AllCameraDefLibs = LibsCameraDef{}
 
 	//	The "default" *LibCameraDefs* library for *CameraDef*s.
@@ -80,12 +105,12 @@ func init() {
 }
 
 //	The underlying type of the global *AllCameraDefLibs* variable: a *map* collection that contains
-//	*LibCameraDefs* libraries associated by their *ID*.
+//	*LibCameraDefs* libraries associated by their *Id*.
 type LibsCameraDef map[string]*LibCameraDefs
 
-//	Creates a new *LibCameraDefs* library with the specified *ID*, adds it to this *LibsCameraDef*, and returns it.
+//	Creates a new *LibCameraDefs* library with the specified *Id*, adds it to this *LibsCameraDef*, and returns it.
 //	
-//	If this *LibsCameraDef* already contains a *LibCameraDefs* library with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibsCameraDef* already contains a *LibCameraDefs* library with the specified *Id*, does nothing and returns *nil*.
 func (me LibsCameraDef) AddNew(id string) (lib *LibCameraDefs) {
 	if me[id] != nil {
 		return
@@ -100,7 +125,7 @@ func (me LibsCameraDef) new(id string) (lib *LibCameraDefs) {
 	return
 }
 
-//	A library that contains *CameraDef*s associated by their *ID*. To create a new *LibCameraDefs* library, ONLY
+//	A library that contains *CameraDef*s associated by their *Id*. To create a new *LibCameraDefs* library, ONLY
 //	use the *LibsCameraDef.New()* or *LibsCameraDef.AddNew()* methods.
 type LibCameraDefs struct {
 	BaseLib
@@ -111,30 +136,30 @@ type LibCameraDefs struct {
 
 func newLibCameraDefs(id string) (me *LibCameraDefs) {
 	me = &LibCameraDefs{M: map[string]*CameraDef{}}
-	me.ID = id
+	me.Id = id
 	return
 }
 
 //	Adds the specified *CameraDef* definition to this *LibCameraDefs*, and returns it.
 //	
-//	If this *LibCameraDefs* already contains a *CameraDef* definition with the same *ID*, does nothing and returns *nil*.
+//	If this *LibCameraDefs* already contains a *CameraDef* definition with the same *Id*, does nothing and returns *nil*.
 func (me *LibCameraDefs) Add(d *CameraDef) (n *CameraDef) {
-	if me.M[d.ID] == nil {
-		n, me.M[d.ID] = d, d
+	if me.M[d.Id] == nil {
+		n, me.M[d.Id] = d, d
 		me.SetDirty()
 	}
 	return
 }
 
-//	Creates a new *CameraDef* definition with the specified *ID*, adds it to this *LibCameraDefs*, and returns it.
+//	Creates a new *CameraDef* definition with the specified *Id*, adds it to this *LibCameraDefs*, and returns it.
 //	
-//	If this *LibCameraDefs* already contains a *CameraDef* definition with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibCameraDefs* already contains a *CameraDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibCameraDefs) AddNew(id string) *CameraDef { return me.Add(me.New(id)) }
 
-//	Creates a new *CameraDef* definition with the specified *ID* and returns it, but does not add it to this *LibCameraDefs*.
+//	Creates a new *CameraDef* definition with the specified *Id* and returns it, but does not add it to this *LibCameraDefs*.
 func (me *LibCameraDefs) New(id string) (def *CameraDef) { def = newCameraDef(id); return }
 
-//	Removes the *CameraDef* with the specified *ID* from this *LibCameraDefs*.
+//	Removes the *CameraDef* with the specified *Id* from this *LibCameraDefs*.
 func (me *LibCameraDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 //	Signals to *core* (or your custom package) that changes have been made to this *LibCameraDefs* that need to be picked up.

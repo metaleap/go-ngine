@@ -25,7 +25,7 @@ func (me *PxSceneInst) Init() {
 
 func newPxSceneDef(id string) (me *PxSceneDef) {
 	me = &PxSceneDef{}
-	me.ID = id
+	me.Id = id
 	me.Base.init()
 	me.Init()
 	return
@@ -41,7 +41,7 @@ func (me *PxSceneDef) NewInst(id string) (inst *PxSceneInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibPxSceneDefs* libraries associated by their *ID*.
+	//	A *map* collection that contains *LibPxSceneDefs* libraries associated by their *Id*.
 	AllPxSceneDefLibs = LibsPxSceneDef{}
 
 	//	The "default" *LibPxSceneDefs* library for *PxSceneDef*s.
@@ -57,12 +57,12 @@ func init() {
 }
 
 //	The underlying type of the global *AllPxSceneDefLibs* variable: a *map* collection that contains
-//	*LibPxSceneDefs* libraries associated by their *ID*.
+//	*LibPxSceneDefs* libraries associated by their *Id*.
 type LibsPxSceneDef map[string]*LibPxSceneDefs
 
-//	Creates a new *LibPxSceneDefs* library with the specified *ID*, adds it to this *LibsPxSceneDef*, and returns it.
+//	Creates a new *LibPxSceneDefs* library with the specified *Id*, adds it to this *LibsPxSceneDef*, and returns it.
 //	
-//	If this *LibsPxSceneDef* already contains a *LibPxSceneDefs* library with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibsPxSceneDef* already contains a *LibPxSceneDefs* library with the specified *Id*, does nothing and returns *nil*.
 func (me LibsPxSceneDef) AddNew(id string) (lib *LibPxSceneDefs) {
 	if me[id] != nil {
 		return
@@ -77,7 +77,7 @@ func (me LibsPxSceneDef) new(id string) (lib *LibPxSceneDefs) {
 	return
 }
 
-//	A library that contains *PxSceneDef*s associated by their *ID*. To create a new *LibPxSceneDefs* library, ONLY
+//	A library that contains *PxSceneDef*s associated by their *Id*. To create a new *LibPxSceneDefs* library, ONLY
 //	use the *LibsPxSceneDef.New()* or *LibsPxSceneDef.AddNew()* methods.
 type LibPxSceneDefs struct {
 	BaseLib
@@ -88,30 +88,30 @@ type LibPxSceneDefs struct {
 
 func newLibPxSceneDefs(id string) (me *LibPxSceneDefs) {
 	me = &LibPxSceneDefs{M: map[string]*PxSceneDef{}}
-	me.ID = id
+	me.Id = id
 	return
 }
 
 //	Adds the specified *PxSceneDef* definition to this *LibPxSceneDefs*, and returns it.
 //	
-//	If this *LibPxSceneDefs* already contains a *PxSceneDef* definition with the same *ID*, does nothing and returns *nil*.
+//	If this *LibPxSceneDefs* already contains a *PxSceneDef* definition with the same *Id*, does nothing and returns *nil*.
 func (me *LibPxSceneDefs) Add(d *PxSceneDef) (n *PxSceneDef) {
-	if me.M[d.ID] == nil {
-		n, me.M[d.ID] = d, d
+	if me.M[d.Id] == nil {
+		n, me.M[d.Id] = d, d
 		me.SetDirty()
 	}
 	return
 }
 
-//	Creates a new *PxSceneDef* definition with the specified *ID*, adds it to this *LibPxSceneDefs*, and returns it.
+//	Creates a new *PxSceneDef* definition with the specified *Id*, adds it to this *LibPxSceneDefs*, and returns it.
 //	
-//	If this *LibPxSceneDefs* already contains a *PxSceneDef* definition with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibPxSceneDefs* already contains a *PxSceneDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibPxSceneDefs) AddNew(id string) *PxSceneDef { return me.Add(me.New(id)) }
 
-//	Creates a new *PxSceneDef* definition with the specified *ID* and returns it, but does not add it to this *LibPxSceneDefs*.
+//	Creates a new *PxSceneDef* definition with the specified *Id* and returns it, but does not add it to this *LibPxSceneDefs*.
 func (me *LibPxSceneDefs) New(id string) (def *PxSceneDef) { def = newPxSceneDef(id); return }
 
-//	Removes the *PxSceneDef* with the specified *ID* from this *LibPxSceneDefs*.
+//	Removes the *PxSceneDef* with the specified *Id* from this *LibPxSceneDefs*.
 func (me *LibPxSceneDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 //	Signals to *core* (or your custom package) that changes have been made to this *LibPxSceneDefs* that need to be picked up.

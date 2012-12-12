@@ -131,7 +131,7 @@ type FxPassState struct {
 }
 
 type FxProfile struct {
-	HasID
+	HasId
 	HasAsset
 	HasExtras
 	HasFxParamDefs
@@ -156,7 +156,7 @@ type FxProfileGlSl struct {
 }
 
 func NewFxProfileGlSl() (me *FxProfileGlSl) {
-	me = &FxProfileGlSl{}
+	me = &FxProfileGlSl{Platform: "PC"}
 	me.NewParams = FxParamDefs{}
 	return
 }
@@ -167,7 +167,7 @@ type FxProfileGlSlCodeInclude struct {
 }
 
 type FxTechnique struct {
-	HasID
+	HasId
 	HasSid
 	HasAsset
 	HasExtras
@@ -251,7 +251,7 @@ type FxEffectInstTechniqueHint struct {
 
 func newFxEffectDef(id string) (me *FxEffectDef) {
 	me = &FxEffectDef{}
-	me.ID = id
+	me.Id = id
 	me.Base.init()
 	me.Init()
 	return
@@ -267,7 +267,7 @@ func (me *FxEffectDef) NewInst(id string) (inst *FxEffectInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibFxEffectDefs* libraries associated by their *ID*.
+	//	A *map* collection that contains *LibFxEffectDefs* libraries associated by their *Id*.
 	AllFxEffectDefLibs = LibsFxEffectDef{}
 
 	//	The "default" *LibFxEffectDefs* library for *FxEffectDef*s.
@@ -283,12 +283,12 @@ func init() {
 }
 
 //	The underlying type of the global *AllFxEffectDefLibs* variable: a *map* collection that contains
-//	*LibFxEffectDefs* libraries associated by their *ID*.
+//	*LibFxEffectDefs* libraries associated by their *Id*.
 type LibsFxEffectDef map[string]*LibFxEffectDefs
 
-//	Creates a new *LibFxEffectDefs* library with the specified *ID*, adds it to this *LibsFxEffectDef*, and returns it.
+//	Creates a new *LibFxEffectDefs* library with the specified *Id*, adds it to this *LibsFxEffectDef*, and returns it.
 //	
-//	If this *LibsFxEffectDef* already contains a *LibFxEffectDefs* library with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibsFxEffectDef* already contains a *LibFxEffectDefs* library with the specified *Id*, does nothing and returns *nil*.
 func (me LibsFxEffectDef) AddNew(id string) (lib *LibFxEffectDefs) {
 	if me[id] != nil {
 		return
@@ -303,7 +303,7 @@ func (me LibsFxEffectDef) new(id string) (lib *LibFxEffectDefs) {
 	return
 }
 
-//	A library that contains *FxEffectDef*s associated by their *ID*. To create a new *LibFxEffectDefs* library, ONLY
+//	A library that contains *FxEffectDef*s associated by their *Id*. To create a new *LibFxEffectDefs* library, ONLY
 //	use the *LibsFxEffectDef.New()* or *LibsFxEffectDef.AddNew()* methods.
 type LibFxEffectDefs struct {
 	BaseLib
@@ -314,30 +314,30 @@ type LibFxEffectDefs struct {
 
 func newLibFxEffectDefs(id string) (me *LibFxEffectDefs) {
 	me = &LibFxEffectDefs{M: map[string]*FxEffectDef{}}
-	me.ID = id
+	me.Id = id
 	return
 }
 
 //	Adds the specified *FxEffectDef* definition to this *LibFxEffectDefs*, and returns it.
 //	
-//	If this *LibFxEffectDefs* already contains a *FxEffectDef* definition with the same *ID*, does nothing and returns *nil*.
+//	If this *LibFxEffectDefs* already contains a *FxEffectDef* definition with the same *Id*, does nothing and returns *nil*.
 func (me *LibFxEffectDefs) Add(d *FxEffectDef) (n *FxEffectDef) {
-	if me.M[d.ID] == nil {
-		n, me.M[d.ID] = d, d
+	if me.M[d.Id] == nil {
+		n, me.M[d.Id] = d, d
 		me.SetDirty()
 	}
 	return
 }
 
-//	Creates a new *FxEffectDef* definition with the specified *ID*, adds it to this *LibFxEffectDefs*, and returns it.
+//	Creates a new *FxEffectDef* definition with the specified *Id*, adds it to this *LibFxEffectDefs*, and returns it.
 //	
-//	If this *LibFxEffectDefs* already contains a *FxEffectDef* definition with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibFxEffectDefs* already contains a *FxEffectDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibFxEffectDefs) AddNew(id string) *FxEffectDef { return me.Add(me.New(id)) }
 
-//	Creates a new *FxEffectDef* definition with the specified *ID* and returns it, but does not add it to this *LibFxEffectDefs*.
+//	Creates a new *FxEffectDef* definition with the specified *Id* and returns it, but does not add it to this *LibFxEffectDefs*.
 func (me *LibFxEffectDefs) New(id string) (def *FxEffectDef) { def = newFxEffectDef(id); return }
 
-//	Removes the *FxEffectDef* with the specified *ID* from this *LibFxEffectDefs*.
+//	Removes the *FxEffectDef* with the specified *Id* from this *LibFxEffectDefs*.
 func (me *LibFxEffectDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 //	Signals to *core* (or your custom package) that changes have been made to this *LibFxEffectDefs* that need to be picked up.

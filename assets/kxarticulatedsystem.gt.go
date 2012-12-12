@@ -134,7 +134,7 @@ func (me *KxArticulatedSystemInst) Init() {
 
 func newKxArticulatedSystemDef(id string) (me *KxArticulatedSystemDef) {
 	me = &KxArticulatedSystemDef{}
-	me.ID = id
+	me.Id = id
 	me.Base.init()
 	me.Init()
 	return
@@ -150,7 +150,7 @@ func (me *KxArticulatedSystemDef) NewInst(id string) (inst *KxArticulatedSystemI
 */
 
 var (
-	//	A *map* collection that contains *LibKxArticulatedSystemDefs* libraries associated by their *ID*.
+	//	A *map* collection that contains *LibKxArticulatedSystemDefs* libraries associated by their *Id*.
 	AllKxArticulatedSystemDefLibs = LibsKxArticulatedSystemDef{}
 
 	//	The "default" *LibKxArticulatedSystemDefs* library for *KxArticulatedSystemDef*s.
@@ -166,12 +166,12 @@ func init() {
 }
 
 //	The underlying type of the global *AllKxArticulatedSystemDefLibs* variable: a *map* collection that contains
-//	*LibKxArticulatedSystemDefs* libraries associated by their *ID*.
+//	*LibKxArticulatedSystemDefs* libraries associated by their *Id*.
 type LibsKxArticulatedSystemDef map[string]*LibKxArticulatedSystemDefs
 
-//	Creates a new *LibKxArticulatedSystemDefs* library with the specified *ID*, adds it to this *LibsKxArticulatedSystemDef*, and returns it.
+//	Creates a new *LibKxArticulatedSystemDefs* library with the specified *Id*, adds it to this *LibsKxArticulatedSystemDef*, and returns it.
 //	
-//	If this *LibsKxArticulatedSystemDef* already contains a *LibKxArticulatedSystemDefs* library with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibsKxArticulatedSystemDef* already contains a *LibKxArticulatedSystemDefs* library with the specified *Id*, does nothing and returns *nil*.
 func (me LibsKxArticulatedSystemDef) AddNew(id string) (lib *LibKxArticulatedSystemDefs) {
 	if me[id] != nil {
 		return
@@ -186,7 +186,7 @@ func (me LibsKxArticulatedSystemDef) new(id string) (lib *LibKxArticulatedSystem
 	return
 }
 
-//	A library that contains *KxArticulatedSystemDef*s associated by their *ID*. To create a new *LibKxArticulatedSystemDefs* library, ONLY
+//	A library that contains *KxArticulatedSystemDef*s associated by their *Id*. To create a new *LibKxArticulatedSystemDefs* library, ONLY
 //	use the *LibsKxArticulatedSystemDef.New()* or *LibsKxArticulatedSystemDef.AddNew()* methods.
 type LibKxArticulatedSystemDefs struct {
 	BaseLib
@@ -197,30 +197,30 @@ type LibKxArticulatedSystemDefs struct {
 
 func newLibKxArticulatedSystemDefs(id string) (me *LibKxArticulatedSystemDefs) {
 	me = &LibKxArticulatedSystemDefs{M: map[string]*KxArticulatedSystemDef{}}
-	me.ID = id
+	me.Id = id
 	return
 }
 
 //	Adds the specified *KxArticulatedSystemDef* definition to this *LibKxArticulatedSystemDefs*, and returns it.
 //	
-//	If this *LibKxArticulatedSystemDefs* already contains a *KxArticulatedSystemDef* definition with the same *ID*, does nothing and returns *nil*.
+//	If this *LibKxArticulatedSystemDefs* already contains a *KxArticulatedSystemDef* definition with the same *Id*, does nothing and returns *nil*.
 func (me *LibKxArticulatedSystemDefs) Add(d *KxArticulatedSystemDef) (n *KxArticulatedSystemDef) {
-	if me.M[d.ID] == nil {
-		n, me.M[d.ID] = d, d
+	if me.M[d.Id] == nil {
+		n, me.M[d.Id] = d, d
 		me.SetDirty()
 	}
 	return
 }
 
-//	Creates a new *KxArticulatedSystemDef* definition with the specified *ID*, adds it to this *LibKxArticulatedSystemDefs*, and returns it.
+//	Creates a new *KxArticulatedSystemDef* definition with the specified *Id*, adds it to this *LibKxArticulatedSystemDefs*, and returns it.
 //	
-//	If this *LibKxArticulatedSystemDefs* already contains a *KxArticulatedSystemDef* definition with the specified *ID*, does nothing and returns *nil*.
+//	If this *LibKxArticulatedSystemDefs* already contains a *KxArticulatedSystemDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibKxArticulatedSystemDefs) AddNew(id string) *KxArticulatedSystemDef { return me.Add(me.New(id)) }
 
-//	Creates a new *KxArticulatedSystemDef* definition with the specified *ID* and returns it, but does not add it to this *LibKxArticulatedSystemDefs*.
+//	Creates a new *KxArticulatedSystemDef* definition with the specified *Id* and returns it, but does not add it to this *LibKxArticulatedSystemDefs*.
 func (me *LibKxArticulatedSystemDefs) New(id string) (def *KxArticulatedSystemDef) { def = newKxArticulatedSystemDef(id); return }
 
-//	Removes the *KxArticulatedSystemDef* with the specified *ID* from this *LibKxArticulatedSystemDefs*.
+//	Removes the *KxArticulatedSystemDef* with the specified *Id* from this *LibKxArticulatedSystemDefs*.
 func (me *LibKxArticulatedSystemDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 //	Signals to *core* (or your custom package) that changes have been made to this *LibKxArticulatedSystemDefs* that need to be picked up.

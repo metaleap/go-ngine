@@ -17,6 +17,7 @@ func (me *Base) SetDirty() {
 	me.dirty = true
 }
 
+//	If field does not equal val, sets field to val and calls SetDirty().
 func (me *Base) SetFieldB(field *bool, val bool) {
 	if *field != val {
 		*field = val
@@ -24,6 +25,7 @@ func (me *Base) SetFieldB(field *bool, val bool) {
 	}
 }
 
+//	If field does not equal val, sets field to val and calls SetDirty().
 func (me *Base) SetFieldF(field *float64, val float64) {
 	if *field != val {
 		*field = val
@@ -48,25 +50,38 @@ func (me *Base) SyncChanges() {
 
 //	Provides a common base for *Def*s.
 type BaseDef struct {
+	//	Syncability
 	Base
-	HasID
+	//	Unique identifier
+	HasId
+	//	Pretty-print name/title
 	HasName
+	//	Asset meta-data
 	HasAsset
+	//	Custom-technique/foreign-profile meta-data
 	HasExtras
 }
 
 //	Provides a common base for *Inst*s.
 type BaseInst struct {
+	//	Syncability
 	Base
+	//	Pretty-print name/title
 	HasName
+	//	Scoped identifier
 	HasSid
+	//	Custom-technique/foreign-profile meta-data
 	HasExtras
-	DefRef string
+	//	The unique ID of the definition that this instance refers to.
+	DefRef RefId
 }
 
 //	Provides a common base for *Lib*s.
 type BaseLib struct {
+	//	Syncability
 	Base
-	HasID
+	//	Unique identifier
+	HasId
+	//	Pretty-print name/title
 	HasName
 }
