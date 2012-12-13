@@ -88,7 +88,7 @@ type GeometryBrepFaces struct {
 	HasId
 	HasName
 	HasExtras
-	IndexedInputsV
+	IndexedInputs
 }
 
 type GeometryBrepHyperbola struct {
@@ -146,7 +146,7 @@ type GeometryBrepPcurves struct {
 	HasId
 	HasName
 	HasExtras
-	IndexedInputsV
+	IndexedInputs
 }
 
 type GeometryBrepPlane struct {
@@ -158,14 +158,14 @@ type GeometryBrepShells struct {
 	HasId
 	HasName
 	HasExtras
-	IndexedInputsV
+	IndexedInputs
 }
 
 type GeometryBrepSolids struct {
 	HasId
 	HasName
 	HasExtras
-	IndexedInputsV
+	IndexedInputs
 }
 
 type GeometryBrepSphere struct {
@@ -218,5 +218,5 @@ type GeometryBrepWires struct {
 	HasId
 	HasName
 	HasExtras
-	IndexedInputsV
+	IndexedInputs
 }

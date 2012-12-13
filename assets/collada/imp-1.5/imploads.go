@@ -285,8 +285,8 @@ func load_Int2x2(xn *xmlx.Node, obj *nga.Int2x2) {
 }
 
 func load_ControllerInst(xn *xmlx.Node, obj *nga.ControllerInst) {
-	obj.BindMaterial = obj_BindMaterial(xn, "bind_material")
-	obj.Skeletons = list_StringsN(xn, "skeleton")
+	obj.BindMaterial = obj_MaterialBinding(xn, "bind_material")
+	obj.SkinSkeletons = list_StringsN(xn, "skeleton")
 }
 
 func load_GeometryBrepCurve(xn *xmlx.Node, obj *nga.GeometryBrepCurve) {
@@ -451,7 +451,7 @@ func load_GeometryMesh(xn *xmlx.Node, obj *nga.GeometryMesh) {
 	obj.Vertices = obj_GeometryVertices(xn, "vertices")
 }
 
-func load_BindMaterial(xn *xmlx.Node, obj *nga.BindMaterial) {
+func load_MaterialBinding(xn *xmlx.Node, obj *nga.MaterialBinding) {
 	obj.Params = objs_Param(xn, "param")
 	if tcn := node_TechCommon(xn); tcn != nil {
 		obj.TC.Materials = objs_FxMaterialInst(tcn, "instance_material")
@@ -491,8 +491,8 @@ func load_AnimationInst(xn *xmlx.Node, obj *nga.AnimationInst) {
 }
 
 func load_GeometryBrepWires(xn *xmlx.Node, obj *nga.GeometryBrepWires) {
-	if iiv := obj_IndexedInputsV(xn, ""); iiv != nil {
-		obj.IndexedInputsV = *iiv
+	if iiv := obj_IndexedInputs(xn, ""); iiv != nil {
+		obj.IndexedInputs = *iiv
 	}
 }
 
@@ -868,7 +868,7 @@ func load_GeometrySpline(xn *xmlx.Node, obj *nga.GeometrySpline) {
 }
 
 func load_GeometryInst(xn *xmlx.Node, obj *nga.GeometryInst) {
-	obj.BindMaterial = obj_BindMaterial(xn, "bind_material")
+	obj.BindMaterial = obj_MaterialBinding(xn, "bind_material")
 }
 
 func load_PxRigidConstraintDef(xn *xmlx.Node, obj *nga.PxRigidConstraintDef) {
@@ -1128,8 +1128,8 @@ func load_KxSceneInstBindModel(xn *xmlx.Node, obj *nga.KxSceneInstBindModel) {
 }
 
 func load_GeometryBrepSolids(xn *xmlx.Node, obj *nga.GeometryBrepSolids) {
-	if iiv := obj_IndexedInputsV(xn, ""); iiv != nil {
-		obj.IndexedInputsV = *iiv
+	if iiv := obj_IndexedInputs(xn, ""); iiv != nil {
+		obj.IndexedInputs = *iiv
 	}
 }
 
@@ -1333,7 +1333,7 @@ func load_ControllerSkin(xn *xmlx.Node, obj *nga.ControllerSkin) {
 	if ci := obj_ControllerInputs(xn, "joints"); ci != nil {
 		obj.Joints = *ci
 	}
-	if iiv := obj_IndexedInputsV(xn, "vertex_weights"); iiv != nil {
+	if iiv := obj_IndexedInputs(xn, "vertex_weights"); iiv != nil {
 		obj.VertexWeights = *iiv
 	}
 }
@@ -1530,8 +1530,8 @@ func load_KxArticulatedSystemDef(xn *xmlx.Node, obj *nga.KxArticulatedSystemDef)
 }
 
 func load_GeometryBrepPcurves(xn *xmlx.Node, obj *nga.GeometryBrepPcurves) {
-	if iiv := obj_IndexedInputsV(xn, ""); iiv != nil {
-		obj.IndexedInputsV = *iiv
+	if iiv := obj_IndexedInputs(xn, ""); iiv != nil {
+		obj.IndexedInputs = *iiv
 	}
 }
 
@@ -1650,12 +1650,6 @@ func load_IndexedInputs(xn *xmlx.Node, obj *nga.IndexedInputs) {
 	obj.Count = xau64(xn, "count")
 	obj.Inputs = objs_InputShared(xn, "input")
 	obj.Indices = listcn_Uints(xn, "p")
-}
-
-func load_IndexedInputsV(xn *xmlx.Node, obj *nga.IndexedInputsV) {
-	if ii := obj_IndexedInputs(xn, ""); ii != nil {
-		obj.IndexedInputs = *ii
-	}
 	obj.Vcount = listcn_Ints(xn, "vcount")
 }
 
@@ -1696,8 +1690,8 @@ func load_ParamBool(xn *xmlx.Node, obj *nga.ParamBool) {
 }
 
 func load_GeometryBrepFaces(xn *xmlx.Node, obj *nga.GeometryBrepFaces) {
-	if iiv := obj_IndexedInputsV(xn, ""); iiv != nil {
-		obj.IndexedInputsV = *iiv
+	if iiv := obj_IndexedInputs(xn, ""); iiv != nil {
+		obj.IndexedInputs = *iiv
 	}
 }
 

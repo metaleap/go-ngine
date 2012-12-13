@@ -4,32 +4,48 @@ import (
 	unum "github.com/metaleap/go-util/num"
 )
 
+//	Used to declare skinning joints or morph targets.
 type ControllerInputs struct {
+	//	Custom-technique/foreign-profile meta-data.
 	HasExtras
+	//	Declares the input semantics of a data Source and connects a consumer to that Source.
 	HasInputs
 }
 
+//	Describes the data required to blend between sets of static meshes.
 type ControllerMorph struct {
+	//	Data for morph weights and for morph targets.
 	HasSources
+	//	Which blending method to use: true for relative blending, false for normalized blending.
 	Relative bool
-	Source   string
-	Targets  ControllerInputs
+	//	Refers to the Geometry that describes the base mesh.
+	Source string
+	//	Input meshes (morph targets) to be blended.
+	Targets ControllerInputs
 }
 
+//	Constructor
 func NewControllerMorph() (me *ControllerMorph) {
 	me = &ControllerMorph{}
 	me.Sources = Sources{}
 	return
 }
 
+//	Contains vertex and primitive information sufficient to describe blend-weight skinning.
 type ControllerSkin struct {
+	//	Provides most of the data required for skinning the given base mesh.
 	HasSources
+	//	Provides extra information about the position and orientation of the base mesh before binding.
 	BindShapeMatrix unum.Mat4
-	VertexWeights   IndexedInputsV
-	Joints          ControllerInputs
-	Source          string
+	//	Describes a per-vertex combination of joints and weights used in this skin. An index of –1 into the array of joints refers to the bind shape. Weights should be normalized before use.
+	VertexWeights IndexedInputs
+	//	Aggregates the per-joint information needed for this skin.
+	Joints ControllerInputs
+	//	A URI reference to the base mesh (a static mesh or a morphed mesh). This also provides the bind-shape of the skinned mesh.
+	Source string
 }
 
+//	Constructor
 func NewControllerSkin() (me *ControllerSkin) {
 	me = &ControllerSkin{}
 	me.BindShapeMatrix.Identity()
@@ -37,21 +53,31 @@ func NewControllerSkin() (me *ControllerSkin) {
 	return
 }
 
+//	Defines generic control information for dynamic content.
 type ControllerDef struct {
+	//	Id, Name, Asset, Extras
 	BaseDef
+	//	Declares this a mesh-morphing controller that deforms meshes and blends them.
 	Morph *ControllerMorph
-	Skin  *ControllerSkin
+	//	Declares this a vertex-skinning controller that transforms vertices based on weighted influences to produce a smoothly changing mesh.
+	Skin *ControllerSkin
 }
 
+//	Initialization
 func (me *ControllerDef) Init() {
 }
 
+//	Instantiates a controller resource.
 type ControllerInst struct {
+	//	Sid, Name, Extras, DefRef
 	BaseInst
-	BindMaterial *BindMaterial
-	Skeletons    []string
+	//	Binds a specific material to this controller instantiation.
+	BindMaterial *MaterialBinding
+	//	Indicates where a skin controller is to start to search for the joint nodes it needs. This element is meaningless for morph controllers.
+	SkinSkeletons []string
 }
 
+//	Initialization
 func (me *ControllerInst) Init() {
 }
 

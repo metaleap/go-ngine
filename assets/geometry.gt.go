@@ -75,7 +75,7 @@ func (me *GeometryDef) Init() {
 
 type GeometryInst struct {
 	BaseInst
-	BindMaterial *BindMaterial
+	BindMaterial *MaterialBinding
 }
 
 func (me *GeometryInst) Init() {

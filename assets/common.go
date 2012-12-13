@@ -132,7 +132,7 @@ func NewAsset() (me *Asset) {
 }
 
 //	Defines authoring information for asset management.
-//	ALL fields are only set-and-retained for imported Collada assets that provide those field, and are not otherwise written, read or used.
+//	ALL fields are only set-and-retained for imported Collada assets that provide those fields, and are not otherwise written, read or used.
 type AssetContributor struct {
 	Author        string
 	AuthorEmail   string
@@ -144,7 +144,7 @@ type AssetContributor struct {
 }
 
 //	Provides information about the location of the visual scene in physical space.
-//	ALL fields are only set-and-retained for imported Collada assets that provide those field, and are not otherwise written, read or used.
+//	ALL fields are only set-and-retained for imported Collada assets that provide those fields, and are not otherwise written, read or used.
 type AssetGeographicLocation struct {
 	Longitude        float64
 	Latitude         float64
@@ -152,94 +152,147 @@ type AssetGeographicLocation struct {
 	AltitudeAbsolute bool
 }
 
-type BindMaterial struct {
-	HasExtras
+//	Provides arbitrary additional information about or related to its parent resource.
+type Extra struct {
+	//	Unique identifier
+	HasId
+	//	Pretty-print name/title
+	HasName
+	//	Resource-specific asset-management meta-data
+	HasAsset
+	//	Custom-technique/foreign-profile data.
 	HasTechniques
+	//	A hint as to the type of information that this particular Extra represents.
+	Type string
+}
+
+//	Used in various geometry primitives and b-rep resources.
+type IndexedInputs struct {
+	//	Number of primitives
+	Count uint64
+	//	Inputs specify how to read data from Sources.
+	Inputs []*InputShared
+	//	Indices that describe the attributes for a number of primitives. The indices reference into the Sources that are referenced by the Inputs.
+	Indices []uint64
+	//	Number of sub-primitives, if used.
+	Vcount []int64
+}
+
+//	Declares unshared input semantics of a data source and connects a consumer to that source.
+type Input struct {
+	//	The user-defined meaning of the input connection.
+	Semantic string
+	//	The location of the data source.
+	Source string
+}
+
+//	Declares shared input semantics of a data source and connects a consumer to that source.
+type InputShared struct {
+	//	Semantic and Source
+	Input
+	//	The offset into the list of indices.
+	Offset uint64
+	//	Which inputs to group as a single set. This is helpful when multiple inputs share the same semantics.
+	Set *uint64
+}
+
+//	Allows simple association of resources with custom named layers.
+type Layers map[string]bool
+
+//	Binds a specific material to a piece of geometry, binding varying and uniform parameters at the same time.
+type MaterialBinding struct {
+	//	Custom-technique/foreign-profile meta-data.
+	HasExtras
+	//	Custom-technique/foreign-profile data.
+	HasTechniques
+	//	Targets for animation
 	Params []*Param
-	TC     struct {
+	//	Common-technique profile.
+	TC struct {
+		//	References to the materials included in this material binding.
 		Materials []*FxMaterialInst
 	}
 }
 
-type Extra struct {
-	HasId
+//	Declares parametric information for its parent resource.
+type Param struct {
+	//	Pretty-print name/title
 	HasName
-	HasAsset
-	HasTechniques
+	//	Scoped identifier
+	HasSid
+	//	The user-defined meaning of the parameter.
+	Semantic string
+	//	The type of the value data. This text string must be understood by the application.
 	Type string
 }
 
-type IndexedInputs struct {
-	Count   uint64
-	Inputs  []*InputShared
-	Indices []uint64
-}
-
-type IndexedInputsV struct {
-	IndexedInputs
-	Vcount []int64
-}
-
-type Input struct {
-	Semantic string
-	Source   string
-}
-
-type InputShared struct {
-	Input
-	Offset uint64
-	Set    *uint64
-}
-
-type Layers map[string]bool
-
-type Param struct {
-	HasName
-	HasSid
-	Semantic string
-	Type     string
-}
-
+//	Declares a new parameter for its parent resource, and assigns it an initial value.
 type ParamDef struct {
+	//	Scoped identifier
 	HasSid
+	//	Initial value for this parameter
 	Value interface{}
 }
 
+//	A hash-table containing parameter declarations of this resource.
 type ParamDefs map[string]*ParamDef
 
+//	Assigns a new value to a previously defined parameter.
 type ParamInst struct {
-	Ref               string
+	//	References the identifier of the pre-defined parameter (ParamDef) that will have its value set.
+	Ref string
+	//	Indicates if the Value is a string referencing the identifier of a connected parameter.
 	IsConnectParamRef bool
-	Value             interface{}
+	//	The new value for the referenced parameter.
+	Value interface{}
 }
 
+//	References a resource by its unique identifier (Id).
 type RefId string
 
+//	Returns its current value.
 func (me RefId) S() string {
 	return string(me)
 }
 
+//	Modifies its current value.
 func (me *RefId) Set(v string) {
 	*me = RefId(v)
 }
 
+//	References a resource by its scoped identifier (Sid).
 type RefSid string
 
+//	Returns its current value.
 func (me RefSid) S() string {
 	return string(me)
 }
 
+//	Modifies its current value.
 func (me *RefSid) Set(v string) {
 	*me = RefSid(v)
 }
 
+//	Declares platform-specific or program-specific information used to process some portion of the content.
 type Technique struct {
+	//	The type of profile. This is a vendor-defined character string that indicates the platform or capability target for the technique.
 	Profile string
-	Data    []*xmlx.Node
+	//	Arbitrary content or meta-data for this Technique.
+	Data []*xmlx.Node
 }
 
+//	Represents a single transformation of a specific kind.
 type Transform struct {
+	//	Scoped identifier
 	HasSid
+	//	The type of this transformation (rotation, skewing, scaling, translation, "look-at", or matrix).
+	//	The only valid values are the TRANSFORM_TYPE_* enumerated constants.
 	Type int
-	F    []float64
+	//	Contains one or more vectors and values representing this transformation.
+	//	If type is "look-at", contains 9 values representing 3 vectors (eye position, interest point, up-axis).
+	//	If type is matrix, contains 16 values representing a column-major 4x4 matrix.
+	//	If type is skew, contains 7 values: one angle in degrees, then 2 vectors specifying the axes of rotation and translation.
+	//	If type is rotate, contains 4 values: one vector specifying the axis of rotation, then 1 value for the angle in degrees.
+	//	If type is translate or scale, contains 3 values representing a single column vector.
+	F []float64
 }
