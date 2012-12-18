@@ -4,26 +4,39 @@ import (
 	xmlx "github.com/jteeuwen/go-pkg-xmlx"
 )
 
+//	There are many ways to describe a formula. Like COLLADA, the *assets* package uses MathML as its common technique.
 type FormulaDef struct {
+	//	Id, Name, Asset, Extras
 	BaseDef
+	//	Sid
 	HasSid
+	//	Formula parameter definitions
 	HasParamDefs
+	//	Custom-profile/foreign-technique support
 	HasTechniques
+	//	A parameter that specifies the result variable of the formula.
 	Target ParamFloat
-	TC     struct {
+	//	Common-technique profile.
+	TC struct {
+		//	Any valid MathML (content) XML defining this formula.
 		MathML []*xmlx.Node
 	}
 }
 
+//	Initialization
 func (me *FormulaDef) Init() {
 	me.NewParams = ParamDefs{}
 }
 
+//	Instantiates a formula resource.
 type FormulaInst struct {
+	//	Sid, Name, Extras, DefRef
 	BaseInst
+	//	Specifies the source (for arguments) or the destination (for the result) of the instantiated formula.
 	HasParamInsts
 }
 
+//	Initialization
 func (me *FormulaInst) Init() {
 }
 
