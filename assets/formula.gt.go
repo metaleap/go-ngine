@@ -4,6 +4,14 @@ import (
 	xmlx "github.com/jteeuwen/go-pkg-xmlx"
 )
 
+//	Represents either a formula definition or a formula instance.
+type Formula struct {
+	//	If set, Inst must be nil.
+	Def *FormulaDef
+	//	If set, Def must be nil.
+	Inst *FormulaInst
+}
+
 //	There are many ways to describe a formula. Like COLLADA, the *assets* package uses MathML as its common technique.
 type FormulaDef struct {
 	//	Id, Name, Asset, Extras
@@ -126,6 +134,9 @@ func (me *LibFormulaDefs) Add(d *FormulaDef) (n *FormulaDef) {
 //	
 //	If this *LibFormulaDefs* already contains a *FormulaDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibFormulaDefs) AddNew(id string) *FormulaDef { return me.Add(me.New(id)) }
+
+//	Short-hand for len(lib.M)
+func (me *LibFormulaDefs) Len() int { return len(me.M) }
 
 //	Creates a new *FormulaDef* definition with the specified *Id* and returns it, but does not add it to this *LibFormulaDefs*.
 func (me *LibFormulaDefs) New(id string) (def *FormulaDef) { def = newFormulaDef(id); return }

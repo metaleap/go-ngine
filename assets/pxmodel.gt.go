@@ -1,23 +1,37 @@
 package assets
 
+//	Allows for building complex combinations of rigid bodies and constraints that may be instantiated multiple times.
 type PxModelDef struct {
+	//	Id, Name, Asset, Extras
 	BaseDef
-	RigidBodies      []*PxRigidBodyDef
+	//	Contains zero or more rigid bodies participating in this physics model.
+	RigidBodies []*PxRigidBodyDef
+	//	Contains zero or more rigid constraints participating in this physics model.
 	RigidConstraints []*PxRigidConstraintDef
-	Insts            []*PxModelInst
+	//	Child physics models participating in this physics model, with optional property overrides.
+	Insts []*PxModelInst
 }
 
+//	Initialization
 func (me *PxModelDef) Init() {
 }
 
+//	Embeds a physics model inside another physics model or instantiates a physics model within a physics scene.
 type PxModelInst struct {
+	//	Sid, Name, Extras, DefRef
 	BaseInst
-	ParentRef        string
-	ForceFields      []*PxForceFieldInst
-	RigidBodies      []*PxRigidBodyInst
+	//	Points to the Id of a node in the visual scene. This allows a physics model to be instantiated under a specific transform node, which will dictate the initial position and orientation, and could be animated to influence kinematic rigid bodies. Optional.
+	//	By default, the physics model is instantiated under the world, rather than a specific transform node. This parameter is only meaningful when the parent element of the current physics model is a physics scene.
+	Parent RefId
+	//	Zero or more force fields influencing this physics model.
+	ForceFields []*PxForceFieldInst
+	//	Contains instances of those rigid bodies included in the instantiated physics model that should have some properties overridden, or should be linked with transform nodes in the visual scene.
+	RigidBodies []*PxRigidBodyInst
+	//	Contains instances of those rigid constraints included in the instantiated physics model that should have some properties overridden.
 	RigidConstraints []*PxRigidConstraintInst
 }
 
+//	Initialization
 func (me *PxModelInst) Init() {
 }
 
@@ -107,6 +121,9 @@ func (me *LibPxModelDefs) Add(d *PxModelDef) (n *PxModelDef) {
 //	
 //	If this *LibPxModelDefs* already contains a *PxModelDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibPxModelDefs) AddNew(id string) *PxModelDef { return me.Add(me.New(id)) }
+
+//	Short-hand for len(lib.M)
+func (me *LibPxModelDefs) Len() int { return len(me.M) }
 
 //	Creates a new *PxModelDef* definition with the specified *Id* and returns it, but does not add it to this *LibPxModelDefs*.
 func (me *LibPxModelDefs) New(id string) (def *PxModelDef) { def = newPxModelDef(id); return }

@@ -1,39 +1,58 @@
 package assets
 
 const (
+	//	Defines a single translational degree of freedom of a joint.
 	KX_JOINT_TYPE_PRISMATIC = 1
-	KX_JOINT_TYPE_REVOLUTE  = iota
+	//	Defines a single rotational degree of freedom of a joint.
+	KX_JOINT_TYPE_REVOLUTE = iota
 )
 
+//	Primitive (simple) joints are joints with one degree of freedom (one given axis) and are used to construct more complex joint types (compound joints) that consist of multiple primitives, each representing an axis.
 type KxJoint struct {
+	//	Sid
 	HasSid
+	//	Must be one of the KX_JOINT_TYPE_* enumerated constants.
+	Type int
+	//	Specifies the axis of the degree of freedom.
 	Axis struct {
-		HasSid
+		//	Name
 		HasName
-		F Float3
+		//	Sid, V
+		ScopedVec3
 	}
+	//	If set, these specified limits are physical limits.
 	Limits *KxJointLimits
-	Type   int
 }
 
+//	Declares a primitive/simple joint as fully limited (if Min and Max are both set), partially limited (if either Min or Max is nil, but not both) or unlimited (if Min and Max are nil).
 type KxJointLimits struct {
+	//	If set, the "minimum" portion of this joint limitation.
 	Min *ScopedFloat
+	//	If set, the "maximum" portion of this joint limitation.
 	Max *ScopedFloat
 }
 
+//	Defines a single complex/compound joint with one or more degrees of freedom.
 type KxJointDef struct {
+	//	Id, Name, Asset, Extras
 	BaseDef
+	//	Sid
 	HasSid
+	//	Primitive (simple) joints are joints with one degree of freedom (one given axis) and are used to construct more complex joint types (compound joints) that consist of multiple primitives, each representing an axis.
 	All []*KxJoint
 }
 
+//	Initialization
 func (me *KxJointDef) Init() {
 }
 
+//	Instantiates a kinematics joint resource.
 type KxJointInst struct {
+	//	Sid, Name, Extras, DefRef
 	BaseInst
 }
 
+//	Initialization
 func (me *KxJointInst) Init() {
 }
 
@@ -123,6 +142,9 @@ func (me *LibKxJointDefs) Add(d *KxJointDef) (n *KxJointDef) {
 //	
 //	If this *LibKxJointDefs* already contains a *KxJointDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibKxJointDefs) AddNew(id string) *KxJointDef { return me.Add(me.New(id)) }
+
+//	Short-hand for len(lib.M)
+func (me *LibKxJointDefs) Len() int { return len(me.M) }
 
 //	Creates a new *KxJointDef* definition with the specified *Id* and returns it, but does not add it to this *LibKxJointDefs*.
 func (me *LibKxJointDefs) New(id string) (def *KxJointDef) { def = newKxJointDef(id); return }

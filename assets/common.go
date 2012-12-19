@@ -260,6 +260,19 @@ func (me *RefId) Set(v string) {
 	*me = RefId(v)
 }
 
+//	References a previously defined parameter.
+type RefParam RefSid
+
+//	Returns its current value.
+func (me RefParam) S() string {
+	return string(me)
+}
+
+//	Modifies its current value.
+func (me *RefParam) Set(v string) {
+	*me = RefParam(v)
+}
+
 //	References a resource by its scoped identifier (Sid).
 type RefSid string
 
@@ -271,6 +284,18 @@ func (me RefSid) S() string {
 //	Modifies its current value.
 func (me *RefSid) Set(v string) {
 	*me = RefSid(v)
+}
+
+//	Declares a complete, self-contained base of a scene hierarchy or scene graph.
+type Scene struct {
+	//	Extras
+	HasExtras
+	//	Embodies the entire set of information that can be visualized from the contents of a resource.
+	Visual *VisualSceneInst
+	//	Embodies the entire set of information that can be articulated kinematically from the contents of a resource.
+	Kinematics *KxSceneInst
+	//	Specifies an environment in which physical objects are instantiated and simulated.
+	Physics []*PxSceneInst
 }
 
 //	Declares platform-specific or program-specific information used to process some portion of the content.

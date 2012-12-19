@@ -1,32 +1,49 @@
 package assets
 
+//	Binds values to uniform inputs of a shader or binds values to effect parameters upon instantiation.
+type FxBinding struct {
+	//	Which effect parameter to bind.
+	Semantic string
+	//	A reference to the Sid of the value to bind to the specified semantic.
+	Target string
+}
+
+//	Binds geometry vertex inputs to effect vertex inputs upon instantiation.
+type FxVertexInputBinding struct {
+	//	Which effect parameter to bind.
+	Semantic string
+	//	Which input semantic to bind.
+	InputSemantic string
+	//	Which input set to bind. Optional.
+	InputSet *uint64
+}
+
+//	Defines the equations necessary for the visual appearance of geometry and screen-space image processing.
 type FxMaterialDef struct {
+	//	Id, Name, Asset, Extras
 	BaseDef
+	//	The parameterized effect instantiation that fully describes and defines this material.
 	Effect FxEffectInst
 }
 
+//	Initialization
 func (me *FxMaterialDef) Init() {
 }
 
+//	Instantiates a material resource.
 type FxMaterialInst struct {
+	//	Sid, Name, Extras, DefRef
 	BaseInst
-	Symbol              string
-	Bindings            []*FxMaterialBinding
+	//	Which symbol defined from within the geometry this material binds to.
+	Symbol string
+	//	Binds values to uniform inputs of a shader or binds values to effect parameters upon instantiation.
+	Bindings []*FxBinding
+	//	Binds vertex inputs to effect parameters upon instantiation.
 	VertexInputBindings []*FxVertexInputBinding
 }
 
+//	Initialization
 func (me *FxMaterialInst) Init() {
-}
-
-type FxMaterialBinding struct {
-	Semantic string
-	Target   string
-}
-
-type FxVertexInputBinding struct {
-	Semantic      string
-	InputSemantic string
-	InputSet      *uint64
 }
 
 //#begin-gt _definstlib.gt T:FxMaterial
@@ -115,6 +132,9 @@ func (me *LibFxMaterialDefs) Add(d *FxMaterialDef) (n *FxMaterialDef) {
 //	
 //	If this *LibFxMaterialDefs* already contains a *FxMaterialDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibFxMaterialDefs) AddNew(id string) *FxMaterialDef { return me.Add(me.New(id)) }
+
+//	Short-hand for len(lib.M)
+func (me *LibFxMaterialDefs) Len() int { return len(me.M) }
 
 //	Creates a new *FxMaterialDef* definition with the specified *Id* and returns it, but does not add it to this *LibFxMaterialDefs*.
 func (me *LibFxMaterialDefs) New(id string) (def *FxMaterialDef) { def = newFxMaterialDef(id); return }

@@ -168,6 +168,9 @@ func (me *LibControllerDefs) Add(d *ControllerDef) (n *ControllerDef) {
 //	If this *LibControllerDefs* already contains a *ControllerDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibControllerDefs) AddNew(id string) *ControllerDef { return me.Add(me.New(id)) }
 
+//	Short-hand for len(lib.M)
+func (me *LibControllerDefs) Len() int { return len(me.M) }
+
 //	Creates a new *ControllerDef* definition with the specified *Id* and returns it, but does not add it to this *LibControllerDefs*.
 func (me *LibControllerDefs) New(id string) (def *ControllerDef) { def = newControllerDef(id); return }
 

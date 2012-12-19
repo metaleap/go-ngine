@@ -1,48 +1,75 @@
 package assets
 
+//	Declares information specifying how to evaluate a visual scene.
 type VisualSceneEvaluation struct {
+	//	Id, Name, Asset, Extras
 	BaseDef
+	//	Sid
 	HasSid
-	Disabled     bool
+	//	Whether evaluation is enabled. Disabling evaluation can be useful for debugging.
+	Disabled bool
+	//	Describes effects passes to render a scene.
 	RenderPasses []*VisualSceneRendering
 }
 
+//	Describes one effect pass to evaluate a scene.
 type VisualSceneRendering struct {
+	//	Name
 	HasName
+	//	Sid
 	HasSid
+	//	Extras
 	HasExtras
-	CameraNode   string
-	Layers       Layers
+	//	Refers to a node that contains a camera describing the viewpoint from which to render this compositing step. Optional.
+	CameraNode string
+	//	Specifies which layer or layers to render in this compositing step while evaluating the scene.
+	Layers Layers
+	//	If set, specifies which effect to render in this compositing step while evaluating the scene.
 	MaterialInst *VisualSceneRenderingMaterialInst
 }
 
+//	Constructor
 func NewVisualSceneRendering() (me *VisualSceneRendering) {
 	me = &VisualSceneRendering{Layers: Layers{}}
 	return
 }
 
+//	Instantiates a material resource for a screen effect.
 type VisualSceneRenderingMaterialInst struct {
+	//	Extras
 	HasExtras
-	Bindings          []*FxMaterialBinding
+	//	Binds values to effect parameters upon instantiation.
+	Bindings []*FxBinding
+	//	Target specific techniques and passes inside a material rather than having to split the effects techniques and passes into multiple effects.
 	OverrideTechnique struct {
-		Ref  string
-		Pass string
+		//	Specifies the Sid of a Technique
+		Ref RefSid
+		//	Specifies the Sid of one FxPass to execute. If not specified, then all of the Technique’s passes are used.
+		Pass RefSid
 	}
 }
 
+//	Embodies the entire set of information that can be visualized from the contents of a resource.
 type VisualSceneDef struct {
+	//	Id, Name, Asset, Extras
 	BaseDef
-	Nodes       []*NodeDef
+	//	A scene graph containing nodes of visual information and related data.
+	Nodes []*NodeDef
+	//	Specifies how to evaluate this visual scene.
 	Evaluations []*VisualSceneEvaluation
 }
 
+//	Initialization
 func (me *VisualSceneDef) Init() {
 }
 
+//	Instantiates a visual scene resource.
 type VisualSceneInst struct {
+	//	Sid, Name, Extras, DefRef
 	BaseInst
 }
 
+//	Initialization
 func (me *VisualSceneInst) Init() {
 }
 
@@ -132,6 +159,9 @@ func (me *LibVisualSceneDefs) Add(d *VisualSceneDef) (n *VisualSceneDef) {
 //	
 //	If this *LibVisualSceneDefs* already contains a *VisualSceneDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibVisualSceneDefs) AddNew(id string) *VisualSceneDef { return me.Add(me.New(id)) }
+
+//	Short-hand for len(lib.M)
+func (me *LibVisualSceneDefs) Len() int { return len(me.M) }
 
 //	Creates a new *VisualSceneDef* definition with the specified *Id* and returns it, but does not add it to this *LibVisualSceneDefs*.
 func (me *LibVisualSceneDefs) New(id string) (def *VisualSceneDef) { def = newVisualSceneDef(id); return }

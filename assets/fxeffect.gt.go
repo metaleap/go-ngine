@@ -207,7 +207,7 @@ type FxPassState struct {
 	Index float64
 }
 
-//	Represents an FX profile.
+//	An FX profile represents a shader-based rendering pipeline.
 type FxProfile struct {
 	//	Id
 	HasId
@@ -217,27 +217,26 @@ type FxProfile struct {
 	HasExtras
 	//	A hash-table containing parameter declarations of this profile.
 	HasFxParamDefs
+	//	If set, this FxProfile represents a common, fixed-function shader pipeline.
+	Common *FxProfileCommon
+	//	If set, this FxProfile represents an OpenGL Shading Language (GLSL) pipeline.
+	GlSl *FxProfileGlSl
 }
 
-//	This FX profile provides platform-independent declarations for the common, fixed-function shader.
-type FxProfileCommon struct {
-	//	Id, Asset, Extras, NewParams
-	FxProfile
-	//	Declares the only technique for this effect.
-	Technique FxTechniqueCommon
-}
-
-//	Constructor
-func NewFxProfileCommon() (me *FxProfileCommon) {
-	me = &FxProfileCommon{}
+func NewProfile() (me *FxProfile) {
+	me = &FxProfile{}
 	me.NewParams = FxParamDefs{}
 	return
 }
 
+//	This FX profile provides platform-independent declarations for the common, fixed-function shader.
+type FxProfileCommon struct {
+	//	Declares the only technique for this effect.
+	Technique FxTechniqueCommon
+}
+
 //	This FX profile provides platform-specific declarations for the OpenGL Shading Language.
 type FxProfileGlSl struct {
-	//	Id, Asset, Extras, NewParams
-	FxProfile
 	//	The type of platform. This is a vendor-defined character string that indicates the platform or capability target for the technique. Defaults to "PC".
 	Platform string
 	//	GLSL shader sources
@@ -249,7 +248,6 @@ type FxProfileGlSl struct {
 //	Constructor
 func NewFxProfileGlSl() (me *FxProfileGlSl) {
 	me = &FxProfileGlSl{Platform: "PC"}
-	me.NewParams = FxParamDefs{}
 	return
 }
 
@@ -331,44 +329,63 @@ type FxTechniqueCommonPhong struct {
 
 //	Holds a description of the textures, samplers, shaders, parameters, and passes necessary for rendering this effect within an FxProfileGlsl.
 type FxTechniqueGlsl struct {
+	//	Id, Sid, Asset, Extras
 	FxTechnique
+	//	Application-specific FX metadata
 	Annotations []*FxAnnotation
-	Passes      []*FxPass
+	//	Static declarations of all the render states, shaders, and settings for the rendering pipeline.
+	Passes []*FxPass
 }
 
+//	Used in FxColorOrTexture instances that refer to a texture image instead of a literal color value.
 type FxTexture struct {
+	//	Extras
 	HasExtras
+	//	References a previously defined FxSampler of type FX_SAMPLER_TYPE_2D.
 	Sampler2D string
-	TexCoord  string
+	//	A semantic token, which will be referenced within FxMaterialBinding to bind an array of texture-coordinates from a geometry instance to the sampler.
+	TexCoord string
 }
 
+//	Defines the equations necessary for the visual appearance of geometry and/or screen-space image processing.
 type FxEffectDef struct {
+	//	Id, Name, Asset, Extras
 	BaseDef
+	//	NewParams
 	HasFxParamDefs
+	//	Application-specific FX metadata
 	Annotations []*FxAnnotation
-	Profiles    struct {
-		GlSl   []*FxProfileGlSl
-		Common []*FxProfileCommon
-	}
+	//	Rendering pipeline(s).
+	Profiles []*FxProfile
 }
 
+//	Initialization
 func (me *FxEffectDef) Init() {
 	me.NewParams = FxParamDefs{}
 }
 
+//	Instantiates an effect resource.
 type FxEffectInst struct {
+	//	Sid, Name, Extras, DefRef
 	BaseInst
+	//	SetParams
 	HasParamInsts
+	//	Platform-specific hints of which techniques to use in this effect.
 	TechniqueHints []*FxEffectInstTechniqueHint
 }
 
+//	Initialization
 func (me *FxEffectInst) Init() {
 }
 
+//	Adds a hint for a platform of which technique to use in this effect.
 type FxEffectInstTechniqueHint struct {
+	//	Defines a string that specifies for which platform this hint is intended. Optional.
 	Platform string
-	Ref      string
-	Profile  string
+	//	A reference to the name of the platform. Required.
+	Ref string
+	//	A string that specifies for which API profile this hint is intended. It is the name of the profile within the effect that contains the technique. Optional. If set, can be "COMMON" or "GLSL".
+	Profile string
 }
 
 //#begin-gt _definstlib.gt T:FxEffect
@@ -457,6 +474,9 @@ func (me *LibFxEffectDefs) Add(d *FxEffectDef) (n *FxEffectDef) {
 //	
 //	If this *LibFxEffectDefs* already contains a *FxEffectDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibFxEffectDefs) AddNew(id string) *FxEffectDef { return me.Add(me.New(id)) }
+
+//	Short-hand for len(lib.M)
+func (me *LibFxEffectDefs) Len() int { return len(me.M) }
 
 //	Creates a new *FxEffectDef* definition with the specified *Id* and returns it, but does not add it to this *LibFxEffectDefs*.
 func (me *LibFxEffectDefs) New(id string) (def *FxEffectDef) { def = newFxEffectDef(id); return }

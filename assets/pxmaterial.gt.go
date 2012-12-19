@@ -1,22 +1,33 @@
 package assets
 
+//	Defines the physical properties of an object.
 type PxMaterialDef struct {
+	//	Id, Name, Asset, Extras
 	BaseDef
+	//	Techniques
 	HasTechniques
+	//	Common-technique profile
 	TC struct {
+		//	The dynamic friction coefficient.
 		DynamicFriction ScopedFloat
-		Restitution     ScopedFloat
-		StaticFriction  ScopedFloat
+		//	The proportion of the kinetic energy preserved in the impact (typically ranges from 0.0 to 1.0). Also known as “bounciness” or “elasticity.”
+		Restitution ScopedFloat
+		//	The static friction coefficient.
+		StaticFriction ScopedFloat
 	}
 }
 
+//	Initialization
 func (me *PxMaterialDef) Init() {
 }
 
+//	Lets a shape specify its surface properties using a previously defined physics material.
 type PxMaterialInst struct {
+	//	Sid, Name, Extras, DefRef
 	BaseInst
 }
 
+//	Initialization
 func (me *PxMaterialInst) Init() {
 }
 
@@ -106,6 +117,9 @@ func (me *LibPxMaterialDefs) Add(d *PxMaterialDef) (n *PxMaterialDef) {
 //	
 //	If this *LibPxMaterialDefs* already contains a *PxMaterialDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibPxMaterialDefs) AddNew(id string) *PxMaterialDef { return me.Add(me.New(id)) }
+
+//	Short-hand for len(lib.M)
+func (me *LibPxMaterialDefs) Len() int { return len(me.M) }
 
 //	Creates a new *PxMaterialDef* definition with the specified *Id* and returns it, but does not add it to this *LibPxMaterialDefs*.
 func (me *LibPxMaterialDefs) New(id string) (def *PxMaterialDef) { def = newPxMaterialDef(id); return }

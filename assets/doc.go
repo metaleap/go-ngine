@@ -74,3 +74,39 @@
 //	Any exported types in this package not following the above pattern (such as MeshData etc.) should be
 //	considered "auxiliary helpers" rather than primary / "first-class" resource types.
 package assets
+
+type Document struct {
+	HasAsset
+	HasExtras
+	Scene *Scene
+	/*
+		Libs  struct {
+			AnimationClips LibsAnimationClipDef
+			Animations     LibsAnimationDef
+			Cameras        LibsCameraDef
+			Controllers    LibsControllerDef
+			Formulas       LibsFormulaDef
+			Geometries     LibsGeometryDef
+			Fx             struct {
+				Effects   LibsFxEffectDef
+				Image     LibsFxImageDef
+				Materials LibsFxMaterialDef
+			}
+			Kx struct {
+				ArticulatedSystems LibsKxArticulatedSystemDef
+				Joints             LibsKxJointDef
+				Models             LibsKxModelDef
+				Scenes             LibsKxSceneDef
+			}
+			Lights LibsLightDef
+			Nodes  LibsNodeDef
+			Px     struct {
+				ForceFields LibsPxForceFieldDef
+				Materials   LibsPxMaterialDef
+				Models      LibsPxModelDef
+				Scenes      LibsPxSceneDef
+			}
+			VisualScenes LibsVisualSceneDef
+		}
+	*/
+}

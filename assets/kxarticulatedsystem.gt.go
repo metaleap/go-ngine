@@ -1,26 +1,40 @@
 package assets
 
 const (
-	KX_FRAME_TYPE_OBJECT = 0
-	KX_FRAME_TYPE_ORIGIN = iota
-	KX_FRAME_TYPE_TCP    = iota
-	KX_FRAME_TYPE_TIP    = iota
+	//	Defines the base frame for kinematics calculation.
+	KX_FRAME_TYPE_ORIGIN = 1
+	//	Defines the frame at the end of the kinematics chain.
+	KX_FRAME_TYPE_TIP = iota
+	//	Defines the offset frame from the kinematics KX_FRAME_TYPE_TIP frame, which usually represents the work point of the end effector (for example, a welding gun).
+	KX_FRAME_TYPE_TCP = iota
+	//	Defines the offset frame from the kinematics KX_FRAME_TYPE_ORIGIN frame; this offset usually represents the transformation to a work piece.
+	KX_FRAME_TYPE_OBJECT = iota
 )
 
-type KxBind struct {
-	Symbol   string
-	ParamRef string
-	Value    interface{}
-}
-
-type KxArticulatedSystemAxisIndex struct {
+//	Specifies the parent axis’ index in the jointmap.
+type KxAxisIndex struct {
+	//	If set, specifies the special use of this index.
 	Semantic string
-	I        ParamInt
+	//	If not set, the parent axis will not appear in the jointmap.
+	I ParamInt
 }
 
-type KxArticulatedSystemAxisLimits struct {
+//	Specifies the parent axis' soft limits.
+type KxAxisLimits struct {
+	//	The "minimum" portion of this limits descriptor.
 	Min ParamFloat
+	//	The "maximum" portion of this limits descriptor.
 	Max ParamFloat
+}
+
+//	Binds inputs to kinematics parameters upon instantiation.
+type KxBinding struct {
+	//	The identifier of the parameter to bind to the new symbol name. Required.
+	Symbol string
+	//	If set, Value is ignored.
+	ParamRef RefParam
+	//	Only used if ParamRef is empty.
+	Value interface{}
 }
 
 type KxArticulatedSystemEffector struct {
@@ -28,7 +42,7 @@ type KxArticulatedSystemEffector struct {
 	HasName
 	HasParamDefs
 	HasParamInsts
-	Bindings     []*KxBind
+	Bindings     []*KxBinding
 	Speed        *ParamFloat2
 	Acceleration *ParamFloat2
 	Deceleration *ParamFloat2
@@ -42,9 +56,11 @@ func NewKxArticulatedSystemEffector() (me *KxArticulatedSystemEffector) {
 }
 
 type KxArticulatedSystemKinematics struct {
+	//	Techniques
 	HasTechniques
 	Models []*KxModelInst
-	TC     struct {
+	//	Common-technique profile
+	TC struct {
 		AxisInfos []*KxArticulatedSystemKinematicsAxis
 		Frame     struct {
 			Origin KxArticulatedSystemKinematicsFrame
@@ -61,9 +77,9 @@ type KxArticulatedSystemKinematicsAxis struct {
 	HasParamDefs
 	JointAxis string
 	Active    ParamBool
-	Indices   []*KxArticulatedSystemAxisIndex
+	Indices   []*KxAxisIndex
+	Limits    *KxAxisLimits
 	Locked    ParamBool
-	Limits    *KxArticulatedSystemAxisLimits
 	Formulas  struct {
 		Defs  []*FormulaDef
 		Insts []*FormulaInst
@@ -83,9 +99,11 @@ type KxArticulatedSystemKinematicsFrame struct {
 }
 
 type KxArticulatedSystemMotion struct {
+	//	Techniques
 	HasTechniques
 	ArticulatedSystem *KxArticulatedSystemInst
-	TC                struct {
+	//	Common-technique profile
+	TC struct {
 		AxisInfos     []*KxArticulatedSystemMotionAxis
 		EffectorInfos []*KxArticulatedSystemEffector
 	}
@@ -97,7 +115,7 @@ type KxArticulatedSystemMotionAxis struct {
 	HasParamDefs
 	HasParamInsts
 	Axis         string
-	Bindings     []*KxBind
+	Bindings     []*KxBinding
 	Speed        *ParamFloat
 	Acceleration *ParamFloat
 	Deceleration *ParamFloat
@@ -110,22 +128,33 @@ func NewKxArticulatedSystemMotionAxis() (me *KxArticulatedSystemMotionAxis) {
 	return
 }
 
+//	Categorizes the declaration of generic control information for kinematics systems.
 type KxArticulatedSystemDef struct {
+	//	Id, Name, Asset, Extras
 	BaseDef
+	//	If set, Motion must be nil, and this articulated system describes a kinematics system.
 	Kinematics *KxArticulatedSystemKinematics
-	Motion     *KxArticulatedSystemMotion
+	//	If set, Kinematics must be nil, and this articulated system describes a motion system.
+	Motion *KxArticulatedSystemMotion
 }
 
+//	Initialization
 func (me *KxArticulatedSystemDef) Init() {
 }
 
+//	Instantiates a kinematics articulated system resource.
 type KxArticulatedSystemInst struct {
+	//	Sid, Name, Extras, DefRef
 	BaseInst
+	//	NewParams
 	HasParamDefs
+	//	SetParams
 	HasParamInsts
-	Bindings []*KxBind
+	//	Bindings of inputs to kinematics parameters.
+	Bindings []*KxBinding
 }
 
+//	Initialization
 func (me *KxArticulatedSystemInst) Init() {
 	me.NewParams = ParamDefs{}
 }
@@ -215,10 +244,18 @@ func (me *LibKxArticulatedSystemDefs) Add(d *KxArticulatedSystemDef) (n *KxArtic
 //	Creates a new *KxArticulatedSystemDef* definition with the specified *Id*, adds it to this *LibKxArticulatedSystemDefs*, and returns it.
 //	
 //	If this *LibKxArticulatedSystemDefs* already contains a *KxArticulatedSystemDef* definition with the specified *Id*, does nothing and returns *nil*.
-func (me *LibKxArticulatedSystemDefs) AddNew(id string) *KxArticulatedSystemDef { return me.Add(me.New(id)) }
+func (me *LibKxArticulatedSystemDefs) AddNew(id string) *KxArticulatedSystemDef {
+	return me.Add(me.New(id))
+}
+
+//	Short-hand for len(lib.M)
+func (me *LibKxArticulatedSystemDefs) Len() int { return len(me.M) }
 
 //	Creates a new *KxArticulatedSystemDef* definition with the specified *Id* and returns it, but does not add it to this *LibKxArticulatedSystemDefs*.
-func (me *LibKxArticulatedSystemDefs) New(id string) (def *KxArticulatedSystemDef) { def = newKxArticulatedSystemDef(id); return }
+func (me *LibKxArticulatedSystemDefs) New(id string) (def *KxArticulatedSystemDef) {
+	def = newKxArticulatedSystemDef(id)
+	return
+}
 
 //	Removes the *KxArticulatedSystemDef* with the specified *Id* from this *LibKxArticulatedSystemDefs*.
 func (me *LibKxArticulatedSystemDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }

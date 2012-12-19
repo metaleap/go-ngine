@@ -1,46 +1,74 @@
 package assets
 
+const (
+	//	Connects two links, describing a real parent-child dependency between them.
+	KX_ATTACHMENT_TYPE_FULL = 1
+	//	Connects two links and defines one end of a closed loop.
+	KX_ATTACHMENT_TYPE_START = iota
+	//	Defines one end of the closed loop in an attachment.
+	KX_ATTACHMENT_TYPE_END = iota
+)
+
+//	Connects links or define ends of closed loops.
 type KxAttachment struct {
-	Joint      string
+	//	Must be one of the KX_ATTACHMENT_TYPE_* enumerated constants.
+	Type int
+	//	The reference to the joint that connects the parent with the child link. Required.
+	Joint string
+	//	Zero or more TRANSFORM_TYPE_ROTATE and/or TRANSFORM_TYPE_TRANSLATE transformations.
 	Transforms []*Transform
-	Link       *KxLink
+	//	If Type is KX_ATTACHMENT_TYPE_FULL, specifies the child link in this parent-child dependency.
+	Link *KxLink
 }
 
+//	Represents a rigid kinematical object without mass whose motion is constrained by one or more joints.
 type KxLink struct {
+	//	Sid
 	HasSid
+	//	Name
 	HasName
-	Transforms  []*Transform
-	Attachments struct {
-		Full  []*KxAttachment
-		Start []*KxAttachment
-		End   []*KxAttachment
-	}
+	//	Zero or more TRANSFORM_TYPE_ROTATE and/or TRANSFORM_TYPE_TRANSLATE transformations.
+	Transforms []*Transform
+	//	The attachments that make up this link.
+	Attachments []*KxAttachment
 }
 
+//	Categorizes the declaration of kinematical information, containing declarations of joints, links, and attachment points.
+//	A kinematics model is focused on strict kinematics description "in zero position", without any additional physical descriptions.
 type KxModelDef struct {
+	//	Id, Name, Asset, Extras
 	BaseDef
+	//	Techniques
 	HasTechniques
+	//	Common-technique profile
 	TC struct {
+		//	NewParams
 		HasParamDefs
-		Links    []*KxLink
-		Formulas struct {
-			Defs  []*FormulaDef
-			Insts []*FormulaInst
-		}
+		//	The kinematics chain.
+		Links []*KxLink
+		//	Specifies dependencies among the joints.
+		Formulas []Formula
 	}
 }
 
+//	Initialization
 func (me *KxModelDef) Init() {
 	me.TC.NewParams = ParamDefs{}
 }
 
+//	Instantiates a kinematics model resource.
 type KxModelInst struct {
+	//	Sid, Name, Extras, DefRef
 	BaseInst
+	//	NewParams
 	HasParamDefs
+	//	SetParams
 	HasParamInsts
-	Bindings []*KxBind
+	//	Bindings of inputs to kinematics parameters.
+	Bindings []*KxBinding
 }
 
+//	Initialization
 func (me *KxModelInst) Init() {
 	me.NewParams = ParamDefs{}
 }
@@ -131,6 +159,9 @@ func (me *LibKxModelDefs) Add(d *KxModelDef) (n *KxModelDef) {
 //	
 //	If this *LibKxModelDefs* already contains a *KxModelDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibKxModelDefs) AddNew(id string) *KxModelDef { return me.Add(me.New(id)) }
+
+//	Short-hand for len(lib.M)
+func (me *LibKxModelDefs) Len() int { return len(me.M) }
 
 //	Creates a new *KxModelDef* definition with the specified *Id* and returns it, but does not add it to this *LibKxModelDefs*.
 func (me *LibKxModelDefs) New(id string) (def *KxModelDef) { def = newKxModelDef(id); return }

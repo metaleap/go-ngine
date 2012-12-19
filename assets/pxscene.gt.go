@@ -1,23 +1,35 @@
 package assets
 
+//	Specifies an environment in which physical objects are instantiated and simulated.
 type PxSceneDef struct {
+	//	Id, Name, Asset, Extras
 	BaseDef
+	//	Techniques
 	HasTechniques
+	//	Force fields influencing this physics scene.
 	ForceFields []*PxForceFieldInst
-	Models      []*PxModelInst
-	TC          struct {
-		Gravity  *ScopedVec3
+	//	Refers to the rigid bodies and constraints participating in this scene.
+	Models []*PxModelInst
+	//	Common-technique profile
+	TC struct {
+		//	If set, a vector representation of this physics scene’s gravity force field. It is given as a denormalized direction vector of three floating-point values that indicate both the magnitude and direction of acceleration caused by the field.
+		Gravity *ScopedVec3
+		//	If set, the integration time step, measured in seconds, of the physics scene. This value is engine-specific. If omitted, the physics engine’s default is used.
 		TimeStep *ScopedFloat
 	}
 }
 
+//	Initialization
 func (me *PxSceneDef) Init() {
 }
 
+//	Instantiates a physics scene resource.
 type PxSceneInst struct {
+	//	Sid, Name, Extras, DefRef
 	BaseInst
 }
 
+//	Initialization
 func (me *PxSceneInst) Init() {
 }
 
@@ -107,6 +119,9 @@ func (me *LibPxSceneDefs) Add(d *PxSceneDef) (n *PxSceneDef) {
 //	
 //	If this *LibPxSceneDefs* already contains a *PxSceneDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibPxSceneDefs) AddNew(id string) *PxSceneDef { return me.Add(me.New(id)) }
+
+//	Short-hand for len(lib.M)
+func (me *LibPxSceneDefs) Len() int { return len(me.M) }
 
 //	Creates a new *PxSceneDef* definition with the specified *Id* and returns it, but does not add it to this *LibPxSceneDefs*.
 func (me *LibPxSceneDefs) New(id string) (def *PxSceneDef) { def = newPxSceneDef(id); return }

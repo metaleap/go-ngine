@@ -1,64 +1,109 @@
 package assets
 
-//	Describes an ambient light source.
+//	Describes an ambient light source. An ambient light is one that lights everything evenly, regardless of location or orientation.
 type LightAmbient struct {
-	//	Declares the parameters required to describe an ambient light source. An
-	//	ambient light is one that lights everything evenly, regardless of location or orientation.
+	//	Color
 	LightBase
 }
 
+//	Describes how the intensity of a light source is attenuated.
 type LightAttenuation struct {
-	Constant  ScopedFloat
-	Linear    ScopedFloat
+	//	Constant light attenuation. Defaults to 1.
+	Constant ScopedFloat
+	//	Linear light attenuation.
+	Linear ScopedFloat
+	//	Quadratic light attenuation.
 	Quadratic ScopedFloat
 }
 
+//	Constructor
+func NewLightAttenuation() (me *LightAttenuation) {
+	me = &LightAttenuation{}
+	me.Constant.F = 1
+	return
+}
+
+//	Contains three floating-point numbers specifying the color of a light.
 type LightBase struct {
+	//	Three floating-point numbers specifying the color of this light.
 	Color Float3
 }
 
+//	Describes a directional light source. A directional light is one that lights everything from the same direction, regardless of location.
+//	The light’s default direction vector in local coordinates is [0,0,-1], pointing down the negative z axis. The actual direction of the light is defined by the transform of the node where the light is instantiated.
 type LightDirectional struct {
+	//	Color
 	LightBase
 }
 
+//	Describes a point light source. A point light source radiates light in all directions from a known location in space. The position of the light is defined by the transform of the node in which it is instantiated.
 type LightPoint struct {
+	//	Color
 	LightBase
+	//	The intensity of a point light source is attenuated as the distance to the light source increases.
 	Attenuation LightAttenuation
 }
 
+//	Constructor
+func NewLightPoint() (me *LightPoint) {
+	me = &LightPoint{}
+	me.Attenuation.Constant.F = 1
+	return
+}
+
+//	Describes a spot light source. A spot light source radiates light in one direction in a cone shape from a known location in space. The light’s default direction vector in local coordinates is [0,0,-1], pointing down the negative z axis. The actual direction of the light is defined by the transform of the node in which the light is instantiated.
 type LightSpot struct {
+	//	Color
 	LightBase
+	//	 The intensity of a spot light source is also attenuated as the distance to the light source increases.
 	Attenuation LightAttenuation
-	Falloff     struct {
-		Angle    ScopedFloat
+	//	The intensity of the light is also attenuated as the radiation angle increases away from the direction of the light source.
+	Falloff struct {
+		//	Fall-off angle. Defaults to 180.
+		Angle ScopedFloat
+		//	Fall-off exponent.
 		Exponent ScopedFloat
 	}
 }
 
+//	Constructor
 func NewLightSpot() (me *LightSpot) {
 	me = &LightSpot{}
+	me.Attenuation.Constant.F = 1
 	me.Falloff.Angle.F = 180
 	return
 }
 
+//	Declares a light source that illuminates a scene.
 type LightDef struct {
+	//	Id, Name, Asset, Extras
 	BaseDef
+	//	Techniques
 	HasTechniques
+	//	Common-technique profile. At least and at most one of its fields should ever be set.
 	TC struct {
-		Ambient     *LightAmbient
+		//	If set, this light declares an ambient light.
+		Ambient *LightAmbient
+		//	If set, this light declares a directional light.
 		Directional *LightDirectional
-		Point       *LightPoint
-		Spot        *LightSpot
+		//	If set, this light declares a point light.
+		Point *LightPoint
+		//	If set, this light declares a spot light.
+		Spot *LightSpot
 	}
 }
 
+//	Initialization
 func (me *LightDef) Init() {
 }
 
+//	Instantiates a light resource.
 type LightInst struct {
+	//	Sid, Name, Extras, DefRef
 	BaseInst
 }
 
+//	Initialization
 func (me *LightInst) Init() {
 }
 
@@ -148,6 +193,9 @@ func (me *LibLightDefs) Add(d *LightDef) (n *LightDef) {
 //	
 //	If this *LibLightDefs* already contains a *LightDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibLightDefs) AddNew(id string) *LightDef { return me.Add(me.New(id)) }
+
+//	Short-hand for len(lib.M)
+func (me *LibLightDefs) Len() int { return len(me.M) }
 
 //	Creates a new *LightDef* definition with the specified *Id* and returns it, but does not add it to this *LibLightDefs*.
 func (me *LibLightDefs) New(id string) (def *LightDef) { def = newLightDef(id); return }

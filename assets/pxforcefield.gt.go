@@ -1,17 +1,25 @@
 package assets
 
+//	Provides a general container for force fields.
+//	Force fields affect physical objects, such as rigid bodies, and may be instantiated under a physics scene or a physics model instance.
 type PxForceFieldDef struct {
+	//	Id, Name, Asset, Extras
 	BaseDef
+	//	Techniques
 	HasTechniques
 }
 
+//	Initialization
 func (me *PxForceFieldDef) Init() {
 }
 
+//	Instantiates a force field resource.
 type PxForceFieldInst struct {
+	//	Sid, Name, Extras, DefRef
 	BaseInst
 }
 
+//	Initialization
 func (me *PxForceFieldInst) Init() {
 }
 
@@ -101,6 +109,9 @@ func (me *LibPxForceFieldDefs) Add(d *PxForceFieldDef) (n *PxForceFieldDef) {
 //	
 //	If this *LibPxForceFieldDefs* already contains a *PxForceFieldDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibPxForceFieldDefs) AddNew(id string) *PxForceFieldDef { return me.Add(me.New(id)) }
+
+//	Short-hand for len(lib.M)
+func (me *LibPxForceFieldDefs) Len() int { return len(me.M) }
 
 //	Creates a new *PxForceFieldDef* definition with the specified *Id* and returns it, but does not add it to this *LibPxForceFieldDefs*.
 func (me *LibPxForceFieldDefs) New(id string) (def *PxForceFieldDef) { def = newPxForceFieldDef(id); return }

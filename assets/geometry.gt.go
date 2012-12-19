@@ -168,6 +168,9 @@ func (me *LibGeometryDefs) Add(d *GeometryDef) (n *GeometryDef) {
 //	If this *LibGeometryDefs* already contains a *GeometryDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibGeometryDefs) AddNew(id string) *GeometryDef { return me.Add(me.New(id)) }
 
+//	Short-hand for len(lib.M)
+func (me *LibGeometryDefs) Len() int { return len(me.M) }
+
 //	Creates a new *GeometryDef* definition with the specified *Id* and returns it, but does not add it to this *LibGeometryDefs*.
 func (me *LibGeometryDefs) New(id string) (def *GeometryDef) { def = newGeometryDef(id); return }
 

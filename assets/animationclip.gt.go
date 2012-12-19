@@ -109,6 +109,9 @@ func (me *LibAnimationClipDefs) Add(d *AnimationClipDef) (n *AnimationClipDef) {
 //	If this *LibAnimationClipDefs* already contains a *AnimationClipDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibAnimationClipDefs) AddNew(id string) *AnimationClipDef { return me.Add(me.New(id)) }
 
+//	Short-hand for len(lib.M)
+func (me *LibAnimationClipDefs) Len() int { return len(me.M) }
+
 //	Creates a new *AnimationClipDef* definition with the specified *Id* and returns it, but does not add it to this *LibAnimationClipDefs*.
 func (me *LibAnimationClipDefs) New(id string) (def *AnimationClipDef) { def = newAnimationClipDef(id); return }
 

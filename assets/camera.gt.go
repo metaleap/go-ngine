@@ -156,6 +156,9 @@ func (me *LibCameraDefs) Add(d *CameraDef) (n *CameraDef) {
 //	If this *LibCameraDefs* already contains a *CameraDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibCameraDefs) AddNew(id string) *CameraDef { return me.Add(me.New(id)) }
 
+//	Short-hand for len(lib.M)
+func (me *LibCameraDefs) Len() int { return len(me.M) }
+
 //	Creates a new *CameraDef* definition with the specified *Id* and returns it, but does not add it to this *LibCameraDefs*.
 func (me *LibCameraDefs) New(id string) (def *CameraDef) { def = newCameraDef(id); return }
 

@@ -1,38 +1,59 @@
 package assets
 
-type KxSceneDef struct {
-	BaseDef
-	Models             []*KxModelInst
-	ArticulatedSystems []*KxArticulatedSystemInst
-}
-
-func (me *KxSceneDef) Init() {
-}
-
-type KxSceneInst struct {
-	BaseInst
-	HasParamDefs
-	HasParamInsts
-	ModelBindings     []*KxSceneInstBindModel
-	JointAxisBindings []*KxSceneInstBindJointAxis
-}
-
-func (me *KxSceneInst) Init() {
-	me.NewParams = ParamDefs{}
-}
-
-type KxSceneInstBindModel struct {
-	Node string
-	Ref  struct {
-		ModelSid string
-		Param    string
+//	Binds a kinematics model to a node. The description of a kinematics model is completely independent of any visual information, but for calculation the position is important.
+type KxModelBinding struct {
+	//	A reference to a node.
+	Node RefId
+	//	Refers to the kinematics model being bound. Only either SidRef or ParamRef, but not both, must be specified.
+	Model struct {
+		//	If set, ParamRef must be empty. The Sid path to the kinematics model to bind to the node.
+		SidRef RefSid
+		//	If set, SidRef must be empty. The parameter of the kinematics model that is defined in the instantiated kinematics scene.
+		ParamRef RefParam
 	}
 }
 
-type KxSceneInstBindJointAxis struct {
-	Target string
-	Axis   ParamSidRef
-	Value  ParamFloat
+//	Binds a joint axis of a kinematics model to a single transformation of a node. By binding a joint axis to a transformation of a node, it is possible to synchronize a kinematics scene with a visual scene.
+type KxJointAxisBinding struct {
+	//	A reference to a transformation of a node.
+	Target RefSid
+	//	If set, Value is ignored. Specifies an axis of a kinematics model.
+	Axis ParamSidRef
+	//	Only used if Axis is empty. Specifies a value of the axis.
+	Value ParamFloat
+}
+
+//	Embodies the entire set of kinematics information that can be articulated from the contents of a resource.
+type KxSceneDef struct {
+	//	Id, Name, Asset, Extras
+	BaseDef
+	//	Zero or more kinematics models participating in this kinematics scene.
+	Models []*KxModelInst
+	//	Zero or more articulated systems participating in this kinematics scene.
+	ArticulatedSystems []*KxArticulatedSystemInst
+}
+
+//	Initialization
+func (me *KxSceneDef) Init() {
+}
+
+//	Instantiates a kinematics scene resource.
+type KxSceneInst struct {
+	//	Sid, Name, Extras, DefRef
+	BaseInst
+	//	NewParams
+	HasParamDefs
+	//	SetParams
+	HasParamInsts
+	//	Zero or more bindings of kinematics models to nodes.
+	ModelBindings []*KxModelBinding
+	//	Zero or more bindings of kinematics models' joint axes to single node transformations.
+	JointAxisBindings []*KxJointAxisBinding
+}
+
+//	Initialization
+func (me *KxSceneInst) Init() {
+	me.NewParams = ParamDefs{}
 }
 
 //#begin-gt _definstlib.gt T:KxScene
@@ -121,6 +142,9 @@ func (me *LibKxSceneDefs) Add(d *KxSceneDef) (n *KxSceneDef) {
 //	
 //	If this *LibKxSceneDefs* already contains a *KxSceneDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibKxSceneDefs) AddNew(id string) *KxSceneDef { return me.Add(me.New(id)) }
+
+//	Short-hand for len(lib.M)
+func (me *LibKxSceneDefs) Len() int { return len(me.M) }
 
 //	Creates a new *KxSceneDef* definition with the specified *Id* and returns it, but does not add it to this *LibKxSceneDefs*.
 func (me *LibKxSceneDefs) New(id string) (def *KxSceneDef) { def = newKxSceneDef(id); return }

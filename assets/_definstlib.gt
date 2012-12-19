@@ -85,6 +85,9 @@ func (me *Lib__T__Defs) Add(d *__T__Def) (n *__T__Def) {
 //	If this *Lib__T__Defs* already contains a *__T__Def* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *Lib__T__Defs) AddNew(id string) *__T__Def { return me.Add(me.New(id)) }
 
+//	Short-hand for len(lib.M)
+func (me *Lib__T__Defs) Len() int { return len(me.M) }
+
 //	Creates a new *__T__Def* definition with the specified *Id* and returns it, but does not add it to this *Lib__T__Defs*.
 func (me *Lib__T__Defs) New(id string) (def *__T__Def) { def = new__T__Def(id); return }
 

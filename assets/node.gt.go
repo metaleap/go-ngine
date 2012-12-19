@@ -1,32 +1,54 @@
 package assets
 
-type NodeDef struct {
-	BaseDef
-	HasSid
-	IsJoint    bool
-	Layers     Layers
-	Transforms []*Transform
-	Insts      struct {
-		Camera     []*CameraInst
-		Controller []*ControllerInst
-		Geometry   []*GeometryInst
-		Light      []*LightInst
-	}
-	Nodes struct {
-		Defs  []*NodeDef
-		Insts []*NodeInst
-	}
+//	Used to recursively define hierarchies of nodes.
+type ChildNode struct {
+	//	If set, Inst must be nil. An inline node definition.
+	Def *NodeDef
+	//	If set, Def must be nil. Instantiates a previously defined node.
+	Inst *NodeInst
 }
 
+//	Declares a point of interest in a scene.
+type NodeDef struct {
+	//	Id, Name, Asset, Extras
+	BaseDef
+	//	Sid
+	HasSid
+	//	Indicates whether this node is a joint for a skin controller.
+	IsSkinJoint bool
+	//	The names of the layers to which this node belongs.
+	Layers Layers
+	//	Any combination of zero or more transformations of any type.
+	Transforms []*Transform
+	//	Content resources participating in this node.
+	Insts struct {
+		//	Cameras participating in this node.
+		Camera []*CameraInst
+		//	Controllers participating in this node.
+		Controller []*ControllerInst
+		//	Geometries participating in this node.
+		Geometry []*GeometryInst
+		//	Lights participating in this node.
+		Light []*LightInst
+	}
+	//	Child nodes to recursively define a hierarchy.
+	Nodes []ChildNode
+}
+
+//	Initialization
 func (me *NodeDef) Init() {
 	me.Layers = Layers{}
 }
 
+//	Instantiates a node resource.
 type NodeInst struct {
+	//	Sid, Name, Extras, DefRef
 	BaseInst
-	ProxyRef string
+	//	Optional. The mechanism and use of this attribute is application-defined. For example, it can be used for bounding boxes or level of detail.
+	Proxy RefId
 }
 
+//	Initialization
 func (me *NodeInst) Init() {
 }
 
@@ -116,6 +138,9 @@ func (me *LibNodeDefs) Add(d *NodeDef) (n *NodeDef) {
 //	
 //	If this *LibNodeDefs* already contains a *NodeDef* definition with the specified *Id*, does nothing and returns *nil*.
 func (me *LibNodeDefs) AddNew(id string) *NodeDef { return me.Add(me.New(id)) }
+
+//	Short-hand for len(lib.M)
+func (me *LibNodeDefs) Len() int { return len(me.M) }
 
 //	Creates a new *NodeDef* definition with the specified *Id* and returns it, but does not add it to this *LibNodeDefs*.
 func (me *LibNodeDefs) New(id string) (def *NodeDef) { def = newNodeDef(id); return }

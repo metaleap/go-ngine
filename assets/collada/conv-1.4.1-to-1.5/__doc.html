@@ -112,9 +112,9 @@ Provides in-memory conversion of Collada 1.4.1 documents to version 1.5.
     ShaderCompilerPlatform = &#34;PC&#34;
 
     <span class="comment">//	Conversion mode: true for strict mode, or false for lax mode.</span>
-    <span class="comment">//	If strict (slower), obsoleted elements and attributes are removed or rewritten so that the remaining document is strictly 1.5-conformant and will hopefully validate against the Collada 1.5 XML schema definition.</span>
-    <span class="comment">//	If lax (faster), obsoleted elements and attributes are not removed, for use-cases where the 1.5-based loader to consume the conversion result is known to simply ignore or discard them quietly.</span>
-    <span class="comment">//	Note in practice there won&#39;t be a noticeable difference in performance or output for approximately 80% of &#34;common use-case&#34; Collada documents.</span>
+    <span class="comment">//	If strict, obsoleted elements and attributes are removed or rewritten so that the remaining document is (in theory) strictly 1.5-conformant and will (ideally) validate against the Collada 1.5 XML schema definition.</span>
+    <span class="comment">//	If lax, obsoleted elements and attributes are not removed, for use-cases where your 1.5 loader consuming the conversion result is known to simply ignore or discard them quietly.</span>
+    <span class="comment">//	Note in practice there won&#39;t be any noticeable difference in performance or output for approximately 95% of &#34;common use-case&#34; Collada documents...</span>
     Strict = true
 )</pre>
 				
@@ -123,7 +123,7 @@ Provides in-memory conversion of Collada 1.4.1 documents to version 1.5.
 		
 			
 			
-			<h2 id="ConvertBytes">func <a href="/target/convert.go?s=3196:3257#L93">ConvertBytes</a></h2>
+			<h2 id="ConvertBytes">func <a href="/target/convert.go?s=3188:3249#L93">ConvertBytes</a></h2>
 			<pre>func ConvertBytes(srcFile []byte) (dstFile []byte, err error)</pre>
 			<p>
 Converts the specified Collada 1.4.1 document to Collada 1.5.
@@ -133,7 +133,7 @@ Converts the specified Collada 1.4.1 document to Collada 1.5.
 		
 			
 			
-			<h2 id="ConvertDoc">func <a href="/target/convert.go?s=3385:3448#L99">ConvertDoc</a></h2>
+			<h2 id="ConvertDoc">func <a href="/target/convert.go?s=3377:3440#L99">ConvertDoc</a></h2>
 			<pre>func ConvertDoc(srcFile []byte) (doc *xmlx.Document, err error)</pre>
 			<p>
 Converts the specified Collada 1.4.1 document to Collada 1.5.
