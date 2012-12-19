@@ -12,7 +12,7 @@ type cameras map[string]*Camera
 
 func (me cameras) add(def *nga.CameraDef) (item *Camera) {
 	item = newCamera(def)
-	me[def.ID] = item
+	me[def.Id] = item
 	return
 }
 
@@ -22,12 +22,12 @@ func (me cameras) syncAssetChanges() {
 		id   string
 	)
 	for _, def := range nga.CameraDefs.M {
-		if item = me[def.ID]; item == nil {
+		if item = me[def.Id]; item == nil {
 			item = me.add(def)
 		}
 	}
 	for id, item = range me {
-		if nga.CameraDefs.M[item.ID] == nil {
+		if nga.CameraDefs.M[item.Id] == nil {
 			delete(me, id)
 			item.dispose()
 		}
@@ -114,7 +114,7 @@ func (me *Camera) ToggleTechnique() {
 }
 
 func (me *Camera) UpdatePerspective() {
-	me.MatProj.Perspective(me.CameraDef.Optics.TechniqueCommon.Perspective.FovY.F, me.ViewPort.aspect, me.CameraDef.Optics.TechniqueCommon.Znear.F, me.CameraDef.Optics.TechniqueCommon.Zfar.F)
+	me.MatProj.Perspective(me.CameraDef.Optics.TC.Perspective.FovY.F, me.ViewPort.aspect, me.CameraDef.Optics.TC.Znear.F, me.CameraDef.Optics.TC.Zfar.F)
 	me.glMatProj.Load(me.MatProj)
 }
 

@@ -17,7 +17,7 @@ type textures map[string]*Texture
 
 func (me textures) add(def *nga.FxImageDef) (item *Texture) {
 	item = newTexture(def)
-	me[def.ID] = item
+	me[def.Id] = item
 	return
 }
 
@@ -31,12 +31,12 @@ func (me textures) syncAssetChanges() {
 		id   string
 	)
 	for _, def := range nga.FxImageDefs.M {
-		if item = me[def.ID]; item == nil {
+		if item = me[def.Id]; item == nil {
 			item = me.add(def)
 		}
 	}
 	for id, item = range me {
-		if nga.FxImageDefs.M[item.ID] == nil {
+		if nga.FxImageDefs.M[item.Id] == nil {
 			delete(me, id)
 			item.dispose()
 		}

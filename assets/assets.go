@@ -26,8 +26,8 @@ func sfmt(format string, fmtArgs ...interface{}) string {
 }
 
 //	Returns a ScopedFloat with the specified value and no Sid.
-func Scopedf(f float64) (sf ScopedFloat) {
-	sf.F = f
+func Scopedf(f float64) (sf *ScopedFloat) {
+	sf = &ScopedFloat{F: f}
 	return
 }
 
