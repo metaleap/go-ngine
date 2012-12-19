@@ -7,7 +7,8 @@ import (
 const (
 	//	A position and orientation transformation suitable for aiming a camera.
 	TRANSFORM_TYPE_LOOKAT = 1
-	//	A transformation that embodies mathematical changes to points within a coordinate system or the coordinate system itself.
+	//	A transformation that embodies mathematical changes to points within a coordinate system
+	//	or the coordinate system itself.
 	TRANSFORM_TYPE_MATRIX = iota
 	//	A transformation that specifies how to rotate an object around an axis.
 	TRANSFORM_TYPE_ROTATE = iota
@@ -51,7 +52,7 @@ type HasInputs struct {
 
 //	Used in all resources that support arbitrary pretty-print names/titles.
 type HasName struct {
-	//	The optional pretty-print name/title of this *Def*, *Inst* or *Lib*.
+	//	The optional pretty-print name/title of this resource.
 	Name string
 }
 
@@ -63,8 +64,8 @@ type HasParamDefs struct {
 
 //	Used in all resources that assign values to other parameters.
 type HasParamInsts struct {
-	//	All parameter values assigned by this resource.
-	SetParams []*ParamInst
+	//	A hash-table containing all parameter values assigned by this resource.
+	SetParams ParamInsts
 }
 
 //	Used in all resources that declare their own scoped identifier.
@@ -87,40 +88,50 @@ type HasTechniques struct {
 
 //	Resource-specific asset-management information and meta-data.
 type Asset struct {
-	//	Custom-technique/foreign-profile meta-data.
+	//	Extras
 	HasExtras
 	//	Contains the date and time that the parent element was created.
-	//	This is only set-and-retained for imported Collada assets that provide this field, and is not otherwise used.
+	//	This is only set-and-retained for imported Collada assets that provide this field,
+	//	and is not otherwise used.
 	Created string
 	//	Contains the date and time that the parent element was last modified.
-	//	This is only set-and-retained for imported Collada assets that provide this field, and is not otherwise used.
+	//	This is only set-and-retained for imported Collada assets that provide this field,
+	//	and is not otherwise used.
 	Modified string
 	//	Contains a list of words used as search criteria.
-	//	This is only set-and-retained for imported Collada assets that provide this field, and is not otherwise used.
+	//	This is only set-and-retained for imported Collada assets that provide this field,
+	//	and is not otherwise used.
 	Keywords string
 	//	Contains revision information.
-	//	This is only set-and-retained for imported Collada assets that provide this field, and is not otherwise used.
+	//	This is only set-and-retained for imported Collada assets that provide this field,
+	//	and is not otherwise used.
 	Revision string
 	//	Contains a description of the topical subject.
-	//	This is only set-and-retained for imported Collada assets that provide this field, and is not otherwise used.
+	//	This is only set-and-retained for imported Collada assets that provide this field,
+	//	and is not otherwise used.
 	Subject string
 	//	Contains title information.
-	//	This is only set-and-retained for imported Collada assets that provide this field, and is not otherwise used.
+	//	This is only set-and-retained for imported Collada assets that provide this field,
+	//	and is not otherwise used.
 	Title string
 	//	Contains descriptive information about the coordinate system of the geometric data. All
 	//	coordinates are right-handed by definition. Valid values are "X", "Y" (the default), or "Z".
 	UpAxis string
 	//	The unit of distance that applies to all spatial measurements within the scope of this resource.
 	Unit struct {
-		//	How many real-world meters in one distance unit as a floating-point number. 1.0 for meter, 0.01 for centimeter, 1000 for kilometer etc.
+		//	How many real-world meters in one distance unit as a floating-point number.
+		//	1.0 for meter, 0.01 for centimeter, 1000 for kilometer etc.
 		Meter float64
-		//	Name of the distance unit, such as "centimeter", "kilometer", "meter", "inch". Default is "meter".
+		//	Name of the distance unit, such as "centimeter", "kilometer", "meter", "inch".
+		//	Default is "meter".
 		Name string
 	}
-	//	This is only set-and-retained for imported Collada assets that provide this field, and is not otherwise used.
+	//	This is only set-and-retained for imported Collada assets that provide this field,
+	//	and is not otherwise used.
 	Contributors []*AssetContributor
 	//	Provides information about the location of the visual scene in physical space.
-	//	This is only set-and-retained for imported Collada assets that provide this field, and is not otherwise used.
+	//	This is only set-and-retained for imported Collada assets that provide this field,
+	//	and is not otherwise used.
 	Coverage *AssetGeographicLocation
 }
 
@@ -132,7 +143,8 @@ func NewAsset() (me *Asset) {
 }
 
 //	Defines authoring information for asset management.
-//	ALL fields are only set-and-retained for imported Collada assets that provide those fields, and are not otherwise written, read or used.
+//	ALL fields are only set-and-retained for imported Collada assets that provide those fields,
+//	and are not otherwise written, read or used.
 type AssetContributor struct {
 	Author        string
 	AuthorEmail   string
@@ -144,7 +156,8 @@ type AssetContributor struct {
 }
 
 //	Provides information about the location of the visual scene in physical space.
-//	ALL fields are only set-and-retained for imported Collada assets that provide those fields, and are not otherwise written, read or used.
+//	ALL fields are only set-and-retained for imported Collada assets that provide those fields,
+//	and are not otherwise written, read or used.
 type AssetGeographicLocation struct {
 	Longitude        float64
 	Latitude         float64
@@ -154,13 +167,13 @@ type AssetGeographicLocation struct {
 
 //	Provides arbitrary additional information about or related to its parent resource.
 type Extra struct {
-	//	Unique identifier
+	//	Id
 	HasId
-	//	Pretty-print name/title
+	//	Name
 	HasName
-	//	Resource-specific asset-management meta-data
+	//	Asset
 	HasAsset
-	//	Custom-technique/foreign-profile data.
+	//	Techniques
 	HasTechniques
 	//	A hint as to the type of information that this particular Extra represents.
 	Type string
@@ -172,7 +185,8 @@ type IndexedInputs struct {
 	Count uint64
 	//	Inputs specify how to read data from Sources.
 	Inputs []*InputShared
-	//	Indices that describe the attributes for a number of primitives. The indices reference into the Sources that are referenced by the Inputs.
+	//	Indices that describe the attributes for a number of primitives.
+	//	The indices reference into the Sources that are referenced by the Inputs.
 	Indices []uint64
 	//	Number of sub-primitives, if used.
 	Vcount []int64
@@ -192,18 +206,20 @@ type InputShared struct {
 	Input
 	//	The offset into the list of indices.
 	Offset uint64
-	//	Which inputs to group as a single set. This is helpful when multiple inputs share the same semantics.
+	//	Which inputs to group as a single set.
+	//	This is helpful when multiple inputs share the same semantics.
 	Set *uint64
 }
 
 //	Allows simple association of resources with custom named layers.
 type Layers map[string]bool
 
-//	Binds a specific material to a piece of geometry, binding varying and uniform parameters at the same time.
+//	Binds a specific material to a piece of geometry,
+//	binding varying and uniform parameters at the same time.
 type MaterialBinding struct {
-	//	Custom-technique/foreign-profile meta-data.
+	//	Extras
 	HasExtras
-	//	Custom-technique/foreign-profile data.
+	//	Techniques
 	HasTechniques
 	//	Targets for animation
 	Params []*Param
@@ -216,9 +232,9 @@ type MaterialBinding struct {
 
 //	Declares parametric information for its parent resource.
 type Param struct {
-	//	Pretty-print name/title
+	//	Name
 	HasName
-	//	Scoped identifier
+	//	Sid
 	HasSid
 	//	The user-defined meaning of the parameter.
 	Semantic string
@@ -228,7 +244,7 @@ type Param struct {
 
 //	Declares a new parameter for its parent resource, and assigns it an initial value.
 type ParamDef struct {
-	//	Scoped identifier
+	//	Sid
 	HasSid
 	//	Initial value for this parameter
 	Value interface{}
@@ -240,12 +256,15 @@ type ParamDefs map[string]*ParamDef
 //	Assigns a new value to a previously defined parameter.
 type ParamInst struct {
 	//	References the identifier of the pre-defined parameter (ParamDef) that will have its value set.
-	Ref string
+	Ref RefSid
 	//	Indicates if the Value is a string referencing the identifier of a connected parameter.
 	IsConnectParamRef bool
 	//	The new value for the referenced parameter.
 	Value interface{}
 }
+
+//	A hash-table containing parameter values assigned by this resource.
+type ParamInsts map[string]*ParamInst
 
 //	References a resource by its unique identifier (Id).
 type RefId string
@@ -266,6 +285,11 @@ type RefParam RefSid
 //	Returns its current value.
 func (me RefParam) S() string {
 	return string(me)
+}
+
+//	Returns its current value as a RefSid.
+func (me RefParam) Sr() RefSid {
+	return RefSid(me)
 }
 
 //	Modifies its current value.
@@ -292,15 +316,17 @@ type Scene struct {
 	HasExtras
 	//	Embodies the entire set of information that can be visualized from the contents of a resource.
 	Visual *VisualSceneInst
-	//	Embodies the entire set of information that can be articulated kinematically from the contents of a resource.
+	//	Embodies the entire set of information that can be articulated kinematically from a resource.
 	Kinematics *KxSceneInst
 	//	Specifies an environment in which physical objects are instantiated and simulated.
 	Physics []*PxSceneInst
 }
 
-//	Declares platform-specific or program-specific information used to process some portion of the content.
+//	Declares platform-specific or program-specific information
+//	used to process some portion of the content.
 type Technique struct {
-	//	The type of profile. This is a vendor-defined character string that indicates the platform or capability target for the technique.
+	//	The type of profile. This is a vendor-defined character string
+	//	that indicates the platform or capability target for the technique.
 	Profile string
 	//	Arbitrary content or meta-data for this Technique.
 	Data []*xmlx.Node
@@ -308,16 +334,21 @@ type Technique struct {
 
 //	Represents a single transformation of a specific kind.
 type Transform struct {
-	//	Scoped identifier
+	//	Sid
 	HasSid
 	//	The type of this transformation (rotation, skewing, scaling, translation, "look-at", or matrix).
 	//	The only valid values are the TRANSFORM_TYPE_* enumerated constants.
 	Type int
 	//	Contains one or more vectors and values representing this transformation.
-	//	If type is "look-at", contains 9 values representing 3 vectors (eye position, interest point, up-axis).
-	//	If type is matrix, contains 16 values representing a column-major 4x4 matrix.
-	//	If type is skew, contains 7 values: one angle in degrees, then 2 vectors specifying the axes of rotation and translation.
-	//	If type is rotate, contains 4 values: one vector specifying the axis of rotation, then 1 value for the angle in degrees.
-	//	If type is translate or scale, contains 3 values representing a single column vector.
+	//	For TRANSFORM_TYPE_LOOKAT:
+	//	9 values representing three 3D vectors (eye position, interest point, up-axis).
+	//	For TRANSFORM_TYPE_MATRIX:
+	//	16 values representing one column-major 4x4 matrix.
+	//	For TRANSFORM_TYPE_SKEW:
+	//	7 values -- one angle in degrees, then two 3D vectors for the axes of rotation and translation.
+	//	For TRANSFORM_TYPE_ROTATE:
+	//	4 values -- one 3D vector specifying the axis of rotation, then one angle in degrees.
+	//	For TRANSFORM_TYPE_TRANSLATE or TRANSFORM_TYPE_SCALE:
+	//	3 values representing a single 3D vector.
 	F []float64
 }

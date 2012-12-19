@@ -3,13 +3,13 @@ package gt
 func new__T__Def(id string) (me *__T__Def) {
 	me = &__T__Def{}
 	me.Id = id
-	me.Base.init()
+	me.BaseSync.init()
 	me.Init()
 	return
 }
 
 /*
-//	Creates and returns a new *__T__Inst* instance referencing this *__T__Def* definition.
+//	Creates and returns a new __T__Inst instance referencing this __T__Def definition.
 func (me *__T__Def) NewInst(id string) (inst *__T__Inst) {
 	inst = &__T__Inst{Def: me}
 	inst.Init()
@@ -18,10 +18,10 @@ func (me *__T__Def) NewInst(id string) (inst *__T__Inst) {
 */
 
 var (
-	//	A *map* collection that contains *Lib__T__Defs* libraries associated by their *Id*.
+	//	A hash-table that contains Lib__T__Defs libraries associated by their Id.
 	All__T__DefLibs = Libs__T__Def{}
 
-	//	The "default" *Lib__T__Defs* library for *__T__Def*s.
+	//	The "default" Lib__T__Defs library for __T__Defs.
 	__T__Defs = All__T__DefLibs.AddNew("")
 )
 
@@ -33,13 +33,12 @@ func init() {
 	})
 }
 
-//	The underlying type of the global *All__T__DefLibs* variable: a *map* collection that contains
-//	*Lib__T__Defs* libraries associated by their *Id*.
+//	The underlying type of the global All__T__DefLibs variable:
+//	a hash-table that contains Lib__T__Defs libraries associated by their Id.
 type Libs__T__Def map[string]*Lib__T__Defs
 
-//	Creates a new *Lib__T__Defs* library with the specified *Id*, adds it to this *Libs__T__Def*, and returns it.
-//	
-//	If this *Libs__T__Def* already contains a *Lib__T__Defs* library with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new Lib__T__Defs library with the specified Id, adds it to this Libs__T__Def, and returns it.
+//	If this Libs__T__Def already contains a Lib__T__Defs library with the specified Id, does nothing and returns nil.
 func (me Libs__T__Def) AddNew(id string) (lib *Lib__T__Defs) {
 	if me[id] != nil {
 		return
@@ -54,12 +53,12 @@ func (me Libs__T__Def) new(id string) (lib *Lib__T__Defs) {
 	return
 }
 
-//	A library that contains *__T__Def*s associated by their *Id*. To create a new *Lib__T__Defs* library, ONLY
-//	use the *Libs__T__Def.New()* or *Libs__T__Def.AddNew()* methods.
+//	A library that contains __T__Defs associated by their Id.
+//	To create a new Lib__T__Defs library, ONLY use the Libs__T__Def.New() or Libs__T__Def.AddNew() methods.
 type Lib__T__Defs struct {
 	BaseLib
-	//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT
-	//	write to *M*, instead use the *Add()*, *AddNew()*, *Remove()* methods ONLY or bugs WILL ensue.
+	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
+	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*__T__Def
 }
 
@@ -69,9 +68,8 @@ func newLib__T__Defs(id string) (me *Lib__T__Defs) {
 	return
 }
 
-//	Adds the specified *__T__Def* definition to this *Lib__T__Defs*, and returns it.
-//	
-//	If this *Lib__T__Defs* already contains a *__T__Def* definition with the same *Id*, does nothing and returns *nil*.
+//	Adds the specified __T__Def definition to this Lib__T__Defs, and returns it.
+//	If this Lib__T__Defs already contains a __T__Def definition with the same Id, does nothing and returns nil.
 func (me *Lib__T__Defs) Add(d *__T__Def) (n *__T__Def) {
 	if me.M[d.Id] == nil {
 		n, me.M[d.Id] = d, d
@@ -80,26 +78,26 @@ func (me *Lib__T__Defs) Add(d *__T__Def) (n *__T__Def) {
 	return
 }
 
-//	Creates a new *__T__Def* definition with the specified *Id*, adds it to this *Lib__T__Defs*, and returns it.
-//	
-//	If this *Lib__T__Defs* already contains a *__T__Def* definition with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new __T__Def definition with the specified Id, adds it to this Lib__T__Defs, and returns it.
+//	If this Lib__T__Defs already contains a __T__Def definition with the specified Id, does nothing and returns nil.
 func (me *Lib__T__Defs) AddNew(id string) *__T__Def { return me.Add(me.New(id)) }
 
-//	Short-hand for len(lib.M)
+//	Convenience short-hand for len(lib.M)
 func (me *Lib__T__Defs) Len() int { return len(me.M) }
 
-//	Creates a new *__T__Def* definition with the specified *Id* and returns it, but does not add it to this *Lib__T__Defs*.
+//	Creates a new __T__Def definition with the specified Id and returns it,
+//	but does not add it to this Lib__T__Defs.
 func (me *Lib__T__Defs) New(id string) (def *__T__Def) { def = new__T__Def(id); return }
 
-//	Removes the *__T__Def* with the specified *Id* from this *Lib__T__Defs*.
+//	Removes the __T__Def with the specified Id from this Lib__T__Defs.
 func (me *Lib__T__Defs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-//	Signals to *core* (or your custom package) that changes have been made to this *Lib__T__Defs* that need to be picked up.
-//	Call this after you have made any number of changes to this *Lib__T__Defs* library or its *__T__Def* definitions.
-//	Also called by the global *SyncChanges()* function.
+//	Signals to the core package (or your custom package) that changes have been made to this Lib__T__Defs
+//	that need to be picked up. Call this after you have made a number of changes to this Lib__T__Defs
+//	library or its __T__Def definitions. Also called by the global SyncChanges() function.
 func (me *Lib__T__Defs) SyncChanges() {
-	me.BaseLib.Base.SyncChanges()
+	me.BaseLib.BaseSync.SyncChanges()
 	for _, def := range me.M {
-		def.BaseDef.Base.SyncChanges()
+		def.BaseDef.BaseSync.SyncChanges()
 	}
 }

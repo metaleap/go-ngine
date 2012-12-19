@@ -98,7 +98,7 @@ func load_FxPassEvaluationClearColor(xn *xmlx.Node, obj *nga.FxPassEvaluationCle
 
 func load_GeometryBrepCylinder(xn *xmlx.Node, obj *nga.GeometryBrepCylinder) {
 	if f := obj_Float2(xn, "radius"); f != nil {
-		obj.Radius = *f
+		obj.Radii = *f
 	}
 }
 
@@ -209,12 +209,16 @@ func load_Float4x3(xn *xmlx.Node, obj *nga.Float4x3) {
 	})
 }
 
-func load_KxArticulatedSystemKinematicsAxis(xn *xmlx.Node, obj *nga.KxArticulatedSystemKinematicsAxis) {
-	obj.JointAxis = xas(xn, "axis")
-	obj.Formulas.Defs = objs_FormulaDef(xn, "formula")
-	obj.Formulas.Insts = objs_FormulaInst(xn, "instance_formula")
-	obj.Limits = obj_KxArticulatedSystemAxisLimits(xn, "limits")
-	obj.Indices = objs_KxArticulatedSystemAxisIndex(xn, "index")
+func load_KxKinematicsAxis(xn *xmlx.Node, obj *nga.KxKinematicsAxis) {
+	var f *nga.Formula
+	obj.Axis.Set(xas(xn, "axis"))
+	for _, cn := range xcns(xn, "formula", "instance_formula") {
+		if f = obj_Formula(cn, ""); f != nil {
+			obj.Formulas = append(obj.Formulas, *f)
+		}
+	}
+	obj.Limits = obj_KxAxisLimits(xn, "limits")
+	obj.Indices = objs_KxAxisIndex(xn, "index")
 	if l := obj_ParamBool(xn, "locked"); l != nil {
 		obj.Locked = *l
 	}
@@ -295,9 +299,15 @@ func load_ControllerInst(xn *xmlx.Node, obj *nga.ControllerInst) {
 	obj.SkinSkeletons = list_StringsN(xn, "skeleton")
 }
 
-func load_GeometryBrepCurve(xn *xmlx.Node, obj *nga.GeometryBrepCurve) {
+func load_GeometryPositioning(xn *xmlx.Node, obj *nga.GeometryPositioning) {
 	obj.Orientations = objs_GeometryBrepOrientation(xn, "orient")
 	obj.Origin = xv3(xn, "origin")
+}
+
+func load_GeometryBrepCurve(xn *xmlx.Node, obj *nga.GeometryBrepCurve) {
+	if pos := obj_GeometryPositioning(xn, ""); pos != nil {
+		obj.Location = *pos
+	}
 	obj.Element.Line = obj_GeometryBrepLine(xn, "line")
 	obj.Element.Circle = obj_GeometryBrepCircle(xn, "circle")
 	obj.Element.Ellipse = obj_GeometryBrepEllipse(xn, "ellipse")
@@ -384,8 +394,8 @@ func load_FxPassProgramShader(xn *xmlx.Node, obj *nga.FxPassProgramShader) {
 
 func load_GeometryBrepCapsule(xn *xmlx.Node, obj *nga.GeometryBrepCapsule) {
 	obj.Height = xf64(xn, "height")
-	if f3 := obj_Float3(xn, "radius"); f3 != nil {
-		obj.Radius = *f3
+	if v3 := xv3(xn, "radius"); v3 != nil {
+		obj.Radii = *v3
 	}
 }
 
@@ -454,7 +464,7 @@ func load_GeometryBrepEdges(xn *xmlx.Node, obj *nga.GeometryBrepEdges) {
 }
 
 func load_GeometryMesh(xn *xmlx.Node, obj *nga.GeometryMesh) {
-	obj.ConvexHullOf = xas(xn, "convex_hull_of")
+	obj.ConvexHullOf.Set(xas(xn, "convex_hull_of"))
 	for _, pn := range xcns(xn, "lines", "linestrips", "polygons", "polylist", "triangles", "trifans", "tristrips") {
 		if p := obj_GeometryPrimitives(pn, ""); p != nil {
 			obj.Primitives = append(obj.Primitives, p)
@@ -632,7 +642,7 @@ func load_FxCreateMips(xn *xmlx.Node, obj *nga.FxCreateMips) {
 	}
 }
 
-func load_KxArticulatedSystemKinematicsFrame(xn *xmlx.Node, obj *nga.KxArticulatedSystemKinematicsFrame) {
+func load_KxFrame(xn *xmlx.Node, obj *nga.KxFrame) {
 	switch xn.Name.Local {
 	case "frame_object":
 		obj.Type = nga.KX_FRAME_TYPE_OBJECT
@@ -644,7 +654,7 @@ func load_KxArticulatedSystemKinematicsFrame(xn *xmlx.Node, obj *nga.KxArticulat
 		obj.Type = nga.KX_FRAME_TYPE_TIP
 	}
 	if obj.Type > 0 {
-		obj.Link = xas(xn, "link")
+		obj.Link.Set(xas(xn, "link"))
 		obj.Transforms = get_Transforms(xn)
 	}
 }
@@ -716,8 +726,9 @@ func load_FxPassState(xn *xmlx.Node, obj *nga.FxPassState) {
 }
 
 func load_GeometryBrepSurface(xn *xmlx.Node, obj *nga.GeometryBrepSurface) {
-	obj.Orientations = objs_GeometryBrepOrientation(xn, "orient")
-	obj.Origin = xv3(xn, "origin")
+	if pos := obj_GeometryPositioning(xn, ""); pos != nil {
+		obj.Location = *pos
+	}
 	obj.Element.Cone = obj_GeometryBrepCone(xn, "cone")
 	obj.Element.Plane = obj_GeometryBrepPlane(xn, "plane")
 	obj.Element.Cylinder = obj_GeometryBrepCylinder(xn, "cylinder")
@@ -752,6 +763,9 @@ func load_ParamUint(xn *xmlx.Node, obj *nga.ParamUint) {
 }
 
 func load_ParamDefs(xn *xmlx.Node, obj *nga.ParamDefs) {
+}
+
+func load_ParamInsts(xn *xmlx.Node, obj *nga.ParamInsts) {
 }
 
 func load_AnimationChannel(xn *xmlx.Node, obj *nga.AnimationChannel) {
@@ -804,15 +818,15 @@ func load_CameraDef(xn *xmlx.Node, obj *nga.CameraDef) {
 }
 
 func load_GeometryBrepSweptSurface(xn *xmlx.Node, obj *nga.GeometryBrepSweptSurface) {
-	obj.ExtrusionDirection = xv3(xn, "direction")
 	obj.Curve = obj_GeometryBrepCurve(xn, "curve")
+	obj.Extrusion.Direction = xv3(xn, "direction")
 	obj.Revolution.Origin = xv3(xn, "origin")
-	obj.Revolution.Axis = xv3(xn, "axis")
+	obj.Revolution.Direction = xv3(xn, "axis")
 }
 
 func load_FxPassProgramBindUniform(xn *xmlx.Node, obj *nga.FxPassProgramBindUniform) {
 	obj.Symbol = xas(xn, "symbol")
-	obj.ParamRef = get_ParamRef(xn, "param")
+	obj.ParamRef.Set(get_ParamRef(xn, "param"))
 	for _, cn := range xn.Children {
 		if cn.Type == xmlx.NT_ELEMENT {
 			if obj.Value = xv(cn); obj.Value != nil {
@@ -822,8 +836,8 @@ func load_FxPassProgramBindUniform(xn *xmlx.Node, obj *nga.FxPassProgramBindUnif
 	}
 }
 
-func load_KxArticulatedSystemMotionAxis(xn *xmlx.Node, obj *nga.KxArticulatedSystemMotionAxis) {
-	obj.Axis = xas(xn, "axis")
+func load_KxMotionAxis(xn *xmlx.Node, obj *nga.KxMotionAxis) {
+	obj.Axis.Set(xas(xn, "axis"))
 	obj.Bindings = objs_KxBinding(xn, "bind")
 	obj.Speed = obj_ParamFloat(xn, "speed")
 	obj.Acceleration = obj_ParamFloat(xn, "acceleration")
@@ -888,7 +902,7 @@ func load_GeometrySpline(xn *xmlx.Node, obj *nga.GeometrySpline) {
 }
 
 func load_GeometryInst(xn *xmlx.Node, obj *nga.GeometryInst) {
-	obj.BindMaterial = obj_MaterialBinding(xn, "bind_material")
+	obj.MaterialBinding = obj_MaterialBinding(xn, "bind_material")
 }
 
 func load_PxRigidConstraintDef(xn *xmlx.Node, obj *nga.PxRigidConstraintDef) {
@@ -995,7 +1009,7 @@ func load_FxPassEvaluationTarget(xn *xmlx.Node, obj *nga.FxPassEvaluationTarget)
 }
 
 func load_FxColorOrTexture(xn *xmlx.Node, obj *nga.FxColorOrTexture) {
-	obj.ParamRef = get_ParamRef(xn, "param")
+	obj.ParamRef.Set(get_ParamRef(xn, "param"))
 	obj.Texture = obj_FxTexture(xn, "texture")
 	if cn := xcn(xn, "color"); cn != nil {
 		list_Rgba32(cn, obj.Color)
@@ -1015,11 +1029,11 @@ func load_FxColorOrTexture(xn *xmlx.Node, obj *nga.FxColorOrTexture) {
 func load_GeometryVertices(xn *xmlx.Node, obj *nga.GeometryVertices) {
 }
 
-func load_KxArticulatedSystemMotion(xn *xmlx.Node, obj *nga.KxArticulatedSystemMotion) {
+func load_KxMotionSystem(xn *xmlx.Node, obj *nga.KxMotionSystem) {
 	obj.ArticulatedSystem = obj_KxArticulatedSystemInst(xn, "instance_articulated_system")
 	if tcn := node_TechCommon(xn); tcn != nil {
-		obj.TC.AxisInfos = objs_KxArticulatedSystemMotionAxis(tcn, "axis_info")
-		obj.TC.EffectorInfos = objs_KxArticulatedSystemEffector(tcn, "effector_info")
+		obj.TC.AxisInfos = objs_KxMotionAxis(tcn, "axis_info")
+		obj.TC.EffectorInfo = obj_KxEffector(tcn, "effector_info")
 	}
 }
 
@@ -1039,7 +1053,7 @@ func load_FxPassEvaluationClearDepth(xn *xmlx.Node, obj *nga.FxPassEvaluationCle
 
 func load_GeometryBrepEllipse(xn *xmlx.Node, obj *nga.GeometryBrepEllipse) {
 	if f2 := obj_Float2(xn, "radius"); f2 != nil {
-		obj.Radius = *f2
+		obj.Radii = *f2
 	}
 }
 
@@ -1076,7 +1090,7 @@ func load_LightDirectional(xn *xmlx.Node, obj *nga.LightDirectional) {
 	get_LightColor(xn, &obj.Color)
 }
 
-func load_KxArticulatedSystemAxisIndex(xn *xmlx.Node, obj *nga.KxArticulatedSystemAxisIndex) {
+func load_KxAxisIndex(xn *xmlx.Node, obj *nga.KxAxisIndex) {
 	obj.Semantic = xas(xn, "semantic")
 	if pi := obj_ParamInt(xn, ""); pi != nil {
 		obj.I = *pi
@@ -1302,7 +1316,7 @@ func load_AssetGeographicLocation(xn *xmlx.Node, obj *nga.AssetGeographicLocatio
 	}
 }
 
-func load_KxArticulatedSystemEffector(xn *xmlx.Node, obj *nga.KxArticulatedSystemEffector) {
+func load_KxEffector(xn *xmlx.Node, obj *nga.KxEffector) {
 	obj.Bindings = objs_KxBinding(xn, "bind")
 	obj.Speed = obj_ParamFloat2(xn, "speed")
 	obj.Acceleration = obj_ParamFloat2(xn, "acceleration")
@@ -1312,7 +1326,7 @@ func load_KxArticulatedSystemEffector(xn *xmlx.Node, obj *nga.KxArticulatedSyste
 
 func load_GeometryBrepTorus(xn *xmlx.Node, obj *nga.GeometryBrepTorus) {
 	if f2 := obj_Float2(xn, "radius"); f2 != nil {
-		obj.Radius = *f2
+		obj.Radii = *f2
 	}
 }
 
@@ -1328,7 +1342,7 @@ func load_FxProfile(xn *xmlx.Node, obj *nga.FxProfile) {
 	}
 }
 
-func load_KxArticulatedSystemAxisLimits(xn *xmlx.Node, obj *nga.KxArticulatedSystemAxisLimits) {
+func load_KxAxisLimits(xn *xmlx.Node, obj *nga.KxAxisLimits) {
 	pf := obj_ParamFloat(xn, "max")
 	if pf != nil {
 		obj.Max = *pf
@@ -1410,17 +1424,17 @@ func load_NodeDef(xn *xmlx.Node, obj *nga.NodeDef) {
 func load_PxForceFieldInst(xn *xmlx.Node, obj *nga.PxForceFieldInst) {
 }
 
-func load_KxArticulatedSystemKinematics(xn *xmlx.Node, obj *nga.KxArticulatedSystemKinematics) {
+func load_KxKinematicsSystem(xn *xmlx.Node, obj *nga.KxKinematicsSystem) {
 	obj.Models = objs_KxModelInst(xn, "instance_kinematics_model")
 	if tcn := node_TechCommon(xn); tcn != nil {
-		obj.TC.AxisInfos = objs_KxArticulatedSystemKinematicsAxis(tcn, "axis_info")
-		obj.TC.Frame.Object = obj_KxArticulatedSystemKinematicsFrame(tcn, "frame_object")
-		obj.TC.Frame.Tcp = obj_KxArticulatedSystemKinematicsFrame(tcn, "frame_tcp")
-		f := obj_KxArticulatedSystemKinematicsFrame(tcn, "frame_tip")
+		obj.TC.AxisInfos = objs_KxKinematicsAxis(tcn, "axis_info")
+		obj.TC.Frame.Object = obj_KxFrame(tcn, "frame_object")
+		obj.TC.Frame.Tcp = obj_KxFrame(tcn, "frame_tcp")
+		f := obj_KxFrame(tcn, "frame_tip")
 		if f != nil {
 			obj.TC.Frame.Tip = *f
 		}
-		if f = obj_KxArticulatedSystemKinematicsFrame(tcn, "frame_origin"); f != nil {
+		if f = obj_KxFrame(tcn, "frame_origin"); f != nil {
 			obj.TC.Frame.Origin = *f
 		}
 	}
@@ -1467,8 +1481,8 @@ func load_FxImageInst(xn *xmlx.Node, obj *nga.FxImageInst) {
 }
 
 func load_GeometryBrepBox(xn *xmlx.Node, obj *nga.GeometryBrepBox) {
-	if f3 := obj_Float3(xn, "half_extents"); f3 != nil {
-		obj.HalfExtents = *f3
+	if v3 := xv3(xn, "half_extents"); v3 != nil {
+		obj.HalfExtents = *v3
 	}
 }
 
@@ -1568,8 +1582,8 @@ func load_PxRigidBodyDef(xn *xmlx.Node, obj *nga.PxRigidBodyDef) {
 }
 
 func load_KxArticulatedSystemDef(xn *xmlx.Node, obj *nga.KxArticulatedSystemDef) {
-	obj.Kinematics = obj_KxArticulatedSystemKinematics(xn, "kinematics")
-	obj.Motion = obj_KxArticulatedSystemMotion(xn, "motion")
+	obj.Kinematics = obj_KxKinematicsSystem(xn, "kinematics")
+	obj.Motion = obj_KxMotionSystem(xn, "motion")
 }
 
 func load_GeometryBrepPcurves(xn *xmlx.Node, obj *nga.GeometryBrepPcurves) {
@@ -1580,7 +1594,7 @@ func load_GeometryBrepPcurves(xn *xmlx.Node, obj *nga.GeometryBrepPcurves) {
 
 func load_GeometryBrepHyperbola(xn *xmlx.Node, obj *nga.GeometryBrepHyperbola) {
 	if f2 := obj_Float2(xn, "radius"); f2 != nil {
-		obj.Radius = *f2
+		obj.Radii = *f2
 	}
 }
 
@@ -1619,7 +1633,7 @@ func load_Float2x4(xn *xmlx.Node, obj *nga.Float2x4) {
 }
 
 func load_ParamInst(xn *xmlx.Node, obj *nga.ParamInst) {
-	obj.Ref = xas(xn, "ref")
+	obj.Ref.Set(xas(xn, "ref"))
 	for _, cn := range xn.Children {
 		if cn.Type == xmlx.NT_ELEMENT {
 			if cn.Name.Local == "connect_param" {

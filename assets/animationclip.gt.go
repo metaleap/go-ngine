@@ -1,6 +1,7 @@
 package assets
 
-//	Defines a section of a set of animation curves and/or formulas to be used together as an animation clip.
+//	Defines a section of a set of animation curves and/or formulas
+//	to be used together as an animation clip.
 type AnimationClipDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
@@ -27,13 +28,13 @@ func (me *AnimationClipDef) Init() {
 func newAnimationClipDef(id string) (me *AnimationClipDef) {
 	me = &AnimationClipDef{}
 	me.Id = id
-	me.Base.init()
+	me.BaseSync.init()
 	me.Init()
 	return
 }
 
 /*
-//	Creates and returns a new *AnimationClipInst* instance referencing this *AnimationClipDef* definition.
+//	Creates and returns a new AnimationClipInst instance referencing this AnimationClipDef definition.
 func (me *AnimationClipDef) NewInst(id string) (inst *AnimationClipInst) {
 	inst = &AnimationClipInst{Def: me}
 	inst.Init()
@@ -42,10 +43,10 @@ func (me *AnimationClipDef) NewInst(id string) (inst *AnimationClipInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibAnimationClipDefs* libraries associated by their *Id*.
+	//	A hash-table that contains LibAnimationClipDefs libraries associated by their Id.
 	AllAnimationClipDefLibs = LibsAnimationClipDef{}
 
-	//	The "default" *LibAnimationClipDefs* library for *AnimationClipDef*s.
+	//	The "default" LibAnimationClipDefs library for AnimationClipDefs.
 	AnimationClipDefs = AllAnimationClipDefLibs.AddNew("")
 )
 
@@ -57,13 +58,12 @@ func init() {
 	})
 }
 
-//	The underlying type of the global *AllAnimationClipDefLibs* variable: a *map* collection that contains
-//	*LibAnimationClipDefs* libraries associated by their *Id*.
+//	The underlying type of the global AllAnimationClipDefLibs variable:
+//	a hash-table that contains LibAnimationClipDefs libraries associated by their Id.
 type LibsAnimationClipDef map[string]*LibAnimationClipDefs
 
-//	Creates a new *LibAnimationClipDefs* library with the specified *Id*, adds it to this *LibsAnimationClipDef*, and returns it.
-//	
-//	If this *LibsAnimationClipDef* already contains a *LibAnimationClipDefs* library with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new LibAnimationClipDefs library with the specified Id, adds it to this LibsAnimationClipDef, and returns it.
+//	If this LibsAnimationClipDef already contains a LibAnimationClipDefs library with the specified Id, does nothing and returns nil.
 func (me LibsAnimationClipDef) AddNew(id string) (lib *LibAnimationClipDefs) {
 	if me[id] != nil {
 		return
@@ -78,12 +78,12 @@ func (me LibsAnimationClipDef) new(id string) (lib *LibAnimationClipDefs) {
 	return
 }
 
-//	A library that contains *AnimationClipDef*s associated by their *Id*. To create a new *LibAnimationClipDefs* library, ONLY
-//	use the *LibsAnimationClipDef.New()* or *LibsAnimationClipDef.AddNew()* methods.
+//	A library that contains AnimationClipDefs associated by their Id.
+//	To create a new LibAnimationClipDefs library, ONLY use the LibsAnimationClipDef.New() or LibsAnimationClipDef.AddNew() methods.
 type LibAnimationClipDefs struct {
 	BaseLib
-	//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT
-	//	write to *M*, instead use the *Add()*, *AddNew()*, *Remove()* methods ONLY or bugs WILL ensue.
+	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
+	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*AnimationClipDef
 }
 
@@ -93,9 +93,8 @@ func newLibAnimationClipDefs(id string) (me *LibAnimationClipDefs) {
 	return
 }
 
-//	Adds the specified *AnimationClipDef* definition to this *LibAnimationClipDefs*, and returns it.
-//	
-//	If this *LibAnimationClipDefs* already contains a *AnimationClipDef* definition with the same *Id*, does nothing and returns *nil*.
+//	Adds the specified AnimationClipDef definition to this LibAnimationClipDefs, and returns it.
+//	If this LibAnimationClipDefs already contains a AnimationClipDef definition with the same Id, does nothing and returns nil.
 func (me *LibAnimationClipDefs) Add(d *AnimationClipDef) (n *AnimationClipDef) {
 	if me.M[d.Id] == nil {
 		n, me.M[d.Id] = d, d
@@ -104,27 +103,27 @@ func (me *LibAnimationClipDefs) Add(d *AnimationClipDef) (n *AnimationClipDef) {
 	return
 }
 
-//	Creates a new *AnimationClipDef* definition with the specified *Id*, adds it to this *LibAnimationClipDefs*, and returns it.
-//	
-//	If this *LibAnimationClipDefs* already contains a *AnimationClipDef* definition with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new AnimationClipDef definition with the specified Id, adds it to this LibAnimationClipDefs, and returns it.
+//	If this LibAnimationClipDefs already contains a AnimationClipDef definition with the specified Id, does nothing and returns nil.
 func (me *LibAnimationClipDefs) AddNew(id string) *AnimationClipDef { return me.Add(me.New(id)) }
 
-//	Short-hand for len(lib.M)
+//	Convenience short-hand for len(lib.M)
 func (me *LibAnimationClipDefs) Len() int { return len(me.M) }
 
-//	Creates a new *AnimationClipDef* definition with the specified *Id* and returns it, but does not add it to this *LibAnimationClipDefs*.
+//	Creates a new AnimationClipDef definition with the specified Id and returns it,
+//	but does not add it to this LibAnimationClipDefs.
 func (me *LibAnimationClipDefs) New(id string) (def *AnimationClipDef) { def = newAnimationClipDef(id); return }
 
-//	Removes the *AnimationClipDef* with the specified *Id* from this *LibAnimationClipDefs*.
+//	Removes the AnimationClipDef with the specified Id from this LibAnimationClipDefs.
 func (me *LibAnimationClipDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-//	Signals to *core* (or your custom package) that changes have been made to this *LibAnimationClipDefs* that need to be picked up.
-//	Call this after you have made any number of changes to this *LibAnimationClipDefs* library or its *AnimationClipDef* definitions.
-//	Also called by the global *SyncChanges()* function.
+//	Signals to the core package (or your custom package) that changes have been made to this LibAnimationClipDefs
+//	that need to be picked up. Call this after you have made a number of changes to this LibAnimationClipDefs
+//	library or its AnimationClipDef definitions. Also called by the global SyncChanges() function.
 func (me *LibAnimationClipDefs) SyncChanges() {
-	me.BaseLib.Base.SyncChanges()
+	me.BaseLib.BaseSync.SyncChanges()
 	for _, def := range me.M {
-		def.BaseDef.Base.SyncChanges()
+		def.BaseDef.BaseSync.SyncChanges()
 	}
 }
 

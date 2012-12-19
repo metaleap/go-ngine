@@ -20,7 +20,8 @@ type VisualSceneRendering struct {
 	HasSid
 	//	Extras
 	HasExtras
-	//	Refers to a node that contains a camera describing the viewpoint from which to render this compositing step. Optional.
+	//	Refers to a node that contains a camera describing
+	//	the viewpoint from which to render this compositing step. Optional.
 	CameraNode string
 	//	Specifies which layer or layers to render in this compositing step while evaluating the scene.
 	Layers Layers
@@ -40,11 +41,13 @@ type VisualSceneRenderingMaterialInst struct {
 	HasExtras
 	//	Binds values to effect parameters upon instantiation.
 	Bindings []*FxBinding
-	//	Target specific techniques and passes inside a material rather than having to split the effects techniques and passes into multiple effects.
+	//	Target specific techniques and passes inside a material
+	//	rather than having to split the effects techniques and passes into multiple effects.
 	OverrideTechnique struct {
 		//	Specifies the Sid of a Technique
 		Ref RefSid
-		//	Specifies the Sid of one FxPass to execute. If not specified, then all of the Technique’s passes are used.
+		//	Specifies the Sid of one FxPass to execute.
+		//	If not specified, then all of the Technique's passes are used.
 		Pass RefSid
 	}
 }
@@ -78,13 +81,13 @@ func (me *VisualSceneInst) Init() {
 func newVisualSceneDef(id string) (me *VisualSceneDef) {
 	me = &VisualSceneDef{}
 	me.Id = id
-	me.Base.init()
+	me.BaseSync.init()
 	me.Init()
 	return
 }
 
 /*
-//	Creates and returns a new *VisualSceneInst* instance referencing this *VisualSceneDef* definition.
+//	Creates and returns a new VisualSceneInst instance referencing this VisualSceneDef definition.
 func (me *VisualSceneDef) NewInst(id string) (inst *VisualSceneInst) {
 	inst = &VisualSceneInst{Def: me}
 	inst.Init()
@@ -93,10 +96,10 @@ func (me *VisualSceneDef) NewInst(id string) (inst *VisualSceneInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibVisualSceneDefs* libraries associated by their *Id*.
+	//	A hash-table that contains LibVisualSceneDefs libraries associated by their Id.
 	AllVisualSceneDefLibs = LibsVisualSceneDef{}
 
-	//	The "default" *LibVisualSceneDefs* library for *VisualSceneDef*s.
+	//	The "default" LibVisualSceneDefs library for VisualSceneDefs.
 	VisualSceneDefs = AllVisualSceneDefLibs.AddNew("")
 )
 
@@ -108,13 +111,12 @@ func init() {
 	})
 }
 
-//	The underlying type of the global *AllVisualSceneDefLibs* variable: a *map* collection that contains
-//	*LibVisualSceneDefs* libraries associated by their *Id*.
+//	The underlying type of the global AllVisualSceneDefLibs variable:
+//	a hash-table that contains LibVisualSceneDefs libraries associated by their Id.
 type LibsVisualSceneDef map[string]*LibVisualSceneDefs
 
-//	Creates a new *LibVisualSceneDefs* library with the specified *Id*, adds it to this *LibsVisualSceneDef*, and returns it.
-//	
-//	If this *LibsVisualSceneDef* already contains a *LibVisualSceneDefs* library with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new LibVisualSceneDefs library with the specified Id, adds it to this LibsVisualSceneDef, and returns it.
+//	If this LibsVisualSceneDef already contains a LibVisualSceneDefs library with the specified Id, does nothing and returns nil.
 func (me LibsVisualSceneDef) AddNew(id string) (lib *LibVisualSceneDefs) {
 	if me[id] != nil {
 		return
@@ -129,12 +131,12 @@ func (me LibsVisualSceneDef) new(id string) (lib *LibVisualSceneDefs) {
 	return
 }
 
-//	A library that contains *VisualSceneDef*s associated by their *Id*. To create a new *LibVisualSceneDefs* library, ONLY
-//	use the *LibsVisualSceneDef.New()* or *LibsVisualSceneDef.AddNew()* methods.
+//	A library that contains VisualSceneDefs associated by their Id.
+//	To create a new LibVisualSceneDefs library, ONLY use the LibsVisualSceneDef.New() or LibsVisualSceneDef.AddNew() methods.
 type LibVisualSceneDefs struct {
 	BaseLib
-	//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT
-	//	write to *M*, instead use the *Add()*, *AddNew()*, *Remove()* methods ONLY or bugs WILL ensue.
+	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
+	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*VisualSceneDef
 }
 
@@ -144,9 +146,8 @@ func newLibVisualSceneDefs(id string) (me *LibVisualSceneDefs) {
 	return
 }
 
-//	Adds the specified *VisualSceneDef* definition to this *LibVisualSceneDefs*, and returns it.
-//	
-//	If this *LibVisualSceneDefs* already contains a *VisualSceneDef* definition with the same *Id*, does nothing and returns *nil*.
+//	Adds the specified VisualSceneDef definition to this LibVisualSceneDefs, and returns it.
+//	If this LibVisualSceneDefs already contains a VisualSceneDef definition with the same Id, does nothing and returns nil.
 func (me *LibVisualSceneDefs) Add(d *VisualSceneDef) (n *VisualSceneDef) {
 	if me.M[d.Id] == nil {
 		n, me.M[d.Id] = d, d
@@ -155,27 +156,27 @@ func (me *LibVisualSceneDefs) Add(d *VisualSceneDef) (n *VisualSceneDef) {
 	return
 }
 
-//	Creates a new *VisualSceneDef* definition with the specified *Id*, adds it to this *LibVisualSceneDefs*, and returns it.
-//	
-//	If this *LibVisualSceneDefs* already contains a *VisualSceneDef* definition with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new VisualSceneDef definition with the specified Id, adds it to this LibVisualSceneDefs, and returns it.
+//	If this LibVisualSceneDefs already contains a VisualSceneDef definition with the specified Id, does nothing and returns nil.
 func (me *LibVisualSceneDefs) AddNew(id string) *VisualSceneDef { return me.Add(me.New(id)) }
 
-//	Short-hand for len(lib.M)
+//	Convenience short-hand for len(lib.M)
 func (me *LibVisualSceneDefs) Len() int { return len(me.M) }
 
-//	Creates a new *VisualSceneDef* definition with the specified *Id* and returns it, but does not add it to this *LibVisualSceneDefs*.
+//	Creates a new VisualSceneDef definition with the specified Id and returns it,
+//	but does not add it to this LibVisualSceneDefs.
 func (me *LibVisualSceneDefs) New(id string) (def *VisualSceneDef) { def = newVisualSceneDef(id); return }
 
-//	Removes the *VisualSceneDef* with the specified *Id* from this *LibVisualSceneDefs*.
+//	Removes the VisualSceneDef with the specified Id from this LibVisualSceneDefs.
 func (me *LibVisualSceneDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-//	Signals to *core* (or your custom package) that changes have been made to this *LibVisualSceneDefs* that need to be picked up.
-//	Call this after you have made any number of changes to this *LibVisualSceneDefs* library or its *VisualSceneDef* definitions.
-//	Also called by the global *SyncChanges()* function.
+//	Signals to the core package (or your custom package) that changes have been made to this LibVisualSceneDefs
+//	that need to be picked up. Call this after you have made a number of changes to this LibVisualSceneDefs
+//	library or its VisualSceneDef definitions. Also called by the global SyncChanges() function.
 func (me *LibVisualSceneDefs) SyncChanges() {
-	me.BaseLib.Base.SyncChanges()
+	me.BaseLib.BaseSync.SyncChanges()
 	for _, def := range me.M {
-		def.BaseDef.Base.SyncChanges()
+		def.BaseDef.BaseSync.SyncChanges()
 	}
 }
 

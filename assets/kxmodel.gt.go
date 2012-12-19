@@ -33,8 +33,9 @@ type KxLink struct {
 	Attachments []*KxAttachment
 }
 
-//	Categorizes the declaration of kinematical information, containing declarations of joints, links, and attachment points.
-//	A kinematics model is focused on strict kinematics description "in zero position", without any additional physical descriptions.
+//	Categorizes the declaration of kinematical information, containing declarations of
+//	joints, links, and attachment points. A kinematics model is focused on strict
+//	kinematics description "in zero position", without any additional physical descriptions.
 type KxModelDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
@@ -71,6 +72,7 @@ type KxModelInst struct {
 //	Initialization
 func (me *KxModelInst) Init() {
 	me.NewParams = ParamDefs{}
+	me.SetParams = ParamInsts{}
 }
 
 //#begin-gt _definstlib.gt T:KxModel
@@ -78,13 +80,13 @@ func (me *KxModelInst) Init() {
 func newKxModelDef(id string) (me *KxModelDef) {
 	me = &KxModelDef{}
 	me.Id = id
-	me.Base.init()
+	me.BaseSync.init()
 	me.Init()
 	return
 }
 
 /*
-//	Creates and returns a new *KxModelInst* instance referencing this *KxModelDef* definition.
+//	Creates and returns a new KxModelInst instance referencing this KxModelDef definition.
 func (me *KxModelDef) NewInst(id string) (inst *KxModelInst) {
 	inst = &KxModelInst{Def: me}
 	inst.Init()
@@ -93,10 +95,10 @@ func (me *KxModelDef) NewInst(id string) (inst *KxModelInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibKxModelDefs* libraries associated by their *Id*.
+	//	A hash-table that contains LibKxModelDefs libraries associated by their Id.
 	AllKxModelDefLibs = LibsKxModelDef{}
 
-	//	The "default" *LibKxModelDefs* library for *KxModelDef*s.
+	//	The "default" LibKxModelDefs library for KxModelDefs.
 	KxModelDefs = AllKxModelDefLibs.AddNew("")
 )
 
@@ -108,13 +110,12 @@ func init() {
 	})
 }
 
-//	The underlying type of the global *AllKxModelDefLibs* variable: a *map* collection that contains
-//	*LibKxModelDefs* libraries associated by their *Id*.
+//	The underlying type of the global AllKxModelDefLibs variable:
+//	a hash-table that contains LibKxModelDefs libraries associated by their Id.
 type LibsKxModelDef map[string]*LibKxModelDefs
 
-//	Creates a new *LibKxModelDefs* library with the specified *Id*, adds it to this *LibsKxModelDef*, and returns it.
-//	
-//	If this *LibsKxModelDef* already contains a *LibKxModelDefs* library with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new LibKxModelDefs library with the specified Id, adds it to this LibsKxModelDef, and returns it.
+//	If this LibsKxModelDef already contains a LibKxModelDefs library with the specified Id, does nothing and returns nil.
 func (me LibsKxModelDef) AddNew(id string) (lib *LibKxModelDefs) {
 	if me[id] != nil {
 		return
@@ -129,12 +130,12 @@ func (me LibsKxModelDef) new(id string) (lib *LibKxModelDefs) {
 	return
 }
 
-//	A library that contains *KxModelDef*s associated by their *Id*. To create a new *LibKxModelDefs* library, ONLY
-//	use the *LibsKxModelDef.New()* or *LibsKxModelDef.AddNew()* methods.
+//	A library that contains KxModelDefs associated by their Id.
+//	To create a new LibKxModelDefs library, ONLY use the LibsKxModelDef.New() or LibsKxModelDef.AddNew() methods.
 type LibKxModelDefs struct {
 	BaseLib
-	//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT
-	//	write to *M*, instead use the *Add()*, *AddNew()*, *Remove()* methods ONLY or bugs WILL ensue.
+	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
+	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*KxModelDef
 }
 
@@ -144,9 +145,8 @@ func newLibKxModelDefs(id string) (me *LibKxModelDefs) {
 	return
 }
 
-//	Adds the specified *KxModelDef* definition to this *LibKxModelDefs*, and returns it.
-//	
-//	If this *LibKxModelDefs* already contains a *KxModelDef* definition with the same *Id*, does nothing and returns *nil*.
+//	Adds the specified KxModelDef definition to this LibKxModelDefs, and returns it.
+//	If this LibKxModelDefs already contains a KxModelDef definition with the same Id, does nothing and returns nil.
 func (me *LibKxModelDefs) Add(d *KxModelDef) (n *KxModelDef) {
 	if me.M[d.Id] == nil {
 		n, me.M[d.Id] = d, d
@@ -155,27 +155,27 @@ func (me *LibKxModelDefs) Add(d *KxModelDef) (n *KxModelDef) {
 	return
 }
 
-//	Creates a new *KxModelDef* definition with the specified *Id*, adds it to this *LibKxModelDefs*, and returns it.
-//	
-//	If this *LibKxModelDefs* already contains a *KxModelDef* definition with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new KxModelDef definition with the specified Id, adds it to this LibKxModelDefs, and returns it.
+//	If this LibKxModelDefs already contains a KxModelDef definition with the specified Id, does nothing and returns nil.
 func (me *LibKxModelDefs) AddNew(id string) *KxModelDef { return me.Add(me.New(id)) }
 
-//	Short-hand for len(lib.M)
+//	Convenience short-hand for len(lib.M)
 func (me *LibKxModelDefs) Len() int { return len(me.M) }
 
-//	Creates a new *KxModelDef* definition with the specified *Id* and returns it, but does not add it to this *LibKxModelDefs*.
+//	Creates a new KxModelDef definition with the specified Id and returns it,
+//	but does not add it to this LibKxModelDefs.
 func (me *LibKxModelDefs) New(id string) (def *KxModelDef) { def = newKxModelDef(id); return }
 
-//	Removes the *KxModelDef* with the specified *Id* from this *LibKxModelDefs*.
+//	Removes the KxModelDef with the specified Id from this LibKxModelDefs.
 func (me *LibKxModelDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-//	Signals to *core* (or your custom package) that changes have been made to this *LibKxModelDefs* that need to be picked up.
-//	Call this after you have made any number of changes to this *LibKxModelDefs* library or its *KxModelDef* definitions.
-//	Also called by the global *SyncChanges()* function.
+//	Signals to the core package (or your custom package) that changes have been made to this LibKxModelDefs
+//	that need to be picked up. Call this after you have made a number of changes to this LibKxModelDefs
+//	library or its KxModelDef definitions. Also called by the global SyncChanges() function.
 func (me *LibKxModelDefs) SyncChanges() {
-	me.BaseLib.Base.SyncChanges()
+	me.BaseLib.BaseSync.SyncChanges()
 	for _, def := range me.M {
-		def.BaseDef.Base.SyncChanges()
+		def.BaseDef.BaseSync.SyncChanges()
 	}
 }
 

@@ -1,19 +1,24 @@
 package assets
 
-//	Binds a kinematics model to a node. The description of a kinematics model is completely independent of any visual information, but for calculation the position is important.
+//	Binds a kinematics model to a node. The description of a kinematics model is
+//	completely independent of any visual information, but for calculation the position is important.
 type KxModelBinding struct {
 	//	A reference to a node.
 	Node RefId
-	//	Refers to the kinematics model being bound. Only either SidRef or ParamRef, but not both, must be specified.
+	//	Refers to the kinematics model being bound.
+	//	Only either SidRef or ParamRef, but not both, must be specified.
 	Model struct {
-		//	If set, ParamRef must be empty. The Sid path to the kinematics model to bind to the node.
+		//	If set, ParamRef must be empty.
+		//	The Sid path to the kinematics model to bind to the node.
 		SidRef RefSid
-		//	If set, SidRef must be empty. The parameter of the kinematics model that is defined in the instantiated kinematics scene.
+		//	If set, SidRef must be empty.
+		//	The parameter of the kinematics model that is defined in the instantiated kinematics scene.
 		ParamRef RefParam
 	}
 }
 
-//	Binds a joint axis of a kinematics model to a single transformation of a node. By binding a joint axis to a transformation of a node, it is possible to synchronize a kinematics scene with a visual scene.
+//	Binds a joint axis of a kinematics model to a single transformation of a node. By binding a joint axis
+//	to a transformation of a node, it is possible to synchronize a kinematics scene with a visual scene.
 type KxJointAxisBinding struct {
 	//	A reference to a transformation of a node.
 	Target RefSid
@@ -23,7 +28,7 @@ type KxJointAxisBinding struct {
 	Value ParamFloat
 }
 
-//	Embodies the entire set of kinematics information that can be articulated from the contents of a resource.
+//	Embodies the entire set of kinematics information that can be articulated from a resource.
 type KxSceneDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
@@ -54,6 +59,7 @@ type KxSceneInst struct {
 //	Initialization
 func (me *KxSceneInst) Init() {
 	me.NewParams = ParamDefs{}
+	me.SetParams = ParamInsts{}
 }
 
 //#begin-gt _definstlib.gt T:KxScene
@@ -61,13 +67,13 @@ func (me *KxSceneInst) Init() {
 func newKxSceneDef(id string) (me *KxSceneDef) {
 	me = &KxSceneDef{}
 	me.Id = id
-	me.Base.init()
+	me.BaseSync.init()
 	me.Init()
 	return
 }
 
 /*
-//	Creates and returns a new *KxSceneInst* instance referencing this *KxSceneDef* definition.
+//	Creates and returns a new KxSceneInst instance referencing this KxSceneDef definition.
 func (me *KxSceneDef) NewInst(id string) (inst *KxSceneInst) {
 	inst = &KxSceneInst{Def: me}
 	inst.Init()
@@ -76,10 +82,10 @@ func (me *KxSceneDef) NewInst(id string) (inst *KxSceneInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibKxSceneDefs* libraries associated by their *Id*.
+	//	A hash-table that contains LibKxSceneDefs libraries associated by their Id.
 	AllKxSceneDefLibs = LibsKxSceneDef{}
 
-	//	The "default" *LibKxSceneDefs* library for *KxSceneDef*s.
+	//	The "default" LibKxSceneDefs library for KxSceneDefs.
 	KxSceneDefs = AllKxSceneDefLibs.AddNew("")
 )
 
@@ -91,13 +97,12 @@ func init() {
 	})
 }
 
-//	The underlying type of the global *AllKxSceneDefLibs* variable: a *map* collection that contains
-//	*LibKxSceneDefs* libraries associated by their *Id*.
+//	The underlying type of the global AllKxSceneDefLibs variable:
+//	a hash-table that contains LibKxSceneDefs libraries associated by their Id.
 type LibsKxSceneDef map[string]*LibKxSceneDefs
 
-//	Creates a new *LibKxSceneDefs* library with the specified *Id*, adds it to this *LibsKxSceneDef*, and returns it.
-//	
-//	If this *LibsKxSceneDef* already contains a *LibKxSceneDefs* library with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new LibKxSceneDefs library with the specified Id, adds it to this LibsKxSceneDef, and returns it.
+//	If this LibsKxSceneDef already contains a LibKxSceneDefs library with the specified Id, does nothing and returns nil.
 func (me LibsKxSceneDef) AddNew(id string) (lib *LibKxSceneDefs) {
 	if me[id] != nil {
 		return
@@ -112,12 +117,12 @@ func (me LibsKxSceneDef) new(id string) (lib *LibKxSceneDefs) {
 	return
 }
 
-//	A library that contains *KxSceneDef*s associated by their *Id*. To create a new *LibKxSceneDefs* library, ONLY
-//	use the *LibsKxSceneDef.New()* or *LibsKxSceneDef.AddNew()* methods.
+//	A library that contains KxSceneDefs associated by their Id.
+//	To create a new LibKxSceneDefs library, ONLY use the LibsKxSceneDef.New() or LibsKxSceneDef.AddNew() methods.
 type LibKxSceneDefs struct {
 	BaseLib
-	//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT
-	//	write to *M*, instead use the *Add()*, *AddNew()*, *Remove()* methods ONLY or bugs WILL ensue.
+	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
+	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*KxSceneDef
 }
 
@@ -127,9 +132,8 @@ func newLibKxSceneDefs(id string) (me *LibKxSceneDefs) {
 	return
 }
 
-//	Adds the specified *KxSceneDef* definition to this *LibKxSceneDefs*, and returns it.
-//	
-//	If this *LibKxSceneDefs* already contains a *KxSceneDef* definition with the same *Id*, does nothing and returns *nil*.
+//	Adds the specified KxSceneDef definition to this LibKxSceneDefs, and returns it.
+//	If this LibKxSceneDefs already contains a KxSceneDef definition with the same Id, does nothing and returns nil.
 func (me *LibKxSceneDefs) Add(d *KxSceneDef) (n *KxSceneDef) {
 	if me.M[d.Id] == nil {
 		n, me.M[d.Id] = d, d
@@ -138,27 +142,27 @@ func (me *LibKxSceneDefs) Add(d *KxSceneDef) (n *KxSceneDef) {
 	return
 }
 
-//	Creates a new *KxSceneDef* definition with the specified *Id*, adds it to this *LibKxSceneDefs*, and returns it.
-//	
-//	If this *LibKxSceneDefs* already contains a *KxSceneDef* definition with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new KxSceneDef definition with the specified Id, adds it to this LibKxSceneDefs, and returns it.
+//	If this LibKxSceneDefs already contains a KxSceneDef definition with the specified Id, does nothing and returns nil.
 func (me *LibKxSceneDefs) AddNew(id string) *KxSceneDef { return me.Add(me.New(id)) }
 
-//	Short-hand for len(lib.M)
+//	Convenience short-hand for len(lib.M)
 func (me *LibKxSceneDefs) Len() int { return len(me.M) }
 
-//	Creates a new *KxSceneDef* definition with the specified *Id* and returns it, but does not add it to this *LibKxSceneDefs*.
+//	Creates a new KxSceneDef definition with the specified Id and returns it,
+//	but does not add it to this LibKxSceneDefs.
 func (me *LibKxSceneDefs) New(id string) (def *KxSceneDef) { def = newKxSceneDef(id); return }
 
-//	Removes the *KxSceneDef* with the specified *Id* from this *LibKxSceneDefs*.
+//	Removes the KxSceneDef with the specified Id from this LibKxSceneDefs.
 func (me *LibKxSceneDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-//	Signals to *core* (or your custom package) that changes have been made to this *LibKxSceneDefs* that need to be picked up.
-//	Call this after you have made any number of changes to this *LibKxSceneDefs* library or its *KxSceneDef* definitions.
-//	Also called by the global *SyncChanges()* function.
+//	Signals to the core package (or your custom package) that changes have been made to this LibKxSceneDefs
+//	that need to be picked up. Call this after you have made a number of changes to this LibKxSceneDefs
+//	library or its KxSceneDef definitions. Also called by the global SyncChanges() function.
 func (me *LibKxSceneDefs) SyncChanges() {
-	me.BaseLib.Base.SyncChanges()
+	me.BaseLib.BaseSync.SyncChanges()
 	for _, def := range me.M {
-		def.BaseDef.Base.SyncChanges()
+		def.BaseDef.BaseSync.SyncChanges()
 	}
 }
 

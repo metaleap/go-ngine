@@ -136,7 +136,11 @@ func has_ParamDefs(xn *xmlx.Node, obj *nga.HasParamDefs) {
 }
 
 func has_ParamInsts(xn *xmlx.Node, obj *nga.HasParamInsts) {
-	obj.SetParams = objs_ParamInst(xn, "setparam")
+	for _, sp := range objs_ParamInst(xn, "setparam") {
+		if sp != nil {
+			obj.SetParams[sp.Ref.S()] = sp
+		}
+	}
 }
 
 func has_Sid(xn *xmlx.Node, obj *nga.HasSid) {

@@ -1,6 +1,7 @@
 package assets
 
-//	Describes an ambient light source. An ambient light is one that lights everything evenly, regardless of location or orientation.
+//	Describes an ambient light source.
+//	An ambient light is one that lights everything evenly, regardless of location or orientation.
 type LightAmbient struct {
 	//	Color
 	LightBase
@@ -29,14 +30,18 @@ type LightBase struct {
 	Color Float3
 }
 
-//	Describes a directional light source. A directional light is one that lights everything from the same direction, regardless of location.
-//	The light’s default direction vector in local coordinates is [0,0,-1], pointing down the negative z axis. The actual direction of the light is defined by the transform of the node where the light is instantiated.
+//	Describes a directional light source.
+//	A directional light is one that lights everything from the same direction, regardless of location.
+//	The light's default direction vector in local coordinates is [0,0,-1], pointing down the negative z axis.
+//	The actual direction of the light is defined by the transform of the node where the light is instantiated.
 type LightDirectional struct {
 	//	Color
 	LightBase
 }
 
-//	Describes a point light source. A point light source radiates light in all directions from a known location in space. The position of the light is defined by the transform of the node in which it is instantiated.
+//	Describes a point light source.
+//	A point light source radiates light in all directions from a known location in space.
+//	The position of the light is defined by the transform of the node in which it is instantiated.
 type LightPoint struct {
 	//	Color
 	LightBase
@@ -51,13 +56,16 @@ func NewLightPoint() (me *LightPoint) {
 	return
 }
 
-//	Describes a spot light source. A spot light source radiates light in one direction in a cone shape from a known location in space. The light’s default direction vector in local coordinates is [0,0,-1], pointing down the negative z axis. The actual direction of the light is defined by the transform of the node in which the light is instantiated.
+//	Describes a spot light source.
+//	A spot light source radiates light in one direction in a cone shape from a known location in space.
+//	The light's default direction vector in local coordinates is [0,0,-1], pointing down the negative z axis.
+//	The actual direction of the light is defined by the transform of the node in which the light is instantiated.
 type LightSpot struct {
 	//	Color
 	LightBase
-	//	 The intensity of a spot light source is also attenuated as the distance to the light source increases.
+	//	 The intensity of a spot light is also attenuated as the distance to the light source increases.
 	Attenuation LightAttenuation
-	//	The intensity of the light is also attenuated as the radiation angle increases away from the direction of the light source.
+	//	The light's intensity is also attenuated as the radiation angle increases away from the direction of the light source.
 	Falloff struct {
 		//	Fall-off angle. Defaults to 180.
 		Angle ScopedFloat
@@ -112,13 +120,13 @@ func (me *LightInst) Init() {
 func newLightDef(id string) (me *LightDef) {
 	me = &LightDef{}
 	me.Id = id
-	me.Base.init()
+	me.BaseSync.init()
 	me.Init()
 	return
 }
 
 /*
-//	Creates and returns a new *LightInst* instance referencing this *LightDef* definition.
+//	Creates and returns a new LightInst instance referencing this LightDef definition.
 func (me *LightDef) NewInst(id string) (inst *LightInst) {
 	inst = &LightInst{Def: me}
 	inst.Init()
@@ -127,10 +135,10 @@ func (me *LightDef) NewInst(id string) (inst *LightInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibLightDefs* libraries associated by their *Id*.
+	//	A hash-table that contains LibLightDefs libraries associated by their Id.
 	AllLightDefLibs = LibsLightDef{}
 
-	//	The "default" *LibLightDefs* library for *LightDef*s.
+	//	The "default" LibLightDefs library for LightDefs.
 	LightDefs = AllLightDefLibs.AddNew("")
 )
 
@@ -142,13 +150,12 @@ func init() {
 	})
 }
 
-//	The underlying type of the global *AllLightDefLibs* variable: a *map* collection that contains
-//	*LibLightDefs* libraries associated by their *Id*.
+//	The underlying type of the global AllLightDefLibs variable:
+//	a hash-table that contains LibLightDefs libraries associated by their Id.
 type LibsLightDef map[string]*LibLightDefs
 
-//	Creates a new *LibLightDefs* library with the specified *Id*, adds it to this *LibsLightDef*, and returns it.
-//	
-//	If this *LibsLightDef* already contains a *LibLightDefs* library with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new LibLightDefs library with the specified Id, adds it to this LibsLightDef, and returns it.
+//	If this LibsLightDef already contains a LibLightDefs library with the specified Id, does nothing and returns nil.
 func (me LibsLightDef) AddNew(id string) (lib *LibLightDefs) {
 	if me[id] != nil {
 		return
@@ -163,12 +170,12 @@ func (me LibsLightDef) new(id string) (lib *LibLightDefs) {
 	return
 }
 
-//	A library that contains *LightDef*s associated by their *Id*. To create a new *LibLightDefs* library, ONLY
-//	use the *LibsLightDef.New()* or *LibsLightDef.AddNew()* methods.
+//	A library that contains LightDefs associated by their Id.
+//	To create a new LibLightDefs library, ONLY use the LibsLightDef.New() or LibsLightDef.AddNew() methods.
 type LibLightDefs struct {
 	BaseLib
-	//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT
-	//	write to *M*, instead use the *Add()*, *AddNew()*, *Remove()* methods ONLY or bugs WILL ensue.
+	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
+	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*LightDef
 }
 
@@ -178,9 +185,8 @@ func newLibLightDefs(id string) (me *LibLightDefs) {
 	return
 }
 
-//	Adds the specified *LightDef* definition to this *LibLightDefs*, and returns it.
-//	
-//	If this *LibLightDefs* already contains a *LightDef* definition with the same *Id*, does nothing and returns *nil*.
+//	Adds the specified LightDef definition to this LibLightDefs, and returns it.
+//	If this LibLightDefs already contains a LightDef definition with the same Id, does nothing and returns nil.
 func (me *LibLightDefs) Add(d *LightDef) (n *LightDef) {
 	if me.M[d.Id] == nil {
 		n, me.M[d.Id] = d, d
@@ -189,27 +195,27 @@ func (me *LibLightDefs) Add(d *LightDef) (n *LightDef) {
 	return
 }
 
-//	Creates a new *LightDef* definition with the specified *Id*, adds it to this *LibLightDefs*, and returns it.
-//	
-//	If this *LibLightDefs* already contains a *LightDef* definition with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new LightDef definition with the specified Id, adds it to this LibLightDefs, and returns it.
+//	If this LibLightDefs already contains a LightDef definition with the specified Id, does nothing and returns nil.
 func (me *LibLightDefs) AddNew(id string) *LightDef { return me.Add(me.New(id)) }
 
-//	Short-hand for len(lib.M)
+//	Convenience short-hand for len(lib.M)
 func (me *LibLightDefs) Len() int { return len(me.M) }
 
-//	Creates a new *LightDef* definition with the specified *Id* and returns it, but does not add it to this *LibLightDefs*.
+//	Creates a new LightDef definition with the specified Id and returns it,
+//	but does not add it to this LibLightDefs.
 func (me *LibLightDefs) New(id string) (def *LightDef) { def = newLightDef(id); return }
 
-//	Removes the *LightDef* with the specified *Id* from this *LibLightDefs*.
+//	Removes the LightDef with the specified Id from this LibLightDefs.
 func (me *LibLightDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-//	Signals to *core* (or your custom package) that changes have been made to this *LibLightDefs* that need to be picked up.
-//	Call this after you have made any number of changes to this *LibLightDefs* library or its *LightDef* definitions.
-//	Also called by the global *SyncChanges()* function.
+//	Signals to the core package (or your custom package) that changes have been made to this LibLightDefs
+//	that need to be picked up. Call this after you have made a number of changes to this LibLightDefs
+//	library or its LightDef definitions. Also called by the global SyncChanges() function.
 func (me *LibLightDefs) SyncChanges() {
-	me.BaseLib.Base.SyncChanges()
+	me.BaseLib.BaseSync.SyncChanges()
 	for _, def := range me.M {
-		def.BaseDef.Base.SyncChanges()
+		def.BaseDef.BaseSync.SyncChanges()
 	}
 }
 

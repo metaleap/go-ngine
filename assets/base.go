@@ -1,24 +1,25 @@
 package assets
 
-//	Provides a common base for *Def*s, *Inst*s and *Lib*s.
-type Base struct {
-	//	This callback, set by *core* (or your custom package), gets called by the *SyncChanges()* method.
-	//	This is the ultimate point in the sync chain where *core* (or your custom package) picks up the changed
-	//	contents of this *Def*, *Inst* or *Lib*. If this is a *Lib* this gets called after all *Defs* in it
-	//	have synced.
+//	Allows for notifying outside packages of changes.
+type BaseSync struct {
+	//	This callback, set by the core package (or your custom package), gets called by the
+	//	SyncChanges() method. This is the ultimate point in the sync chain where the core package
+	//	(or your custom package) picks up the changed contents of this resource.
+	//	If the parent is a Lib then this gets called after all its Defs have synced.
 	OnSync func()
 
 	dirty bool
 }
 
-//	You NEED to call this method if you modified this *Def* or *Inst* by setting its fields directly
-//	(instead of using the provided *SetFoo()* methods) for your changes to be picked up by *core* (or your custom package).
-func (me *Base) SetDirty() {
+//	You NEED to call this method if you modified this Def or Inst by setting its fields directly
+//	(instead of using the provided SetFoo() or SetFieldX() methods) for your changes
+//	to be picked up by the core package (or your custom package).
+func (me *BaseSync) SetDirty() {
 	me.dirty = true
 }
 
 //	If field does not equal val, sets field to val and calls SetDirty().
-func (me *Base) SetFieldB(field *bool, val bool) {
+func (me *BaseSync) SetFieldB(field *bool, val bool) {
 	if *field != val {
 		*field = val
 		me.SetDirty()
@@ -26,62 +27,62 @@ func (me *Base) SetFieldB(field *bool, val bool) {
 }
 
 //	If field does not equal val, sets field to val and calls SetDirty().
-func (me *Base) SetFieldF(field *float64, val float64) {
+func (me *BaseSync) SetFieldF(field *float64, val float64) {
 	if *field != val {
 		*field = val
 		me.SetDirty()
 	}
 }
 
-func (me *Base) init() {
+func (me *BaseSync) init() {
 	me.OnSync = func() {}
 	me.SetDirty()
 }
 
-//	Signals to *core* (or your custom package) that changes have been made to this *Def*, *Inst* or *Lib* that need to be picked up.
-//	Call this after you have made any number of changes to this this *Def*, *Inst* or *Lib*.
-//	Also called by the global *SyncChanges()* function.
-func (me *Base) SyncChanges() {
+//	Signals to the core package (or your custom package) that changes have been made to this
+//	Def, Inst or Lib resource that need to be picked up. Call this after you have made a number
+//	of changes to this this resource. Also called by the global SyncChanges() function.
+func (me *BaseSync) SyncChanges() {
 	if me.dirty {
 		me.dirty = false
 		me.OnSync()
 	}
 }
 
-//	Provides a common base for *Def*s.
+//	Provides a common base for resource definitions.
 type BaseDef struct {
 	//	Syncability
-	Base
-	//	Unique identifier
+	BaseSync
+	//	Id
 	HasId
-	//	Pretty-print name/title
+	//	Name
 	HasName
-	//	Asset meta-data
+	//	Asset
 	HasAsset
-	//	Custom-technique/foreign-profile meta-data
+	//	Extras
 	HasExtras
 }
 
-//	Provides a common base for *Inst*s.
+//	Provides a common base for resource instantiations.
 type BaseInst struct {
 	//	Syncability
-	Base
-	//	Pretty-print name/title
+	BaseSync
+	//	Name
 	HasName
-	//	Scoped identifier
+	//	Sid
 	HasSid
-	//	Custom-technique/foreign-profile meta-data
+	//	Extras
 	HasExtras
-	//	The unique ID of the definition that this instance refers to.
+	//	The Id of the resource definition referenced by this instance.
 	DefRef RefId
 }
 
-//	Provides a common base for *Lib*s.
+//	Provides a common base for resource libraries.
 type BaseLib struct {
 	//	Syncability
-	Base
-	//	Unique identifier
+	BaseSync
+	//	Id
 	HasId
-	//	Pretty-print name/title
+	//	Name
 	HasName
 }

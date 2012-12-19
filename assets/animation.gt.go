@@ -85,13 +85,13 @@ func (me *AnimationInst) Init() {
 func newAnimationDef(id string) (me *AnimationDef) {
 	me = &AnimationDef{}
 	me.Id = id
-	me.Base.init()
+	me.BaseSync.init()
 	me.Init()
 	return
 }
 
 /*
-//	Creates and returns a new *AnimationInst* instance referencing this *AnimationDef* definition.
+//	Creates and returns a new AnimationInst instance referencing this AnimationDef definition.
 func (me *AnimationDef) NewInst(id string) (inst *AnimationInst) {
 	inst = &AnimationInst{Def: me}
 	inst.Init()
@@ -100,10 +100,10 @@ func (me *AnimationDef) NewInst(id string) (inst *AnimationInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibAnimationDefs* libraries associated by their *Id*.
+	//	A hash-table that contains LibAnimationDefs libraries associated by their Id.
 	AllAnimationDefLibs = LibsAnimationDef{}
 
-	//	The "default" *LibAnimationDefs* library for *AnimationDef*s.
+	//	The "default" LibAnimationDefs library for AnimationDefs.
 	AnimationDefs = AllAnimationDefLibs.AddNew("")
 )
 
@@ -115,13 +115,12 @@ func init() {
 	})
 }
 
-//	The underlying type of the global *AllAnimationDefLibs* variable: a *map* collection that contains
-//	*LibAnimationDefs* libraries associated by their *Id*.
+//	The underlying type of the global AllAnimationDefLibs variable:
+//	a hash-table that contains LibAnimationDefs libraries associated by their Id.
 type LibsAnimationDef map[string]*LibAnimationDefs
 
-//	Creates a new *LibAnimationDefs* library with the specified *Id*, adds it to this *LibsAnimationDef*, and returns it.
-//	
-//	If this *LibsAnimationDef* already contains a *LibAnimationDefs* library with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new LibAnimationDefs library with the specified Id, adds it to this LibsAnimationDef, and returns it.
+//	If this LibsAnimationDef already contains a LibAnimationDefs library with the specified Id, does nothing and returns nil.
 func (me LibsAnimationDef) AddNew(id string) (lib *LibAnimationDefs) {
 	if me[id] != nil {
 		return
@@ -136,12 +135,12 @@ func (me LibsAnimationDef) new(id string) (lib *LibAnimationDefs) {
 	return
 }
 
-//	A library that contains *AnimationDef*s associated by their *Id*. To create a new *LibAnimationDefs* library, ONLY
-//	use the *LibsAnimationDef.New()* or *LibsAnimationDef.AddNew()* methods.
+//	A library that contains AnimationDefs associated by their Id.
+//	To create a new LibAnimationDefs library, ONLY use the LibsAnimationDef.New() or LibsAnimationDef.AddNew() methods.
 type LibAnimationDefs struct {
 	BaseLib
-	//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT
-	//	write to *M*, instead use the *Add()*, *AddNew()*, *Remove()* methods ONLY or bugs WILL ensue.
+	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
+	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*AnimationDef
 }
 
@@ -151,9 +150,8 @@ func newLibAnimationDefs(id string) (me *LibAnimationDefs) {
 	return
 }
 
-//	Adds the specified *AnimationDef* definition to this *LibAnimationDefs*, and returns it.
-//	
-//	If this *LibAnimationDefs* already contains a *AnimationDef* definition with the same *Id*, does nothing and returns *nil*.
+//	Adds the specified AnimationDef definition to this LibAnimationDefs, and returns it.
+//	If this LibAnimationDefs already contains a AnimationDef definition with the same Id, does nothing and returns nil.
 func (me *LibAnimationDefs) Add(d *AnimationDef) (n *AnimationDef) {
 	if me.M[d.Id] == nil {
 		n, me.M[d.Id] = d, d
@@ -162,27 +160,27 @@ func (me *LibAnimationDefs) Add(d *AnimationDef) (n *AnimationDef) {
 	return
 }
 
-//	Creates a new *AnimationDef* definition with the specified *Id*, adds it to this *LibAnimationDefs*, and returns it.
-//	
-//	If this *LibAnimationDefs* already contains a *AnimationDef* definition with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new AnimationDef definition with the specified Id, adds it to this LibAnimationDefs, and returns it.
+//	If this LibAnimationDefs already contains a AnimationDef definition with the specified Id, does nothing and returns nil.
 func (me *LibAnimationDefs) AddNew(id string) *AnimationDef { return me.Add(me.New(id)) }
 
-//	Short-hand for len(lib.M)
+//	Convenience short-hand for len(lib.M)
 func (me *LibAnimationDefs) Len() int { return len(me.M) }
 
-//	Creates a new *AnimationDef* definition with the specified *Id* and returns it, but does not add it to this *LibAnimationDefs*.
+//	Creates a new AnimationDef definition with the specified Id and returns it,
+//	but does not add it to this LibAnimationDefs.
 func (me *LibAnimationDefs) New(id string) (def *AnimationDef) { def = newAnimationDef(id); return }
 
-//	Removes the *AnimationDef* with the specified *Id* from this *LibAnimationDefs*.
+//	Removes the AnimationDef with the specified Id from this LibAnimationDefs.
 func (me *LibAnimationDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-//	Signals to *core* (or your custom package) that changes have been made to this *LibAnimationDefs* that need to be picked up.
-//	Call this after you have made any number of changes to this *LibAnimationDefs* library or its *AnimationDef* definitions.
-//	Also called by the global *SyncChanges()* function.
+//	Signals to the core package (or your custom package) that changes have been made to this LibAnimationDefs
+//	that need to be picked up. Call this after you have made a number of changes to this LibAnimationDefs
+//	library or its AnimationDef definitions. Also called by the global SyncChanges() function.
 func (me *LibAnimationDefs) SyncChanges() {
-	me.BaseLib.Base.SyncChanges()
+	me.BaseLib.BaseSync.SyncChanges()
 	for _, def := range me.M {
-		def.BaseDef.Base.SyncChanges()
+		def.BaseDef.BaseSync.SyncChanges()
 	}
 }
 

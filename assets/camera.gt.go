@@ -2,17 +2,17 @@ package assets
 
 //	Represents the image sensor of a camera (for example, film or CCD).
 type CameraImager struct {
-	//	Custom-profile/foreign-technique meta-data
+	//	Extras
 	HasExtras
-	//	Custom-profile/foreign-technique support
+	//	Techniques
 	HasTechniques
 }
 
 //	Represents the apparatus on a camera that projects the image onto the image sensor.
 type CameraOptics struct {
-	//	Custom-profile/foreign-technique meta-data
+	//	Extras
 	HasExtras
-	//	Custom-profile/foreign-technique support
+	//	Techniques
 	HasTechniques
 	//	Common-technique profile.
 	TC struct {
@@ -74,13 +74,13 @@ func (me *CameraInst) Init() {
 func newCameraDef(id string) (me *CameraDef) {
 	me = &CameraDef{}
 	me.Id = id
-	me.Base.init()
+	me.BaseSync.init()
 	me.Init()
 	return
 }
 
 /*
-//	Creates and returns a new *CameraInst* instance referencing this *CameraDef* definition.
+//	Creates and returns a new CameraInst instance referencing this CameraDef definition.
 func (me *CameraDef) NewInst(id string) (inst *CameraInst) {
 	inst = &CameraInst{Def: me}
 	inst.Init()
@@ -89,10 +89,10 @@ func (me *CameraDef) NewInst(id string) (inst *CameraInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibCameraDefs* libraries associated by their *Id*.
+	//	A hash-table that contains LibCameraDefs libraries associated by their Id.
 	AllCameraDefLibs = LibsCameraDef{}
 
-	//	The "default" *LibCameraDefs* library for *CameraDef*s.
+	//	The "default" LibCameraDefs library for CameraDefs.
 	CameraDefs = AllCameraDefLibs.AddNew("")
 )
 
@@ -104,13 +104,12 @@ func init() {
 	})
 }
 
-//	The underlying type of the global *AllCameraDefLibs* variable: a *map* collection that contains
-//	*LibCameraDefs* libraries associated by their *Id*.
+//	The underlying type of the global AllCameraDefLibs variable:
+//	a hash-table that contains LibCameraDefs libraries associated by their Id.
 type LibsCameraDef map[string]*LibCameraDefs
 
-//	Creates a new *LibCameraDefs* library with the specified *Id*, adds it to this *LibsCameraDef*, and returns it.
-//	
-//	If this *LibsCameraDef* already contains a *LibCameraDefs* library with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new LibCameraDefs library with the specified Id, adds it to this LibsCameraDef, and returns it.
+//	If this LibsCameraDef already contains a LibCameraDefs library with the specified Id, does nothing and returns nil.
 func (me LibsCameraDef) AddNew(id string) (lib *LibCameraDefs) {
 	if me[id] != nil {
 		return
@@ -125,12 +124,12 @@ func (me LibsCameraDef) new(id string) (lib *LibCameraDefs) {
 	return
 }
 
-//	A library that contains *CameraDef*s associated by their *Id*. To create a new *LibCameraDefs* library, ONLY
-//	use the *LibsCameraDef.New()* or *LibsCameraDef.AddNew()* methods.
+//	A library that contains CameraDefs associated by their Id.
+//	To create a new LibCameraDefs library, ONLY use the LibsCameraDef.New() or LibsCameraDef.AddNew() methods.
 type LibCameraDefs struct {
 	BaseLib
-	//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT
-	//	write to *M*, instead use the *Add()*, *AddNew()*, *Remove()* methods ONLY or bugs WILL ensue.
+	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
+	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*CameraDef
 }
 
@@ -140,9 +139,8 @@ func newLibCameraDefs(id string) (me *LibCameraDefs) {
 	return
 }
 
-//	Adds the specified *CameraDef* definition to this *LibCameraDefs*, and returns it.
-//	
-//	If this *LibCameraDefs* already contains a *CameraDef* definition with the same *Id*, does nothing and returns *nil*.
+//	Adds the specified CameraDef definition to this LibCameraDefs, and returns it.
+//	If this LibCameraDefs already contains a CameraDef definition with the same Id, does nothing and returns nil.
 func (me *LibCameraDefs) Add(d *CameraDef) (n *CameraDef) {
 	if me.M[d.Id] == nil {
 		n, me.M[d.Id] = d, d
@@ -151,27 +149,27 @@ func (me *LibCameraDefs) Add(d *CameraDef) (n *CameraDef) {
 	return
 }
 
-//	Creates a new *CameraDef* definition with the specified *Id*, adds it to this *LibCameraDefs*, and returns it.
-//	
-//	If this *LibCameraDefs* already contains a *CameraDef* definition with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new CameraDef definition with the specified Id, adds it to this LibCameraDefs, and returns it.
+//	If this LibCameraDefs already contains a CameraDef definition with the specified Id, does nothing and returns nil.
 func (me *LibCameraDefs) AddNew(id string) *CameraDef { return me.Add(me.New(id)) }
 
-//	Short-hand for len(lib.M)
+//	Convenience short-hand for len(lib.M)
 func (me *LibCameraDefs) Len() int { return len(me.M) }
 
-//	Creates a new *CameraDef* definition with the specified *Id* and returns it, but does not add it to this *LibCameraDefs*.
+//	Creates a new CameraDef definition with the specified Id and returns it,
+//	but does not add it to this LibCameraDefs.
 func (me *LibCameraDefs) New(id string) (def *CameraDef) { def = newCameraDef(id); return }
 
-//	Removes the *CameraDef* with the specified *Id* from this *LibCameraDefs*.
+//	Removes the CameraDef with the specified Id from this LibCameraDefs.
 func (me *LibCameraDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-//	Signals to *core* (or your custom package) that changes have been made to this *LibCameraDefs* that need to be picked up.
-//	Call this after you have made any number of changes to this *LibCameraDefs* library or its *CameraDef* definitions.
-//	Also called by the global *SyncChanges()* function.
+//	Signals to the core package (or your custom package) that changes have been made to this LibCameraDefs
+//	that need to be picked up. Call this after you have made a number of changes to this LibCameraDefs
+//	library or its CameraDef definitions. Also called by the global SyncChanges() function.
 func (me *LibCameraDefs) SyncChanges() {
-	me.BaseLib.Base.SyncChanges()
+	me.BaseLib.BaseSync.SyncChanges()
 	for _, def := range me.M {
-		def.BaseDef.Base.SyncChanges()
+		def.BaseDef.BaseSync.SyncChanges()
 	}
 }
 

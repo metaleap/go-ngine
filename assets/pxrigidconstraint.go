@@ -1,14 +1,17 @@
 package assets
 
-//	Defines an attachment frame (or attachment frame of reference), to a rigid body or a node, within a rigid constraint.
+//	Defines an attachment frame (or attachment frame of reference),
+//	to a rigid body or a node, within a rigid constraint.
 type PxRigidConstraintAttachment struct {
 	//	Extras
 	HasExtras
 	//	Refers to a RigidBodyDef or NodeDef.
 	RigidBody RefSid
 	//	Zero or more translation and/or rotation transformations:
-	//	The position of a TRANSFORM_TYPE_TRANSLATE Transform indicates the attachment point on the corresponding RigidBodyDef.
-	//	The orientation of a TRANSFORM_TYPE_ROTATE Transform indicates the alignment of the joint frame for that RigidBodyDef.
+	//	The position of a TRANSFORM_TYPE_TRANSLATE Transform indicates
+	//	the attachment point on the corresponding RigidBodyDef.
+	//	The orientation of a TRANSFORM_TYPE_ROTATE Transform indicates
+	//	the alignment of the joint frame for that RigidBodyDef.
 	Transforms []*Transform
 }
 
@@ -22,7 +25,8 @@ type PxRigidConstraintLimit struct {
 
 //	Spring is based based on either distance (Linear) or angle (Angular), or both.
 type PxRigidConstraintSpring struct {
-	//	Also called spring coefficient. Has units of force/distance (for Linear) or force/angle (for Angular).
+	//	Also called spring coefficient.
+	//	Has units of force/distance (for Linear) or force/angle (for Angular).
 	Stiffness ScopedFloat
 	//	How this spring is damped.
 	Damping ScopedFloat
@@ -51,7 +55,7 @@ type PxRigidConstraintDef struct {
 	Attachment PxRigidConstraintAttachment
 	//	Common-technique profile
 	TC struct {
-		//	Defaults to true. If false, this rigid constraint doesn’t exert any force or influence on the rigid bodies.
+		//	If false, this rigid constraint doesn't exert any force or influence on the rigid bodies.
 		Enabled ScopedBool
 		//	If true, the attached rigid bodies may interpenetrate.
 		Interpenetrate ScopedBool

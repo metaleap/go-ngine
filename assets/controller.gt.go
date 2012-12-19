@@ -6,15 +6,15 @@ import (
 
 //	Used to declare skinning joints or morph targets.
 type ControllerInputs struct {
-	//	Custom-technique/foreign-profile meta-data.
+	//	Extras
 	HasExtras
-	//	Declares the input semantics of a data Source and connects a consumer to that Source.
+	//	Inputs
 	HasInputs
 }
 
 //	Describes the data required to blend between sets of static meshes.
 type ControllerMorph struct {
-	//	Data for morph weights and for morph targets.
+	//	Sources
 	HasSources
 	//	Which blending method to use: true for relative blending, false for normalized blending.
 	Relative bool
@@ -33,15 +33,18 @@ func NewControllerMorph() (me *ControllerMorph) {
 
 //	Contains vertex and primitive information sufficient to describe blend-weight skinning.
 type ControllerSkin struct {
-	//	Provides most of the data required for skinning the given base mesh.
+	//	Sources
 	HasSources
 	//	Provides extra information about the position and orientation of the base mesh before binding.
 	BindShapeMatrix unum.Mat4
-	//	Describes a per-vertex combination of joints and weights used in this skin. An index of –1 into the array of joints refers to the bind shape. Weights should be normalized before use.
+	//	Describes a per-vertex combination of joints and weights used in this skin.
+	//	An index of –1 into the array of joints refers to the bind shape.
+	//	Weights should be normalized before use.
 	VertexWeights IndexedInputs
 	//	Aggregates the per-joint information needed for this skin.
 	Joints ControllerInputs
-	//	A URI reference to the base mesh (a static mesh or a morphed mesh). This also provides the bind-shape of the skinned mesh.
+	//	A URI reference to the base mesh (a static mesh or a morphed mesh).
+	//	This also provides the bind-shape of the skinned mesh.
 	Source string
 }
 
@@ -59,7 +62,8 @@ type ControllerDef struct {
 	BaseDef
 	//	Declares this a mesh-morphing controller that deforms meshes and blends them.
 	Morph *ControllerMorph
-	//	Declares this a vertex-skinning controller that transforms vertices based on weighted influences to produce a smoothly changing mesh.
+	//	Declares this a vertex-skinning controller that transforms vertices
+	//	based on weighted influences to produce a smoothly changing mesh.
 	Skin *ControllerSkin
 }
 
@@ -73,7 +77,8 @@ type ControllerInst struct {
 	BaseInst
 	//	Binds a specific material to this controller instantiation.
 	BindMaterial *MaterialBinding
-	//	Indicates where a skin controller is to start to search for the joint nodes it needs. This element is meaningless for morph controllers.
+	//	Indicates where a Skin controller is to start to search for the joint nodes it needs.
+	//	This element is meaningless for Morph controllers.
 	SkinSkeletons []string
 }
 
@@ -86,13 +91,13 @@ func (me *ControllerInst) Init() {
 func newControllerDef(id string) (me *ControllerDef) {
 	me = &ControllerDef{}
 	me.Id = id
-	me.Base.init()
+	me.BaseSync.init()
 	me.Init()
 	return
 }
 
 /*
-//	Creates and returns a new *ControllerInst* instance referencing this *ControllerDef* definition.
+//	Creates and returns a new ControllerInst instance referencing this ControllerDef definition.
 func (me *ControllerDef) NewInst(id string) (inst *ControllerInst) {
 	inst = &ControllerInst{Def: me}
 	inst.Init()
@@ -101,10 +106,10 @@ func (me *ControllerDef) NewInst(id string) (inst *ControllerInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibControllerDefs* libraries associated by their *Id*.
+	//	A hash-table that contains LibControllerDefs libraries associated by their Id.
 	AllControllerDefLibs = LibsControllerDef{}
 
-	//	The "default" *LibControllerDefs* library for *ControllerDef*s.
+	//	The "default" LibControllerDefs library for ControllerDefs.
 	ControllerDefs = AllControllerDefLibs.AddNew("")
 )
 
@@ -116,13 +121,12 @@ func init() {
 	})
 }
 
-//	The underlying type of the global *AllControllerDefLibs* variable: a *map* collection that contains
-//	*LibControllerDefs* libraries associated by their *Id*.
+//	The underlying type of the global AllControllerDefLibs variable:
+//	a hash-table that contains LibControllerDefs libraries associated by their Id.
 type LibsControllerDef map[string]*LibControllerDefs
 
-//	Creates a new *LibControllerDefs* library with the specified *Id*, adds it to this *LibsControllerDef*, and returns it.
-//	
-//	If this *LibsControllerDef* already contains a *LibControllerDefs* library with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new LibControllerDefs library with the specified Id, adds it to this LibsControllerDef, and returns it.
+//	If this LibsControllerDef already contains a LibControllerDefs library with the specified Id, does nothing and returns nil.
 func (me LibsControllerDef) AddNew(id string) (lib *LibControllerDefs) {
 	if me[id] != nil {
 		return
@@ -137,12 +141,12 @@ func (me LibsControllerDef) new(id string) (lib *LibControllerDefs) {
 	return
 }
 
-//	A library that contains *ControllerDef*s associated by their *Id*. To create a new *LibControllerDefs* library, ONLY
-//	use the *LibsControllerDef.New()* or *LibsControllerDef.AddNew()* methods.
+//	A library that contains ControllerDefs associated by their Id.
+//	To create a new LibControllerDefs library, ONLY use the LibsControllerDef.New() or LibsControllerDef.AddNew() methods.
 type LibControllerDefs struct {
 	BaseLib
-	//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT
-	//	write to *M*, instead use the *Add()*, *AddNew()*, *Remove()* methods ONLY or bugs WILL ensue.
+	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
+	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*ControllerDef
 }
 
@@ -152,9 +156,8 @@ func newLibControllerDefs(id string) (me *LibControllerDefs) {
 	return
 }
 
-//	Adds the specified *ControllerDef* definition to this *LibControllerDefs*, and returns it.
-//	
-//	If this *LibControllerDefs* already contains a *ControllerDef* definition with the same *Id*, does nothing and returns *nil*.
+//	Adds the specified ControllerDef definition to this LibControllerDefs, and returns it.
+//	If this LibControllerDefs already contains a ControllerDef definition with the same Id, does nothing and returns nil.
 func (me *LibControllerDefs) Add(d *ControllerDef) (n *ControllerDef) {
 	if me.M[d.Id] == nil {
 		n, me.M[d.Id] = d, d
@@ -163,27 +166,27 @@ func (me *LibControllerDefs) Add(d *ControllerDef) (n *ControllerDef) {
 	return
 }
 
-//	Creates a new *ControllerDef* definition with the specified *Id*, adds it to this *LibControllerDefs*, and returns it.
-//	
-//	If this *LibControllerDefs* already contains a *ControllerDef* definition with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new ControllerDef definition with the specified Id, adds it to this LibControllerDefs, and returns it.
+//	If this LibControllerDefs already contains a ControllerDef definition with the specified Id, does nothing and returns nil.
 func (me *LibControllerDefs) AddNew(id string) *ControllerDef { return me.Add(me.New(id)) }
 
-//	Short-hand for len(lib.M)
+//	Convenience short-hand for len(lib.M)
 func (me *LibControllerDefs) Len() int { return len(me.M) }
 
-//	Creates a new *ControllerDef* definition with the specified *Id* and returns it, but does not add it to this *LibControllerDefs*.
+//	Creates a new ControllerDef definition with the specified Id and returns it,
+//	but does not add it to this LibControllerDefs.
 func (me *LibControllerDefs) New(id string) (def *ControllerDef) { def = newControllerDef(id); return }
 
-//	Removes the *ControllerDef* with the specified *Id* from this *LibControllerDefs*.
+//	Removes the ControllerDef with the specified Id from this LibControllerDefs.
 func (me *LibControllerDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-//	Signals to *core* (or your custom package) that changes have been made to this *LibControllerDefs* that need to be picked up.
-//	Call this after you have made any number of changes to this *LibControllerDefs* library or its *ControllerDef* definitions.
-//	Also called by the global *SyncChanges()* function.
+//	Signals to the core package (or your custom package) that changes have been made to this LibControllerDefs
+//	that need to be picked up. Call this after you have made a number of changes to this LibControllerDefs
+//	library or its ControllerDef definitions. Also called by the global SyncChanges() function.
 func (me *LibControllerDefs) SyncChanges() {
-	me.BaseLib.Base.SyncChanges()
+	me.BaseLib.BaseSync.SyncChanges()
 	for _, def := range me.M {
-		def.BaseDef.Base.SyncChanges()
+		def.BaseDef.BaseSync.SyncChanges()
 	}
 }
 

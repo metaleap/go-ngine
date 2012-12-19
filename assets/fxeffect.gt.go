@@ -5,13 +5,17 @@ import (
 )
 
 const (
-	//	Takes the transparency information from the color's alpha channel, where the value 1.0 is opaque.
+	//	Takes the transparency information from the color's alpha channel,
+	//	where the value 1.0 is opaque.
 	FX_COLOR_TEXTURE_OPAQUE_A_ZERO = 0
-	//	Takes the transparency information from the color's red, green, and blue channels, where the value 0.0 is opaque, with each channel modulated independently.
+	//	Takes the transparency information from the color's red, green, and blue channels,
+	//	where the value 0.0 is opaque, with each channel modulated independently.
 	FX_COLOR_TEXTURE_OPAQUE_A_ONE = 1
-	//	Takes the transparency information from the color’s alpha channel, where the value 0.0 is opaque.
+	//	Takes the transparency information from the color's alpha channel,
+	//	where the value 0.0 is opaque.
 	FX_COLOR_TEXTURE_OPAQUE_RGB_ZERO = 2
-	//	Takes the transparency information from the color’s red, green, and blue channels, where the value 1.0 is opaque, with each channel modulated independently.
+	//	Takes the transparency information from the color's red, green, and blue channels,
+	//	where the value 1.0 is opaque, with each channel modulated independently.
 	FX_COLOR_TEXTURE_OPAQUE_RGB_ONE = 3
 
 	FX_PASS_PROGRAM_SHADER_STAGE_TESSELATION = 0
@@ -21,23 +25,26 @@ const (
 	FX_PASS_PROGRAM_SHADER_STAGE_COMPUTE     = 4
 )
 
-//	Annotations communicate metadata from the Effect Runtime to the application only and are not otherwise interpreted within the *assets* package.
+//	Annotations communicate metadata from the Effect Runtime to the application only
+//	and are not otherwise interpreted within the *assets* package.
 type FxAnnotation struct {
 	//	Name
 	HasName
-	//	Value
+	//	Annotation value.
 	Value interface{}
 }
 
 //	Describes color attributes of fixed-function shaders inside FxProfileCommon effects.
 type FxColorOrTexture struct {
-	//	Specifies from which channel to take transparency information. Can be any of the FX_COLOR_TEXTURE_OPAQUE_* enumerated constants.
+	//	Specifies from which channel to take transparency information.
+	//	Must be one of the FX_COLOR_TEXTURE_OPAQUE_* enumerated constants.
 	Opaque int
 	//	If set, describes he literal color of this value.
 	Color *ugfx.Rgba32
-	//	If set, refers to a previously-defined parameter in the current scope that provides 4 float values definining the literal color of this value.
-	ParamRef string
-	//	If set, refers to a previously-defined FxSampler with type FX_SAMPLER_TYPE_2D.
+	//	If set, refers to a previously-defined parameter in the current scope that provides
+	//	four float values describing the literal color of this value.
+	ParamRef RefParam
+	//	If set, refers to a previously-defined FxSampler with a Type of FX_SAMPLER_TYPE_2D.
 	Texture *FxTexture
 }
 
@@ -56,11 +63,12 @@ type FxParamDef struct {
 //	A hash-table containing parameter declarations of this FX-related resource.
 type FxParamDefs map[string]*FxParamDef
 
-//	Provides a static declaration of all the render states, shaders, and settings for one rendering pipeline.
+//	Provides a static declaration of all the render states, shaders, and settings
+//	for one rendering pipeline.
 type FxPass struct {
 	//	Sid
 	HasSid
-	//	Custom-profile/foreign-technique meta-data
+	//	Extras
 	HasExtras
 	//	Application-specific FX metadata
 	Annotations []*FxAnnotation
@@ -137,7 +145,8 @@ type FxPassEvaluationTarget struct {
 	Slice uint64
 	//	Indexes a sub-image inside a target surface, specifically: a single MIP-map level.
 	Mip uint64
-	//	Indexes a sub-image inside a target surface, specifically: a unique cube face. Can be any of the FX_CUBE_FACE_* enumerated constants.
+	//	Indexes a sub-image inside a target surface, specifically: a unique cube face.
+	//	Must be one of the FX_CUBE_FACE_* enumerated constants.
 	CubeFace int
 	//	If set, this render target references a sampler parameter to determine which image to use.
 	SamplerParamRef string
@@ -163,27 +172,31 @@ type FxPassProgram struct {
 
 //	Binds semantics to vertex attribute inputs of a shader.
 type FxPassProgramBindAttribute struct {
-	//	The identifier for a vertex attribute variable in the shader (a formal function parameter or in-scope global).
+	//	The identifier for a vertex attribute variable in the shader
+	//	(a formal function parameter or in-scope global).
 	Symbol string
-	//	Contains an alternative name to the attribute variable for semantic binding to geometry vertex inputs.
+	//	Contains an alternative name to the attribute variable
+	//	for semantic binding to geometry vertex inputs.
 	Semantic string
 }
 
 //	Binds values to uniform inputs of a shader or binds values to effect parameters upon instantiation.
 type FxPassProgramBindUniform struct {
-	//	The identifier for a uniform input parameter to the shader (a formal function parameter or in-scope global) that will be bound to an external resource.
+	//	The identifier for a uniform input parameter to the shader
+	//	(a formal function parameter or in-scope global) that will be bound to an external resource.
 	Symbol string
 	//	If set, refers to a previously defined parameter providing the uniform value to be bound.
-	ParamRef string
+	ParamRef RefParam
 	//	If set, the uniform value to be bound.
 	Value interface{}
 }
 
 //	Declares and prepares a shader for execution in the rendering pipeline of a pass.
 type FxPassProgramShader struct {
-	//	Custom-profile/foreign-technique meta-data
+	//	Extras
 	HasExtras
-	//	In which pipeline stage this programmable shader is designed to execute. Can be any of the FX_PASS_PROGRAM_SHADER_STAGE_* enumerated constants.
+	//	In which pipeline stage this programmable shader is designed to execute.
+	//	Must be one of the FX_PASS_PROGRAM_SHADER_STAGE_* enumerated constants.
 	Stage int
 	//	Concatenates the source code for the shader from one or more sources.
 	Sources []FxPassProgramShaderSources
@@ -211,15 +224,15 @@ type FxPassState struct {
 type FxProfile struct {
 	//	Id
 	HasId
-	//	Resource-specific asset-management information and meta-data.
+	//	Asset
 	HasAsset
-	//	Custom-profile/foreign-technique meta-data
+	//	Extras
 	HasExtras
-	//	A hash-table containing parameter declarations of this profile.
+	//	NewParams
 	HasFxParamDefs
-	//	If set, this FxProfile represents a common, fixed-function shader pipeline.
+	//	If set, GlSl must be nil, and this FxProfile represents a common, fixed-function shader pipeline.
 	Common *FxProfileCommon
-	//	If set, this FxProfile represents an OpenGL Shading Language (GLSL) pipeline.
+	//	If set, Common must be nil, and this FxProfile represents an OpenGL Shading Language pipeline.
 	GlSl *FxProfileGlSl
 }
 
@@ -237,7 +250,8 @@ type FxProfileCommon struct {
 
 //	This FX profile provides platform-specific declarations for the OpenGL Shading Language.
 type FxProfileGlSl struct {
-	//	The type of platform. This is a vendor-defined character string that indicates the platform or capability target for the technique. Defaults to "PC".
+	//	The type of platform. This is a vendor-defined character string that
+	//	indicates the platform or capability target for the technique. Defaults to "PC".
 	Platform string
 	//	GLSL shader sources
 	CodesIncludes []FxProfileGlSlCodeInclude
@@ -259,7 +273,8 @@ type FxProfileGlSlCodeInclude struct {
 	IsInclude bool
 }
 
-//	Holds a description of the textures, samplers, shaders, parameters, and passes necessary for rendering this effect using one method.
+//	Holds a description of the textures, samplers, shaders, parameters, and passes
+//	necessary for rendering this effect using one method.
 type FxTechnique struct {
 	//	Id
 	HasId
@@ -271,7 +286,8 @@ type FxTechnique struct {
 	HasExtras
 }
 
-//	Holds a description of the textures, samplers, shaders, parameters, and passes necessary for rendering this effect within an FxProfileCommon.
+//	Holds a description of the textures, samplers, shaders, parameters, and passes
+//	necessary for rendering this effect within an FxProfileCommon.
 type FxTechniqueCommon struct {
 	//	Id, Sid, Asset, Extras
 	FxTechnique
@@ -281,7 +297,7 @@ type FxTechniqueCommon struct {
 	Constant *FxTechniqueCommonConstant
 	//	Produces a constantly shaded surface that is independent of lighting.
 	Lambert *FxTechniqueCommonLambert
-	//	Produces a shaded surface where the specular reflection is shaded according the Phong BRDF approximation.
+	//	Produces a shaded surface with a Phong BRDF approximation.
 	Phong *FxTechniqueCommonPhong
 }
 
@@ -301,11 +317,13 @@ type FxTechniqueCommonConstant struct {
 	Emission *FxColorOrTexture
 	//	Declares the color of a perfect mirror reflection.
 	Reflective *FxColorOrTexture
-	//	Declares the amount of perfect mirror reflection to be added to the reflected light as a value between 0.0 and 1.0.
+	//	Declares the amount of perfect mirror reflection to be added to the reflected light
+	//	as a value between 0.0 and 1.0.
 	Reflectivity *ParamScopedFloat
 	//	Declares the color of perfectly refracted light.
 	Transparent *FxColorOrTexture
-	//	Declares the amount of perfectly refracted light added to the reflected color as a scalar value between 0.0 and 1.0.
+	//	Declares the amount of perfectly refracted light added to the reflected color
+	//	as a scalar value between 0.0 and 1.0.
 	Transparency *ParamScopedFloat
 	//	Declares the index of refraction for perfectly refracted light as a single scalar index.
 	IndexOfRefraction *ParamScopedFloat
@@ -321,13 +339,14 @@ type FxTechniqueCommonLambert struct {
 	Diffuse *FxColorOrTexture
 }
 
-//	Produces a shaded surface where the specular reflection is shaded according the Phong BRDF approximation.
+//	Produces a shaded surface with a Phong BRDF approximation.
 type FxTechniqueCommonPhong struct {
 	//	Specular, Shininess, Ambient, Diffuse, Emission, Reflective, Reflectivity, Transparent, Transparency, IndexOfRefraction
 	FxTechniqueCommonBlinn
 }
 
-//	Holds a description of the textures, samplers, shaders, parameters, and passes necessary for rendering this effect within an FxProfileGlsl.
+//	Holds a description of the textures, samplers, shaders, parameters, and passes
+//	necessary for rendering this effect within an FxProfileGlsl.
 type FxTechniqueGlsl struct {
 	//	Id, Sid, Asset, Extras
 	FxTechnique
@@ -343,11 +362,12 @@ type FxTexture struct {
 	HasExtras
 	//	References a previously defined FxSampler of type FX_SAMPLER_TYPE_2D.
 	Sampler2D string
-	//	A semantic token, which will be referenced within FxMaterialBinding to bind an array of texture-coordinates from a geometry instance to the sampler.
+	//	A semantic token, which will be referenced within FxMaterialBinding
+	//	to bind an array of texture-coordinates from a geometry instance to the sampler.
 	TexCoord string
 }
 
-//	Defines the equations necessary for the visual appearance of geometry and/or screen-space image processing.
+//	Defines the equations necessary for the visual appearance of geometry or screen-space image processing.
 type FxEffectDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
@@ -376,6 +396,7 @@ type FxEffectInst struct {
 
 //	Initialization
 func (me *FxEffectInst) Init() {
+	me.SetParams = ParamInsts{}
 }
 
 //	Adds a hint for a platform of which technique to use in this effect.
@@ -384,7 +405,8 @@ type FxEffectInstTechniqueHint struct {
 	Platform string
 	//	A reference to the name of the platform. Required.
 	Ref string
-	//	A string that specifies for which API profile this hint is intended. It is the name of the profile within the effect that contains the technique. Optional. If set, can be "COMMON" or "GLSL".
+	//	Specifies for which API profile this hint is intended.
+	//	Optional. If set, must be either "COMMON" or "GLSL".
 	Profile string
 }
 
@@ -393,13 +415,13 @@ type FxEffectInstTechniqueHint struct {
 func newFxEffectDef(id string) (me *FxEffectDef) {
 	me = &FxEffectDef{}
 	me.Id = id
-	me.Base.init()
+	me.BaseSync.init()
 	me.Init()
 	return
 }
 
 /*
-//	Creates and returns a new *FxEffectInst* instance referencing this *FxEffectDef* definition.
+//	Creates and returns a new FxEffectInst instance referencing this FxEffectDef definition.
 func (me *FxEffectDef) NewInst(id string) (inst *FxEffectInst) {
 	inst = &FxEffectInst{Def: me}
 	inst.Init()
@@ -408,10 +430,10 @@ func (me *FxEffectDef) NewInst(id string) (inst *FxEffectInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibFxEffectDefs* libraries associated by their *Id*.
+	//	A hash-table that contains LibFxEffectDefs libraries associated by their Id.
 	AllFxEffectDefLibs = LibsFxEffectDef{}
 
-	//	The "default" *LibFxEffectDefs* library for *FxEffectDef*s.
+	//	The "default" LibFxEffectDefs library for FxEffectDefs.
 	FxEffectDefs = AllFxEffectDefLibs.AddNew("")
 )
 
@@ -423,13 +445,12 @@ func init() {
 	})
 }
 
-//	The underlying type of the global *AllFxEffectDefLibs* variable: a *map* collection that contains
-//	*LibFxEffectDefs* libraries associated by their *Id*.
+//	The underlying type of the global AllFxEffectDefLibs variable:
+//	a hash-table that contains LibFxEffectDefs libraries associated by their Id.
 type LibsFxEffectDef map[string]*LibFxEffectDefs
 
-//	Creates a new *LibFxEffectDefs* library with the specified *Id*, adds it to this *LibsFxEffectDef*, and returns it.
-//	
-//	If this *LibsFxEffectDef* already contains a *LibFxEffectDefs* library with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new LibFxEffectDefs library with the specified Id, adds it to this LibsFxEffectDef, and returns it.
+//	If this LibsFxEffectDef already contains a LibFxEffectDefs library with the specified Id, does nothing and returns nil.
 func (me LibsFxEffectDef) AddNew(id string) (lib *LibFxEffectDefs) {
 	if me[id] != nil {
 		return
@@ -444,12 +465,12 @@ func (me LibsFxEffectDef) new(id string) (lib *LibFxEffectDefs) {
 	return
 }
 
-//	A library that contains *FxEffectDef*s associated by their *Id*. To create a new *LibFxEffectDefs* library, ONLY
-//	use the *LibsFxEffectDef.New()* or *LibsFxEffectDef.AddNew()* methods.
+//	A library that contains FxEffectDefs associated by their Id.
+//	To create a new LibFxEffectDefs library, ONLY use the LibsFxEffectDef.New() or LibsFxEffectDef.AddNew() methods.
 type LibFxEffectDefs struct {
 	BaseLib
-	//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT
-	//	write to *M*, instead use the *Add()*, *AddNew()*, *Remove()* methods ONLY or bugs WILL ensue.
+	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
+	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*FxEffectDef
 }
 
@@ -459,9 +480,8 @@ func newLibFxEffectDefs(id string) (me *LibFxEffectDefs) {
 	return
 }
 
-//	Adds the specified *FxEffectDef* definition to this *LibFxEffectDefs*, and returns it.
-//	
-//	If this *LibFxEffectDefs* already contains a *FxEffectDef* definition with the same *Id*, does nothing and returns *nil*.
+//	Adds the specified FxEffectDef definition to this LibFxEffectDefs, and returns it.
+//	If this LibFxEffectDefs already contains a FxEffectDef definition with the same Id, does nothing and returns nil.
 func (me *LibFxEffectDefs) Add(d *FxEffectDef) (n *FxEffectDef) {
 	if me.M[d.Id] == nil {
 		n, me.M[d.Id] = d, d
@@ -470,27 +490,27 @@ func (me *LibFxEffectDefs) Add(d *FxEffectDef) (n *FxEffectDef) {
 	return
 }
 
-//	Creates a new *FxEffectDef* definition with the specified *Id*, adds it to this *LibFxEffectDefs*, and returns it.
-//	
-//	If this *LibFxEffectDefs* already contains a *FxEffectDef* definition with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new FxEffectDef definition with the specified Id, adds it to this LibFxEffectDefs, and returns it.
+//	If this LibFxEffectDefs already contains a FxEffectDef definition with the specified Id, does nothing and returns nil.
 func (me *LibFxEffectDefs) AddNew(id string) *FxEffectDef { return me.Add(me.New(id)) }
 
-//	Short-hand for len(lib.M)
+//	Convenience short-hand for len(lib.M)
 func (me *LibFxEffectDefs) Len() int { return len(me.M) }
 
-//	Creates a new *FxEffectDef* definition with the specified *Id* and returns it, but does not add it to this *LibFxEffectDefs*.
+//	Creates a new FxEffectDef definition with the specified Id and returns it,
+//	but does not add it to this LibFxEffectDefs.
 func (me *LibFxEffectDefs) New(id string) (def *FxEffectDef) { def = newFxEffectDef(id); return }
 
-//	Removes the *FxEffectDef* with the specified *Id* from this *LibFxEffectDefs*.
+//	Removes the FxEffectDef with the specified Id from this LibFxEffectDefs.
 func (me *LibFxEffectDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-//	Signals to *core* (or your custom package) that changes have been made to this *LibFxEffectDefs* that need to be picked up.
-//	Call this after you have made any number of changes to this *LibFxEffectDefs* library or its *FxEffectDef* definitions.
-//	Also called by the global *SyncChanges()* function.
+//	Signals to the core package (or your custom package) that changes have been made to this LibFxEffectDefs
+//	that need to be picked up. Call this after you have made a number of changes to this LibFxEffectDefs
+//	library or its FxEffectDef definitions. Also called by the global SyncChanges() function.
 func (me *LibFxEffectDefs) SyncChanges() {
-	me.BaseLib.Base.SyncChanges()
+	me.BaseLib.BaseSync.SyncChanges()
 	for _, def := range me.M {
-		def.BaseDef.Base.SyncChanges()
+		def.BaseDef.BaseSync.SyncChanges()
 	}
 }
 

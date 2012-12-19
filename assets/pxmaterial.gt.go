@@ -10,7 +10,8 @@ type PxMaterialDef struct {
 	TC struct {
 		//	The dynamic friction coefficient.
 		DynamicFriction ScopedFloat
-		//	The proportion of the kinetic energy preserved in the impact (typically ranges from 0.0 to 1.0). Also known as “bounciness” or “elasticity.”
+		//	The proportion of the kinetic energy preserved in the impact
+		//	(typically ranges from 0.0 to 1.0). Also known as "bounciness" or "elasticity."
 		Restitution ScopedFloat
 		//	The static friction coefficient.
 		StaticFriction ScopedFloat
@@ -36,13 +37,13 @@ func (me *PxMaterialInst) Init() {
 func newPxMaterialDef(id string) (me *PxMaterialDef) {
 	me = &PxMaterialDef{}
 	me.Id = id
-	me.Base.init()
+	me.BaseSync.init()
 	me.Init()
 	return
 }
 
 /*
-//	Creates and returns a new *PxMaterialInst* instance referencing this *PxMaterialDef* definition.
+//	Creates and returns a new PxMaterialInst instance referencing this PxMaterialDef definition.
 func (me *PxMaterialDef) NewInst(id string) (inst *PxMaterialInst) {
 	inst = &PxMaterialInst{Def: me}
 	inst.Init()
@@ -51,10 +52,10 @@ func (me *PxMaterialDef) NewInst(id string) (inst *PxMaterialInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibPxMaterialDefs* libraries associated by their *Id*.
+	//	A hash-table that contains LibPxMaterialDefs libraries associated by their Id.
 	AllPxMaterialDefLibs = LibsPxMaterialDef{}
 
-	//	The "default" *LibPxMaterialDefs* library for *PxMaterialDef*s.
+	//	The "default" LibPxMaterialDefs library for PxMaterialDefs.
 	PxMaterialDefs = AllPxMaterialDefLibs.AddNew("")
 )
 
@@ -66,13 +67,12 @@ func init() {
 	})
 }
 
-//	The underlying type of the global *AllPxMaterialDefLibs* variable: a *map* collection that contains
-//	*LibPxMaterialDefs* libraries associated by their *Id*.
+//	The underlying type of the global AllPxMaterialDefLibs variable:
+//	a hash-table that contains LibPxMaterialDefs libraries associated by their Id.
 type LibsPxMaterialDef map[string]*LibPxMaterialDefs
 
-//	Creates a new *LibPxMaterialDefs* library with the specified *Id*, adds it to this *LibsPxMaterialDef*, and returns it.
-//	
-//	If this *LibsPxMaterialDef* already contains a *LibPxMaterialDefs* library with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new LibPxMaterialDefs library with the specified Id, adds it to this LibsPxMaterialDef, and returns it.
+//	If this LibsPxMaterialDef already contains a LibPxMaterialDefs library with the specified Id, does nothing and returns nil.
 func (me LibsPxMaterialDef) AddNew(id string) (lib *LibPxMaterialDefs) {
 	if me[id] != nil {
 		return
@@ -87,12 +87,12 @@ func (me LibsPxMaterialDef) new(id string) (lib *LibPxMaterialDefs) {
 	return
 }
 
-//	A library that contains *PxMaterialDef*s associated by their *Id*. To create a new *LibPxMaterialDefs* library, ONLY
-//	use the *LibsPxMaterialDef.New()* or *LibsPxMaterialDef.AddNew()* methods.
+//	A library that contains PxMaterialDefs associated by their Id.
+//	To create a new LibPxMaterialDefs library, ONLY use the LibsPxMaterialDef.New() or LibsPxMaterialDef.AddNew() methods.
 type LibPxMaterialDefs struct {
 	BaseLib
-	//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT
-	//	write to *M*, instead use the *Add()*, *AddNew()*, *Remove()* methods ONLY or bugs WILL ensue.
+	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
+	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*PxMaterialDef
 }
 
@@ -102,9 +102,8 @@ func newLibPxMaterialDefs(id string) (me *LibPxMaterialDefs) {
 	return
 }
 
-//	Adds the specified *PxMaterialDef* definition to this *LibPxMaterialDefs*, and returns it.
-//	
-//	If this *LibPxMaterialDefs* already contains a *PxMaterialDef* definition with the same *Id*, does nothing and returns *nil*.
+//	Adds the specified PxMaterialDef definition to this LibPxMaterialDefs, and returns it.
+//	If this LibPxMaterialDefs already contains a PxMaterialDef definition with the same Id, does nothing and returns nil.
 func (me *LibPxMaterialDefs) Add(d *PxMaterialDef) (n *PxMaterialDef) {
 	if me.M[d.Id] == nil {
 		n, me.M[d.Id] = d, d
@@ -113,27 +112,27 @@ func (me *LibPxMaterialDefs) Add(d *PxMaterialDef) (n *PxMaterialDef) {
 	return
 }
 
-//	Creates a new *PxMaterialDef* definition with the specified *Id*, adds it to this *LibPxMaterialDefs*, and returns it.
-//	
-//	If this *LibPxMaterialDefs* already contains a *PxMaterialDef* definition with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new PxMaterialDef definition with the specified Id, adds it to this LibPxMaterialDefs, and returns it.
+//	If this LibPxMaterialDefs already contains a PxMaterialDef definition with the specified Id, does nothing and returns nil.
 func (me *LibPxMaterialDefs) AddNew(id string) *PxMaterialDef { return me.Add(me.New(id)) }
 
-//	Short-hand for len(lib.M)
+//	Convenience short-hand for len(lib.M)
 func (me *LibPxMaterialDefs) Len() int { return len(me.M) }
 
-//	Creates a new *PxMaterialDef* definition with the specified *Id* and returns it, but does not add it to this *LibPxMaterialDefs*.
+//	Creates a new PxMaterialDef definition with the specified Id and returns it,
+//	but does not add it to this LibPxMaterialDefs.
 func (me *LibPxMaterialDefs) New(id string) (def *PxMaterialDef) { def = newPxMaterialDef(id); return }
 
-//	Removes the *PxMaterialDef* with the specified *Id* from this *LibPxMaterialDefs*.
+//	Removes the PxMaterialDef with the specified Id from this LibPxMaterialDefs.
 func (me *LibPxMaterialDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-//	Signals to *core* (or your custom package) that changes have been made to this *LibPxMaterialDefs* that need to be picked up.
-//	Call this after you have made any number of changes to this *LibPxMaterialDefs* library or its *PxMaterialDef* definitions.
-//	Also called by the global *SyncChanges()* function.
+//	Signals to the core package (or your custom package) that changes have been made to this LibPxMaterialDefs
+//	that need to be picked up. Call this after you have made a number of changes to this LibPxMaterialDefs
+//	library or its PxMaterialDef definitions. Also called by the global SyncChanges() function.
 func (me *LibPxMaterialDefs) SyncChanges() {
-	me.BaseLib.Base.SyncChanges()
+	me.BaseLib.BaseSync.SyncChanges()
 	for _, def := range me.M {
-		def.BaseDef.Base.SyncChanges()
+		def.BaseDef.BaseSync.SyncChanges()
 	}
 }
 

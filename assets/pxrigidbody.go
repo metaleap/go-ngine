@@ -4,9 +4,10 @@ import (
 	unum "github.com/metaleap/go-util/num"
 )
 
-//	Declares a cylinder primitive that is centered around its local origin and aligned along its local y axis.
+//	Declares a cylinder primitive that is centered around its local origin
+//	and aligned along its local y axis.
 type PxCylinder struct {
-	//	Radius, Extras
+	//	Radii, Extras
 	GeometryBrepCylinder
 	//	Contains a floating-point value that represents the length of the cylinder along the y axis.
 	Height float64
@@ -41,7 +42,7 @@ type PxShape struct {
 		Box *GeometryBrepBox
 		//	A perfectly round sphere.
 		Sphere *GeometryBrepSphere
-		//	A cylinder primitive that is centered around its local origin and aligned along its local y axis.
+		//	A cylinder primitive that is centered on its local origin and aligned along its y axis.
 		Cylinder *PxCylinder
 		//	A capsule primitive that is centered on the local origin and aligned along the y axis.
 		Capsule *GeometryBrepCapsule
@@ -58,10 +59,13 @@ type PxRigidBodyCommon struct {
 	Dynamic ScopedBool
 	//	If set, specifies the total mass of this rigid body.
 	Mass *ScopedFloat
-	//	Zero or more TRANSFORM_TYPE_TRANSLATE and/or TRANSFORM_TYPE_ROTATE transformations defining the center and orientation of mass of the rigid-body relative to the local origin of the “root” shape.
-	//	This makes the off-diagonal elements of the inertia tensor (products of inertia) all 0 and allows us to just store the diagonal elements (moments of inertia).
+	//	Zero or more TRANSFORM_TYPE_TRANSLATE and/or TRANSFORM_TYPE_ROTATE transformations defining the
+	//	center and orientation of mass of the rigid-body relative to the local origin of the "root" shape.
+	//	This makes the off-diagonal elements of the inertia tensor (products of inertia) all 0
+	//	and allows us to just store the diagonal elements (moments of inertia).
 	MassFrame []*Transform
-	//	The diagonal elements of the inertia tensor (moments of inertia), represented in the local frame of the center of mass.
+	//	The diagonal elements of the inertia tensor (moments of inertia),
+	//	represented in the local frame of the center of mass.
 	Inertia *ScopedFloat3
 	//	Describes the physical surface properties for this rigid body.
 	Material PxMaterial
@@ -97,7 +101,8 @@ type PxRigidBodyInst struct {
 	TC struct {
 		//	Dynamic, Mass, MassFrame, Inertia, Material, Shapes
 		PxRigidBodyCommon
-		//	Initial spin or angular velocity, also known as the axis of rotation, with a magnitude equal to the rate of rotation in radians per second.
+		//	Initial spin or angular velocity, also known as the axis of rotation,
+		//	with a magnitude equal to the rate of rotation in radians per second.
 		AngularVelocity unum.Vec3
 		//	Initial linear velocity.
 		LinearVelocity unum.Vec3

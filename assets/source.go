@@ -11,10 +11,9 @@ type SourceAccessor struct {
 	//	The number of values that are to be considered a unit during each access to the array.
 	//	The default is 1, indicating that a single value is accessed. Optional.
 	Stride uint64
-	//	The number and order of Params define the output of the accessor. Parameters
-	//	are bound to values in the order in which both are specified. No reordering of the data can occur. A
-	//	Param without a Name indicates that the value is not part of the output, so the Param
-	//	is unbound.
+	//	The number and order of Params define the output of the accessor.
+	//	Parameters are bound to values in the order in which both are specified. No reordering of the data can occur.
+	//	A Param without a Name indicates that the value is not part of the output, so the Param is unbound.
 	Params []*Param
 }
 
@@ -24,7 +23,8 @@ func NewSourceAccessor() (me *SourceAccessor) {
 	return
 }
 
-//	Declares a data repository that provides values according to the semantics of an Input that refers to it.
+//	Declares a data repository that provides values
+//	according to the semantics of an Input that refers to it.
 type Source struct {
 	//	Id
 	HasId
@@ -34,7 +34,8 @@ type Source struct {
 	HasAsset
 	//	Techniques
 	HasTechniques
-	//	The data array of this Source. Of all the []slice fields in this struct, only one should ever be non-empty at any time.
+	//	The data array of this Source.
+	//	Of all its []slice fields, only one should ever be non-nil/non-empty at any time.
 	Array struct {
 		//	Id
 		HasId

@@ -18,7 +18,7 @@ type FxVertexInputBinding struct {
 	InputSet *uint64
 }
 
-//	Defines the equations necessary for the visual appearance of geometry and screen-space image processing.
+//	Defines the equations necessary for the visual appearance of geometry or screen-space image processing.
 type FxMaterialDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
@@ -51,13 +51,13 @@ func (me *FxMaterialInst) Init() {
 func newFxMaterialDef(id string) (me *FxMaterialDef) {
 	me = &FxMaterialDef{}
 	me.Id = id
-	me.Base.init()
+	me.BaseSync.init()
 	me.Init()
 	return
 }
 
 /*
-//	Creates and returns a new *FxMaterialInst* instance referencing this *FxMaterialDef* definition.
+//	Creates and returns a new FxMaterialInst instance referencing this FxMaterialDef definition.
 func (me *FxMaterialDef) NewInst(id string) (inst *FxMaterialInst) {
 	inst = &FxMaterialInst{Def: me}
 	inst.Init()
@@ -66,10 +66,10 @@ func (me *FxMaterialDef) NewInst(id string) (inst *FxMaterialInst) {
 */
 
 var (
-	//	A *map* collection that contains *LibFxMaterialDefs* libraries associated by their *Id*.
+	//	A hash-table that contains LibFxMaterialDefs libraries associated by their Id.
 	AllFxMaterialDefLibs = LibsFxMaterialDef{}
 
-	//	The "default" *LibFxMaterialDefs* library for *FxMaterialDef*s.
+	//	The "default" LibFxMaterialDefs library for FxMaterialDefs.
 	FxMaterialDefs = AllFxMaterialDefLibs.AddNew("")
 )
 
@@ -81,13 +81,12 @@ func init() {
 	})
 }
 
-//	The underlying type of the global *AllFxMaterialDefLibs* variable: a *map* collection that contains
-//	*LibFxMaterialDefs* libraries associated by their *Id*.
+//	The underlying type of the global AllFxMaterialDefLibs variable:
+//	a hash-table that contains LibFxMaterialDefs libraries associated by their Id.
 type LibsFxMaterialDef map[string]*LibFxMaterialDefs
 
-//	Creates a new *LibFxMaterialDefs* library with the specified *Id*, adds it to this *LibsFxMaterialDef*, and returns it.
-//	
-//	If this *LibsFxMaterialDef* already contains a *LibFxMaterialDefs* library with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new LibFxMaterialDefs library with the specified Id, adds it to this LibsFxMaterialDef, and returns it.
+//	If this LibsFxMaterialDef already contains a LibFxMaterialDefs library with the specified Id, does nothing and returns nil.
 func (me LibsFxMaterialDef) AddNew(id string) (lib *LibFxMaterialDefs) {
 	if me[id] != nil {
 		return
@@ -102,12 +101,12 @@ func (me LibsFxMaterialDef) new(id string) (lib *LibFxMaterialDefs) {
 	return
 }
 
-//	A library that contains *FxMaterialDef*s associated by their *Id*. To create a new *LibFxMaterialDefs* library, ONLY
-//	use the *LibsFxMaterialDef.New()* or *LibsFxMaterialDef.AddNew()* methods.
+//	A library that contains FxMaterialDefs associated by their Id.
+//	To create a new LibFxMaterialDefs library, ONLY use the LibsFxMaterialDef.New() or LibsFxMaterialDef.AddNew() methods.
 type LibFxMaterialDefs struct {
 	BaseLib
-	//	The underlying *map* collection. NOTE: this is for easier read-access and range-iteration -- DO NOT
-	//	write to *M*, instead use the *Add()*, *AddNew()*, *Remove()* methods ONLY or bugs WILL ensue.
+	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
+	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*FxMaterialDef
 }
 
@@ -117,9 +116,8 @@ func newLibFxMaterialDefs(id string) (me *LibFxMaterialDefs) {
 	return
 }
 
-//	Adds the specified *FxMaterialDef* definition to this *LibFxMaterialDefs*, and returns it.
-//	
-//	If this *LibFxMaterialDefs* already contains a *FxMaterialDef* definition with the same *Id*, does nothing and returns *nil*.
+//	Adds the specified FxMaterialDef definition to this LibFxMaterialDefs, and returns it.
+//	If this LibFxMaterialDefs already contains a FxMaterialDef definition with the same Id, does nothing and returns nil.
 func (me *LibFxMaterialDefs) Add(d *FxMaterialDef) (n *FxMaterialDef) {
 	if me.M[d.Id] == nil {
 		n, me.M[d.Id] = d, d
@@ -128,27 +126,27 @@ func (me *LibFxMaterialDefs) Add(d *FxMaterialDef) (n *FxMaterialDef) {
 	return
 }
 
-//	Creates a new *FxMaterialDef* definition with the specified *Id*, adds it to this *LibFxMaterialDefs*, and returns it.
-//	
-//	If this *LibFxMaterialDefs* already contains a *FxMaterialDef* definition with the specified *Id*, does nothing and returns *nil*.
+//	Creates a new FxMaterialDef definition with the specified Id, adds it to this LibFxMaterialDefs, and returns it.
+//	If this LibFxMaterialDefs already contains a FxMaterialDef definition with the specified Id, does nothing and returns nil.
 func (me *LibFxMaterialDefs) AddNew(id string) *FxMaterialDef { return me.Add(me.New(id)) }
 
-//	Short-hand for len(lib.M)
+//	Convenience short-hand for len(lib.M)
 func (me *LibFxMaterialDefs) Len() int { return len(me.M) }
 
-//	Creates a new *FxMaterialDef* definition with the specified *Id* and returns it, but does not add it to this *LibFxMaterialDefs*.
+//	Creates a new FxMaterialDef definition with the specified Id and returns it,
+//	but does not add it to this LibFxMaterialDefs.
 func (me *LibFxMaterialDefs) New(id string) (def *FxMaterialDef) { def = newFxMaterialDef(id); return }
 
-//	Removes the *FxMaterialDef* with the specified *Id* from this *LibFxMaterialDefs*.
+//	Removes the FxMaterialDef with the specified Id from this LibFxMaterialDefs.
 func (me *LibFxMaterialDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-//	Signals to *core* (or your custom package) that changes have been made to this *LibFxMaterialDefs* that need to be picked up.
-//	Call this after you have made any number of changes to this *LibFxMaterialDefs* library or its *FxMaterialDef* definitions.
-//	Also called by the global *SyncChanges()* function.
+//	Signals to the core package (or your custom package) that changes have been made to this LibFxMaterialDefs
+//	that need to be picked up. Call this after you have made a number of changes to this LibFxMaterialDefs
+//	library or its FxMaterialDef definitions. Also called by the global SyncChanges() function.
 func (me *LibFxMaterialDefs) SyncChanges() {
-	me.BaseLib.Base.SyncChanges()
+	me.BaseLib.BaseSync.SyncChanges()
 	for _, def := range me.M {
-		def.BaseDef.Base.SyncChanges()
+		def.BaseDef.BaseSync.SyncChanges()
 	}
 }
 
