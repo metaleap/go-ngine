@@ -3,7 +3,7 @@ package assets
 //	References a resource by its unique identifier (Id).
 type RefId string
 
-//	Searches (in all LibAnimationDefs contained in AllAnimationDefLibs) for the AnimationSampler
+//	Searches (all LibAnimationDefs contained in AllAnimationDefLibs) for the AnimationSampler
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) AnimationSampler() (as *AnimationSampler) {
 	var (
@@ -23,9 +23,9 @@ func (me RefId) AnimationSampler() (as *AnimationSampler) {
 	return
 }
 
-//	Searches (in all LibAnimationDefs contained in AllAnimationDefLibs) for the SourceArray
+//	Searches (all LibAnimationDefs contained in AllAnimationDefLibs) for the SourceArray
 //	whose Id is referenced by me, returning the first match found.
-func (me RefId) ArrayAnimationDef() *SourceArray {
+func (me RefId) ArrayInAnimationDef() *SourceArray {
 	var (
 		s   *Source
 		def *AnimationDef
@@ -43,9 +43,9 @@ func (me RefId) ArrayAnimationDef() *SourceArray {
 	return nil
 }
 
-//	Searches (in all LibControllerDefs contained in AllControllerDefLibs) for the SourceArray
+//	Searches (all LibControllerDefs contained in AllControllerDefLibs) for the SourceArray
 //	whose Id is referenced by me, returning the first match found.
-func (me RefId) ArrayControllerDef() *SourceArray {
+func (me RefId) ArrayInControllerDef() *SourceArray {
 	var (
 		s   *Source
 		cs  Sources
@@ -71,9 +71,9 @@ func (me RefId) ArrayControllerDef() *SourceArray {
 	return nil
 }
 
-//	Searches (in all LibGeometryDefs contained in AllGeometryDefLibs) for the SourceArray
+//	Searches (all LibGeometryDefs contained in AllGeometryDefLibs) for the SourceArray
 //	whose Id is referenced by me, returning the first match found.
-func (me RefId) ArrayGeometryDef() (sa *SourceArray) {
+func (me RefId) ArrayInGeometryDef() (sa *SourceArray) {
 	var (
 		gbc *GeometryBrepCurve
 		gbs *GeometryBrepSurface
@@ -131,7 +131,7 @@ func (me RefId) ArrayGeometryDef() (sa *SourceArray) {
 	return
 }
 
-//	Searches (in all LibFxEffectDefs contained in AllFxEffectDefLibs) for the FxProfile
+//	Searches (all LibFxEffectDefs contained in AllFxEffectDefLibs) for the FxProfile
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) FxProfile() (fp *FxProfile) {
 	var (
@@ -151,7 +151,7 @@ func (me RefId) FxProfile() (fp *FxProfile) {
 	return
 }
 
-//	Searches (in all LibFxEffectDefs contained in AllFxEffectDefLibs) for the FxTechniqueCommon
+//	Searches (all LibFxEffectDefs contained in AllFxEffectDefLibs) for the FxTechniqueCommon
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) FxTechniqueCommon() *FxTechniqueCommon {
 	var (
@@ -171,7 +171,7 @@ func (me RefId) FxTechniqueCommon() *FxTechniqueCommon {
 	return nil
 }
 
-//	Searches (in all LibFxEffectDefs contained in AllFxEffectDefLibs) for the FxTechniqueGlsl
+//	Searches (all LibFxEffectDefs contained in AllFxEffectDefLibs) for the FxTechniqueGlsl
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) FxTechniqueGlsl() (t *FxTechniqueGlsl) {
 	var (
@@ -196,7 +196,7 @@ func (me RefId) FxTechniqueGlsl() (t *FxTechniqueGlsl) {
 	return
 }
 
-//	Searches (in all LibGeometryDefs contained in AllGeometryDefLibs) for the GeometryBrepEdges
+//	Searches (all LibGeometryDefs contained in AllGeometryDefLibs) for the GeometryBrepEdges
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) GeometryBrepEdges() *GeometryBrepEdges {
 	var (
@@ -213,7 +213,7 @@ func (me RefId) GeometryBrepEdges() *GeometryBrepEdges {
 	return nil
 }
 
-//	Searches (in all LibGeometryDefs contained in AllGeometryDefLibs) for the GeometryBrepFaces
+//	Searches (all LibGeometryDefs contained in AllGeometryDefLibs) for the GeometryBrepFaces
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) GeometryBrepFaces() *GeometryBrepFaces {
 	var (
@@ -230,7 +230,7 @@ func (me RefId) GeometryBrepFaces() *GeometryBrepFaces {
 	return nil
 }
 
-//	Searches (in all LibGeometryDefs contained in AllGeometryDefLibs) for the GeometryBrepPcurves
+//	Searches (all LibGeometryDefs contained in AllGeometryDefLibs) for the GeometryBrepPcurves
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) GeometryBrepPcurves() *GeometryBrepPcurves {
 	var (
@@ -247,7 +247,7 @@ func (me RefId) GeometryBrepPcurves() *GeometryBrepPcurves {
 	return nil
 }
 
-//	Searches (in all LibGeometryDefs contained in AllGeometryDefLibs) for the GeometryBrepShells
+//	Searches (all LibGeometryDefs contained in AllGeometryDefLibs) for the GeometryBrepShells
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) GeometryBrepShells() *GeometryBrepShells {
 	var (
@@ -264,7 +264,7 @@ func (me RefId) GeometryBrepShells() *GeometryBrepShells {
 	return nil
 }
 
-//	Searches (in all LibGeometryDefs contained in AllGeometryDefLibs) for the GeometryBrepSolids
+//	Searches (all LibGeometryDefs contained in AllGeometryDefLibs) for the GeometryBrepSolids
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) GeometryBrepSolids() *GeometryBrepSolids {
 	var (
@@ -281,7 +281,7 @@ func (me RefId) GeometryBrepSolids() *GeometryBrepSolids {
 	return nil
 }
 
-//	Searches (in all LibGeometryDefs contained in AllGeometryDefLibs) for the GeometryDef
+//	Searches (all LibGeometryDefs contained in AllGeometryDefLibs) for the GeometryDef
 //	whose Id is referenced by me, returning the Mesh of the first match found.
 func (me RefId) GeometryMesh() (gm *GeometryMesh) {
 	if def := me.GeometryDef(); def != nil {
@@ -290,7 +290,7 @@ func (me RefId) GeometryMesh() (gm *GeometryMesh) {
 	return
 }
 
-//	Searches (in all LibGeometryDefs contained in AllGeometryDefLibs) for the GeometryVertices
+//	Searches (all LibGeometryDefs contained in AllGeometryDefLibs) for the GeometryVertices
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) GeometryVertices() *GeometryVertices {
 	var (
@@ -309,7 +309,7 @@ func (me RefId) GeometryVertices() *GeometryVertices {
 	return nil
 }
 
-//	Searches (in all LibGeometryDefs contained in AllGeometryDefLibs) for the GeometryBrepWires
+//	Searches (all LibGeometryDefs contained in AllGeometryDefLibs) for the GeometryBrepWires
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) GeometryBrepWires() *GeometryBrepWires {
 	var (
@@ -326,19 +326,19 @@ func (me RefId) GeometryBrepWires() *GeometryBrepWires {
 	return nil
 }
 
-//	Returns its current value.
+//	Returns the Id currently referenced by me.
 func (me RefId) S() string {
 	return string(me)
 }
 
-//	Modifies its current value.
-func (me *RefId) Set(v string) {
+//	Modifies the Id currently referenced by me.
+func (me *RefId) SetIdRef(v string) {
 	*me = RefId(v)
 }
 
-//	Searches (in all LibAnimationDefs contained in AllAnimationDefLibs) for the Source
+//	Searches (all LibAnimationDefs contained in AllAnimationDefLibs) for the Source
 //	whose Id is referenced by me, returning the first match found.
-func (me RefId) SourceAnimationDef() (s *Source) {
+func (me RefId) SourceInAnimationDef() (s *Source) {
 	var (
 		def *AnimationDef
 		id  = me.S()
@@ -353,9 +353,9 @@ func (me RefId) SourceAnimationDef() (s *Source) {
 	return
 }
 
-//	Searches (in all LibControllerDefs contained in AllControllerDefLibs) for the Source
+//	Searches (all LibControllerDefs contained in AllControllerDefLibs) for the Source
 //	whose Id is referenced by me, returning the first match found.
-func (me RefId) SourceControllerDef() (s *Source) {
+func (me RefId) SourceInControllerDef() (s *Source) {
 	var (
 		def *ControllerDef
 		cs  Sources
@@ -378,9 +378,9 @@ func (me RefId) SourceControllerDef() (s *Source) {
 	return
 }
 
-//	Searches (in all LibGeometryDefs contained in AllGeometryDefLibs) for the Source
+//	Searches (all LibGeometryDefs contained in AllGeometryDefLibs) for the Source
 //	whose Id is referenced by me, returning the first match found.
-func (me RefId) SourceGeometryDef() (s *Source) {
+func (me RefId) SourceInGeometryDef() (s *Source) {
 	var (
 		gbc *GeometryBrepCurve
 		gbs *GeometryBrepSurface

@@ -271,6 +271,9 @@ func (me *FxImageDef) Init() {
 type FxImageInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+	//	A pointer to the resource definition referenced by this instance.
+	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	Def *FxImageDef
 }
 
 //	Initialization
@@ -295,14 +298,23 @@ func newFxImageDef(id string) (me *FxImageDef) {
 	return
 }
 
-/*
 //	Creates and returns a new FxImageInst instance referencing this FxImageDef definition.
-func (me *FxImageDef) NewInst(id string) (inst *FxImageInst) {
+func (me *FxImageDef) NewInst() (inst *FxImageInst) {
 	inst = &FxImageInst{Def: me}
+	inst.DefRef = RefId(me.Id)
 	inst.Init()
 	return
 }
-*/
+
+//	If me is dirty or me.Def is nil, sets me.Def to the correct FxImageDef
+//	according to the current me.DefRef value (by searching AllFxImageDefLibs).
+//	Then returns me.Def.
+func (me *FxImageInst) EnsureDef() *FxImageDef {
+	if (me.Def == nil) || me.dirty {
+		me.Def = me.DefRef.FxImageDef()
+	}
+	return me.Def
+}
 
 var (
 	//	A hash-table that contains LibFxImageDefs libraries associated by their Id.
@@ -320,7 +332,7 @@ func init() {
 	})
 }
 
-//	Searches (in all LibFxImageDefs contained in AllFxImageDefLibs) for the FxImageDef
+//	Searches (all LibFxImageDefs contained in AllFxImageDefLibs) for the FxImageDef
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) FxImageDef() (def *FxImageDef) {
 	id := me.S()

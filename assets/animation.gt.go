@@ -61,6 +61,9 @@ func (me *AnimationDef) Init() {
 type AnimationInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+	//	A pointer to the resource definition referenced by this instance.
+	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	Def *AnimationDef
 }
 
 //	Initialization
@@ -77,14 +80,23 @@ func newAnimationDef(id string) (me *AnimationDef) {
 	return
 }
 
-/*
 //	Creates and returns a new AnimationInst instance referencing this AnimationDef definition.
-func (me *AnimationDef) NewInst(id string) (inst *AnimationInst) {
+func (me *AnimationDef) NewInst() (inst *AnimationInst) {
 	inst = &AnimationInst{Def: me}
+	inst.DefRef = RefId(me.Id)
 	inst.Init()
 	return
 }
-*/
+
+//	If me is dirty or me.Def is nil, sets me.Def to the correct AnimationDef
+//	according to the current me.DefRef value (by searching AllAnimationDefLibs).
+//	Then returns me.Def.
+func (me *AnimationInst) EnsureDef() *AnimationDef {
+	if (me.Def == nil) || me.dirty {
+		me.Def = me.DefRef.AnimationDef()
+	}
+	return me.Def
+}
 
 var (
 	//	A hash-table that contains LibAnimationDefs libraries associated by their Id.
@@ -102,7 +114,7 @@ func init() {
 	})
 }
 
-//	Searches (in all LibAnimationDefs contained in AllAnimationDefLibs) for the AnimationDef
+//	Searches (all LibAnimationDefs contained in AllAnimationDefLibs) for the AnimationDef
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) AnimationDef() (def *AnimationDef) {
 	id := me.S()

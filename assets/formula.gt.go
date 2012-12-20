@@ -43,6 +43,9 @@ type FormulaInst struct {
 	BaseInst
 	//	SetParams
 	HasParamInsts
+	//	A pointer to the resource definition referenced by this instance.
+	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	Def *FormulaDef
 }
 
 //	Initialization
@@ -60,14 +63,23 @@ func newFormulaDef(id string) (me *FormulaDef) {
 	return
 }
 
-/*
 //	Creates and returns a new FormulaInst instance referencing this FormulaDef definition.
-func (me *FormulaDef) NewInst(id string) (inst *FormulaInst) {
+func (me *FormulaDef) NewInst() (inst *FormulaInst) {
 	inst = &FormulaInst{Def: me}
+	inst.DefRef = RefId(me.Id)
 	inst.Init()
 	return
 }
-*/
+
+//	If me is dirty or me.Def is nil, sets me.Def to the correct FormulaDef
+//	according to the current me.DefRef value (by searching AllFormulaDefLibs).
+//	Then returns me.Def.
+func (me *FormulaInst) EnsureDef() *FormulaDef {
+	if (me.Def == nil) || me.dirty {
+		me.Def = me.DefRef.FormulaDef()
+	}
+	return me.Def
+}
 
 var (
 	//	A hash-table that contains LibFormulaDefs libraries associated by their Id.
@@ -85,7 +97,7 @@ func init() {
 	})
 }
 
-//	Searches (in all LibFormulaDefs contained in AllFormulaDefLibs) for the FormulaDef
+//	Searches (all LibFormulaDefs contained in AllFormulaDefLibs) for the FormulaDef
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) FormulaDef() (def *FormulaDef) {
 	id := me.S()

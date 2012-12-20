@@ -109,6 +109,9 @@ func (me *LightDef) Init() {
 type LightInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+	//	A pointer to the resource definition referenced by this instance.
+	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	Def *LightDef
 }
 
 //	Initialization
@@ -125,14 +128,23 @@ func newLightDef(id string) (me *LightDef) {
 	return
 }
 
-/*
 //	Creates and returns a new LightInst instance referencing this LightDef definition.
-func (me *LightDef) NewInst(id string) (inst *LightInst) {
+func (me *LightDef) NewInst() (inst *LightInst) {
 	inst = &LightInst{Def: me}
+	inst.DefRef = RefId(me.Id)
 	inst.Init()
 	return
 }
-*/
+
+//	If me is dirty or me.Def is nil, sets me.Def to the correct LightDef
+//	according to the current me.DefRef value (by searching AllLightDefLibs).
+//	Then returns me.Def.
+func (me *LightInst) EnsureDef() *LightDef {
+	if (me.Def == nil) || me.dirty {
+		me.Def = me.DefRef.LightDef()
+	}
+	return me.Def
+}
 
 var (
 	//	A hash-table that contains LibLightDefs libraries associated by their Id.
@@ -150,7 +162,7 @@ func init() {
 	})
 }
 
-//	Searches (in all LibLightDefs contained in AllLightDefLibs) for the LightDef
+//	Searches (all LibLightDefs contained in AllLightDefLibs) for the LightDef
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) LightDef() (def *LightDef) {
 	id := me.S()

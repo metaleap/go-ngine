@@ -50,6 +50,9 @@ type KxSceneInst struct {
 	HasParamDefs
 	//	SetParams
 	HasParamInsts
+	//	A pointer to the resource definition referenced by this instance.
+	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	Def *KxSceneDef
 	//	Zero or more bindings of kinematics models to nodes.
 	ModelBindings []*KxModelBinding
 	//	Zero or more bindings of kinematics models' joint axes to single node transformations.
@@ -72,14 +75,23 @@ func newKxSceneDef(id string) (me *KxSceneDef) {
 	return
 }
 
-/*
 //	Creates and returns a new KxSceneInst instance referencing this KxSceneDef definition.
-func (me *KxSceneDef) NewInst(id string) (inst *KxSceneInst) {
+func (me *KxSceneDef) NewInst() (inst *KxSceneInst) {
 	inst = &KxSceneInst{Def: me}
+	inst.DefRef = RefId(me.Id)
 	inst.Init()
 	return
 }
-*/
+
+//	If me is dirty or me.Def is nil, sets me.Def to the correct KxSceneDef
+//	according to the current me.DefRef value (by searching AllKxSceneDefLibs).
+//	Then returns me.Def.
+func (me *KxSceneInst) EnsureDef() *KxSceneDef {
+	if (me.Def == nil) || me.dirty {
+		me.Def = me.DefRef.KxSceneDef()
+	}
+	return me.Def
+}
 
 var (
 	//	A hash-table that contains LibKxSceneDefs libraries associated by their Id.
@@ -97,7 +109,7 @@ func init() {
 	})
 }
 
-//	Searches (in all LibKxSceneDefs contained in AllKxSceneDefLibs) for the KxSceneDef
+//	Searches (all LibKxSceneDefs contained in AllKxSceneDefLibs) for the KxSceneDef
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) KxSceneDef() (def *KxSceneDef) {
 	id := me.S()

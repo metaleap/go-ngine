@@ -34,6 +34,9 @@ func (me *FxMaterialDef) Init() {
 type FxMaterialInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+	//	A pointer to the resource definition referenced by this instance.
+	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	Def *FxMaterialDef
 	//	Which symbol defined from within the geometry this material binds to.
 	Symbol string
 	//	Binds values to uniform inputs of a shader or binds values to effect parameters upon instantiation.
@@ -56,14 +59,23 @@ func newFxMaterialDef(id string) (me *FxMaterialDef) {
 	return
 }
 
-/*
 //	Creates and returns a new FxMaterialInst instance referencing this FxMaterialDef definition.
-func (me *FxMaterialDef) NewInst(id string) (inst *FxMaterialInst) {
+func (me *FxMaterialDef) NewInst() (inst *FxMaterialInst) {
 	inst = &FxMaterialInst{Def: me}
+	inst.DefRef = RefId(me.Id)
 	inst.Init()
 	return
 }
-*/
+
+//	If me is dirty or me.Def is nil, sets me.Def to the correct FxMaterialDef
+//	according to the current me.DefRef value (by searching AllFxMaterialDefLibs).
+//	Then returns me.Def.
+func (me *FxMaterialInst) EnsureDef() *FxMaterialDef {
+	if (me.Def == nil) || me.dirty {
+		me.Def = me.DefRef.FxMaterialDef()
+	}
+	return me.Def
+}
 
 var (
 	//	A hash-table that contains LibFxMaterialDefs libraries associated by their Id.
@@ -81,7 +93,7 @@ func init() {
 	})
 }
 
-//	Searches (in all LibFxMaterialDefs contained in AllFxMaterialDefLibs) for the FxMaterialDef
+//	Searches (all LibFxMaterialDefs contained in AllFxMaterialDefLibs) for the FxMaterialDef
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) FxMaterialDef() (def *FxMaterialDef) {
 	id := me.S()

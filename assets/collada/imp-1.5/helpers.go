@@ -267,8 +267,15 @@ func node_TechCommon(xn *xmlx.Node) *xmlx.Node {
 	return xcn(xn, "technique_common")
 }
 
+func setIdRef(ref *nga.RefId, id string) {
+	for strings.HasPrefix(id, "#") {
+		id = id[1:]
+	}
+	ref.SetIdRef(id)
+}
+
 func setInstDefRef(xn *xmlx.Node, inst *nga.BaseInst) {
-	inst.Def.Set(xas1(xn, "url", "body", "constraint", "target"))
+	setIdRef(&inst.DefRef, xas1(xn, "url", "body", "constraint", "target"))
 }
 
 func xab(xn *xmlx.Node, name string) bool {

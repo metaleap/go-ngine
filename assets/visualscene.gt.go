@@ -70,6 +70,9 @@ func (me *VisualSceneDef) Init() {
 type VisualSceneInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+	//	A pointer to the resource definition referenced by this instance.
+	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	Def *VisualSceneDef
 }
 
 //	Initialization
@@ -86,14 +89,23 @@ func newVisualSceneDef(id string) (me *VisualSceneDef) {
 	return
 }
 
-/*
 //	Creates and returns a new VisualSceneInst instance referencing this VisualSceneDef definition.
-func (me *VisualSceneDef) NewInst(id string) (inst *VisualSceneInst) {
+func (me *VisualSceneDef) NewInst() (inst *VisualSceneInst) {
 	inst = &VisualSceneInst{Def: me}
+	inst.DefRef = RefId(me.Id)
 	inst.Init()
 	return
 }
-*/
+
+//	If me is dirty or me.Def is nil, sets me.Def to the correct VisualSceneDef
+//	according to the current me.DefRef value (by searching AllVisualSceneDefLibs).
+//	Then returns me.Def.
+func (me *VisualSceneInst) EnsureDef() *VisualSceneDef {
+	if (me.Def == nil) || me.dirty {
+		me.Def = me.DefRef.VisualSceneDef()
+	}
+	return me.Def
+}
 
 var (
 	//	A hash-table that contains LibVisualSceneDefs libraries associated by their Id.
@@ -111,7 +123,7 @@ func init() {
 	})
 }
 
-//	Searches (in all LibVisualSceneDefs contained in AllVisualSceneDefLibs) for the VisualSceneDef
+//	Searches (all LibVisualSceneDefs contained in AllVisualSceneDefLibs) for the VisualSceneDef
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) VisualSceneDef() (def *VisualSceneDef) {
 	id := me.S()

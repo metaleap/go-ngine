@@ -136,7 +136,7 @@ func SamplesMainFunc(assetLoader func()) {
 		ng.Loop.OnSec = OnSec
 		camDef := nga.CameraDefs.AddNew("")
 		camDef.Optics.TC.Znear.F, camDef.Optics.TC.Zfar.F = 0.3, 30000
-		camDef.Optics.TC.Perspective = &nga.CameraPerspective{FovY: nga.Scopedf(37.8493)}
+		camDef.Optics.TC.Perspective = &nga.CameraPerspective{FovY: nga.SidF(37.8493)}
 		nga.SyncChanges()
 		Cam = ng.Core.Cameras[""]
 		CamCtl = Cam.Controller

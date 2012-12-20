@@ -75,6 +75,9 @@ func (me *ControllerDef) Init() {
 type ControllerInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+	//	A pointer to the resource definition referenced by this instance.
+	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	Def *ControllerDef
 	//	Binds a specific material to this controller instantiation.
 	BindMaterial *MaterialBinding
 	//	Indicates where a Skin controller is to start to search for the joint nodes it needs.
@@ -96,14 +99,23 @@ func newControllerDef(id string) (me *ControllerDef) {
 	return
 }
 
-/*
 //	Creates and returns a new ControllerInst instance referencing this ControllerDef definition.
-func (me *ControllerDef) NewInst(id string) (inst *ControllerInst) {
+func (me *ControllerDef) NewInst() (inst *ControllerInst) {
 	inst = &ControllerInst{Def: me}
+	inst.DefRef = RefId(me.Id)
 	inst.Init()
 	return
 }
-*/
+
+//	If me is dirty or me.Def is nil, sets me.Def to the correct ControllerDef
+//	according to the current me.DefRef value (by searching AllControllerDefLibs).
+//	Then returns me.Def.
+func (me *ControllerInst) EnsureDef() *ControllerDef {
+	if (me.Def == nil) || me.dirty {
+		me.Def = me.DefRef.ControllerDef()
+	}
+	return me.Def
+}
 
 var (
 	//	A hash-table that contains LibControllerDefs libraries associated by their Id.
@@ -121,7 +133,7 @@ func init() {
 	})
 }
 
-//	Searches (in all LibControllerDefs contained in AllControllerDefLibs) for the ControllerDef
+//	Searches (all LibControllerDefs contained in AllControllerDefLibs) for the ControllerDef
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) ControllerDef() (def *ControllerDef) {
 	id := me.S()

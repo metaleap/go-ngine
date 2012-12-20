@@ -44,6 +44,9 @@ func (me *NodeDef) Init() {
 type NodeInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+	//	A pointer to the resource definition referenced by this instance.
+	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	Def *NodeDef
 	//	Optional. The mechanism and use of this attribute is application-defined.
 	//	For example, it can be used for bounding boxes or level of detail.
 	Proxy RefId
@@ -63,14 +66,23 @@ func newNodeDef(id string) (me *NodeDef) {
 	return
 }
 
-/*
 //	Creates and returns a new NodeInst instance referencing this NodeDef definition.
-func (me *NodeDef) NewInst(id string) (inst *NodeInst) {
+func (me *NodeDef) NewInst() (inst *NodeInst) {
 	inst = &NodeInst{Def: me}
+	inst.DefRef = RefId(me.Id)
 	inst.Init()
 	return
 }
-*/
+
+//	If me is dirty or me.Def is nil, sets me.Def to the correct NodeDef
+//	according to the current me.DefRef value (by searching AllNodeDefLibs).
+//	Then returns me.Def.
+func (me *NodeInst) EnsureDef() *NodeDef {
+	if (me.Def == nil) || me.dirty {
+		me.Def = me.DefRef.NodeDef()
+	}
+	return me.Def
+}
 
 var (
 	//	A hash-table that contains LibNodeDefs libraries associated by their Id.
@@ -88,7 +100,7 @@ func init() {
 	})
 }
 
-//	Searches (in all LibNodeDefs contained in AllNodeDefLibs) for the NodeDef
+//	Searches (all LibNodeDefs contained in AllNodeDefLibs) for the NodeDef
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) NodeDef() (def *NodeDef) {
 	id := me.S()

@@ -395,6 +395,9 @@ type FxEffectInst struct {
 	BaseInst
 	//	SetParams
 	HasParamInsts
+	//	A pointer to the resource definition referenced by this instance.
+	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	Def *FxEffectDef
 	//	Platform-specific hints of which techniques to use in this effect.
 	TechniqueHints []*FxEffectInstTechniqueHint
 }
@@ -425,14 +428,23 @@ func newFxEffectDef(id string) (me *FxEffectDef) {
 	return
 }
 
-/*
 //	Creates and returns a new FxEffectInst instance referencing this FxEffectDef definition.
-func (me *FxEffectDef) NewInst(id string) (inst *FxEffectInst) {
+func (me *FxEffectDef) NewInst() (inst *FxEffectInst) {
 	inst = &FxEffectInst{Def: me}
+	inst.DefRef = RefId(me.Id)
 	inst.Init()
 	return
 }
-*/
+
+//	If me is dirty or me.Def is nil, sets me.Def to the correct FxEffectDef
+//	according to the current me.DefRef value (by searching AllFxEffectDefLibs).
+//	Then returns me.Def.
+func (me *FxEffectInst) EnsureDef() *FxEffectDef {
+	if (me.Def == nil) || me.dirty {
+		me.Def = me.DefRef.FxEffectDef()
+	}
+	return me.Def
+}
 
 var (
 	//	A hash-table that contains LibFxEffectDefs libraries associated by their Id.
@@ -450,7 +462,7 @@ func init() {
 	})
 }
 
-//	Searches (in all LibFxEffectDefs contained in AllFxEffectDefLibs) for the FxEffectDef
+//	Searches (all LibFxEffectDefs contained in AllFxEffectDefLibs) for the FxEffectDef
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) FxEffectDef() (def *FxEffectDef) {
 	id := me.S()

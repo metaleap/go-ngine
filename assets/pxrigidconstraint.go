@@ -85,6 +85,9 @@ func (me *PxRigidConstraintDef) Init() {
 type PxRigidConstraintInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+	//	A pointer to the resource definition referenced by this instance.
+	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	Def *PxRigidConstraintDef
 }
 
 //	Initialization
