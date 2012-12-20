@@ -268,7 +268,7 @@ func node_TechCommon(xn *xmlx.Node) *xmlx.Node {
 }
 
 func setInstDefRef(xn *xmlx.Node, inst *nga.BaseInst) {
-	inst.DefRef.Set(xas1(xn, "url", "body", "constraint", "target"))
+	inst.Def.Set(xas1(xn, "url", "body", "constraint", "target"))
 }
 
 func xab(xn *xmlx.Node, name string) bool {

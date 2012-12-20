@@ -18,20 +18,20 @@ type PxRigidConstraintAttachment struct {
 //	Degrees of freedom and ranges.
 type PxRigidConstraintLimit struct {
 	//	Lower bounds for this limit across all 3 axes.
-	Min ScopedVec3
+	Min SidVec3
 	//	Upper bounds for this limit across all 3 axes.
-	Max ScopedVec3
+	Max SidVec3
 }
 
 //	Spring is based based on either distance (Linear) or angle (Angular), or both.
 type PxRigidConstraintSpring struct {
 	//	Also called spring coefficient.
 	//	Has units of force/distance (for Linear) or force/angle (for Angular).
-	Stiffness ScopedFloat
+	Stiffness SidFloat
 	//	How this spring is damped.
-	Damping ScopedFloat
+	Damping SidFloat
 	//	Target value for this spring.
-	TargetValue ScopedFloat
+	TargetValue SidFloat
 }
 
 //	Constructor
@@ -56,9 +56,9 @@ type PxRigidConstraintDef struct {
 	//	Common-technique profile
 	TC struct {
 		//	If false, this rigid constraint doesn't exert any force or influence on the rigid bodies.
-		Enabled ScopedBool
+		Enabled SidBool
 		//	If true, the attached rigid bodies may interpenetrate.
-		Interpenetrate ScopedBool
+		Interpenetrate SidBool
 		//	Degrees of freedom and ranges.
 		Limits struct {
 			//	Describes the angular limits along each rotation axis in degrees.

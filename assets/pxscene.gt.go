@@ -15,10 +15,10 @@ type PxSceneDef struct {
 		//	If set, a vector representation of this physics scene's gravity force field.
 		//	It is given as a denormalized direction vector of three floating-point values that
 		//	indicate both the magnitude and direction of acceleration caused by the field.
-		Gravity *ScopedVec3
+		Gravity *SidVec3
 		//	If set, the integration time step, measured in seconds, of the physics scene.
 		//	This value is engine-specific. If omitted, the physics engine's default is used.
-		TimeStep *ScopedFloat
+		TimeStep *SidFloat
 	}
 }
 
@@ -69,6 +69,18 @@ func init() {
 			lib.SyncChanges()
 		}
 	})
+}
+
+//	Searches (in all LibPxSceneDefs contained in AllPxSceneDefLibs) for the PxSceneDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) PxSceneDef() (def *PxSceneDef) {
+	id := me.S()
+	for _, lib := range AllPxSceneDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
 }
 
 //	The underlying type of the global AllPxSceneDefLibs variable:

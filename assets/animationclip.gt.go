@@ -5,16 +5,12 @@ package assets
 type AnimationClipDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
-
 	//	The time in seconds of the beginning of the clip.
 	Start float64
-
 	//	The time in seconds of the end of the clip.
 	End float64
-
 	//	The animation instances contributing to this animation clip.
 	Animations []*AnimationInst
-
 	//	Any formulas used in this animation clip.
 	Formulas []*FormulaInst
 }
@@ -56,6 +52,18 @@ func init() {
 			lib.SyncChanges()
 		}
 	})
+}
+
+//	Searches (in all LibAnimationClipDefs contained in AllAnimationClipDefLibs) for the AnimationClipDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) AnimationClipDef() (def *AnimationClipDef) {
+	id := me.S()
+	for _, lib := range AllAnimationClipDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
 }
 
 //	The underlying type of the global AllAnimationClipDefLibs variable:

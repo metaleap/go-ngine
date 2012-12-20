@@ -9,12 +9,12 @@ type PxMaterialDef struct {
 	//	Common-technique profile
 	TC struct {
 		//	The dynamic friction coefficient.
-		DynamicFriction ScopedFloat
+		DynamicFriction SidFloat
 		//	The proportion of the kinetic energy preserved in the impact
 		//	(typically ranges from 0.0 to 1.0). Also known as "bounciness" or "elasticity."
-		Restitution ScopedFloat
+		Restitution SidFloat
 		//	The static friction coefficient.
-		StaticFriction ScopedFloat
+		StaticFriction SidFloat
 	}
 }
 
@@ -65,6 +65,18 @@ func init() {
 			lib.SyncChanges()
 		}
 	})
+}
+
+//	Searches (in all LibPxMaterialDefs contained in AllPxMaterialDefLibs) for the PxMaterialDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) PxMaterialDef() (def *PxMaterialDef) {
+	id := me.S()
+	for _, lib := range AllPxMaterialDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
 }
 
 //	The underlying type of the global AllPxMaterialDefLibs variable:

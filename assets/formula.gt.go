@@ -24,7 +24,7 @@ type FormulaDef struct {
 	//	Techniques
 	HasTechniques
 	//	A parameter that specifies the result variable of the formula.
-	Target ParamFloat
+	Target ParamOrFloat
 	//	Common-technique profile.
 	TC struct {
 		//	Any valid MathML (content) XML defining this formula.
@@ -83,6 +83,18 @@ func init() {
 			lib.SyncChanges()
 		}
 	})
+}
+
+//	Searches (in all LibFormulaDefs contained in AllFormulaDefLibs) for the FormulaDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) FormulaDef() (def *FormulaDef) {
+	id := me.S()
+	for _, lib := range AllFormulaDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
 }
 
 //	The underlying type of the global AllFormulaDefLibs variable:

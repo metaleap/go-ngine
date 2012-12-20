@@ -90,30 +90,32 @@ type HasTechniques struct {
 type Asset struct {
 	//	Extras
 	HasExtras
-	//	Contains the date and time that the parent element was created.
-	//	This is only set-and-retained for imported Collada assets that provide this field,
-	//	and is not otherwise used.
-	Created string
-	//	Contains the date and time that the parent element was last modified.
-	//	This is only set-and-retained for imported Collada assets that provide this field,
-	//	and is not otherwise used.
-	Modified string
-	//	Contains a list of words used as search criteria.
-	//	This is only set-and-retained for imported Collada assets that provide this field,
-	//	and is not otherwise used.
-	Keywords string
-	//	Contains revision information.
-	//	This is only set-and-retained for imported Collada assets that provide this field,
-	//	and is not otherwise used.
-	Revision string
-	//	Contains a description of the topical subject.
-	//	This is only set-and-retained for imported Collada assets that provide this field,
-	//	and is not otherwise used.
-	Subject string
-	//	Contains title information.
-	//	This is only set-and-retained for imported Collada assets that provide this field,
-	//	and is not otherwise used.
-	Title string
+	/*
+		//	Contains the date and time that the parent element was created.
+		//	This is only set-and-retained for imported Collada assets that provide this field,
+		//	and is not otherwise used.
+		Created string
+		//	Contains the date and time that the parent element was last modified.
+		//	This is only set-and-retained for imported Collada assets that provide this field,
+		//	and is not otherwise used.
+		Modified string
+		//	Contains a list of words used as search criteria.
+		//	This is only set-and-retained for imported Collada assets that provide this field,
+		//	and is not otherwise used.
+		Keywords string
+		//	Contains revision information.
+		//	This is only set-and-retained for imported Collada assets that provide this field,
+		//	and is not otherwise used.
+		Revision string
+		//	Contains a description of the topical subject.
+		//	This is only set-and-retained for imported Collada assets that provide this field,
+		//	and is not otherwise used.
+		Subject string
+		//	Contains title information.
+		//	This is only set-and-retained for imported Collada assets that provide this field,
+		//	and is not otherwise used.
+		Title string
+	*/
 	//	Contains descriptive information about the coordinate system of the geometric data. All
 	//	coordinates are right-handed by definition. Valid values are "X", "Y" (the default), or "Z".
 	UpAxis string
@@ -143,16 +145,18 @@ func NewAsset() (me *Asset) {
 }
 
 //	Defines authoring information for asset management.
-//	ALL fields are only set-and-retained for imported Collada assets that provide those fields,
-//	and are not otherwise written, read or used.
 type AssetContributor struct {
-	Author        string
-	AuthorEmail   string
-	AuthorWebsite string
-	AuthoringTool string
-	Comments      string
-	Copyright     string
-	SourceData    string
+	/*
+		//	ALL fields are only set-and-retained for imported Collada assets that provide those fields,
+		//	and are not otherwise written, read or used.
+				Author        string
+				AuthorEmail   string
+				AuthorWebsite string
+				AuthoringTool string
+				Comments      string
+				Copyright     string
+				SourceData    string
+	*/
 }
 
 //	Provides information about the location of the visual scene in physical space.
@@ -196,8 +200,8 @@ type IndexedInputs struct {
 type Input struct {
 	//	The user-defined meaning of the input connection.
 	Semantic string
-	//	The location of the data source.
-	Source string
+	//	Refers to the Source for this Input.
+	Source RefId
 }
 
 //	Declares shared input semantics of a data source and connects a consumer to that source.
@@ -266,50 +270,6 @@ type ParamInst struct {
 //	A hash-table containing parameter values assigned by this resource.
 type ParamInsts map[string]*ParamInst
 
-//	References a resource by its unique identifier (Id).
-type RefId string
-
-//	Returns its current value.
-func (me RefId) S() string {
-	return string(me)
-}
-
-//	Modifies its current value.
-func (me *RefId) Set(v string) {
-	*me = RefId(v)
-}
-
-//	References a previously defined parameter.
-type RefParam RefSid
-
-//	Returns its current value.
-func (me RefParam) S() string {
-	return string(me)
-}
-
-//	Returns its current value as a RefSid.
-func (me RefParam) Sr() RefSid {
-	return RefSid(me)
-}
-
-//	Modifies its current value.
-func (me *RefParam) Set(v string) {
-	*me = RefParam(v)
-}
-
-//	References a resource by its scoped identifier (Sid).
-type RefSid string
-
-//	Returns its current value.
-func (me RefSid) S() string {
-	return string(me)
-}
-
-//	Modifies its current value.
-func (me *RefSid) Set(v string) {
-	*me = RefSid(v)
-}
-
 //	Declares a complete, self-contained base of a scene hierarchy or scene graph.
 type Scene struct {
 	//	Extras
@@ -337,18 +297,18 @@ type Transform struct {
 	//	Sid
 	HasSid
 	//	The type of this transformation (rotation, skewing, scaling, translation, "look-at", or matrix).
-	//	The only valid values are the TRANSFORM_TYPE_* enumerated constants.
+	//	Must be one of the TRANSFORM_TYPE_* enumerated constants.
 	Type int
 	//	Contains one or more vectors and values representing this transformation.
 	//	For TRANSFORM_TYPE_LOOKAT:
-	//	9 values representing three 3D vectors (eye position, interest point, up-axis).
+	//		9 values representing three 3D vectors (eye position, interest point, up-axis).
 	//	For TRANSFORM_TYPE_MATRIX:
-	//	16 values representing one column-major 4x4 matrix.
+	//		16 values representing one column-major 4x4 matrix.
 	//	For TRANSFORM_TYPE_SKEW:
-	//	7 values -- one angle in degrees, then two 3D vectors for the axes of rotation and translation.
+	//		7 values -- one angle in degrees, then two 3D vectors for the axes of rotation and translation.
 	//	For TRANSFORM_TYPE_ROTATE:
-	//	4 values -- one 3D vector specifying the axis of rotation, then one angle in degrees.
+	//		4 values -- one 3D vector specifying the axis of rotation, then one angle in degrees.
 	//	For TRANSFORM_TYPE_TRANSLATE or TRANSFORM_TYPE_SCALE:
-	//	3 values representing a single 3D vector.
+	//		3 values representing a single 3D vector.
 	F []float64
 }

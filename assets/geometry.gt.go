@@ -171,6 +171,18 @@ func init() {
 	})
 }
 
+//	Searches (in all LibGeometryDefs contained in AllGeometryDefLibs) for the GeometryDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) GeometryDef() (def *GeometryDef) {
+	id := me.S()
+	for _, lib := range AllGeometryDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
+}
+
 //	The underlying type of the global AllGeometryDefLibs variable:
 //	a hash-table that contains LibGeometryDefs libraries associated by their Id.
 type LibsGeometryDef map[string]*LibGeometryDefs

@@ -3,45 +3,36 @@ package assets
 const (
 	//	The before and after behaviors are not defined.
 	ANIM_SAMPLER_BEHAVIOR_UNDEFINED = 0
-
 	//	The value for the first (PreBehavior) or last (PostBehavior) is returned.
 	ANIM_SAMPLER_BEHAVIOR_CONSTANT = iota
-
 	//	The key is mapped in the [first_key , last_key] interval so that the animation cycles.
 	ANIM_SAMPLER_BEHAVIOR_CYCLE = iota
-
 	//	The animation continues indefinitely.
 	ANIM_SAMPLER_BEHAVIOR_CYCLE_RELATIVE = iota
-
 	//	The value follows the line given by the last two keys in the sample.
 	ANIM_SAMPLER_BEHAVIOR_GRADIENT = iota
-
 	//	The key is mapped in the [first_key , last_key] interval so that the animation oscillates.
 	ANIM_SAMPLER_BEHAVIOR_OSCILLATE = iota
 )
 
 //	Declares an output channel of an animation.
 type AnimationChannel struct {
-	//	Refers to the Id of the source animation sampler.
+	//	Refers to the source animation sampler.
 	Source RefId
-
-	//	Refers to the Sid of the element bound to the output of the sampler.
+	//	Refers to the resource property bound to the output of the sampler.
 	Target RefSid
 }
 
 //	Declares an interpolation sampling function for an animation.
 type AnimationSampler struct {
-	//	Unique identifier
+	//	Id
 	HasId
-
-	//	These Inputs describe sampling points, referring to Sources.
-	//	At least one of the Inputs must have its Semantic set to INTERPOLATION.
+	//	Inputs. These describe sampling points.
+	//	At least one of the Inputs must have its Semantic set to "INTERPOLATION".
 	HasInputs
-
 	//	Indicates what the sampled value should be before the first key.
 	//	Valid values are the ANIM_SAMPLER_BEHAVIOR_* enumerated constants.
 	PreBehavior int
-
 	//	Indicates what the sampled value should be after the last key.
 	//	Valid values are the ANIM_SAMPLER_BEHAVIOR_* enumerated constants.
 	PostBehavior int
@@ -51,16 +42,12 @@ type AnimationSampler struct {
 type AnimationDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
-
-	//	Describes a stream of values from an array data source.
+	//	Sources
 	HasSources
-
 	//	Allows the formation of a hierarchy of related animations.
 	AnimationDefs []*AnimationDef
-
 	//	Describes output channels for the animation.
 	Channels []*AnimationChannel
-
 	//	Describes the interpolation sampling functions for the animation.
 	Samplers []*AnimationSampler
 }
@@ -113,6 +100,18 @@ func init() {
 			lib.SyncChanges()
 		}
 	})
+}
+
+//	Searches (in all LibAnimationDefs contained in AllAnimationDefLibs) for the AnimationDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) AnimationDef() (def *AnimationDef) {
+	id := me.S()
+	for _, lib := range AllAnimationDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
 }
 
 //	The underlying type of the global AllAnimationDefLibs variable:

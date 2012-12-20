@@ -33,6 +33,18 @@ func init() {
 	})
 }
 
+//	Searches (in all Lib__T__Defs contained in All__T__DefLibs) for the __T__Def
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) __T__Def() (def *__T__Def) {
+	id := me.S()
+	for _, lib := range All__T__DefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
+}
+
 //	The underlying type of the global All__T__DefLibs variable:
 //	a hash-table that contains Lib__T__Defs libraries associated by their Id.
 type Libs__T__Def map[string]*Lib__T__Defs

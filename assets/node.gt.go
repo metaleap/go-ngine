@@ -88,6 +88,18 @@ func init() {
 	})
 }
 
+//	Searches (in all LibNodeDefs contained in AllNodeDefLibs) for the NodeDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) NodeDef() (def *NodeDef) {
+	id := me.S()
+	for _, lib := range AllNodeDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
+}
+
 //	The underlying type of the global AllNodeDefLibs variable:
 //	a hash-table that contains LibNodeDefs libraries associated by their Id.
 type LibsNodeDef map[string]*LibNodeDefs

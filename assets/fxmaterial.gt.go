@@ -4,8 +4,8 @@ package assets
 type FxBinding struct {
 	//	Which effect parameter to bind.
 	Semantic string
-	//	A reference to the Sid of the value to bind to the specified semantic.
-	Target string
+	//	Refers to the value to bind to the specified semantic.
+	Target RefSid
 }
 
 //	Binds geometry vertex inputs to effect vertex inputs upon instantiation.
@@ -79,6 +79,18 @@ func init() {
 			lib.SyncChanges()
 		}
 	})
+}
+
+//	Searches (in all LibFxMaterialDefs contained in AllFxMaterialDefLibs) for the FxMaterialDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) FxMaterialDef() (def *FxMaterialDef) {
+	id := me.S()
+	for _, lib := range AllFxMaterialDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
 }
 
 //	The underlying type of the global AllFxMaterialDefLibs variable:

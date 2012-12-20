@@ -13,8 +13,8 @@ const (
 type KxAttachment struct {
 	//	Must be one of the KX_ATTACHMENT_TYPE_* enumerated constants.
 	Type int
-	//	The reference to the joint that connects the parent with the child link. Required.
-	Joint string
+	//	Refers to the KxJoint that connects the parent with the child link. Required.
+	Joint RefSid
 	//	Zero or more TRANSFORM_TYPE_ROTATE and/or TRANSFORM_TYPE_TRANSLATE transformations.
 	Transforms []*Transform
 	//	If Type is KX_ATTACHMENT_TYPE_FULL, specifies the child link in this parent-child dependency.
@@ -108,6 +108,18 @@ func init() {
 			lib.SyncChanges()
 		}
 	})
+}
+
+//	Searches (in all LibKxModelDefs contained in AllKxModelDefLibs) for the KxModelDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) KxModelDef() (def *KxModelDef) {
+	id := me.S()
+	for _, lib := range AllKxModelDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
 }
 
 //	The underlying type of the global AllKxModelDefLibs variable:

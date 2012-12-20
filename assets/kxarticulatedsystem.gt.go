@@ -18,15 +18,15 @@ type KxAxisIndex struct {
 	//	If set, specifies the special use of this index.
 	Semantic string
 	//	If not set, the parent axis will not appear in the jointmap.
-	I ParamInt
+	I ParamOrInt
 }
 
 //	Specifies the parent axis' soft limits.
 type KxAxisLimits struct {
 	//	The "minimum" portion of this limits descriptor.
-	Min ParamFloat
+	Min ParamOrFloat
 	//	The "maximum" portion of this limits descriptor.
-	Max ParamFloat
+	Max ParamOrFloat
 }
 
 //	Binds inputs to kinematics parameters upon instantiation.
@@ -34,8 +34,8 @@ type KxBinding struct {
 	//	The identifier of the parameter to bind to the new symbol name. Required.
 	Symbol string
 	//	If set, Value is ignored.
-	ParamRef RefParam
-	//	Only used if ParamRef is empty.
+	Param RefParam
+	//	Only used if Param is empty.
 	Value interface{}
 }
 
@@ -53,16 +53,16 @@ type KxEffector struct {
 	Bindings []*KxBinding
 	//	Specifies maximum speed.
 	//	The first value is translational (m/sec), the second is rotational (°/sec).
-	Speed *ParamFloat2
+	Speed *ParamOrFloat2
 	//	Specifies maximum acceleration.
 	//	The first value is translational (m/sec²), the second is rotational (°/sec²).
-	Acceleration *ParamFloat2
+	Acceleration *ParamOrFloat2
 	//	Specifies the maximum deceleration.
 	//	The first value is translational (m/sec²), the second is rotational (°/sec²).
-	Deceleration *ParamFloat2
+	Deceleration *ParamOrFloat2
 	//	Specifies the maximum jerk (also called jolt or surge).
 	//	The first value is translational (m/sec³), the second is rotational (°/sec³).
-	Jerk *ParamFloat2
+	Jerk *ParamOrFloat2
 }
 
 //	Constructor
@@ -94,13 +94,13 @@ type KxKinematicsAxis struct {
 	//	The joint axis of an instantiated kinematics model.
 	Axis RefSid
 	//	Defaults to true.
-	Active ParamBool
+	Active ParamOrBool
 	//	Specifies this axis' indices in the jointmap. If empty, this axis will not appear in the jointmap.
 	Indices []*KxAxisIndex
 	//	Specifies the soft limits. If not set, the axis is limited only by its physical limits.
 	Limits *KxAxisLimits
 	//	Defaults to false.
-	Locked ParamBool
+	Locked ParamOrBool
 	//	Formulas can be useful to define the behavior of a passive link according to one or more
 	//	active axes, or to define dependencies of the soft limits and another joint, for example.
 	Formulas []Formula
@@ -154,14 +154,14 @@ type KxMotionAxis struct {
 	//	Bindings of inputs to kinematics parameters.
 	Bindings []*KxBinding
 	//	The maximum permitted speed of the axis in meters per second (m/sec).
-	Speed *ParamFloat
+	Speed *ParamOrFloat
 	//	The maximum permitted acceleration of the axis in m/sec².
-	Acceleration *ParamFloat
+	Acceleration *ParamOrFloat
 	//	The maximum permitted deceleration of an axis.
 	//	If not set, acceleration and deceleration have the same value in m/sec².
-	Deceleration *ParamFloat
+	Deceleration *ParamOrFloat
 	//	The maximum permitted jerk of an axis in m/sec³.
-	Jerk *ParamFloat
+	Jerk *ParamOrFloat
 }
 
 //	Constructor
@@ -252,6 +252,18 @@ func init() {
 			lib.SyncChanges()
 		}
 	})
+}
+
+//	Searches (in all LibKxArticulatedSystemDefs contained in AllKxArticulatedSystemDefLibs) for the KxArticulatedSystemDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) KxArticulatedSystemDef() (def *KxArticulatedSystemDef) {
+	id := me.S()
+	for _, lib := range AllKxArticulatedSystemDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
 }
 
 //	The underlying type of the global AllKxArticulatedSystemDefLibs variable:

@@ -20,7 +20,7 @@ type KxJoint struct {
 		//	Name
 		HasName
 		//	Sid, V
-		ScopedVec3
+		SidVec3
 	}
 	//	If set, these specified limits are physical limits.
 	Limits *KxJointLimits
@@ -30,9 +30,9 @@ type KxJoint struct {
 //	partially limited (if either Min or Max is nil, but not both) or unlimited (if Min and Max are nil).
 type KxJointLimits struct {
 	//	If set, the "minimum" portion of this joint limitation.
-	Min *ScopedFloat
+	Min *SidFloat
 	//	If set, the "maximum" portion of this joint limitation.
-	Max *ScopedFloat
+	Max *SidFloat
 }
 
 //	Defines a single complex/compound joint with one or more degrees of freedom.
@@ -94,6 +94,18 @@ func init() {
 			lib.SyncChanges()
 		}
 	})
+}
+
+//	Searches (in all LibKxJointDefs contained in AllKxJointDefLibs) for the KxJointDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) KxJointDef() (def *KxJointDef) {
+	id := me.S()
+	for _, lib := range AllKxJointDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
 }
 
 //	The underlying type of the global AllKxJointDefLibs variable:

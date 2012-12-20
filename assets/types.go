@@ -71,63 +71,63 @@ type Int4 [4]int64
 type Int4x4 [16]int64
 
 //	Provides a bool value.
-type ParamBool struct {
-	//	The value provided if Ref is empty.
+type ParamOrBool struct {
+	//	The value provided if Param is empty.
 	B bool
 	//	If set, refers to a previously defined parameter providing the value.
-	Ref RefParam
+	Param RefParam
 }
 
 //	Provides a float64 value.
-type ParamFloat struct {
-	//	The value provided if Ref is empty.
+type ParamOrFloat struct {
+	//	The value provided if Param is empty.
 	F float64
 	//	If set, refers to a previously defined parameter providing the value.
-	Ref RefParam
+	Param RefParam
 }
 
 //	Provides two float64 values.
-type ParamFloat2 struct {
-	//	The values provided if Ref is empty.
+type ParamOrFloat2 struct {
+	//	The values provided if Param is empty.
 	F Float2
 	//	If set, refers to a previously defined parameter providing the values.
-	Ref RefParam
+	Param RefParam
 }
 
 //	Provides a int64 value.
-type ParamInt struct {
-	//	The value provided if Ref is empty.
+type ParamOrInt struct {
+	//	The value provided if Param is empty.
 	I int64
 	//	If set, refers to a previously defined parameter providing the value.
-	Ref RefParam
+	Param RefParam
 }
 
 //	Provides a scoped float64 value.
-type ParamScopedFloat struct {
-	//	The value provided if Ref is empty.
-	F ScopedFloat
+type ParamOrSidFloat struct {
+	//	The value provided if Param is empty.
+	F SidFloat
 	//	If set, refers to a previously defined parameter providing the value.
-	Ref RefParam
+	Param RefParam
 }
 
 //	Provides a RefSid value.
-type ParamSidRef struct {
-	//	The value provided if Ref is empty.
+type ParamOrRefSid struct {
+	//	The value provided if Param is empty.
 	Sr RefSid
 	//	If set, refers to a previously defined parameter providing the value.
-	Ref RefParam
+	Param RefParam
 }
 
 //	Provides a uint64 value.
-type ParamUint struct {
-	//	The value provided if Ref is empty.
+type ParamOrUint struct {
+	//	The value provided if Param is empty.
 	U uint64
 	//	If set, refers to a previously defined parameter providing the value.
-	Ref RefParam
+	Param RefParam
 }
 
 //	A bool value that has a scoped identifier.
-type ScopedBool struct {
+type SidBool struct {
 	//	Sid
 	HasSid
 	//	The value.
@@ -135,7 +135,7 @@ type ScopedBool struct {
 }
 
 //	A float64 value that has a scoped identifier.
-type ScopedFloat struct {
+type SidFloat struct {
 	//	Sid
 	HasSid
 	//	The value.
@@ -143,7 +143,7 @@ type ScopedFloat struct {
 }
 
 //	Three float64 values that have a scoped identifier.
-type ScopedFloat3 struct {
+type SidFloat3 struct {
 	//	Sid
 	HasSid
 	//	The values.
@@ -151,7 +151,7 @@ type ScopedFloat3 struct {
 }
 
 //	A string value that has a scoped identifier.
-type ScopedString struct {
+type SidString struct {
 	//	Sid
 	HasSid
 	//	The value.
@@ -159,9 +159,9 @@ type ScopedString struct {
 }
 
 //	A 3D vector that has a scoped identifier.
-type ScopedVec3 struct {
+type SidVec3 struct {
 	//	Sid
 	HasSid
-	//	The vector.
-	V unum.Vec3
+	//	X, Y, Z
+	unum.Vec3
 }

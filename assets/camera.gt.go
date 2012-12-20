@@ -17,11 +17,11 @@ type CameraOptics struct {
 	//	Common-technique profile.
 	TC struct {
 		//	Aspect ratio of the field of view.
-		AspectRatio *ScopedFloat
+		AspectRatio *SidFloat
 		//	Distance to the far clipping plane.
-		Zfar ScopedFloat
+		Zfar SidFloat
 		//	Distance to the near clipping plane.
-		Znear ScopedFloat
+		Znear SidFloat
 		//	Orthographic projection type. To use Perspective instead, also set this to nil.
 		Orthographic *CameraOrthographic
 		//	Perspective projection type. To use Orthographic instead, also set this to nil.
@@ -32,17 +32,17 @@ type CameraOptics struct {
 //	Describes the field of view of an orthographic camera.
 type CameraOrthographic struct {
 	//	Horizontal magnification of the view.
-	MagX *ScopedFloat
+	MagX *SidFloat
 	//	Vertical magnification of the view.
-	MagY *ScopedFloat
+	MagY *SidFloat
 }
 
 //	Describes the field of view of a perspective camera.
 type CameraPerspective struct {
 	//	Horizontal field of view in degrees.
-	FovX *ScopedFloat
+	FovX *SidFloat
 	//	Vertical field of view in degrees.
-	FovY *ScopedFloat
+	FovY *SidFloat
 }
 
 //	Declares a view of the visual scene hierarchy or scene graph.
@@ -102,6 +102,18 @@ func init() {
 			lib.SyncChanges()
 		}
 	})
+}
+
+//	Searches (in all LibCameraDefs contained in AllCameraDefLibs) for the CameraDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) CameraDef() (def *CameraDef) {
+	id := me.S()
+	for _, lib := range AllCameraDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
 }
 
 //	The underlying type of the global AllCameraDefLibs variable:

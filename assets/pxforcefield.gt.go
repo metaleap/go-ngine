@@ -59,6 +59,18 @@ func init() {
 	})
 }
 
+//	Searches (in all LibPxForceFieldDefs contained in AllPxForceFieldDefLibs) for the PxForceFieldDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) PxForceFieldDef() (def *PxForceFieldDef) {
+	id := me.S()
+	for _, lib := range AllPxForceFieldDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
+}
+
 //	The underlying type of the global AllPxForceFieldDefLibs variable:
 //	a hash-table that contains LibPxForceFieldDefs libraries associated by their Id.
 type LibsPxForceFieldDef map[string]*LibPxForceFieldDefs

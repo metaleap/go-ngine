@@ -77,6 +77,18 @@ func init() {
 	})
 }
 
+//	Searches (in all LibPxModelDefs contained in AllPxModelDefLibs) for the PxModelDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) PxModelDef() (def *PxModelDef) {
+	id := me.S()
+	for _, lib := range AllPxModelDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
+}
+
 //	The underlying type of the global AllPxModelDefLibs variable:
 //	a hash-table that contains LibPxModelDefs libraries associated by their Id.
 type LibsPxModelDef map[string]*LibPxModelDefs

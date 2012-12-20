@@ -10,11 +10,11 @@ type LightAmbient struct {
 //	Describes how the intensity of a light source is attenuated.
 type LightAttenuation struct {
 	//	Constant light attenuation. Defaults to 1.
-	Constant ScopedFloat
+	Constant SidFloat
 	//	Linear light attenuation.
-	Linear ScopedFloat
+	Linear SidFloat
 	//	Quadratic light attenuation.
-	Quadratic ScopedFloat
+	Quadratic SidFloat
 }
 
 //	Constructor
@@ -68,9 +68,9 @@ type LightSpot struct {
 	//	The light's intensity is also attenuated as the radiation angle increases away from the direction of the light source.
 	Falloff struct {
 		//	Fall-off angle. Defaults to 180.
-		Angle ScopedFloat
+		Angle SidFloat
 		//	Fall-off exponent.
-		Exponent ScopedFloat
+		Exponent SidFloat
 	}
 }
 
@@ -148,6 +148,18 @@ func init() {
 			lib.SyncChanges()
 		}
 	})
+}
+
+//	Searches (in all LibLightDefs contained in AllLightDefLibs) for the LightDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) LightDef() (def *LightDef) {
+	id := me.S()
+	for _, lib := range AllLightDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
 }
 
 //	The underlying type of the global AllLightDefLibs variable:

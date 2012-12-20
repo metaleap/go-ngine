@@ -52,29 +52,33 @@ func load_LightDef(xn *xmlx.Node, obj *nga.LightDef) {
 	}
 }
 
+func load_SourceArray(xn *xmlx.Node, obj *nga.SourceArray) {
+	if dn := xcn1(xn, "bool_array", "float_array", "IDREF_array", "idref_array", "int_array", "Name_array", "name_array", "SIDREF_array", "sidref_array", "token_array"); dn != nil {
+		switch strings.ToLower(dn.Name.Local) {
+		case "bool_array":
+			obj.Bools = list_Bools(dn)
+		case "float_array":
+			obj.Floats = list_Floats(dn)
+		case "idref_array":
+			obj.IdRefs = list_Strings(dn)
+		case "int_array":
+			obj.Ints = list_Ints(dn)
+		case "name_array":
+			obj.Names = list_Strings(dn)
+		case "sidref_array":
+			obj.SidRefs = list_Strings(dn)
+		case "token_array":
+			obj.Tokens = list_Strings(dn)
+		}
+	}
+}
+
 func load_Source(xn *xmlx.Node, obj *nga.Source) {
 	if tcn := node_TechCommon(xn); tcn != nil {
 		obj.TC.Accessor = obj_SourceAccessor(tcn, "accessor")
 	}
-	if od, dn := &obj.Array, xcn1(xn, "bool_array", "float_array", "IDREF_array", "int_array", "Name_array", "SIDREF_array", "token_array"); dn != nil {
-		has_Id(dn, &od.HasId)
-		has_Name(dn, &od.HasName)
-		switch dn.Name.Local {
-		case "bool_array":
-			od.Bools = list_Bools(dn)
-		case "float_array":
-			od.Floats = list_Floats(dn)
-		case "IDREF_array":
-			od.IdRefs = list_Strings(dn)
-		case "int_array":
-			od.Ints = list_Ints(dn)
-		case "Name_array":
-			od.Names = list_Strings(dn)
-		case "SIDREF_array":
-			od.SidRefs = list_Strings(dn)
-		case "token_array":
-			od.Tokens = list_Strings(dn)
-		}
+	if arr := obj_SourceArray(xn, ""); arr != nil {
+		obj.Array = *arr
 	}
 }
 
@@ -219,10 +223,10 @@ func load_KxKinematicsAxis(xn *xmlx.Node, obj *nga.KxKinematicsAxis) {
 	}
 	obj.Limits = obj_KxAxisLimits(xn, "limits")
 	obj.Indices = objs_KxAxisIndex(xn, "index")
-	if l := obj_ParamBool(xn, "locked"); l != nil {
+	if l := obj_ParamOrBool(xn, "locked"); l != nil {
 		obj.Locked = *l
 	}
-	if pb := obj_ParamBool(xn, "active"); pb != nil {
+	if pb := obj_ParamOrBool(xn, "active"); pb != nil {
 		obj.Active = *pb
 	} else {
 		obj.Active.B = true
@@ -265,8 +269,8 @@ func load_KxJoint(xn *xmlx.Node, obj *nga.KxJoint) {
 	}
 	if obj.Type > 0 {
 		if xa := xcn(xn, "axis"); xa != nil {
-			if sv3 := obj_ScopedVec3(xa, ""); sv3 != nil {
-				obj.Axis.ScopedVec3 = *sv3
+			if sv3 := obj_SidVec3(xa, ""); sv3 != nil {
+				obj.Axis.SidVec3 = *sv3
 			}
 			has_Name(xa, &obj.Axis.HasName)
 		}
@@ -274,8 +278,8 @@ func load_KxJoint(xn *xmlx.Node, obj *nga.KxJoint) {
 	}
 }
 
-func load_ParamInt(xn *xmlx.Node, obj *nga.ParamInt) {
-	obj.Ref.Set(xs(xn, "param"))
+func load_ParamOrInt(xn *xmlx.Node, obj *nga.ParamOrInt) {
+	obj.Param.Set(xs(xn, "param"))
 	obj.I = xi64(xn, "int")
 }
 
@@ -334,7 +338,7 @@ func load_Formula(xn *xmlx.Node, obj *nga.Formula) {
 }
 
 func load_FormulaDef(xn *xmlx.Node, obj *nga.FormulaDef) {
-	if pf := obj_ParamFloat(xn, "target"); pf != nil {
+	if pf := obj_ParamOrFloat(xn, "target"); pf != nil {
 		obj.Target = *pf
 	}
 	if tcn := node_TechCommon(xn); tcn != nil {
@@ -353,12 +357,12 @@ func load_Asset(xn *xmlx.Node, obj *nga.Asset) {
 	if cn := xcn(xn, "unit"); cn != nil {
 		obj.Unit.Meter, obj.Unit.Name = xaf64d(cn, "meter", obj.Unit.Meter), xasd(cn, "name", obj.Unit.Name)
 	}
-	obj.Created = xs(xn, "created")
-	obj.Keywords = xs(xn, "keywords")
-	obj.Modified = xs(xn, "modified")
-	obj.Revision = xs(xn, "revision")
-	obj.Subject = xs(xn, "subject")
-	obj.Title = xs(xn, "title")
+	// obj.Created = xs(xn, "created")
+	// obj.Keywords = xs(xn, "keywords")
+	// obj.Modified = xs(xn, "modified")
+	// obj.Revision = xs(xn, "revision")
+	// obj.Subject = xs(xn, "subject")
+	// obj.Title = xs(xn, "title")
 	if obj.UpAxis = xs(xn, "up_axis"); len(obj.UpAxis) == 0 {
 		obj.UpAxis = "Y"
 	} else if obj.UpAxis = strings.ToUpper(obj.UpAxis[:1]); (obj.UpAxis != "X") && (obj.UpAxis != "Z") {
@@ -374,8 +378,8 @@ func load_FxPassProgramShader(xn *xmlx.Node, obj *nga.FxPassProgramShader) {
 		obj.Stage = nga.FX_PASS_PROGRAM_SHADER_STAGE_FRAGMENT
 	case "GEOMETRY":
 		obj.Stage = nga.FX_PASS_PROGRAM_SHADER_STAGE_GEOMETRY
-	case "TESSELATION":
-		obj.Stage = nga.FX_PASS_PROGRAM_SHADER_STAGE_TESSELATION
+	case "TESSELATION", "TESSELLATION":
+		obj.Stage = nga.FX_PASS_PROGRAM_SHADER_STAGE_TESSELLATION
 	case "VERTEX":
 		obj.Stage = nga.FX_PASS_PROGRAM_SHADER_STAGE_VERTEX
 	}
@@ -406,7 +410,7 @@ func load_FxProfileCommon(xn *xmlx.Node, obj *nga.FxProfileCommon) {
 }
 
 func load_ControllerMorph(xn *xmlx.Node, obj *nga.ControllerMorph) {
-	obj.Source = xas(xn, "source")
+	obj.Source.Set(xas(xn, "source"))
 	obj.Relative = (strings.ToUpper(xas(xn, "method")) == "RELATIVE")
 	if t := obj_ControllerInputs(xn, "targets"); t != nil {
 		obj.Targets = *t
@@ -428,8 +432,8 @@ func load_PxSceneDef(xn *xmlx.Node, obj *nga.PxSceneDef) {
 	obj.ForceFields = objs_PxForceFieldInst(xn, "instance_force_field")
 	obj.Models = objs_PxModelInst(xn, "instance_physics_model")
 	if tcn := node_TechCommon(xn); tcn != nil {
-		obj.TC.Gravity = obj_ScopedVec3(tcn, "gravity")
-		obj.TC.TimeStep = obj_ScopedFloat(tcn, "time_step")
+		obj.TC.Gravity = obj_SidVec3(tcn, "gravity")
+		obj.TC.TimeStep = obj_SidFloat(tcn, "time_step")
 	}
 }
 
@@ -441,7 +445,7 @@ func load_InputShared(xn *xmlx.Node, obj *nga.InputShared) {
 	obj.Set = xau64p(xn, "set")
 }
 
-func load_ScopedBool(xn *xmlx.Node, obj *nga.ScopedBool) {
+func load_SidBool(xn *xmlx.Node, obj *nga.SidBool) {
 	obj.B = xb(xn, "")
 }
 
@@ -485,8 +489,8 @@ func load_FxEffectInst(xn *xmlx.Node, obj *nga.FxEffectInst) {
 }
 
 func load_KxJointLimits(xn *xmlx.Node, obj *nga.KxJointLimits) {
-	obj.Max = obj_ScopedFloat(xn, "max")
-	obj.Min = obj_ScopedFloat(xn, "min")
+	obj.Max = obj_SidFloat(xn, "max")
+	obj.Min = obj_SidFloat(xn, "min")
 }
 
 func load_FxSamplerWrapping(xn *xmlx.Node, obj *nga.FxSamplerWrapping) {
@@ -533,12 +537,12 @@ func load_CameraOptics(xn *xmlx.Node, obj *nga.CameraOptics) {
 			cn = on
 		}
 		if cn != nil {
-			sf := obj_ScopedFloat(cn, "aspect_ratio")
+			sf := obj_SidFloat(cn, "aspect_ratio")
 			obj.TC.AspectRatio = sf
-			if sf = obj_ScopedFloat(cn, "zfar"); sf != nil {
+			if sf = obj_SidFloat(cn, "zfar"); sf != nil {
 				obj.TC.Zfar = *sf
 			}
-			if sf = obj_ScopedFloat(cn, "znear"); sf != nil {
+			if sf = obj_SidFloat(cn, "znear"); sf != nil {
 				obj.TC.Znear = *sf
 			}
 		}
@@ -664,7 +668,7 @@ func load_KxJointInst(xn *xmlx.Node, obj *nga.KxJointInst) {
 
 func load_Input(xn *xmlx.Node, obj *nga.Input) {
 	obj.Semantic = xas(xn, "semantic")
-	obj.Source = xas(xn, "source")
+	obj.Source.Set(xas(xn, "source"))
 }
 
 func load_ControllerDef(xn *xmlx.Node, obj *nga.ControllerDef) {
@@ -681,26 +685,26 @@ func load_FxCreate(xn *xmlx.Node, obj *nga.FxCreate) {
 
 func load_FxTechniqueCommonConstant(xn *xmlx.Node, obj *nga.FxTechniqueCommonConstant) {
 	obj.Emission = obj_FxColorOrTexture(xn, "emission")
-	obj.IndexOfRefraction = obj_ParamScopedFloat(xn, "index_of_refraction")
+	obj.IndexOfRefraction = obj_ParamOrSidFloat(xn, "index_of_refraction")
 	obj.Reflective = obj_FxColorOrTexture(xn, "reflective")
-	obj.Reflectivity = obj_ParamScopedFloat(xn, "reflectivity")
-	obj.Transparency = obj_ParamScopedFloat(xn, "transparency")
+	obj.Reflectivity = obj_ParamOrSidFloat(xn, "reflectivity")
+	obj.Transparency = obj_ParamOrSidFloat(xn, "transparency")
 	obj.Transparent = obj_FxColorOrTexture(xn, "transparent")
 }
 
 func load_PxRigidConstraintLimit(xn *xmlx.Node, obj *nga.PxRigidConstraintLimit) {
-	sv3 := obj_ScopedVec3(xn, "max")
+	sv3 := obj_SidVec3(xn, "max")
 	if sv3 != nil {
 		obj.Max = *sv3
 	}
-	if sv3 = obj_ScopedVec3(xn, "min"); sv3 != nil {
+	if sv3 = obj_SidVec3(xn, "min"); sv3 != nil {
 		obj.Min = *sv3
 	}
 }
 
-func load_ScopedVec3(xn *xmlx.Node, obj *nga.ScopedVec3) {
+func load_SidVec3(xn *xmlx.Node, obj *nga.SidVec3) {
 	if v3 := xv3(xn, ""); v3 != nil {
-		obj.V = *v3
+		obj.Vec3 = *v3
 	}
 }
 
@@ -709,8 +713,8 @@ func load_NodeInst(xn *xmlx.Node, obj *nga.NodeInst) {
 }
 
 func load_CameraOrthographic(xn *xmlx.Node, obj *nga.CameraOrthographic) {
-	obj.MagX = obj_ScopedFloat(xn, "xmag")
-	obj.MagY = obj_ScopedFloat(xn, "ymag")
+	obj.MagX = obj_SidFloat(xn, "xmag")
+	obj.MagY = obj_SidFloat(xn, "ymag")
 }
 
 func load_Float3x3(xn *xmlx.Node, obj *nga.Float3x3) {
@@ -721,7 +725,7 @@ func load_Float3x3(xn *xmlx.Node, obj *nga.Float3x3) {
 
 func load_FxPassState(xn *xmlx.Node, obj *nga.FxPassState) {
 	obj.Value = xas(xn, "value")
-	obj.ParamRef = xas(xn, "param")
+	obj.Param.Set(xas(xn, "param"))
 	obj.Index = xf64(xn, "index")
 }
 
@@ -757,8 +761,8 @@ func load_AnimationSampler(xn *xmlx.Node, obj *nga.AnimationSampler) {
 	}
 }
 
-func load_ParamUint(xn *xmlx.Node, obj *nga.ParamUint) {
-	obj.Ref.Set(xs(xn, "param"))
+func load_ParamOrUint(xn *xmlx.Node, obj *nga.ParamOrUint) {
+	obj.Param.Set(xs(xn, "param"))
 	obj.U = xu64(xn, "uint")
 }
 
@@ -778,22 +782,22 @@ func load_LightAmbient(xn *xmlx.Node, obj *nga.LightAmbient) {
 }
 
 func load_CameraPerspective(xn *xmlx.Node, obj *nga.CameraPerspective) {
-	obj.FovX = obj_ScopedFloat(xn, "xfov")
-	obj.FovY = obj_ScopedFloat(xn, "yfov")
+	obj.FovX = obj_SidFloat(xn, "xfov")
+	obj.FovY = obj_SidFloat(xn, "yfov")
 }
 
 func load_PxForceFieldDef(xn *xmlx.Node, obj *nga.PxForceFieldDef) {
 }
 
 func load_PxRigidConstraintSpring(xn *xmlx.Node, obj *nga.PxRigidConstraintSpring) {
-	sf := obj_ScopedFloat(xn, "damping")
+	sf := obj_SidFloat(xn, "damping")
 	if sf != nil {
 		obj.Damping = *sf
 	}
-	if sf = obj_ScopedFloat(xn, "target_value"); sf != nil {
+	if sf = obj_SidFloat(xn, "target_value"); sf != nil {
 		obj.TargetValue = *sf
 	}
-	if sf = obj_ScopedFloat(xn, "stiffness"); sf != nil {
+	if sf = obj_SidFloat(xn, "stiffness"); sf != nil {
 		obj.Stiffness = *sf
 	} else {
 		obj.Stiffness.F = 1
@@ -839,10 +843,10 @@ func load_FxPassProgramBindUniform(xn *xmlx.Node, obj *nga.FxPassProgramBindUnif
 func load_KxMotionAxis(xn *xmlx.Node, obj *nga.KxMotionAxis) {
 	obj.Axis.Set(xas(xn, "axis"))
 	obj.Bindings = objs_KxBinding(xn, "bind")
-	obj.Speed = obj_ParamFloat(xn, "speed")
-	obj.Acceleration = obj_ParamFloat(xn, "acceleration")
-	obj.Deceleration = obj_ParamFloat(xn, "deceleration")
-	obj.Jerk = obj_ParamFloat(xn, "jerk")
+	obj.Speed = obj_ParamOrFloat(xn, "speed")
+	obj.Acceleration = obj_ParamOrFloat(xn, "acceleration")
+	obj.Deceleration = obj_ParamOrFloat(xn, "deceleration")
+	obj.Jerk = obj_ParamOrFloat(xn, "jerk")
 }
 
 func load_AnimationClipDef(xn *xmlx.Node, obj *nga.AnimationClipDef) {
@@ -870,11 +874,11 @@ func load_PxMaterial(xn *xmlx.Node, obj *nga.PxMaterial) {
 }
 
 func load_PxShape(xn *xmlx.Node, obj *nga.PxShape) {
-	if sb := obj_ScopedBool(xn, "hollow"); sb != nil {
+	if sb := obj_SidBool(xn, "hollow"); sb != nil {
 		obj.Hollow = *sb
 	}
-	obj.Density = obj_ScopedFloat(xn, "density")
-	obj.Mass = obj_ScopedFloat(xn, "mass")
+	obj.Density = obj_SidFloat(xn, "density")
+	obj.Mass = obj_SidFloat(xn, "mass")
 	obj.Transforms = get_Transforms(xn)
 	if pm := obj_PxMaterial(xn, ""); pm != nil {
 		obj.Material = *pm
@@ -914,11 +918,11 @@ func load_PxRigidConstraintDef(xn *xmlx.Node, obj *nga.PxRigidConstraintDef) {
 		obj.RefAttachment = *a
 	}
 	if tcn := node_TechCommon(xn); tcn != nil {
-		sb := obj_ScopedBool(tcn, "enabled")
+		sb := obj_SidBool(tcn, "enabled")
 		if sb != nil {
 			obj.TC.Enabled = *sb
 		}
-		if sb = obj_ScopedBool(tcn, "interpenetrate"); sb != nil {
+		if sb = obj_SidBool(tcn, "interpenetrate"); sb != nil {
 			obj.TC.Interpenetrate = *sb
 		}
 		cn := xcn(tcn, "limits")
@@ -934,7 +938,7 @@ func load_PxRigidConstraintDef(xn *xmlx.Node, obj *nga.PxRigidConstraintDef) {
 }
 
 func load_GeometryBrepSurfaceCurves(xn *xmlx.Node, obj *nga.GeometryBrepSurfaceCurves) {
-	obj.Curves = objs_GeometryBrepCurve(xn, "curve")
+	obj.All = objs_GeometryBrepCurve(xn, "curve")
 }
 
 func load_Int3x3(xn *xmlx.Node, obj *nga.Int3x3) {
@@ -948,10 +952,10 @@ func load_FxTechniqueCommonBlinn(xn *xmlx.Node, obj *nga.FxTechniqueCommonBlinn)
 		obj.FxTechniqueCommonLambert = *l
 	}
 	obj.Specular = obj_FxColorOrTexture(xn, "specular")
-	obj.Shininess = obj_ParamScopedFloat(xn, "shininess")
+	obj.Shininess = obj_ParamOrSidFloat(xn, "shininess")
 }
 
-func load_ScopedString(xn *xmlx.Node, obj *nga.ScopedString) {
+func load_SidString(xn *xmlx.Node, obj *nga.SidString) {
 	obj.S = xn.Value
 }
 
@@ -985,7 +989,7 @@ func load_Float2(xn *xmlx.Node, obj *nga.Float2) {
 
 func load_KxBinding(xn *xmlx.Node, obj *nga.KxBinding) {
 	obj.Symbol = xas(xn, "symbol")
-	obj.ParamRef.Set(get_ParamRef(xn, "param"))
+	obj.Param.Set(get_ParamRef(xn, "param"))
 	for _, cn := range xn.Children {
 		if cn.Type == xmlx.NT_ELEMENT {
 			if obj.Value = xv(cn); obj.Value != nil {
@@ -1004,7 +1008,7 @@ func load_FxPassEvaluationTarget(xn *xmlx.Node, obj *nga.FxPassEvaluationTarget)
 	obj.Slice = xau64(xn, "slice")
 	obj.Mip = xau64(xn, "mip")
 	obj.CubeFace = get_CubeFace(xn)
-	obj.SamplerParamRef = get_ParamRef(xn, "param")
+	obj.Sampler.Set(get_ParamRef(xn, "param"))
 	obj.Image = obj_FxImageInst(xn, "instance_image")
 }
 
@@ -1059,14 +1063,14 @@ func load_GeometryBrepEllipse(xn *xmlx.Node, obj *nga.GeometryBrepEllipse) {
 
 func load_FxBinding(xn *xmlx.Node, obj *nga.FxBinding) {
 	obj.Semantic = xas(xn, "semantic")
-	obj.Target = xas(xn, "target")
+	obj.Target.Set(xas(xn, "target"))
 }
 
 func load_GeometryBrepParabola(xn *xmlx.Node, obj *nga.GeometryBrepParabola) {
 	obj.FocalLength = xf64(xn, "focal")
 }
 
-func load_ScopedFloat(xn *xmlx.Node, obj *nga.ScopedFloat) {
+func load_SidFloat(xn *xmlx.Node, obj *nga.SidFloat) {
 	obj.F = xf64(xn, "")
 }
 
@@ -1092,13 +1096,13 @@ func load_LightDirectional(xn *xmlx.Node, obj *nga.LightDirectional) {
 
 func load_KxAxisIndex(xn *xmlx.Node, obj *nga.KxAxisIndex) {
 	obj.Semantic = xas(xn, "semantic")
-	if pi := obj_ParamInt(xn, ""); pi != nil {
+	if pi := obj_ParamOrInt(xn, ""); pi != nil {
 		obj.I = *pi
 	}
 }
 
 func load_VisualSceneRendering(xn *xmlx.Node, obj *nga.VisualSceneRendering) {
-	obj.CameraNode = xas(xn, "camera_node")
+	obj.CameraNode.Set(xas(xn, "camera_node"))
 	for _, ln := range xcns(xn, "layer") {
 		obj.Layers[ln.Value] = true
 	}
@@ -1125,9 +1129,9 @@ func load_FxTechniqueCommonLambert(xn *xmlx.Node, obj *nga.FxTechniqueCommonLamb
 	obj.Diffuse = obj_FxColorOrTexture(xn, "diffuse")
 }
 
-func load_ParamScopedFloat(xn *xmlx.Node, obj *nga.ParamScopedFloat) {
-	obj.Ref.Set(xs(xn, "param"))
-	if f := obj_ScopedFloat(xn, "float"); f != nil {
+func load_ParamOrSidFloat(xn *xmlx.Node, obj *nga.ParamOrSidFloat) {
+	obj.Param.Set(xs(xn, "param"))
+	if f := obj_SidFloat(xn, "float"); f != nil {
 		obj.F = *f
 	}
 }
@@ -1147,9 +1151,9 @@ func load_FxCreateInitFrom(xn *xmlx.Node, obj *nga.FxCreateInitFrom) {
 }
 
 func load_LightAttenuation(xn *xmlx.Node, obj *nga.LightAttenuation) {
-	var sf *nga.ScopedFloat
-	for n, f := range map[string]*nga.ScopedFloat{"constant_attenuation": &obj.Constant, "linear_attenuation": &obj.Linear, "quadratic_attenuation": &obj.Quadratic} {
-		if sf = obj_ScopedFloat(xn, n); sf != nil {
+	var sf *nga.SidFloat
+	for n, f := range map[string]*nga.SidFloat{"constant_attenuation": &obj.Constant, "linear_attenuation": &obj.Linear, "quadratic_attenuation": &obj.Quadratic} {
+		if sf = obj_SidFloat(xn, n); sf != nil {
 			*f = *sf
 		}
 	}
@@ -1173,12 +1177,12 @@ func load_FxMaterialDef(xn *xmlx.Node, obj *nga.FxMaterialDef) {
 	}
 }
 
-func load_ParamFloat(xn *xmlx.Node, obj *nga.ParamFloat) {
-	obj.Ref.Set(xs(xn, "param"))
+func load_ParamOrFloat(xn *xmlx.Node, obj *nga.ParamOrFloat) {
+	obj.Param.Set(xs(xn, "param"))
 	obj.F = xf64(xn, "float")
 }
 
-func load_ScopedFloat3(xn *xmlx.Node, obj *nga.ScopedFloat3) {
+func load_SidFloat3(xn *xmlx.Node, obj *nga.SidFloat3) {
 	if f3 := obj_Float3(xn, ""); f3 != nil {
 		obj.F = *f3
 	}
@@ -1194,7 +1198,7 @@ func load_FxInitFrom(xn *xmlx.Node, obj *nga.FxInitFrom) {
 
 func load_FxTexture(xn *xmlx.Node, obj *nga.FxTexture) {
 	obj.TexCoord = xas(xn, "texcoord")
-	obj.Sampler2D = xas(xn, "texture")
+	obj.Sampler2D.Set(xas(xn, "texture"))
 }
 
 func load_Int4(xn *xmlx.Node, obj *nga.Int4) {
@@ -1277,10 +1281,10 @@ func load_Float3x4(xn *xmlx.Node, obj *nga.Float3x4) {
 
 func load_KxJointAxisBinding(xn *xmlx.Node, obj *nga.KxJointAxisBinding) {
 	obj.Target.Set(xas(xn, "target"))
-	if pf := obj_ParamFloat(xn, "value"); pf != nil {
+	if pf := obj_ParamOrFloat(xn, "value"); pf != nil {
 		obj.Value = *pf
 	}
-	if psr := obj_ParamSidRef(xn, "axis"); psr != nil {
+	if psr := obj_ParamOrRefSid(xn, "axis"); psr != nil {
 		obj.Axis = *psr
 	}
 }
@@ -1301,7 +1305,7 @@ func load_VisualSceneEvaluation(xn *xmlx.Node, obj *nga.VisualSceneEvaluation) {
 	obj.RenderPasses = objs_VisualSceneRendering(xn, "render")
 }
 
-func load_FxProfileGlSlCodeInclude(xn *xmlx.Node, obj *nga.FxProfileGlSlCodeInclude) {
+func load_FxProfileGlslCodeInclude(xn *xmlx.Node, obj *nga.FxProfileGlslCodeInclude) {
 	if obj.S, obj.IsInclude = xn.Value, (xn.Name.Local == "include"); obj.IsInclude {
 		obj.S = xas(xn, "url")
 	}
@@ -1318,10 +1322,10 @@ func load_AssetGeographicLocation(xn *xmlx.Node, obj *nga.AssetGeographicLocatio
 
 func load_KxEffector(xn *xmlx.Node, obj *nga.KxEffector) {
 	obj.Bindings = objs_KxBinding(xn, "bind")
-	obj.Speed = obj_ParamFloat2(xn, "speed")
-	obj.Acceleration = obj_ParamFloat2(xn, "acceleration")
-	obj.Deceleration = obj_ParamFloat2(xn, "deceleration")
-	obj.Jerk = obj_ParamFloat2(xn, "jerk")
+	obj.Speed = obj_ParamOrFloat2(xn, "speed")
+	obj.Acceleration = obj_ParamOrFloat2(xn, "acceleration")
+	obj.Deceleration = obj_ParamOrFloat2(xn, "deceleration")
+	obj.Jerk = obj_ParamOrFloat2(xn, "jerk")
 }
 
 func load_GeometryBrepTorus(xn *xmlx.Node, obj *nga.GeometryBrepTorus) {
@@ -1336,18 +1340,18 @@ func load_Layers(xn *xmlx.Node, obj *nga.Layers) {
 func load_FxProfile(xn *xmlx.Node, obj *nga.FxProfile) {
 	switch xn.Name.Local {
 	case "profile_GLSL":
-		obj.GlSl = obj_FxProfileGlSl(xn, "")
+		obj.Glsl = obj_FxProfileGlsl(xn, "")
 	case "profile_COMMON":
 		obj.Common = obj_FxProfileCommon(xn, "")
 	}
 }
 
 func load_KxAxisLimits(xn *xmlx.Node, obj *nga.KxAxisLimits) {
-	pf := obj_ParamFloat(xn, "max")
+	pf := obj_ParamOrFloat(xn, "max")
 	if pf != nil {
 		obj.Max = *pf
 	}
-	if pf = obj_ParamFloat(xn, "min"); pf != nil {
+	if pf = obj_ParamOrFloat(xn, "min"); pf != nil {
 		obj.Min = *pf
 	}
 }
@@ -1368,7 +1372,7 @@ func load_Extra(xn *xmlx.Node, obj *nga.Extra) {
 }
 
 func load_ControllerSkin(xn *xmlx.Node, obj *nga.ControllerSkin) {
-	obj.Source = xas(xn, "source")
+	obj.Source.Set(xas(xn, "source"))
 	obj.BindShapeMatrix = *xm4(xn, "bind_shape_matrix")
 	if ci := obj_ControllerInputs(xn, "joints"); ci != nil {
 		obj.Joints = *ci
@@ -1486,8 +1490,8 @@ func load_GeometryBrepBox(xn *xmlx.Node, obj *nga.GeometryBrepBox) {
 	}
 }
 
-func load_ParamFloat2(xn *xmlx.Node, obj *nga.ParamFloat2) {
-	obj.Ref.Set(xs(xn, "param"))
+func load_ParamOrFloat2(xn *xmlx.Node, obj *nga.ParamOrFloat2) {
+	obj.Param.Set(xs(xn, "param"))
 	if fn := xcn(xn, "float2"); fn != nil {
 		arr_Floats(fn, 2, func(i int, f float64) {
 			obj.F[i] = f
@@ -1525,10 +1529,10 @@ func load_FxParamDefs(xn *xmlx.Node, obj *nga.FxParamDefs) {
 }
 
 func load_PxMaterialDef(xn *xmlx.Node, obj *nga.PxMaterialDef) {
-	var sf *nga.ScopedFloat
+	var sf *nga.SidFloat
 	if tcn := node_TechCommon(xn); tcn != nil {
-		for n, f := range map[string]*nga.ScopedFloat{"dynamic_friction": &obj.TC.DynamicFriction, "restitution": &obj.TC.Restitution, "static_friction": &obj.TC.StaticFriction} {
-			if sf = obj_ScopedFloat(tcn, n); sf != nil {
+		for n, f := range map[string]*nga.SidFloat{"dynamic_friction": &obj.TC.DynamicFriction, "restitution": &obj.TC.Restitution, "static_friction": &obj.TC.StaticFriction} {
+			if sf = obj_SidFloat(tcn, n); sf != nil {
 				*f = *sf
 			}
 		}
@@ -1545,7 +1549,7 @@ func load_PxRigidConstraintInst(xn *xmlx.Node, obj *nga.PxRigidConstraintInst) {
 }
 
 func load_GeometryBrepSurfaces(xn *xmlx.Node, obj *nga.GeometryBrepSurfaces) {
-	obj.Surfaces = objs_GeometryBrepSurface(xn, "surface")
+	obj.All = objs_GeometryBrepSurface(xn, "surface")
 }
 
 func load_Bool4(xn *xmlx.Node, obj *nga.Bool4) {
@@ -1570,13 +1574,13 @@ func load_FxCreate3D(xn *xmlx.Node, obj *nga.FxCreate3D) {
 }
 
 func load_GeometryBrepCurves(xn *xmlx.Node, obj *nga.GeometryBrepCurves) {
-	obj.Curves = objs_GeometryBrepCurve(xn, "curve")
+	obj.All = objs_GeometryBrepCurve(xn, "curve")
 }
 
 func load_PxRigidBodyDef(xn *xmlx.Node, obj *nga.PxRigidBodyDef) {
 	if tcn := node_TechCommon(xn); tcn != nil {
 		if rbc := obj_PxRigidBodyCommon(tcn, ""); rbc != nil {
-			obj.TC = *rbc
+			obj.TC.PxRigidBodyCommon = *rbc
 		}
 	}
 }
@@ -1599,14 +1603,14 @@ func load_GeometryBrepHyperbola(xn *xmlx.Node, obj *nga.GeometryBrepHyperbola) {
 }
 
 func load_PxRigidBodyCommon(xn *xmlx.Node, obj *nga.PxRigidBodyCommon) {
-	if sb := obj_ScopedBool(xn, "dynamic"); sb != nil {
+	if sb := obj_SidBool(xn, "dynamic"); sb != nil {
 		obj.Dynamic = *sb
 	}
-	obj.Mass = obj_ScopedFloat(xn, "mass")
+	obj.Mass = obj_SidFloat(xn, "mass")
 	if tn := xcn(xn, "mass_frame"); tn != nil {
 		obj.MassFrame = get_Transforms(tn)
 	}
-	obj.Inertia = obj_ScopedFloat3(xn, "inertia")
+	obj.Inertia = obj_SidFloat3(xn, "inertia")
 	obj.Shapes = objs_PxShape(xn, "shape")
 	if pm := obj_PxMaterial(xn, ""); pm != nil {
 		obj.Material = *pm
@@ -1665,12 +1669,12 @@ func load_KxLink(xn *xmlx.Node, obj *nga.KxLink) {
 	}
 }
 
-func load_FxProfileGlSl(xn *xmlx.Node, obj *nga.FxProfileGlSl) {
-	var ci *nga.FxProfileGlSlCodeInclude
+func load_FxProfileGlsl(xn *xmlx.Node, obj *nga.FxProfileGlsl) {
+	var ci *nga.FxProfileGlslCodeInclude
 	obj.Platform = xasd(xn, "platform", obj.Platform)
 	obj.Techniques = objs_FxTechniqueGlsl(xn, "technique")
 	for _, cn := range xcns(xn, "code", "include") {
-		if ci = obj_FxProfileGlSlCodeInclude(cn, ""); ci != nil {
+		if ci = obj_FxProfileGlslCodeInclude(cn, ""); ci != nil {
 			obj.CodesIncludes = append(obj.CodesIncludes, *ci)
 		}
 	}
@@ -1722,11 +1726,11 @@ func load_LightSpot(xn *xmlx.Node, obj *nga.LightSpot) {
 	if a := obj_LightAttenuation(xn, ""); a != nil {
 		obj.Attenuation = *a
 	}
-	sf := obj_ScopedFloat(xn, "falloff_exponent")
+	sf := obj_SidFloat(xn, "falloff_exponent")
 	if sf != nil {
 		obj.Falloff.Exponent = *sf
 	}
-	if sf = obj_ScopedFloat(xn, "falloff_angle"); sf != nil {
+	if sf = obj_SidFloat(xn, "falloff_angle"); sf != nil {
 		obj.Falloff.Angle = *sf
 	}
 }
@@ -1742,8 +1746,8 @@ func load_FxCreate2D(xn *xmlx.Node, obj *nga.FxCreate2D) {
 	obj.Unnormalized = (xcns(xn, "unnormalized") != nil)
 }
 
-func load_ParamBool(xn *xmlx.Node, obj *nga.ParamBool) {
-	obj.Ref.Set(xs(xn, "param"))
+func load_ParamOrBool(xn *xmlx.Node, obj *nga.ParamOrBool) {
+	obj.Param.Set(xs(xn, "param"))
 	obj.B = xb(xn, "bool")
 }
 
@@ -1763,24 +1767,24 @@ func load_KxAttachment(xn *xmlx.Node, obj *nga.KxAttachment) {
 		obj.Type = nga.KX_ATTACHMENT_TYPE_END
 	}
 	if obj.Type > 0 {
-		obj.Joint = xas(xn, "joint")
+		obj.Joint.Set(xas(xn, "joint"))
 		obj.Transforms = get_Transforms(xn)
 		obj.Link = obj_KxLink(xn, "link")
 	}
 }
 
 func load_AssetContributor(xn *xmlx.Node, obj *nga.AssetContributor) {
-	obj.Author = xs(xn, "author")
-	obj.AuthorEmail = xs(xn, "author_email")
-	obj.AuthorWebsite = xs(xn, "author_website")
-	obj.AuthoringTool = xs(xn, "authoring_tool")
-	obj.Comments = xs(xn, "comments")
-	obj.Copyright = xs(xn, "copyright")
-	obj.SourceData = xs(xn, "source_data")
+	// obj.Author = xs(xn, "author")
+	// obj.AuthorEmail = xs(xn, "author_email")
+	// obj.AuthorWebsite = xs(xn, "author_website")
+	// obj.AuthoringTool = xs(xn, "authoring_tool")
+	// obj.Comments = xs(xn, "comments")
+	// obj.Copyright = xs(xn, "copyright")
+	// obj.SourceData = xs(xn, "source_data")
 }
 
-func load_ParamSidRef(xn *xmlx.Node, obj *nga.ParamSidRef) {
-	obj.Ref.Set(xs(xn, "param"))
+func load_ParamOrRefSid(xn *xmlx.Node, obj *nga.ParamOrRefSid) {
+	obj.Param.Set(xs(xn, "param"))
 	obj.Sr.Set(xss(xn, "sidref", "SIDREF"))
 }
 

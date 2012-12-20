@@ -18,11 +18,16 @@ const (
 	//	where the value 1.0 is opaque, with each channel modulated independently.
 	FX_COLOR_TEXTURE_OPAQUE_RGB_ONE = 3
 
-	FX_PASS_PROGRAM_SHADER_STAGE_TESSELATION = 0
-	FX_PASS_PROGRAM_SHADER_STAGE_VERTEX      = 1
-	FX_PASS_PROGRAM_SHADER_STAGE_GEOMETRY    = 2
-	FX_PASS_PROGRAM_SHADER_STAGE_FRAGMENT    = 3
-	FX_PASS_PROGRAM_SHADER_STAGE_COMPUTE     = 4
+	//	This programmable shader is designed to execute in the Tessellation pipeline stage.
+	FX_PASS_PROGRAM_SHADER_STAGE_TESSELLATION = 0
+	//	This programmable shader is designed to execute in the Vertex pipeline stage.
+	FX_PASS_PROGRAM_SHADER_STAGE_VERTEX = 1
+	//	This programmable shader is designed to execute in the Geometry pipeline stage.
+	FX_PASS_PROGRAM_SHADER_STAGE_GEOMETRY = 2
+	//	This programmable shader is designed to execute in the Fragment pipeline stage.
+	FX_PASS_PROGRAM_SHADER_STAGE_FRAGMENT = 3
+	//	This programmable shader is designed to execute in the Compute pipeline stage.
+	FX_PASS_PROGRAM_SHADER_STAGE_COMPUTE = 4
 )
 
 //	Annotations communicate metadata from the Effect Runtime to the application only
@@ -148,9 +153,9 @@ type FxPassEvaluationTarget struct {
 	//	Indexes a sub-image inside a target surface, specifically: a unique cube face.
 	//	Must be one of the FX_CUBE_FACE_* enumerated constants.
 	CubeFace int
-	//	If set, this render target references a sampler parameter to determine which image to use.
-	SamplerParamRef string
-	//	If set, this render target directly instantiates a renderable image.
+	//	If set, Image is ignored; this render target references a sampler parameter to determine which image to use.
+	Sampler RefParam
+	//	If set (and Sampler is empty), this render target directly instantiates a renderable image.
 	Image *FxImageInst
 }
 
@@ -204,18 +209,18 @@ type FxPassProgramShader struct {
 
 //	Contains either code or an import reference.
 type FxPassProgramShaderSources struct {
-	//	The code or import reference.
-	S string
 	//	If true, S is an import reference; otherwise, S is code.
 	IsImportRef bool
+	//	The code or import reference.
+	S string
 }
 
 //	Represents a rendering state for a pass.
 type FxPassState struct {
-	//	If set, the value for this rendering state.
+	//	If set, Value is ignored; refers to a previously defined parameter providing the value for this rendering state.
+	Param RefParam
+	//	If set (and Param is empty), the value for this rendering state.
 	Value string
-	//	If set, refers to a previously defined parameter providing the value for this rendering state.
-	ParamRef string
 	//	State-specific optional index attribute.
 	Index float64
 }
@@ -230,10 +235,10 @@ type FxProfile struct {
 	HasExtras
 	//	NewParams
 	HasFxParamDefs
-	//	If set, GlSl must be nil, and this FxProfile represents a common, fixed-function shader pipeline.
+	//	If set, Glsl must be nil, and this FxProfile represents a common, fixed-function shader pipeline.
 	Common *FxProfileCommon
 	//	If set, Common must be nil, and this FxProfile represents an OpenGL Shading Language pipeline.
-	GlSl *FxProfileGlSl
+	Glsl *FxProfileGlsl
 }
 
 func NewProfile() (me *FxProfile) {
@@ -249,27 +254,27 @@ type FxProfileCommon struct {
 }
 
 //	This FX profile provides platform-specific declarations for the OpenGL Shading Language.
-type FxProfileGlSl struct {
+type FxProfileGlsl struct {
 	//	The type of platform. This is a vendor-defined character string that
 	//	indicates the platform or capability target for the technique. Defaults to "PC".
 	Platform string
 	//	GLSL shader sources
-	CodesIncludes []FxProfileGlSlCodeInclude
+	CodesIncludes []FxProfileGlslCodeInclude
 	//	Declares the techniques for this effect.
 	Techniques []*FxTechniqueGlsl
 }
 
 //	Constructor
-func NewFxProfileGlSl() (me *FxProfileGlSl) {
-	me = &FxProfileGlSl{Platform: "PC"}
+func NewFxProfileGlsl() (me *FxProfileGlsl) {
+	me = &FxProfileGlsl{Platform: "PC"}
 	return
 }
 
 //	GLSL shader sources
-type FxProfileGlSlCodeInclude struct {
+type FxProfileGlslCodeInclude struct {
 	//	Source code or include reference
-	ScopedString
-	//	Indicates whether ScopedString is an import reference (true) or source code (false).
+	SidString
+	//	Indicates whether SidString is an import reference (true) or source code (false).
 	IsInclude bool
 }
 
@@ -308,7 +313,7 @@ type FxTechniqueCommonBlinn struct {
 	//	Declares the color of light specularly reflected from the surface of this object.
 	Specular *FxColorOrTexture
 	//	Declares the specularity or roughness of the specular reflection lobe.
-	Shininess *ParamScopedFloat
+	Shininess *ParamOrSidFloat
 }
 
 //	Produces a constantly shaded surface that is independent of lighting.
@@ -319,14 +324,14 @@ type FxTechniqueCommonConstant struct {
 	Reflective *FxColorOrTexture
 	//	Declares the amount of perfect mirror reflection to be added to the reflected light
 	//	as a value between 0.0 and 1.0.
-	Reflectivity *ParamScopedFloat
+	Reflectivity *ParamOrSidFloat
 	//	Declares the color of perfectly refracted light.
 	Transparent *FxColorOrTexture
 	//	Declares the amount of perfectly refracted light added to the reflected color
 	//	as a scalar value between 0.0 and 1.0.
-	Transparency *ParamScopedFloat
+	Transparency *ParamOrSidFloat
 	//	Declares the index of refraction for perfectly refracted light as a single scalar index.
-	IndexOfRefraction *ParamScopedFloat
+	IndexOfRefraction *ParamOrSidFloat
 }
 
 //	Produces a constantly shaded surface that is independent of lighting.
@@ -361,7 +366,7 @@ type FxTexture struct {
 	//	Extras
 	HasExtras
 	//	References a previously defined FxSampler of type FX_SAMPLER_TYPE_2D.
-	Sampler2D string
+	Sampler2D RefParam
 	//	A semantic token, which will be referenced within FxMaterialBinding
 	//	to bind an array of texture-coordinates from a geometry instance to the sampler.
 	TexCoord string
@@ -443,6 +448,18 @@ func init() {
 			lib.SyncChanges()
 		}
 	})
+}
+
+//	Searches (in all LibFxEffectDefs contained in AllFxEffectDefLibs) for the FxEffectDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) FxEffectDef() (def *FxEffectDef) {
+	id := me.S()
+	for _, lib := range AllFxEffectDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
 }
 
 //	The underlying type of the global AllFxEffectDefLibs variable:

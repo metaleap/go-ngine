@@ -8,7 +8,6 @@ var (
 	//	This callback, set by the core package (or your custom package),
 	//	gets called before SyncChanges() proceeds with syncing.
 	OnBeforeSyncAll func()
-
 	//	This callback, set by the core package (or your custom package),
 	//	gets called after SyncChanges() has finished syncing.
 	OnAfterSyncAll func()
@@ -26,8 +25,8 @@ func sfmt(format string, fmtArgs ...interface{}) string {
 }
 
 //	Returns a ScopedFloat with the specified value and no Sid.
-func Scopedf(f float64) (sf *ScopedFloat) {
-	sf = &ScopedFloat{F: f}
+func SidF(f float64) (sf *SidFloat) {
+	sf = &SidFloat{F: f}
 	return
 }
 

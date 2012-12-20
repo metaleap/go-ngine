@@ -74,7 +74,7 @@ type BaseInst struct {
 	//	Extras
 	HasExtras
 	//	The Id of the resource definition referenced by this instance.
-	DefRef RefId
+	Def RefId
 }
 
 //	Provides a common base for resource libraries.

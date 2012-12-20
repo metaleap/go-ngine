@@ -20,9 +20,9 @@ type VisualSceneRendering struct {
 	HasSid
 	//	Extras
 	HasExtras
-	//	Refers to a node that contains a camera describing
+	//	Refers to a NodeDef that contains a camera describing
 	//	the viewpoint from which to render this compositing step. Optional.
-	CameraNode string
+	CameraNode RefId
 	//	Specifies which layer or layers to render in this compositing step while evaluating the scene.
 	Layers Layers
 	//	If set, specifies which effect to render in this compositing step while evaluating the scene.
@@ -109,6 +109,18 @@ func init() {
 			lib.SyncChanges()
 		}
 	})
+}
+
+//	Searches (in all LibVisualSceneDefs contained in AllVisualSceneDefLibs) for the VisualSceneDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) VisualSceneDef() (def *VisualSceneDef) {
+	id := me.S()
+	for _, lib := range AllVisualSceneDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
 }
 
 //	The underlying type of the global AllVisualSceneDefLibs variable:

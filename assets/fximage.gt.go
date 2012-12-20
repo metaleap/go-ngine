@@ -14,6 +14,7 @@ const (
 	FX_CREATE_FORMAT_HINT_CHANNELS_RGBA = iota
 	//	RGB color with shared exponent for HDR.
 	FX_CREATE_FORMAT_HINT_CHANNELS_RGBE = iota
+
 	//	Designer does not care as long as it provides "reasonable" precision and performance.
 	FX_CREATE_FORMAT_HINT_PRECISION_DEFAULT = 1
 	//	For integers, this typically represents 16 to 32 bits. For floating points, typically
@@ -27,6 +28,7 @@ const (
 	//	For integers, this typically represents 8 to 24 bits.
 	//	For floating points, typically 16 to 32 bits.
 	FX_CREATE_FORMAT_HINT_PRECISION_MID = iota
+
 	//	Format should support full floating-point ranges.
 	//	High precision is expected to be 32 bits.
 	//	Mid precision may be 16 to 32 bits.
@@ -42,6 +44,7 @@ const (
 	//	Format represents a decimal value that remains within the 0 to 1 range.
 	//	Implementation could be integer-fixed-point or floating point.
 	FX_CREATE_FORMAT_HINT_RANGE_UNORM = iota
+
 	//	Cube-map face target "X negative"
 	FX_CUBE_FACE_NEGATIVE_X = 0x8516
 	//	Cube-map face target "Y negative"
@@ -315,6 +318,18 @@ func init() {
 			lib.SyncChanges()
 		}
 	})
+}
+
+//	Searches (in all LibFxImageDefs contained in AllFxImageDefLibs) for the FxImageDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) FxImageDef() (def *FxImageDef) {
+	id := me.S()
+	for _, lib := range AllFxImageDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
 }
 
 //	The underlying type of the global AllFxImageDefLibs variable:

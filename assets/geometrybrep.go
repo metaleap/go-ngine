@@ -107,7 +107,7 @@ type GeometryBrepCurves struct {
 	//	Extras
 	HasExtras
 	//	A container for all 3D curves used by the edges of the parent B-rep structure.
-	Curves []*GeometryBrepCurve
+	All []*GeometryBrepCurve
 }
 
 //	Describes an unlimited cylindrical surface.
@@ -328,7 +328,7 @@ type GeometryBrepSurfaceCurves struct {
 	//	Extras
 	HasExtras
 	//	Pcurves are curves in the parametric space of the surface on which they lie.
-	Curves []*GeometryBrepCurve
+	All []*GeometryBrepCurve
 }
 
 //	Contains all surfaces that are used in a B-rep structure.
@@ -336,7 +336,7 @@ type GeometryBrepSurfaces struct {
 	//	Extras
 	HasExtras
 	//	A container for all surfaces used by the faces of the parent B-rep structure.
-	Surfaces []*GeometryBrepSurface
+	All []*GeometryBrepSurface
 }
 
 //	Describes a surface by extruding or revolving a curve.

@@ -19,7 +19,7 @@ type ControllerMorph struct {
 	//	Which blending method to use: true for relative blending, false for normalized blending.
 	Relative bool
 	//	Refers to the Geometry that describes the base mesh.
-	Source string
+	Source RefId
 	//	Input meshes (morph targets) to be blended.
 	Targets ControllerInputs
 }
@@ -43,9 +43,9 @@ type ControllerSkin struct {
 	VertexWeights IndexedInputs
 	//	Aggregates the per-joint information needed for this skin.
 	Joints ControllerInputs
-	//	A URI reference to the base mesh (a static mesh or a morphed mesh).
+	//	Refers to the base mesh (a static mesh or a morphed mesh).
 	//	This also provides the bind-shape of the skinned mesh.
-	Source string
+	Source RefId
 }
 
 //	Constructor
@@ -60,9 +60,9 @@ func NewControllerSkin() (me *ControllerSkin) {
 type ControllerDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
-	//	Declares this a mesh-morphing controller that deforms meshes and blends them.
+	//	If set, Skin must be nil; declares this a mesh-morphing controller that deforms meshes and blends them.
 	Morph *ControllerMorph
-	//	Declares this a vertex-skinning controller that transforms vertices
+	//	If set, Morph must be nil; declares this a vertex-skinning controller that transforms vertices
 	//	based on weighted influences to produce a smoothly changing mesh.
 	Skin *ControllerSkin
 }
@@ -119,6 +119,18 @@ func init() {
 			lib.SyncChanges()
 		}
 	})
+}
+
+//	Searches (in all LibControllerDefs contained in AllControllerDefLibs) for the ControllerDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) ControllerDef() (def *ControllerDef) {
+	id := me.S()
+	for _, lib := range AllControllerDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
 }
 
 //	The underlying type of the global AllControllerDefLibs variable:

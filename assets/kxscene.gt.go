@@ -23,9 +23,9 @@ type KxJointAxisBinding struct {
 	//	A reference to a transformation of a node.
 	Target RefSid
 	//	If set, Value is ignored. Specifies an axis of a kinematics model.
-	Axis ParamSidRef
+	Axis ParamOrRefSid
 	//	Only used if Axis is empty. Specifies a value of the axis.
-	Value ParamFloat
+	Value ParamOrFloat
 }
 
 //	Embodies the entire set of kinematics information that can be articulated from a resource.
@@ -95,6 +95,18 @@ func init() {
 			lib.SyncChanges()
 		}
 	})
+}
+
+//	Searches (in all LibKxSceneDefs contained in AllKxSceneDefLibs) for the KxSceneDef
+//	whose Id is referenced by me, returning the first match found.
+func (me RefId) KxSceneDef() (def *KxSceneDef) {
+	id := me.S()
+	for _, lib := range AllKxSceneDefLibs {
+		if def = lib.M[id]; def != nil {
+			return
+		}
+	}
+	return
 }
 
 //	The underlying type of the global AllKxSceneDefLibs variable:
