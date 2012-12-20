@@ -586,7 +586,7 @@ func xv(xn *xmlx.Node) (val interface{}) {
 			case "sampler_states":
 				val = obj_FxSamplerStates(xn, "")
 			case "SIDREF", "sidref":
-				val = nga.RefSid(xn.Value)
+				val = nga.NewRefSid(xn.Value)
 			default:
 				val = xn.Value
 			}

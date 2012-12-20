@@ -261,12 +261,12 @@ type FxProfileGlsl struct {
 	//	GLSL shader sources
 	CodesIncludes []FxProfileGlslCodeInclude
 	//	Declares the techniques for this effect.
-	Techniques []*FxTechniqueGlsl
+	Techniques FxGlslTechniques
 }
 
 //	Constructor
 func NewFxProfileGlsl() (me *FxProfileGlsl) {
-	me = &FxProfileGlsl{Platform: "PC"}
+	me = &FxProfileGlsl{Platform: "PC", Techniques: FxGlslTechniques{}}
 	return
 }
 
@@ -277,6 +277,9 @@ type FxProfileGlslCodeInclude struct {
 	//	Indicates whether SidString is an import reference (true) or source code (false).
 	IsInclude bool
 }
+
+//	A hash-table of GLSL techniques mapped to their scoped identifiers.
+type FxGlslTechniques map[string]*FxTechniqueGlsl
 
 //	Holds a description of the textures, samplers, shaders, parameters, and passes
 //	necessary for rendering this effect using one method.

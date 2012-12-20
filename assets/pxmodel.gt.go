@@ -6,15 +6,17 @@ type PxModelDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
 	//	Contains zero or more rigid bodies participating in this physics model.
-	RigidBodies []*PxRigidBodyDef
+	RigidBodies PxRigidBodyDefs
 	//	Contains zero or more rigid constraints participating in this physics model.
-	RigidConstraints []*PxRigidConstraintDef
+	RigidConstraints PxRigidConstraintDefs
 	//	Child physics models participating in this physics model, with optional property overrides.
 	Insts []*PxModelInst
 }
 
 //	Initialization
 func (me *PxModelDef) Init() {
+	me.RigidBodies = PxRigidBodyDefs{}
+	me.RigidConstraints = PxRigidConstraintDefs{}
 }
 
 //	Embeds a physics model inside another physics model or

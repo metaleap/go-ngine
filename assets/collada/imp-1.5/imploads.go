@@ -108,8 +108,12 @@ func load_GeometryBrepCylinder(xn *xmlx.Node, obj *nga.GeometryBrepCylinder) {
 
 func load_PxModelDef(xn *xmlx.Node, obj *nga.PxModelDef) {
 	obj.Insts = objs_PxModelInst(xn, "instance_physics_model")
-	obj.RigidBodies = objs_PxRigidBodyDef(xn, "rigid_body")
-	obj.RigidConstraints = objs_PxRigidConstraintDef(xn, "rigid_constraint")
+	for _, rb := range objs_PxRigidBodyDef(xn, "rigid_body") {
+		obj.RigidBodies[rb.Sid] = rb
+	}
+	for _, rc := range objs_PxRigidConstraintDef(xn, "rigid_constraint") {
+		obj.RigidConstraints[rc.Sid] = rc
+	}
 }
 
 func load_FxCreateCubeInitFrom(xn *xmlx.Node, obj *nga.FxCreateCubeInitFrom) {
@@ -1675,7 +1679,9 @@ func load_KxLink(xn *xmlx.Node, obj *nga.KxLink) {
 func load_FxProfileGlsl(xn *xmlx.Node, obj *nga.FxProfileGlsl) {
 	var ci *nga.FxProfileGlslCodeInclude
 	obj.Platform = xasd(xn, "platform", obj.Platform)
-	obj.Techniques = objs_FxTechniqueGlsl(xn, "technique")
+	for _, gt := range objs_FxTechniqueGlsl(xn, "technique") {
+		obj.Techniques[gt.Sid] = gt
+	}
 	for _, cn := range xcns(xn, "code", "include") {
 		if ci = obj_FxProfileGlslCodeInclude(cn, ""); ci != nil {
 			obj.CodesIncludes = append(obj.CodesIncludes, *ci)
@@ -1834,14 +1840,11 @@ func load_FxSamplerStates(xn *xmlx.Node, obj *nga.FxSamplerStates) {
 	obj.Wrapping = obj_FxSamplerWrapping(xn, "")
 }
 
-func load_RefId(xn *xmlx.Node, obj *nga.RefId) {
-	panic("load_RefId() should never be called in theory?!")
+func load_PxRigidBodyDefs(xn *xmlx.Node, obj *nga.PxRigidBodyDefs) {
 }
 
-func load_RefParam(xn *xmlx.Node, obj *nga.RefParam) {
-	panic("load_RefParam() should never be called in theory?!")
+func load_PxRigidConstraintDefs(xn *xmlx.Node, obj *nga.PxRigidConstraintDefs) {
 }
 
-func load_RefSid(xn *xmlx.Node, obj *nga.RefSid) {
-	panic("load_RefSid() should never be called in theory?!")
+func load_FxGlslTechniques(xn *xmlx.Node, obj *nga.FxGlslTechniques) {
 }

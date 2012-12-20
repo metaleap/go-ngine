@@ -73,6 +73,10 @@ type PxRigidBodyCommon struct {
 	Shapes []*PxShape
 }
 
+//	A hash-table of rigid body definitions mapped to their scoped identifiers.
+type PxRigidBodyDefs map[string]*PxRigidBodyDef
+
+//	Describes simulated bodies that do not deform.
 type PxRigidBodyDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef

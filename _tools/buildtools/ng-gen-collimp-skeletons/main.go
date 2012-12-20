@@ -108,7 +108,7 @@ func load_%s(xn *xmlx.Node, obj *nga.%s) {
 	has := []string{"Asset", "Extras", "FxParamDefs", "ID", "Inputs", "Name", "ParamDefs", "ParamInsts", "Sid", "Sources", "Techniques"}
 	flag.Parse()
 	for n, t := range nga.Types {
-		if canDirty = false; !(strings.HasPrefix(n, "Lib") || strings.HasPrefix(n, "Mesh") || strings.HasPrefix(n, "Base") || strings.HasSuffix(n, "Base") || strings.HasPrefix(n, "Has")) {
+		if canDirty = false; !(strings.HasPrefix(n, "Lib") || strings.HasPrefix(n, "Mesh") || strings.HasPrefix(n, "Base") || strings.HasSuffix(n, "Base") || strings.HasPrefix(n, "Has") || strings.HasPrefix(n, "Ref")) {
 			srcObjs += fmt.Sprintf(srcImpObj, n, n, n)
 			if _, ok = nga.Functions["New"+n]; ok && (n != "FxImageInitFrom") {
 				srcInits += fmt.Sprintf(srcImpInitCtor, n, n, n)

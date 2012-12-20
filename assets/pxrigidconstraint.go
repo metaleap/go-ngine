@@ -41,6 +41,9 @@ func NewPxRigidConstraintSpring() (me *PxRigidConstraintSpring) {
 	return
 }
 
+//	A hash-table of rigid constraint definitions mapped to their scoped identifiers.
+type PxRigidConstraintDefs map[string]*PxRigidConstraintDef
+
 //	Constrains rigid bodies to each other or to the world.
 type PxRigidConstraintDef struct {
 	//	Id, Name, Asset, Extras
