@@ -64,7 +64,8 @@ type CameraInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *CameraDef
 }
 
@@ -83,6 +84,7 @@ func newCameraDef(id string) (me *CameraDef) {
 }
 
 //	Creates and returns a new CameraInst instance referencing this CameraDef definition.
+//	Any CameraInst created by this method will have its Def field readily set to me.
 func (me *CameraDef) NewInst() (inst *CameraInst) {
 	inst = &CameraInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -90,9 +92,10 @@ func (me *CameraDef) NewInst() (inst *CameraInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct CameraDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct CameraDef
 //	according to the current me.DefRef value (by searching AllCameraDefLibs).
 //	Then returns me.Def.
+//	(Note, every CameraInst's Def is nil initially, unless it was created via CameraDef.NewInst().)
 func (me *CameraInst) EnsureDef() *CameraDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.CameraDef()

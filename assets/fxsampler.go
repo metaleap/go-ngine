@@ -6,7 +6,7 @@ import (
 
 const (
 	//	No MIP-mapped minification.
-	FX_SAMPLER_FILTER_NONE = 20
+	FX_SAMPLER_FILTER_MIP_NONE = 20
 	//	Bilinear filtering.
 	FX_SAMPLER_FILTER_NEAREST = 0x2600
 	//	Trilinear filtering.

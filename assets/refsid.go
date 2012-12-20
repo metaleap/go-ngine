@@ -6,6 +6,7 @@ import (
 
 //	References a previously defined parameter.
 type RefParam struct {
+	//	A parameter reference technically always refers to a Sid.
 	RefSid
 }
 

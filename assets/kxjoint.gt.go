@@ -56,7 +56,8 @@ type KxJointInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *KxJointDef
 }
 
@@ -75,6 +76,7 @@ func newKxJointDef(id string) (me *KxJointDef) {
 }
 
 //	Creates and returns a new KxJointInst instance referencing this KxJointDef definition.
+//	Any KxJointInst created by this method will have its Def field readily set to me.
 func (me *KxJointDef) NewInst() (inst *KxJointInst) {
 	inst = &KxJointInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -82,9 +84,10 @@ func (me *KxJointDef) NewInst() (inst *KxJointInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct KxJointDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct KxJointDef
 //	according to the current me.DefRef value (by searching AllKxJointDefLibs).
 //	Then returns me.Def.
+//	(Note, every KxJointInst's Def is nil initially, unless it was created via KxJointDef.NewInst().)
 func (me *KxJointInst) EnsureDef() *KxJointDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.KxJointDef()

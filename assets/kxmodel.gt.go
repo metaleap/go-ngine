@@ -66,7 +66,8 @@ type KxModelInst struct {
 	//	SetParams
 	HasParamInsts
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *KxModelDef
 	//	Bindings of inputs to kinematics parameters.
 	Bindings []*KxBinding
@@ -89,6 +90,7 @@ func newKxModelDef(id string) (me *KxModelDef) {
 }
 
 //	Creates and returns a new KxModelInst instance referencing this KxModelDef definition.
+//	Any KxModelInst created by this method will have its Def field readily set to me.
 func (me *KxModelDef) NewInst() (inst *KxModelInst) {
 	inst = &KxModelInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -96,9 +98,10 @@ func (me *KxModelDef) NewInst() (inst *KxModelInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct KxModelDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct KxModelDef
 //	according to the current me.DefRef value (by searching AllKxModelDefLibs).
 //	Then returns me.Def.
+//	(Note, every KxModelInst's Def is nil initially, unless it was created via KxModelDef.NewInst().)
 func (me *KxModelInst) EnsureDef() *KxModelDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.KxModelDef()

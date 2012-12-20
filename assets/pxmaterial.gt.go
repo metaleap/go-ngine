@@ -27,7 +27,8 @@ type PxMaterialInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *PxMaterialDef
 }
 
@@ -46,6 +47,7 @@ func newPxMaterialDef(id string) (me *PxMaterialDef) {
 }
 
 //	Creates and returns a new PxMaterialInst instance referencing this PxMaterialDef definition.
+//	Any PxMaterialInst created by this method will have its Def field readily set to me.
 func (me *PxMaterialDef) NewInst() (inst *PxMaterialInst) {
 	inst = &PxMaterialInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -53,9 +55,10 @@ func (me *PxMaterialDef) NewInst() (inst *PxMaterialInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct PxMaterialDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct PxMaterialDef
 //	according to the current me.DefRef value (by searching AllPxMaterialDefLibs).
 //	Then returns me.Def.
+//	(Note, every PxMaterialInst's Def is nil initially, unless it was created via PxMaterialDef.NewInst().)
 func (me *PxMaterialInst) EnsureDef() *PxMaterialDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.PxMaterialDef()

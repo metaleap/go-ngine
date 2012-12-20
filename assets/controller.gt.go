@@ -76,7 +76,8 @@ type ControllerInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *ControllerDef
 	//	Binds a specific material to this controller instantiation.
 	BindMaterial *MaterialBinding
@@ -100,6 +101,7 @@ func newControllerDef(id string) (me *ControllerDef) {
 }
 
 //	Creates and returns a new ControllerInst instance referencing this ControllerDef definition.
+//	Any ControllerInst created by this method will have its Def field readily set to me.
 func (me *ControllerDef) NewInst() (inst *ControllerInst) {
 	inst = &ControllerInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -107,9 +109,10 @@ func (me *ControllerDef) NewInst() (inst *ControllerInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct ControllerDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct ControllerDef
 //	according to the current me.DefRef value (by searching AllControllerDefLibs).
 //	Then returns me.Def.
+//	(Note, every ControllerInst's Def is nil initially, unless it was created via ControllerDef.NewInst().)
 func (me *ControllerInst) EnsureDef() *ControllerDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.ControllerDef()

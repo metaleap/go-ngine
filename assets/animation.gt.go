@@ -31,10 +31,10 @@ type AnimationSampler struct {
 	//	At least one of the Inputs must have its Semantic set to "INTERPOLATION".
 	HasInputs
 	//	Indicates what the sampled value should be before the first key.
-	//	Valid values are the ANIM_SAMPLER_BEHAVIOR_* enumerated constants.
+	//	Must be one of the ANIM_SAMPLER_BEHAVIOR_* enumerated constants (defaulting to UNDEFINED).
 	PreBehavior int
 	//	Indicates what the sampled value should be after the last key.
-	//	Valid values are the ANIM_SAMPLER_BEHAVIOR_* enumerated constants.
+	//	Must be one of the ANIM_SAMPLER_BEHAVIOR_* enumerated constants (defaulting to UNDEFINED).
 	PostBehavior int
 }
 
@@ -62,7 +62,8 @@ type AnimationInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *AnimationDef
 }
 
@@ -81,6 +82,7 @@ func newAnimationDef(id string) (me *AnimationDef) {
 }
 
 //	Creates and returns a new AnimationInst instance referencing this AnimationDef definition.
+//	Any AnimationInst created by this method will have its Def field readily set to me.
 func (me *AnimationDef) NewInst() (inst *AnimationInst) {
 	inst = &AnimationInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -88,9 +90,10 @@ func (me *AnimationDef) NewInst() (inst *AnimationInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct AnimationDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct AnimationDef
 //	according to the current me.DefRef value (by searching AllAnimationDefLibs).
 //	Then returns me.Def.
+//	(Note, every AnimationInst's Def is nil initially, unless it was created via AnimationDef.NewInst().)
 func (me *AnimationInst) EnsureDef() *AnimationDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.AnimationDef()

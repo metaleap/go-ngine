@@ -31,7 +31,8 @@ type PxSceneInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *PxSceneDef
 }
 
@@ -50,6 +51,7 @@ func newPxSceneDef(id string) (me *PxSceneDef) {
 }
 
 //	Creates and returns a new PxSceneInst instance referencing this PxSceneDef definition.
+//	Any PxSceneInst created by this method will have its Def field readily set to me.
 func (me *PxSceneDef) NewInst() (inst *PxSceneInst) {
 	inst = &PxSceneInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -57,9 +59,10 @@ func (me *PxSceneDef) NewInst() (inst *PxSceneInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct PxSceneDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct PxSceneDef
 //	according to the current me.DefRef value (by searching AllPxSceneDefLibs).
 //	Then returns me.Def.
+//	(Note, every PxSceneInst's Def is nil initially, unless it was created via PxSceneDef.NewInst().)
 func (me *PxSceneInst) EnsureDef() *PxSceneDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.PxSceneDef()

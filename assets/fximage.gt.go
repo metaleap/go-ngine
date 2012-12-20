@@ -272,7 +272,8 @@ type FxImageInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *FxImageDef
 }
 
@@ -299,6 +300,7 @@ func newFxImageDef(id string) (me *FxImageDef) {
 }
 
 //	Creates and returns a new FxImageInst instance referencing this FxImageDef definition.
+//	Any FxImageInst created by this method will have its Def field readily set to me.
 func (me *FxImageDef) NewInst() (inst *FxImageInst) {
 	inst = &FxImageInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -306,9 +308,10 @@ func (me *FxImageDef) NewInst() (inst *FxImageInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct FxImageDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct FxImageDef
 //	according to the current me.DefRef value (by searching AllFxImageDefLibs).
 //	Then returns me.Def.
+//	(Note, every FxImageInst's Def is nil initially, unless it was created via FxImageDef.NewInst().)
 func (me *FxImageInst) EnsureDef() *FxImageDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.FxImageDef()

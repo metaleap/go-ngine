@@ -25,7 +25,8 @@ type PxModelInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *PxModelDef
 	//	Points to the Id of a node in the visual scene. This allows a physics model to be instantiated
 	//	under a specific transform node, which will dictate the initial position and orientation,
@@ -58,6 +59,7 @@ func newPxModelDef(id string) (me *PxModelDef) {
 }
 
 //	Creates and returns a new PxModelInst instance referencing this PxModelDef definition.
+//	Any PxModelInst created by this method will have its Def field readily set to me.
 func (me *PxModelDef) NewInst() (inst *PxModelInst) {
 	inst = &PxModelInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -65,9 +67,10 @@ func (me *PxModelDef) NewInst() (inst *PxModelInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct PxModelDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct PxModelDef
 //	according to the current me.DefRef value (by searching AllPxModelDefLibs).
 //	Then returns me.Def.
+//	(Note, every PxModelInst's Def is nil initially, unless it was created via PxModelDef.NewInst().)
 func (me *PxModelInst) EnsureDef() *PxModelDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.PxModelDef()

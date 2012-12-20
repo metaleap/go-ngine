@@ -71,7 +71,8 @@ type VisualSceneInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *VisualSceneDef
 }
 
@@ -90,6 +91,7 @@ func newVisualSceneDef(id string) (me *VisualSceneDef) {
 }
 
 //	Creates and returns a new VisualSceneInst instance referencing this VisualSceneDef definition.
+//	Any VisualSceneInst created by this method will have its Def field readily set to me.
 func (me *VisualSceneDef) NewInst() (inst *VisualSceneInst) {
 	inst = &VisualSceneInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -97,9 +99,10 @@ func (me *VisualSceneDef) NewInst() (inst *VisualSceneInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct VisualSceneDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct VisualSceneDef
 //	according to the current me.DefRef value (by searching AllVisualSceneDefLibs).
 //	Then returns me.Def.
+//	(Note, every VisualSceneInst's Def is nil initially, unless it was created via VisualSceneDef.NewInst().)
 func (me *VisualSceneInst) EnsureDef() *VisualSceneDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.VisualSceneDef()

@@ -19,7 +19,8 @@ type PxForceFieldInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *PxForceFieldDef
 }
 
@@ -38,6 +39,7 @@ func newPxForceFieldDef(id string) (me *PxForceFieldDef) {
 }
 
 //	Creates and returns a new PxForceFieldInst instance referencing this PxForceFieldDef definition.
+//	Any PxForceFieldInst created by this method will have its Def field readily set to me.
 func (me *PxForceFieldDef) NewInst() (inst *PxForceFieldInst) {
 	inst = &PxForceFieldInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -45,9 +47,10 @@ func (me *PxForceFieldDef) NewInst() (inst *PxForceFieldInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct PxForceFieldDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct PxForceFieldDef
 //	according to the current me.DefRef value (by searching AllPxForceFieldDefLibs).
 //	Then returns me.Def.
+//	(Note, every PxForceFieldInst's Def is nil initially, unless it was created via PxForceFieldDef.NewInst().)
 func (me *PxForceFieldInst) EnsureDef() *PxForceFieldDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.PxForceFieldDef()

@@ -51,7 +51,8 @@ type KxSceneInst struct {
 	//	SetParams
 	HasParamInsts
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *KxSceneDef
 	//	Zero or more bindings of kinematics models to nodes.
 	ModelBindings []*KxModelBinding
@@ -76,6 +77,7 @@ func newKxSceneDef(id string) (me *KxSceneDef) {
 }
 
 //	Creates and returns a new KxSceneInst instance referencing this KxSceneDef definition.
+//	Any KxSceneInst created by this method will have its Def field readily set to me.
 func (me *KxSceneDef) NewInst() (inst *KxSceneInst) {
 	inst = &KxSceneInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -83,9 +85,10 @@ func (me *KxSceneDef) NewInst() (inst *KxSceneInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct KxSceneDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct KxSceneDef
 //	according to the current me.DefRef value (by searching AllKxSceneDefLibs).
 //	Then returns me.Def.
+//	(Note, every KxSceneInst's Def is nil initially, unless it was created via KxSceneDef.NewInst().)
 func (me *KxSceneInst) EnsureDef() *KxSceneDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.KxSceneDef()

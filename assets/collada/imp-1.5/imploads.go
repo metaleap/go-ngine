@@ -181,7 +181,11 @@ func load_FxSamplerFiltering(xn *xmlx.Node, obj *nga.FxSamplerFiltering) {
 		case "NEAREST":
 			*i = nga.FX_SAMPLER_FILTER_NEAREST
 		case "NONE":
-			*i = nga.FX_SAMPLER_FILTER_NONE
+			if n == "mipfilter" {
+				*i = nga.FX_SAMPLER_FILTER_MIP_NONE
+			} else {
+				*i = nga.FX_SAMPLER_FILTER_NEAREST
+			}
 		default:
 			*i = nga.FX_SAMPLER_FILTER_LINEAR
 		}

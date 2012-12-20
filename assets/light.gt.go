@@ -110,7 +110,8 @@ type LightInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *LightDef
 }
 
@@ -129,6 +130,7 @@ func newLightDef(id string) (me *LightDef) {
 }
 
 //	Creates and returns a new LightInst instance referencing this LightDef definition.
+//	Any LightInst created by this method will have its Def field readily set to me.
 func (me *LightDef) NewInst() (inst *LightInst) {
 	inst = &LightInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -136,9 +138,10 @@ func (me *LightDef) NewInst() (inst *LightInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct LightDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct LightDef
 //	according to the current me.DefRef value (by searching AllLightDefLibs).
 //	Then returns me.Def.
+//	(Note, every LightInst's Def is nil initially, unless it was created via LightDef.NewInst().)
 func (me *LightInst) EnsureDef() *LightDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.LightDef()

@@ -128,7 +128,8 @@ type GeometryInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *GeometryDef
 	//	Binds material symbols to material instances. This allows a single geometry
 	//	to be instantiated into a scene multiple times each with a different appearance.
@@ -150,6 +151,7 @@ func newGeometryDef(id string) (me *GeometryDef) {
 }
 
 //	Creates and returns a new GeometryInst instance referencing this GeometryDef definition.
+//	Any GeometryInst created by this method will have its Def field readily set to me.
 func (me *GeometryDef) NewInst() (inst *GeometryInst) {
 	inst = &GeometryInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -157,9 +159,10 @@ func (me *GeometryDef) NewInst() (inst *GeometryInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct GeometryDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct GeometryDef
 //	according to the current me.DefRef value (by searching AllGeometryDefLibs).
 //	Then returns me.Def.
+//	(Note, every GeometryInst's Def is nil initially, unless it was created via GeometryDef.NewInst().)
 func (me *GeometryInst) EnsureDef() *GeometryDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.GeometryDef()

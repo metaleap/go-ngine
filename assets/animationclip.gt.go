@@ -24,7 +24,8 @@ type AnimationClipInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *AnimationClipDef
 }
 
@@ -43,6 +44,7 @@ func newAnimationClipDef(id string) (me *AnimationClipDef) {
 }
 
 //	Creates and returns a new AnimationClipInst instance referencing this AnimationClipDef definition.
+//	Any AnimationClipInst created by this method will have its Def field readily set to me.
 func (me *AnimationClipDef) NewInst() (inst *AnimationClipInst) {
 	inst = &AnimationClipInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -50,9 +52,10 @@ func (me *AnimationClipDef) NewInst() (inst *AnimationClipInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct AnimationClipDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct AnimationClipDef
 //	according to the current me.DefRef value (by searching AllAnimationClipDefLibs).
 //	Then returns me.Def.
+//	(Note, every AnimationClipInst's Def is nil initially, unless it was created via AnimationClipDef.NewInst().)
 func (me *AnimationClipInst) EnsureDef() *AnimationClipDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.AnimationClipDef()

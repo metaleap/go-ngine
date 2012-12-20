@@ -35,7 +35,8 @@ type FxMaterialInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *FxMaterialDef
 	//	Which symbol defined from within the geometry this material binds to.
 	Symbol string
@@ -60,6 +61,7 @@ func newFxMaterialDef(id string) (me *FxMaterialDef) {
 }
 
 //	Creates and returns a new FxMaterialInst instance referencing this FxMaterialDef definition.
+//	Any FxMaterialInst created by this method will have its Def field readily set to me.
 func (me *FxMaterialDef) NewInst() (inst *FxMaterialInst) {
 	inst = &FxMaterialInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -67,9 +69,10 @@ func (me *FxMaterialDef) NewInst() (inst *FxMaterialInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct FxMaterialDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct FxMaterialDef
 //	according to the current me.DefRef value (by searching AllFxMaterialDefLibs).
 //	Then returns me.Def.
+//	(Note, every FxMaterialInst's Def is nil initially, unless it was created via FxMaterialDef.NewInst().)
 func (me *FxMaterialInst) EnsureDef() *FxMaterialDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.FxMaterialDef()

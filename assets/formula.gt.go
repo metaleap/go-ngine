@@ -44,7 +44,8 @@ type FormulaInst struct {
 	//	SetParams
 	HasParamInsts
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *FormulaDef
 }
 
@@ -64,6 +65,7 @@ func newFormulaDef(id string) (me *FormulaDef) {
 }
 
 //	Creates and returns a new FormulaInst instance referencing this FormulaDef definition.
+//	Any FormulaInst created by this method will have its Def field readily set to me.
 func (me *FormulaDef) NewInst() (inst *FormulaInst) {
 	inst = &FormulaInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -71,9 +73,10 @@ func (me *FormulaDef) NewInst() (inst *FormulaInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct FormulaDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct FormulaDef
 //	according to the current me.DefRef value (by searching AllFormulaDefLibs).
 //	Then returns me.Def.
+//	(Note, every FormulaInst's Def is nil initially, unless it was created via FormulaDef.NewInst().)
 func (me *FormulaInst) EnsureDef() *FormulaDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.FormulaDef()

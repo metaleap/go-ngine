@@ -7,27 +7,27 @@ import (
 const (
 	//	Takes the transparency information from the color's alpha channel,
 	//	where the value 1.0 is opaque.
-	FX_COLOR_TEXTURE_OPAQUE_A_ZERO = 0
+	FX_COLOR_TEXTURE_OPAQUE_A_ZERO = 1
 	//	Takes the transparency information from the color's red, green, and blue channels,
 	//	where the value 0.0 is opaque, with each channel modulated independently.
-	FX_COLOR_TEXTURE_OPAQUE_A_ONE = 1
+	FX_COLOR_TEXTURE_OPAQUE_A_ONE = iota
 	//	Takes the transparency information from the color's alpha channel,
 	//	where the value 0.0 is opaque.
-	FX_COLOR_TEXTURE_OPAQUE_RGB_ZERO = 2
+	FX_COLOR_TEXTURE_OPAQUE_RGB_ZERO = iota
 	//	Takes the transparency information from the color's red, green, and blue channels,
 	//	where the value 1.0 is opaque, with each channel modulated independently.
-	FX_COLOR_TEXTURE_OPAQUE_RGB_ONE = 3
+	FX_COLOR_TEXTURE_OPAQUE_RGB_ONE = iota
 
 	//	This programmable shader is designed to execute in the Tessellation pipeline stage.
-	FX_PASS_PROGRAM_SHADER_STAGE_TESSELLATION = 0
+	FX_PASS_PROGRAM_SHADER_STAGE_TESSELLATION = 1
 	//	This programmable shader is designed to execute in the Vertex pipeline stage.
-	FX_PASS_PROGRAM_SHADER_STAGE_VERTEX = 1
+	FX_PASS_PROGRAM_SHADER_STAGE_VERTEX = iota
 	//	This programmable shader is designed to execute in the Geometry pipeline stage.
-	FX_PASS_PROGRAM_SHADER_STAGE_GEOMETRY = 2
+	FX_PASS_PROGRAM_SHADER_STAGE_GEOMETRY = iota
 	//	This programmable shader is designed to execute in the Fragment pipeline stage.
-	FX_PASS_PROGRAM_SHADER_STAGE_FRAGMENT = 3
+	FX_PASS_PROGRAM_SHADER_STAGE_FRAGMENT = iota
 	//	This programmable shader is designed to execute in the Compute pipeline stage.
-	FX_PASS_PROGRAM_SHADER_STAGE_COMPUTE = 4
+	FX_PASS_PROGRAM_SHADER_STAGE_COMPUTE = iota
 )
 
 //	Annotations communicate metadata from the Effect Runtime to the application only
@@ -399,7 +399,8 @@ type FxEffectInst struct {
 	//	SetParams
 	HasParamInsts
 	//	A pointer to the resource definition referenced by this instance.
-	//	Is nil by default and meant to be set ONLY by the EnsureDef() method (which uses BaseInst.DefRef to find it).
+	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
+	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *FxEffectDef
 	//	Platform-specific hints of which techniques to use in this effect.
 	TechniqueHints []*FxEffectInstTechniqueHint
@@ -432,6 +433,7 @@ func newFxEffectDef(id string) (me *FxEffectDef) {
 }
 
 //	Creates and returns a new FxEffectInst instance referencing this FxEffectDef definition.
+//	Any FxEffectInst created by this method will have its Def field readily set to me.
 func (me *FxEffectDef) NewInst() (inst *FxEffectInst) {
 	inst = &FxEffectInst{Def: me}
 	inst.DefRef = RefId(me.Id)
@@ -439,9 +441,10 @@ func (me *FxEffectDef) NewInst() (inst *FxEffectInst) {
 	return
 }
 
-//	If me is dirty or me.Def is nil, sets me.Def to the correct FxEffectDef
+//	If me is "dirty" or me.Def is nil, sets me.Def to the correct FxEffectDef
 //	according to the current me.DefRef value (by searching AllFxEffectDefLibs).
 //	Then returns me.Def.
+//	(Note, every FxEffectInst's Def is nil initially, unless it was created via FxEffectDef.NewInst().)
 func (me *FxEffectInst) EnsureDef() *FxEffectDef {
 	if (me.Def == nil) || me.dirty {
 		me.Def = me.DefRef.FxEffectDef()
