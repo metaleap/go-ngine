@@ -9,7 +9,7 @@ type FxTextureOpaque int
 const (
 	//	Takes the transparency information from the color's alpha channel,
 	//	where the value 1.0 is opaque. This is the default.
-	FxTextureOpaqueA1 = iota
+	FxTextureOpaqueA1 FxTextureOpaque = iota
 	//	Takes the transparency information from the color's alpha channel,
 	//	where the value 0.0 is opaque.
 	FxTextureOpaqueA0
