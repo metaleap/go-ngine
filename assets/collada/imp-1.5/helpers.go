@@ -52,20 +52,20 @@ func arr_Uints(xn *xmlx.Node, l int, s func(int, uint64)) {
 	}
 }
 
-func get_CubeFace(xn *xmlx.Node) (cf int) {
+func get_CubeFace(xn *xmlx.Node) (cf nga.FxCubeFace) {
 	switch strings.ToUpper(xas(xn, "face")) {
-	case "NEGATIVE_X":
-		cf = nga.FX_CUBE_FACE_NEGATIVE_X
-	case "POSITIVE_Y":
-		cf = nga.FX_CUBE_FACE_POSITIVE_Y
 	case "NEGATIVE_Y":
-		cf = nga.FX_CUBE_FACE_NEGATIVE_Y
-	case "POSITIVE_Z":
-		cf = nga.FX_CUBE_FACE_POSITIVE_Z
+		cf = nga.FxCubeFaceNegativeY
+	case "POSITIVE_Y":
+		cf = nga.FxCubeFacePositiveY
 	case "NEGATIVE_Z":
-		cf = nga.FX_CUBE_FACE_NEGATIVE_Z
+		cf = nga.FxCubeFaceNegativeZ
+	case "POSITIVE_Z":
+		cf = nga.FxCubeFacePositiveZ
+	case "NEGATIVE_X":
+		cf = nga.FxCubeFaceNegativeX
 	default:
-		cf = nga.FX_CUBE_FACE_POSITIVE_X
+		cf = nga.FxCubeFacePositiveX
 	}
 	return
 }
@@ -91,7 +91,7 @@ func get_ParamRef(xn *xmlx.Node, name string) (v string) {
 func get_Transforms(xn *xmlx.Node) (ts []*nga.Transform) {
 	for _, cn := range xn.Children {
 		if cn.Type == xmlx.NT_ELEMENT {
-			if t := obj_Transform(cn, ""); (t != nil) && (t.Type > 0) {
+			if t := obj_Transform(cn, ""); (t != nil) && (t.Kind > 0) {
 				ts = append(ts, t)
 			}
 		}

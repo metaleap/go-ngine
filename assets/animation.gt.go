@@ -1,18 +1,20 @@
 package assets
 
+type AnimSamplerBehavior int
+
 const (
 	//	The before and after behaviors are not defined.
-	ANIM_SAMPLER_BEHAVIOR_UNDEFINED = 0
+	AnimSamplerBehaviorUndefined AnimSamplerBehavior = iota
 	//	The value for the first (PreBehavior) or last (PostBehavior) is returned.
-	ANIM_SAMPLER_BEHAVIOR_CONSTANT = iota
+	AnimSamplerBehaviorConstant
 	//	The key is mapped in the [first_key , last_key] interval so that the animation cycles.
-	ANIM_SAMPLER_BEHAVIOR_CYCLE = iota
+	AnimSamplerBehaviorCycle
 	//	The animation continues indefinitely.
-	ANIM_SAMPLER_BEHAVIOR_CYCLE_RELATIVE = iota
+	AnimSamplerBehaviorCycleRelative
 	//	The value follows the line given by the last two keys in the sample.
-	ANIM_SAMPLER_BEHAVIOR_GRADIENT = iota
+	AnimSamplerBehaviorGradient
 	//	The key is mapped in the [first_key , last_key] interval so that the animation oscillates.
-	ANIM_SAMPLER_BEHAVIOR_OSCILLATE = iota
+	AnimSamplerBehaviorOscillate
 )
 
 //	Declares an output channel of an animation.
@@ -31,11 +33,11 @@ type AnimationSampler struct {
 	//	At least one of the Inputs must have its Semantic set to "INTERPOLATION".
 	HasInputs
 	//	Indicates what the sampled value should be before the first key.
-	//	Must be one of the ANIM_SAMPLER_BEHAVIOR_* enumerated constants (defaulting to UNDEFINED).
-	PreBehavior int
+	//	Must be one of the AnimSamplerBehavior* enumerated constants (defaulting to AnimSamplerBehaviorUndefined).
+	PreBehavior AnimSamplerBehavior
 	//	Indicates what the sampled value should be after the last key.
-	//	Must be one of the ANIM_SAMPLER_BEHAVIOR_* enumerated constants (defaulting to UNDEFINED).
-	PostBehavior int
+	//	Must be one of the AnimSamplerBehavior* enumerated constants (defaulting to AnimSamplerBehaviorUndefined).
+	PostBehavior AnimSamplerBehavior
 }
 
 //	Categorizes the declaration of animation information.

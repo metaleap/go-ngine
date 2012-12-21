@@ -1,10 +1,14 @@
 package assets
 
+//	Categorizes the kind of a KxJoint.
+type KxJointKind int
+
 const (
+	_ = iota
 	//	Defines a single translational degree of freedom of a joint.
-	KX_JOINT_TYPE_PRISMATIC = 1
+	KxJointKindPrismatic KxJointKind = iota
 	//	Defines a single rotational degree of freedom of a joint.
-	KX_JOINT_TYPE_REVOLUTE = iota
+	KxJointKindRevolute
 )
 
 //	Primitive (simple) joints are joints with one degree of freedom (one given axis) and
@@ -13,8 +17,8 @@ const (
 type KxJoint struct {
 	//	Sid
 	HasSid
-	//	Must be one of the KX_JOINT_TYPE_* enumerated constants.
-	Type int
+	//	Must be one of the KxJointKind* enumerated constants.
+	Kind KxJointKind
 	//	Specifies the axis of the degree of freedom.
 	Axis struct {
 		//	Name

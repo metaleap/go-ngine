@@ -1,62 +1,82 @@
 package assets
 
+//	Categorizes the Channels of a FxCreateFormatHint.
+type FxFormatChannels int
+
 const (
+	_ = iota
 	//	Depth map, often used for displacement, parellax, relief, or shadow mapping.
-	FX_CREATE_FORMAT_HINT_CHANNELS_D = 1
+	FxFormatChannelsD FxFormatChannels = iota
 	//	Luminance map, often used for light mapping.
-	FX_CREATE_FORMAT_HINT_CHANNELS_L = iota
+	FxFormatChannelsL
 	//	Luminance with alpha map, often used for light mapping.
-	FX_CREATE_FORMAT_HINT_CHANNELS_LA = iota
+	FxFormatChannelsLa
 	//	RGB color map
-	FX_CREATE_FORMAT_HINT_CHANNELS_RGB = iota
+	FxFormatChannelsRgb
 	//	RGB color with alpha map. Often used for color plus transparency
 	//	or other things packed into channel A, such as specular power.
-	FX_CREATE_FORMAT_HINT_CHANNELS_RGBA = iota
+	FxFormatChannelsRgba
 	//	RGB color with shared exponent for HDR.
-	FX_CREATE_FORMAT_HINT_CHANNELS_RGBE = iota
+	FxFormatChannelsRgbe
+)
 
+//	Categorizes the Precision of a FxCreateFormatHint.
+type FxFormatPrecision int
+
+const (
 	//	Designer does not care as long as it provides "reasonable" precision and performance.
-	FX_CREATE_FORMAT_HINT_PRECISION_DEFAULT = 1
+	FxFormatPrecisionDefault FxFormatPrecision = iota
 	//	For integers, this typically represents 16 to 32 bits. For floating points, typically
 	//	24 to 32 bits.
-	FX_CREATE_FORMAT_HINT_PRECISION_HIGH = iota
+	FxFormatPrecisionHigh
 	//	For integers, this typically represents 8 bits. For floating points, typically 16 bits.
-	FX_CREATE_FORMAT_HINT_PRECISION_LOW = iota
+	FxFormatPrecisionLow
 	//	Typically 32 bits or 64 bits if available. 64 bits has been separated into its own category
 	//	beyond HIGH because it typically has significant performance impact.
-	FX_CREATE_FORMAT_HINT_PRECISION_MAX = iota
+	FxFormatPrecisionMax
 	//	For integers, this typically represents 8 to 24 bits.
 	//	For floating points, typically 16 to 32 bits.
-	FX_CREATE_FORMAT_HINT_PRECISION_MID = iota
+	FxFormatPrecisionMid
+)
 
+//	Categorizes the Range of a FxCreateFormatHint.
+type FxFormatRange int
+
+const (
+	_ = iota
 	//	Format should support full floating-point ranges.
 	//	High precision is expected to be 32 bits.
 	//	Mid precision may be 16 to 32 bits.
 	//	Low precision is expected to be 16 bits.
-	FX_CREATE_FORMAT_HINT_RANGE_FLOAT = 1
+	FxFormatRangeFloat FxFormatRange = iota
 	//	Format represents signed integer numbers. For example, 8 bits is -128 to 127.
-	FX_CREATE_FORMAT_HINT_RANGE_SINT = iota
+	FxFormatRangeSint
 	//	Format represents a decimal value that remains within the -1 to 1 range.
 	//	Implementation could be integer-fixed-point or floating point.
-	FX_CREATE_FORMAT_HINT_RANGE_SNORM = iota
+	FxFormatRangeSnorm
 	//	Format represent unsigned integer numbers. For example, 8 bits is 0 to 255.
-	FX_CREATE_FORMAT_HINT_RANGE_UINT = iota
+	FxFormatRangeUint
 	//	Format represents a decimal value that remains within the 0 to 1 range.
 	//	Implementation could be integer-fixed-point or floating point.
-	FX_CREATE_FORMAT_HINT_RANGE_UNORM = iota
+	FxFormatRangeUnorm
+)
 
-	//	Cube-map face target "X negative"
-	FX_CUBE_FACE_NEGATIVE_X = 0x8516
-	//	Cube-map face target "Y negative"
-	FX_CUBE_FACE_NEGATIVE_Y = 0x8518
-	//	Cube-map face target "Z negative"
-	FX_CUBE_FACE_NEGATIVE_Z = 0x851A
-	//	Cube-map face target "X positive"
-	FX_CUBE_FACE_POSITIVE_X = 0x8515
-	//	Cube-map face target "Y positive"
-	FX_CUBE_FACE_POSITIVE_Y = 0x8517
-	//	Cube-map face target "Z positive"
-	FX_CUBE_FACE_POSITIVE_Z = 0x8519
+//	Categorizes one of the six sub-images (faces) in a cube-map.
+type FxCubeFace int
+
+const (
+	//	Cube-map face "X negative"
+	FxCubeFaceNegativeX FxCubeFace = 0x8516
+	//	Cube-map face "Y negative"
+	FxCubeFaceNegativeY FxCubeFace = 0x8518
+	//	Cube-map face "Z negative"
+	FxCubeFaceNegativeZ FxCubeFace = 0x851A
+	//	Cube-map face "X positive"
+	FxCubeFacePositiveX FxCubeFace = 0x8515
+	//	Cube-map face "Y positive"
+	FxCubeFacePositiveY FxCubeFace = 0x8517
+	//	Cube-map face "Z positive"
+	FxCubeFacePositiveZ FxCubeFace = 0x8519
 )
 
 //	Fields shared by FxCreate2D, FxCreate3D and FxCreateCube
@@ -152,8 +172,8 @@ type FxCreateCubeInitFrom struct {
 	//	Raw or RefUrl, ArrayIndex and MipIndex
 	FxCreateInitFrom
 	//	Specifies the cube-map face within the MIP that is to be initialized.
-	//	Must be one of the FX_CUBE_FACE_* enumerated constants.
-	Face int
+	//	Must be one of the FxCubeFace* enumerated constants.
+	Face FxCubeFace
 }
 
 //	Describes the formatting or memory layout expected of an FxImageDef asset.
@@ -170,16 +190,16 @@ type FxCreateFormat struct {
 //	Describes features and characteristics to select an appropriate format for image creation.
 type FxCreateFormatHint struct {
 	//	Describes the per-texel layout of the format.
-	//	Must be one of the FX_CREATE_FORMAT_HINT_CHANNELS_* enumerated constants.
-	Channels int
+	//	Must be one of the FxFormatChannels* enumerated constants.
+	Channels FxFormatChannels
 	//	Describes the range of texel channel values. Each channel represents a range of values.
 	//	Some example ranges are signed or unsigned integers, or are within a clamped range
 	//	such as 0.0f to 1.0f, or are a high dynamic range via floating point.
-	//	Must be one of the FX_CREATE_FORMAT_HINT_RANGE_* enumerated constants.
-	Range int
+	//	Must be one of the FxFormatRange* enumerated constants.
+	Range FxFormatRange
 	//	Identifies the precision of the texel channel value.
-	//	Must be one of the FX_CREATE_FORMAT_HINT_PRECISION_* enumerated constants.
-	Precision int
+	//	Must be one of the FxFormatPrecision* enumerated constants.
+	Precision FxFormatPrecision
 	//	Optional custom / application-specific color-space information.
 	Space string
 }

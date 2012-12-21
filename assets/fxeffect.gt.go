@@ -4,30 +4,37 @@ import (
 	ugfx "github.com/metaleap/go-util/gfx"
 )
 
+type FxTextureOpaque int
+
 const (
 	//	Takes the transparency information from the color's alpha channel,
-	//	where the value 1.0 is opaque.
-	FX_COLOR_TEXTURE_OPAQUE_A_ZERO = 1
-	//	Takes the transparency information from the color's red, green, and blue channels,
-	//	where the value 0.0 is opaque, with each channel modulated independently.
-	FX_COLOR_TEXTURE_OPAQUE_A_ONE = iota
+	//	where the value 1.0 is opaque. This is the default.
+	FxTextureOpaqueA1 = iota
 	//	Takes the transparency information from the color's alpha channel,
 	//	where the value 0.0 is opaque.
-	FX_COLOR_TEXTURE_OPAQUE_RGB_ZERO = iota
+	FxTextureOpaqueA0
+	//	Takes the transparency information from the color's red, green, and blue channels,
+	//	where the value 0.0 is opaque, with each channel modulated independently.
+	FxTextureOpaqueRgb0
 	//	Takes the transparency information from the color's red, green, and blue channels,
 	//	where the value 1.0 is opaque, with each channel modulated independently.
-	FX_COLOR_TEXTURE_OPAQUE_RGB_ONE = iota
+	FxTextureOpaqueRgb1
+)
 
+type FxShaderStage int
+
+const (
+	_ = iota
 	//	This programmable shader is designed to execute in the Tessellation pipeline stage.
-	FX_PASS_PROGRAM_SHADER_STAGE_TESSELLATION = 1
+	FxShaderStageTessellation FxShaderStage = iota
 	//	This programmable shader is designed to execute in the Vertex pipeline stage.
-	FX_PASS_PROGRAM_SHADER_STAGE_VERTEX = iota
+	FxShaderStageVertex
 	//	This programmable shader is designed to execute in the Geometry pipeline stage.
-	FX_PASS_PROGRAM_SHADER_STAGE_GEOMETRY = iota
+	FxShaderStageGeometry
 	//	This programmable shader is designed to execute in the Fragment pipeline stage.
-	FX_PASS_PROGRAM_SHADER_STAGE_FRAGMENT = iota
+	FxShaderStageFragment
 	//	This programmable shader is designed to execute in the Compute pipeline stage.
-	FX_PASS_PROGRAM_SHADER_STAGE_COMPUTE = iota
+	FxShaderStageCompute
 )
 
 //	Annotations communicate metadata from the Effect Runtime to the application only
@@ -39,17 +46,25 @@ type FxAnnotation struct {
 	Value interface{}
 }
 
+//	Used to describe the literal color of an FxColorOrTexture.
+type FxColor struct {
+	//	Sid
+	HasSid
+	//	Describes the literal color of the parent FxColorOrTexture.
+	Color ugfx.Rgba32
+}
+
 //	Describes color attributes of fixed-function shaders inside FxProfileCommon effects.
 type FxColorOrTexture struct {
 	//	Specifies from which channel to take transparency information.
-	//	Must be one of the FX_COLOR_TEXTURE_OPAQUE_* enumerated constants.
-	Opaque int
-	//	If set, describes he literal color of this value.
-	Color *ugfx.Rgba32
+	//	Must be one of the FxTextureOpaque* enumerated constants.
+	Opaque FxTextureOpaque
 	//	If set, refers to a previously-defined parameter in the current scope that provides
 	//	four float values describing the literal color of this value.
 	ParamRef RefParam
-	//	If set, refers to a previously-defined FxSampler with a Type of FX_SAMPLER_TYPE_2D.
+	//	If set, describes he literal color of this value.
+	Color *FxColor
+	//	If set, refers to a previously-defined FxSampler with a Kind of FxSamplerKind2D.
 	Texture *FxTexture
 }
 
@@ -162,8 +177,8 @@ type FxPassEvaluationTarget struct {
 	//	Indexes a sub-image inside a target surface, specifically: a single MIP-map level.
 	Mip uint64
 	//	Indexes a sub-image inside a target surface, specifically: a unique cube face.
-	//	Must be one of the FX_CUBE_FACE_* enumerated constants.
-	CubeFace int
+	//	Must be one of the FxCubeFace* enumerated constants.
+	CubeFace FxCubeFace
 	//	If set, Image is ignored; this render target references a sampler parameter to determine which image to use.
 	Sampler RefParam
 	//	If set (and Sampler is empty), this render target directly instantiates a renderable image.
@@ -212,8 +227,8 @@ type FxPassProgramShader struct {
 	//	Extras
 	HasExtras
 	//	In which pipeline stage this programmable shader is designed to execute.
-	//	Must be one of the FX_PASS_PROGRAM_SHADER_STAGE_* enumerated constants.
-	Stage int
+	//	Must be one of the FxShaderStage* enumerated constants.
+	Stage FxShaderStage
 	//	Concatenates the source code for the shader from one or more sources.
 	Sources []FxPassProgramShaderSources
 }
@@ -379,7 +394,7 @@ type FxTechniqueGlsl struct {
 type FxTexture struct {
 	//	Extras
 	HasExtras
-	//	References a previously defined FxSampler of type FX_SAMPLER_TYPE_2D.
+	//	References a previously defined FxSampler of Kind FxSamplerKind2D.
 	Sampler2D RefParam
 	//	A semantic token, which will be referenced within FxMaterialBinding
 	//	to bind an array of texture-coordinates from a geometry instance to the sampler.

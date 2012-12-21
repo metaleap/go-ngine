@@ -1,18 +1,5 @@
 package assets
 
-const (
-	//	Defines the base frame for kinematics calculation.
-	KX_FRAME_TYPE_ORIGIN = 1
-	//	Defines the frame at the end of the kinematics chain.
-	KX_FRAME_TYPE_TIP = iota
-	//	Defines the offset frame from the kinematics KX_FRAME_TYPE_TIP frame,
-	//	which usually represents the work point of the end effector (for example, a welding gun).
-	KX_FRAME_TYPE_TCP = iota
-	//	Defines the offset frame from the kinematics KX_FRAME_TYPE_ORIGIN frame;
-	//	this offset usually represents the transformation to a work piece.
-	KX_FRAME_TYPE_OBJECT = iota
-)
-
 //	Specifies the parent axis' index in the jointmap.
 type KxAxisIndex struct {
 	//	If set, specifies the special use of this index.
@@ -75,12 +62,36 @@ func NewKxEffector() (me *KxEffector) {
 
 //	Contains information for a frame used for kinematics calculation.
 type KxFrame struct {
-	//	Must be one of the KX_FRAME_TYPE_* enumerated constants.
-	Type int
 	//	References a KxLink defined in the kinematics model. Optional.
 	Link RefSid
-	//	Zero or more TRANSFORM_TYPE_TRANSLATE and/or TRANSFORM_TYPE_ROTATE transformations.
+	//	Zero or more TransformKindTranslate and/or TransformKindRotate transformations.
 	Transforms []*Transform
+}
+
+//	Defines the offset frame from the KxFrameOrigin;
+//	this offset usually represents the transformation to a work piece.
+type KxFrameObject struct {
+	//	Link, Transforms
+	KxFrame
+}
+
+//	Defines the base frame for kinematics calculation.
+type KxFrameOrigin struct {
+	//	Link, Transforms
+	KxFrame
+}
+
+//	Defines the offset frame from the KxFrameTip,
+//	which usually represents the work point of the end effector (for example, a welding gun).
+type KxFrameTcp struct {
+	//	Link, Transforms
+	KxFrame
+}
+
+//	Defines the frame at the end of the kinematics chain.
+type KxFrameTip struct {
+	//	Link, Transforms
+	KxFrame
 }
 
 //	Contains axis information to describe the kinematics behavior of an articulated model.
@@ -126,15 +137,15 @@ type KxKinematicsSystem struct {
 		//	Kinematics calculation chain frames
 		Frame struct {
 			//	Defines the base frame for kinematics calculation.
-			Origin KxFrame
+			Origin KxFrameOrigin
 			//	Defines the frame at the end of the kinematics chain.
-			Tip KxFrame
+			Tip KxFrameTip
 			//	If set, defines the offset frame from the Tip frame,
 			//	which usually represents the work point of the end effector (for example, a welding gun).
-			Tcp *KxFrame
+			Tcp *KxFrameTcp
 			//	If set, defines the offset frame from the Origin frame;
 			//	this offset usually represents the transformation to a work piece.
-			Object *KxFrame
+			Object *KxFrameObject
 		}
 	}
 }

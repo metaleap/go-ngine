@@ -174,20 +174,20 @@ func load_FxSamplerFiltering(xn *xmlx.Node, obj *nga.FxSamplerFiltering) {
 	} else {
 		obj.MaxAnisotropy = 1
 	}
-	for n, i := range map[string]*int{"minfilter": &obj.FilterMin, "magfilter": &obj.FilterMag, "mipfilter": &obj.FilterMip} {
+	for n, i := range map[string]*nga.FxFilterKind{"minfilter": &obj.FilterMin, "magfilter": &obj.FilterMag, "mipfilter": &obj.FilterMip} {
 		switch strings.ToUpper(xs(xn, n)) {
 		case "ANISOTROPIC":
-			*i = nga.FX_SAMPLER_FILTER_ANISOTROPIC
+			*i = nga.FxFilterKindAnisotropic
 		case "NEAREST":
-			*i = nga.FX_SAMPLER_FILTER_NEAREST
+			*i = nga.FxFilterKindNearest
 		case "NONE":
 			if n == "mipfilter" {
-				*i = nga.FX_SAMPLER_FILTER_MIP_NONE
+				*i = nga.FxFilterKindMipNone
 			} else {
-				*i = nga.FX_SAMPLER_FILTER_NEAREST
+				*i = nga.FxFilterKindNearest
 			}
 		default:
-			*i = nga.FX_SAMPLER_FILTER_LINEAR
+			*i = nga.FxFilterKindLinear
 		}
 	}
 }
@@ -251,19 +251,19 @@ func load_PxModelInst(xn *xmlx.Node, obj *nga.PxModelInst) {
 func load_Transform(xn *xmlx.Node, obj *nga.Transform) {
 	switch xn.Name.Local {
 	case "lookat":
-		obj.Type = nga.TRANSFORM_TYPE_LOOKAT
+		obj.Kind = nga.TransformKindLookat
 	case "matrix":
-		obj.Type = nga.TRANSFORM_TYPE_MATRIX
+		obj.Kind = nga.TransformKindMatrix
 	case "rotate":
-		obj.Type = nga.TRANSFORM_TYPE_ROTATE
+		obj.Kind = nga.TransformKindRotate
 	case "scale":
-		obj.Type = nga.TRANSFORM_TYPE_SCALE
+		obj.Kind = nga.TransformKindScale
 	case "skew":
-		obj.Type = nga.TRANSFORM_TYPE_SKEW
+		obj.Kind = nga.TransformKindSkew
 	case "translate":
-		obj.Type = nga.TRANSFORM_TYPE_TRANSLATE
+		obj.Kind = nga.TransformKindTranslate
 	}
-	if obj.Type > 0 {
+	if obj.Kind > 0 {
 		obj.F = list_Floats(xn)
 	}
 }
@@ -271,11 +271,11 @@ func load_Transform(xn *xmlx.Node, obj *nga.Transform) {
 func load_KxJoint(xn *xmlx.Node, obj *nga.KxJoint) {
 	switch xn.Name.Local {
 	case "revolute":
-		obj.Type = nga.KX_JOINT_TYPE_REVOLUTE
+		obj.Kind = nga.KxJointKindRevolute
 	case "prismatic":
-		obj.Type = nga.KX_JOINT_TYPE_PRISMATIC
+		obj.Kind = nga.KxJointKindPrismatic
 	}
-	if obj.Type > 0 {
+	if obj.Kind > 0 {
 		if xa := xcn(xn, "axis"); xa != nil {
 			if sv3 := obj_SidVec3(xa, ""); sv3 != nil {
 				obj.Axis.SidVec3 = *sv3
@@ -381,17 +381,17 @@ func load_Asset(xn *xmlx.Node, obj *nga.Asset) {
 func load_FxPassProgramShader(xn *xmlx.Node, obj *nga.FxPassProgramShader) {
 	switch strings.ToUpper(xas(xn, "stage")) {
 	case "COMPUTE":
-		obj.Stage = nga.FX_PASS_PROGRAM_SHADER_STAGE_COMPUTE
+		obj.Stage = nga.FxShaderStageCompute
 	case "FRAGMENT":
-		obj.Stage = nga.FX_PASS_PROGRAM_SHADER_STAGE_FRAGMENT
+		obj.Stage = nga.FxShaderStageFragment
 	case "GEOMETRY":
-		obj.Stage = nga.FX_PASS_PROGRAM_SHADER_STAGE_GEOMETRY
+		obj.Stage = nga.FxShaderStageGeometry
 	case "TESSELATION", "TESSELLATION":
-		obj.Stage = nga.FX_PASS_PROGRAM_SHADER_STAGE_TESSELLATION
+		obj.Stage = nga.FxShaderStageTessellation
 	case "VERTEX":
-		obj.Stage = nga.FX_PASS_PROGRAM_SHADER_STAGE_VERTEX
+		obj.Stage = nga.FxShaderStageVertex
 	}
-	if sn := xcn(xn, "sources"); sn != nil {
+	if sn := xcn(xn, "sources"); (obj.Stage > 0) && (sn != nil) {
 		pss := nga.FxPassProgramShaderSources{}
 		arr := make([]nga.FxPassProgramShaderSources, 0, len(sn.Children))
 		for _, scn := range sn.Children {
@@ -505,18 +505,18 @@ func load_FxSamplerWrapping(xn *xmlx.Node, obj *nga.FxSamplerWrapping) {
 	if cn := xcn(xn, "border_color"); cn != nil {
 		list_Rgba32(cn, &obj.BorderColor)
 	}
-	for n, i := range map[string]*int{"wrap_s": &obj.WrapS, "wrap_t": &obj.WrapT, "wrap_p": &obj.WrapP} {
+	for n, i := range map[string]*nga.FxWrapKind{"wrap_s": &obj.WrapS, "wrap_t": &obj.WrapT, "wrap_p": &obj.WrapP} {
 		switch strings.ToUpper(xs(xn, n)) {
 		case "BORDER":
-			*i = nga.FX_SAMPLER_WRAP_BORDER
+			*i = nga.FxWrapKindBorder
 		case "CLAMP":
-			*i = nga.FX_SAMPLER_WRAP_CLAMP
+			*i = nga.FxWrapKindClamp
 		case "MIRROR":
-			*i = nga.FX_SAMPLER_WRAP_MIRROR
+			*i = nga.FxWrapKindMirror
 		case "MIRROR_ONCE":
-			*i = nga.FX_SAMPLER_WRAP_MIRROR_ONCE
+			*i = nga.FxWrapKindMirrorOnce
 		default:
-			*i = nga.FX_SAMPLER_WRAP_WRAP
+			*i = nga.FxWrapKindWrap
 		}
 	}
 }
@@ -593,41 +593,41 @@ func load_FxCreateFormatHint(xn *xmlx.Node, obj *nga.FxCreateFormatHint) {
 	obj.Space = xas(xn, "space")
 	switch strings.ToUpper(xas(xn, "channels")) {
 	case "RGB":
-		obj.Channels = nga.FX_CREATE_FORMAT_HINT_CHANNELS_RGB
+		obj.Channels = nga.FxFormatChannelsRgb
 	case "RGBA":
-		obj.Channels = nga.FX_CREATE_FORMAT_HINT_CHANNELS_RGBA
+		obj.Channels = nga.FxFormatChannelsRgba
 	case "RGBE":
-		obj.Channels = nga.FX_CREATE_FORMAT_HINT_CHANNELS_RGBE
+		obj.Channels = nga.FxFormatChannelsRgbe
 	case "L":
-		obj.Channels = nga.FX_CREATE_FORMAT_HINT_CHANNELS_L
+		obj.Channels = nga.FxFormatChannelsL
 	case "LA":
-		obj.Channels = nga.FX_CREATE_FORMAT_HINT_CHANNELS_LA
+		obj.Channels = nga.FxFormatChannelsLa
 	case "D":
-		obj.Channels = nga.FX_CREATE_FORMAT_HINT_CHANNELS_D
+		obj.Channels = nga.FxFormatChannelsD
 	}
 	switch strings.ToUpper(xas(xn, "range")) {
 	case "FLOAT":
-		obj.Range = nga.FX_CREATE_FORMAT_HINT_RANGE_FLOAT
+		obj.Range = nga.FxFormatRangeFloat
 	case "SINT":
-		obj.Range = nga.FX_CREATE_FORMAT_HINT_RANGE_SINT
+		obj.Range = nga.FxFormatRangeSint
 	case "SNORM":
-		obj.Range = nga.FX_CREATE_FORMAT_HINT_RANGE_SNORM
+		obj.Range = nga.FxFormatRangeSnorm
 	case "UINT":
-		obj.Range = nga.FX_CREATE_FORMAT_HINT_RANGE_UINT
+		obj.Range = nga.FxFormatRangeUint
 	case "UNORM":
-		obj.Range = nga.FX_CREATE_FORMAT_HINT_RANGE_UNORM
+		obj.Range = nga.FxFormatRangeUnorm
 	}
 	switch strings.ToUpper(xas(xn, "precision")) {
 	case "LOW":
-		obj.Precision = nga.FX_CREATE_FORMAT_HINT_PRECISION_LOW
+		obj.Precision = nga.FxFormatPrecisionLow
 	case "MID":
-		obj.Precision = nga.FX_CREATE_FORMAT_HINT_PRECISION_MID
+		obj.Precision = nga.FxFormatPrecisionMid
 	case "HIGH":
-		obj.Precision = nga.FX_CREATE_FORMAT_HINT_PRECISION_HIGH
+		obj.Precision = nga.FxFormatPrecisionHigh
 	case "MAX":
-		obj.Precision = nga.FX_CREATE_FORMAT_HINT_PRECISION_MAX
+		obj.Precision = nga.FxFormatPrecisionMax
 	default:
-		obj.Precision = nga.FX_CREATE_FORMAT_HINT_PRECISION_DEFAULT
+		obj.Precision = nga.FxFormatPrecisionDefault
 	}
 }
 
@@ -654,21 +654,33 @@ func load_FxCreateMips(xn *xmlx.Node, obj *nga.FxCreateMips) {
 	}
 }
 
+func load_KxFrameObject(xn *xmlx.Node, obj *nga.KxFrameObject) {
+	if kf := obj_KxFrame(xn, ""); kf != nil {
+		obj.KxFrame = *kf
+	}
+}
+
+func load_KxFrameOrigin(xn *xmlx.Node, obj *nga.KxFrameOrigin) {
+	if kf := obj_KxFrame(xn, ""); kf != nil {
+		obj.KxFrame = *kf
+	}
+}
+
+func load_KxFrameTcp(xn *xmlx.Node, obj *nga.KxFrameTcp) {
+	if kf := obj_KxFrame(xn, ""); kf != nil {
+		obj.KxFrame = *kf
+	}
+}
+
+func load_KxFrameTip(xn *xmlx.Node, obj *nga.KxFrameTip) {
+	if kf := obj_KxFrame(xn, ""); kf != nil {
+		obj.KxFrame = *kf
+	}
+}
+
 func load_KxFrame(xn *xmlx.Node, obj *nga.KxFrame) {
-	switch xn.Name.Local {
-	case "frame_object":
-		obj.Type = nga.KX_FRAME_TYPE_OBJECT
-	case "frame_origin":
-		obj.Type = nga.KX_FRAME_TYPE_ORIGIN
-	case "frame_tcp":
-		obj.Type = nga.KX_FRAME_TYPE_TCP
-	case "frame_tip":
-		obj.Type = nga.KX_FRAME_TYPE_TIP
-	}
-	if obj.Type > 0 {
-		obj.Link.SetSidRef(xas(xn, "link"))
-		obj.Transforms = get_Transforms(xn)
-	}
+	obj.Link.SetSidRef(xas(xn, "link"))
+	obj.Transforms = get_Transforms(xn)
 }
 
 func load_KxJointInst(xn *xmlx.Node, obj *nga.KxJointInst) {
@@ -751,20 +763,20 @@ func load_GeometryBrepSurface(xn *xmlx.Node, obj *nga.GeometryBrepSurface) {
 }
 
 func load_AnimationSampler(xn *xmlx.Node, obj *nga.AnimationSampler) {
-	for n, pb := range map[string]*int{"pre_behavior": &obj.PreBehavior, "post_behavior": &obj.PostBehavior} {
+	for n, pb := range map[string]*nga.AnimSamplerBehavior{"pre_behavior": &obj.PreBehavior, "post_behavior": &obj.PostBehavior} {
 		switch strings.ToUpper(xas(xn, n)) {
 		case "CONSTANT":
-			*pb = nga.ANIM_SAMPLER_BEHAVIOR_CONSTANT
+			*pb = nga.AnimSamplerBehaviorConstant
 		case "CYCLE":
-			*pb = nga.ANIM_SAMPLER_BEHAVIOR_CYCLE
+			*pb = nga.AnimSamplerBehaviorCycle
 		case "CYCLE_RELATIVE":
-			*pb = nga.ANIM_SAMPLER_BEHAVIOR_CYCLE_RELATIVE
+			*pb = nga.AnimSamplerBehaviorCycleRelative
 		case "GRADIENT":
-			*pb = nga.ANIM_SAMPLER_BEHAVIOR_GRADIENT
+			*pb = nga.AnimSamplerBehaviorGradient
 		case "OSCILLATE":
-			*pb = nga.ANIM_SAMPLER_BEHAVIOR_OSCILLATE
+			*pb = nga.AnimSamplerBehaviorOscillate
 		default:
-			*pb = nga.ANIM_SAMPLER_BEHAVIOR_UNDEFINED
+			*pb = nga.AnimSamplerBehaviorUndefined
 		}
 	}
 }
@@ -1023,21 +1035,23 @@ func load_FxPassEvaluationTarget(xn *xmlx.Node, obj *nga.FxPassEvaluationTarget)
 	obj.Image = obj_FxImageInst(xn, "instance_image")
 }
 
+func load_FxColor(xn *xmlx.Node, obj *nga.FxColor) {
+	list_Rgba32(xn, &obj.Color)
+}
+
 func load_FxColorOrTexture(xn *xmlx.Node, obj *nga.FxColorOrTexture) {
 	obj.ParamRef.SetParamRef(get_ParamRef(xn, "param"))
 	obj.Texture = obj_FxTexture(xn, "texture")
-	if cn := xcn(xn, "color"); cn != nil {
-		list_Rgba32(cn, obj.Color)
-	}
+	obj.Color = obj_FxColor(xn, "color")
 	switch strings.ToUpper(xas(xn, "opaque")) {
 	case "RGB_ZERO":
-		obj.Opaque = nga.FX_COLOR_TEXTURE_OPAQUE_RGB_ZERO
+		obj.Opaque = nga.FxTextureOpaqueRgb0
 	case "RGB_ONE":
-		obj.Opaque = nga.FX_COLOR_TEXTURE_OPAQUE_RGB_ONE
+		obj.Opaque = nga.FxTextureOpaqueRgb1
 	case "A_ZERO":
-		obj.Opaque = nga.FX_COLOR_TEXTURE_OPAQUE_A_ZERO
+		obj.Opaque = nga.FxTextureOpaqueA0
 	default:
-		obj.Opaque = nga.FX_COLOR_TEXTURE_OPAQUE_A_ONE
+		obj.Opaque = nga.FxTextureOpaqueA1
 	}
 }
 
@@ -1234,21 +1248,21 @@ func load_GeometryBrepOrientation(xn *xmlx.Node, obj *nga.GeometryBrepOrientatio
 func load_GeometryPrimitives(xn *xmlx.Node, obj *nga.GeometryPrimitives) {
 	switch xn.Name.Local {
 	case "lines":
-		obj.Type = nga.GEOMETRY_PRIMITIVE_TYPE_LINES
+		obj.Kind = nga.GeometryPrimitiveKindLines
 	case "linestrips":
-		obj.Type = nga.GEOMETRY_PRIMITIVE_TYPE_LINE_STRIPS
+		obj.Kind = nga.GeometryPrimitiveKindLineStrips
 	case "polygons":
-		obj.Type = nga.GEOMETRY_PRIMITIVE_TYPE_POLYGONS
+		obj.Kind = nga.GeometryPrimitiveKindPolygons
 	case "polylist":
-		obj.Type = nga.GEOMETRY_PRIMITIVE_TYPE_POLYLIST
+		obj.Kind = nga.GeometryPrimitiveKindPolylist
 	case "triangles":
-		obj.Type = nga.GEOMETRY_PRIMITIVE_TYPE_TRIANGLES
+		obj.Kind = nga.GeometryPrimitiveKindTriangles
 	case "trifans":
-		obj.Type = nga.GEOMETRY_PRIMITIVE_TYPE_TRIFANS
+		obj.Kind = nga.GeometryPrimitiveKindTrifans
 	case "tristrips":
-		obj.Type = nga.GEOMETRY_PRIMITIVE_TYPE_TRISTRIPS
+		obj.Kind = nga.GeometryPrimitiveKindTristrips
 	}
-	if obj.Type > 0 {
+	if obj.Kind > 0 {
 		if ii := obj_IndexedInputs(xn, ""); ii != nil {
 			obj.IndexedInputs = *ii
 		}
@@ -1303,7 +1317,7 @@ func load_KxJointAxisBinding(xn *xmlx.Node, obj *nga.KxJointAxisBinding) {
 func load_KxJointDef(xn *xmlx.Node, obj *nga.KxJointDef) {
 	var j *nga.KxJoint
 	for _, cn := range xcns(xn, "prismatic", "revolute") {
-		if j = obj_KxJoint(cn, ""); (j != nil) && (j.Type > 0) {
+		if j = obj_KxJoint(cn, ""); (j != nil) && (j.Kind > 0) {
 			obj.All = append(obj.All, j)
 		}
 	}
@@ -1443,13 +1457,12 @@ func load_KxKinematicsSystem(xn *xmlx.Node, obj *nga.KxKinematicsSystem) {
 	obj.Models = objs_KxModelInst(xn, "instance_kinematics_model")
 	if tcn := node_TechCommon(xn); tcn != nil {
 		obj.TC.AxisInfos = objs_KxKinematicsAxis(tcn, "axis_info")
-		obj.TC.Frame.Object = obj_KxFrame(tcn, "frame_object")
-		obj.TC.Frame.Tcp = obj_KxFrame(tcn, "frame_tcp")
-		f := obj_KxFrame(tcn, "frame_tip")
-		if f != nil {
+		obj.TC.Frame.Object = obj_KxFrameObject(tcn, "frame_object")
+		obj.TC.Frame.Tcp = obj_KxFrameTcp(tcn, "frame_tcp")
+		if f := obj_KxFrameTip(tcn, "frame_tip"); f != nil {
 			obj.TC.Frame.Tip = *f
 		}
-		if f = obj_KxFrame(tcn, "frame_origin"); f != nil {
+		if f := obj_KxFrameOrigin(tcn, "frame_origin"); f != nil {
 			obj.TC.Frame.Origin = *f
 		}
 	}
@@ -1773,13 +1786,13 @@ func load_GeometryBrepFaces(xn *xmlx.Node, obj *nga.GeometryBrepFaces) {
 func load_KxAttachment(xn *xmlx.Node, obj *nga.KxAttachment) {
 	switch xn.Name.Local {
 	case "attachment_full":
-		obj.Type = nga.KX_ATTACHMENT_TYPE_FULL
+		obj.Kind = nga.KxAttachmentKindFull
 	case "attachment_start":
-		obj.Type = nga.KX_ATTACHMENT_TYPE_START
+		obj.Kind = nga.KxAttachmentKindStart
 	case "attachment_end":
-		obj.Type = nga.KX_ATTACHMENT_TYPE_END
+		obj.Kind = nga.KxAttachmentKindEnd
 	}
-	if obj.Type > 0 {
+	if obj.Kind > 0 {
 		obj.Joint.SetSidRef(xas(xn, "joint"))
 		obj.Transforms = get_Transforms(xn)
 		obj.Link = obj_KxLink(xn, "link")
@@ -1804,19 +1817,19 @@ func load_ParamOrRefSid(xn *xmlx.Node, obj *nga.ParamOrRefSid) {
 func load_FxSampler(xn *xmlx.Node, obj *nga.FxSampler) {
 	switch xn.Name.Local {
 	case "sampler1D":
-		obj.Type = nga.FX_SAMPLER_TYPE_1D
+		obj.Kind = nga.FxSamplerKind1D
 	case "sampler2D":
-		obj.Type = nga.FX_SAMPLER_TYPE_2D
+		obj.Kind = nga.FxSamplerKind2D
 	case "sampler3D":
-		obj.Type = nga.FX_SAMPLER_TYPE_3D
+		obj.Kind = nga.FxSamplerKind3D
 	case "samplerCUBE":
-		obj.Type = nga.FX_SAMPLER_TYPE_CUBE
+		obj.Kind = nga.FxSamplerKindCube
 	case "samplerDEPTH":
-		obj.Type = nga.FX_SAMPLER_TYPE_DEPTH
+		obj.Kind = nga.FxSamplerKindDepth
 	case "samplerRECT":
-		obj.Type = nga.FX_SAMPLER_TYPE_RECT
+		obj.Kind = nga.FxSamplerKindRect
 	}
-	if obj.Type > 0 {
+	if obj.Kind > 0 {
 		obj.Image = obj_FxImageInst(xn, "instance_image")
 		if ss := obj_FxSamplerStates(xn, ""); ss != nil {
 			obj.FxSamplerStates = *ss
@@ -1851,4 +1864,49 @@ func load_PxRigidConstraintDefs(xn *xmlx.Node, obj *nga.PxRigidConstraintDefs) {
 }
 
 func load_FxGlslTechniques(xn *xmlx.Node, obj *nga.FxGlslTechniques) {
+}
+
+func load_GetRefSidResolver(xn *xmlx.Node, obj *nga.GetRefSidResolver) {
+}
+
+func load_GeometryPrimitiveKind(xn *xmlx.Node, obj *nga.GeometryPrimitiveKind) {
+}
+
+func load_TransformKind(xn *xmlx.Node, obj *nga.TransformKind) {
+}
+
+func load_KxAttachmentKind(xn *xmlx.Node, obj *nga.KxAttachmentKind) {
+}
+
+func load_FxFormatRange(xn *xmlx.Node, obj *nga.FxFormatRange) {
+}
+
+func load_FxFilterKind(xn *xmlx.Node, obj *nga.FxFilterKind) {
+}
+
+func load_FxFormatPrecision(xn *xmlx.Node, obj *nga.FxFormatPrecision) {
+}
+
+func load_FxFormatChannels(xn *xmlx.Node, obj *nga.FxFormatChannels) {
+}
+
+func load_FxShaderStage(xn *xmlx.Node, obj *nga.FxShaderStage) {
+}
+
+func load_FxCubeFace(xn *xmlx.Node, obj *nga.FxCubeFace) {
+}
+
+func load_KxJointKind(xn *xmlx.Node, obj *nga.KxJointKind) {
+}
+
+func load_FxSamplerKind(xn *xmlx.Node, obj *nga.FxSamplerKind) {
+}
+
+func load_FxWrapKind(xn *xmlx.Node, obj *nga.FxWrapKind) {
+}
+
+func load_FxTextureOpaque(xn *xmlx.Node, obj *nga.FxTextureOpaque) {
+}
+
+func load_AnimSamplerBehavior(xn *xmlx.Node, obj *nga.AnimSamplerBehavior) {
 }

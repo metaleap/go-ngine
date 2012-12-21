@@ -8,9 +8,9 @@ type PxRigidConstraintAttachment struct {
 	//	Refers to a RigidBodyDef or NodeDef.
 	RigidBody RefSid
 	//	Zero or more translation and/or rotation transformations:
-	//	The position of a TRANSFORM_TYPE_TRANSLATE Transform indicates
+	//	The position of a TransformKindTranslate Transform indicates
 	//	the attachment point on the corresponding RigidBodyDef.
-	//	The orientation of a TRANSFORM_TYPE_ROTATE Transform indicates
+	//	The orientation of a TransformKindRotate Transform indicates
 	//	the alignment of the joint frame for that RigidBodyDef.
 	Transforms []*Transform
 }
@@ -52,7 +52,7 @@ type PxRigidConstraintDef struct {
 	HasSid
 	//	Techniques
 	HasTechniques
-	//	Defines the attachment frame of reference (to a rigid_body or a node) within this rigid constraint.
+	//	Defines the attachment frame of reference (to a rigid body or a node) within this rigid constraint.
 	RefAttachment PxRigidConstraintAttachment
 	//	Defines an attachment frame (to a rigid body or a node) within this rigid constraint.
 	Attachment PxRigidConstraintAttachment

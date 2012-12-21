@@ -43,6 +43,16 @@ func (me RefId) ArrayInAnimationDef() *SourceArray {
 	return nil
 }
 
+//	Calls the ArrayInAnimationDef(), ArrayInControllerDef() and ArrayInGeometryDef() methods in that order to find srcArr.
+func (me RefId) ArrayInAnyDef() (srcArr *SourceArray) {
+	if srcArr = me.ArrayInAnimationDef(); srcArr == nil {
+		if srcArr = me.ArrayInControllerDef(); srcArr == nil {
+			srcArr = me.ArrayInGeometryDef()
+		}
+	}
+	return
+}
+
 //	Searches (all LibControllerDefs contained in AllControllerDefLibs) for the SourceArray
 //	whose Id is referenced by me, returning the first match found.
 func (me RefId) ArrayInControllerDef() *SourceArray {
@@ -348,6 +358,16 @@ func (me RefId) SourceInAnimationDef() (s *Source) {
 			if s = def.Sources[id]; s != nil {
 				return
 			}
+		}
+	}
+	return
+}
+
+//	Calls the SourceInAnimationDef(), SourceInControllerDef() and SourceInGeometryDef() methods in that order to find src.
+func (me RefId) SourceInAnyDef() (src *Source) {
+	if src = me.SourceInAnimationDef(); src == nil {
+		if src = me.SourceInControllerDef(); src == nil {
+			src = me.SourceInGeometryDef()
 		}
 	}
 	return

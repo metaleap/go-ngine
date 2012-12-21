@@ -49,7 +49,7 @@ type PxShape struct {
 		//	Refers to a previously defined mesh or spline geometric primitive.
 		Inst *GeometryInst
 	}
-	//	Zero or more TRANSFORM_TYPE_ROTATE and/or TRANSFORM_TYPE_TRANSLATE transformations for the shape.
+	//	Zero or more TransformKindRotate and/or TransformKindTranslate transformations for the shape.
 	Transforms []*Transform
 }
 
@@ -59,7 +59,7 @@ type PxRigidBodyCommon struct {
 	Dynamic SidBool
 	//	If set, specifies the total mass of this rigid body.
 	Mass *SidFloat
-	//	Zero or more TRANSFORM_TYPE_TRANSLATE and/or TRANSFORM_TYPE_ROTATE transformations defining the
+	//	Zero or more TransformKindRotate and/or TransformKindTranslate transformations defining the
 	//	center and orientation of mass of the rigid-body relative to the local origin of the "root" shape.
 	//	This makes the off-diagonal elements of the inertia tensor (products of inertia) all 0
 	//	and allows us to just store the diagonal elements (moments of inertia).

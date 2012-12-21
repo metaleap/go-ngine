@@ -1,20 +1,23 @@
 package assets
 
+//	Categorizes the kind of a GeometryPrimitives.
+type GeometryPrimitiveKind int
+
 const (
 	//	Organizes vertices into individual lines.
-	GEOMETRY_PRIMITIVE_TYPE_LINES = 0x0001
+	GeometryPrimitiveKindLines GeometryPrimitiveKind = 0x0001
 	//	Organizes vertices into connected line-strips.
-	GEOMETRY_PRIMITIVE_TYPE_LINE_STRIPS = 0x0003
+	GeometryPrimitiveKindLineStrips GeometryPrimitiveKind = 0x0003
 	//	Organizes vertices into individual polygons that may contain holes.
-	GEOMETRY_PRIMITIVE_TYPE_POLYGONS = 2
+	GeometryPrimitiveKindPolygons GeometryPrimitiveKind = 2
 	//	Organizes vertices into individual polygons that cannot contain holes.
-	GEOMETRY_PRIMITIVE_TYPE_POLYLIST = 7
+	GeometryPrimitiveKindPolylist GeometryPrimitiveKind = 7
 	//	Organizes vertices into individual triangles.
-	GEOMETRY_PRIMITIVE_TYPE_TRIANGLES = 0x0004
+	GeometryPrimitiveKindTriangles GeometryPrimitiveKind = 0x0004
 	//	Organizes vertices into fan-connected triangles.
-	GEOMETRY_PRIMITIVE_TYPE_TRIFANS = 0x0006
+	GeometryPrimitiveKindTrifans GeometryPrimitiveKind = 0x0006
 	//	Organizes vertices into strip-connected triangles.
-	GEOMETRY_PRIMITIVE_TYPE_TRISTRIPS = 0x0005
+	GeometryPrimitiveKindTristrips GeometryPrimitiveKind = 0x0005
 )
 
 //	Describes the control vertices of a spline.
@@ -56,12 +59,12 @@ type GeometryPrimitives struct {
 	HasName
 	//	When at least one input is present, one input must specify its Semantic as "VERTEX".
 	IndexedInputs
-	//	Must be one of the GEOMETRY_PRIMITIVE_TYPE_* enumerated constants.
-	Type int
+	//	Must be one of the GeometryPrimitiveKind* enumerated constants.
+	Kind GeometryPrimitiveKind
 	//	Declares a symbol for a material. This symbol is bound to a material at the time of instantiation.
 	//	Optional. If not specified then the lighting and shading results are application defined.
 	Material string
-	//	If Type is GEOMETRY_PRIMITIVE_TYPE_POLYGONS, describes the polygons that contain one or more holes.
+	//	If Kind is GeometryPrimitiveKindPolygons, describes the polygons that contain one or more holes.
 	PolyHoles []*GeometryPolygonHole
 }
 

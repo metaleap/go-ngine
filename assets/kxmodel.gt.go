@@ -1,23 +1,27 @@
 package assets
 
+//	Categorizes the kind of a KxAttachment.
+type KxAttachmentKind int
+
 const (
+	_ = iota
 	//	Connects two links, describing a real parent-child dependency between them.
-	KX_ATTACHMENT_TYPE_FULL = 1
+	KxAttachmentKindFull KxAttachmentKind = iota
 	//	Connects two links and defines one end of a closed loop.
-	KX_ATTACHMENT_TYPE_START = iota
+	KxAttachmentKindStart
 	//	Defines one end of the closed loop in an attachment.
-	KX_ATTACHMENT_TYPE_END = iota
+	KxAttachmentKindEnd
 )
 
 //	Connects links or define ends of closed loops.
 type KxAttachment struct {
-	//	Must be one of the KX_ATTACHMENT_TYPE_* enumerated constants.
-	Type int
+	//	Must be one of the KxAttachmentKind* enumerated constants.
+	Kind KxAttachmentKind
 	//	Refers to the KxJoint that connects the parent with the child link. Required.
 	Joint RefSid
-	//	Zero or more TRANSFORM_TYPE_ROTATE and/or TRANSFORM_TYPE_TRANSLATE transformations.
+	//	Zero or more TransformKindRotate and/or TransformKindTranslate transformations.
 	Transforms []*Transform
-	//	If Type is KX_ATTACHMENT_TYPE_FULL, specifies the child link in this parent-child dependency.
+	//	If Kind is KxAttachmentKindFull, specifies the child link in this parent-child dependency.
 	Link *KxLink
 }
 
@@ -27,7 +31,7 @@ type KxLink struct {
 	HasSid
 	//	Name
 	HasName
-	//	Zero or more TRANSFORM_TYPE_ROTATE and/or TRANSFORM_TYPE_TRANSLATE transformations.
+	//	Zero or more TransformKindRotate and/or TransformKindTranslate transformations.
 	Transforms []*Transform
 	//	The attachments that make up this link.
 	Attachments []*KxAttachment
