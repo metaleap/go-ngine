@@ -196,6 +196,13 @@ func (me *LibKxModelDefs) New(id string) (def *KxModelDef) { def = newKxModelDef
 //	Removes the KxModelDef with the specified Id from this LibKxModelDefs.
 func (me *LibKxModelDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
+//	Returns a GetRefSidResolver that looks up and yields the KxModelDef with the specified Id.
+func (me *LibKxModelDefs) ResolverGetter() GetRefSidResolver {
+	return func(id string) RefSidResolver {
+		return nil // me.M[id]
+	}
+}
+
 //	Signals to the core package (or your custom package) that changes have been made to this LibKxModelDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibKxModelDefs
 //	library or its KxModelDef definitions. Also called by the global SyncChanges() function.

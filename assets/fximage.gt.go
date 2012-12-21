@@ -406,6 +406,13 @@ func (me *LibFxImageDefs) New(id string) (def *FxImageDef) { def = newFxImageDef
 //	Removes the FxImageDef with the specified Id from this LibFxImageDefs.
 func (me *LibFxImageDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
+//	Returns a GetRefSidResolver that looks up and yields the FxImageDef with the specified Id.
+func (me *LibFxImageDefs) ResolverGetter() GetRefSidResolver {
+	return func(id string) RefSidResolver {
+		return nil // me.M[id]
+	}
+}
+
 //	Signals to the core package (or your custom package) that changes have been made to this LibFxImageDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibFxImageDefs
 //	library or its FxImageDef definitions. Also called by the global SyncChanges() function.

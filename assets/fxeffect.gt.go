@@ -53,6 +53,17 @@ type FxColorOrTexture struct {
 	Texture *FxTexture
 }
 
+//	Adds a hint for a platform of which technique to use in this effect.
+type FxEffectInstTechniqueHint struct {
+	//	Defines a string that specifies for which platform this hint is intended. Optional.
+	Platform string
+	//	A reference to the name of the platform. Required.
+	Ref string
+	//	Specifies for which API profile this hint is intended.
+	//	Optional. If set, must be either "COMMON" or "GLSL".
+	Profile string
+}
+
 //	Declares a new parameter for its parent FX-related resource, and assigns it an initial value.
 type FxParamDef struct {
 	//	Sid and Value
@@ -411,17 +422,6 @@ func (me *FxEffectInst) Init() {
 	me.SetParams = ParamInsts{}
 }
 
-//	Adds a hint for a platform of which technique to use in this effect.
-type FxEffectInstTechniqueHint struct {
-	//	Defines a string that specifies for which platform this hint is intended. Optional.
-	Platform string
-	//	A reference to the name of the platform. Required.
-	Ref string
-	//	Specifies for which API profile this hint is intended.
-	//	Optional. If set, must be either "COMMON" or "GLSL".
-	Profile string
-}
-
 //#begin-gt _definstlib.gt T:FxEffect
 
 func newFxEffectDef(id string) (me *FxEffectDef) {
@@ -538,6 +538,13 @@ func (me *LibFxEffectDefs) New(id string) (def *FxEffectDef) { def = newFxEffect
 
 //	Removes the FxEffectDef with the specified Id from this LibFxEffectDefs.
 func (me *LibFxEffectDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
+
+//	Returns a GetRefSidResolver that looks up and yields the FxEffectDef with the specified Id.
+func (me *LibFxEffectDefs) ResolverGetter() GetRefSidResolver {
+	return func(id string) RefSidResolver {
+		return nil // me.M[id]
+	}
+}
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibFxEffectDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibFxEffectDefs

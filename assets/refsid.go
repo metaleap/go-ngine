@@ -4,6 +4,9 @@ import (
 	"strings"
 )
 
+//	Returns a RefSidResolver based on the specified arg (typically, an Id).
+type GetRefSidResolver func(arg string) RefSidResolver
+
 //	References a previously defined parameter.
 type RefParam struct {
 	//	A parameter reference technically always refers to a Sid.
@@ -22,53 +25,45 @@ func NewRefParam(paramRef string) (rs *RefParam) {
 	return
 }
 
-//	Resolves a Sid path.
-type RefSidResolver interface {
-	//	The returned val is always a pointer: so val may be a *SidFloat but it will never be a SidFloat.
-	//	If no match is found for the full path, should always return nil, instead of a partial-path match.
-	ResolveSidPath(path []string) (val interface{})
-}
-
 //	References a resource by its scoped identifier (Sid).
 type RefSid struct {
-	s     string
-	parts []string
-	val   interface{}
+	//	The Sid path currently referenced.
+	//	To be set ONLY through the NewRefSid() constructor or SetSidRef() method!
+	S string
+	//	The resolved value referenced by this Sid path.
+	//	This is always a pointer: so V may be a *SidFloat but it will never be a SidFloat.
+	//	To be set ONLY through the Resolve() method! Reset to nil by the SetSidRef() method.
+	V interface{}
 }
 
-//	Creates and returns a new RefSid initialized with the specified sidRef.
+//	Creates and returns a new RefSid, its S initialized with the specified sidRef.
 func NewRefSid(sidRef string) (rs *RefSid) {
 	rs = &RefSid{}
 	rs.SetSidRef(sidRef)
 	return
 }
 
-//	Returns the Sid currently referenced by me.
-func (me *RefSid) S() string {
-	return me.s
-}
-
-//	Modifies the Sid currently referenced by me.
+//	Sets S to sidRef and resets V to nil.
 func (me *RefSid) SetSidRef(sidRef string) {
-	me.s = sidRef
-	me.parts = nil
-	me.val = nil
+	me.S, me.V = sidRef, nil
 }
 
-//	Resolves this Sid reference and returns the value, field, attribute, resource it targets.
-//	The returned val is always a pointer: so val may be a *SidFloat but it will never be a SidFloat.
-func (me *RefSid) V(rsr func(id string) RefSidResolver) (val interface{}) {
-	if me.val == nil {
-		if len(me.parts) == 0 {
-			me.parts = strings.Split(me.S(), "/")
-		}
-		resolver := rsr(me.parts[0])
-		if (resolver != nil) && (len(me.parts) > 1) {
-			me.val = resolver.ResolveSidPath(me.parts[1:])
+//	Resolves this Sid reference (if V is nil or force is true), sets and returns V.
+func (me *RefSid) Resolve(rsr GetRefSidResolver, force bool) interface{} {
+	if force || (me.V == nil) {
+		parts := strings.Split(me.S, "/")
+		if resolver := rsr(parts[0]); (resolver != nil) && (len(parts) > 1) {
+			me.V = resolver.ResolveSidPath(parts[1:])
 		} else {
-			me.val = resolver
+			me.V = resolver
 		}
 	}
-	val = me.val
-	return
+	return me.V
+}
+
+//	Resolves a Sid path.
+type RefSidResolver interface {
+	//	The returned val is always a pointer: so val may be a *SidFloat but it will never be a SidFloat.
+	//	If no match is found for the full path, should always return nil, instead of a partial-path match.
+	ResolveSidPath(path []string) (val interface{})
 }

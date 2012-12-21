@@ -153,6 +153,13 @@ func (me *LibPxMaterialDefs) New(id string) (def *PxMaterialDef) { def = newPxMa
 //	Removes the PxMaterialDef with the specified Id from this LibPxMaterialDefs.
 func (me *LibPxMaterialDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
+//	Returns a GetRefSidResolver that looks up and yields the PxMaterialDef with the specified Id.
+func (me *LibPxMaterialDefs) ResolverGetter() GetRefSidResolver {
+	return func(id string) RefSidResolver {
+		return nil // me.M[id]
+	}
+}
+
 //	Signals to the core package (or your custom package) that changes have been made to this LibPxMaterialDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibPxMaterialDefs
 //	library or its PxMaterialDef definitions. Also called by the global SyncChanges() function.
