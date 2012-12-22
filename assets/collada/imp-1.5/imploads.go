@@ -1866,9 +1866,6 @@ func load_PxRigidConstraintDefs(xn *xmlx.Node, obj *nga.PxRigidConstraintDefs) {
 func load_FxGlslTechniques(xn *xmlx.Node, obj *nga.FxGlslTechniques) {
 }
 
-func load_GetRefSidResolver(xn *xmlx.Node, obj *nga.GetRefSidResolver) {
-}
-
 func load_GeometryPrimitiveKind(xn *xmlx.Node, obj *nga.GeometryPrimitiveKind) {
 }
 
