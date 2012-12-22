@@ -15,11 +15,12 @@ import (
 type typeMap map[reflect.Type]bool
 
 var (
-	hasSidType reflect.Type
-	allStructs []reflect.Type
-	haveSids   = map[reflect.Type]bool{}
-	isResolver = map[reflect.Type]bool{}
-	typeDeps   = map[reflect.Type]typeMap{}
+	hasSidType   reflect.Type
+	allStructs   = map[string]reflect.Type{}
+	haveSids     = map[reflect.Type]bool{}
+	isResolver   = map[reflect.Type]bool{}
+	typesWritten = map[reflect.Type]bool{}
+	typeDeps     = map[reflect.Type]typeMap{}
 )
 
 func anyOf(t reflect.Type, kinds ...reflect.Kind) bool {
@@ -123,34 +124,32 @@ func sfmt(format string, args ...interface{}) string {
 	return fmt.Sprintf(format, args...)
 }
 
-/*
-func (me *Lib__T__Defs) resolver(part0 string) RefSidResolver {
-	return me.M[part0]
-}
-*/
-func writeMethod(rt reflect.Type) (outSrc string) {
+func writeMethod(rt reflect.Type, force bool) (outSrc string) {
 	var (
 		count      int
 		walkFields func(reflect.Type, string)
 	)
 	walkFields = func(tt reflect.Type, pref string) {
 		var (
-			isPtr      bool
-			amper      string
-			et, ft     reflect.Type
-			sf         reflect.StructField
-			beginIfNil func()
-			endIfNil   func()
+			isPtr        bool
+			amper, lnpre string
+			et, ft       reflect.Type
+			sf           reflect.StructField
+			beginIfNil   func()
+			endIfNil     func()
 		)
 		beginIfNil = func() {
+			lnpre = "\t"
 			if isPtr = ft.Kind() == reflect.Ptr; isPtr {
 				outSrc += sfmt("\tif %s != nil {\n", pref+sf.Name)
 				amper = ""
+				lnpre += "\t"
 			} else {
 				amper = "&"
 			}
 		}
 		endIfNil = func() {
+			lnpre = "\t"
 			if isPtr {
 				outSrc += "\t}\n"
 			}
@@ -165,20 +164,20 @@ func writeMethod(rt reflect.Type) (outSrc string) {
 					if haveSids[et] && !sf.Anonymous {
 						switch ft.Kind() {
 						case reflect.Array, reflect.Map, reflect.Slice:
-							outSrc += sfmt("\tfor _, v := range %s { if val = sidResolveCore(path, v, %s, v.Sid); val != nil { return } }\n", pref+sf.Name, ustr.Ifs(isResolver[et], "v", "nil"))
+							outSrc += sfmt("\tfor _, sidItem := range %s {\n\t\tif val = sidResolveCore(path, sidItem, %s, sidItem.Sid); val != nil {\n\t\t\treturn\n\t\t}\n\t}\n", pref+sf.Name, ustr.Ifs(isResolver[et], "sidItem", "nil"))
 						default:
 							beginIfNil()
-							outSrc += sfmt("\tif val = sidResolveCore(path, %s, %s, %s.Sid); val != nil { return }\n", amper+pref+sf.Name, ustr.Ifs(isResolver[et], amper+pref+sf.Name, "nil"), pref+sf.Name)
+							outSrc += sfmt(lnpre+"if val = sidResolveCore(path, %s, %s, %s.Sid); val != nil {\n"+lnpre+"\treturn\n"+lnpre+"}\n", amper+pref+sf.Name, ustr.Ifs(isResolver[et], amper+pref+sf.Name, "nil"), pref+sf.Name)
 							endIfNil()
 						}
 						count++
 					} else if isResolver[et] {
 						switch ft.Kind() {
 						case reflect.Array, reflect.Map, reflect.Slice:
-							outSrc += sfmt("\tfor _, v := range %s { if val = v.resolveSidPath(path); val != nil { return } }\n", pref+sf.Name)
+							outSrc += sfmt("\tfor _, subItem := range %s {\n\t\tif val = subItem.resolveSidPath(path); val != nil {\n\t\t\treturn\n\t\t}\n\t}\n", pref+sf.Name)
 						default:
 							beginIfNil()
-							outSrc += sfmt("\tif val = %s.resolveSidPath(path); val != nil { return }\n", pref+sf.Name)
+							outSrc += sfmt(lnpre+"if val = %s.resolveSidPath(path); val != nil {\n"+lnpre+"\treturn\n"+lnpre+"}\n", pref+sf.Name)
 							endIfNil()
 						}
 						count++
@@ -191,8 +190,12 @@ func writeMethod(rt reflect.Type) (outSrc string) {
 	}
 	outSrc += sfmt("func (me *%s) resolveSidPath(path []string) (val interface{}) {\n", rt.Name())
 	walkFields(rt, "me.")
-	if isResolver[rt] || (count > 0) {
+	if isResolver[rt] || (count > 0) || force {
+		typesWritten[rt] = true
 		outSrc += "\treturn\n}\n\n"
+		if _, ok := rt.FieldByName("Id"); ok && (isResolver[rt] || (count > 0)) {
+			outSrc += sfmt("func (me *%s) resolver(part0 string) RefSidResolver {\n\treturn me\n}\n\n", rt.Name())
+		}
 	} else {
 		outSrc = ""
 	}
@@ -200,7 +203,11 @@ func writeMethod(rt reflect.Type) (outSrc string) {
 }
 
 func main() {
-	var rt reflect.Type
+	var (
+		ok bool
+		tn string
+		rt reflect.Type
+	)
 	runtime.LockOSThread()
 	outFilePath := filepath.Join(os.Args[1], "-gen-refsids.go")
 	outSrc := "package assets\n\n"
@@ -208,7 +215,7 @@ func main() {
 	for _, rt = range ngr.Types {
 		if rt.Kind() == reflect.Struct {
 			if !ustr.HasAnyPrefix(rt.Name(), "Lib", "Base", "Has", "Ref") {
-				allStructs = append(allStructs, rt)
+				allStructs[rt.Name()] = rt
 			}
 			if rt.Name() == "HasSid" {
 				hasSidType = rt
@@ -222,8 +229,13 @@ func main() {
 	}
 	for rt, _ = range typeDeps {
 		if rt != hasSidType {
-			outSrc += writeMethod(rt)
+			outSrc += writeMethod(rt, false)
 		}
 	}
-	uio.WriteTextFile(outFilePath, outSrc)
+	for tn, rt = range allStructs {
+		if _, ok = ngr.Types["Libs"+tn]; ustr.HasAnySuffix(tn, "Def") && (!typesWritten[rt]) && ok {
+			outSrc += writeMethod(rt, true)
+		}
+	}
+	uio.WriteTextFile(outFilePath, outSrc[:len(outSrc)-1])
 }

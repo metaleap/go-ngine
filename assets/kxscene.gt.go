@@ -183,6 +183,10 @@ func (me *LibKxSceneDefs) New(id string) (def *KxSceneDef) { def = newKxSceneDef
 //	Removes the KxSceneDef with the specified Id from this LibKxSceneDefs.
 func (me *LibKxSceneDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
+func (me *LibKxSceneDefs) resolver(part0 string) RefSidResolver {
+	return me.M[part0]
+}
+
 //	Signals to the core package (or your custom package) that changes have been made to this LibKxSceneDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibKxSceneDefs
 //	library or its KxSceneDef definitions. Also called by the global SyncChanges() function.

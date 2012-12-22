@@ -165,6 +165,10 @@ func (me *LibPxModelDefs) New(id string) (def *PxModelDef) { def = newPxModelDef
 //	Removes the PxModelDef with the specified Id from this LibPxModelDefs.
 func (me *LibPxModelDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
+func (me *LibPxModelDefs) resolver(part0 string) RefSidResolver {
+	return me.M[part0]
+}
+
 //	Signals to the core package (or your custom package) that changes have been made to this LibPxModelDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibPxModelDefs
 //	library or its PxModelDef definitions. Also called by the global SyncChanges() function.

@@ -167,6 +167,10 @@ func (me *LibFxMaterialDefs) New(id string) (def *FxMaterialDef) { def = newFxMa
 //	Removes the FxMaterialDef with the specified Id from this LibFxMaterialDefs.
 func (me *LibFxMaterialDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
+func (me *LibFxMaterialDefs) resolver(part0 string) RefSidResolver {
+	return me.M[part0]
+}
+
 //	Signals to the core package (or your custom package) that changes have been made to this LibFxMaterialDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibFxMaterialDefs
 //	library or its FxMaterialDef definitions. Also called by the global SyncChanges() function.

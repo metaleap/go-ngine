@@ -207,6 +207,10 @@ func (me *LibControllerDefs) New(id string) (def *ControllerDef) { def = newCont
 //	Removes the ControllerDef with the specified Id from this LibControllerDefs.
 func (me *LibControllerDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
+func (me *LibControllerDefs) resolver(part0 string) RefSidResolver {
+	return me.M[part0]
+}
+
 //	Signals to the core package (or your custom package) that changes have been made to this LibControllerDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibControllerDefs
 //	library or its ControllerDef definitions. Also called by the global SyncChanges() function.

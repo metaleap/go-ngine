@@ -190,6 +190,10 @@ func (me *LibAnimationDefs) New(id string) (def *AnimationDef) { def = newAnimat
 //	Removes the AnimationDef with the specified Id from this LibAnimationDefs.
 func (me *LibAnimationDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
+func (me *LibAnimationDefs) resolver(part0 string) RefSidResolver {
+	return me.M[part0]
+}
+
 //	Signals to the core package (or your custom package) that changes have been made to this LibAnimationDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibAnimationDefs
 //	library or its AnimationDef definitions. Also called by the global SyncChanges() function.

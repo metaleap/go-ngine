@@ -190,6 +190,10 @@ func (me *LibCameraDefs) New(id string) (def *CameraDef) { def = newCameraDef(id
 //	Removes the CameraDef with the specified Id from this LibCameraDefs.
 func (me *LibCameraDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
+func (me *LibCameraDefs) resolver(part0 string) RefSidResolver {
+	return me.M[part0]
+}
+
 //	Signals to the core package (or your custom package) that changes have been made to this LibCameraDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibCameraDefs
 //	library or its CameraDef definitions. Also called by the global SyncChanges() function.

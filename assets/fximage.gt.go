@@ -259,8 +259,6 @@ type FxInitFrom struct {
 type FxImageDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
-	//	Sid
-	HasSid
 	//	Indicates whether this image represents a render target.
 	Renderable struct {
 		//	If true, defines the image as a render target, meaning the image can be rendered to.
@@ -425,6 +423,10 @@ func (me *LibFxImageDefs) New(id string) (def *FxImageDef) { def = newFxImageDef
 
 //	Removes the FxImageDef with the specified Id from this LibFxImageDefs.
 func (me *LibFxImageDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
+
+func (me *LibFxImageDefs) resolver(part0 string) RefSidResolver {
+	return me.M[part0]
+}
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibFxImageDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibFxImageDefs

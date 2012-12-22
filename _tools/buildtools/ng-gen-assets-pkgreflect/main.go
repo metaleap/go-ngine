@@ -20,6 +20,7 @@ func main() {
 	outDirPath := filepath.Join(srcDirPath, "pkgreflect")
 	outFilePath := filepath.Join(outDirPath, "-gen-pkgreflect.go")
 	if raw, err := exec.Command("pkgreflect", "-novars=true", "-norecurs=true", "-nofuncs=false", "-gofile=-pkgreflect.go", srcDirPath).CombinedOutput(); err != nil {
+		print(err)
 		panic(err)
 	} else {
 		if len(raw) > 0 {

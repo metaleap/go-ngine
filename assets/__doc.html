@@ -5244,12 +5244,10 @@ A hash-table of GLSL techniques mapped to their scoped identifiers.
 		
 			
 			
-			<h2 id="FxImageDef">type <a href="/target/fximage.gt.go?s=9408:10578#L249">FxImageDef</a></h2>
+			<h2 id="FxImageDef">type <a href="/target/fximage.gt.go?s=9408:10562#L249">FxImageDef</a></h2>
 			<pre>type FxImageDef struct {
     <span class="comment">//	Id, Name, Asset, Extras</span>
     BaseDef
-    <span class="comment">//	Sid</span>
-    HasSid
     <span class="comment">//	Indicates whether this image represents a render target.</span>
     Renderable struct {
         <span class="comment">//	If true, defines the image as a render target, meaning the image can be rendered to.</span>
@@ -5286,7 +5284,7 @@ Declares the storage for the graphical representation of an object.
 
 			
 				
-				<h3 id="FxImageDef.Init">func (*FxImageDef) <a href="/target/fximage.gt.go?s=10598:10626#L277">Init</a></h3>
+				<h3 id="FxImageDef.Init">func (*FxImageDef) <a href="/target/fximage.gt.go?s=10582:10610#L275">Init</a></h3>
 				<pre>func (me *FxImageDef) Init()</pre>
 				<p>
 Initialization
@@ -5296,7 +5294,7 @@ Initialization
 				
 			
 				
-				<h3 id="FxImageDef.NewInst">func (*FxImageDef) <a href="/target/fximage.gt.go?s=11666:11717#L314">NewInst</a></h3>
+				<h3 id="FxImageDef.NewInst">func (*FxImageDef) <a href="/target/fximage.gt.go?s=11650:11701#L312">NewInst</a></h3>
 				<pre>func (me *FxImageDef) NewInst() (inst *FxImageInst)</pre>
 				<p>
 Creates and returns a new FxImageInst instance referencing this FxImageDef definition.
@@ -5343,7 +5341,7 @@ Constructor
 		
 			
 			
-			<h2 id="FxImageInst">type <a href="/target/fximage.gt.go?s=10667:10974#L281">FxImageInst</a></h2>
+			<h2 id="FxImageInst">type <a href="/target/fximage.gt.go?s=10651:10958#L279">FxImageInst</a></h2>
 			<pre>type FxImageInst struct {
     <span class="comment">//	Sid, Name, Extras, DefRef</span>
     BaseInst
@@ -5367,7 +5365,7 @@ Instantiates an image resource.
 
 			
 				
-				<h3 id="FxImageInst.EnsureDef">func (*FxImageInst) <a href="/target/fximage.gt.go?s=12081:12127#L325">EnsureDef</a></h3>
+				<h3 id="FxImageInst.EnsureDef">func (*FxImageInst) <a href="/target/fximage.gt.go?s=12065:12111#L323">EnsureDef</a></h3>
 				<pre>func (me *FxImageInst) EnsureDef() *FxImageDef</pre>
 				<p>
 If me is &#34;dirty&#34; or me.Def is nil, sets me.Def to the correct FxImageDef
@@ -5380,7 +5378,7 @@ Then returns me.Def.
 				
 			
 				
-				<h3 id="FxImageInst.Init">func (*FxImageInst) <a href="/target/fximage.gt.go?s=10994:11023#L291">Init</a></h3>
+				<h3 id="FxImageInst.Init">func (*FxImageInst) <a href="/target/fximage.gt.go?s=10978:11007#L289">Init</a></h3>
 				<pre>func (me *FxImageInst) Init()</pre>
 				<p>
 Initialization
@@ -9408,7 +9406,7 @@ Removes the AnimationClipDef with the specified Id from this LibAnimationClipDef
 				
 			
 				
-				<h3 id="LibAnimationClipDefs.SyncChanges">func (*LibAnimationClipDefs) <a href="/target/animationclip.gt.go?s=5683:5728#L146">SyncChanges</a></h3>
+				<h3 id="LibAnimationClipDefs.SyncChanges">func (*LibAnimationClipDefs) <a href="/target/animationclip.gt.go?s=5778:5823#L150">SyncChanges</a></h3>
 				<pre>func (me *LibAnimationClipDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibAnimationClipDefs
@@ -9498,7 +9496,7 @@ Removes the AnimationDef with the specified Id from this LibAnimationDefs.
 				
 			
 				
-				<h3 id="LibAnimationDefs.SyncChanges">func (*LibAnimationDefs) <a href="/target/animation.gt.go?s=6888:6929#L186">SyncChanges</a></h3>
+				<h3 id="LibAnimationDefs.SyncChanges">func (*LibAnimationDefs) <a href="/target/animation.gt.go?s=6979:7020#L190">SyncChanges</a></h3>
 				<pre>func (me *LibAnimationDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibAnimationDefs
@@ -9588,7 +9586,7 @@ Removes the CameraDef with the specified Id from this LibCameraDefs.
 				
 			
 				
-				<h3 id="LibCameraDefs.SyncChanges">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=6110:6148#L186">SyncChanges</a></h3>
+				<h3 id="LibCameraDefs.SyncChanges">func (*LibCameraDefs) <a href="/target/camera.gt.go?s=6198:6236#L190">SyncChanges</a></h3>
 				<pre>func (me *LibCameraDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibCameraDefs
@@ -9678,7 +9676,7 @@ Removes the ControllerDef with the specified Id from this LibControllerDefs.
 				
 			
 				
-				<h3 id="LibControllerDefs.SyncChanges">func (*LibControllerDefs) <a href="/target/controller.gt.go?s=7232:7274#L203">SyncChanges</a></h3>
+				<h3 id="LibControllerDefs.SyncChanges">func (*LibControllerDefs) <a href="/target/controller.gt.go?s=7324:7366#L207">SyncChanges</a></h3>
 				<pre>func (me *LibControllerDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibControllerDefs
@@ -9768,7 +9766,7 @@ Removes the FormulaDef with the specified Id from this LibFormulaDefs.
 				
 			
 				
-				<h3 id="LibFormulaDefs.SyncChanges">func (*LibFormulaDefs) <a href="/target/formula.gt.go?s=5436:5475#L163">SyncChanges</a></h3>
+				<h3 id="LibFormulaDefs.SyncChanges">func (*LibFormulaDefs) <a href="/target/formula.gt.go?s=5525:5564#L167">SyncChanges</a></h3>
 				<pre>func (me *LibFormulaDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibFormulaDefs
@@ -9858,7 +9856,7 @@ Removes the FxEffectDef with the specified Id from this LibFxEffectDefs.
 				
 			
 				
-				<h3 id="LibFxEffectDefs.SyncChanges">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=19731:19771#L550">SyncChanges</a></h3>
+				<h3 id="LibFxEffectDefs.SyncChanges">func (*LibFxEffectDefs) <a href="/target/fxeffect.gt.go?s=19821:19861#L554">SyncChanges</a></h3>
 				<pre>func (me *LibFxEffectDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibFxEffectDefs
@@ -9872,7 +9870,7 @@ library or its FxEffectDef definitions. Also called by the global SyncChanges() 
 		
 			
 			
-			<h2 id="LibFxImageDefs">type <a href="/target/fximage.gt.go?s=13745:13999#L382">LibFxImageDefs</a></h2>
+			<h2 id="LibFxImageDefs">type <a href="/target/fximage.gt.go?s=13729:13983#L380">LibFxImageDefs</a></h2>
 			<pre>type LibFxImageDefs struct {
     BaseLib
     <span class="comment">//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:</span>
@@ -9895,7 +9893,7 @@ To create a new LibFxImageDefs library, ONLY use the LibsFxImageDef.New() or Lib
 
 			
 				
-				<h3 id="LibFxImageDefs.Add">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=14331:14391#L397">Add</a></h3>
+				<h3 id="LibFxImageDefs.Add">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=14315:14375#L395">Add</a></h3>
 				<pre>func (me *LibFxImageDefs) Add(d *FxImageDef) (n *FxImageDef)</pre>
 				<p>
 Adds the specified FxImageDef definition to this LibFxImageDefs, and returns it.
@@ -9906,7 +9904,7 @@ If this LibFxImageDefs already contains a FxImageDef definition with the same Id
 				
 			
 				
-				<h3 id="LibFxImageDefs.AddFromRefUrls">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=11155:11224#L296">AddFromRefUrls</a></h3>
+				<h3 id="LibFxImageDefs.AddFromRefUrls">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=11139:11208#L294">AddFromRefUrls</a></h3>
 				<pre>func (me *LibFxImageDefs) AddFromRefUrls(idRefUrls map[string]string)</pre>
 				<p>
 Adds multiple FxImageDefs to this library,
@@ -9917,7 +9915,7 @@ with each one&#39;s Id and InitFrom.RefUrl set from the specified idRefUrls map.
 				
 			
 				
-				<h3 id="LibFxImageDefs.AddNew">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=14701:14756#L407">AddNew</a></h3>
+				<h3 id="LibFxImageDefs.AddNew">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=14685:14740#L405">AddNew</a></h3>
 				<pre>func (me *LibFxImageDefs) AddNew(id string) *FxImageDef</pre>
 				<p>
 Creates a new FxImageDef definition with the specified Id, adds it to this LibFxImageDefs, and returns it.
@@ -9928,7 +9926,7 @@ If this LibFxImageDefs already contains a FxImageDef definition with the specifi
 				
 			
 				
-				<h3 id="LibFxImageDefs.Len">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=14829:14864#L410">Len</a></h3>
+				<h3 id="LibFxImageDefs.Len">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=14813:14848#L408">Len</a></h3>
 				<pre>func (me *LibFxImageDefs) Len() int</pre>
 				<p>
 Convenience short-hand for len(lib.M)
@@ -9938,7 +9936,7 @@ Convenience short-hand for len(lib.M)
 				
 			
 				
-				<h3 id="LibFxImageDefs.New">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=15011:15069#L414">New</a></h3>
+				<h3 id="LibFxImageDefs.New">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=14995:15053#L412">New</a></h3>
 				<pre>func (me *LibFxImageDefs) New(id string) (def *FxImageDef)</pre>
 				<p>
 Creates a new FxImageDef definition with the specified Id and returns it,
@@ -9949,7 +9947,7 @@ but does not add it to this LibFxImageDefs.
 				
 			
 				
-				<h3 id="LibFxImageDefs.Remove">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=15181:15224#L417">Remove</a></h3>
+				<h3 id="LibFxImageDefs.Remove">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=15165:15208#L415">Remove</a></h3>
 				<pre>func (me *LibFxImageDefs) Remove(id string)</pre>
 				<p>
 Removes the FxImageDef with the specified Id from this LibFxImageDefs.
@@ -9959,7 +9957,7 @@ Removes the FxImageDef with the specified Id from this LibFxImageDefs.
 				
 			
 				
-				<h3 id="LibFxImageDefs.SyncChanges">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=15564:15603#L422">SyncChanges</a></h3>
+				<h3 id="LibFxImageDefs.SyncChanges">func (*LibFxImageDefs) <a href="/target/fximage.gt.go?s=15637:15676#L424">SyncChanges</a></h3>
 				<pre>func (me *LibFxImageDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibFxImageDefs
@@ -10049,7 +10047,7 @@ Removes the FxMaterialDef with the specified Id from this LibFxMaterialDefs.
 				
 			
 				
-				<h3 id="LibFxMaterialDefs.SyncChanges">func (*LibFxMaterialDefs) <a href="/target/fxmaterial.gt.go?s=6100:6142#L163">SyncChanges</a></h3>
+				<h3 id="LibFxMaterialDefs.SyncChanges">func (*LibFxMaterialDefs) <a href="/target/fxmaterial.gt.go?s=6192:6234#L167">SyncChanges</a></h3>
 				<pre>func (me *LibFxMaterialDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibFxMaterialDefs
@@ -10139,7 +10137,7 @@ Removes the GeometryDef with the specified Id from this LibGeometryDefs.
 				
 			
 				
-				<h3 id="LibGeometryDefs.SyncChanges">func (*LibGeometryDefs) <a href="/target/geometry.gt.go?s=9058:9098#L256">SyncChanges</a></h3>
+				<h3 id="LibGeometryDefs.SyncChanges">func (*LibGeometryDefs) <a href="/target/geometry.gt.go?s=9148:9188#L260">SyncChanges</a></h3>
 				<pre>func (me *LibGeometryDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibGeometryDefs
@@ -10229,7 +10227,7 @@ Removes the KxArticulatedSystemDef with the specified Id from this LibKxArticula
 				
 			
 				
-				<h3 id="LibKxArticulatedSystemDefs.SyncChanges">func (*LibKxArticulatedSystemDefs) <a href="/target/kxarticulatedsystem.gt.go?s=12188:12239#L347">SyncChanges</a></h3>
+				<h3 id="LibKxArticulatedSystemDefs.SyncChanges">func (*LibKxArticulatedSystemDefs) <a href="/target/kxarticulatedsystem.gt.go?s=12289:12340#L351">SyncChanges</a></h3>
 				<pre>func (me *LibKxArticulatedSystemDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibKxArticulatedSystemDefs
@@ -10319,7 +10317,7 @@ Removes the KxJointDef with the specified Id from this LibKxJointDefs.
 				
 			
 				
-				<h3 id="LibKxJointDefs.SyncChanges">func (*LibKxJointDefs) <a href="/target/kxjoint.gt.go?s=6280:6319#L182">SyncChanges</a></h3>
+				<h3 id="LibKxJointDefs.SyncChanges">func (*LibKxJointDefs) <a href="/target/kxjoint.gt.go?s=6369:6408#L186">SyncChanges</a></h3>
 				<pre>func (me *LibKxJointDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibKxJointDefs
@@ -10409,7 +10407,7 @@ Removes the KxModelDef with the specified Id from this LibKxModelDefs.
 				
 			
 				
-				<h3 id="LibKxModelDefs.SyncChanges">func (*LibKxModelDefs) <a href="/target/kxmodel.gt.go?s=6671:6710#L196">SyncChanges</a></h3>
+				<h3 id="LibKxModelDefs.SyncChanges">func (*LibKxModelDefs) <a href="/target/kxmodel.gt.go?s=6760:6799#L200">SyncChanges</a></h3>
 				<pre>func (me *LibKxModelDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibKxModelDefs
@@ -10499,7 +10497,7 @@ Removes the KxSceneDef with the specified Id from this LibKxSceneDefs.
 				
 			
 				
-				<h3 id="LibKxSceneDefs.SyncChanges">func (*LibKxSceneDefs) <a href="/target/kxscene.gt.go?s=6563:6602#L179">SyncChanges</a></h3>
+				<h3 id="LibKxSceneDefs.SyncChanges">func (*LibKxSceneDefs) <a href="/target/kxscene.gt.go?s=6652:6691#L183">SyncChanges</a></h3>
 				<pre>func (me *LibKxSceneDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibKxSceneDefs
@@ -10589,7 +10587,7 @@ Removes the LightDef with the specified Id from this LibLightDefs.
 				
 			
 				
-				<h3 id="LibLightDefs.SyncChanges">func (*LibLightDefs) <a href="/target/light.gt.go?s=7693:7730#L232">SyncChanges</a></h3>
+				<h3 id="LibLightDefs.SyncChanges">func (*LibLightDefs) <a href="/target/light.gt.go?s=7780:7817#L236">SyncChanges</a></h3>
 				<pre>func (me *LibLightDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibLightDefs
@@ -10679,7 +10677,7 @@ Removes the NodeDef with the specified Id from this LibNodeDefs.
 				
 			
 				
-				<h3 id="LibNodeDefs.SyncChanges">func (*LibNodeDefs) <a href="/target/node.gt.go?s=5645:5681#L170">SyncChanges</a></h3>
+				<h3 id="LibNodeDefs.SyncChanges">func (*LibNodeDefs) <a href="/target/node.gt.go?s=5731:5767#L174">SyncChanges</a></h3>
 				<pre>func (me *LibNodeDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibNodeDefs
@@ -10769,7 +10767,7 @@ Removes the PxForceFieldDef with the specified Id from this LibPxForceFieldDefs.
 				
 			
 				
-				<h3 id="LibPxForceFieldDefs.SyncChanges">func (*LibPxForceFieldDefs) <a href="/target/pxforcefield.gt.go?s=5410:5454#L141">SyncChanges</a></h3>
+				<h3 id="LibPxForceFieldDefs.SyncChanges">func (*LibPxForceFieldDefs) <a href="/target/pxforcefield.gt.go?s=5504:5548#L145">SyncChanges</a></h3>
 				<pre>func (me *LibPxForceFieldDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibPxForceFieldDefs
@@ -10859,7 +10857,7 @@ Removes the PxMaterialDef with the specified Id from this LibPxMaterialDefs.
 				
 			
 				
-				<h3 id="LibPxMaterialDefs.SyncChanges">func (*LibPxMaterialDefs) <a href="/target/pxmaterial.gt.go?s=5501:5543#L149">SyncChanges</a></h3>
+				<h3 id="LibPxMaterialDefs.SyncChanges">func (*LibPxMaterialDefs) <a href="/target/pxmaterial.gt.go?s=5593:5635#L153">SyncChanges</a></h3>
 				<pre>func (me *LibPxMaterialDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibPxMaterialDefs
@@ -10949,7 +10947,7 @@ Removes the PxModelDef with the specified Id from this LibPxModelDefs.
 				
 			
 				
-				<h3 id="LibPxModelDefs.SyncChanges">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=6398:6437#L161">SyncChanges</a></h3>
+				<h3 id="LibPxModelDefs.SyncChanges">func (*LibPxModelDefs) <a href="/target/pxmodel.gt.go?s=6487:6526#L165">SyncChanges</a></h3>
 				<pre>func (me *LibPxModelDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibPxModelDefs
@@ -11039,7 +11037,7 @@ Removes the PxSceneDef with the specified Id from this LibPxSceneDefs.
 				
 			
 				
-				<h3 id="LibPxSceneDefs.SyncChanges">func (*LibPxSceneDefs) <a href="/target/pxscene.gt.go?s=5576:5615#L153">SyncChanges</a></h3>
+				<h3 id="LibPxSceneDefs.SyncChanges">func (*LibPxSceneDefs) <a href="/target/pxscene.gt.go?s=5665:5704#L157">SyncChanges</a></h3>
 				<pre>func (me *LibPxSceneDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibPxSceneDefs
@@ -11129,7 +11127,7 @@ Removes the VisualSceneDef with the specified Id from this LibVisualSceneDefs.
 				
 			
 				
-				<h3 id="LibVisualSceneDefs.SyncChanges">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=6985:7028#L193">SyncChanges</a></h3>
+				<h3 id="LibVisualSceneDefs.SyncChanges">func (*LibVisualSceneDefs) <a href="/target/visualscene.gt.go?s=7078:7121#L197">SyncChanges</a></h3>
 				<pre>func (me *LibVisualSceneDefs) SyncChanges()</pre>
 				<p>
 Signals to the core package (or your custom package) that changes have been made to this LibVisualSceneDefs
@@ -11329,7 +11327,7 @@ If this LibsFxEffectDef already contains a LibFxEffectDefs library with the spec
 		
 			
 			
-			<h2 id="LibsFxImageDef">type <a href="/target/fximage.gt.go?s=13043:13089#L362">LibsFxImageDef</a></h2>
+			<h2 id="LibsFxImageDef">type <a href="/target/fximage.gt.go?s=13027:13073#L360">LibsFxImageDef</a></h2>
 			<pre>type LibsFxImageDef map[string]*LibFxImageDefs</pre>
 			<p>
 The underlying type of the global AllFxImageDefLibs variable:
@@ -11347,7 +11345,7 @@ a hash-table that contains LibFxImageDefs libraries associated by their Id.
 
 			
 				
-				<h3 id="LibsFxImageDef.AddNew">func (LibsFxImageDef) <a href="/target/fximage.gt.go?s=13323:13387#L366">AddNew</a></h3>
+				<h3 id="LibsFxImageDef.AddNew">func (LibsFxImageDef) <a href="/target/fximage.gt.go?s=13307:13371#L364">AddNew</a></h3>
 				<pre>func (me LibsFxImageDef) AddNew(id string) (lib *LibFxImageDefs)</pre>
 				<p>
 Creates a new LibFxImageDefs library with the specified Id, adds it to this LibsFxImageDef, and returns it.
@@ -13730,7 +13728,7 @@ whose Id is referenced by me, returning the first match found.
 				
 			
 				
-				<h3 id="RefId.FxImageDef">func (RefId) <a href="/target/fximage.gt.go?s=12732:12778#L350">FxImageDef</a></h3>
+				<h3 id="RefId.FxImageDef">func (RefId) <a href="/target/fximage.gt.go?s=12716:12762#L348">FxImageDef</a></h3>
 				<pre>func (me RefId) FxImageDef() (def *FxImageDef)</pre>
 				<p>
 Searches (all LibFxImageDefs contained in AllFxImageDefLibs) for the FxImageDef
