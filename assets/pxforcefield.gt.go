@@ -145,7 +145,7 @@ func (me *LibPxForceFieldDefs) New(id string) (def *PxForceFieldDef) { def = new
 //	Removes the PxForceFieldDef with the specified Id from this LibPxForceFieldDefs.
 func (me *LibPxForceFieldDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibPxForceFieldDefs) resolver(part0 string) RefSidResolver {
+func (me *LibPxForceFieldDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

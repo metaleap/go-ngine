@@ -167,7 +167,7 @@ func (me *LibFxMaterialDefs) New(id string) (def *FxMaterialDef) { def = newFxMa
 //	Removes the FxMaterialDef with the specified Id from this LibFxMaterialDefs.
 func (me *LibFxMaterialDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibFxMaterialDefs) resolver(part0 string) RefSidResolver {
+func (me *LibFxMaterialDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

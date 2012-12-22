@@ -153,7 +153,7 @@ func (me *LibPxMaterialDefs) New(id string) (def *PxMaterialDef) { def = newPxMa
 //	Removes the PxMaterialDef with the specified Id from this LibPxMaterialDefs.
 func (me *LibPxMaterialDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibPxMaterialDefs) resolver(part0 string) RefSidResolver {
+func (me *LibPxMaterialDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

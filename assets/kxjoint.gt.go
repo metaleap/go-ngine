@@ -186,7 +186,7 @@ func (me *LibKxJointDefs) New(id string) (def *KxJointDef) { def = newKxJointDef
 //	Removes the KxJointDef with the specified Id from this LibKxJointDefs.
 func (me *LibKxJointDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibKxJointDefs) resolver(part0 string) RefSidResolver {
+func (me *LibKxJointDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

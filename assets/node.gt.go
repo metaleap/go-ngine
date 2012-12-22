@@ -174,7 +174,7 @@ func (me *LibNodeDefs) New(id string) (def *NodeDef) { def = newNodeDef(id); ret
 //	Removes the NodeDef with the specified Id from this LibNodeDefs.
 func (me *LibNodeDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibNodeDefs) resolver(part0 string) RefSidResolver {
+func (me *LibNodeDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

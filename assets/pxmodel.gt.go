@@ -165,7 +165,7 @@ func (me *LibPxModelDefs) New(id string) (def *PxModelDef) { def = newPxModelDef
 //	Removes the PxModelDef with the specified Id from this LibPxModelDefs.
 func (me *LibPxModelDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibPxModelDefs) resolver(part0 string) RefSidResolver {
+func (me *LibPxModelDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

@@ -115,7 +115,7 @@ func (me *Lib__T__Defs) New(id string) (def *__T__Def) { def = new__T__Def(id); 
 //	Removes the __T__Def with the specified Id from this Lib__T__Defs.
 func (me *Lib__T__Defs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *Lib__T__Defs) resolver(part0 string) RefSidResolver {
+func (me *Lib__T__Defs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

@@ -424,7 +424,7 @@ func (me *LibFxImageDefs) New(id string) (def *FxImageDef) { def = newFxImageDef
 //	Removes the FxImageDef with the specified Id from this LibFxImageDefs.
 func (me *LibFxImageDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibFxImageDefs) resolver(part0 string) RefSidResolver {
+func (me *LibFxImageDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

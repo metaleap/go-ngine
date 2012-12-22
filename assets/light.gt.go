@@ -236,7 +236,7 @@ func (me *LibLightDefs) New(id string) (def *LightDef) { def = newLightDef(id); 
 //	Removes the LightDef with the specified Id from this LibLightDefs.
 func (me *LibLightDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibLightDefs) resolver(part0 string) RefSidResolver {
+func (me *LibLightDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

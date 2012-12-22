@@ -1092,11 +1092,6 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				
 			
 				
-				<dd><a href="#GetRefSidResolver">type GetRefSidResolver</a></dd>
-				
-				
-			
-				
 				<dd><a href="#HasAsset">type HasAsset</a></dd>
 				
 				
@@ -2550,19 +2545,14 @@ considered &#34;auxiliary helpers&#34; rather than primary / &#34;first-class&#3
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RefSid.Resolve">func (me *RefSid) Resolve(root RefSidResolverRoot, force bool) interface{}</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#RefSid.Resolve">func (me *RefSid) Resolve(root RefSidRoot, force bool) interface{}</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#RefSid.SetSidRef">func (me *RefSid) SetSidRef(sidRef string)</a></dd>
 				
 			
 				
-				<dd><a href="#RefSidResolver">type RefSidResolver</a></dd>
-				
-				
-			
-				
-				<dd><a href="#RefSidResolverRoot">type RefSidResolverRoot</a></dd>
+				<dd><a href="#RefSidRoot">type RefSidRoot</a></dd>
 				
 				
 			
@@ -7782,25 +7772,6 @@ Constructor
 Declares the attributes and identity of mesh-vertices.
 The mesh-vertices represent the position (identity) of the vertices comprising the mesh
 and other vertex attributes that are invariant to tessellation.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="GetRefSidResolver">type <a href="/target/refsid.go?s=114:168#L1">GetRefSidResolver</a></h2>
-			<pre>type GetRefSidResolver func(arg string) RefSidResolver</pre>
-			<p>
-Returns a RefSidResolver based on the specified arg (typically, an Id).
 </p>
 
 
@@ -14068,7 +14039,7 @@ whose Id is referenced by me, returning the first match found.
 		
 			
 			
-			<h2 id="RefParam">type <a href="/target/refsid.go?s=216:310#L1">RefParam</a></h2>
+			<h2 id="RefParam">type <a href="/target/refsid.go?s=85:179#L1">RefParam</a></h2>
 			<pre>type RefParam struct {
     <span class="comment">//	A parameter reference technically always refers to a Sid.</span>
     RefSid
@@ -14086,7 +14057,7 @@ References a previously defined parameter.
 
 			
 				
-				<h3 id="NewRefParam">func <a href="/target/refsid.go?s=530:578#L12">NewRefParam</a></h3>
+				<h3 id="NewRefParam">func <a href="/target/refsid.go?s=399:447#L9">NewRefParam</a></h3>
 				<pre>func NewRefParam(paramRef string) (rs *RefParam)</pre>
 				<p>
 Creates and returns a new RefParam initialized with the specified paramRef.
@@ -14097,7 +14068,7 @@ Creates and returns a new RefParam initialized with the specified paramRef.
 
 			
 				
-				<h3 id="RefParam.SetParamRef">func (*RefParam) <a href="/target/refsid.go?s=370:416#L7">SetParamRef</a></h3>
+				<h3 id="RefParam.SetParamRef">func (*RefParam) <a href="/target/refsid.go?s=239:285#L4">SetParamRef</a></h3>
 				<pre>func (me *RefParam) SetParamRef(sidRef string)</pre>
 				<p>
 Convenience short-hand for me.RefSid.SetSidRef(sidRef)
@@ -14109,7 +14080,7 @@ Convenience short-hand for me.RefSid.SetSidRef(sidRef)
 		
 			
 			
-			<h2 id="RefSid">type <a href="/target/refsid.go?s=693:1085#L19">RefSid</a></h2>
+			<h2 id="RefSid">type <a href="/target/refsid.go?s=562:954#L16">RefSid</a></h2>
 			<pre>type RefSid struct {
     <span class="comment">//	The Sid path currently referenced.</span>
     <span class="comment">//	To be set ONLY through the NewRefSid() constructor or SetSidRef() method!</span>
@@ -14132,7 +14103,7 @@ References a resource by its scoped identifier (Sid).
 
 			
 				
-				<h3 id="NewRefSid">func <a href="/target/refsid.go?s=1169:1211#L30">NewRefSid</a></h3>
+				<h3 id="NewRefSid">func <a href="/target/refsid.go?s=1038:1080#L27">NewRefSid</a></h3>
 				<pre>func NewRefSid(sidRef string) (rs *RefSid)</pre>
 				<p>
 Creates and returns a new RefSid, its S initialized with the specified sidRef.
@@ -14143,8 +14114,8 @@ Creates and returns a new RefSid, its S initialized with the specified sidRef.
 
 			
 				
-				<h3 id="RefSid.Resolve">func (*RefSid) <a href="/target/refsid.go?s=1580:1654#L44">Resolve</a></h3>
-				<pre>func (me *RefSid) Resolve(root RefSidResolverRoot, force bool) interface{}</pre>
+				<h3 id="RefSid.Resolve">func (*RefSid) <a href="/target/refsid.go?s=1449:1515#L41">Resolve</a></h3>
+				<pre>func (me *RefSid) Resolve(root RefSidRoot, force bool) interface{}</pre>
 				<p>
 Resolves this Sid reference (if V is nil or force is true), sets and returns V.
 If no match is found for the full path, V will become nil
@@ -14155,7 +14126,7 @@ If no match is found for the full path, V will become nil
 				
 			
 				
-				<h3 id="RefSid.SetSidRef">func (*RefSid) <a href="/target/refsid.go?s=1304:1346#L37">SetSidRef</a></h3>
+				<h3 id="RefSid.SetSidRef">func (*RefSid) <a href="/target/refsid.go?s=1173:1215#L34">SetSidRef</a></h3>
 				<pre>func (me *RefSid) SetSidRef(sidRef string)</pre>
 				<p>
 Sets S to sidRef and resets V to nil.
@@ -14167,33 +14138,18 @@ Sets S to sidRef and resets V to nil.
 		
 			
 			
-			<h2 id="RefSidResolver">type <a href="/target/refsid.go?s=2051:2133#L58">RefSidResolver</a></h2>
-			<pre>type RefSidResolver interface {
+			<h2 id="RefSidRoot">type <a href="/target/refsid.go?s=2268:2336#L62">RefSidRoot</a></h2>
+			<pre>type RefSidRoot interface {
     <span class="comment">// contains filtered or unexported methods</span>
 }</pre>
 			<p>
-Resolves a Sid path. Though its resolveSidPath() method is unexported,
-all &#34;applicable&#34; struct types in this package implement this interface.
+This interface needs to be passed to the RefSid.Resolve() method to resolve a Sid path:
+Implemented by all &#34;LibFooDefs&#34; types, plus all types that embed HasId and directly or
+indirectly lead to types that embed HasSid -- this includes almost all &#34;FooDef&#34; types.
+The latter ignore the Id part of the Sid path (but it is still required syntactically),
+whereas the former (all &#34;LibFooDefs&#34; types) require it.
 </p>
 
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="RefSidResolverRoot">type <a href="/target/refsid.go?s=2135:2211#L62">RefSidResolverRoot</a></h2>
-			<pre>type RefSidResolverRoot interface {
-    <span class="comment">// contains filtered or unexported methods</span>
-}</pre>
-			
 
 			
 

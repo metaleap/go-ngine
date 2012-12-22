@@ -200,7 +200,7 @@ func (me *LibKxModelDefs) New(id string) (def *KxModelDef) { def = newKxModelDef
 //	Removes the KxModelDef with the specified Id from this LibKxModelDefs.
 func (me *LibKxModelDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibKxModelDefs) resolver(part0 string) RefSidResolver {
+func (me *LibKxModelDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

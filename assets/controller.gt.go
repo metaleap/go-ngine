@@ -207,7 +207,7 @@ func (me *LibControllerDefs) New(id string) (def *ControllerDef) { def = newCont
 //	Removes the ControllerDef with the specified Id from this LibControllerDefs.
 func (me *LibControllerDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibControllerDefs) resolver(part0 string) RefSidResolver {
+func (me *LibControllerDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

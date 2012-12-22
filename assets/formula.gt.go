@@ -167,7 +167,7 @@ func (me *LibFormulaDefs) New(id string) (def *FormulaDef) { def = newFormulaDef
 //	Removes the FormulaDef with the specified Id from this LibFormulaDefs.
 func (me *LibFormulaDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibFormulaDefs) resolver(part0 string) RefSidResolver {
+func (me *LibFormulaDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

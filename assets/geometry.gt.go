@@ -260,7 +260,7 @@ func (me *LibGeometryDefs) New(id string) (def *GeometryDef) { def = newGeometry
 //	Removes the GeometryDef with the specified Id from this LibGeometryDefs.
 func (me *LibGeometryDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibGeometryDefs) resolver(part0 string) RefSidResolver {
+func (me *LibGeometryDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

@@ -157,7 +157,7 @@ func (me *LibPxSceneDefs) New(id string) (def *PxSceneDef) { def = newPxSceneDef
 //	Removes the PxSceneDef with the specified Id from this LibPxSceneDefs.
 func (me *LibPxSceneDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibPxSceneDefs) resolver(part0 string) RefSidResolver {
+func (me *LibPxSceneDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

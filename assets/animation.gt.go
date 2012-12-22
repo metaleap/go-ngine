@@ -190,7 +190,7 @@ func (me *LibAnimationDefs) New(id string) (def *AnimationDef) { def = newAnimat
 //	Removes the AnimationDef with the specified Id from this LibAnimationDefs.
 func (me *LibAnimationDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibAnimationDefs) resolver(part0 string) RefSidResolver {
+func (me *LibAnimationDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

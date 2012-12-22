@@ -190,7 +190,7 @@ func (me *LibCameraDefs) New(id string) (def *CameraDef) { def = newCameraDef(id
 //	Removes the CameraDef with the specified Id from this LibCameraDefs.
 func (me *LibCameraDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibCameraDefs) resolver(part0 string) RefSidResolver {
+func (me *LibCameraDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

@@ -4,9 +4,6 @@ import (
 	"strings"
 )
 
-//	Returns a RefSidResolver based on the specified arg (typically, an Id).
-type GetRefSidResolver func(arg string) RefSidResolver
-
 //	References a previously defined parameter.
 type RefParam struct {
 	//	A parameter reference technically always refers to a Sid.
@@ -51,7 +48,7 @@ func (me *RefSid) SetSidRef(sidRef string) {
 //	Resolves this Sid reference (if V is nil or force is true), sets and returns V.
 //	If no match is found for the full path, V will become nil
 //	(rather than, say, a partial-path-match result-value).
-func (me *RefSid) Resolve(root RefSidResolverRoot, force bool) interface{} {
+func (me *RefSid) Resolve(root RefSidRoot, force bool) interface{} {
 	if force || (me.V == nil) {
 		parts := strings.Split(me.S, "/")
 		if resolver := root.resolver(parts[0]); (resolver != nil) && (len(parts) > 1) {
@@ -63,17 +60,20 @@ func (me *RefSid) Resolve(root RefSidResolverRoot, force bool) interface{} {
 	return me.V
 }
 
-//	Resolves a Sid path. Though its resolveSidPath() method is unexported,
-//	all "applicable" struct types in this package implement this interface.
-type RefSidResolver interface {
+type refSidResolver interface {
 	resolveSidPath(path []string) (val interface{})
 }
 
-type RefSidResolverRoot interface {
-	resolver(part0 string) RefSidResolver
+//	This interface needs to be passed to the RefSid.Resolve() method to resolve a Sid path:
+//	Implemented by all "LibFooDefs" types, plus all types that embed HasId and directly or
+//	indirectly lead to types that embed HasSid -- this includes almost all "FooDef" types.
+//	The latter ignore the Id part of the Sid path (but it is still required syntactically),
+//	whereas the former (all "LibFooDefs" types) require it.
+type RefSidRoot interface {
+	resolver(part0 string) refSidResolver
 }
 
-func sidResolveCore(path []string, val interface{}, res RefSidResolver, sid string) interface{} {
+func sidResolveCore(path []string, val interface{}, res refSidResolver, sid string) interface{} {
 	if sid == path[0] {
 		if len(path) == 1 {
 			return val

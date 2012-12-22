@@ -197,7 +197,7 @@ func (me *LibVisualSceneDefs) New(id string) (def *VisualSceneDef) { def = newVi
 //	Removes the VisualSceneDef with the specified Id from this LibVisualSceneDefs.
 func (me *LibVisualSceneDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibVisualSceneDefs) resolver(part0 string) RefSidResolver {
+func (me *LibVisualSceneDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

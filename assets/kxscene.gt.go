@@ -183,7 +183,7 @@ func (me *LibKxSceneDefs) New(id string) (def *KxSceneDef) { def = newKxSceneDef
 //	Removes the KxSceneDef with the specified Id from this LibKxSceneDefs.
 func (me *LibKxSceneDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibKxSceneDefs) resolver(part0 string) RefSidResolver {
+func (me *LibKxSceneDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
 }
 

@@ -194,7 +194,7 @@ func writeMethod(rt reflect.Type, force bool) (outSrc string) {
 		typesWritten[rt] = true
 		outSrc += "\treturn\n}\n\n"
 		if _, ok := rt.FieldByName("Id"); ok && (isResolver[rt] || (count > 0)) {
-			outSrc += sfmt("func (me *%s) resolver(part0 string) RefSidResolver {\n\treturn me\n}\n\n", rt.Name())
+			outSrc += sfmt("func (me *%s) resolver(part0 string) refSidResolver {\n\treturn me\n}\n\n", rt.Name())
 		}
 	} else {
 		outSrc = ""
