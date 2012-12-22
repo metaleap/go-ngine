@@ -45,6 +45,12 @@ func (me *RefSid) SetSidRef(sidRef string) {
 	me.S, me.V = sidRef, nil
 }
 
+type refSidBag struct {
+	fielder, indexer, sid string
+	valRaw                interface{}
+	valAsRes              refSidResolver
+}
+
 //	Resolves this Sid reference (if V is nil or force is true), sets and returns V.
 //	If no match is found for the full path, V will become nil
 //	(rather than, say, a partial-path-match result-value).
@@ -52,7 +58,16 @@ func (me *RefSid) Resolve(root RefSidRoot, force bool) interface{} {
 	if force || (me.V == nil) {
 		parts := strings.Split(me.S, "/")
 		if resolver := root.resolver(parts[0]); (resolver != nil) && (len(parts) > 1) {
-			me.V = resolver.resolveSidPath(parts[1:])
+			bag := &refSidBag{}
+			last := parts[len(parts)-1]
+			if pos := strings.Index(last, "."); pos > 0 {
+				bag.fielder = last[pos+1:]
+				parts[len(parts)-1] = last[:pos]
+			} else if pos = strings.Index(last, "("); pos > 0 {
+				bag.indexer = last[pos+1:]
+				parts[len(parts)-1] = last[:pos]
+			}
+			me.V = resolver.resolveSidPath(parts[1:], bag)
 		} else {
 			me.V = resolver
 		}
@@ -60,8 +75,16 @@ func (me *RefSid) Resolve(root RefSidRoot, force bool) interface{} {
 	return me.V
 }
 
+type refSidFielder interface {
+	accessField(field string) interface{}
+}
+
+type refSidIndexer interface {
+	accessIndex(indices string) interface{}
+}
+
 type refSidResolver interface {
-	resolveSidPath(path []string) (val interface{})
+	resolveSidPath(path []string, bag *refSidBag) (val interface{})
 }
 
 //	This interface needs to be passed to the RefSid.Resolve() method to resolve a Sid path:
@@ -73,12 +96,12 @@ type RefSidRoot interface {
 	resolver(part0 string) refSidResolver
 }
 
-func sidResolveCore(path []string, val interface{}, res refSidResolver, sid string) interface{} {
-	if sid == path[0] {
+func sidResolveCore(path []string, bag *refSidBag) interface{} {
+	if bag.sid == path[0] {
 		if len(path) == 1 {
-			return val
-		} else if res != nil {
-			return res.resolveSidPath(path[1:])
+			return bag.valRaw
+		} else if bag.valAsRes != nil {
+			return bag.valAsRes.resolveSidPath(path[1:], bag)
 		}
 	}
 	return nil

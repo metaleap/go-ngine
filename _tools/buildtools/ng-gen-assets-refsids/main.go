@@ -164,20 +164,20 @@ func writeMethod(rt reflect.Type, force bool) (outSrc string) {
 					if haveSids[et] && !sf.Anonymous {
 						switch ft.Kind() {
 						case reflect.Array, reflect.Map, reflect.Slice:
-							outSrc += sfmt("\tfor _, sidItem := range %s {\n\t\tif val = sidResolveCore(path, sidItem, %s, sidItem.Sid); val != nil {\n\t\t\treturn\n\t\t}\n\t}\n", pref+sf.Name, ustr.Ifs(isResolver[et], "sidItem", "nil"))
+							outSrc += sfmt("\tfor _, sidItem := range %s {\n\t\tbag.valRaw, bag.valAsRes, bag.sid = sidItem, %s, sidItem.Sid\n\t\tif val = sidResolveCore(path, bag); val != nil {\n\t\t\treturn\n\t\t}\n\t}\n", pref+sf.Name, ustr.Ifs(isResolver[et], "sidItem", "nil"))
 						default:
 							beginIfNil()
-							outSrc += sfmt(lnpre+"if val = sidResolveCore(path, %s, %s, %s.Sid); val != nil {\n"+lnpre+"\treturn\n"+lnpre+"}\n", amper+pref+sf.Name, ustr.Ifs(isResolver[et], amper+pref+sf.Name, "nil"), pref+sf.Name)
+							outSrc += sfmt(lnpre+"bag.valRaw, bag.valAsRes, bag.sid = %s, %s, %s.Sid\n"+lnpre+"if val = sidResolveCore(path, bag); val != nil {\n"+lnpre+"\treturn\n"+lnpre+"}\n", amper+pref+sf.Name, ustr.Ifs(isResolver[et], amper+pref+sf.Name, "nil"), pref+sf.Name)
 							endIfNil()
 						}
 						count++
 					} else if isResolver[et] {
 						switch ft.Kind() {
 						case reflect.Array, reflect.Map, reflect.Slice:
-							outSrc += sfmt("\tfor _, subItem := range %s {\n\t\tif val = subItem.resolveSidPath(path); val != nil {\n\t\t\treturn\n\t\t}\n\t}\n", pref+sf.Name)
+							outSrc += sfmt("\tfor _, subItem := range %s {\n\t\tif val = subItem.resolveSidPath(path, bag); val != nil {\n\t\t\treturn\n\t\t}\n\t}\n", pref+sf.Name)
 						default:
 							beginIfNil()
-							outSrc += sfmt(lnpre+"if val = %s.resolveSidPath(path); val != nil {\n"+lnpre+"\treturn\n"+lnpre+"}\n", pref+sf.Name)
+							outSrc += sfmt(lnpre+"if val = %s.resolveSidPath(path, bag); val != nil {\n"+lnpre+"\treturn\n"+lnpre+"}\n", pref+sf.Name)
 							endIfNil()
 						}
 						count++
@@ -188,7 +188,7 @@ func writeMethod(rt reflect.Type, force bool) (outSrc string) {
 			}
 		}
 	}
-	outSrc += sfmt("func (me *%s) resolveSidPath(path []string) (val interface{}) {\n", rt.Name())
+	outSrc += sfmt("func (me *%s) resolveSidPath(path []string, bag *refSidBag) (val interface{}) {\n", rt.Name())
 	walkFields(rt, "me.")
 	if isResolver[rt] || (count > 0) || force {
 		typesWritten[rt] = true
@@ -237,5 +237,5 @@ func main() {
 			outSrc += writeMethod(rt, true)
 		}
 	}
-	uio.WriteTextFile(outFilePath, outSrc[:len(outSrc)-1])
+	uio.WriteTextFile(outFilePath, outSrc[:len(outSrc)-1]+"\n")
 }
