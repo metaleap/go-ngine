@@ -1,9 +1,5 @@
 package assets
 
-import (
-	xmlx "github.com/jteeuwen/go-pkg-xmlx"
-)
-
 type TransformKind int
 
 const (
@@ -291,8 +287,8 @@ type Technique struct {
 	//	The type of profile. This is a vendor-defined character string
 	//	that indicates the platform or capability target for the technique.
 	Profile string
-	//	Arbitrary content or meta-data for this Technique.
-	Data []*xmlx.Node
+	//	Arbitrary XML content or meta-data for this Technique.
+	Data string
 }
 
 //	Represents a single transformation of a specific kind.

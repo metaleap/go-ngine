@@ -1,1 +1,1 @@
-pkgreflect -novars=true -norecurs=true -nofuncs=false -gofile=-pkgreflect.go $dir
+ng-gen-assets-pkgreflect $dir

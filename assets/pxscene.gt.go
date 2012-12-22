@@ -157,13 +157,6 @@ func (me *LibPxSceneDefs) New(id string) (def *PxSceneDef) { def = newPxSceneDef
 //	Removes the PxSceneDef with the specified Id from this LibPxSceneDefs.
 func (me *LibPxSceneDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-//	Returns a GetRefSidResolver that looks up and yields the PxSceneDef with the specified Id.
-func (me *LibPxSceneDefs) ResolverGetter() GetRefSidResolver {
-	return func(id string) RefSidResolver {
-		return nil // me.M[id]
-	}
-}
-
 //	Signals to the core package (or your custom package) that changes have been made to this LibPxSceneDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibPxSceneDefs
 //	library or its PxSceneDef definitions. Also called by the global SyncChanges() function.

@@ -174,13 +174,6 @@ func (me *LibNodeDefs) New(id string) (def *NodeDef) { def = newNodeDef(id); ret
 //	Removes the NodeDef with the specified Id from this LibNodeDefs.
 func (me *LibNodeDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-//	Returns a GetRefSidResolver that looks up and yields the NodeDef with the specified Id.
-func (me *LibNodeDefs) ResolverGetter() GetRefSidResolver {
-	return func(id string) RefSidResolver {
-		return nil // me.M[id]
-	}
-}
-
 //	Signals to the core package (or your custom package) that changes have been made to this LibNodeDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibNodeDefs
 //	library or its NodeDef definitions. Also called by the global SyncChanges() function.

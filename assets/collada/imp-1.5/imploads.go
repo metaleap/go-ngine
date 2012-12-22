@@ -350,7 +350,7 @@ func load_FormulaDef(xn *xmlx.Node, obj *nga.FormulaDef) {
 		obj.Target = *pf
 	}
 	if tcn := node_TechCommon(xn); tcn != nil {
-		obj.TC.MathML = tcn.Children
+		obj.TC.MathML = tcn.String()
 	}
 }
 
@@ -1525,7 +1525,7 @@ func load_ParamOrFloat2(xn *xmlx.Node, obj *nga.ParamOrFloat2) {
 
 func load_Technique(xn *xmlx.Node, obj *nga.Technique) {
 	obj.Profile = xas(xn, "profile")
-	obj.Data = xn.Children
+	obj.Data = xn.String()
 }
 
 func load_FxPassEvaluationClearStencil(xn *xmlx.Node, obj *nga.FxPassEvaluationClearStencil) {

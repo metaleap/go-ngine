@@ -554,13 +554,6 @@ func (me *LibFxEffectDefs) New(id string) (def *FxEffectDef) { def = newFxEffect
 //	Removes the FxEffectDef with the specified Id from this LibFxEffectDefs.
 func (me *LibFxEffectDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-//	Returns a GetRefSidResolver that looks up and yields the FxEffectDef with the specified Id.
-func (me *LibFxEffectDefs) ResolverGetter() GetRefSidResolver {
-	return func(id string) RefSidResolver {
-		return nil // me.M[id]
-	}
-}
-
 //	Signals to the core package (or your custom package) that changes have been made to this LibFxEffectDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibFxEffectDefs
 //	library or its FxEffectDef definitions. Also called by the global SyncChanges() function.

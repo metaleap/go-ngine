@@ -145,13 +145,6 @@ func (me *LibPxForceFieldDefs) New(id string) (def *PxForceFieldDef) { def = new
 //	Removes the PxForceFieldDef with the specified Id from this LibPxForceFieldDefs.
 func (me *LibPxForceFieldDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-//	Returns a GetRefSidResolver that looks up and yields the PxForceFieldDef with the specified Id.
-func (me *LibPxForceFieldDefs) ResolverGetter() GetRefSidResolver {
-	return func(id string) RefSidResolver {
-		return nil // me.M[id]
-	}
-}
-
 //	Signals to the core package (or your custom package) that changes have been made to this LibPxForceFieldDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibPxForceFieldDefs
 //	library or its PxForceFieldDef definitions. Also called by the global SyncChanges() function.

@@ -49,11 +49,13 @@ func (me *RefSid) SetSidRef(sidRef string) {
 }
 
 //	Resolves this Sid reference (if V is nil or force is true), sets and returns V.
-func (me *RefSid) Resolve(rsr GetRefSidResolver, force bool) interface{} {
+//	If no match is found for the full path, V will become nil
+//	(rather than, say, a partial-path-match result-value).
+func (me *RefSid) Resolve(root RefSidResolverRoot, force bool) interface{} {
 	if force || (me.V == nil) {
 		parts := strings.Split(me.S, "/")
-		if resolver := rsr(parts[0]); (resolver != nil) && (len(parts) > 1) {
-			me.V = resolver.ResolveSidPath(parts[1:])
+		if resolver := root.resolver(parts[0]); (resolver != nil) && (len(parts) > 1) {
+			me.V = resolver.resolveSidPath(parts[1:])
 		} else {
 			me.V = resolver
 		}
@@ -61,9 +63,23 @@ func (me *RefSid) Resolve(rsr GetRefSidResolver, force bool) interface{} {
 	return me.V
 }
 
-//	Resolves a Sid path.
+//	Resolves a Sid path. Though its resolveSidPath() method is unexported,
+//	all "applicable" struct types in this package implement this interface.
 type RefSidResolver interface {
-	//	The returned val is always a pointer: so val may be a *SidFloat but it will never be a SidFloat.
-	//	If no match is found for the full path, should always return nil, instead of a partial-path match.
-	ResolveSidPath(path []string) (val interface{})
+	resolveSidPath(path []string) (val interface{})
+}
+
+type RefSidResolverRoot interface {
+	resolver(part0 string) RefSidResolver
+}
+
+func sidResolveCore(path []string, val interface{}, res RefSidResolver, sid string) interface{} {
+	if sid == path[0] {
+		if len(path) == 1 {
+			return val
+		} else if res != nil {
+			return res.resolveSidPath(path[1:])
+		}
+	}
+	return nil
 }

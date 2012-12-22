@@ -197,13 +197,6 @@ func (me *LibVisualSceneDefs) New(id string) (def *VisualSceneDef) { def = newVi
 //	Removes the VisualSceneDef with the specified Id from this LibVisualSceneDefs.
 func (me *LibVisualSceneDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-//	Returns a GetRefSidResolver that looks up and yields the VisualSceneDef with the specified Id.
-func (me *LibVisualSceneDefs) ResolverGetter() GetRefSidResolver {
-	return func(id string) RefSidResolver {
-		return nil // me.M[id]
-	}
-}
-
 //	Signals to the core package (or your custom package) that changes have been made to this LibVisualSceneDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibVisualSceneDefs
 //	library or its VisualSceneDef definitions. Also called by the global SyncChanges() function.
