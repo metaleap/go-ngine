@@ -1337,12 +1337,12 @@ func load_FxProfileGlslCodeInclude(xn *xmlx.Node, obj *nga.FxProfileGlslCodeIncl
 }
 
 func load_AssetGeographicLocation(xn *xmlx.Node, obj *nga.AssetGeographicLocation) {
-	obj.Longitude = xf64(xn, "longitude")
-	obj.Latitude = xf64(xn, "latitude")
-	if an := xcn(xn, "altitude"); an != nil {
-		obj.Altitude = xf64(an, "")
-		obj.AltitudeAbsolute = xab(an, "absolute")
-	}
+	// obj.Longitude = xf64(xn, "longitude")
+	// obj.Latitude = xf64(xn, "latitude")
+	// if an := xcn(xn, "altitude"); an != nil {
+	// 	obj.Altitude = xf64(an, "")
+	// 	obj.AltitudeAbsolute = xab(an, "absolute")
+	// }
 }
 
 func load_KxEffector(xn *xmlx.Node, obj *nga.KxEffector) {

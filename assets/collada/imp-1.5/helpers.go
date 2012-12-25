@@ -55,17 +55,17 @@ func arr_Uints(xn *xmlx.Node, l int, s func(int, uint64)) {
 func get_CubeFace(xn *xmlx.Node) (cf nga.FxCubeFace) {
 	switch strings.ToUpper(xas(xn, "face")) {
 	case "NEGATIVE_Y":
-		cf = nga.FxCubeFaceNegativeY
+		cf = nga.FxCubeFaceNy
 	case "POSITIVE_Y":
-		cf = nga.FxCubeFacePositiveY
+		cf = nga.FxCubeFacePy
 	case "NEGATIVE_Z":
-		cf = nga.FxCubeFaceNegativeZ
+		cf = nga.FxCubeFaceNz
 	case "POSITIVE_Z":
-		cf = nga.FxCubeFacePositiveZ
+		cf = nga.FxCubeFacePz
 	case "NEGATIVE_X":
-		cf = nga.FxCubeFaceNegativeX
+		cf = nga.FxCubeFaceNx
 	default:
-		cf = nga.FxCubeFacePositiveX
+		cf = nga.FxCubeFacePx
 	}
 	return
 }

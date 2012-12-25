@@ -25,7 +25,7 @@ type EngineOptions struct {
 func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions) {
 	me = &EngineOptions{AssetRootDirPath: assetRootDirPath, DefaultRenderTechnique: "rt_unlit_colored"}
 	me.glClearColor = ugl.GlVec4{0, 0, 0, 1}
-	me.DefaultTextureParams = newTextureParams(true, 6)
+	me.DefaultTextureParams = newTextureParams(true, 8)
 	me.winWidth, me.winHeight, me.winSwapInterval, me.winFullScreen = winWidth, winHeight, winSwapInterval, winFullScreen
 	return
 }
