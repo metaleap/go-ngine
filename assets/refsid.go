@@ -27,6 +27,7 @@ type RefSid struct {
 	//	The Sid path currently referenced.
 	//	To be set ONLY through the NewRefSid() constructor or SetSidRef() method!
 	S string
+
 	//	The resolved value referenced by this Sid path.
 	//	This is always a pointer: so V may be a *SidFloat but it will never be a SidFloat.
 	//	To be set ONLY through the Resolve() method! Reset to nil by the SetSidRef() method.
@@ -45,16 +46,10 @@ func (me *RefSid) SetSidRef(sidRef string) {
 	me.S, me.V = sidRef, nil
 }
 
-type refSidBag struct {
-	fielder, indexer, sid string
-	valRaw                interface{}
-	valAsRes              refSidResolver
-}
-
-//	Resolves this Sid reference (if V is nil or force is true), sets and returns V.
-//	If no match is found for the full path, V will become nil
-//	(rather than, say, a partial-path-match result-value).
-func (me *RefSid) Resolve(root RefSidRoot, force bool) interface{} {
+//	If me.V is nil or force is true: resolves the Sid path in me.S and sets V to the result.
+//	For possible root arguments, see RefSidRoot. If no match is found for the full path, V
+//	will become nil (rather than, say, a partial-path-match result-value).
+func (me *RefSid) Resolve(root RefSidRoot, force bool) {
 	if force || (me.V == nil) {
 		parts := strings.Split(me.S, "/")
 		if resolver := root.resolver(parts[0]); (resolver != nil) && (len(parts) > 1) {
@@ -72,7 +67,12 @@ func (me *RefSid) Resolve(root RefSidRoot, force bool) interface{} {
 			me.V = resolver
 		}
 	}
-	return me.V
+}
+
+type refSidBag struct {
+	fielder, indexer, sid string
+	valRaw                interface{}
+	valAsRes              refSidResolver
 }
 
 type refSidFielder interface {

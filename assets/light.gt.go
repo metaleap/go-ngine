@@ -11,8 +11,10 @@ type LightAmbient struct {
 type LightAttenuation struct {
 	//	Constant light attenuation. Defaults to 1.
 	Constant SidFloat
+
 	//	Linear light attenuation.
 	Linear SidFloat
+
 	//	Quadratic light attenuation.
 	Quadratic SidFloat
 }
@@ -45,6 +47,7 @@ type LightDirectional struct {
 type LightPoint struct {
 	//	Color
 	LightBase
+
 	//	The intensity of a point light source is attenuated as the distance to the light source increases.
 	Attenuation LightAttenuation
 }
@@ -63,12 +66,15 @@ func NewLightPoint() (me *LightPoint) {
 type LightSpot struct {
 	//	Color
 	LightBase
+
 	//	 The intensity of a spot light is also attenuated as the distance to the light source increases.
 	Attenuation LightAttenuation
+
 	//	The light's intensity is also attenuated as the radiation angle increases away from the direction of the light source.
 	Falloff struct {
 		//	Fall-off angle. Defaults to 180.
 		Angle SidFloat
+
 		//	Fall-off exponent.
 		Exponent SidFloat
 	}
@@ -86,16 +92,21 @@ func NewLightSpot() (me *LightSpot) {
 type LightDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	Techniques
 	HasTechniques
+
 	//	Common-technique profile. At least and at most one of its fields should ever be set.
 	TC struct {
 		//	If set, this light declares an ambient light.
 		Ambient *LightAmbient
+
 		//	If set, this light declares a directional light.
 		Directional *LightDirectional
+
 		//	If set, this light declares a point light.
 		Point *LightPoint
+
 		//	If set, this light declares a spot light.
 		Spot *LightSpot
 	}
@@ -109,6 +120,7 @@ func (me *LightDef) Init() {
 type LightInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
@@ -200,7 +212,9 @@ func (me LibsLightDef) new(id string) (lib *LibLightDefs) {
 //	A library that contains LightDefs associated by their Id.
 //	To create a new LibLightDefs library, ONLY use the LibsLightDef.New() or LibsLightDef.AddNew() methods.
 type LibLightDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*LightDef

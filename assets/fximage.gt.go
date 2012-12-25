@@ -1,61 +1,72 @@
 package assets
 
-//	Categorizes the Channels of a FxCreateFormatHint.
+//	Categorizes the Channels of an FxCreateFormatHint.
 type FxFormatChannels int
 
 const (
-	_ = iota
 	//	Depth map, often used for displacement, parellax, relief, or shadow mapping.
-	FxFormatChannelsD FxFormatChannels = iota
+	FxFormatChannelsD FxFormatChannels = iota + 1
+
 	//	Luminance map, often used for light mapping.
 	FxFormatChannelsL
+
 	//	Luminance with alpha map, often used for light mapping.
 	FxFormatChannelsLa
+
 	//	RGB color map
 	FxFormatChannelsRgb
+
 	//	RGB color with alpha map. Often used for color plus transparency
 	//	or other things packed into channel A, such as specular power.
 	FxFormatChannelsRgba
+
 	//	RGB color with shared exponent for HDR.
 	FxFormatChannelsRgbe
 )
 
-//	Categorizes the Precision of a FxCreateFormatHint.
+//	Categorizes the Precision of an FxCreateFormatHint.
 type FxFormatPrecision int
 
 const (
 	//	Designer does not care as long as it provides "reasonable" precision and performance.
 	FxFormatPrecisionDefault FxFormatPrecision = iota
+
 	//	For integers, this typically represents 16 to 32 bits. For floating points, typically
 	//	24 to 32 bits.
 	FxFormatPrecisionHigh
+
 	//	For integers, this typically represents 8 bits. For floating points, typically 16 bits.
 	FxFormatPrecisionLow
+
 	//	Typically 32 bits or 64 bits if available. 64 bits has been separated into its own category
 	//	beyond HIGH because it typically has significant performance impact.
 	FxFormatPrecisionMax
+
 	//	For integers, this typically represents 8 to 24 bits.
 	//	For floating points, typically 16 to 32 bits.
 	FxFormatPrecisionMid
 )
 
-//	Categorizes the Range of a FxCreateFormatHint.
+//	Categorizes the Range of an FxCreateFormatHint.
 type FxFormatRange int
 
 const (
-	_ = iota
 	//	Format should support full floating-point ranges.
 	//	High precision is expected to be 32 bits.
 	//	Mid precision may be 16 to 32 bits.
 	//	Low precision is expected to be 16 bits.
-	FxFormatRangeFloat FxFormatRange = iota
+	FxFormatRangeFloat FxFormatRange = iota + 1
+
 	//	Format represents signed integer numbers. For example, 8 bits is -128 to 127.
 	FxFormatRangeSint
+
 	//	Format represents a decimal value that remains within the -1 to 1 range.
 	//	Implementation could be integer-fixed-point or floating point.
 	FxFormatRangeSnorm
+
 	//	Format represent unsigned integer numbers. For example, 8 bits is 0 to 255.
 	FxFormatRangeUint
+
 	//	Format represents a decimal value that remains within the 0 to 1 range.
 	//	Implementation could be integer-fixed-point or floating point.
 	FxFormatRangeUnorm
@@ -66,23 +77,29 @@ type FxCubeFace int
 
 const (
 	//	Cube-map face "X negative"
-	FxCubeFaceNegativeX FxCubeFace = 0x8516
+	FxCubeFaceNx FxCubeFace = 0x8516
+
 	//	Cube-map face "Y negative"
-	FxCubeFaceNegativeY FxCubeFace = 0x8518
+	FxCubeFaceNy FxCubeFace = 0x8518
+
 	//	Cube-map face "Z negative"
-	FxCubeFaceNegativeZ FxCubeFace = 0x851A
+	FxCubeFaceNz FxCubeFace = 0x851A
+
 	//	Cube-map face "X positive"
-	FxCubeFacePositiveX FxCubeFace = 0x8515
+	FxCubeFacePx FxCubeFace = 0x8515
+
 	//	Cube-map face "Y positive"
-	FxCubeFacePositiveY FxCubeFace = 0x8517
+	FxCubeFacePy FxCubeFace = 0x8517
+
 	//	Cube-map face "Z positive"
-	FxCubeFacePositiveZ FxCubeFace = 0x8519
+	FxCubeFacePz FxCubeFace = 0x8519
 )
 
 //	Fields shared by FxCreate2D, FxCreate3D and FxCreateCube
 type FxCreate struct {
 	//	Specifies the length of the 2D array, 3D array or cube-map array.
 	ArrayLength uint64
+
 	//	Specifies an image's pixel or compression format.
 	//	If not present, the format is assumed to be R8G8B8A8 linear.
 	Format *FxCreateFormat
@@ -92,17 +109,21 @@ type FxCreate struct {
 type FxCreate2D struct {
 	//	ArrayLength and Format
 	FxCreate
+
 	//	Either Exact or Ratio, but not both, must be present.
 	Size struct {
 		//	Specifies that the surface should be sized to these exact dimensions.
 		Exact *FxCreate2DSizeExact
+
 		//	Specifies that the image size should be relative to the size of the viewport.
 		Ratio *FxCreate2DSizeRatio
 	}
 	//	MIP information. Ignored if Unnormalized is true.
 	Mips *FxCreateMips
+
 	//	Unnormalized addressing of texels. (0-W, 0-H).
 	Unnormalized bool
+
 	//	Specifies which 2D image to initialize and which MIP level to initialize.
 	InitFrom []*FxCreateInitFrom
 }
@@ -111,6 +132,7 @@ type FxCreate2D struct {
 type FxCreate2DSizeExact struct {
 	//	width in pixels
 	Width uint64
+
 	//	height in pixels
 	Height uint64
 }
@@ -120,6 +142,7 @@ type FxCreate2DSizeExact struct {
 type FxCreate2DSizeRatio struct {
 	//	Relative width where 1.0 represents viewport width.
 	Width float64
+
 	//	Relative height where 1.0 represents viewport height.
 	Height float64
 }
@@ -128,17 +151,21 @@ type FxCreate2DSizeRatio struct {
 type FxCreate3D struct {
 	//	ArrayLength and Format
 	FxCreate
+
 	//	Specifies that the surface should be sized to these exact dimensions.
 	Size struct {
 		//	Width in pixels for this 3D texture.
 		Width uint64
+
 		//	Height in pixels for this 3D texture.
 		Height uint64
+
 		//	Depth in pixels for this 3D texture.
 		Depth uint64
 	}
 	//	MIP information.
 	Mips FxCreateMips
+
 	//	Specifies which 3D image to initialize and which MIP level to initialize.
 	InitFrom []*FxCreate3DInitFrom
 }
@@ -147,6 +174,7 @@ type FxCreate3D struct {
 type FxCreate3DInitFrom struct {
 	//	Raw or RefUrl, ArrayIndex and MipIndex
 	FxCreateInitFrom
+
 	//	Specifies the slice (depth level) within the MIP that is to be initialized.
 	Depth uint64
 }
@@ -155,6 +183,7 @@ type FxCreate3DInitFrom struct {
 type FxCreateCube struct {
 	//	ArrayLength and Format
 	FxCreate
+
 	//	Specifies that the cube surfaces should be sized to these exact dimensions.
 	Size struct {
 		//	Width and height are identical across all faces in a cube-map.
@@ -162,6 +191,7 @@ type FxCreateCube struct {
 	}
 	//	MIP information.
 	Mips FxCreateMips
+
 	//	Specifies which cube image to initialize, which MIP level to initialize,
 	//	and which cube face within the MIP that is to be initialized.
 	InitFrom []*FxCreateCubeInitFrom
@@ -171,6 +201,7 @@ type FxCreateCube struct {
 type FxCreateCubeInitFrom struct {
 	//	Raw or RefUrl, ArrayIndex and MipIndex
 	FxCreateInitFrom
+
 	//	Specifies the cube-map face within the MIP that is to be initialized.
 	//	Must be one of the FxCubeFace* enumerated constants.
 	Face FxCubeFace
@@ -183,6 +214,7 @@ type FxCreateFormat struct {
 	//	or if it is specified but the application cannot process the specified format,
 	//	then the application uses the Hint.
 	Exact string
+
 	//	If this is not set, then use a common format R8G8B8A8 with linear color gradient, not sRGB.
 	Hint *FxCreateFormatHint
 }
@@ -192,14 +224,17 @@ type FxCreateFormatHint struct {
 	//	Describes the per-texel layout of the format.
 	//	Must be one of the FxFormatChannels* enumerated constants.
 	Channels FxFormatChannels
+
 	//	Describes the range of texel channel values. Each channel represents a range of values.
 	//	Some example ranges are signed or unsigned integers, or are within a clamped range
 	//	such as 0.0f to 1.0f, or are a high dynamic range via floating point.
 	//	Must be one of the FxFormatRange* enumerated constants.
 	Range FxFormatRange
+
 	//	Identifies the precision of the texel channel value.
 	//	Must be one of the FxFormatPrecision* enumerated constants.
 	Precision FxFormatPrecision
+
 	//	Optional custom / application-specific color-space information.
 	Space string
 }
@@ -208,8 +243,10 @@ type FxCreateFormatHint struct {
 type FxCreateInitFrom struct {
 	//	Raw and RefUrl
 	FxInitFrom
+
 	//	Specifies which array element in the image to initialize (fill).
 	ArrayIndex uint64
+
 	//	Specifies which MIP level in the image to initialize.
 	MipIndex uint64
 }
@@ -218,6 +255,7 @@ type FxCreateInitFrom struct {
 type FxCreateMips struct {
 	//	Desired number of MIP levels. Special values: 1 is "no MIP levels", 0 is "all MIP levels".
 	Levels uint64
+
 	//	If false, initializes higher MIP levels if data does not exist in a file.
 	//	If true, no MIP levels are ever automatically initialized.
 	NoAutoGen bool
@@ -227,6 +265,7 @@ type FxCreateMips struct {
 type FxImageInitFrom struct {
 	//	Raw and RefUrl
 	FxInitFrom
+
 	//	If false, initializes higher MIP levels if data does not exist in a file.
 	//	If true, no MIP levels are ever automatically initialized.
 	NoAutoMip bool
@@ -246,6 +285,7 @@ type FxInitFrom struct {
 		//	Contains the embedded binary image data as a sequence of bytes. Typically contains all
 		//	the necessary information including header info such as width and height.
 		Data []byte
+
 		//	Specifies which codec decodes the image's descriptions and data.
 		//	This is usually its typical file extension, such as "BMP", "JPG", "DDS", "TGA".
 		Format string
@@ -259,10 +299,12 @@ type FxInitFrom struct {
 type FxImageDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	Indicates whether this image represents a render target.
 	Renderable struct {
 		//	If true, defines the image as a render target, meaning the image can be rendered to.
 		Is bool
+
 		//	Indicates whether, when instantiated, the render target is to be shared among all
 		//	instances instead of being cloned.
 		Shared bool
@@ -270,13 +312,16 @@ type FxImageDef struct {
 	//	If set, initializes a custom 2D image by specifying its size, viewport ratio, MIP levels,
 	//	normalization, pixel format, and data sources. It also supports arrays of 2D images.
 	Create2D *FxCreate2D
+
 	//	If set, initializes a custom 3D image (a volumetric image) by specifying its size, MIP level,
 	//	pixel format, and data sources. It also supports arrays of 3D images.
 	Create3D *FxCreate3D
+
 	//	If set, initializes the six faces of a cube by specifying its size, MIP level, pixel format,
 	//	and data sources. It also supports arrays of images on each of the cube faces.
 	//	It also supports arrays of cube images.
 	CreateCube *FxCreateCube
+
 	//	If set, initializes the image from a URL (for example, a file) or binary image data.
 	InitFrom *FxImageInitFrom
 }
@@ -289,6 +334,7 @@ func (me *FxImageDef) Init() {
 type FxImageInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
@@ -388,7 +434,9 @@ func (me LibsFxImageDef) new(id string) (lib *LibFxImageDefs) {
 //	A library that contains FxImageDefs associated by their Id.
 //	To create a new LibFxImageDefs library, ONLY use the LibsFxImageDef.New() or LibsFxImageDef.AddNew() methods.
 type LibFxImageDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*FxImageDef

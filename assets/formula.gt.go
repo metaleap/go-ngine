@@ -4,6 +4,7 @@ package assets
 type Formula struct {
 	//	If set, Inst must be nil.
 	Def *FormulaDef
+
 	//	If set, Def must be nil.
 	Inst *FormulaInst
 }
@@ -13,14 +14,19 @@ type Formula struct {
 type FormulaDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	Sid
 	HasSid
+
 	//	NewParams
 	HasParamDefs
+
 	//	Techniques
 	HasTechniques
+
 	//	A parameter that specifies the result variable of the formula.
 	Target ParamOrFloat
+
 	//	Common-technique profile.
 	TC struct {
 		//	Any valid MathML (content) XML defining this formula.
@@ -37,8 +43,10 @@ func (me *FormulaDef) Init() {
 type FormulaInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	SetParams
 	HasParamInsts
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
@@ -131,7 +139,9 @@ func (me LibsFormulaDef) new(id string) (lib *LibFormulaDefs) {
 //	A library that contains FormulaDefs associated by their Id.
 //	To create a new LibFormulaDefs library, ONLY use the LibsFormulaDef.New() or LibsFormulaDef.AddNew() methods.
 type LibFormulaDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*FormulaDef

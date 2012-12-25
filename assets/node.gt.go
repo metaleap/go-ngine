@@ -4,6 +4,7 @@ package assets
 type ChildNode struct {
 	//	If set, Inst must be nil. An inline node definition.
 	Def *NodeDef
+
 	//	If set, Def must be nil. Instantiates a previously defined node.
 	Inst *NodeInst
 }
@@ -12,22 +13,30 @@ type ChildNode struct {
 type NodeDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	Sid
 	HasSid
+
 	//	Indicates whether this node is a joint for a skin controller.
 	IsSkinJoint bool
+
 	//	The names of the layers to which this node belongs.
 	Layers Layers
+
 	//	Any combination of zero or more transformations of any type.
 	Transforms []*Transform
+
 	//	Content resources participating in this node.
 	Insts struct {
 		//	Cameras participating in this node.
 		Camera []*CameraInst
+
 		//	Controllers participating in this node.
 		Controller []*ControllerInst
+
 		//	Geometries participating in this node.
 		Geometry []*GeometryInst
+
 		//	Lights participating in this node.
 		Light []*LightInst
 	}
@@ -44,10 +53,12 @@ func (me *NodeDef) Init() {
 type NodeInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *NodeDef
+
 	//	Optional. The mechanism and use of this attribute is application-defined.
 	//	For example, it can be used for bounding boxes or level of detail.
 	Proxy RefId
@@ -138,7 +149,9 @@ func (me LibsNodeDef) new(id string) (lib *LibNodeDefs) {
 //	A library that contains NodeDefs associated by their Id.
 //	To create a new LibNodeDefs library, ONLY use the LibsNodeDef.New() or LibsNodeDef.AddNew() methods.
 type LibNodeDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*NodeDef

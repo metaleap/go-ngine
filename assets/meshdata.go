@@ -10,8 +10,10 @@ type MeshFace3 [3]MeshVert
 type MeshRaw struct {
 	//	Raw vertices
 	MeshVerts []float32
+
 	//	Vertex indices
 	Indices []uint32
+
 	//	Raw face definitions
 	Faces []*MeshRawFace
 }
@@ -50,10 +52,13 @@ type MeshVertAtt3 [3]float32
 type MeshData struct {
 	//	Vertex positions
 	Positions []MeshVertAtt3
+
 	//	Vertex texture coordinates
 	TexCoords []MeshVertAtt2
+
 	//	Vertex normals
 	Normals []MeshVertAtt3
+
 	//	Indexed triangle definitions
 	Faces []MeshFace3
 }

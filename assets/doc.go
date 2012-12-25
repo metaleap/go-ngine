@@ -6,11 +6,11 @@
 //	
 //	First off, the go:ngine 3 RULES of bugless(er) development:
 //	
-//	1. you do NOT set exported fields directly, those are provided for simplified read-access. If a field is
+//	1. DON'T set exported fields directly, those are provided for simplified read-only access. If a field is
 //	meant to be modifiable, there will be a SetFoo() method or it will be documented explicitly as directly
 //	modifiable, but such instances will be rare.
 //	
-//	2. you do NOT instantiate exported struct types directly, as in "new(ImageDef)" or "&ImageDef {}". Many of
+//	2. DON'T instantiate exported struct types directly, as in "new(ImageDef)" or "&ImageDef {}". Many of
 //	those are exported only for documentation, but are to be instantiated only inside the go:ngine package.
 //	For types to be instantiated by package-external code (ie. your code), go:ngine packages provide constructor
 //	functions -- often in collections, ie. img := ImageDefs.New("id") instead of, say, img := NewImageDef("id").
@@ -79,8 +79,10 @@ package assets
 type Document struct {
 	//	Asset
 	HasAsset
+
 	//	Extras
 	HasExtras
+
 	//	Describes a complete, fully self-contained scene graph.
 	Scene *Scene
 }

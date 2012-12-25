@@ -1,18 +1,24 @@
 package assets
 
+//	Categorizes the possible behaviors for animation samplers.
 type AnimSamplerBehavior int
 
 const (
 	//	The before and after behaviors are not defined.
 	AnimSamplerBehaviorUndefined AnimSamplerBehavior = iota
+
 	//	The value for the first (PreBehavior) or last (PostBehavior) is returned.
 	AnimSamplerBehaviorConstant
+
 	//	The key is mapped in the [first_key , last_key] interval so that the animation cycles.
 	AnimSamplerBehaviorCycle
+
 	//	The animation continues indefinitely.
 	AnimSamplerBehaviorCycleRelative
+
 	//	The value follows the line given by the last two keys in the sample.
 	AnimSamplerBehaviorGradient
+
 	//	The key is mapped in the [first_key , last_key] interval so that the animation oscillates.
 	AnimSamplerBehaviorOscillate
 )
@@ -21,6 +27,7 @@ const (
 type AnimationChannel struct {
 	//	Refers to the source animation sampler.
 	Source RefId
+
 	//	Refers to the resource property bound to the output of the sampler.
 	Target RefSid
 }
@@ -29,12 +36,15 @@ type AnimationChannel struct {
 type AnimationSampler struct {
 	//	Id
 	HasId
+
 	//	Inputs. These describe sampling points.
 	//	At least one of the Inputs must have its Semantic set to "INTERPOLATION".
 	HasInputs
+
 	//	Indicates what the sampled value should be before the first key.
 	//	Must be one of the AnimSamplerBehavior* enumerated constants (defaulting to AnimSamplerBehaviorUndefined).
 	PreBehavior AnimSamplerBehavior
+
 	//	Indicates what the sampled value should be after the last key.
 	//	Must be one of the AnimSamplerBehavior* enumerated constants (defaulting to AnimSamplerBehaviorUndefined).
 	PostBehavior AnimSamplerBehavior
@@ -44,12 +54,16 @@ type AnimationSampler struct {
 type AnimationDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	Sources
 	HasSources
+
 	//	Allows the formation of a hierarchy of related animations.
 	AnimationDefs []*AnimationDef
+
 	//	Describes output channels for the animation.
 	Channels []*AnimationChannel
+
 	//	Describes the interpolation sampling functions for the animation.
 	Samplers []*AnimationSampler
 }
@@ -63,6 +77,7 @@ func (me *AnimationDef) Init() {
 type AnimationInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
@@ -154,7 +169,9 @@ func (me LibsAnimationDef) new(id string) (lib *LibAnimationDefs) {
 //	A library that contains AnimationDefs associated by their Id.
 //	To create a new LibAnimationDefs library, ONLY use the LibsAnimationDef.New() or LibsAnimationDef.AddNew() methods.
 type LibAnimationDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*AnimationDef

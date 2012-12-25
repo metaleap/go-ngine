@@ -4,6 +4,7 @@ package assets
 type FxBinding struct {
 	//	Which effect parameter to bind.
 	Semantic string
+
 	//	Refers to the value to bind to the specified semantic.
 	Target RefSid
 }
@@ -12,8 +13,10 @@ type FxBinding struct {
 type FxVertexInputBinding struct {
 	//	Which effect parameter to bind.
 	Semantic string
+
 	//	Which input semantic to bind.
 	InputSemantic string
+
 	//	Which input set to bind. Optional.
 	InputSet *uint64
 }
@@ -22,6 +25,7 @@ type FxVertexInputBinding struct {
 type FxMaterialDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	The parameterized effect instantiation that fully describes and defines this material.
 	Effect FxEffectInst
 }
@@ -34,14 +38,18 @@ func (me *FxMaterialDef) Init() {
 type FxMaterialInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *FxMaterialDef
+
 	//	Which symbol defined from within the geometry this material binds to.
 	Symbol string
+
 	//	Binds values to uniform inputs of a shader or binds values to effect parameters upon instantiation.
 	Bindings []*FxBinding
+
 	//	Binds vertex inputs to effect parameters upon instantiation.
 	VertexInputBindings []*FxVertexInputBinding
 }
@@ -131,7 +139,9 @@ func (me LibsFxMaterialDef) new(id string) (lib *LibFxMaterialDefs) {
 //	A library that contains FxMaterialDefs associated by their Id.
 //	To create a new LibFxMaterialDefs library, ONLY use the LibsFxMaterialDef.New() or LibsFxMaterialDef.AddNew() methods.
 type LibFxMaterialDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*FxMaterialDef

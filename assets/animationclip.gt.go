@@ -5,12 +5,16 @@ package assets
 type AnimationClipDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	The time in seconds of the beginning of the clip.
 	Start float64
+
 	//	The time in seconds of the end of the clip.
 	End float64
+
 	//	The animation instances contributing to this animation clip.
 	Animations []*AnimationInst
+
 	//	Any formulas used in this animation clip.
 	Formulas []*FormulaInst
 }
@@ -23,6 +27,7 @@ func (me *AnimationClipDef) Init() {
 type AnimationClipInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
@@ -114,7 +119,9 @@ func (me LibsAnimationClipDef) new(id string) (lib *LibAnimationClipDefs) {
 //	A library that contains AnimationClipDefs associated by their Id.
 //	To create a new LibAnimationClipDefs library, ONLY use the LibsAnimationClipDef.New() or LibsAnimationClipDef.AddNew() methods.
 type LibAnimationClipDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*AnimationClipDef

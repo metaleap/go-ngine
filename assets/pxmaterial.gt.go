@@ -4,15 +4,19 @@ package assets
 type PxMaterialDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	Techniques
 	HasTechniques
+
 	//	Common-technique profile
 	TC struct {
 		//	The dynamic friction coefficient.
 		DynamicFriction SidFloat
+
 		//	The proportion of the kinetic energy preserved in the impact
 		//	(typically ranges from 0.0 to 1.0). Also known as "bounciness" or "elasticity."
 		Restitution SidFloat
+
 		//	The static friction coefficient.
 		StaticFriction SidFloat
 	}
@@ -26,6 +30,7 @@ func (me *PxMaterialDef) Init() {
 type PxMaterialInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
@@ -117,7 +122,9 @@ func (me LibsPxMaterialDef) new(id string) (lib *LibPxMaterialDefs) {
 //	A library that contains PxMaterialDefs associated by their Id.
 //	To create a new LibPxMaterialDefs library, ONLY use the LibsPxMaterialDef.New() or LibsPxMaterialDef.AddNew() methods.
 type LibPxMaterialDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*PxMaterialDef

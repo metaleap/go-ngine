@@ -4,18 +4,23 @@ package assets
 type PxSceneDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	Techniques
 	HasTechniques
+
 	//	Force fields influencing this physics scene.
 	ForceFields []*PxForceFieldInst
+
 	//	Refers to the rigid bodies and constraints participating in this scene.
 	Models []*PxModelInst
+
 	//	Common-technique profile
 	TC struct {
 		//	If set, a vector representation of this physics scene's gravity force field.
 		//	It is given as a denormalized direction vector of three floating-point values that
 		//	indicate both the magnitude and direction of acceleration caused by the field.
 		Gravity *SidVec3
+
 		//	If set, the integration time step, measured in seconds, of the physics scene.
 		//	This value is engine-specific. If omitted, the physics engine's default is used.
 		TimeStep *SidFloat
@@ -30,6 +35,7 @@ func (me *PxSceneDef) Init() {
 type PxSceneInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
@@ -121,7 +127,9 @@ func (me LibsPxSceneDef) new(id string) (lib *LibPxSceneDefs) {
 //	A library that contains PxSceneDefs associated by their Id.
 //	To create a new LibPxSceneDefs library, ONLY use the LibsPxSceneDef.New() or LibsPxSceneDef.AddNew() methods.
 type LibPxSceneDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*PxSceneDef

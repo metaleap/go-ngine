@@ -79,7 +79,9 @@ func (me Libs__T__Def) new(id string) (lib *Lib__T__Defs) {
 //	A library that contains __T__Defs associated by their Id.
 //	To create a new Lib__T__Defs library, ONLY use the Libs__T__Def.New() or Libs__T__Def.AddNew() methods.
 type Lib__T__Defs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*__T__Def

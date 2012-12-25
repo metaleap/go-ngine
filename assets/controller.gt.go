@@ -8,6 +8,7 @@ import (
 type ControllerInputs struct {
 	//	Extras
 	HasExtras
+
 	//	Inputs
 	HasInputs
 }
@@ -16,10 +17,13 @@ type ControllerInputs struct {
 type ControllerMorph struct {
 	//	Sources
 	HasSources
+
 	//	Which blending method to use: true for relative blending, false for normalized blending.
 	Relative bool
+
 	//	Refers to the Geometry that describes the base mesh.
 	Source RefId
+
 	//	Input meshes (morph targets) to be blended.
 	Targets ControllerInputs
 }
@@ -35,14 +39,18 @@ func NewControllerMorph() (me *ControllerMorph) {
 type ControllerSkin struct {
 	//	Sources
 	HasSources
+
 	//	Provides extra information about the position and orientation of the base mesh before binding.
 	BindShapeMatrix unum.Mat4
+
 	//	Describes a per-vertex combination of joints and weights used in this skin.
 	//	An index of –1 into the array of joints refers to the bind shape.
 	//	Weights should be normalized before use.
 	VertexWeights IndexedInputs
+
 	//	Aggregates the per-joint information needed for this skin.
 	Joints ControllerInputs
+
 	//	Refers to the base mesh (a static mesh or a morphed mesh).
 	//	This also provides the bind-shape of the skinned mesh.
 	Source RefId
@@ -60,8 +68,10 @@ func NewControllerSkin() (me *ControllerSkin) {
 type ControllerDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	If set, Skin must be nil; declares this a mesh-morphing controller that deforms meshes and blends them.
 	Morph *ControllerMorph
+
 	//	If set, Morph must be nil; declares this a vertex-skinning controller that transforms vertices
 	//	based on weighted influences to produce a smoothly changing mesh.
 	Skin *ControllerSkin
@@ -75,12 +85,15 @@ func (me *ControllerDef) Init() {
 type ControllerInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *ControllerDef
+
 	//	Binds a specific material to this controller instantiation.
 	BindMaterial *MaterialBinding
+
 	//	Indicates where a Skin controller is to start to search for the joint nodes it needs.
 	//	This element is meaningless for Morph controllers.
 	SkinSkeletons []string
@@ -171,7 +184,9 @@ func (me LibsControllerDef) new(id string) (lib *LibControllerDefs) {
 //	A library that contains ControllerDefs associated by their Id.
 //	To create a new LibControllerDefs library, ONLY use the LibsControllerDef.New() or LibsControllerDef.AddNew() methods.
 type LibControllerDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*ControllerDef

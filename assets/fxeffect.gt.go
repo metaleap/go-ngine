@@ -4,35 +4,43 @@ import (
 	ugfx "github.com/metaleap/go-util/gfx"
 )
 
+//	Categorizes transparency access in an FxColorOrTexture.
 type FxTextureOpaque int
 
 const (
 	//	Takes the transparency information from the color's alpha channel,
 	//	where the value 1.0 is opaque. This is the default.
 	FxTextureOpaqueA1 FxTextureOpaque = iota
+
 	//	Takes the transparency information from the color's alpha channel,
 	//	where the value 0.0 is opaque.
 	FxTextureOpaqueA0
+
 	//	Takes the transparency information from the color's red, green, and blue channels,
 	//	where the value 0.0 is opaque, with each channel modulated independently.
 	FxTextureOpaqueRgb0
+
 	//	Takes the transparency information from the color's red, green, and blue channels,
 	//	where the value 1.0 is opaque, with each channel modulated independently.
 	FxTextureOpaqueRgb1
 )
 
+//	Categorizes the kind of Stage in an FxPassProgramShader.
 type FxShaderStage int
 
 const (
-	_ = iota
 	//	This programmable shader is designed to execute in the Tessellation pipeline stage.
-	FxShaderStageTessellation FxShaderStage = iota
+	FxShaderStageTessellation FxShaderStage = iota + 1
+
 	//	This programmable shader is designed to execute in the Vertex pipeline stage.
 	FxShaderStageVertex
+
 	//	This programmable shader is designed to execute in the Geometry pipeline stage.
 	FxShaderStageGeometry
+
 	//	This programmable shader is designed to execute in the Fragment pipeline stage.
 	FxShaderStageFragment
+
 	//	This programmable shader is designed to execute in the Compute pipeline stage.
 	FxShaderStageCompute
 )
@@ -42,6 +50,7 @@ const (
 type FxAnnotation struct {
 	//	Name
 	HasName
+
 	//	Annotation value.
 	Value interface{}
 }
@@ -50,6 +59,7 @@ type FxAnnotation struct {
 type FxColor struct {
 	//	Sid
 	HasSid
+
 	//	Describes the literal color of the parent FxColorOrTexture.
 	Color ugfx.Rgba32
 }
@@ -59,11 +69,14 @@ type FxColorOrTexture struct {
 	//	Specifies from which channel to take transparency information.
 	//	Must be one of the FxTextureOpaque* enumerated constants.
 	Opaque FxTextureOpaque
+
 	//	If set, refers to a previously-defined parameter in the current scope that provides
 	//	four float values describing the literal color of this value.
 	ParamRef RefParam
+
 	//	If set, describes he literal color of this value.
 	Color *FxColor
+
 	//	If set, refers to a previously-defined FxSampler with a Kind of FxSamplerKind2D.
 	Texture *FxTexture
 }
@@ -72,8 +85,10 @@ type FxColorOrTexture struct {
 type FxEffectInstTechniqueHint struct {
 	//	Defines a string that specifies for which platform this hint is intended. Optional.
 	Platform string
+
 	//	A reference to the name of the platform. Required.
 	Ref string
+
 	//	Specifies for which API profile this hint is intended.
 	//	Optional. If set, must be either "COMMON" or "GLSL".
 	Profile string
@@ -83,10 +98,13 @@ type FxEffectInstTechniqueHint struct {
 type FxParamDef struct {
 	//	Sid and Value
 	ParamDef
+
 	//	Application-specific FX metadata
 	Annotations []*FxAnnotation
+
 	//	Specifies constant, external, or uniform parameters.
 	Modifier string
+
 	//	Provides metadata that describes the purpose of a parameter declaration.
 	Semantic string
 }
@@ -99,14 +117,19 @@ type FxParamDefs map[string]*FxParamDef
 type FxPass struct {
 	//	Sid
 	HasSid
+
 	//	Extras
 	HasExtras
+
 	//	Application-specific FX metadata
 	Annotations []*FxAnnotation
+
 	//	Contains all rendering states to set up for this pass.
 	States map[string]*FxPassState
+
 	//	Links multiple shaders together to produce a pipeline for geometry processing.
 	Program *FxPassProgram
+
 	//	Contains evaluation elements for this rendering pass.
 	Evaluate *FxPassEvaluation
 }
@@ -121,10 +144,12 @@ func NewFxPass() (me *FxPass) {
 type FxPassEvaluation struct {
 	//	Instructs the FX Runtime what kind of geometry to submit.
 	Draw string
+
 	//	Color-information render target
 	Color struct {
 		//	Specifies whether this render target image is to be cleared, and which value to use.
 		Clear *FxPassEvaluationClearColor
+
 		//	Specifies which FxImageDef will receive the color information from the output of this pass.
 		Target *FxPassEvaluationTarget
 	}
@@ -132,6 +157,7 @@ type FxPassEvaluation struct {
 	Depth struct {
 		//	Specifies whether this render target image is to be cleared, and which value to use.
 		Clear *FxPassEvaluationClearDepth
+
 		//	Specifies which FxImageDef will receive the depth information from the output of this pass.
 		Target *FxPassEvaluationTarget
 	}
@@ -139,6 +165,7 @@ type FxPassEvaluation struct {
 	Stencil struct {
 		//	Specifies whether this render target image is to be cleared, and which value to use.
 		Clear *FxPassEvaluationClearStencil
+
 		//	Specifies which FxImageDef will receive the stencil information from the output of this pass.
 		Target *FxPassEvaluationTarget
 	}
@@ -148,6 +175,7 @@ type FxPassEvaluation struct {
 type FxPassEvaluationClearColor struct {
 	//	Default clear-color value
 	ugfx.Rgba32
+
 	//	Which of the multiple render targets is being set. The default is 0.
 	Index uint64
 }
@@ -156,6 +184,7 @@ type FxPassEvaluationClearColor struct {
 type FxPassEvaluationClearDepth struct {
 	//	Default clear-depth value
 	F float64
+
 	//	Which of the multiple render targets is being set. The default is 0.
 	Index uint64
 }
@@ -164,6 +193,7 @@ type FxPassEvaluationClearDepth struct {
 type FxPassEvaluationClearStencil struct {
 	//	Default clear-stencil value
 	B byte
+
 	//	Which of the multiple render targets is being set. The default is 0.
 	Index uint64
 }
@@ -172,15 +202,20 @@ type FxPassEvaluationClearStencil struct {
 type FxPassEvaluationTarget struct {
 	//	Indexes one of the Multiple Render Targets.
 	Index uint64
+
 	//	Indexes a sub-image inside a target surface, specifically: a layer of a 3D texture.
 	Slice uint64
+
 	//	Indexes a sub-image inside a target surface, specifically: a single MIP-map level.
 	Mip uint64
+
 	//	Indexes a sub-image inside a target surface, specifically: a unique cube face.
 	//	Must be one of the FxCubeFace* enumerated constants.
 	CubeFace FxCubeFace
+
 	//	If set, Image is ignored; this render target references a sampler parameter to determine which image to use.
 	Sampler RefParam
+
 	//	If set (and Sampler is empty), this render target directly instantiates a renderable image.
 	Image *FxImageInst
 }
@@ -195,8 +230,10 @@ func NewFxPassEvaluationTarget() (me *FxPassEvaluationTarget) {
 type FxPassProgram struct {
 	//	Information for binding the shader variables to effect parameters.
 	BindAttributes []*FxPassProgramBindAttribute
+
 	//	Binds a uniform shader variable to a parameter or a value.
 	BindUniforms []*FxPassProgramBindUniform
+
 	//	Setup and compilation information for shaders such as vertex and pixel shaders.
 	Shaders []*FxPassProgramShader
 }
@@ -206,6 +243,7 @@ type FxPassProgramBindAttribute struct {
 	//	The identifier for a vertex attribute variable in the shader
 	//	(a formal function parameter or in-scope global).
 	Symbol string
+
 	//	Contains an alternative name to the attribute variable
 	//	for semantic binding to geometry vertex inputs.
 	Semantic string
@@ -216,8 +254,10 @@ type FxPassProgramBindUniform struct {
 	//	The identifier for a uniform input parameter to the shader
 	//	(a formal function parameter or in-scope global) that will be bound to an external resource.
 	Symbol string
+
 	//	If set, refers to a previously defined parameter providing the uniform value to be bound.
 	ParamRef RefParam
+
 	//	If set, the uniform value to be bound.
 	Value interface{}
 }
@@ -226,9 +266,11 @@ type FxPassProgramBindUniform struct {
 type FxPassProgramShader struct {
 	//	Extras
 	HasExtras
+
 	//	In which pipeline stage this programmable shader is designed to execute.
 	//	Must be one of the FxShaderStage* enumerated constants.
 	Stage FxShaderStage
+
 	//	Concatenates the source code for the shader from one or more sources.
 	Sources []FxPassProgramShaderSources
 }
@@ -237,6 +279,7 @@ type FxPassProgramShader struct {
 type FxPassProgramShaderSources struct {
 	//	If true, S is an import reference; otherwise, S is code.
 	IsImportRef bool
+
 	//	The code or import reference.
 	S string
 }
@@ -245,8 +288,10 @@ type FxPassProgramShaderSources struct {
 type FxPassState struct {
 	//	If set, Value is ignored; refers to a previously defined parameter providing the value for this rendering state.
 	Param RefParam
+
 	//	If set (and Param is empty), the value for this rendering state.
 	Value string
+
 	//	State-specific optional index attribute.
 	Index float64
 }
@@ -255,14 +300,19 @@ type FxPassState struct {
 type FxProfile struct {
 	//	Id
 	HasId
+
 	//	Asset
 	HasAsset
+
 	//	Extras
 	HasExtras
+
 	//	NewParams
 	HasFxParamDefs
+
 	//	If set, Glsl must be nil, and this FxProfile represents a common, fixed-function shader pipeline.
 	Common *FxProfileCommon
+
 	//	If set, Common must be nil, and this FxProfile represents an OpenGL Shading Language pipeline.
 	Glsl *FxProfileGlsl
 }
@@ -284,8 +334,10 @@ type FxProfileGlsl struct {
 	//	The type of platform. This is a vendor-defined character string that
 	//	indicates the platform or capability target for the technique. Defaults to "PC".
 	Platform string
+
 	//	GLSL shader sources
 	CodesIncludes []FxProfileGlslCodeInclude
+
 	//	Declares the techniques for this effect.
 	Techniques FxGlslTechniques
 }
@@ -300,6 +352,7 @@ func NewFxProfileGlsl() (me *FxProfileGlsl) {
 type FxProfileGlslCodeInclude struct {
 	//	Source code or include reference
 	SidString
+
 	//	Indicates whether SidString is an import reference (true) or source code (false).
 	IsInclude bool
 }
@@ -312,10 +365,13 @@ type FxGlslTechniques map[string]*FxTechniqueGlsl
 type FxTechnique struct {
 	//	Id
 	HasId
+
 	//	Sid
 	HasSid
+
 	//	Asset
 	HasAsset
+
 	//	Extras
 	HasExtras
 }
@@ -325,12 +381,16 @@ type FxTechnique struct {
 type FxTechniqueCommon struct {
 	//	Id, Sid, Asset, Extras
 	FxTechnique
+
 	//	Produces a shaded surface with a Blinn BRDF approximation.
 	Blinn *FxTechniqueCommonBlinn
+
 	//	Produces a constantly shaded surface that is independent of lighting.
 	Constant *FxTechniqueCommonConstant
+
 	//	Produces a constantly shaded surface that is independent of lighting.
 	Lambert *FxTechniqueCommonLambert
+
 	//	Produces a shaded surface with a Phong BRDF approximation.
 	Phong *FxTechniqueCommonPhong
 }
@@ -339,8 +399,10 @@ type FxTechniqueCommon struct {
 type FxTechniqueCommonBlinn struct {
 	//	Ambient, Diffuse, Emission, Reflective, Reflectivity, Transparent, Transparency, IndexOfRefraction
 	FxTechniqueCommonLambert
+
 	//	Declares the color of light specularly reflected from the surface of this object.
 	Specular *FxColorOrTexture
+
 	//	Declares the specularity or roughness of the specular reflection lobe.
 	Shininess *ParamOrSidFloat
 }
@@ -349,16 +411,21 @@ type FxTechniqueCommonBlinn struct {
 type FxTechniqueCommonConstant struct {
 	//	Declares the amount of light emitted from the surface of this object
 	Emission *FxColorOrTexture
+
 	//	Declares the color of a perfect mirror reflection.
 	Reflective *FxColorOrTexture
+
 	//	Declares the amount of perfect mirror reflection to be added to the reflected light
 	//	as a value between 0.0 and 1.0.
 	Reflectivity *ParamOrSidFloat
+
 	//	Declares the color of perfectly refracted light.
 	Transparent *FxColorOrTexture
+
 	//	Declares the amount of perfectly refracted light added to the reflected color
 	//	as a scalar value between 0.0 and 1.0.
 	Transparency *ParamOrSidFloat
+
 	//	Declares the index of refraction for perfectly refracted light as a single scalar index.
 	IndexOfRefraction *ParamOrSidFloat
 }
@@ -367,8 +434,10 @@ type FxTechniqueCommonConstant struct {
 type FxTechniqueCommonLambert struct {
 	//	Emission, Reflective, Reflectivity, Transparent, Transparency, IndexOfRefraction
 	FxTechniqueCommonConstant
+
 	//	Declares the amount of ambient light reflected from the surface of this object.
 	Ambient *FxColorOrTexture
+
 	//	Declares the amount of light diffusely reflected from the surface of this object.
 	Diffuse *FxColorOrTexture
 }
@@ -384,8 +453,10 @@ type FxTechniqueCommonPhong struct {
 type FxTechniqueGlsl struct {
 	//	Id, Sid, Asset, Extras
 	FxTechnique
+
 	//	Application-specific FX metadata
 	Annotations []*FxAnnotation
+
 	//	Static declarations of all the render states, shaders, and settings for the rendering pipeline.
 	Passes []*FxPass
 }
@@ -394,8 +465,10 @@ type FxTechniqueGlsl struct {
 type FxTexture struct {
 	//	Extras
 	HasExtras
+
 	//	References a previously defined FxSampler of Kind FxSamplerKind2D.
 	Sampler2D RefParam
+
 	//	A semantic token, which will be referenced within FxMaterialBinding
 	//	to bind an array of texture-coordinates from a geometry instance to the sampler.
 	TexCoord string
@@ -405,10 +478,13 @@ type FxTexture struct {
 type FxEffectDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	NewParams
 	HasFxParamDefs
+
 	//	Application-specific FX metadata
 	Annotations []*FxAnnotation
+
 	//	Rendering pipeline(s).
 	Profiles []*FxProfile
 }
@@ -422,12 +498,15 @@ func (me *FxEffectDef) Init() {
 type FxEffectInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	SetParams
 	HasParamInsts
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *FxEffectDef
+
 	//	Platform-specific hints of which techniques to use in this effect.
 	TechniqueHints []*FxEffectInstTechniqueHint
 }
@@ -518,7 +597,9 @@ func (me LibsFxEffectDef) new(id string) (lib *LibFxEffectDefs) {
 //	A library that contains FxEffectDefs associated by their Id.
 //	To create a new LibFxEffectDefs library, ONLY use the LibsFxEffectDef.New() or LibsFxEffectDef.AddNew() methods.
 type LibFxEffectDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*FxEffectDef

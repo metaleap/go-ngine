@@ -53,12 +53,16 @@ func (me *BaseSync) SyncChanges() {
 type BaseDef struct {
 	//	Syncability
 	BaseSync
+
 	//	Id
 	HasId
+
 	//	Name
 	HasName
+
 	//	Asset
 	HasAsset
+
 	//	Extras
 	HasExtras
 }
@@ -67,12 +71,16 @@ type BaseDef struct {
 type BaseInst struct {
 	//	Syncability
 	BaseSync
+
 	//	Name
 	HasName
+
 	//	Sid
 	HasSid
+
 	//	Extras
 	HasExtras
+
 	//	The Id of the resource definition referenced by this instance.
 	DefRef RefId
 }
@@ -81,8 +89,10 @@ type BaseInst struct {
 type BaseLib struct {
 	//	Syncability
 	BaseSync
+
 	//	Id
 	HasId
+
 	//	Name
 	HasName
 }

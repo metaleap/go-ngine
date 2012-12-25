@@ -5,12 +5,14 @@ package assets
 type KxModelBinding struct {
 	//	A reference to a node.
 	Node RefId
+
 	//	Refers to the kinematics model being bound.
 	//	Only either SidRef or ParamRef, but not both, must be specified.
 	Model struct {
 		//	If set, ParamRef must be empty.
 		//	The Sid path to the kinematics model to bind to the node.
 		SidRef RefSid
+
 		//	If set, SidRef must be empty.
 		//	The parameter of the kinematics model that is defined in the instantiated kinematics scene.
 		ParamRef RefParam
@@ -22,8 +24,10 @@ type KxModelBinding struct {
 type KxJointAxisBinding struct {
 	//	A reference to a transformation of a node.
 	Target RefSid
+
 	//	If set, Value is ignored. Specifies an axis of a kinematics model.
 	Axis ParamOrRefSid
+
 	//	Only used if Axis is empty. Specifies a value of the axis.
 	Value ParamOrFloat
 }
@@ -32,8 +36,10 @@ type KxJointAxisBinding struct {
 type KxSceneDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	Zero or more kinematics models participating in this kinematics scene.
 	Models []*KxModelInst
+
 	//	Zero or more articulated systems participating in this kinematics scene.
 	ArticulatedSystems []*KxArticulatedSystemInst
 }
@@ -46,16 +52,21 @@ func (me *KxSceneDef) Init() {
 type KxSceneInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	NewParams
 	HasParamDefs
+
 	//	SetParams
 	HasParamInsts
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *KxSceneDef
+
 	//	Zero or more bindings of kinematics models to nodes.
 	ModelBindings []*KxModelBinding
+
 	//	Zero or more bindings of kinematics models' joint axes to single node transformations.
 	JointAxisBindings []*KxJointAxisBinding
 }
@@ -147,7 +158,9 @@ func (me LibsKxSceneDef) new(id string) (lib *LibKxSceneDefs) {
 //	A library that contains KxSceneDefs associated by their Id.
 //	To create a new LibKxSceneDefs library, ONLY use the LibsKxSceneDef.New() or LibsKxSceneDef.AddNew() methods.
 type LibKxSceneDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*KxSceneDef

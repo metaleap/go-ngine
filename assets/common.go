@@ -1,20 +1,25 @@
 package assets
 
+//	Categorizes the kind of a Transform.
 type TransformKind int
 
 const (
-	_ = iota
 	//	A position and orientation transformation suitable for aiming a camera.
-	TransformKindLookat TransformKind = iota
+	TransformKindLookat TransformKind = iota + 1
+
 	//	A transformation that embodies mathematical changes to points within a coordinate system
 	//	or the coordinate system itself.
 	TransformKindMatrix
+
 	//	A transformation that specifies how to rotate an object around an axis.
 	TransformKindRotate
+
 	//	A transformation that specifies how to deform an object along one axis.
 	TransformKindSkew
+
 	//	A transformation that specifies how to change an object's size.
 	TransformKindScale
+
 	//	A transformation that changes the position of an object in a local coordinate system.
 	TransformKindTranslate
 )
@@ -89,6 +94,7 @@ type HasTechniques struct {
 type Asset struct {
 	//	Extras
 	HasExtras
+
 	/*
 		//	Contains the date and time that the parent element was created.
 		//	This is only set-and-retained for imported Collada assets that provide this field,
@@ -115,14 +121,17 @@ type Asset struct {
 		//	and is not otherwise used.
 		Title string
 	*/
+
 	//	Contains descriptive information about the coordinate system of the geometric data. All
 	//	coordinates are right-handed by definition. Valid values are "X", "Y" (the default), or "Z".
 	UpAxis string
+
 	//	The unit of distance that applies to all spatial measurements within the scope of this resource.
 	Unit struct {
 		//	How many real-world meters in one distance unit as a floating-point number.
 		//	1.0 for meter, 0.01 for centimeter, 1000 for kilometer etc.
 		Meter float64
+
 		//	Name of the distance unit, such as "centimeter", "kilometer", "meter", "inch".
 		//	Default is "meter".
 		Name string
@@ -130,6 +139,7 @@ type Asset struct {
 	//	This is only set-and-retained for imported Collada assets that provide this field,
 	//	and is not otherwise used.
 	Contributors []*AssetContributor
+
 	//	Provides information about the location of the visual scene in physical space.
 	//	This is only set-and-retained for imported Collada assets that provide this field,
 	//	and is not otherwise used.
@@ -162,22 +172,26 @@ type AssetContributor struct {
 //	ALL fields are only set-and-retained for imported Collada assets that provide those fields,
 //	and are not otherwise written, read or used.
 type AssetGeographicLocation struct {
-	Longitude        float64
-	Latitude         float64
-	Altitude         float64
-	AltitudeAbsolute bool
+	// Longitude        float64
+	// Latitude         float64
+	// Altitude         float64
+	// AltitudeAbsolute bool
 }
 
 //	Provides arbitrary additional information about or related to its parent resource.
 type Extra struct {
 	//	Id
 	HasId
+
 	//	Name
 	HasName
+
 	//	Asset
 	HasAsset
+
 	//	Techniques
 	HasTechniques
+
 	//	A hint as to the type of information that this particular Extra represents.
 	Type string
 }
@@ -186,11 +200,14 @@ type Extra struct {
 type IndexedInputs struct {
 	//	Number of primitives
 	Count uint64
+
 	//	Inputs specify how to read data from Sources.
 	Inputs []*InputShared
+
 	//	Indices that describe the attributes for a number of primitives.
 	//	The indices reference into the Sources that are referenced by the Inputs.
 	Indices []uint64
+
 	//	Number of sub-primitives, if used.
 	Vcount []int64
 }
@@ -199,6 +216,7 @@ type IndexedInputs struct {
 type Input struct {
 	//	The user-defined meaning of the input connection.
 	Semantic string
+
 	//	Refers to the Source for this Input.
 	Source RefId
 }
@@ -207,8 +225,10 @@ type Input struct {
 type InputShared struct {
 	//	Semantic and Source
 	Input
+
 	//	The offset into the list of indices.
 	Offset uint64
+
 	//	Which inputs to group as a single set.
 	//	This is helpful when multiple inputs share the same semantics.
 	Set *uint64
@@ -222,10 +242,13 @@ type Layers map[string]bool
 type MaterialBinding struct {
 	//	Extras
 	HasExtras
+
 	//	Techniques
 	HasTechniques
+
 	//	Targets for animation
 	Params []*Param
+
 	//	Common-technique profile.
 	TC struct {
 		//	References to the materials included in this material binding.
@@ -237,10 +260,13 @@ type MaterialBinding struct {
 type Param struct {
 	//	Name
 	HasName
+
 	//	Sid
 	HasSid
+
 	//	The user-defined meaning of the parameter.
 	Semantic string
+
 	//	The type of the value data. This text string must be understood by the application.
 	Type string
 }
@@ -249,6 +275,7 @@ type Param struct {
 type ParamDef struct {
 	//	Sid
 	HasSid
+
 	//	Initial value for this parameter
 	Value interface{}
 }
@@ -260,8 +287,10 @@ type ParamDefs map[string]*ParamDef
 type ParamInst struct {
 	//	References the identifier of the pre-defined parameter (ParamDef) that will have its value set.
 	Ref RefSid
+
 	//	Indicates if the Value is a string referencing the identifier of a connected parameter.
 	IsConnectParamRef bool
+
 	//	The new value for the referenced parameter.
 	Value interface{}
 }
@@ -273,10 +302,13 @@ type ParamInsts map[string]*ParamInst
 type Scene struct {
 	//	Extras
 	HasExtras
+
 	//	Embodies the entire set of information that can be visualized from the contents of a resource.
 	Visual *VisualSceneInst
+
 	//	Embodies the entire set of information that can be articulated kinematically from a resource.
 	Kinematics *KxSceneInst
+
 	//	Specifies an environment in which physical objects are instantiated and simulated.
 	Physics []*PxSceneInst
 }
@@ -287,6 +319,7 @@ type Technique struct {
 	//	The type of profile. This is a vendor-defined character string
 	//	that indicates the platform or capability target for the technique.
 	Profile string
+
 	//	Arbitrary XML content or meta-data for this Technique.
 	Data string
 }
@@ -295,9 +328,11 @@ type Technique struct {
 type Transform struct {
 	//	Sid
 	HasSid
+
 	//	The type of this transformation (rotation, skewing, scaling, translation, "look-at", or matrix).
 	//	Must be one of the TransformKind* enumerated constants.
 	Kind TransformKind
+
 	//	Contains one or more vectors and values representing this transformation.
 	//	For TransformKindLookat:
 	//		9 values representing three 3D vectors (eye position, interest point, up-axis).

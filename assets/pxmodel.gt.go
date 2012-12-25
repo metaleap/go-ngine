@@ -5,10 +5,13 @@ package assets
 type PxModelDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	Contains zero or more rigid bodies participating in this physics model.
 	RigidBodies PxRigidBodyDefs
+
 	//	Contains zero or more rigid constraints participating in this physics model.
 	RigidConstraints PxRigidConstraintDefs
+
 	//	Child physics models participating in this physics model, with optional property overrides.
 	Insts []*PxModelInst
 }
@@ -24,21 +27,26 @@ func (me *PxModelDef) Init() {
 type PxModelInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *PxModelDef
+
 	//	Points to the Id of a node in the visual scene. This allows a physics model to be instantiated
 	//	under a specific transform node, which will dictate the initial position and orientation,
 	//	and could be animated to influence kinematic rigid bodies. Optional.
 	//	By default, the physics model is instantiated under the world, rather than a specific transform node.
 	//	This parameter is only meaningful when the parent element of the current physics model is a physics scene.
 	Parent RefId
+
 	//	Zero or more force fields influencing this physics model.
 	ForceFields []*PxForceFieldInst
+
 	//	Contains instances of those rigid bodies included in the instantiated physics model that should
 	//	have some properties overridden, or should be linked with transform nodes in the visual scene.
 	RigidBodies []*PxRigidBodyInst
+
 	//	Contains instances of those rigid constraints included in the instantiated
 	//	physics model that should have some properties overridden.
 	RigidConstraints []*PxRigidConstraintInst
@@ -129,7 +137,9 @@ func (me LibsPxModelDef) new(id string) (lib *LibPxModelDefs) {
 //	A library that contains PxModelDefs associated by their Id.
 //	To create a new LibPxModelDefs library, ONLY use the LibsPxModelDef.New() or LibsPxModelDef.AddNew() methods.
 type LibPxModelDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*PxModelDef

@@ -4,6 +4,7 @@ package assets
 type KxAxisIndex struct {
 	//	If set, specifies the special use of this index.
 	Semantic string
+
 	//	If not set, the parent axis will not appear in the jointmap.
 	I ParamOrInt
 }
@@ -12,6 +13,7 @@ type KxAxisIndex struct {
 type KxAxisLimits struct {
 	//	The "minimum" portion of this limits descriptor.
 	Min ParamOrFloat
+
 	//	The "maximum" portion of this limits descriptor.
 	Max ParamOrFloat
 }
@@ -20,8 +22,10 @@ type KxAxisLimits struct {
 type KxBinding struct {
 	//	The identifier of the parameter to bind to the new symbol name. Required.
 	Symbol string
+
 	//	If set, Value is ignored.
 	Param RefParam
+
 	//	Only used if Param is empty.
 	Value interface{}
 }
@@ -30,23 +34,31 @@ type KxBinding struct {
 type KxEffector struct {
 	//	Sid
 	HasSid
+
 	//	Name
 	HasName
+
 	//	NewParams
 	HasParamDefs
+
 	//	SetParams
 	HasParamInsts
+
 	//	Bindings of inputs to kinematics parameters.
 	Bindings []*KxBinding
+
 	//	Specifies maximum speed.
 	//	The first value is translational (m/sec), the second is rotational (°/sec).
 	Speed *ParamOrFloat2
+
 	//	Specifies maximum acceleration.
 	//	The first value is translational (m/sec²), the second is rotational (°/sec²).
 	Acceleration *ParamOrFloat2
+
 	//	Specifies the maximum deceleration.
 	//	The first value is translational (m/sec²), the second is rotational (°/sec²).
 	Deceleration *ParamOrFloat2
+
 	//	Specifies the maximum jerk (also called jolt or surge).
 	//	The first value is translational (m/sec³), the second is rotational (°/sec³).
 	Jerk *ParamOrFloat2
@@ -64,6 +76,7 @@ func NewKxEffector() (me *KxEffector) {
 type KxFrame struct {
 	//	References a KxLink defined in the kinematics model. Optional.
 	Link RefSid
+
 	//	Zero or more TransformKindTranslate and/or TransformKindRotate transformations.
 	Transforms []*Transform
 }
@@ -98,20 +111,28 @@ type KxFrameTip struct {
 type KxKinematicsAxis struct {
 	//	Sid
 	HasSid
+
 	//	Name
 	HasName
+
 	//	NewParams
 	HasParamDefs
+
 	//	The joint axis of an instantiated kinematics model.
 	Axis RefSid
+
 	//	Defaults to true.
 	Active ParamOrBool
+
 	//	Specifies this axis' indices in the jointmap. If empty, this axis will not appear in the jointmap.
 	Indices []*KxAxisIndex
+
 	//	Specifies the soft limits. If not set, the axis is limited only by its physical limits.
 	Limits *KxAxisLimits
+
 	//	Defaults to false.
 	Locked ParamOrBool
+
 	//	Formulas can be useful to define the behavior of a passive link according to one or more
 	//	active axes, or to define dependencies of the soft limits and another joint, for example.
 	Formulas []Formula
@@ -128,21 +149,27 @@ func NewKxKinematicsAxis() (me *KxKinematicsAxis) {
 type KxKinematicsSystem struct {
 	//	Techniques
 	HasTechniques
+
 	//	The kinematics models to be enhanced with kinematics information.
 	Models []*KxModelInst
+
 	//	Common-technique profile
 	TC struct {
 		//	Kinematics-related information for all axes.
 		AxisInfos []*KxKinematicsAxis
+
 		//	Kinematics calculation chain frames
 		Frame struct {
 			//	Defines the base frame for kinematics calculation.
 			Origin KxFrameOrigin
+
 			//	Defines the frame at the end of the kinematics chain.
 			Tip KxFrameTip
+
 			//	If set, defines the offset frame from the Tip frame,
 			//	which usually represents the work point of the end effector (for example, a welding gun).
 			Tcp *KxFrameTcp
+
 			//	If set, defines the offset frame from the Origin frame;
 			//	this offset usually represents the transformation to a work piece.
 			Object *KxFrameObject
@@ -154,23 +181,32 @@ type KxKinematicsSystem struct {
 type KxMotionAxis struct {
 	//	Sid
 	HasSid
+
 	//	Name
 	HasName
+
 	//	NewParams
 	HasParamDefs
+
 	//	SetParams
 	HasParamInsts
+
 	//	References the KxKinematicsAxis of an instantiated kinematics system.
 	Axis RefSid
+
 	//	Bindings of inputs to kinematics parameters.
 	Bindings []*KxBinding
+
 	//	The maximum permitted speed of the axis in meters per second (m/sec).
 	Speed *ParamOrFloat
+
 	//	The maximum permitted acceleration of the axis in m/sec².
 	Acceleration *ParamOrFloat
+
 	//	The maximum permitted deceleration of an axis.
 	//	If not set, acceleration and deceleration have the same value in m/sec².
 	Deceleration *ParamOrFloat
+
 	//	The maximum permitted jerk of an axis in m/sec³.
 	Jerk *ParamOrFloat
 }
@@ -187,12 +223,15 @@ func NewKxMotionAxis() (me *KxMotionAxis) {
 type KxMotionSystem struct {
 	//	Techniques
 	HasTechniques
+
 	//	The articulated system to be enhanced with dynamics information.
 	ArticulatedSystem *KxArticulatedSystemInst
+
 	//	Common-technique profile
 	TC struct {
 		//	Dynamics-related information for all axes.
 		AxisInfos []*KxMotionAxis
+
 		//	Additional dynamics information
 		EffectorInfo *KxEffector
 	}
@@ -202,8 +241,10 @@ type KxMotionSystem struct {
 type KxArticulatedSystemDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	If set, Motion must be nil, and this articulated system describes a kinematics system.
 	Kinematics *KxKinematicsSystem
+
 	//	If set, Kinematics must be nil, and this articulated system describes a motion system.
 	Motion *KxMotionSystem
 }
@@ -216,14 +257,18 @@ func (me *KxArticulatedSystemDef) Init() {
 type KxArticulatedSystemInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	NewParams
 	HasParamDefs
+
 	//	SetParams
 	HasParamInsts
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *KxArticulatedSystemDef
+
 	//	Bindings of inputs to kinematics parameters.
 	Bindings []*KxBinding
 }
@@ -315,7 +360,9 @@ func (me LibsKxArticulatedSystemDef) new(id string) (lib *LibKxArticulatedSystem
 //	A library that contains KxArticulatedSystemDefs associated by their Id.
 //	To create a new LibKxArticulatedSystemDefs library, ONLY use the LibsKxArticulatedSystemDef.New() or LibsKxArticulatedSystemDef.AddNew() methods.
 type LibKxArticulatedSystemDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*KxArticulatedSystemDef

@@ -4,9 +4,9 @@ package assets
 type KxJointKind int
 
 const (
-	_ = iota
 	//	Defines a single translational degree of freedom of a joint.
-	KxJointKindPrismatic KxJointKind = iota
+	KxJointKindPrismatic KxJointKind = iota + 1
+
 	//	Defines a single rotational degree of freedom of a joint.
 	KxJointKindRevolute
 )
@@ -17,12 +17,15 @@ const (
 type KxJoint struct {
 	//	Sid
 	HasSid
+
 	//	Must be one of the KxJointKind* enumerated constants.
 	Kind KxJointKind
+
 	//	Specifies the axis of the degree of freedom.
 	Axis struct {
 		//	Name
 		HasName
+
 		//	Sid, V
 		SidVec3
 	}
@@ -35,6 +38,7 @@ type KxJoint struct {
 type KxJointLimits struct {
 	//	If set, the "minimum" portion of this joint limitation.
 	Min *SidFloat
+
 	//	If set, the "maximum" portion of this joint limitation.
 	Max *SidFloat
 }
@@ -43,8 +47,10 @@ type KxJointLimits struct {
 type KxJointDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	Sid
 	HasSid
+
 	//	Primitive (simple) joints are joints with one degree of freedom (one given axis) and are
 	//	used to construct more complex joint types (compound joints) that
 	//	consist of multiple primitives, each representing an axis.
@@ -59,6 +65,7 @@ func (me *KxJointDef) Init() {
 type KxJointInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
@@ -150,7 +157,9 @@ func (me LibsKxJointDef) new(id string) (lib *LibKxJointDefs) {
 //	A library that contains KxJointDefs associated by their Id.
 //	To create a new LibKxJointDefs library, ONLY use the LibsKxJointDef.New() or LibsKxJointDef.AddNew() methods.
 type LibKxJointDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*KxJointDef

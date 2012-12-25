@@ -8,6 +8,7 @@ var (
 	//	This callback, set by the core package (or your custom package),
 	//	gets called before SyncChanges() proceeds with syncing.
 	OnBeforeSyncAll func()
+
 	//	This callback, set by the core package (or your custom package),
 	//	gets called after SyncChanges() has finished syncing.
 	OnAfterSyncAll func()

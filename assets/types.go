@@ -74,6 +74,7 @@ type Int4x4 [16]int64
 type ParamOrBool struct {
 	//	The value provided if Param is empty.
 	B bool
+
 	//	If set, refers to a previously defined parameter providing the value.
 	Param RefParam
 }
@@ -82,6 +83,7 @@ type ParamOrBool struct {
 type ParamOrFloat struct {
 	//	The value provided if Param is empty.
 	F float64
+
 	//	If set, refers to a previously defined parameter providing the value.
 	Param RefParam
 }
@@ -90,6 +92,7 @@ type ParamOrFloat struct {
 type ParamOrFloat2 struct {
 	//	The values provided if Param is empty.
 	F Float2
+
 	//	If set, refers to a previously defined parameter providing the values.
 	Param RefParam
 }
@@ -98,6 +101,7 @@ type ParamOrFloat2 struct {
 type ParamOrInt struct {
 	//	The value provided if Param is empty.
 	I int64
+
 	//	If set, refers to a previously defined parameter providing the value.
 	Param RefParam
 }
@@ -106,6 +110,7 @@ type ParamOrInt struct {
 type ParamOrSidFloat struct {
 	//	The value provided if Param is empty.
 	F SidFloat
+
 	//	If set, refers to a previously defined parameter providing the value.
 	Param RefParam
 }
@@ -114,6 +119,7 @@ type ParamOrSidFloat struct {
 type ParamOrRefSid struct {
 	//	The value provided if Param is empty.
 	Sr RefSid
+
 	//	If set, refers to a previously defined parameter providing the value.
 	Param RefParam
 }
@@ -122,6 +128,7 @@ type ParamOrRefSid struct {
 type ParamOrUint struct {
 	//	The value provided if Param is empty.
 	U uint64
+
 	//	If set, refers to a previously defined parameter providing the value.
 	Param RefParam
 }
@@ -130,6 +137,7 @@ type ParamOrUint struct {
 type SidBool struct {
 	//	Sid
 	HasSid
+
 	//	The value.
 	B bool
 }
@@ -138,6 +146,7 @@ type SidBool struct {
 type SidFloat struct {
 	//	Sid
 	HasSid
+
 	//	The value.
 	F float64
 }
@@ -146,6 +155,7 @@ type SidFloat struct {
 type SidFloat3 struct {
 	//	Sid
 	HasSid
+
 	//	The values.
 	F Float3
 }
@@ -154,6 +164,7 @@ type SidFloat3 struct {
 type SidString struct {
 	//	Sid
 	HasSid
+
 	//	The value.
 	S string
 }
@@ -162,6 +173,7 @@ type SidString struct {
 type SidVec3 struct {
 	//	Sid
 	HasSid
+
 	//	X, Y, Z
 	unum.Vec3
 }

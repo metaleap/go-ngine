@@ -6,16 +6,22 @@ type GeometryPrimitiveKind int
 const (
 	//	Organizes vertices into individual lines.
 	GeometryPrimitiveKindLines GeometryPrimitiveKind = 0x0001
+
 	//	Organizes vertices into connected line-strips.
 	GeometryPrimitiveKindLineStrips GeometryPrimitiveKind = 0x0003
+
 	//	Organizes vertices into individual polygons that may contain holes.
 	GeometryPrimitiveKindPolygons GeometryPrimitiveKind = 2
+
 	//	Organizes vertices into individual polygons that cannot contain holes.
 	GeometryPrimitiveKindPolylist GeometryPrimitiveKind = 7
+
 	//	Organizes vertices into individual triangles.
 	GeometryPrimitiveKindTriangles GeometryPrimitiveKind = 0x0004
+
 	//	Organizes vertices into fan-connected triangles.
 	GeometryPrimitiveKindTrifans GeometryPrimitiveKind = 0x0006
+
 	//	Organizes vertices into strip-connected triangles.
 	GeometryPrimitiveKindTristrips GeometryPrimitiveKind = 0x0005
 )
@@ -24,6 +30,7 @@ const (
 type GeometryControlVertices struct {
 	//	Extras
 	HasExtras
+
 	//	Inputs
 	HasInputs
 }
@@ -32,14 +39,18 @@ type GeometryControlVertices struct {
 type GeometryMesh struct {
 	//	Extras
 	HasExtras
+
 	//	Sources
 	HasSources
+
 	//	Refers to a GeometryDef described by a GeometryMesh.
 	//	If specified, compute the convex hull of the specified mesh.
 	ConvexHullOf RefId
+
 	//	Describes the mesh-vertex attributes and establishes their topological identity.
 	//	Required if ConvexHullOf is empty.
 	Vertices *GeometryVertices
+
 	//	Geometric primitives, which assemble values from the inputs into vertex attribute data.
 	Primitives []*GeometryPrimitives
 }
@@ -55,15 +66,20 @@ func NewGeometryMesh() (me *GeometryMesh) {
 type GeometryPrimitives struct {
 	//	Extras
 	HasExtras
+
 	//	Name
 	HasName
+
 	//	When at least one input is present, one input must specify its Semantic as "VERTEX".
 	IndexedInputs
+
 	//	Must be one of the GeometryPrimitiveKind* enumerated constants.
 	Kind GeometryPrimitiveKind
+
 	//	Declares a symbol for a material. This symbol is bound to a material at the time of instantiation.
 	//	Optional. If not specified then the lighting and shading results are application defined.
 	Material string
+
 	//	If Kind is GeometryPrimitiveKindPolygons, describes the polygons that contain one or more holes.
 	PolyHoles []*GeometryPolygonHole
 }
@@ -72,6 +88,7 @@ type GeometryPrimitives struct {
 type GeometryPolygonHole struct {
 	//	Specifies the vertex attributes (indices) for an individual polygon.
 	Indices []uint64
+
 	//	Specifies the indices of a hole in the polygon specified by Indices.
 	Holes [][]uint64
 }
@@ -80,11 +97,14 @@ type GeometryPolygonHole struct {
 type GeometrySpline struct {
 	//	Extras
 	HasExtras
+
 	//	Sources
 	HasSources
+
 	//	Whether there is a segment connecting the first and last control vertices.
 	//	The default is false, indicating that the spline is open.
 	Closed bool
+
 	//	Describes the control vertices of the spline.
 	ControlVertices GeometryControlVertices
 }
@@ -102,10 +122,13 @@ func NewGeometrySpline() (me *GeometrySpline) {
 type GeometryVertices struct {
 	//	Id
 	HasId
+
 	//	Name
 	HasName
+
 	//	Extras
 	HasExtras
+
 	//	Inputs
 	HasInputs
 }
@@ -114,10 +137,13 @@ type GeometryVertices struct {
 type GeometryDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	If set, Mesh and Spline must be nil, and the GeometryDef is described by this B-rep structure.
 	Brep *GeometryBrep
+
 	//	If set, Brep and Spline must be nil, and the GeometryDef is described by this mesh structure.
 	Mesh *GeometryMesh
+
 	//	If set, Mesh and Brep must be nil, and the GeometryDef is described by this multi-segment spline.
 	Spline *GeometrySpline
 }
@@ -130,10 +156,12 @@ func (me *GeometryDef) Init() {
 type GeometryInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *GeometryDef
+
 	//	Binds material symbols to material instances. This allows a single geometry
 	//	to be instantiated into a scene multiple times each with a different appearance.
 	MaterialBinding *MaterialBinding
@@ -224,7 +252,9 @@ func (me LibsGeometryDef) new(id string) (lib *LibGeometryDefs) {
 //	A library that contains GeometryDefs associated by their Id.
 //	To create a new LibGeometryDefs library, ONLY use the LibsGeometryDef.New() or LibsGeometryDef.AddNew() methods.
 type LibGeometryDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*GeometryDef

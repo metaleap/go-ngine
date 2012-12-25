@@ -4,11 +4,12 @@ package assets
 type KxAttachmentKind int
 
 const (
-	_ = iota
 	//	Connects two links, describing a real parent-child dependency between them.
-	KxAttachmentKindFull KxAttachmentKind = iota
+	KxAttachmentKindFull KxAttachmentKind = iota + 1
+
 	//	Connects two links and defines one end of a closed loop.
 	KxAttachmentKindStart
+
 	//	Defines one end of the closed loop in an attachment.
 	KxAttachmentKindEnd
 )
@@ -17,10 +18,13 @@ const (
 type KxAttachment struct {
 	//	Must be one of the KxAttachmentKind* enumerated constants.
 	Kind KxAttachmentKind
+
 	//	Refers to the KxJoint that connects the parent with the child link. Required.
 	Joint RefSid
+
 	//	Zero or more TransformKindRotate and/or TransformKindTranslate transformations.
 	Transforms []*Transform
+
 	//	If Kind is KxAttachmentKindFull, specifies the child link in this parent-child dependency.
 	Link *KxLink
 }
@@ -29,10 +33,13 @@ type KxAttachment struct {
 type KxLink struct {
 	//	Sid
 	HasSid
+
 	//	Name
 	HasName
+
 	//	Zero or more TransformKindRotate and/or TransformKindTranslate transformations.
 	Transforms []*Transform
+
 	//	The attachments that make up this link.
 	Attachments []*KxAttachment
 }
@@ -43,14 +50,18 @@ type KxLink struct {
 type KxModelDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	Techniques
 	HasTechniques
+
 	//	Common-technique profile
 	TC struct {
 		//	NewParams
 		HasParamDefs
+
 		//	The kinematics chain.
 		Links []*KxLink
+
 		//	Specifies dependencies among the joints.
 		Formulas []Formula
 	}
@@ -65,14 +76,18 @@ func (me *KxModelDef) Init() {
 type KxModelInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	NewParams
 	HasParamDefs
+
 	//	SetParams
 	HasParamInsts
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
 	Def *KxModelDef
+
 	//	Bindings of inputs to kinematics parameters.
 	Bindings []*KxBinding
 }
@@ -164,7 +179,9 @@ func (me LibsKxModelDef) new(id string) (lib *LibKxModelDefs) {
 //	A library that contains KxModelDefs associated by their Id.
 //	To create a new LibKxModelDefs library, ONLY use the LibsKxModelDef.New() or LibsKxModelDef.AddNew() methods.
 type LibKxModelDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*KxModelDef

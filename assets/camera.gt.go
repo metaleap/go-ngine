@@ -4,6 +4,7 @@ package assets
 type CameraImager struct {
 	//	Extras
 	HasExtras
+
 	//	Techniques
 	HasTechniques
 }
@@ -12,18 +13,24 @@ type CameraImager struct {
 type CameraOptics struct {
 	//	Extras
 	HasExtras
+
 	//	Techniques
 	HasTechniques
+
 	//	Common-technique profile.
 	TC struct {
 		//	Aspect ratio of the field of view.
 		AspectRatio *SidFloat
+
 		//	Distance to the far clipping plane.
 		Zfar SidFloat
+
 		//	Distance to the near clipping plane.
 		Znear SidFloat
+
 		//	Orthographic projection type. To use Perspective instead, also set this to nil.
 		Orthographic *CameraOrthographic
+
 		//	Perspective projection type. To use Orthographic instead, also set this to nil.
 		Perspective *CameraPerspective
 	}
@@ -33,6 +40,7 @@ type CameraOptics struct {
 type CameraOrthographic struct {
 	//	Horizontal magnification of the view.
 	MagX *SidFloat
+
 	//	Vertical magnification of the view.
 	MagY *SidFloat
 }
@@ -41,6 +49,7 @@ type CameraOrthographic struct {
 type CameraPerspective struct {
 	//	Horizontal field of view in degrees.
 	FovX *SidFloat
+
 	//	Vertical field of view in degrees.
 	FovY *SidFloat
 }
@@ -49,8 +58,10 @@ type CameraPerspective struct {
 type CameraDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	Describes the field of view and viewing frustum using canonical parameters.
 	Optics CameraOptics
+
 	//	Represents the image sensor of a camera.
 	Imager *CameraImager
 }
@@ -63,6 +74,7 @@ func (me *CameraDef) Init() {
 type CameraInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
@@ -154,7 +166,9 @@ func (me LibsCameraDef) new(id string) (lib *LibCameraDefs) {
 //	A library that contains CameraDefs associated by their Id.
 //	To create a new LibCameraDefs library, ONLY use the LibsCameraDef.New() or LibsCameraDef.AddNew() methods.
 type LibCameraDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*CameraDef

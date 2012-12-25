@@ -4,10 +4,13 @@ package assets
 type VisualSceneEvaluation struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	Sid
 	HasSid
+
 	//	Whether evaluation is enabled. Disabling evaluation can be useful for debugging.
 	Disabled bool
+
 	//	Describes effects passes to render a scene.
 	RenderPasses []*VisualSceneRendering
 }
@@ -16,15 +19,20 @@ type VisualSceneEvaluation struct {
 type VisualSceneRendering struct {
 	//	Name
 	HasName
+
 	//	Sid
 	HasSid
+
 	//	Extras
 	HasExtras
+
 	//	Refers to a NodeDef that contains a camera describing
 	//	the viewpoint from which to render this compositing step. Optional.
 	CameraNode RefId
+
 	//	Specifies which layer or layers to render in this compositing step while evaluating the scene.
 	Layers Layers
+
 	//	If set, specifies which effect to render in this compositing step while evaluating the scene.
 	MaterialInst *VisualSceneRenderingMaterialInst
 }
@@ -39,13 +47,16 @@ func NewVisualSceneRendering() (me *VisualSceneRendering) {
 type VisualSceneRenderingMaterialInst struct {
 	//	Extras
 	HasExtras
+
 	//	Binds values to effect parameters upon instantiation.
 	Bindings []*FxBinding
+
 	//	Target specific techniques and passes inside a material
 	//	rather than having to split the effects techniques and passes into multiple effects.
 	OverrideTechnique struct {
 		//	Specifies the Sid of a Technique
 		Ref RefSid
+
 		//	Specifies the Sid of one FxPass to execute.
 		//	If not specified, then all of the Technique's passes are used.
 		Pass RefSid
@@ -56,8 +67,10 @@ type VisualSceneRenderingMaterialInst struct {
 type VisualSceneDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	A scene graph containing nodes of visual information and related data.
 	Nodes []*NodeDef
+
 	//	Specifies how to evaluate this visual scene.
 	Evaluations []*VisualSceneEvaluation
 }
@@ -70,6 +83,7 @@ func (me *VisualSceneDef) Init() {
 type VisualSceneInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
@@ -161,7 +175,9 @@ func (me LibsVisualSceneDef) new(id string) (lib *LibVisualSceneDefs) {
 //	A library that contains VisualSceneDefs associated by their Id.
 //	To create a new LibVisualSceneDefs library, ONLY use the LibsVisualSceneDef.New() or LibsVisualSceneDef.AddNew() methods.
 type LibVisualSceneDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*VisualSceneDef

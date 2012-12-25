@@ -6,6 +6,7 @@ package assets
 type PxForceFieldDef struct {
 	//	Id, Name, Asset, Extras
 	BaseDef
+
 	//	Techniques
 	HasTechniques
 }
@@ -18,6 +19,7 @@ func (me *PxForceFieldDef) Init() {
 type PxForceFieldInst struct {
 	//	Sid, Name, Extras, DefRef
 	BaseInst
+
 	//	A pointer to the resource definition referenced by this instance.
 	//	Is nil by default (unless created via Def.NewInst()) and meant to be set ONLY by
 	//	the EnsureDef() method (which uses BaseInst.DefRef to find it).
@@ -109,7 +111,9 @@ func (me LibsPxForceFieldDef) new(id string) (lib *LibPxForceFieldDefs) {
 //	A library that contains PxForceFieldDefs associated by their Id.
 //	To create a new LibPxForceFieldDefs library, ONLY use the LibsPxForceFieldDef.New() or LibsPxForceFieldDef.AddNew() methods.
 type LibPxForceFieldDefs struct {
+	//	Id, Name
 	BaseLib
+
 	//	The underlying hash-table. NOTE -- this is for easier read-access and range-iteration:
 	//	DO NOT write to M, instead use the Add(), AddNew(), Remove() methods ONLY or bugs WILL ensue.
 	M map[string]*PxForceFieldDef
