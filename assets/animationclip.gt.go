@@ -158,7 +158,7 @@ func (me *LibAnimationClipDefs) New(id string) (def *AnimationClipDef) { def = n
 func (me *LibAnimationClipDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibAnimationClipDefs) resolver(part0 string) refSidResolver {
-	return me.M[part0]
+	return nil // me.M[part0]
 }
 
 func (me *LibAnimationClipDefs) resolverRootIsLib() bool {

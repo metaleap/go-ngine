@@ -197,7 +197,7 @@ func (me *LibKxSceneDefs) New(id string) (def *KxSceneDef) { def = newKxSceneDef
 func (me *LibKxSceneDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibKxSceneDefs) resolver(part0 string) refSidResolver {
-	return me.M[part0]
+	return nil // me.M[part0]
 }
 
 func (me *LibKxSceneDefs) resolverRootIsLib() bool {

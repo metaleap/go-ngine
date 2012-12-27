@@ -160,6 +160,10 @@ type SidFloat3 struct {
 	F Float3
 }
 
+func (me *SidFloat3) accessIndex(i int) interface{} {
+	return &me.F[i]
+}
+
 //	A string value that has a scoped identifier.
 type SidString struct {
 	//	Sid
@@ -176,4 +180,28 @@ type SidVec3 struct {
 
 	//	X, Y, Z
 	unum.Vec3
+}
+
+func (me *SidVec3) accessField(fn string) interface{} {
+	switch fn {
+	case "X":
+		return &me.X
+	case "Y":
+		return &me.Y
+	case "Z":
+		return &me.Z
+	}
+	return nil
+}
+
+func (me *SidVec3) accessIndex(i int) interface{} {
+	switch i {
+	case 0:
+		return &me.X
+	case 1:
+		return &me.Y
+	case 2:
+		return &me.Z
+	}
+	return nil
 }

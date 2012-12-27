@@ -291,7 +291,7 @@ func (me *LibGeometryDefs) New(id string) (def *GeometryDef) { def = newGeometry
 func (me *LibGeometryDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibGeometryDefs) resolver(part0 string) refSidResolver {
-	return me.M[part0]
+	return nil // me.M[part0]
 }
 
 func (me *LibGeometryDefs) resolverRootIsLib() bool {

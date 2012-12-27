@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"runtime"
+	"strings"
 
 	ngr "github.com/go3d/go-ngine/assets/pkgreflect"
 	uio "github.com/metaleap/go-util/io"
@@ -124,7 +125,58 @@ func sfmt(format string, args ...interface{}) string {
 	return fmt.Sprintf(format, args...)
 }
 
-func writeMethod(rt reflect.Type, force bool) (outSrc string) {
+func spref(s string, prefs ...string) bool {
+	return ustr.HasAnyPrefix(s, prefs...)
+}
+
+func writeAccessorMethods(rt reflect.Type) (accSrc string) {
+	var (
+		sf           reflect.StructField
+		sfType       reflect.Type
+		isSid        bool
+		sfName       string
+		numCase, pos int
+	)
+	if _, hasSid := rt.FieldByName("HasSid"); !spref(rt.Name(), "ParamOrSid") {
+		accSrc += sfmt("func (me *%s) accessField(fn string) interface{} {\n\tswitch fn {\n", rt.Name())
+		for i := 0; i < rt.NumField(); i++ {
+			if sf = rt.Field(i); (len(sf.Name) > 0) && (sf.Name != "Def") && (sf.Name != "Kind") && !sf.Anonymous {
+				if isSid, sfName, sfType = spref(sf.Type.Name(), "Sid"), sf.Name, sf.Type; isSid || (hasSid && (!anyOf(sfType, reflect.Invalid, reflect.Array, reflect.Chan, reflect.Func, reflect.Map, reflect.Slice, reflect.Struct, reflect.UnsafePointer)) && ((sfType.Kind() != reflect.Ptr) || elemType(sfType).Kind() != reflect.Struct)) {
+					if numCase++; isSid {
+						switch sfType.Name() {
+						case "SidBool":
+							sfName += ".B"
+						case "SidString":
+							sfName += ".S"
+						case "SidVec3":
+							sfName += ".Vec3"
+						default:
+							sfName += ".F"
+						}
+					}
+					accSrc += sfmt("\tcase %#v:\n\t\treturn %sme.%s\n", sf.Name, ustr.Ifs(sfType.Kind() == reflect.Ptr, "", "&"), sfName)
+				} else if pos = strings.Index(sfType.String(), "ParamOr"); pos > 0 {
+					// numCase++
+					switch sfType.String()[pos+len("ParamOr"):] {
+					case "Bool":
+					case "RefSid":
+					case "Float":
+					case "SidFloat":
+					case "Float2":
+					case "Int":
+					}
+					// println(rt.Name() + "." + sf.Name + " => " + sfType.String())
+				}
+			}
+		}
+		if accSrc += "\t}\n\treturn nil\n}\n\n"; numCase == 0 {
+			accSrc = ""
+		}
+	}
+	return
+}
+
+func writeResolverMethods(rt reflect.Type, force bool) (outSrc string) {
 	var (
 		count      int
 		walkFields func(reflect.Type, string)
@@ -214,7 +266,7 @@ func main() {
 	//	collect all struct types and catch the HasSid struct type
 	for _, rt = range ngr.Types {
 		if rt.Kind() == reflect.Struct {
-			if !ustr.HasAnyPrefix(rt.Name(), "Lib", "Base", "Has", "Ref") {
+			if !spref(rt.Name(), "Lib", "Base", "Has", "Ref") {
 				allStructs[rt.Name()] = rt
 			}
 			if rt.Name() == "HasSid" {
@@ -229,12 +281,17 @@ func main() {
 	}
 	for rt, _ = range typeDeps {
 		if rt != hasSidType {
-			outSrc += writeMethod(rt, false)
+			outSrc += writeResolverMethods(rt, false)
 		}
 	}
 	for tn, rt = range allStructs {
-		if _, ok = ngr.Types["Libs"+tn]; ustr.HasAnySuffix(tn, "Def") && (!typesWritten[rt]) && ok {
-			outSrc += writeMethod(rt, true)
+		if _, ok = ngr.Types["Libs"+tn]; spref(tn, "Def") && (!typesWritten[rt]) && ok {
+			outSrc += writeResolverMethods(rt, true)
+		}
+	}
+	for _, rt = range ngr.Types {
+		if (rt.Kind() == reflect.Struct) && !spref(rt.Name(), "Sid", "Base") {
+			outSrc += writeAccessorMethods(rt)
 		}
 	}
 	uio.WriteTextFile(outFilePath, outSrc[:len(outSrc)-1]+"\n")

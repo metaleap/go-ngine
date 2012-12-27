@@ -1,6 +1,7 @@
 package assets
 
 import (
+	"strconv"
 	"strings"
 )
 
@@ -57,7 +58,7 @@ func (me *RefSid) Resolve(root RefSidRoot, force bool) {
 			isLib = lib.resolverRootIsLib()
 		}
 		thisId, parts := ".", strings.Split(me.S, "/")
-		if hId, ok := root.(hasId); ok {
+		if hId, _ := root.(hasId); hId != nil {
 			thisId = hId.id()
 		}
 		if (len(parts) == 1) && (!isLib) && (parts[0] != ".") && (parts[0] != thisId) {
@@ -67,13 +68,36 @@ func (me *RefSid) Resolve(root RefSidRoot, force bool) {
 			bag := &refSidBag{}
 			last := parts[len(parts)-1]
 			if pos := strings.Index(last, "."); pos > 0 {
+				parts[len(parts)-1] = last[:pos]
 				bag.fielder = last[pos+1:]
-				parts[len(parts)-1] = last[:pos]
 			} else if pos = strings.Index(last, "("); pos > 0 {
-				bag.indexer = last[pos+1:]
 				parts[len(parts)-1] = last[:pos]
+				for _, s := range strings.Split(last[pos+1:], ")(") {
+					if i, err := strconv.Atoi(strings.Trim(s, " )(")); err != nil {
+						bag.indexers = append(bag.indexers, i)
+					}
+				}
 			}
-			me.V = resolver.resolveSidPath(parts[1:], bag)
+			if me.V = resolver.resolveSidPath(parts[1:], bag); me.V != nil {
+				if len(bag.fielder) > 0 {
+					if fielder, _ := me.V.(refSidFielder); fielder != nil {
+						me.V = fielder.accessField(bag.fielder)
+					} else {
+						me.V = nil
+					}
+				} else if len(bag.indexers) > 0 {
+					for _, index := range bag.indexers {
+						if indexer, _ := me.V.(refSidIndexer); indexer != nil {
+							if me.V = indexer.accessIndex(index); me.V == nil {
+								break
+							}
+						} else {
+							me.V = nil
+							break
+						}
+					}
+				}
+			}
 		} else if !isLib {
 			me.V = resolver
 		}
@@ -81,9 +105,10 @@ func (me *RefSid) Resolve(root RefSidRoot, force bool) {
 }
 
 type refSidBag struct {
-	fielder, indexer, sid string
-	valRaw                interface{}
-	valAsRes              refSidResolver
+	fielder, sid string
+	indexers     []int
+	valRaw       interface{}
+	valAsRes     refSidResolver
 }
 
 type refSidFielder interface {
@@ -91,7 +116,7 @@ type refSidFielder interface {
 }
 
 type refSidIndexer interface {
-	accessIndex(indices string) interface{}
+	accessIndex(index int) interface{}
 }
 
 type refSidRootLib interface {

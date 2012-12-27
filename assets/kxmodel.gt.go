@@ -218,7 +218,7 @@ func (me *LibKxModelDefs) New(id string) (def *KxModelDef) { def = newKxModelDef
 func (me *LibKxModelDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibKxModelDefs) resolver(part0 string) refSidResolver {
-	return me.M[part0]
+	return nil // me.M[part0]
 }
 
 func (me *LibKxModelDefs) resolverRootIsLib() bool {

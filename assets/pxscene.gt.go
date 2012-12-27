@@ -166,7 +166,7 @@ func (me *LibPxSceneDefs) New(id string) (def *PxSceneDef) { def = newPxSceneDef
 func (me *LibPxSceneDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibPxSceneDefs) resolver(part0 string) refSidResolver {
-	return me.M[part0]
+	return nil // me.M[part0]
 }
 
 func (me *LibPxSceneDefs) resolverRootIsLib() bool {
