@@ -245,7 +245,7 @@ func writeResolverMethods(rt reflect.Type, force bool) (outSrc string) {
 	if isResolver[rt] || (count > 0) || force {
 		typesWritten[rt] = true
 		outSrc += "\treturn\n}\n\n"
-		if _, ok := rt.FieldByName("Id"); ok && (isResolver[rt] || (count > 0)) {
+		if _, ok := rt.FieldByName("Id"); ok /*&& (isResolver[rt] || (count > 0))*/ {
 			outSrc += sfmt("func (me *%s) resolver(id string) (rsr refSidResolver) {\n\tif (id == me.Id) || (id == \".\") {\n\t\trsr = me\n\t}\n\treturn\n}\n\n", rt.Name())
 		}
 	} else {
@@ -285,7 +285,7 @@ func main() {
 		}
 	}
 	for tn, rt = range allStructs {
-		if _, ok = ngr.Types["Libs"+tn]; spref(tn, "Def") && (!typesWritten[rt]) && ok {
+		if _, ok = ngr.Types["Libs"+tn]; ustr.HasAnySuffix(tn, "Def") && (!typesWritten[rt]) && ok {
 			outSrc += writeResolverMethods(rt, true)
 		}
 	}

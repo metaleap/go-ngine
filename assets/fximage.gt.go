@@ -473,7 +473,7 @@ func (me *LibFxImageDefs) New(id string) (def *FxImageDef) { def = newFxImageDef
 func (me *LibFxImageDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibFxImageDefs) resolver(part0 string) refSidResolver {
-	return nil // me.M[part0]
+	return me.M[part0]
 }
 
 func (me *LibFxImageDefs) resolverRootIsLib() bool {

@@ -223,7 +223,7 @@ func (me *LibControllerDefs) New(id string) (def *ControllerDef) { def = newCont
 func (me *LibControllerDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibControllerDefs) resolver(part0 string) refSidResolver {
-	return nil // me.M[part0]
+	return me.M[part0]
 }
 
 func (me *LibControllerDefs) resolverRootIsLib() bool {

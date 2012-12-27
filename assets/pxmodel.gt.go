@@ -176,7 +176,7 @@ func (me *LibPxModelDefs) New(id string) (def *PxModelDef) { def = newPxModelDef
 func (me *LibPxModelDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibPxModelDefs) resolver(part0 string) refSidResolver {
-	return nil // me.M[part0]
+	return me.M[part0]
 }
 
 func (me *LibPxModelDefs) resolverRootIsLib() bool {

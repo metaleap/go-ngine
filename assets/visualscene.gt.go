@@ -214,7 +214,7 @@ func (me *LibVisualSceneDefs) New(id string) (def *VisualSceneDef) { def = newVi
 func (me *LibVisualSceneDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibVisualSceneDefs) resolver(part0 string) refSidResolver {
-	return nil // me.M[part0]
+	return me.M[part0]
 }
 
 func (me *LibVisualSceneDefs) resolverRootIsLib() bool {

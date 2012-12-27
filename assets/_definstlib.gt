@@ -118,7 +118,7 @@ func (me *Lib__T__Defs) New(id string) (def *__T__Def) { def = new__T__Def(id); 
 func (me *Lib__T__Defs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *Lib__T__Defs) resolver(part0 string) refSidResolver {
-	return nil // me.M[part0]
+	return me.M[part0]
 }
 
 func (me *Lib__T__Defs) resolverRootIsLib() bool {

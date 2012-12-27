@@ -150,7 +150,7 @@ func (me *LibPxForceFieldDefs) New(id string) (def *PxForceFieldDef) { def = new
 func (me *LibPxForceFieldDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibPxForceFieldDefs) resolver(part0 string) refSidResolver {
-	return nil // me.M[part0]
+	return me.M[part0]
 }
 
 func (me *LibPxForceFieldDefs) resolverRootIsLib() bool {

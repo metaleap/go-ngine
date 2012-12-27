@@ -178,7 +178,7 @@ func (me *LibFormulaDefs) New(id string) (def *FormulaDef) { def = newFormulaDef
 func (me *LibFormulaDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibFormulaDefs) resolver(part0 string) refSidResolver {
-	return nil // me.M[part0]
+	return me.M[part0]
 }
 
 func (me *LibFormulaDefs) resolverRootIsLib() bool {

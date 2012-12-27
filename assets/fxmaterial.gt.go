@@ -178,7 +178,7 @@ func (me *LibFxMaterialDefs) New(id string) (def *FxMaterialDef) { def = newFxMa
 func (me *LibFxMaterialDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibFxMaterialDefs) resolver(part0 string) refSidResolver {
-	return nil // me.M[part0]
+	return me.M[part0]
 }
 
 func (me *LibFxMaterialDefs) resolverRootIsLib() bool {

@@ -188,7 +188,7 @@ func (me *LibNodeDefs) New(id string) (def *NodeDef) { def = newNodeDef(id); ret
 func (me *LibNodeDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibNodeDefs) resolver(part0 string) refSidResolver {
-	return nil // me.M[part0]
+	return me.M[part0]
 }
 
 func (me *LibNodeDefs) resolverRootIsLib() bool {

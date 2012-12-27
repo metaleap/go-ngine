@@ -627,7 +627,7 @@ func (me *LibFxEffectDefs) New(id string) (def *FxEffectDef) { def = newFxEffect
 func (me *LibFxEffectDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibFxEffectDefs) resolver(part0 string) refSidResolver {
-	return nil // me.M[part0]
+	return me.M[part0]
 }
 
 func (me *LibFxEffectDefs) resolverRootIsLib() bool {
