@@ -159,7 +159,7 @@ type LibNodeDefs struct {
 
 func newLibNodeDefs(id string) (me *LibNodeDefs) {
 	me = &LibNodeDefs{M: map[string]*NodeDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -189,6 +189,10 @@ func (me *LibNodeDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibNodeDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibNodeDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibNodeDefs

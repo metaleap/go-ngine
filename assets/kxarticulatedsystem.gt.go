@@ -370,7 +370,7 @@ type LibKxArticulatedSystemDefs struct {
 
 func newLibKxArticulatedSystemDefs(id string) (me *LibKxArticulatedSystemDefs) {
 	me = &LibKxArticulatedSystemDefs{M: map[string]*KxArticulatedSystemDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -400,6 +400,10 @@ func (me *LibKxArticulatedSystemDefs) Remove(id string) { delete(me.M, id); me.S
 
 func (me *LibKxArticulatedSystemDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibKxArticulatedSystemDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibKxArticulatedSystemDefs

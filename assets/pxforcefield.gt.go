@@ -121,7 +121,7 @@ type LibPxForceFieldDefs struct {
 
 func newLibPxForceFieldDefs(id string) (me *LibPxForceFieldDefs) {
 	me = &LibPxForceFieldDefs{M: map[string]*PxForceFieldDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -151,6 +151,10 @@ func (me *LibPxForceFieldDefs) Remove(id string) { delete(me.M, id); me.SetDirty
 
 func (me *LibPxForceFieldDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibPxForceFieldDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibPxForceFieldDefs

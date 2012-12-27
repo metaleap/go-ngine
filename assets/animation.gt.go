@@ -179,7 +179,7 @@ type LibAnimationDefs struct {
 
 func newLibAnimationDefs(id string) (me *LibAnimationDefs) {
 	me = &LibAnimationDefs{M: map[string]*AnimationDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -209,6 +209,10 @@ func (me *LibAnimationDefs) Remove(id string) { delete(me.M, id); me.SetDirty() 
 
 func (me *LibAnimationDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibAnimationDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibAnimationDefs

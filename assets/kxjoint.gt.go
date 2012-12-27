@@ -167,7 +167,7 @@ type LibKxJointDefs struct {
 
 func newLibKxJointDefs(id string) (me *LibKxJointDefs) {
 	me = &LibKxJointDefs{M: map[string]*KxJointDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -197,6 +197,10 @@ func (me *LibKxJointDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibKxJointDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibKxJointDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibKxJointDefs

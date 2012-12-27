@@ -4,6 +4,23 @@ import (
 	ugfx "github.com/metaleap/go-util/gfx"
 )
 
+//	Categorizes the Kind of an FxTechniqueCommon.
+type FxTechniqueKind int
+
+const (
+	//	Produces a constantly shaded surface that is independent of lighting.
+	FxTechniqueKindConstant FxTechniqueKind = iota
+
+	//	Produces a constantly shaded surface that is independent of lighting.
+	FxTechniqueKindLambert
+
+	//	Produces a shaded surface with a Blinn BRDF approximation.
+	FxTechniqueKindBlinn
+
+	//	Produces a shaded surface with a Phong BRDF approximation.
+	FxTechniqueKindPhong
+)
+
 //	Categorizes transparency access in an FxColorOrTexture.
 type FxTextureOpaque int
 
@@ -382,34 +399,10 @@ type FxTechniqueCommon struct {
 	//	Id, Sid, Asset, Extras
 	FxTechnique
 
-	//	Produces a shaded surface with a Blinn BRDF approximation.
-	Blinn *FxTechniqueCommonBlinn
+	//	Must be one of the FxTechniqueKind* enumerated constants.
+	Kind FxTechniqueKind
 
-	//	Produces a constantly shaded surface that is independent of lighting.
-	Constant *FxTechniqueCommonConstant
-
-	//	Produces a constantly shaded surface that is independent of lighting.
-	Lambert *FxTechniqueCommonLambert
-
-	//	Produces a shaded surface with a Phong BRDF approximation.
-	Phong *FxTechniqueCommonPhong
-}
-
-//	Produces a shaded surface with a Blinn BRDF approximation.
-type FxTechniqueCommonBlinn struct {
-	//	Ambient, Diffuse, Emission, Reflective, Reflectivity, Transparent, Transparency, IndexOfRefraction
-	FxTechniqueCommonLambert
-
-	//	Declares the color of light specularly reflected from the surface of this object.
-	Specular *FxColorOrTexture
-
-	//	Declares the specularity or roughness of the specular reflection lobe.
-	Shininess *ParamOrSidFloat
-}
-
-//	Produces a constantly shaded surface that is independent of lighting.
-type FxTechniqueCommonConstant struct {
-	//	Declares the amount of light emitted from the surface of this object
+	//	Declares the amount of light emitted from the surface of this object.
 	Emission *FxColorOrTexture
 
 	//	Declares the color of a perfect mirror reflection.
@@ -428,24 +421,22 @@ type FxTechniqueCommonConstant struct {
 
 	//	Declares the index of refraction for perfectly refracted light as a single scalar index.
 	IndexOfRefraction *ParamOrSidFloat
-}
-
-//	Produces a constantly shaded surface that is independent of lighting.
-type FxTechniqueCommonLambert struct {
-	//	Emission, Reflective, Reflectivity, Transparent, Transparency, IndexOfRefraction
-	FxTechniqueCommonConstant
 
 	//	Declares the amount of ambient light reflected from the surface of this object.
+	//	Ignored if Kind is FxTechniqueKindConstant.
 	Ambient *FxColorOrTexture
 
 	//	Declares the amount of light diffusely reflected from the surface of this object.
+	//	Ignored if Kind is FxTechniqueKindConstant.
 	Diffuse *FxColorOrTexture
-}
 
-//	Produces a shaded surface with a Phong BRDF approximation.
-type FxTechniqueCommonPhong struct {
-	//	Specular, Shininess, Ambient, Diffuse, Emission, Reflective, Reflectivity, Transparent, Transparency, IndexOfRefraction
-	FxTechniqueCommonBlinn
+	//	Declares the color of light specularly reflected from the surface of this object.
+	//	Ignored if Kind is FxTechniqueKindConstant or FxTechniqueKindLambert.
+	Specular *FxColorOrTexture
+
+	//	Declares the specularity or roughness of the specular reflection lobe.
+	//	Ignored if Kind is FxTechniqueKindConstant or FxTechniqueKindLambert.
+	Shininess *ParamOrSidFloat
 }
 
 //	Holds a description of the textures, samplers, shaders, parameters, and passes
@@ -607,7 +598,7 @@ type LibFxEffectDefs struct {
 
 func newLibFxEffectDefs(id string) (me *LibFxEffectDefs) {
 	me = &LibFxEffectDefs{M: map[string]*FxEffectDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -637,6 +628,10 @@ func (me *LibFxEffectDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibFxEffectDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibFxEffectDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibFxEffectDefs

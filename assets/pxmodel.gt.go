@@ -147,7 +147,7 @@ type LibPxModelDefs struct {
 
 func newLibPxModelDefs(id string) (me *LibPxModelDefs) {
 	me = &LibPxModelDefs{M: map[string]*PxModelDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -177,6 +177,10 @@ func (me *LibPxModelDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibPxModelDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibPxModelDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibPxModelDefs

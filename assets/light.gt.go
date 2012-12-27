@@ -222,7 +222,7 @@ type LibLightDefs struct {
 
 func newLibLightDefs(id string) (me *LibLightDefs) {
 	me = &LibLightDefs{M: map[string]*LightDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -252,6 +252,10 @@ func (me *LibLightDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibLightDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibLightDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibLightDefs

@@ -185,7 +185,7 @@ type LibVisualSceneDefs struct {
 
 func newLibVisualSceneDefs(id string) (me *LibVisualSceneDefs) {
 	me = &LibVisualSceneDefs{M: map[string]*VisualSceneDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -215,6 +215,10 @@ func (me *LibVisualSceneDefs) Remove(id string) { delete(me.M, id); me.SetDirty(
 
 func (me *LibVisualSceneDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibVisualSceneDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibVisualSceneDefs

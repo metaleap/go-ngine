@@ -262,7 +262,7 @@ type LibGeometryDefs struct {
 
 func newLibGeometryDefs(id string) (me *LibGeometryDefs) {
 	me = &LibGeometryDefs{M: map[string]*GeometryDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -292,6 +292,10 @@ func (me *LibGeometryDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibGeometryDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibGeometryDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibGeometryDefs

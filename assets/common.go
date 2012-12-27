@@ -42,10 +42,18 @@ type HasFxParamDefs struct {
 	NewParams FxParamDefs
 }
 
+type hasId interface {
+	id() string
+}
+
 //	Used in all resources that declare their own unique identifier.
 type HasId struct {
 	//	The unique identifier of this resource.
 	Id string
+}
+
+func (me *HasId) id() string {
+	return me.Id
 }
 
 //	Used in all data consumers that require input connections into a data Source.

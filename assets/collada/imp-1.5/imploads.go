@@ -37,12 +37,6 @@ func load_Float4x4(xn *xmlx.Node, obj *nga.Float4x4) {
 	})
 }
 
-func load_FxTechniqueCommonPhong(xn *xmlx.Node, obj *nga.FxTechniqueCommonPhong) {
-	if b := obj_FxTechniqueCommonBlinn(xn, ""); b != nil {
-		obj.FxTechniqueCommonBlinn = *b
-	}
-}
-
 func load_LightDef(xn *xmlx.Node, obj *nga.LightDef) {
 	if tcn := node_TechCommon(xn); tcn != nil {
 		obj.TC.Ambient = obj_LightAmbient(tcn, "ambient")
@@ -703,15 +697,6 @@ func load_FxCreate(xn *xmlx.Node, obj *nga.FxCreate) {
 	}
 }
 
-func load_FxTechniqueCommonConstant(xn *xmlx.Node, obj *nga.FxTechniqueCommonConstant) {
-	obj.Emission = obj_FxColorOrTexture(xn, "emission")
-	obj.IndexOfRefraction = obj_ParamOrSidFloat(xn, "index_of_refraction")
-	obj.Reflective = obj_FxColorOrTexture(xn, "reflective")
-	obj.Reflectivity = obj_ParamOrSidFloat(xn, "reflectivity")
-	obj.Transparency = obj_ParamOrSidFloat(xn, "transparency")
-	obj.Transparent = obj_FxColorOrTexture(xn, "transparent")
-}
-
 func load_PxRigidConstraintLimit(xn *xmlx.Node, obj *nga.PxRigidConstraintLimit) {
 	sv3 := obj_SidVec3(xn, "max")
 	if sv3 != nil {
@@ -970,14 +955,6 @@ func load_Int3x3(xn *xmlx.Node, obj *nga.Int3x3) {
 	})
 }
 
-func load_FxTechniqueCommonBlinn(xn *xmlx.Node, obj *nga.FxTechniqueCommonBlinn) {
-	if l := obj_FxTechniqueCommonLambert(xn, ""); l != nil {
-		obj.FxTechniqueCommonLambert = *l
-	}
-	obj.Specular = obj_FxColorOrTexture(xn, "specular")
-	obj.Shininess = obj_ParamOrSidFloat(xn, "shininess")
-}
-
 func load_SidString(xn *xmlx.Node, obj *nga.SidString) {
 	obj.S = xn.Value
 }
@@ -1146,14 +1123,6 @@ func load_Param(xn *xmlx.Node, obj *nga.Param) {
 	obj.Semantic = xas(xn, "semantic")
 }
 
-func load_FxTechniqueCommonLambert(xn *xmlx.Node, obj *nga.FxTechniqueCommonLambert) {
-	if c := obj_FxTechniqueCommonConstant(xn, ""); c != nil {
-		obj.FxTechniqueCommonConstant = *c
-	}
-	obj.Ambient = obj_FxColorOrTexture(xn, "ambient")
-	obj.Diffuse = obj_FxColorOrTexture(xn, "diffuse")
-}
-
 func load_ParamOrSidFloat(xn *xmlx.Node, obj *nga.ParamOrSidFloat) {
 	obj.Param.SetParamRef(xs(xn, "param"))
 	if f := obj_SidFloat(xn, "float"); f != nil {
@@ -1292,10 +1261,32 @@ func load_FxTechniqueCommon(xn *xmlx.Node, obj *nga.FxTechniqueCommon) {
 	if t := obj_FxTechnique(xn, ""); t != nil {
 		obj.FxTechnique = *t
 	}
-	obj.Blinn = obj_FxTechniqueCommonBlinn(xn, "blinn")
-	obj.Constant = obj_FxTechniqueCommonConstant(xn, "constant")
-	obj.Lambert = obj_FxTechniqueCommonLambert(xn, "lambert")
-	obj.Phong = obj_FxTechniqueCommonPhong(xn, "phong")
+	if cn := xcn1(xn, "blinn", "constant", "lambert", "phong"); cn != nil {
+		switch cn.Name.Local {
+		case "blinn":
+			obj.Kind = nga.FxTechniqueKindBlinn
+		case "lambert":
+			obj.Kind = nga.FxTechniqueKindLambert
+		case "phong":
+			obj.Kind = nga.FxTechniqueKindPhong
+		default:
+			obj.Kind = nga.FxTechniqueKindConstant
+		}
+		//	constant
+		obj.Emission = obj_FxColorOrTexture(cn, "emission")
+		obj.IndexOfRefraction = obj_ParamOrSidFloat(cn, "index_of_refraction")
+		obj.Reflective = obj_FxColorOrTexture(cn, "reflective")
+		obj.Reflectivity = obj_ParamOrSidFloat(cn, "reflectivity")
+		obj.Transparency = obj_ParamOrSidFloat(cn, "transparency")
+		obj.Transparent = obj_FxColorOrTexture(cn, "transparent")
+		//	lambert
+		obj.Ambient = obj_FxColorOrTexture(cn, "ambient")
+		obj.Diffuse = obj_FxColorOrTexture(cn, "diffuse")
+		//	blinn or phong
+		obj.Specular = obj_FxColorOrTexture(cn, "specular")
+		obj.Shininess = obj_ParamOrSidFloat(cn, "shininess")
+
+	}
 }
 
 func load_Float3x4(xn *xmlx.Node, obj *nga.Float3x4) {
@@ -1897,6 +1888,9 @@ func load_KxJointKind(xn *xmlx.Node, obj *nga.KxJointKind) {
 }
 
 func load_FxSamplerKind(xn *xmlx.Node, obj *nga.FxSamplerKind) {
+}
+
+func load_FxTechniqueKind(xn *xmlx.Node, obj *nga.FxTechniqueKind) {
 }
 
 func load_FxWrapKind(xn *xmlx.Node, obj *nga.FxWrapKind) {

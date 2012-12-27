@@ -189,7 +189,7 @@ type LibKxModelDefs struct {
 
 func newLibKxModelDefs(id string) (me *LibKxModelDefs) {
 	me = &LibKxModelDefs{M: map[string]*KxModelDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -219,6 +219,10 @@ func (me *LibKxModelDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibKxModelDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibKxModelDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibKxModelDefs

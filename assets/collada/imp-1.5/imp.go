@@ -9,6 +9,7 @@ import (
 )
 
 var (
+	bag   *ImportBag
 	state *importState
 )
 
@@ -29,6 +30,7 @@ type importState struct {
 
 //	Imports the specified Collada document, using the import options specified in importBag.
 func ImportCollada(colladaDoc []byte, importBag *ImportBag) (doc *nga.Document, err error) {
+	bag = importBag
 	state = &importState{curAssetUnitInMeters: 1}
 	c141.Force, c141.Strict = false, false
 	if state.doc, err = c141.ConvertDoc(colladaDoc); err == nil {

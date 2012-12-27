@@ -96,3 +96,8 @@ type BaseLib struct {
 	//	Name
 	HasName
 }
+
+func (me *BaseLib) init(id string) {
+	me.Id = id
+	me.BaseSync.init()
+}

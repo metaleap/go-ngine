@@ -129,7 +129,7 @@ type LibAnimationClipDefs struct {
 
 func newLibAnimationClipDefs(id string) (me *LibAnimationClipDefs) {
 	me = &LibAnimationClipDefs{M: map[string]*AnimationClipDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -159,6 +159,10 @@ func (me *LibAnimationClipDefs) Remove(id string) { delete(me.M, id); me.SetDirt
 
 func (me *LibAnimationClipDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibAnimationClipDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibAnimationClipDefs

@@ -194,7 +194,7 @@ type LibControllerDefs struct {
 
 func newLibControllerDefs(id string) (me *LibControllerDefs) {
 	me = &LibControllerDefs{M: map[string]*ControllerDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -224,6 +224,10 @@ func (me *LibControllerDefs) Remove(id string) { delete(me.M, id); me.SetDirty()
 
 func (me *LibControllerDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibControllerDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibControllerDefs

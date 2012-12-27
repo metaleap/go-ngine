@@ -149,7 +149,7 @@ type LibFxMaterialDefs struct {
 
 func newLibFxMaterialDefs(id string) (me *LibFxMaterialDefs) {
 	me = &LibFxMaterialDefs{M: map[string]*FxMaterialDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -179,6 +179,10 @@ func (me *LibFxMaterialDefs) Remove(id string) { delete(me.M, id); me.SetDirty()
 
 func (me *LibFxMaterialDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibFxMaterialDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibFxMaterialDefs

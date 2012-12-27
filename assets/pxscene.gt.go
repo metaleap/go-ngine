@@ -137,7 +137,7 @@ type LibPxSceneDefs struct {
 
 func newLibPxSceneDefs(id string) (me *LibPxSceneDefs) {
 	me = &LibPxSceneDefs{M: map[string]*PxSceneDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -167,6 +167,10 @@ func (me *LibPxSceneDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibPxSceneDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibPxSceneDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibPxSceneDefs

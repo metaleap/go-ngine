@@ -51,7 +51,18 @@ func (me *RefSid) SetSidRef(sidRef string) {
 //	will become nil (rather than, say, a partial-path-match result-value).
 func (me *RefSid) Resolve(root RefSidRoot, force bool) {
 	if force || (me.V == nil) {
-		parts := strings.Split(me.S, "/")
+		me.V = nil
+		lib, isLib := root.(refSidRootLib)
+		if lib != nil {
+			isLib = lib.resolverRootIsLib()
+		}
+		thisId, parts := ".", strings.Split(me.S, "/")
+		if hId, ok := root.(hasId); ok {
+			thisId = hId.id()
+		}
+		if (len(parts) == 1) && (!isLib) && (parts[0] != ".") && (parts[0] != thisId) {
+			parts = append([]string{thisId}, parts...)
+		}
 		if resolver := root.resolver(parts[0]); (resolver != nil) && (len(parts) > 1) {
 			bag := &refSidBag{}
 			last := parts[len(parts)-1]
@@ -63,7 +74,7 @@ func (me *RefSid) Resolve(root RefSidRoot, force bool) {
 				parts[len(parts)-1] = last[:pos]
 			}
 			me.V = resolver.resolveSidPath(parts[1:], bag)
-		} else {
+		} else if !isLib {
 			me.V = resolver
 		}
 	}
@@ -81,6 +92,11 @@ type refSidFielder interface {
 
 type refSidIndexer interface {
 	accessIndex(indices string) interface{}
+}
+
+type refSidRootLib interface {
+	RefSidRoot
+	resolverRootIsLib() bool
 }
 
 type refSidResolver interface {

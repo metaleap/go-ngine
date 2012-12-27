@@ -444,7 +444,7 @@ type LibFxImageDefs struct {
 
 func newLibFxImageDefs(id string) (me *LibFxImageDefs) {
 	me = &LibFxImageDefs{M: map[string]*FxImageDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -474,6 +474,10 @@ func (me *LibFxImageDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibFxImageDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibFxImageDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibFxImageDefs

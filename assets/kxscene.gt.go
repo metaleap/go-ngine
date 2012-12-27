@@ -168,7 +168,7 @@ type LibKxSceneDefs struct {
 
 func newLibKxSceneDefs(id string) (me *LibKxSceneDefs) {
 	me = &LibKxSceneDefs{M: map[string]*KxSceneDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -198,6 +198,10 @@ func (me *LibKxSceneDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibKxSceneDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibKxSceneDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibKxSceneDefs

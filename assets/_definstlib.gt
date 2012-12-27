@@ -89,7 +89,7 @@ type Lib__T__Defs struct {
 
 func newLib__T__Defs(id string) (me *Lib__T__Defs) {
 	me = &Lib__T__Defs{M: map[string]*__T__Def{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -119,6 +119,10 @@ func (me *Lib__T__Defs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *Lib__T__Defs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *Lib__T__Defs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this Lib__T__Defs

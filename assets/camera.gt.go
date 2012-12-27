@@ -176,7 +176,7 @@ type LibCameraDefs struct {
 
 func newLibCameraDefs(id string) (me *LibCameraDefs) {
 	me = &LibCameraDefs{M: map[string]*CameraDef{}}
-	me.Id = id
+	me.BaseLib.init(id)
 	return
 }
 
@@ -206,6 +206,10 @@ func (me *LibCameraDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
 func (me *LibCameraDefs) resolver(part0 string) refSidResolver {
 	return me.M[part0]
+}
+
+func (me *LibCameraDefs) resolverRootIsLib() bool {
+	return true
 }
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibCameraDefs

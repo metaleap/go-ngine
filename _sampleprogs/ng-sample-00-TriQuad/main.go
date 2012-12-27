@@ -47,6 +47,14 @@ func LoadSampleScene_00_TriQuad() {
 		"tex_dog": "tex/dog.png",
 	})
 
+	nga.FxEffectDefs.AddNew("fx_cat")
+	nga.FxEffectDefs.AddNew("fx_dog")
+
+	// nga.FxEffectDefs.M["fx_cat"].Profiles[0].Common.Technique.Lambert.Diffuse.Texture.
+
+	nga.FxMaterialDefs.AddNew("mat_cat").Effect.DefRef = "fx_cat"
+	nga.FxMaterialDefs.AddNew("mat_dog").Effect.DefRef = "fx_dog"
+
 	ng.Core.Materials["mat_cat"] = ng.Core.Materials.New("tex_cat")
 	ng.Core.Materials["mat_dog"] = ng.Core.Materials.New("tex_dog")
 
