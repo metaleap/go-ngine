@@ -208,14 +208,6 @@ func (me *LibKxJointDefs) New(id string) (def *KxJointDef) { def = newKxJointDef
 //	Removes the KxJointDef with the specified Id from this LibKxJointDefs.
 func (me *LibKxJointDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibKxJointDefs) resolver(part0 string) refSidResolver {
-	return me.M[part0]
-}
-
-func (me *LibKxJointDefs) resolverRootIsLib() bool {
-	return true
-}
-
 //	Signals to the core package (or your custom package) that changes have been made to this LibKxJointDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibKxJointDefs
 //	library or its KxJointDef definitions. Also called by the global SyncChanges() function.

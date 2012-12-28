@@ -92,6 +92,15 @@ func mapTypeDeps(forType reflect.Type) {
 	}
 }
 
+func oneOf(s string, vals ...string) bool {
+	for _, v := range vals {
+		if s == v {
+			return true
+		}
+	}
+	return false
+}
+
 func testResolvers(rt reflect.Type) bool {
 	if _, ok := isResolver[rt]; !ok {
 		var (
@@ -131,6 +140,7 @@ func spref(s string, prefs ...string) bool {
 
 func writeAccessorMethods(rt reflect.Type) (accSrc string) {
 	var (
+		nameCases    []string
 		sf           reflect.StructField
 		sfType       reflect.Type
 		isSid        bool
@@ -138,7 +148,7 @@ func writeAccessorMethods(rt reflect.Type) (accSrc string) {
 		numCase, pos int
 	)
 	if _, hasSid := rt.FieldByName("HasSid"); !spref(rt.Name(), "ParamOrSid") {
-		accSrc += sfmt("func (me *%s) accessField(fn string) interface{} {\n\tswitch fn {\n", rt.Name())
+		accSrc += sfmt("func (me *%s) AccessField(fn string) interface{} {\n\tswitch fn {\n", rt.Name())
 		for i := 0; i < rt.NumField(); i++ {
 			if sf = rt.Field(i); (len(sf.Name) > 0) && (sf.Name != "Def") && (sf.Name != "Kind") && !sf.Anonymous {
 				if isSid, sfName, sfType = spref(sf.Type.Name(), "Sid"), sf.Name, sf.Type; isSid || (hasSid && (!anyOf(sfType, reflect.Invalid, reflect.Array, reflect.Chan, reflect.Func, reflect.Map, reflect.Slice, reflect.Struct, reflect.UnsafePointer)) && ((sfType.Kind() != reflect.Ptr) || elemType(sfType).Kind() != reflect.Struct)) {
@@ -154,6 +164,7 @@ func writeAccessorMethods(rt reflect.Type) (accSrc string) {
 							sfName += ".F"
 						}
 					}
+					nameCases = append(nameCases, sf.Name)
 					accSrc += sfmt("\tcase %#v:\n\t\treturn %sme.%s\n", sf.Name, ustr.Ifs(sfType.Kind() == reflect.Ptr, "", "&"), sfName)
 				} else if pos = strings.Index(sfType.String(), "ParamOr"); pos > 0 {
 					// numCase++
@@ -171,12 +182,14 @@ func writeAccessorMethods(rt reflect.Type) (accSrc string) {
 		}
 		if accSrc += "\t}\n\treturn nil\n}\n\n"; numCase == 0 {
 			accSrc = ""
+		} else {
+			accSrc = sfmt("//\tRefSidFielder implementation.\n//\tSupported field names: \"%v\".\n", strings.Join(nameCases, "\", \"")) + accSrc
 		}
 	}
 	return
 }
 
-func writeResolverMethods(rt reflect.Type, force bool) (outSrc string) {
+func writeResolverMethods(rt reflect.Type) (outSrc string) {
 	var (
 		count      int
 		walkFields func(reflect.Type, string)
@@ -216,20 +229,20 @@ func writeResolverMethods(rt reflect.Type, force bool) (outSrc string) {
 					if haveSids[et] && !sf.Anonymous {
 						switch ft.Kind() {
 						case reflect.Array, reflect.Map, reflect.Slice:
-							outSrc += sfmt("\tfor _, sidItem := range %s {\n\t\tbag.valRaw, bag.valAsRes, bag.sid = sidItem, %s, sidItem.Sid\n\t\tif val = sidResolveCore(path, bag); val != nil {\n\t\t\treturn\n\t\t}\n\t}\n", pref+sf.Name, ustr.Ifs(isResolver[et], "sidItem", "nil"))
+							outSrc += sfmt("\tfor _, sidItem := range %s {\n\t\tbag.valRaw, bag.valAsRes, bag.sid = sidItem, %s, sidItem.Sid\n\t\tif val = bag.sidResolve(path); val != nil {\n\t\t\treturn\n\t\t}\n\t}\n", pref+sf.Name, ustr.Ifs(isResolver[et], "sidItem", "nil"))
 						default:
 							beginIfNil()
-							outSrc += sfmt(lnpre+"bag.valRaw, bag.valAsRes, bag.sid = %s, %s, %s.Sid\n"+lnpre+"if val = sidResolveCore(path, bag); val != nil {\n"+lnpre+"\treturn\n"+lnpre+"}\n", amper+pref+sf.Name, ustr.Ifs(isResolver[et], amper+pref+sf.Name, "nil"), pref+sf.Name)
+							outSrc += sfmt(lnpre+"bag.valRaw, bag.valAsRes, bag.sid = %s, %s, %s.Sid\n"+lnpre+"if val = bag.sidResolve(path); val != nil {\n"+lnpre+"\treturn\n"+lnpre+"}\n", amper+pref+sf.Name, ustr.Ifs(isResolver[et], amper+pref+sf.Name, "nil"), pref+sf.Name)
 							endIfNil()
 						}
 						count++
 					} else if isResolver[et] {
 						switch ft.Kind() {
 						case reflect.Array, reflect.Map, reflect.Slice:
-							outSrc += sfmt("\tfor _, subItem := range %s {\n\t\tif val = subItem.resolveSidPath(path, bag); val != nil {\n\t\t\treturn\n\t\t}\n\t}\n", pref+sf.Name)
+							outSrc += sfmt("\tfor _, subItem := range %s {\n\t\tif val = subItem.sidResolve(path, bag); val != nil {\n\t\t\treturn\n\t\t}\n\t}\n", pref+sf.Name)
 						default:
 							beginIfNil()
-							outSrc += sfmt(lnpre+"if val = %s.resolveSidPath(path, bag); val != nil {\n"+lnpre+"\treturn\n"+lnpre+"}\n", pref+sf.Name)
+							outSrc += sfmt(lnpre+"if val = %s.sidResolve(path, bag); val != nil {\n"+lnpre+"\treturn\n"+lnpre+"}\n", pref+sf.Name)
 							endIfNil()
 						}
 						count++
@@ -240,13 +253,17 @@ func writeResolverMethods(rt reflect.Type, force bool) (outSrc string) {
 			}
 		}
 	}
-	outSrc += sfmt("func (me *%s) resolveSidPath(path []string, bag *refSidBag) (val interface{}) {\n", rt.Name())
+	rtName := rt.Name()
+	outSrc += sfmt("func (me *%s) sidResolve(path []string, bag *refSidBag) (val interface{}) {\n", rtName)
 	walkFields(rt, "me.")
-	if isResolver[rt] || (count > 0) || force {
+	if isResolver[rt] || (count > 0) {
 		typesWritten[rt] = true
 		outSrc += "\treturn\n}\n\n"
 		if _, ok := rt.FieldByName("Id"); ok /*&& (isResolver[rt] || (count > 0))*/ {
-			outSrc += sfmt("func (me *%s) resolver(id string) (rsr refSidResolver) {\n\tif (id == me.Id) || (id == \".\") {\n\t\trsr = me\n\t}\n\treturn\n}\n\n", rt.Name())
+			outSrc += sfmt("func (me *%s) sidResolver(id string) (rsr refSidResolver) {\n\tif (id == me.Id) || (id == \".\") {\n\t\trsr = me\n\t}\n\treturn\n}\n\n", rt.Name())
+			if strings.HasSuffix(rtName, "Def") && !oneOf(rtName, "PxRigidBodyDef", "PxRigidConstraintDef") {
+				outSrc += sfmt("func (me *Lib%ss) sidResolver(id string) refSidResolver {\n\treturn me.M[id]\n}\n\n", rtName)
+			}
 		}
 	} else {
 		outSrc = ""
@@ -255,11 +272,7 @@ func writeResolverMethods(rt reflect.Type, force bool) (outSrc string) {
 }
 
 func main() {
-	var (
-		ok bool
-		tn string
-		rt reflect.Type
-	)
+	var rt reflect.Type
 	runtime.LockOSThread()
 	outFilePath := filepath.Join(os.Args[1], "-gen-refsids.go")
 	outSrc := "package assets\n\n"
@@ -281,12 +294,7 @@ func main() {
 	}
 	for rt, _ = range typeDeps {
 		if rt != hasSidType {
-			outSrc += writeResolverMethods(rt, false)
-		}
-	}
-	for tn, rt = range allStructs {
-		if _, ok = ngr.Types["Libs"+tn]; ustr.HasAnySuffix(tn, "Def") && (!typesWritten[rt]) && ok {
-			outSrc += writeResolverMethods(rt, true)
+			outSrc += writeResolverMethods(rt)
 		}
 	}
 	for _, rt = range ngr.Types {

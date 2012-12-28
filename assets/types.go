@@ -7,68 +7,236 @@ import (
 //	Contains two bool values.
 type Bool2 [2]bool
 
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Bool2) AccessIndex(i, _ int) interface{} {
+	return &me[i]
+}
+
 //	Contains three bool values.
 type Bool3 [3]bool
+
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Bool3) AccessIndex(i, _ int) interface{} {
+	return &me[i]
+}
 
 //	Contains four bool values.
 type Bool4 [4]bool
 
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Bool4) AccessIndex(i, _ int) interface{} {
+	return &me[i]
+}
+
 //	Contains two float64 values.
 type Float2 [2]float64
+
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Float2) AccessIndex(i, _ int) interface{} {
+	return &me[i]
+}
 
 //	Contains four float64 values.
 type Float2x2 [4]float64
 
+//	RefSidIndexer implementation.
+//	Supports one-dimensional or two-dimensional indices.
+func (me *Float2x2) AccessIndex(i, j int) interface{} {
+	if j >= 0 {
+		i = index2D(i, j, len(me))
+	}
+	return &me[i]
+}
+
 //	Contains six float64 values.
 type Float2x3 [6]float64
+
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Float2x3) AccessIndex(i, j int) interface{} {
+	if j >= 0 {
+		i = index2D(i, j, len(me))
+	}
+	return &me[i]
+}
 
 //	Contains eight float64 values.
 type Float2x4 [8]float64
 
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Float2x4) AccessIndex(i, j int) interface{} {
+	if j >= 0 {
+		i = index2D(i, j, len(me))
+	}
+	return &me[i]
+}
+
 //	Contains three float64 values.
 type Float3 [3]float64
+
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Float3) AccessIndex(i, _ int) interface{} {
+	return &me[i]
+}
 
 //	Contains six float64 values.
 type Float3x2 [6]float64
 
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Float3x2) AccessIndex(i, j int) interface{} {
+	if j >= 0 {
+		i = index2D(i, j, len(me))
+	}
+	return &me[i]
+}
+
 //	Contains nine float64 values.
 type Float3x3 [9]float64
+
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Float3x3) AccessIndex(i, j int) interface{} {
+	if j >= 0 {
+		i = index2D(i, j, len(me))
+	}
+	return &me[i]
+}
 
 //	Contains twelve float64 values.
 type Float3x4 [12]float64
 
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Float3x4) AccessIndex(i, j int) interface{} {
+	if j >= 0 {
+		i = index2D(i, j, len(me))
+	}
+	return &me[i]
+}
+
 //	Contains four float64 values.
 type Float4 [4]float64
+
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Float4) AccessIndex(i, _ int) interface{} {
+	return &me[i]
+}
 
 //	Contains eight float64 values.
 type Float4x2 [8]float64
 
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Float4x2) AccessIndex(i, j int) interface{} {
+	if j >= 0 {
+		i = index2D(i, j, len(me))
+	}
+	return &me[i]
+}
+
 //	Contains twelve float64 values.
 type Float4x3 [12]float64
+
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Float4x3) AccessIndex(i, j int) interface{} {
+	if j >= 0 {
+		i = index2D(i, j, len(me))
+	}
+	return &me[i]
+}
 
 //	Contains sixteen float64 values.
 type Float4x4 [16]float64
 
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Float4x4) AccessIndex(i, j int) interface{} {
+	if j >= 0 {
+		i = index2D(i, j, len(me))
+	}
+	return &me[i]
+}
+
 //	Contains seven float64 values.
 type Float7 [7]float64
+
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Float7) AccessIndex(i, _ int) interface{} {
+	return &me[i]
+}
 
 //	Contains two int64 values.
 type Int2 [2]int64
 
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Int2) AccessIndex(i, _ int) interface{} {
+	return &me[i]
+}
+
 //	Contains four int64 values.
 type Int2x2 [4]int64
+
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Int2x2) AccessIndex(i, j int) interface{} {
+	if j >= 0 {
+		i = index2D(i, j, len(me))
+	}
+	return &me[i]
+}
 
 //	Contains three int64 values.
 type Int3 [3]int64
 
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Int3) AccessIndex(i, _ int) interface{} {
+	return &me[i]
+}
+
 //	Contains nine int64 values.
 type Int3x3 [9]int64
+
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Int3x3) AccessIndex(i, j int) interface{} {
+	if j >= 0 {
+		i = index2D(i, j, len(me))
+	}
+	return &me[i]
+}
 
 //	Contains four int64 values.
 type Int4 [4]int64
 
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Int4) AccessIndex(i, _ int) interface{} {
+	return &me[i]
+}
+
 //	Contains sixteen int64 values.
 type Int4x4 [16]int64
+
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *Int4x4) AccessIndex(i, j int) interface{} {
+	if j >= 0 {
+		i = index2D(i, j, len(me))
+	}
+	return &me[i]
+}
 
 //	Provides a bool value.
 type ParamOrBool struct {
@@ -95,6 +263,12 @@ type ParamOrFloat2 struct {
 
 	//	If set, refers to a previously defined parameter providing the values.
 	Param RefParam
+}
+
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *ParamOrFloat2) AccessIndex(i, _ int) interface{} {
+	return &me.F[i]
 }
 
 //	Provides a int64 value.
@@ -160,7 +334,9 @@ type SidFloat3 struct {
 	F Float3
 }
 
-func (me *SidFloat3) accessIndex(i int) interface{} {
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices.
+func (me *SidFloat3) AccessIndex(i, _ int) interface{} {
 	return &me.F[i]
 }
 
@@ -182,7 +358,9 @@ type SidVec3 struct {
 	unum.Vec3
 }
 
-func (me *SidVec3) accessField(fn string) interface{} {
+//	RefSidFielder implementation.
+//	Supported field names: "X", "Y", "Z".
+func (me *SidVec3) AccessField(fn string) interface{} {
 	switch fn {
 	case "X":
 		return &me.X
@@ -194,7 +372,9 @@ func (me *SidVec3) accessField(fn string) interface{} {
 	return nil
 }
 
-func (me *SidVec3) accessIndex(i int) interface{} {
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices 0 through 2.
+func (me *SidVec3) AccessIndex(i, _ int) interface{} {
 	switch i {
 	case 0:
 		return &me.X

@@ -263,14 +263,6 @@ func (me *LibLightDefs) New(id string) (def *LightDef) { def = newLightDef(id); 
 //	Removes the LightDef with the specified Id from this LibLightDefs.
 func (me *LibLightDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibLightDefs) resolver(part0 string) refSidResolver {
-	return me.M[part0]
-}
-
-func (me *LibLightDefs) resolverRootIsLib() bool {
-	return true
-}
-
 //	Signals to the core package (or your custom package) that changes have been made to this LibLightDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibLightDefs
 //	library or its LightDef definitions. Also called by the global SyncChanges() function.

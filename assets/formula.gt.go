@@ -190,14 +190,6 @@ func (me *LibFormulaDefs) New(id string) (def *FormulaDef) { def = newFormulaDef
 //	Removes the FormulaDef with the specified Id from this LibFormulaDefs.
 func (me *LibFormulaDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibFormulaDefs) resolver(part0 string) refSidResolver {
-	return me.M[part0]
-}
-
-func (me *LibFormulaDefs) resolverRootIsLib() bool {
-	return true
-}
-
 //	Signals to the core package (or your custom package) that changes have been made to this LibFormulaDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibFormulaDefs
 //	library or its FormulaDef definitions. Also called by the global SyncChanges() function.

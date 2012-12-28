@@ -130,14 +130,6 @@ func (me *Lib__T__Defs) New(id string) (def *__T__Def) { def = new__T__Def(id); 
 //	Removes the __T__Def with the specified Id from this Lib__T__Defs.
 func (me *Lib__T__Defs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *Lib__T__Defs) resolver(part0 string) refSidResolver {
-	return me.M[part0]
-}
-
-func (me *Lib__T__Defs) resolverRootIsLib() bool {
-	return true
-}
-
 //	Signals to the core package (or your custom package) that changes have been made to this Lib__T__Defs
 //	that need to be picked up. Call this after you have made a number of changes to this Lib__T__Defs
 //	library or its __T__Def definitions. Also called by the global SyncChanges() function.

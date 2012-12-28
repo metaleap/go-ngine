@@ -47,7 +47,9 @@ type Transform struct {
 	F []float64
 }
 
-func (me *Transform) accessField(fn string) interface{} {
+//	RefSidFielder implementation.
+//	Supported field names: "X", "Y", "Z" (mapped to the first three values in me.F).
+func (me *Transform) AccessField(fn string) interface{} {
 	switch fn {
 	case "X":
 		return &me.F[0]
@@ -59,6 +61,11 @@ func (me *Transform) accessField(fn string) interface{} {
 	return nil
 }
 
-func (me *Transform) accessIndex(i int) interface{} {
+//	RefSidIndexer implementation.
+//	Supports one-dimensional and two-dimensional indices.
+func (me *Transform) AccessIndex(i, j int) interface{} {
+	if j >= 0 {
+		i = index2D(i, j, len(me.F))
+	}
 	return &me.F[i]
 }

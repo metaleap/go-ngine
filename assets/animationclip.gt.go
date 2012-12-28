@@ -170,14 +170,6 @@ func (me *LibAnimationClipDefs) New(id string) (def *AnimationClipDef) { def = n
 //	Removes the AnimationClipDef with the specified Id from this LibAnimationClipDefs.
 func (me *LibAnimationClipDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
 
-func (me *LibAnimationClipDefs) resolver(part0 string) refSidResolver {
-	return me.M[part0]
-}
-
-func (me *LibAnimationClipDefs) resolverRootIsLib() bool {
-	return true
-}
-
 //	Signals to the core package (or your custom package) that changes have been made to this LibAnimationClipDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibAnimationClipDefs
 //	library or its AnimationClipDef definitions. Also called by the global SyncChanges() function.

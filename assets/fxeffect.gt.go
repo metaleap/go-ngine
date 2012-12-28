@@ -81,7 +81,9 @@ type FxColor struct {
 	ugfx.Rgba32
 }
 
-func (me *FxColor) accessField(fn string) interface{} {
+//	RefSidFielder implementation.
+//	Supported field names: "R", "G", "B", "A".
+func (me *FxColor) AccessField(fn string) interface{} {
 	switch fn {
 	case "R":
 		return &me.Rgba32.R
@@ -95,7 +97,9 @@ func (me *FxColor) accessField(fn string) interface{} {
 	return nil
 }
 
-func (me *FxColor) accessIndex(i int) interface{} {
+//	RefSidIndexer implementation.
+//	Supports one-dimensional indices 0 through 3.
+func (me *FxColor) AccessIndex(i, _ int) interface{} {
 	switch i {
 	case 0:
 		return &me.Rgba32.R
@@ -694,14 +698,6 @@ func (me *LibFxEffectDefs) New(id string) (def *FxEffectDef) { def = newFxEffect
 
 //	Removes the FxEffectDef with the specified Id from this LibFxEffectDefs.
 func (me *LibFxEffectDefs) Remove(id string) { delete(me.M, id); me.SetDirty() }
-
-func (me *LibFxEffectDefs) resolver(part0 string) refSidResolver {
-	return me.M[part0]
-}
-
-func (me *LibFxEffectDefs) resolverRootIsLib() bool {
-	return true
-}
 
 //	Signals to the core package (or your custom package) that changes have been made to this LibFxEffectDefs
 //	that need to be picked up. Call this after you have made a number of changes to this LibFxEffectDefs

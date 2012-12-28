@@ -2,6 +2,8 @@ package assets
 
 import (
 	"fmt"
+
+	ugfx "github.com/metaleap/go-util/gfx"
 )
 
 var (
@@ -15,6 +17,10 @@ var (
 
 	syncHandlers []func()
 )
+
+func index2D(x, y, ysize int) int {
+	return ugfx.Index2D(x, y, ysize)
+}
 
 func init() {
 	OnBeforeSyncAll = func() {}
