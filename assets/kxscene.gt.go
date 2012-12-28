@@ -87,6 +87,17 @@ func newKxSceneDef(id string) (me *KxSceneDef) {
 	return
 }
 
+//	Returns "the default KxSceneInst instance" referencing this KxSceneDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *KxSceneDef) DefaultInst() (inst *KxSceneInst) {
+	if inst = defaultKxSceneInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultKxSceneInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new KxSceneInst instance referencing this KxSceneDef definition.
 //	Any KxSceneInst created by this method will have its Def field readily set to me.
 func (me *KxSceneDef) NewInst() (inst *KxSceneInst) {
@@ -113,6 +124,8 @@ var (
 
 	//	The "default" LibKxSceneDefs library for KxSceneDefs.
 	KxSceneDefs = AllKxSceneDefLibs.AddNew("")
+
+	defaultKxSceneInsts = map[*KxSceneDef]*KxSceneInst{}
 )
 
 func init() {

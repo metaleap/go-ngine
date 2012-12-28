@@ -95,6 +95,17 @@ func newCameraDef(id string) (me *CameraDef) {
 	return
 }
 
+//	Returns "the default CameraInst instance" referencing this CameraDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *CameraDef) DefaultInst() (inst *CameraInst) {
+	if inst = defaultCameraInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultCameraInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new CameraInst instance referencing this CameraDef definition.
 //	Any CameraInst created by this method will have its Def field readily set to me.
 func (me *CameraDef) NewInst() (inst *CameraInst) {
@@ -121,6 +132,8 @@ var (
 
 	//	The "default" LibCameraDefs library for CameraDefs.
 	CameraDefs = AllCameraDefLibs.AddNew("")
+
+	defaultCameraInsts = map[*CameraDef]*CameraInst{}
 )
 
 func init() {

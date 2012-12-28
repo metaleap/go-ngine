@@ -78,6 +78,17 @@ func newNodeDef(id string) (me *NodeDef) {
 	return
 }
 
+//	Returns "the default NodeInst instance" referencing this NodeDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *NodeDef) DefaultInst() (inst *NodeInst) {
+	if inst = defaultNodeInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultNodeInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new NodeInst instance referencing this NodeDef definition.
 //	Any NodeInst created by this method will have its Def field readily set to me.
 func (me *NodeDef) NewInst() (inst *NodeInst) {
@@ -104,6 +115,8 @@ var (
 
 	//	The "default" LibNodeDefs library for NodeDefs.
 	NodeDefs = AllNodeDefLibs.AddNew("")
+
+	defaultNodeInsts = map[*NodeDef]*NodeInst{}
 )
 
 func init() {

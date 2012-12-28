@@ -68,6 +68,17 @@ func newFxMaterialDef(id string) (me *FxMaterialDef) {
 	return
 }
 
+//	Returns "the default FxMaterialInst instance" referencing this FxMaterialDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *FxMaterialDef) DefaultInst() (inst *FxMaterialInst) {
+	if inst = defaultFxMaterialInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultFxMaterialInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new FxMaterialInst instance referencing this FxMaterialDef definition.
 //	Any FxMaterialInst created by this method will have its Def field readily set to me.
 func (me *FxMaterialDef) NewInst() (inst *FxMaterialInst) {
@@ -94,6 +105,8 @@ var (
 
 	//	The "default" LibFxMaterialDefs library for FxMaterialDefs.
 	FxMaterialDefs = AllFxMaterialDefLibs.AddNew("")
+
+	defaultFxMaterialInsts = map[*FxMaterialDef]*FxMaterialInst{}
 )
 
 func init() {

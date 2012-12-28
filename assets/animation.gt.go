@@ -98,6 +98,17 @@ func newAnimationDef(id string) (me *AnimationDef) {
 	return
 }
 
+//	Returns "the default AnimationInst instance" referencing this AnimationDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *AnimationDef) DefaultInst() (inst *AnimationInst) {
+	if inst = defaultAnimationInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultAnimationInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new AnimationInst instance referencing this AnimationDef definition.
 //	Any AnimationInst created by this method will have its Def field readily set to me.
 func (me *AnimationDef) NewInst() (inst *AnimationInst) {
@@ -124,6 +135,8 @@ var (
 
 	//	The "default" LibAnimationDefs library for AnimationDefs.
 	AnimationDefs = AllAnimationDefLibs.AddNew("")
+
+	defaultAnimationInsts = map[*AnimationDef]*AnimationInst{}
 )
 
 func init() {

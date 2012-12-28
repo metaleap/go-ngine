@@ -2,7 +2,7 @@ package main
 
 import (
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
-	nga "github.com/go3d/go-ngine/assets"
+	// nga "github.com/go3d/go-ngine/assets"
 	ng "github.com/go3d/go-ngine/core"
 )
 
@@ -31,10 +31,9 @@ func LoadSampleScene_01_EmptyPlane() {
 	ngsamples.Cam.Options.BackfaceCulling = false
 
 	//	textures / materials
-	nga.FxImageDefs.AddFromIdsUrls(map[string]string{
-		"tex_cobbles": "tex/cobbles.png",
+	ngsamples.AddTextureMaterials(map[string]string{
+		"cobbles": "tex/cobbles.png",
 	})
-	ng.Core.Materials["mat_cobbles"] = ng.Core.Materials.New("tex_cobbles")
 
 	//	meshes / models
 	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(100, 100)); err != nil {

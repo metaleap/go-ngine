@@ -4,7 +4,7 @@ import (
 	"math"
 
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
-	nga "github.com/go3d/go-ngine/assets"
+	// nga "github.com/go3d/go-ngine/assets"
 	ng "github.com/go3d/go-ngine/core"
 )
 
@@ -44,11 +44,10 @@ func LoadSampleScene_02_PyrCube() {
 	ngsamples.Cam.Options.BackfaceCulling = false
 
 	//	textures / materials
-
-	nga.FxImageDefs.AddFromIdsUrls(map[string]string{
-		"tex_cobbles": "http://dl.dropbox.com/u/136375/go-ngine/assets/tex/cobbles.png",
-		"tex_crate":   "tex/crate.jpeg",
-		"tex_mosaic":  "tex/mosaic.jpeg",
+	ngsamples.AddTextureMaterials(map[string]string{
+		"cobbles": "http://dl.dropbox.com/u/136375/go-ngine/assets/tex/cobbles.png",
+		"crate":   "tex/crate.jpeg",
+		"mosaic":  "tex/mosaic.jpeg",
 	})
 
 	ng.Core.Materials["mat_cobbles"] = ng.Core.Materials.New("tex_cobbles")

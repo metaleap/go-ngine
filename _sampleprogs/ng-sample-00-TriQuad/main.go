@@ -4,7 +4,8 @@ import (
 	"math"
 
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
-	nga "github.com/go3d/go-ngine/assets"
+	// nga "github.com/go3d/go-ngine/assets"
+	// ngau "github.com/go3d/go-ngine/assets/util"
 	ng "github.com/go3d/go-ngine/core"
 )
 
@@ -41,22 +42,10 @@ func LoadSampleScene_00_TriQuad() {
 	ngsamples.Cam.Options.BackfaceCulling = false
 
 	//	textures / materials
-
-	nga.FxImageDefs.AddFromIdsUrls(map[string]string{
-		"tex_cat": "tex/cat.png",
-		"tex_dog": "tex/dog.png",
+	ngsamples.AddTextureMaterials(map[string]string{
+		"cat": "tex/cat.png",
+		"dog": "tex/dog.png",
 	})
-
-	nga.FxEffectDefs.AddNew("fx_cat")
-	nga.FxEffectDefs.AddNew("fx_dog")
-
-	// nga.FxEffectDefs.M["fx_cat"].Profiles[0].Common.Technique.Lambert.Diffuse.Texture.
-
-	nga.FxMaterialDefs.AddNew("mat_cat").Effect.DefRef = "fx_cat"
-	nga.FxMaterialDefs.AddNew("mat_dog").Effect.DefRef = "fx_dog"
-
-	ng.Core.Materials["mat_cat"] = ng.Core.Materials.New("tex_cat")
-	ng.Core.Materials["mat_dog"] = ng.Core.Materials.New("tex_dog")
 
 	//	meshes / models
 

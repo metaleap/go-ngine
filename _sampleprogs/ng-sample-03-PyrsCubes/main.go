@@ -4,7 +4,7 @@ import (
 	"math"
 
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
-	nga "github.com/go3d/go-ngine/assets"
+	// nga "github.com/go3d/go-ngine/assets"
 	ng "github.com/go3d/go-ngine/core"
 	unum "github.com/metaleap/go-util/num"
 )
@@ -62,20 +62,13 @@ func LoadSampleScene_03_PyrsCubes() {
 	ngsamples.Cam.Options.BackfaceCulling = false
 
 	//	textures / materials
-
-	nga.FxImageDefs.AddFromIdsUrls(map[string]string{
-		"tex_cobbles": "tex/cobbles.png",
-		"tex_crate":   "tex/crate.jpeg",
-		"tex_mosaic":  "tex/mosaic.jpeg",
-		"tex_cat":     "tex/cat.png",
-		"tex_dog":     "tex/dog.png",
+	ngsamples.AddTextureMaterials(map[string]string{
+		"cobbles": "tex/cobbles.png",
+		"crate":   "tex/crate.jpeg",
+		"mosaic":  "tex/mosaic.jpeg",
+		"cat":     "tex/cat.png",
+		"dog":     "tex/dog.png",
 	})
-
-	ng.Core.Materials["mat_cobbles"] = ng.Core.Materials.New("tex_cobbles")
-	ng.Core.Materials["mat_crate"] = ng.Core.Materials.New("tex_crate")
-	ng.Core.Materials["mat_mosaic"] = ng.Core.Materials.New("tex_mosaic")
-	ng.Core.Materials["mat_cat"] = ng.Core.Materials.New("tex_cat")
-	ng.Core.Materials["mat_dog"] = ng.Core.Materials.New("tex_dog")
 
 	//	meshes / models
 	if bufFloor, err = ng.Core.MeshBuffers.Add("buf_floor", ng.Core.MeshBuffers.NewParams(6, 6)); err != nil {

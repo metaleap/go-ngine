@@ -56,6 +56,17 @@ func newPxSceneDef(id string) (me *PxSceneDef) {
 	return
 }
 
+//	Returns "the default PxSceneInst instance" referencing this PxSceneDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *PxSceneDef) DefaultInst() (inst *PxSceneInst) {
+	if inst = defaultPxSceneInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultPxSceneInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new PxSceneInst instance referencing this PxSceneDef definition.
 //	Any PxSceneInst created by this method will have its Def field readily set to me.
 func (me *PxSceneDef) NewInst() (inst *PxSceneInst) {
@@ -82,6 +93,8 @@ var (
 
 	//	The "default" LibPxSceneDefs library for PxSceneDefs.
 	PxSceneDefs = AllPxSceneDefLibs.AddNew("")
+
+	defaultPxSceneInsts = map[*PxSceneDef]*PxSceneInst{}
 )
 
 func init() {

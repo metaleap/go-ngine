@@ -113,6 +113,17 @@ func newControllerDef(id string) (me *ControllerDef) {
 	return
 }
 
+//	Returns "the default ControllerInst instance" referencing this ControllerDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *ControllerDef) DefaultInst() (inst *ControllerInst) {
+	if inst = defaultControllerInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultControllerInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new ControllerInst instance referencing this ControllerDef definition.
 //	Any ControllerInst created by this method will have its Def field readily set to me.
 func (me *ControllerDef) NewInst() (inst *ControllerInst) {
@@ -139,6 +150,8 @@ var (
 
 	//	The "default" LibControllerDefs library for ControllerDefs.
 	ControllerDefs = AllControllerDefLibs.AddNew("")
+
+	defaultControllerInsts = map[*ControllerDef]*ControllerInst{}
 )
 
 func init() {

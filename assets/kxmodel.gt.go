@@ -108,6 +108,17 @@ func newKxModelDef(id string) (me *KxModelDef) {
 	return
 }
 
+//	Returns "the default KxModelInst instance" referencing this KxModelDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *KxModelDef) DefaultInst() (inst *KxModelInst) {
+	if inst = defaultKxModelInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultKxModelInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new KxModelInst instance referencing this KxModelDef definition.
 //	Any KxModelInst created by this method will have its Def field readily set to me.
 func (me *KxModelDef) NewInst() (inst *KxModelInst) {
@@ -134,6 +145,8 @@ var (
 
 	//	The "default" LibKxModelDefs library for KxModelDefs.
 	KxModelDefs = AllKxModelDefLibs.AddNew("")
+
+	defaultKxModelInsts = map[*KxModelDef]*KxModelInst{}
 )
 
 func init() {

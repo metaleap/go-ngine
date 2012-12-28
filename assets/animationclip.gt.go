@@ -48,6 +48,17 @@ func newAnimationClipDef(id string) (me *AnimationClipDef) {
 	return
 }
 
+//	Returns "the default AnimationClipInst instance" referencing this AnimationClipDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *AnimationClipDef) DefaultInst() (inst *AnimationClipInst) {
+	if inst = defaultAnimationClipInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultAnimationClipInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new AnimationClipInst instance referencing this AnimationClipDef definition.
 //	Any AnimationClipInst created by this method will have its Def field readily set to me.
 func (me *AnimationClipDef) NewInst() (inst *AnimationClipInst) {
@@ -74,6 +85,8 @@ var (
 
 	//	The "default" LibAnimationClipDefs library for AnimationClipDefs.
 	AnimationClipDefs = AllAnimationClipDefLibs.AddNew("")
+
+	defaultAnimationClipInsts = map[*AnimationClipDef]*AnimationClipInst{}
 )
 
 func init() {

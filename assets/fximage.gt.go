@@ -348,9 +348,17 @@ func (me *FxImageInst) Init() {
 //	Adds multiple FxImageDefs to this library,
 //	with each one's Id and InitFrom.RefUrl set from the specified idRefUrls map.
 func (me *LibFxImageDefs) AddFromIdsUrls(idRefUrls map[string]string) {
-	for imgID, refUrl := range idRefUrls {
-		me.AddNew(imgID).InitFrom = NewFxImageInitFrom(refUrl)
+	for id, refUrl := range idRefUrls {
+		me.AddNewUrl(id, refUrl)
 	}
+}
+
+//	Adds a new FxImageDefs with the specified Id to this library, with its
+//	InitFrom.RefUrl set to the specified refUrl.
+func (me *LibFxImageDefs) AddNewUrl(id string, refUrl string) (def *FxImageDef) {
+	def = me.AddNew(id)
+	def.InitFrom = NewFxImageInitFrom(refUrl)
+	return
 }
 
 //#begin-gt _definstlib.gt T:FxImage
@@ -360,6 +368,17 @@ func newFxImageDef(id string) (me *FxImageDef) {
 	me.Id = id
 	me.BaseSync.init()
 	me.Init()
+	return
+}
+
+//	Returns "the default FxImageInst instance" referencing this FxImageDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *FxImageDef) DefaultInst() (inst *FxImageInst) {
+	if inst = defaultFxImageInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultFxImageInsts[me] = inst
+	}
 	return
 }
 
@@ -389,6 +408,8 @@ var (
 
 	//	The "default" LibFxImageDefs library for FxImageDefs.
 	FxImageDefs = AllFxImageDefLibs.AddNew("")
+
+	defaultFxImageInsts = map[*FxImageDef]*FxImageInst{}
 )
 
 func init() {

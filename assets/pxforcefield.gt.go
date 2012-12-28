@@ -40,6 +40,17 @@ func newPxForceFieldDef(id string) (me *PxForceFieldDef) {
 	return
 }
 
+//	Returns "the default PxForceFieldInst instance" referencing this PxForceFieldDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *PxForceFieldDef) DefaultInst() (inst *PxForceFieldInst) {
+	if inst = defaultPxForceFieldInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultPxForceFieldInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new PxForceFieldInst instance referencing this PxForceFieldDef definition.
 //	Any PxForceFieldInst created by this method will have its Def field readily set to me.
 func (me *PxForceFieldDef) NewInst() (inst *PxForceFieldInst) {
@@ -66,6 +77,8 @@ var (
 
 	//	The "default" LibPxForceFieldDefs library for PxForceFieldDefs.
 	PxForceFieldDefs = AllPxForceFieldDefLibs.AddNew("")
+
+	defaultPxForceFieldInsts = map[*PxForceFieldDef]*PxForceFieldInst{}
 )
 
 func init() {

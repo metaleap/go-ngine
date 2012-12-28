@@ -86,6 +86,17 @@ func newKxJointDef(id string) (me *KxJointDef) {
 	return
 }
 
+//	Returns "the default KxJointInst instance" referencing this KxJointDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *KxJointDef) DefaultInst() (inst *KxJointInst) {
+	if inst = defaultKxJointInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultKxJointInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new KxJointInst instance referencing this KxJointDef definition.
 //	Any KxJointInst created by this method will have its Def field readily set to me.
 func (me *KxJointDef) NewInst() (inst *KxJointInst) {
@@ -112,6 +123,8 @@ var (
 
 	//	The "default" LibKxJointDefs library for KxJointDefs.
 	KxJointDefs = AllKxJointDefLibs.AddNew("")
+
+	defaultKxJointInsts = map[*KxJointDef]*KxJointInst{}
 )
 
 func init() {

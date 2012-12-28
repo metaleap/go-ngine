@@ -141,6 +141,17 @@ func newLightDef(id string) (me *LightDef) {
 	return
 }
 
+//	Returns "the default LightInst instance" referencing this LightDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *LightDef) DefaultInst() (inst *LightInst) {
+	if inst = defaultLightInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultLightInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new LightInst instance referencing this LightDef definition.
 //	Any LightInst created by this method will have its Def field readily set to me.
 func (me *LightDef) NewInst() (inst *LightInst) {
@@ -167,6 +178,8 @@ var (
 
 	//	The "default" LibLightDefs library for LightDefs.
 	LightDefs = AllLightDefLibs.AddNew("")
+
+	defaultLightInsts = map[*LightDef]*LightInst{}
 )
 
 func init() {

@@ -10,6 +10,7 @@ import (
 	util "github.com/metaleap/go-util"
 
 	nga "github.com/go3d/go-ngine/assets"
+	ngau "github.com/go3d/go-ngine/assets/util"
 	ng "github.com/go3d/go-ngine/core"
 )
 
@@ -41,6 +42,29 @@ var (
 	curKeyHint = 0
 	sec        = 0
 )
+
+//	Sets up texture materials (associated and 2D samplers) with the specified IDs and image URLs.
+//	For each ID (such as "foo" and "bar"):
+//	-	creates an assets.FxImageDef with ID "tex_ID" (ie. "tex_foo" and "tex_bar")
+//	-	creates an assets.FxEffectDef with ID "fx_ID" (ie. "fx_foo" and "fx_bar")
+//	-	creates an assets.FxMaterialDef with ID "mat_ID" (ie. "mat_foo" and "mat_bar")
+//	-	and links them all together to create a ready-to-use texture material.
+func AddTextureMaterials(idsUrls map[string]string) {
+	var (
+		image  *nga.FxImageDef
+		effect *nga.FxEffectDef
+	)
+	for id, refUrl := range idsUrls {
+		image = ngau.FxAddImage("tex_"+id, refUrl)
+		effect = ngau.FxAddEffect("fx_"+id, true, false)
+		effect.Profiles[0].NewParams.Set("sampler_"+id, ngau.NewFxSampler2D(image.DefaultInst(), nil, nil))
+		effect.Profiles[0].Common.Technique.Diffuse = ngau.NewFxColorOrTexture(ngau.NewFxTexture("sampler_"+id, "TEX0"), nil, "")
+
+		nga.FxMaterialDefs.AddNew("mat_" + id).Effect.DefRef.SetIdRef("fx_" + id)
+
+		ng.Core.Materials["mat_"+id] = ng.Core.Materials.New("tex_" + id)
+	}
+}
 
 //	Returns the "asset root directory" path for go:ngine, in this case: $GOPATH/src/github.com/go3d/go-ngine/_sampleprogs/_sharedassets
 func AssetRootDirPath() string {

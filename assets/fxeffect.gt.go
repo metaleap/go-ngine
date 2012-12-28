@@ -78,7 +78,35 @@ type FxColor struct {
 	HasSid
 
 	//	Describes the literal color of the parent FxColorOrTexture.
-	Color ugfx.Rgba32
+	ugfx.Rgba32
+}
+
+func (me *FxColor) accessField(fn string) interface{} {
+	switch fn {
+	case "R":
+		return &me.Rgba32.R
+	case "G":
+		return &me.Rgba32.G
+	case "B":
+		return &me.Rgba32.B
+	case "A":
+		return &me.Rgba32.A
+	}
+	return nil
+}
+
+func (me *FxColor) accessIndex(i int) interface{} {
+	switch i {
+	case 0:
+		return &me.Rgba32.R
+	case 1:
+		return &me.Rgba32.G
+	case 2:
+		return &me.Rgba32.B
+	case 3:
+		return &me.Rgba32.A
+	}
+	return nil
 }
 
 //	Describes color attributes of fixed-function shaders inside FxProfileCommon effects.
@@ -97,6 +125,12 @@ type FxColorOrTexture struct {
 	//	If set, refers to a previously-defined FxSampler with a Kind of FxSamplerKind2D.
 	Texture *FxTexture
 }
+
+// func NewFxColorOrTexture () (me *FxColorOrTexture) {
+// 	me=&FxColorOrTexture{}
+// 	me.Texture.
+// 	return
+// }
 
 //	Adds a hint for a platform of which technique to use in this effect.
 type FxEffectInstTechniqueHint struct {
@@ -128,6 +162,17 @@ type FxParamDef struct {
 
 //	A hash-table containing parameter declarations of this FX-related resource.
 type FxParamDefs map[string]*FxParamDef
+
+//	If me does not contain an FxParamDef with the specified Sid, adds it.
+//	Next, sets the value of the FxParamDef with the specified Sid in me to val.
+func (me FxParamDefs) Set(sid string, val interface{}) {
+	pd := me[sid]
+	if pd == nil {
+		pd = &FxParamDef{}
+		me[sid] = pd
+	}
+	pd.Sid, pd.Value = sid, val
+}
 
 //	Provides a static declaration of all the render states, shaders, and settings
 //	for one rendering pipeline.
@@ -480,6 +525,17 @@ type FxEffectDef struct {
 	Profiles []*FxProfile
 }
 
+//	Returns the first FxProfile with a Common in me.Profiles.
+func (me *FxEffectDef) Common() (prof *FxProfile) {
+	for _, prof = range me.Profiles {
+		if prof.Common != nil {
+			break
+		}
+		prof = nil
+	}
+	return
+}
+
 //	Initialization
 func (me *FxEffectDef) Init() {
 	me.NewParams = FxParamDefs{}
@@ -517,6 +573,17 @@ func newFxEffectDef(id string) (me *FxEffectDef) {
 	return
 }
 
+//	Returns "the default FxEffectInst instance" referencing this FxEffectDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *FxEffectDef) DefaultInst() (inst *FxEffectInst) {
+	if inst = defaultFxEffectInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultFxEffectInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new FxEffectInst instance referencing this FxEffectDef definition.
 //	Any FxEffectInst created by this method will have its Def field readily set to me.
 func (me *FxEffectDef) NewInst() (inst *FxEffectInst) {
@@ -543,6 +610,8 @@ var (
 
 	//	The "default" LibFxEffectDefs library for FxEffectDefs.
 	FxEffectDefs = AllFxEffectDefLibs.AddNew("")
+
+	defaultFxEffectInsts = map[*FxEffectDef]*FxEffectInst{}
 )
 
 func init() {

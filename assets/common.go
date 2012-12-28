@@ -267,6 +267,17 @@ type ParamDef struct {
 //	A hash-table containing parameter declarations of this resource.
 type ParamDefs map[string]*ParamDef
 
+//	If me does not contain a ParamDef with the specified Sid, adds it.
+//	Next, sets the value of the ParamDef with the specified Sid in me to val.
+func (me ParamDefs) Set(sid string, val interface{}) {
+	pd := me[sid]
+	if pd == nil {
+		pd = &ParamDef{}
+		me[sid] = pd
+	}
+	pd.Sid, pd.Value = sid, val
+}
+
 //	Assigns a new value to a previously defined parameter.
 type ParamInst struct {
 	//	References the identifier of the pre-defined parameter (ParamDef) that will have its value set.

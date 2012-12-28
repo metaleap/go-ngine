@@ -8,6 +8,17 @@ func new__T__Def(id string) (me *__T__Def) {
 	return
 }
 
+//	Returns "the default __T__Inst instance" referencing this __T__Def definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *__T__Def) DefaultInst() (inst *__T__Inst) {
+	if inst = default__T__Insts[me]; inst == nil {
+		inst = me.NewInst()
+		default__T__Insts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new __T__Inst instance referencing this __T__Def definition.
 //	Any __T__Inst created by this method will have its Def field readily set to me.
 func (me *__T__Def) NewInst() (inst *__T__Inst) {
@@ -34,6 +45,8 @@ var (
 
 	//	The "default" Lib__T__Defs library for __T__Defs.
 	__T__Defs = All__T__DefLibs.AddNew("")
+
+	default__T__Insts = map[*__T__Def]*__T__Inst{}
 )
 
 func init() {

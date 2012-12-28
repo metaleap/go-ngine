@@ -181,6 +181,17 @@ func newGeometryDef(id string) (me *GeometryDef) {
 	return
 }
 
+//	Returns "the default GeometryInst instance" referencing this GeometryDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *GeometryDef) DefaultInst() (inst *GeometryInst) {
+	if inst = defaultGeometryInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultGeometryInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new GeometryInst instance referencing this GeometryDef definition.
 //	Any GeometryInst created by this method will have its Def field readily set to me.
 func (me *GeometryDef) NewInst() (inst *GeometryInst) {
@@ -207,6 +218,8 @@ var (
 
 	//	The "default" LibGeometryDefs library for GeometryDefs.
 	GeometryDefs = AllGeometryDefLibs.AddNew("")
+
+	defaultGeometryInsts = map[*GeometryDef]*GeometryInst{}
 )
 
 func init() {

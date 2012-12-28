@@ -1013,7 +1013,7 @@ func load_FxPassEvaluationTarget(xn *xmlx.Node, obj *nga.FxPassEvaluationTarget)
 }
 
 func load_FxColor(xn *xmlx.Node, obj *nga.FxColor) {
-	list_Rgba32(xn, &obj.Color)
+	list_Rgba32(xn, &obj.Rgba32)
 }
 
 func load_FxColorOrTexture(xn *xmlx.Node, obj *nga.FxColorOrTexture) {

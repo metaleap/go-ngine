@@ -104,6 +104,17 @@ func newVisualSceneDef(id string) (me *VisualSceneDef) {
 	return
 }
 
+//	Returns "the default VisualSceneInst instance" referencing this VisualSceneDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *VisualSceneDef) DefaultInst() (inst *VisualSceneInst) {
+	if inst = defaultVisualSceneInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultVisualSceneInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new VisualSceneInst instance referencing this VisualSceneDef definition.
 //	Any VisualSceneInst created by this method will have its Def field readily set to me.
 func (me *VisualSceneDef) NewInst() (inst *VisualSceneInst) {
@@ -130,6 +141,8 @@ var (
 
 	//	The "default" LibVisualSceneDefs library for VisualSceneDefs.
 	VisualSceneDefs = AllVisualSceneDefLibs.AddNew("")
+
+	defaultVisualSceneInsts = map[*VisualSceneDef]*VisualSceneInst{}
 )
 
 func init() {

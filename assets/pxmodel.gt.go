@@ -66,6 +66,17 @@ func newPxModelDef(id string) (me *PxModelDef) {
 	return
 }
 
+//	Returns "the default PxModelInst instance" referencing this PxModelDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *PxModelDef) DefaultInst() (inst *PxModelInst) {
+	if inst = defaultPxModelInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultPxModelInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new PxModelInst instance referencing this PxModelDef definition.
 //	Any PxModelInst created by this method will have its Def field readily set to me.
 func (me *PxModelDef) NewInst() (inst *PxModelInst) {
@@ -92,6 +103,8 @@ var (
 
 	//	The "default" LibPxModelDefs library for PxModelDefs.
 	PxModelDefs = AllPxModelDefLibs.AddNew("")
+
+	defaultPxModelInsts = map[*PxModelDef]*PxModelInst{}
 )
 
 func init() {

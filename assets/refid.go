@@ -341,7 +341,7 @@ func (me RefId) S() string {
 	return string(me)
 }
 
-//	Modifies the Id currently referenced by me.
+//	Modifies the Id currently referenced by me. This is a mere string assignment.
 func (me *RefId) SetIdRef(v string) {
 	*me = RefId(v)
 }

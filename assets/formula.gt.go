@@ -68,6 +68,17 @@ func newFormulaDef(id string) (me *FormulaDef) {
 	return
 }
 
+//	Returns "the default FormulaInst instance" referencing this FormulaDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *FormulaDef) DefaultInst() (inst *FormulaInst) {
+	if inst = defaultFormulaInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultFormulaInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new FormulaInst instance referencing this FormulaDef definition.
 //	Any FormulaInst created by this method will have its Def field readily set to me.
 func (me *FormulaDef) NewInst() (inst *FormulaInst) {
@@ -94,6 +105,8 @@ var (
 
 	//	The "default" LibFormulaDefs library for FormulaDefs.
 	FormulaDefs = AllFormulaDefLibs.AddNew("")
+
+	defaultFormulaInsts = map[*FormulaDef]*FormulaInst{}
 )
 
 func init() {

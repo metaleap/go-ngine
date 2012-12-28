@@ -51,6 +51,17 @@ func newPxMaterialDef(id string) (me *PxMaterialDef) {
 	return
 }
 
+//	Returns "the default PxMaterialInst instance" referencing this PxMaterialDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *PxMaterialDef) DefaultInst() (inst *PxMaterialInst) {
+	if inst = defaultPxMaterialInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultPxMaterialInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new PxMaterialInst instance referencing this PxMaterialDef definition.
 //	Any PxMaterialInst created by this method will have its Def field readily set to me.
 func (me *PxMaterialDef) NewInst() (inst *PxMaterialInst) {
@@ -77,6 +88,8 @@ var (
 
 	//	The "default" LibPxMaterialDefs library for PxMaterialDefs.
 	PxMaterialDefs = AllPxMaterialDefLibs.AddNew("")
+
+	defaultPxMaterialInsts = map[*PxMaterialDef]*PxMaterialInst{}
 )
 
 func init() {

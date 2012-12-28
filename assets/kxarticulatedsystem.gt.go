@@ -289,6 +289,17 @@ func newKxArticulatedSystemDef(id string) (me *KxArticulatedSystemDef) {
 	return
 }
 
+//	Returns "the default KxArticulatedSystemInst instance" referencing this KxArticulatedSystemDef definition.
+//	That instance is created once when this method is first called on me,
+//	and will have its Def field readily set to me.
+func (me *KxArticulatedSystemDef) DefaultInst() (inst *KxArticulatedSystemInst) {
+	if inst = defaultKxArticulatedSystemInsts[me]; inst == nil {
+		inst = me.NewInst()
+		defaultKxArticulatedSystemInsts[me] = inst
+	}
+	return
+}
+
 //	Creates and returns a new KxArticulatedSystemInst instance referencing this KxArticulatedSystemDef definition.
 //	Any KxArticulatedSystemInst created by this method will have its Def field readily set to me.
 func (me *KxArticulatedSystemDef) NewInst() (inst *KxArticulatedSystemInst) {
@@ -315,6 +326,8 @@ var (
 
 	//	The "default" LibKxArticulatedSystemDefs library for KxArticulatedSystemDefs.
 	KxArticulatedSystemDefs = AllKxArticulatedSystemDefLibs.AddNew("")
+
+	defaultKxArticulatedSystemInsts = map[*KxArticulatedSystemDef]*KxArticulatedSystemInst{}
 )
 
 func init() {
