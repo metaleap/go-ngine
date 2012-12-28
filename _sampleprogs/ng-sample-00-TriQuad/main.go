@@ -42,7 +42,7 @@ func LoadSampleScene_00_TriQuad() {
 
 	//	textures / materials
 
-	nga.FxImageDefs.AddFromRefUrls(map[string]string{
+	nga.FxImageDefs.AddFromIdsUrls(map[string]string{
 		"tex_cat": "tex/cat.png",
 		"tex_dog": "tex/dog.png",
 	})

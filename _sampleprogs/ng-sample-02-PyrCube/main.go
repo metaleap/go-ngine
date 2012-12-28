@@ -45,7 +45,7 @@ func LoadSampleScene_02_PyrCube() {
 
 	//	textures / materials
 
-	nga.FxImageDefs.AddFromRefUrls(map[string]string{
+	nga.FxImageDefs.AddFromIdsUrls(map[string]string{
 		"tex_cobbles": "http://dl.dropbox.com/u/136375/go-ngine/assets/tex/cobbles.png",
 		"tex_crate":   "tex/crate.jpeg",
 		"tex_mosaic":  "tex/mosaic.jpeg",

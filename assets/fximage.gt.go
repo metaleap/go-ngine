@@ -347,7 +347,7 @@ func (me *FxImageInst) Init() {
 
 //	Adds multiple FxImageDefs to this library,
 //	with each one's Id and InitFrom.RefUrl set from the specified idRefUrls map.
-func (me *LibFxImageDefs) AddFromRefUrls(idRefUrls map[string]string) {
+func (me *LibFxImageDefs) AddFromIdsUrls(idRefUrls map[string]string) {
 	for imgID, refUrl := range idRefUrls {
 		me.AddNew(imgID).InitFrom = NewFxImageInitFrom(refUrl)
 	}

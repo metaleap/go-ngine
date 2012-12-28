@@ -1638,4 +1638,3 @@ func (me *FxMaterialInst) accessField(fn string) interface{} {
 	}
 	return nil
 }
-

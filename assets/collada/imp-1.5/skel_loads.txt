@@ -3,115 +3,7 @@ func load_KxModelBinding(xn *xmlx.Node, obj *nga.KxModelBinding) {
 
 }
 
-func load_GeometryBrepCircle(xn *xmlx.Node, obj *nga.GeometryBrepCircle) {
-
-}
-
-func load_GeometryBrepEdges(xn *xmlx.Node, obj *nga.GeometryBrepEdges) {
-
-}
-
-func load_AnimationDef(xn *xmlx.Node, obj *nga.AnimationDef) {
-
-}
-
-func load_KxBinding(xn *xmlx.Node, obj *nga.KxBinding) {
-
-}
-
-func load_FxEffectDef(xn *xmlx.Node, obj *nga.FxEffectDef) {
-
-}
-
-func load_FxFormatPrecision(xn *xmlx.Node, obj *nga.FxFormatPrecision) {
-
-}
-
-func load_AnimationSampler(xn *xmlx.Node, obj *nga.AnimationSampler) {
-
-}
-
-func load_NodeInst(xn *xmlx.Node, obj *nga.NodeInst) {
-
-}
-
-func load_Float3x4(xn *xmlx.Node, obj *nga.Float3x4) {
-
-}
-
-func load_ControllerSkin(xn *xmlx.Node, obj *nga.ControllerSkin) {
-
-}
-
-func load_FxParamDef(xn *xmlx.Node, obj *nga.FxParamDef) {
-
-}
-
-func load_ParamDefs(xn *xmlx.Node, obj *nga.ParamDefs) {
-
-}
-
-func load_FxTechniqueGlsl(xn *xmlx.Node, obj *nga.FxTechniqueGlsl) {
-
-}
-
-func load_GeometryBrepWires(xn *xmlx.Node, obj *nga.GeometryBrepWires) {
-
-}
-
-func load_LightInst(xn *xmlx.Node, obj *nga.LightInst) {
-
-}
-
-func load_FxTextureOpaque(xn *xmlx.Node, obj *nga.FxTextureOpaque) {
-
-}
-
-func load_CameraImager(xn *xmlx.Node, obj *nga.CameraImager) {
-
-}
-
-func load_GeometryVertices(xn *xmlx.Node, obj *nga.GeometryVertices) {
-
-}
-
-func load_FxCreate(xn *xmlx.Node, obj *nga.FxCreate) {
-
-}
-
-func load_PxRigidBodyDef(xn *xmlx.Node, obj *nga.PxRigidBodyDef) {
-
-}
-
-func load_Input(xn *xmlx.Node, obj *nga.Input) {
-
-}
-
-func load_FxPassProgramBindAttribute(xn *xmlx.Node, obj *nga.FxPassProgramBindAttribute) {
-
-}
-
-func load_FxPassProgramBindUniform(xn *xmlx.Node, obj *nga.FxPassProgramBindUniform) {
-
-}
-
-func load_FxCubeFace(xn *xmlx.Node, obj *nga.FxCubeFace) {
-
-}
-
-func load_KxFrameObject(xn *xmlx.Node, obj *nga.KxFrameObject) {
-
-}
-
-func load_FxFormatChannels(xn *xmlx.Node, obj *nga.FxFormatChannels) {
-
-}
-
-func load_Param(xn *xmlx.Node, obj *nga.Param) {
-
-}
-
-func load_Int3(xn *xmlx.Node, obj *nga.Int3) {
+func load_GeometryBrepCurves(xn *xmlx.Node, obj *nga.GeometryBrepCurves) {
 
 }
 
@@ -119,311 +11,15 @@ func load_Formula(xn *xmlx.Node, obj *nga.Formula) {
 
 }
 
-func load_GeometryControlVertices(xn *xmlx.Node, obj *nga.GeometryControlVertices) {
-
-}
-
-func load_KxFrameTcp(xn *xmlx.Node, obj *nga.KxFrameTcp) {
-
-}
-
-func load_FxPassEvaluation(xn *xmlx.Node, obj *nga.FxPassEvaluation) {
-
-}
-
-func load_LightDef(xn *xmlx.Node, obj *nga.LightDef) {
-
-}
-
-func load_FxFormatRange(xn *xmlx.Node, obj *nga.FxFormatRange) {
-
-}
-
-func load_Int4(xn *xmlx.Node, obj *nga.Int4) {
-
-}
-
-func load_GeometryBrepSweptSurface(xn *xmlx.Node, obj *nga.GeometryBrepSweptSurface) {
-
-}
-
-func load_FxPassProgramShader(xn *xmlx.Node, obj *nga.FxPassProgramShader) {
-
-}
-
-func load_PxMaterialDef(xn *xmlx.Node, obj *nga.PxMaterialDef) {
-
-}
-
-func load_ParamOrFloat(xn *xmlx.Node, obj *nga.ParamOrFloat) {
-
-}
-
 func load_Sources(xn *xmlx.Node, obj *nga.Sources) {
 
 }
 
-func load_Int2x2(xn *xmlx.Node, obj *nga.Int2x2) {
+func load_PxSceneInst(xn *xmlx.Node, obj *nga.PxSceneInst) {
 
 }
 
-func load_FxPassProgram(xn *xmlx.Node, obj *nga.FxPassProgram) {
-
-}
-
-func load_GeometryMesh(xn *xmlx.Node, obj *nga.GeometryMesh) {
-
-}
-
-func load_FxProfileGlslCodeInclude(xn *xmlx.Node, obj *nga.FxProfileGlslCodeInclude) {
-
-}
-
-func load_SidFloat(xn *xmlx.Node, obj *nga.SidFloat) {
-
-}
-
-func load_KxFrameTip(xn *xmlx.Node, obj *nga.KxFrameTip) {
-
-}
-
-func load_FxCreateCubeInitFrom(xn *xmlx.Node, obj *nga.FxCreateCubeInitFrom) {
-
-}
-
-func load_PxRigidBodyCommon(xn *xmlx.Node, obj *nga.PxRigidBodyCommon) {
-
-}
-
-func load_KxKinematicsSystem(xn *xmlx.Node, obj *nga.KxKinematicsSystem) {
-
-}
-
-func load_GeometryBrepSurface(xn *xmlx.Node, obj *nga.GeometryBrepSurface) {
-
-}
-
-func load_PxRigidConstraintAttachment(xn *xmlx.Node, obj *nga.PxRigidConstraintAttachment) {
-
-}
-
-func load_FxCreateCube(xn *xmlx.Node, obj *nga.FxCreateCube) {
-
-}
-
-func load_FxImageInst(xn *xmlx.Node, obj *nga.FxImageInst) {
-
-}
-
-func load_Float3x2(xn *xmlx.Node, obj *nga.Float3x2) {
-
-}
-
-func load_GeometryBrepCurves(xn *xmlx.Node, obj *nga.GeometryBrepCurves) {
-
-}
-
-func load_FxWrapKind(xn *xmlx.Node, obj *nga.FxWrapKind) {
-
-}
-
-func load_Float4x4(xn *xmlx.Node, obj *nga.Float4x4) {
-
-}
-
-func load_Float4x3(xn *xmlx.Node, obj *nga.Float4x3) {
-
-}
-
-func load_ControllerInst(xn *xmlx.Node, obj *nga.ControllerInst) {
-
-}
-
-func load_FxInitFrom(xn *xmlx.Node, obj *nga.FxInitFrom) {
-
-}
-
-func load_KxAttachment(xn *xmlx.Node, obj *nga.KxAttachment) {
-
-}
-
-func load_FxMaterialDef(xn *xmlx.Node, obj *nga.FxMaterialDef) {
-
-}
-
-func load_FxTechniqueKind(xn *xmlx.Node, obj *nga.FxTechniqueKind) {
-
-}
-
-func load_FxEffectInstTechniqueHint(xn *xmlx.Node, obj *nga.FxEffectInstTechniqueHint) {
-
-}
-
-func load_KxKinematicsAxis(xn *xmlx.Node, obj *nga.KxKinematicsAxis) {
-
-}
-
-func load_FxSampler(xn *xmlx.Node, obj *nga.FxSampler) {
-
-}
-
-func load_PxMaterialInst(xn *xmlx.Node, obj *nga.PxMaterialInst) {
-
-}
-
-func load_Scene(xn *xmlx.Node, obj *nga.Scene) {
-
-}
-
-func load_ControllerInputs(xn *xmlx.Node, obj *nga.ControllerInputs) {
-
-}
-
-func load_KxFrame(xn *xmlx.Node, obj *nga.KxFrame) {
-
-}
-
-func load_FormulaInst(xn *xmlx.Node, obj *nga.FormulaInst) {
-
-}
-
-func load_KxAttachmentKind(xn *xmlx.Node, obj *nga.KxAttachmentKind) {
-
-}
-
-func load_GeometryBrepCone(xn *xmlx.Node, obj *nga.GeometryBrepCone) {
-
-}
-
-func load_LightSpot(xn *xmlx.Node, obj *nga.LightSpot) {
-
-}
-
-func load_FxGlslTechniques(xn *xmlx.Node, obj *nga.FxGlslTechniques) {
-
-}
-
-func load_FormulaDef(xn *xmlx.Node, obj *nga.FormulaDef) {
-
-}
-
-func load_FxAnnotation(xn *xmlx.Node, obj *nga.FxAnnotation) {
-
-}
-
-func load_FxCreateFormat(xn *xmlx.Node, obj *nga.FxCreateFormat) {
-
-}
-
-func load_Technique(xn *xmlx.Node, obj *nga.Technique) {
-
-}
-
-func load_FxFilterKind(xn *xmlx.Node, obj *nga.FxFilterKind) {
-
-}
-
-func load_GeometryBrepShells(xn *xmlx.Node, obj *nga.GeometryBrepShells) {
-
-}
-
-func load_FxCreate2DSizeExact(xn *xmlx.Node, obj *nga.FxCreate2DSizeExact) {
-
-}
-
-func load_ParamOrBool(xn *xmlx.Node, obj *nga.ParamOrBool) {
-
-}
-
-func load_GeometrySpline(xn *xmlx.Node, obj *nga.GeometrySpline) {
-
-}
-
-func load_Document(xn *xmlx.Node, obj *nga.Document) {
-
-}
-
-func load_Float3(xn *xmlx.Node, obj *nga.Float3) {
-
-}
-
-func load_Float7(xn *xmlx.Node, obj *nga.Float7) {
-
-}
-
-func load_FxPass(xn *xmlx.Node, obj *nga.FxPass) {
-
-}
-
-func load_SidString(xn *xmlx.Node, obj *nga.SidString) {
-
-}
-
-func load_KxJoint(xn *xmlx.Node, obj *nga.KxJoint) {
-
-}
-
-func load_PxCylinder(xn *xmlx.Node, obj *nga.PxCylinder) {
-
-}
-
-func load_FxCreate2DSizeRatio(xn *xmlx.Node, obj *nga.FxCreate2DSizeRatio) {
-
-}
-
-func load_GeometryBrepCylinder(xn *xmlx.Node, obj *nga.GeometryBrepCylinder) {
-
-}
-
-func load_PxMaterial(xn *xmlx.Node, obj *nga.PxMaterial) {
-
-}
-
-func load_LightPoint(xn *xmlx.Node, obj *nga.LightPoint) {
-
-}
-
-func load_LightDirectional(xn *xmlx.Node, obj *nga.LightDirectional) {
-
-}
-
-func load_FxImageInitFrom(xn *xmlx.Node, obj *nga.FxImageInitFrom) {
-
-}
-
-func load_GeometryBrepOrientation(xn *xmlx.Node, obj *nga.GeometryBrepOrientation) {
-
-}
-
-func load_ParamOrUint(xn *xmlx.Node, obj *nga.ParamOrUint) {
-
-}
-
-func load_GeometryBrepTorus(xn *xmlx.Node, obj *nga.GeometryBrepTorus) {
-
-}
-
-func load_SidFloat3(xn *xmlx.Node, obj *nga.SidFloat3) {
-
-}
-
-func load_KxJointDef(xn *xmlx.Node, obj *nga.KxJointDef) {
-
-}
-
-func load_GeometryBrepPlane(xn *xmlx.Node, obj *nga.GeometryBrepPlane) {
-
-}
-
-func load_PxModelDef(xn *xmlx.Node, obj *nga.PxModelDef) {
-
-}
-
-func load_Float2(xn *xmlx.Node, obj *nga.Float2) {
-
-}
-
-func load_SidBool(xn *xmlx.Node, obj *nga.SidBool) {
+func load_SidVec3(xn *xmlx.Node, obj *nga.SidVec3) {
 
 }
 
@@ -431,51 +27,51 @@ func load_GeometryPrimitives(xn *xmlx.Node, obj *nga.GeometryPrimitives) {
 
 }
 
-func load_GeometryBrepBox(xn *xmlx.Node, obj *nga.GeometryBrepBox) {
+func load_KxJointDef(xn *xmlx.Node, obj *nga.KxJointDef) {
 
 }
 
-func load_GeometryDef(xn *xmlx.Node, obj *nga.GeometryDef) {
+func load_KxFrameTcp(xn *xmlx.Node, obj *nga.KxFrameTcp) {
 
 }
 
-func load_AnimationClipDef(xn *xmlx.Node, obj *nga.AnimationClipDef) {
+func load_FxPassEvaluationClearColor(xn *xmlx.Node, obj *nga.FxPassEvaluationClearColor) {
 
 }
 
-func load_VisualSceneDef(xn *xmlx.Node, obj *nga.VisualSceneDef) {
+func load_FxCreateInitFrom(xn *xmlx.Node, obj *nga.FxCreateInitFrom) {
 
 }
 
-func load_GeometryBrepPcurves(xn *xmlx.Node, obj *nga.GeometryBrepPcurves) {
+func load_FormulaInst(xn *xmlx.Node, obj *nga.FormulaInst) {
 
 }
 
-func load_FxParamDefs(xn *xmlx.Node, obj *nga.FxParamDefs) {
+func load_FxEffectInstTechniqueHint(xn *xmlx.Node, obj *nga.FxEffectInstTechniqueHint) {
 
 }
 
-func load_FxProfile(xn *xmlx.Node, obj *nga.FxProfile) {
+func load_KxJointKind(xn *xmlx.Node, obj *nga.KxJointKind) {
 
 }
 
-func load_ParamOrRefSid(xn *xmlx.Node, obj *nga.ParamOrRefSid) {
+func load_LightAmbient(xn *xmlx.Node, obj *nga.LightAmbient) {
 
 }
 
-func load_FxPassProgramShaderSources(xn *xmlx.Node, obj *nga.FxPassProgramShaderSources) {
+func load_GeometryBrepOrientation(xn *xmlx.Node, obj *nga.GeometryBrepOrientation) {
 
 }
 
-func load_ControllerDef(xn *xmlx.Node, obj *nga.ControllerDef) {
+func load_ChildNode(xn *xmlx.Node, obj *nga.ChildNode) {
 
 }
 
-func load_KxJointInst(xn *xmlx.Node, obj *nga.KxJointInst) {
+func load_Transform(xn *xmlx.Node, obj *nga.Transform) {
 
 }
 
-func load_ParamOrSidFloat(xn *xmlx.Node, obj *nga.ParamOrSidFloat) {
+func load_CameraOptics(xn *xmlx.Node, obj *nga.CameraOptics) {
 
 }
 
@@ -483,27 +79,23 @@ func load_FxProfileCommon(xn *xmlx.Node, obj *nga.FxProfileCommon) {
 
 }
 
-func load_FxSamplerKind(xn *xmlx.Node, obj *nga.FxSamplerKind) {
+func load_NodeDef(xn *xmlx.Node, obj *nga.NodeDef) {
 
 }
 
-func load_IndexedInputs(xn *xmlx.Node, obj *nga.IndexedInputs) {
+func load_FxGlslTechniques(xn *xmlx.Node, obj *nga.FxGlslTechniques) {
 
 }
 
-func load_GeometryBrepCapsule(xn *xmlx.Node, obj *nga.GeometryBrepCapsule) {
+func load_CameraOrthographic(xn *xmlx.Node, obj *nga.CameraOrthographic) {
 
 }
 
-func load_FxVertexInputBinding(xn *xmlx.Node, obj *nga.FxVertexInputBinding) {
+func load_Scene(xn *xmlx.Node, obj *nga.Scene) {
 
 }
 
-func load_Extra(xn *xmlx.Node, obj *nga.Extra) {
-
-}
-
-func load_FxCreate2D(xn *xmlx.Node, obj *nga.FxCreate2D) {
+func load_FxPassProgramBindUniform(xn *xmlx.Node, obj *nga.FxPassProgramBindUniform) {
 
 }
 
@@ -515,19 +107,7 @@ func load_GeometryBrepEllipse(xn *xmlx.Node, obj *nga.GeometryBrepEllipse) {
 
 }
 
-func load_FxProfileGlsl(xn *xmlx.Node, obj *nga.FxProfileGlsl) {
-
-}
-
-func load_FxSamplerWrapping(xn *xmlx.Node, obj *nga.FxSamplerWrapping) {
-
-}
-
-func load_FxPassEvaluationClearStencil(xn *xmlx.Node, obj *nga.FxPassEvaluationClearStencil) {
-
-}
-
-func load_AnimationInst(xn *xmlx.Node, obj *nga.AnimationInst) {
+func load_GeometryInst(xn *xmlx.Node, obj *nga.GeometryInst) {
 
 }
 
@@ -535,131 +115,23 @@ func load_GeometryPositioning(xn *xmlx.Node, obj *nga.GeometryPositioning) {
 
 }
 
-func load_KxEffector(xn *xmlx.Node, obj *nga.KxEffector) {
-
-}
-
-func load_PxRigidConstraintDefs(xn *xmlx.Node, obj *nga.PxRigidConstraintDefs) {
-
-}
-
-func load_Int3x3(xn *xmlx.Node, obj *nga.Int3x3) {
-
-}
-
-func load_LightAttenuation(xn *xmlx.Node, obj *nga.LightAttenuation) {
-
-}
-
-func load_GeometryBrepLine(xn *xmlx.Node, obj *nga.GeometryBrepLine) {
-
-}
-
-func load_FxPassState(xn *xmlx.Node, obj *nga.FxPassState) {
-
-}
-
-func load_Float4(xn *xmlx.Node, obj *nga.Float4) {
-
-}
-
-func load_PxModelInst(xn *xmlx.Node, obj *nga.PxModelInst) {
-
-}
-
-func load_GeometryBrepNurbsSurface(xn *xmlx.Node, obj *nga.GeometryBrepNurbsSurface) {
-
-}
-
-func load_Layers(xn *xmlx.Node, obj *nga.Layers) {
-
-}
-
-func load_ParamDef(xn *xmlx.Node, obj *nga.ParamDef) {
-
-}
-
-func load_GeometryInst(xn *xmlx.Node, obj *nga.GeometryInst) {
-
-}
-
-func load_SourceArray(xn *xmlx.Node, obj *nga.SourceArray) {
-
-}
-
-func load_PxShape(xn *xmlx.Node, obj *nga.PxShape) {
-
-}
-
-func load_FxTechnique(xn *xmlx.Node, obj *nga.FxTechnique) {
-
-}
-
-func load_GeometryBrep(xn *xmlx.Node, obj *nga.GeometryBrep) {
-
-}
-
-func load_FxShaderStage(xn *xmlx.Node, obj *nga.FxShaderStage) {
-
-}
-
-func load_LightAmbient(xn *xmlx.Node, obj *nga.LightAmbient) {
-
-}
-
-func load_Bool3(xn *xmlx.Node, obj *nga.Bool3) {
-
-}
-
-func load_SidVec3(xn *xmlx.Node, obj *nga.SidVec3) {
-
-}
-
-func load_CameraPerspective(xn *xmlx.Node, obj *nga.CameraPerspective) {
-
-}
-
-func load_FxPassEvaluationTarget(xn *xmlx.Node, obj *nga.FxPassEvaluationTarget) {
-
-}
-
-func load_GeometryPrimitiveKind(xn *xmlx.Node, obj *nga.GeometryPrimitiveKind) {
-
-}
-
-func load_GeometryBrepSphere(xn *xmlx.Node, obj *nga.GeometryBrepSphere) {
-
-}
-
-func load_AnimSamplerBehavior(xn *xmlx.Node, obj *nga.AnimSamplerBehavior) {
-
-}
-
-func load_PxRigidConstraintSpring(xn *xmlx.Node, obj *nga.PxRigidConstraintSpring) {
-
-}
-
-func load_CameraOrthographic(xn *xmlx.Node, obj *nga.CameraOrthographic) {
-
-}
-
-func load_Source(xn *xmlx.Node, obj *nga.Source) {
-
-}
-
-func load_CameraOptics(xn *xmlx.Node, obj *nga.CameraOptics) {
-
-}
-
 func load_PxForceFieldInst(xn *xmlx.Node, obj *nga.PxForceFieldInst) {
 
 }
 
-func load_ParamInst(xn *xmlx.Node, obj *nga.ParamInst) {
+func load_GeometryBrepEdges(xn *xmlx.Node, obj *nga.GeometryBrepEdges) {
 
 }
 
-func load_ParamInsts(xn *xmlx.Node, obj *nga.ParamInsts) {
+func load_Bool2(xn *xmlx.Node, obj *nga.Bool2) {
+
+}
+
+func load_FxCubeFace(xn *xmlx.Node, obj *nga.FxCubeFace) {
+
+}
+
+func load_Int2(xn *xmlx.Node, obj *nga.Int2) {
 
 }
 
@@ -667,11 +139,87 @@ func load_Float2x4(xn *xmlx.Node, obj *nga.Float2x4) {
 
 }
 
-func load_GeometryPolygonHole(xn *xmlx.Node, obj *nga.GeometryPolygonHole) {
+func load_KxLink(xn *xmlx.Node, obj *nga.KxLink) {
 
 }
 
-func load_KxJointAxisBinding(xn *xmlx.Node, obj *nga.KxJointAxisBinding) {
+func load_FxPassProgramBindAttribute(xn *xmlx.Node, obj *nga.FxPassProgramBindAttribute) {
+
+}
+
+func load_KxModelInst(xn *xmlx.Node, obj *nga.KxModelInst) {
+
+}
+
+func load_ParamDef(xn *xmlx.Node, obj *nga.ParamDef) {
+
+}
+
+func load_FxFormatRange(xn *xmlx.Node, obj *nga.FxFormatRange) {
+
+}
+
+func load_GeometryMesh(xn *xmlx.Node, obj *nga.GeometryMesh) {
+
+}
+
+func load_CameraImager(xn *xmlx.Node, obj *nga.CameraImager) {
+
+}
+
+func load_PxRigidBodyDef(xn *xmlx.Node, obj *nga.PxRigidBodyDef) {
+
+}
+
+func load_FxCreateMips(xn *xmlx.Node, obj *nga.FxCreateMips) {
+
+}
+
+func load_GeometryBrepSolids(xn *xmlx.Node, obj *nga.GeometryBrepSolids) {
+
+}
+
+func load_LightDirectional(xn *xmlx.Node, obj *nga.LightDirectional) {
+
+}
+
+func load_GeometryVertices(xn *xmlx.Node, obj *nga.GeometryVertices) {
+
+}
+
+func load_Float2x3(xn *xmlx.Node, obj *nga.Float2x3) {
+
+}
+
+func load_GeometryBrepCircle(xn *xmlx.Node, obj *nga.GeometryBrepCircle) {
+
+}
+
+func load_KxAxisIndex(xn *xmlx.Node, obj *nga.KxAxisIndex) {
+
+}
+
+func load_FxSamplerKind(xn *xmlx.Node, obj *nga.FxSamplerKind) {
+
+}
+
+func load_KxAttachment(xn *xmlx.Node, obj *nga.KxAttachment) {
+
+}
+
+func load_GeometryBrepSweptSurface(xn *xmlx.Node, obj *nga.GeometryBrepSweptSurface) {
+
+}
+
+func load_ParamOrRefSid(xn *xmlx.Node, obj *nga.ParamOrRefSid) {
+
+}
+
+func load_ControllerDef(xn *xmlx.Node, obj *nga.ControllerDef) {
+
+}
+
+func load_FxBinding(xn *xmlx.Node, obj *nga.FxBinding) {
 
 }
 
@@ -679,7 +227,631 @@ func load_FxSamplerFiltering(xn *xmlx.Node, obj *nga.FxSamplerFiltering) {
 
 }
 
-func load_KxLink(xn *xmlx.Node, obj *nga.KxLink) {
+func load_VisualSceneEvaluation(xn *xmlx.Node, obj *nga.VisualSceneEvaluation) {
+
+}
+
+func load_FxSamplerWrapping(xn *xmlx.Node, obj *nga.FxSamplerWrapping) {
+
+}
+
+func load_GeometryBrepSphere(xn *xmlx.Node, obj *nga.GeometryBrepSphere) {
+
+}
+
+func load_SourceAccessor(xn *xmlx.Node, obj *nga.SourceAccessor) {
+
+}
+
+func load_FxCreateFormat(xn *xmlx.Node, obj *nga.FxCreateFormat) {
+
+}
+
+func load_FxColorOrTexture(xn *xmlx.Node, obj *nga.FxColorOrTexture) {
+
+}
+
+func load_FxPassState(xn *xmlx.Node, obj *nga.FxPassState) {
+
+}
+
+func load_VisualSceneInst(xn *xmlx.Node, obj *nga.VisualSceneInst) {
+
+}
+
+func load_FxEffectDef(xn *xmlx.Node, obj *nga.FxEffectDef) {
+
+}
+
+func load_Source(xn *xmlx.Node, obj *nga.Source) {
+
+}
+
+func load_Param(xn *xmlx.Node, obj *nga.Param) {
+
+}
+
+func load_FormulaDef(xn *xmlx.Node, obj *nga.FormulaDef) {
+
+}
+
+func load_GeometrySpline(xn *xmlx.Node, obj *nga.GeometrySpline) {
+
+}
+
+func load_GeometryBrepCylinder(xn *xmlx.Node, obj *nga.GeometryBrepCylinder) {
+
+}
+
+func load_Float4x4(xn *xmlx.Node, obj *nga.Float4x4) {
+
+}
+
+func load_KxModelDef(xn *xmlx.Node, obj *nga.KxModelDef) {
+
+}
+
+func load_VisualSceneRenderingMaterialInst(xn *xmlx.Node, obj *nga.VisualSceneRenderingMaterialInst) {
+
+}
+
+func load_FxPassProgram(xn *xmlx.Node, obj *nga.FxPassProgram) {
+
+}
+
+func load_PxShape(xn *xmlx.Node, obj *nga.PxShape) {
+
+}
+
+func load_PxCylinder(xn *xmlx.Node, obj *nga.PxCylinder) {
+
+}
+
+func load_KxBinding(xn *xmlx.Node, obj *nga.KxBinding) {
+
+}
+
+func load_ParamOrFloat(xn *xmlx.Node, obj *nga.ParamOrFloat) {
+
+}
+
+func load_GeometryPrimitiveKind(xn *xmlx.Node, obj *nga.GeometryPrimitiveKind) {
+
+}
+
+func load_CameraPerspective(xn *xmlx.Node, obj *nga.CameraPerspective) {
+
+}
+
+func load_GeometryDef(xn *xmlx.Node, obj *nga.GeometryDef) {
+
+}
+
+func load_Extra(xn *xmlx.Node, obj *nga.Extra) {
+
+}
+
+func load_InputShared(xn *xmlx.Node, obj *nga.InputShared) {
+
+}
+
+func load_FxMaterialInst(xn *xmlx.Node, obj *nga.FxMaterialInst) {
+
+}
+
+func load_KxSceneInst(xn *xmlx.Node, obj *nga.KxSceneInst) {
+
+}
+
+func load_FxTechniqueGlsl(xn *xmlx.Node, obj *nga.FxTechniqueGlsl) {
+
+}
+
+func load_AnimationSampler(xn *xmlx.Node, obj *nga.AnimationSampler) {
+
+}
+
+func load_FxMaterialDef(xn *xmlx.Node, obj *nga.FxMaterialDef) {
+
+}
+
+func load_FxColor(xn *xmlx.Node, obj *nga.FxColor) {
+
+}
+
+func load_LightInst(xn *xmlx.Node, obj *nga.LightInst) {
+
+}
+
+func load_GeometryBrepLine(xn *xmlx.Node, obj *nga.GeometryBrepLine) {
+
+}
+
+func load_FxTechniqueCommon(xn *xmlx.Node, obj *nga.FxTechniqueCommon) {
+
+}
+
+func load_GeometryBrepShells(xn *xmlx.Node, obj *nga.GeometryBrepShells) {
+
+}
+
+func load_PxSceneDef(xn *xmlx.Node, obj *nga.PxSceneDef) {
+
+}
+
+func load_LightSpot(xn *xmlx.Node, obj *nga.LightSpot) {
+
+}
+
+func load_KxJointInst(xn *xmlx.Node, obj *nga.KxJointInst) {
+
+}
+
+func load_ParamInst(xn *xmlx.Node, obj *nga.ParamInst) {
+
+}
+
+func load_CameraInst(xn *xmlx.Node, obj *nga.CameraInst) {
+
+}
+
+func load_FxTechnique(xn *xmlx.Node, obj *nga.FxTechnique) {
+
+}
+
+func load_FxCreate(xn *xmlx.Node, obj *nga.FxCreate) {
+
+}
+
+func load_PxRigidConstraintAttachment(xn *xmlx.Node, obj *nga.PxRigidConstraintAttachment) {
+
+}
+
+func load_FxPassEvaluationClearStencil(xn *xmlx.Node, obj *nga.FxPassEvaluationClearStencil) {
+
+}
+
+func load_LightDef(xn *xmlx.Node, obj *nga.LightDef) {
+
+}
+
+func load_GeometryBrepBox(xn *xmlx.Node, obj *nga.GeometryBrepBox) {
+
+}
+
+func load_ControllerInputs(xn *xmlx.Node, obj *nga.ControllerInputs) {
+
+}
+
+func load_FxPassEvaluationClearDepth(xn *xmlx.Node, obj *nga.FxPassEvaluationClearDepth) {
+
+}
+
+func load_GeometryBrepSurfaceCurves(xn *xmlx.Node, obj *nga.GeometryBrepSurfaceCurves) {
+
+}
+
+func load_PxRigidBodyInst(xn *xmlx.Node, obj *nga.PxRigidBodyInst) {
+
+}
+
+func load_GeometryBrepNurbsSurface(xn *xmlx.Node, obj *nga.GeometryBrepNurbsSurface) {
+
+}
+
+func load_KxFrame(xn *xmlx.Node, obj *nga.KxFrame) {
+
+}
+
+func load_FxImageInst(xn *xmlx.Node, obj *nga.FxImageInst) {
+
+}
+
+func load_FxTextureOpaque(xn *xmlx.Node, obj *nga.FxTextureOpaque) {
+
+}
+
+func load_FxSamplerImage(xn *xmlx.Node, obj *nga.FxSamplerImage) {
+
+}
+
+func load_GeometryControlVertices(xn *xmlx.Node, obj *nga.GeometryControlVertices) {
+
+}
+
+func load_Float2x2(xn *xmlx.Node, obj *nga.Float2x2) {
+
+}
+
+func load_FxCreate2DSizeRatio(xn *xmlx.Node, obj *nga.FxCreate2DSizeRatio) {
+
+}
+
+func load_VisualSceneDef(xn *xmlx.Node, obj *nga.VisualSceneDef) {
+
+}
+
+func load_Int4x4(xn *xmlx.Node, obj *nga.Int4x4) {
+
+}
+
+func load_KxAttachmentKind(xn *xmlx.Node, obj *nga.KxAttachmentKind) {
+
+}
+
+func load_GeometryBrepFaces(xn *xmlx.Node, obj *nga.GeometryBrepFaces) {
+
+}
+
+func load_KxFrameObject(xn *xmlx.Node, obj *nga.KxFrameObject) {
+
+}
+
+func load_KxJointAxisBinding(xn *xmlx.Node, obj *nga.KxJointAxisBinding) {
+
+}
+
+func load_MaterialBinding(xn *xmlx.Node, obj *nga.MaterialBinding) {
+
+}
+
+func load_Float3(xn *xmlx.Node, obj *nga.Float3) {
+
+}
+
+func load_Int4(xn *xmlx.Node, obj *nga.Int4) {
+
+}
+
+func load_IndexedInputs(xn *xmlx.Node, obj *nga.IndexedInputs) {
+
+}
+
+func load_Int2x2(xn *xmlx.Node, obj *nga.Int2x2) {
+
+}
+
+func load_AssetContributor(xn *xmlx.Node, obj *nga.AssetContributor) {
+
+}
+
+func load_FxPassEvaluation(xn *xmlx.Node, obj *nga.FxPassEvaluation) {
+
+}
+
+func load_Bool4(xn *xmlx.Node, obj *nga.Bool4) {
+
+}
+
+func load_GeometryBrepCone(xn *xmlx.Node, obj *nga.GeometryBrepCone) {
+
+}
+
+func load_Layers(xn *xmlx.Node, obj *nga.Layers) {
+
+}
+
+func load_Float3x2(xn *xmlx.Node, obj *nga.Float3x2) {
+
+}
+
+func load_PxRigidBodyDefs(xn *xmlx.Node, obj *nga.PxRigidBodyDefs) {
+
+}
+
+func load_PxRigidConstraintInst(xn *xmlx.Node, obj *nga.PxRigidConstraintInst) {
+
+}
+
+func load_FxProfileGlslCodeInclude(xn *xmlx.Node, obj *nga.FxProfileGlslCodeInclude) {
+
+}
+
+func load_FxPassProgramShader(xn *xmlx.Node, obj *nga.FxPassProgramShader) {
+
+}
+
+func load_ControllerMorph(xn *xmlx.Node, obj *nga.ControllerMorph) {
+
+}
+
+func load_KxKinematicsSystem(xn *xmlx.Node, obj *nga.KxKinematicsSystem) {
+
+}
+
+func load_PxRigidBodyCommon(xn *xmlx.Node, obj *nga.PxRigidBodyCommon) {
+
+}
+
+func load_PxMaterialDef(xn *xmlx.Node, obj *nga.PxMaterialDef) {
+
+}
+
+func load_FxPass(xn *xmlx.Node, obj *nga.FxPass) {
+
+}
+
+func load_Float4(xn *xmlx.Node, obj *nga.Float4) {
+
+}
+
+func load_KxJointLimits(xn *xmlx.Node, obj *nga.KxJointLimits) {
+
+}
+
+func load_AnimationDef(xn *xmlx.Node, obj *nga.AnimationDef) {
+
+}
+
+func load_FxFilterKind(xn *xmlx.Node, obj *nga.FxFilterKind) {
+
+}
+
+func load_GeometryBrepHyperbola(xn *xmlx.Node, obj *nga.GeometryBrepHyperbola) {
+
+}
+
+func load_ParamOrBool(xn *xmlx.Node, obj *nga.ParamOrBool) {
+
+}
+
+func load_FxSampler(xn *xmlx.Node, obj *nga.FxSampler) {
+
+}
+
+func load_PxRigidConstraintDefs(xn *xmlx.Node, obj *nga.PxRigidConstraintDefs) {
+
+}
+
+func load_LightPoint(xn *xmlx.Node, obj *nga.LightPoint) {
+
+}
+
+func load_FxCreateFormatHint(xn *xmlx.Node, obj *nga.FxCreateFormatHint) {
+
+}
+
+func load_Asset(xn *xmlx.Node, obj *nga.Asset) {
+
+}
+
+func load_KxSceneDef(xn *xmlx.Node, obj *nga.KxSceneDef) {
+
+}
+
+func load_FxCreateCube(xn *xmlx.Node, obj *nga.FxCreateCube) {
+
+}
+
+func load_Float3x3(xn *xmlx.Node, obj *nga.Float3x3) {
+
+}
+
+func load_GeometryBrepCurve(xn *xmlx.Node, obj *nga.GeometryBrepCurve) {
+
+}
+
+func load_FxShaderStage(xn *xmlx.Node, obj *nga.FxShaderStage) {
+
+}
+
+func load_SidString(xn *xmlx.Node, obj *nga.SidString) {
+
+}
+
+func load_Bool3(xn *xmlx.Node, obj *nga.Bool3) {
+
+}
+
+func load_FxEffectInst(xn *xmlx.Node, obj *nga.FxEffectInst) {
+
+}
+
+func load_VisualSceneRendering(xn *xmlx.Node, obj *nga.VisualSceneRendering) {
+
+}
+
+func load_FxCreate3D(xn *xmlx.Node, obj *nga.FxCreate3D) {
+
+}
+
+func load_Float2(xn *xmlx.Node, obj *nga.Float2) {
+
+}
+
+func load_KxJoint(xn *xmlx.Node, obj *nga.KxJoint) {
+
+}
+
+func load_AnimationInst(xn *xmlx.Node, obj *nga.AnimationInst) {
+
+}
+
+func load_GeometryBrep(xn *xmlx.Node, obj *nga.GeometryBrep) {
+
+}
+
+func load_ParamOrUint(xn *xmlx.Node, obj *nga.ParamOrUint) {
+
+}
+
+func load_LightAttenuation(xn *xmlx.Node, obj *nga.LightAttenuation) {
+
+}
+
+func load_Float4x2(xn *xmlx.Node, obj *nga.Float4x2) {
+
+}
+
+func load_PxModelInst(xn *xmlx.Node, obj *nga.PxModelInst) {
+
+}
+
+func load_NodeInst(xn *xmlx.Node, obj *nga.NodeInst) {
+
+}
+
+func load_FxVertexInputBinding(xn *xmlx.Node, obj *nga.FxVertexInputBinding) {
+
+}
+
+func load_SidFloat(xn *xmlx.Node, obj *nga.SidFloat) {
+
+}
+
+func load_FxWrapKind(xn *xmlx.Node, obj *nga.FxWrapKind) {
+
+}
+
+func load_GeometryBrepSurfaces(xn *xmlx.Node, obj *nga.GeometryBrepSurfaces) {
+
+}
+
+func load_FxImageDef(xn *xmlx.Node, obj *nga.FxImageDef) {
+
+}
+
+func load_FxPassEvaluationTarget(xn *xmlx.Node, obj *nga.FxPassEvaluationTarget) {
+
+}
+
+func load_ControllerInst(xn *xmlx.Node, obj *nga.ControllerInst) {
+
+}
+
+func load_Document(xn *xmlx.Node, obj *nga.Document) {
+
+}
+
+func load_FxCreate2D(xn *xmlx.Node, obj *nga.FxCreate2D) {
+
+}
+
+func load_SidBool(xn *xmlx.Node, obj *nga.SidBool) {
+
+}
+
+func load_PxRigidConstraintLimit(xn *xmlx.Node, obj *nga.PxRigidConstraintLimit) {
+
+}
+
+func load_SidFloat3(xn *xmlx.Node, obj *nga.SidFloat3) {
+
+}
+
+func load_ParamDefs(xn *xmlx.Node, obj *nga.ParamDefs) {
+
+}
+
+func load_Int3(xn *xmlx.Node, obj *nga.Int3) {
+
+}
+
+func load_AnimSamplerBehavior(xn *xmlx.Node, obj *nga.AnimSamplerBehavior) {
+
+}
+
+func load_TransformKind(xn *xmlx.Node, obj *nga.TransformKind) {
+
+}
+
+func load_FxParamDefs(xn *xmlx.Node, obj *nga.FxParamDefs) {
+
+}
+
+func load_GeometryBrepSurface(xn *xmlx.Node, obj *nga.GeometryBrepSurface) {
+
+}
+
+func load_FxCreate2DSizeExact(xn *xmlx.Node, obj *nga.FxCreate2DSizeExact) {
+
+}
+
+func load_AssetGeographicLocation(xn *xmlx.Node, obj *nga.AssetGeographicLocation) {
+
+}
+
+func load_FxPassProgramShaderSources(xn *xmlx.Node, obj *nga.FxPassProgramShaderSources) {
+
+}
+
+func load_GeometryBrepTorus(xn *xmlx.Node, obj *nga.GeometryBrepTorus) {
+
+}
+
+func load_PxModelDef(xn *xmlx.Node, obj *nga.PxModelDef) {
+
+}
+
+func load_Int3x3(xn *xmlx.Node, obj *nga.Int3x3) {
+
+}
+
+func load_KxFrameOrigin(xn *xmlx.Node, obj *nga.KxFrameOrigin) {
+
+}
+
+func load_KxMotionSystem(xn *xmlx.Node, obj *nga.KxMotionSystem) {
+
+}
+
+func load_KxKinematicsAxis(xn *xmlx.Node, obj *nga.KxKinematicsAxis) {
+
+}
+
+func load_SourceArray(xn *xmlx.Node, obj *nga.SourceArray) {
+
+}
+
+func load_ControllerSkin(xn *xmlx.Node, obj *nga.ControllerSkin) {
+
+}
+
+func load_GeometryBrepPcurves(xn *xmlx.Node, obj *nga.GeometryBrepPcurves) {
+
+}
+
+func load_ParamInsts(xn *xmlx.Node, obj *nga.ParamInsts) {
+
+}
+
+func load_FxParamDef(xn *xmlx.Node, obj *nga.FxParamDef) {
+
+}
+
+func load_GeometryPolygonHole(xn *xmlx.Node, obj *nga.GeometryPolygonHole) {
+
+}
+
+func load_FxProfileGlsl(xn *xmlx.Node, obj *nga.FxProfileGlsl) {
+
+}
+
+func load_GeometryBrepParabola(xn *xmlx.Node, obj *nga.GeometryBrepParabola) {
+
+}
+
+func load_KxMotionAxis(xn *xmlx.Node, obj *nga.KxMotionAxis) {
+
+}
+
+func load_CameraDef(xn *xmlx.Node, obj *nga.CameraDef) {
+
+}
+
+func load_FxTechniqueKind(xn *xmlx.Node, obj *nga.FxTechniqueKind) {
+
+}
+
+func load_FxAnnotation(xn *xmlx.Node, obj *nga.FxAnnotation) {
+
+}
+
+func load_AnimationChannel(xn *xmlx.Node, obj *nga.AnimationChannel) {
+
+}
+
+func load_Float7(xn *xmlx.Node, obj *nga.Float7) {
 
 }
 
@@ -691,103 +863,7 @@ func load_ParamOrFloat2(xn *xmlx.Node, obj *nga.ParamOrFloat2) {
 
 }
 
-func load_Asset(xn *xmlx.Node, obj *nga.Asset) {
-
-}
-
-func load_Bool4(xn *xmlx.Node, obj *nga.Bool4) {
-
-}
-
-func load_FxBinding(xn *xmlx.Node, obj *nga.FxBinding) {
-
-}
-
-func load_FxCreateInitFrom(xn *xmlx.Node, obj *nga.FxCreateInitFrom) {
-
-}
-
-func load_FxPassEvaluationClearColor(xn *xmlx.Node, obj *nga.FxPassEvaluationClearColor) {
-
-}
-
-func load_VisualSceneInst(xn *xmlx.Node, obj *nga.VisualSceneInst) {
-
-}
-
-func load_KxAxisLimits(xn *xmlx.Node, obj *nga.KxAxisLimits) {
-
-}
-
-func load_KxModelDef(xn *xmlx.Node, obj *nga.KxModelDef) {
-
-}
-
-func load_PxRigidConstraintDef(xn *xmlx.Node, obj *nga.PxRigidConstraintDef) {
-
-}
-
-func load_PxSceneDef(xn *xmlx.Node, obj *nga.PxSceneDef) {
-
-}
-
-func load_FxColorOrTexture(xn *xmlx.Node, obj *nga.FxColorOrTexture) {
-
-}
-
-func load_ParamOrInt(xn *xmlx.Node, obj *nga.ParamOrInt) {
-
-}
-
-func load_ChildNode(xn *xmlx.Node, obj *nga.ChildNode) {
-
-}
-
-func load_PxSceneInst(xn *xmlx.Node, obj *nga.PxSceneInst) {
-
-}
-
-func load_MaterialBinding(xn *xmlx.Node, obj *nga.MaterialBinding) {
-
-}
-
-func load_KxSceneDef(xn *xmlx.Node, obj *nga.KxSceneDef) {
-
-}
-
-func load_AnimationClipInst(xn *xmlx.Node, obj *nga.AnimationClipInst) {
-
-}
-
-func load_FxTexture(xn *xmlx.Node, obj *nga.FxTexture) {
-
-}
-
-func load_Int2(xn *xmlx.Node, obj *nga.Int2) {
-
-}
-
-func load_GeometryBrepFaces(xn *xmlx.Node, obj *nga.GeometryBrepFaces) {
-
-}
-
-func load_FxImageDef(xn *xmlx.Node, obj *nga.FxImageDef) {
-
-}
-
-func load_AnimationChannel(xn *xmlx.Node, obj *nga.AnimationChannel) {
-
-}
-
-func load_PxForceFieldDef(xn *xmlx.Node, obj *nga.PxForceFieldDef) {
-
-}
-
-func load_FxCreateFormatHint(xn *xmlx.Node, obj *nga.FxCreateFormatHint) {
-
-}
-
-func load_KxMotionSystem(xn *xmlx.Node, obj *nga.KxMotionSystem) {
+func load_FxProfile(xn *xmlx.Node, obj *nga.FxProfile) {
 
 }
 
@@ -795,103 +871,47 @@ func load_FxCreate3DInitFrom(xn *xmlx.Node, obj *nga.FxCreate3DInitFrom) {
 
 }
 
-func load_Transform(xn *xmlx.Node, obj *nga.Transform) {
+func load_PxMaterialInst(xn *xmlx.Node, obj *nga.PxMaterialInst) {
 
 }
 
-func load_VisualSceneRenderingMaterialInst(xn *xmlx.Node, obj *nga.VisualSceneRenderingMaterialInst) {
+func load_PxMaterial(xn *xmlx.Node, obj *nga.PxMaterial) {
 
 }
 
-func load_Float2x2(xn *xmlx.Node, obj *nga.Float2x2) {
+func load_Float3x4(xn *xmlx.Node, obj *nga.Float3x4) {
 
 }
 
-func load_PxRigidBodyDefs(xn *xmlx.Node, obj *nga.PxRigidBodyDefs) {
+func load_FxInitFrom(xn *xmlx.Node, obj *nga.FxInitFrom) {
 
 }
 
-func load_GeometryBrepHyperbola(xn *xmlx.Node, obj *nga.GeometryBrepHyperbola) {
+func load_KxAxisLimits(xn *xmlx.Node, obj *nga.KxAxisLimits) {
 
 }
 
-func load_VisualSceneEvaluation(xn *xmlx.Node, obj *nga.VisualSceneEvaluation) {
+func load_ParamOrSidFloat(xn *xmlx.Node, obj *nga.ParamOrSidFloat) {
 
 }
 
-func load_PxRigidBodyInst(xn *xmlx.Node, obj *nga.PxRigidBodyInst) {
+func load_AnimationClipDef(xn *xmlx.Node, obj *nga.AnimationClipDef) {
 
 }
 
-func load_GeometryBrepSurfaces(xn *xmlx.Node, obj *nga.GeometryBrepSurfaces) {
+func load_KxEffector(xn *xmlx.Node, obj *nga.KxEffector) {
 
 }
 
-func load_NodeDef(xn *xmlx.Node, obj *nga.NodeDef) {
+func load_FxFormatPrecision(xn *xmlx.Node, obj *nga.FxFormatPrecision) {
 
 }
 
-func load_PxRigidConstraintInst(xn *xmlx.Node, obj *nga.PxRigidConstraintInst) {
+func load_AnimationClipInst(xn *xmlx.Node, obj *nga.AnimationClipInst) {
 
 }
 
-func load_KxAxisIndex(xn *xmlx.Node, obj *nga.KxAxisIndex) {
-
-}
-
-func load_AssetGeographicLocation(xn *xmlx.Node, obj *nga.AssetGeographicLocation) {
-
-}
-
-func load_GeometryBrepSolids(xn *xmlx.Node, obj *nga.GeometryBrepSolids) {
-
-}
-
-func load_FxCreate3D(xn *xmlx.Node, obj *nga.FxCreate3D) {
-
-}
-
-func load_ControllerMorph(xn *xmlx.Node, obj *nga.ControllerMorph) {
-
-}
-
-func load_CameraDef(xn *xmlx.Node, obj *nga.CameraDef) {
-
-}
-
-func load_VisualSceneRendering(xn *xmlx.Node, obj *nga.VisualSceneRendering) {
-
-}
-
-func load_Float4x2(xn *xmlx.Node, obj *nga.Float4x2) {
-
-}
-
-func load_CameraInst(xn *xmlx.Node, obj *nga.CameraInst) {
-
-}
-
-func load_AssetContributor(xn *xmlx.Node, obj *nga.AssetContributor) {
-
-}
-
-func load_TransformKind(xn *xmlx.Node, obj *nga.TransformKind) {
-
-}
-
-func load_FxCreateMips(xn *xmlx.Node, obj *nga.FxCreateMips) {
-
-}
-
-func load_KxJointKind(xn *xmlx.Node, obj *nga.KxJointKind) {
-
-}
-
-func load_KxModelInst(xn *xmlx.Node, obj *nga.KxModelInst) {
-
-}
-
-func load_Bool2(xn *xmlx.Node, obj *nga.Bool2) {
+func load_Technique(xn *xmlx.Node, obj *nga.Technique) {
 
 }
 
@@ -899,71 +919,23 @@ func load_KxArticulatedSystemDef(xn *xmlx.Node, obj *nga.KxArticulatedSystemDef)
 
 }
 
-func load_Int4x4(xn *xmlx.Node, obj *nga.Int4x4) {
+func load_GeometryBrepPlane(xn *xmlx.Node, obj *nga.GeometryBrepPlane) {
 
 }
 
-func load_PxRigidConstraintLimit(xn *xmlx.Node, obj *nga.PxRigidConstraintLimit) {
+func load_ParamOrInt(xn *xmlx.Node, obj *nga.ParamOrInt) {
 
 }
 
-func load_SourceAccessor(xn *xmlx.Node, obj *nga.SourceAccessor) {
+func load_FxFormatChannels(xn *xmlx.Node, obj *nga.FxFormatChannels) {
 
 }
 
-func load_FxPassEvaluationClearDepth(xn *xmlx.Node, obj *nga.FxPassEvaluationClearDepth) {
+func load_GeometryBrepWires(xn *xmlx.Node, obj *nga.GeometryBrepWires) {
 
 }
 
-func load_GeometryBrepParabola(xn *xmlx.Node, obj *nga.GeometryBrepParabola) {
-
-}
-
-func load_FxEffectInst(xn *xmlx.Node, obj *nga.FxEffectInst) {
-
-}
-
-func load_KxMotionAxis(xn *xmlx.Node, obj *nga.KxMotionAxis) {
-
-}
-
-func load_GeometryBrepCurve(xn *xmlx.Node, obj *nga.GeometryBrepCurve) {
-
-}
-
-func load_KxFrameOrigin(xn *xmlx.Node, obj *nga.KxFrameOrigin) {
-
-}
-
-func load_FxColor(xn *xmlx.Node, obj *nga.FxColor) {
-
-}
-
-func load_InputShared(xn *xmlx.Node, obj *nga.InputShared) {
-
-}
-
-func load_Float2x3(xn *xmlx.Node, obj *nga.Float2x3) {
-
-}
-
-func load_KxSceneInst(xn *xmlx.Node, obj *nga.KxSceneInst) {
-
-}
-
-func load_FxSamplerImage(xn *xmlx.Node, obj *nga.FxSamplerImage) {
-
-}
-
-func load_FxMaterialInst(xn *xmlx.Node, obj *nga.FxMaterialInst) {
-
-}
-
-func load_Float3x3(xn *xmlx.Node, obj *nga.Float3x3) {
-
-}
-
-func load_GeometryBrepSurfaceCurves(xn *xmlx.Node, obj *nga.GeometryBrepSurfaceCurves) {
+func load_PxRigidConstraintSpring(xn *xmlx.Node, obj *nga.PxRigidConstraintSpring) {
 
 }
 
@@ -971,10 +943,38 @@ func load_FxSamplerStates(xn *xmlx.Node, obj *nga.FxSamplerStates) {
 
 }
 
-func load_FxTechniqueCommon(xn *xmlx.Node, obj *nga.FxTechniqueCommon) {
+func load_GeometryBrepCapsule(xn *xmlx.Node, obj *nga.GeometryBrepCapsule) {
 
 }
 
-func load_KxJointLimits(xn *xmlx.Node, obj *nga.KxJointLimits) {
+func load_KxFrameTip(xn *xmlx.Node, obj *nga.KxFrameTip) {
+
+}
+
+func load_FxImageInitFrom(xn *xmlx.Node, obj *nga.FxImageInitFrom) {
+
+}
+
+func load_PxForceFieldDef(xn *xmlx.Node, obj *nga.PxForceFieldDef) {
+
+}
+
+func load_Float4x3(xn *xmlx.Node, obj *nga.Float4x3) {
+
+}
+
+func load_FxTexture(xn *xmlx.Node, obj *nga.FxTexture) {
+
+}
+
+func load_Input(xn *xmlx.Node, obj *nga.Input) {
+
+}
+
+func load_PxRigidConstraintDef(xn *xmlx.Node, obj *nga.PxRigidConstraintDef) {
+
+}
+
+func load_FxCreateCubeInitFrom(xn *xmlx.Node, obj *nga.FxCreateCubeInitFrom) {
 
 }

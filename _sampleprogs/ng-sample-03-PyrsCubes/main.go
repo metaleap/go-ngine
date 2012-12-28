@@ -63,7 +63,7 @@ func LoadSampleScene_03_PyrsCubes() {
 
 	//	textures / materials
 
-	nga.FxImageDefs.AddFromRefUrls(map[string]string{
+	nga.FxImageDefs.AddFromIdsUrls(map[string]string{
 		"tex_cobbles": "tex/cobbles.png",
 		"tex_crate":   "tex/crate.jpeg",
 		"tex_mosaic":  "tex/mosaic.jpeg",

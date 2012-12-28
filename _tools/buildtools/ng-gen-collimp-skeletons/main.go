@@ -104,13 +104,14 @@ func load_%s(xn *xmlx.Node, obj *nga.%s) {
 		i                                    int
 		ok, canDirty                         bool
 		srcLibs, srcInits, srcObjs, srcLoads string
+		ctorFunc                             reflect.Value
 	)
 	has := []string{"Asset", "Extras", "FxParamDefs", "ID", "Inputs", "Name", "ParamDefs", "ParamInsts", "Sid", "Sources", "Techniques"}
 	flag.Parse()
 	for n, t := range ngr.Types {
 		if canDirty = false; !(strings.HasPrefix(n, "Lib") || strings.HasPrefix(n, "Mesh") || strings.HasPrefix(n, "Base") || strings.HasSuffix(n, "Base") || strings.HasPrefix(n, "Has") || strings.HasPrefix(n, "Ref")) {
 			srcObjs += fmt.Sprintf(srcImpObj, n, n, n)
-			if _, ok = ngr.Functions["New"+n]; ok && (n != "FxImageInitFrom") {
+			if ctorFunc, ok = ngr.Functions["New"+n]; ok && ctorFunc.Type().NumIn() == 0 {
 				srcInits += fmt.Sprintf(srcImpInitCtor, n, n, n)
 			} else {
 				srcInits += fmt.Sprintf(srcImpInitNew, n, n, n)
