@@ -48,6 +48,10 @@
 Provides utility functions encapsulating (otherwise potentially verbose)
 recurring tasks for working with the go:ngine &#39;assets&#39; package.
 </p>
+<p>
+Specifically, provides a wide range of useful constructor functions for
+a variety of &#39;assets&#39; package resource definitions and instances.
+</p>
 
 			</div>
 		</div>
@@ -59,12 +63,6 @@ recurring tasks for working with the go:ngine &#39;assets&#39; package.
 			<dl>
 			
 			
-			
-				
-				<dd><a href="#FxAddEffect">func FxAddEffect(id string, ensureCommonProfile, ensureGlslProfile bool) (me *nga.FxEffectDef)</a></dd>
-			
-				
-				<dd><a href="#FxAddImage">func FxAddImage(id, refUrl string) *nga.FxImageDef</a></dd>
 			
 				
 				<dd><a href="#FxAddProfileCommon">func FxAddProfileCommon(def *nga.FxEffectDef) (prof *nga.FxProfile)</a></dd>
@@ -83,6 +81,12 @@ recurring tasks for working with the go:ngine &#39;assets&#39; package.
 			
 				
 				<dd><a href="#NewFxColorOrTexture">func NewFxColorOrTexture(texture *nga.FxTexture, color *nga.FxColor, paramRef string) (ct *nga.FxColorOrTexture)</a></dd>
+			
+				
+				<dd><a href="#NewFxEffectDef">func NewFxEffectDef(id string, ensureCommonProfile, ensureGlslProfile bool) (me *nga.FxEffectDef)</a></dd>
+			
+				
+				<dd><a href="#NewFxImageDef">func NewFxImageDef(id, refUrl string) (me *nga.FxImageDef)</a></dd>
 			
 				
 				<dd><a href="#NewFxSampler2D">func NewFxSampler2D(image *nga.FxImageInst, filtering *nga.FxSamplerFiltering, wrapping *nga.FxSamplerWrapping) (me *nga.FxSampler)</a></dd>
@@ -118,29 +122,7 @@ recurring tasks for working with the go:ngine &#39;assets&#39; package.
 		
 			
 			
-			<h2 id="FxAddEffect">func <a href="/target/fxeffect.go?s=233:327#L1">FxAddEffect</a></h2>
-			<pre>func FxAddEffect(id string, ensureCommonProfile, ensureGlslProfile bool) (me *nga.FxEffectDef)</pre>
-			<p>
-Adds a new assets.FxEffectDef with the specified Id to the assets.FxEffectDefs
-library, and optionally adds a common profile, a GLSL profile, or both to it.
-</p>
-
-			
-		
-			
-			
-			<h2 id="FxAddImage">func <a href="/target/fximage.go?s=207:257#L1">FxAddImage</a></h2>
-			<pre>func FxAddImage(id, refUrl string) *nga.FxImageDef</pre>
-			<p>
-Adds a new assets.FxImageDef with the specified Id to the assets.FxImageDefs
-library, to be initialized from the specified refUrl.
-</p>
-
-			
-		
-			
-			
-			<h2 id="FxAddProfileCommon">func <a href="/target/fxeffect.go?s=584:651#L11">FxAddProfileCommon</a></h2>
+			<h2 id="FxAddProfileCommon">func <a href="/target/fxeffect.go?s=169:236#L1">FxAddProfileCommon</a></h2>
 			<pre>func FxAddProfileCommon(def *nga.FxEffectDef) (prof *nga.FxProfile)</pre>
 			<p>
 Adds a new common profile to the specified effect definition (even if it already contains one).
@@ -150,7 +132,7 @@ Adds a new common profile to the specified effect definition (even if it already
 		
 			
 			
-			<h2 id="FxAddProfileGlsl">func <a href="/target/fxeffect.go?s=868:933#L19">FxAddProfileGlsl</a></h2>
+			<h2 id="FxAddProfileGlsl">func <a href="/target/fxeffect.go?s=453:518#L6">FxAddProfileGlsl</a></h2>
 			<pre>func FxAddProfileGlsl(def *nga.FxEffectDef) (prof *nga.FxProfile)</pre>
 			<p>
 Adds a new GLSL profile to the specified effect definition (even if it already contains one).
@@ -160,7 +142,7 @@ Adds a new GLSL profile to the specified effect definition (even if it already c
 		
 			
 			
-			<h2 id="FxEnsureProfileCommon">func <a href="/target/fxeffect.go?s=1136:1206#L27">FxEnsureProfileCommon</a></h2>
+			<h2 id="FxEnsureProfileCommon">func <a href="/target/fxeffect.go?s=721:791#L14">FxEnsureProfileCommon</a></h2>
 			<pre>func FxEnsureProfileCommon(def *nga.FxEffectDef) (prof *nga.FxProfile)</pre>
 			<p>
 Ensures the specified effect definition contains a common profile and returns it.
@@ -170,7 +152,7 @@ Ensures the specified effect definition contains a common profile and returns it
 		
 			
 			
-			<h2 id="FxEnsureProfileGlsl">func <a href="/target/fxeffect.go?s=1448:1516#L41">FxEnsureProfileGlsl</a></h2>
+			<h2 id="FxEnsureProfileGlsl">func <a href="/target/fxeffect.go?s=1033:1101#L28">FxEnsureProfileGlsl</a></h2>
 			<pre>func FxEnsureProfileGlsl(def *nga.FxEffectDef) (prof *nga.FxProfile)</pre>
 			<p>
 Ensures the specified effect definition contains a GLSL profile and returns it.
@@ -180,7 +162,7 @@ Ensures the specified effect definition contains a GLSL profile and returns it.
 		
 			
 			
-			<h2 id="NewFxColor">func <a href="/target/fxeffect.go?s=1800:1865#L56">NewFxColor</a></h2>
+			<h2 id="NewFxColor">func <a href="/target/fxeffect.go?s=1385:1450#L43">NewFxColor</a></h2>
 			<pre>func NewFxColor(sid string, r, g, b, a float32) (me *nga.FxColor)</pre>
 			<p>
 Creates and returns a new assets.FxColor initialized with the specified
@@ -191,12 +173,34 @@ Sid and red, green, blue and alpha channel values.
 		
 			
 			
-			<h2 id="NewFxColorOrTexture">func <a href="/target/fxeffect.go?s=2179:2291#L65">NewFxColorOrTexture</a></h2>
+			<h2 id="NewFxColorOrTexture">func <a href="/target/fxeffect.go?s=1764:1876#L52">NewFxColorOrTexture</a></h2>
 			<pre>func NewFxColorOrTexture(texture *nga.FxTexture, color *nga.FxColor, paramRef string) (ct *nga.FxColorOrTexture)</pre>
 			<p>
 Creates and returns a new assets.FxColorOrTexture referring to either the
 specified texture or the specified color. Only at least and at most one of
 the arguments (texture, color, paramRef) must be non-nil/non-empty.
+</p>
+
+			
+		
+			
+			
+			<h2 id="NewFxEffectDef">func <a href="/target/fxeffect.go?s=2126:2223#L62">NewFxEffectDef</a></h2>
+			<pre>func NewFxEffectDef(id string, ensureCommonProfile, ensureGlslProfile bool) (me *nga.FxEffectDef)</pre>
+			<p>
+Creates a new assets.FxEffectDef with the specified Id, and
+optionally adds a common profile, a GLSL profile, or both to it.
+</p>
+
+			
+		
+			
+			
+			<h2 id="NewFxImageDef">func <a href="/target/fximage.go?s=188:246#L1">NewFxImageDef</a></h2>
+			<pre>func NewFxImageDef(id, refUrl string) (me *nga.FxImageDef)</pre>
+			<p>
+Creates and returns a new assets.FxImageDef with the specified Id,
+to be initialized from the specified refUrl.
 </p>
 
 			
@@ -215,7 +219,7 @@ specified wrapping (or assets.DefaultFxSamplerWrapping if nil).
 		
 			
 			
-			<h2 id="NewFxTexture">func <a href="/target/fxeffect.go?s=2496:2569#L74">NewFxTexture</a></h2>
+			<h2 id="NewFxTexture">func <a href="/target/fxeffect.go?s=2464:2537#L74">NewFxTexture</a></h2>
 			<pre>func NewFxTexture(sampler2DParamRef, texCoord string) (me *nga.FxTexture)</pre>
 			<p>
 Creates and returns a new assets.FxTexture sampling from the specified 2D sampler.

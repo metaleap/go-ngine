@@ -4,8 +4,10 @@ import (
 	nga "github.com/go3d/go-ngine/assets"
 )
 
-//	Adds a new assets.FxImageDef with the specified Id to the assets.FxImageDefs
-//	library, to be initialized from the specified refUrl.
-func FxAddImage(id, refUrl string) *nga.FxImageDef {
-	return nga.FxImageDefs.AddNewUrl(id, refUrl)
+//	Creates and returns a new assets.FxImageDef with the specified Id,
+//	to be initialized from the specified refUrl.
+func NewFxImageDef(id, refUrl string) (me *nga.FxImageDef) {
+	me = nga.FxImageDefs.New(id)
+	me.InitFrom = nga.NewFxImageInitFrom(refUrl)
+	return
 }

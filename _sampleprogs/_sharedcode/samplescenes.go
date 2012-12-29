@@ -55,8 +55,8 @@ func AddTextureMaterials(idsUrls map[string]string) {
 		effect *nga.FxEffectDef
 	)
 	for id, refUrl := range idsUrls {
-		image = ngau.FxAddImage("tex_"+id, refUrl)
-		effect = ngau.FxAddEffect("fx_"+id, true, false)
+		image = nga.FxImageDefs.Add(ngau.NewFxImageDef("tex_"+id, refUrl))
+		effect = nga.FxEffectDefs.Add(ngau.NewFxEffectDef("fx_"+id, true, false))
 		effect.Profiles[0].NewParams.Set("sampler_"+id, ngau.NewFxSampler2D(image.DefaultInst(), nil, nil))
 		effect.Profiles[0].Common.Technique.Diffuse = ngau.NewFxColorOrTexture(ngau.NewFxTexture("sampler_"+id, "TEX0"), nil, "")
 

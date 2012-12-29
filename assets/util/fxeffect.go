@@ -4,19 +4,6 @@ import (
 	nga "github.com/go3d/go-ngine/assets"
 )
 
-//	Adds a new assets.FxEffectDef with the specified Id to the assets.FxEffectDefs
-//	library, and optionally adds a common profile, a GLSL profile, or both to it.
-func FxAddEffect(id string, ensureCommonProfile, ensureGlslProfile bool) (me *nga.FxEffectDef) {
-	me = nga.FxEffectDefs.AddNew(id)
-	if ensureCommonProfile {
-		FxEnsureProfileCommon(me)
-	}
-	if ensureGlslProfile {
-		FxEnsureProfileGlsl(me)
-	}
-	return
-}
-
 //	Adds a new common profile to the specified effect definition (even if it already contains one).
 func FxAddProfileCommon(def *nga.FxEffectDef) (prof *nga.FxProfile) {
 	prof = nga.NewProfile()
@@ -77,6 +64,19 @@ func NewFxColorOrTexture(texture *nga.FxTexture, color *nga.FxColor, paramRef st
 	ct.Texture = texture
 	ct.Color = color
 	ct.ParamRef.SetParamRef(paramRef)
+	return
+}
+
+//	Creates a new assets.FxEffectDef with the specified Id, and
+//	optionally adds a common profile, a GLSL profile, or both to it.
+func NewFxEffectDef(id string, ensureCommonProfile, ensureGlslProfile bool) (me *nga.FxEffectDef) {
+	me = nga.FxEffectDefs.New(id)
+	if ensureCommonProfile {
+		FxEnsureProfileCommon(me)
+	}
+	if ensureGlslProfile {
+		FxEnsureProfileGlsl(me)
+	}
 	return
 }
 

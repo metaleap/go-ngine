@@ -345,22 +345,6 @@ type FxImageInst struct {
 func (me *FxImageInst) Init() {
 }
 
-//	Adds multiple FxImageDefs to this library,
-//	with each one's Id and InitFrom.RefUrl set from the specified idRefUrls map.
-func (me *LibFxImageDefs) AddFromIdsUrls(idRefUrls map[string]string) {
-	for id, refUrl := range idRefUrls {
-		me.AddNewUrl(id, refUrl)
-	}
-}
-
-//	Adds a new FxImageDefs with the specified Id to this library, with its
-//	InitFrom.RefUrl set to the specified refUrl.
-func (me *LibFxImageDefs) AddNewUrl(id string, refUrl string) (def *FxImageDef) {
-	def = me.AddNew(id)
-	def.InitFrom = NewFxImageInitFrom(refUrl)
-	return
-}
-
 //#begin-gt _definstlib.gt T:FxImage
 
 func newFxImageDef(id string) (me *FxImageDef) {
