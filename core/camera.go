@@ -4,38 +4,22 @@ import (
 	gl "github.com/chsc/gogl/gl42"
 
 	ugl "github.com/go3d/go-glutil"
-	nga "github.com/go3d/go-ngine/assets"
 	unum "github.com/metaleap/go-util/num"
 )
 
 type cameras map[string]*Camera
 
-func (me cameras) add(def *nga.CameraDef) (item *Camera) {
-	item = newCamera(def)
-	me[def.Id] = item
+func (me cameras) AddNew(id string) (cam *Camera) {
+	cam = me.New()
+	me[id] = cam
 	return
 }
 
-func (me cameras) syncAssetChanges() {
-	var (
-		item *Camera
-		id   string
-	)
-	for _, def := range nga.CameraDefs.M {
-		if item = me[def.Id]; item == nil {
-			item = me.add(def)
-		}
-	}
-	for id, item = range me {
-		if nga.CameraDefs.M[item.Id] == nil {
-			delete(me, id)
-			item.dispose()
-		}
-	}
+func (me cameras) New() *Camera {
+	return newCamera()
 }
 
 type Camera struct {
-	*nga.CameraDef
 	ViewPort   *CameraViewPort
 	MatProj    *unum.Mat4
 	Options    *CameraOptions
@@ -47,15 +31,13 @@ type Camera struct {
 	glMatProj *ugl.GlMat4
 }
 
-func newCamera(def *nga.CameraDef) (me *Camera) {
+func newCamera() (me *Camera) {
 	me = &Camera{}
-	me.CameraDef = def
 	me.Options = newCameraOptions()
 	me.MatProj = &unum.Mat4{}
 	me.glMatProj = &ugl.GlMat4{}
 	me.Controller = newController()
 	me.ViewPort = newCameraViewPort(me)
-	me.CameraDef.OnSync = func() { me.UpdatePerspective() }
 	me.UpdatePerspective()
 	me.SetTechnique(Core.Options.DefaultRenderTechnique)
 	return
@@ -114,7 +96,7 @@ func (me *Camera) ToggleTechnique() {
 }
 
 func (me *Camera) UpdatePerspective() {
-	me.MatProj.Perspective(me.CameraDef.Optics.TC.Perspective.FovY.F, me.ViewPort.aspect, me.CameraDef.Optics.TC.Znear.F, me.CameraDef.Optics.TC.Zfar.F)
+	me.MatProj.Perspective(me.Options.FovY, me.ViewPort.aspect, me.Options.ZNear, me.Options.ZFar)
 	me.glMatProj.Load(me.MatProj)
 }
 

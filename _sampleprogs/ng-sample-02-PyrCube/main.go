@@ -90,7 +90,4 @@ func LoadSampleScene_02_PyrCube() {
 	ngsamples.CamCtl.BeginUpdate()
 	ngsamples.CamCtl.Pos.Y = 1.6
 	ngsamples.CamCtl.EndUpdate()
-
-	//	upload everything
-	ng.Core.SyncUpdates()
 }

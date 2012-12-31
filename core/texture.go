@@ -6,7 +6,6 @@ import (
 
 	gl "github.com/chsc/gogl/gl42"
 	ugl "github.com/go3d/go-glutil"
-	nga "github.com/go3d/go-ngine/assets"
 )
 
 var (
@@ -15,38 +14,28 @@ var (
 
 type textures map[string]*Texture
 
-func (me textures) add(def *nga.FxImageDef) (item *Texture) {
-	item = newTexture(def)
-	me[def.Id] = item
+func (me textures) AddNew(id, refUrl string) (img *Texture) {
+	img = me.New()
+	img.InitFrom.RefUrl = refUrl
+	me[id] = img
 	return
+}
+
+func (me textures) New() *Texture {
+	return newTexture()
 }
 
 func (me textures) NewParams(filter bool, filterAnisotropy float64) *textureParams {
 	return newTextureParams(filter, filterAnisotropy)
 }
 
-func (me textures) syncAssetChanges() {
-	var (
-		item *Texture
-		id   string
-	)
-	for _, def := range nga.FxImageDefs.M {
-		if item = me[def.Id]; item == nil {
-			item = me.add(def)
-		}
-	}
-	for id, item = range me {
-		if nga.FxImageDefs.M[item.Id] == nil {
-			delete(me, id)
-			item.dispose()
-		}
-	}
-}
-
 type Texture struct {
-	*nga.FxImageDef
 	LastError error
 	Params    *textureParams
+	InitFrom  struct {
+		RawData []byte
+		RefUrl  string
+	}
 
 	img                                                       image.Image
 	gpuSynced, noMipMap                                       bool
@@ -56,13 +45,8 @@ type Texture struct {
 	glSizedInternalFormat, glPixelDataFormat, glPixelDataType gl.Enum
 }
 
-func newTexture(def *nga.FxImageDef) (me *Texture) {
+func newTexture() (me *Texture) {
 	me = &Texture{}
-	me.FxImageDef = def
-	me.FxImageDef.OnSync = func() {
-		me.load()
-		me.GpuSync()
-	}
 	me.Params = Core.Options.DefaultTextureParams
 	return
 }
@@ -162,17 +146,13 @@ func (me *Texture) Loaded() bool {
 }
 
 func (me *Texture) provider() (prov TextureProvider, arg interface{}, remote bool) {
-	if me.FxImageDef != nil {
-		if initFrom := me.FxImageDef.InitFrom; initFrom != nil {
-			if len(initFrom.Raw.Data) > 0 {
-				prov, arg = TextureProviders.IoReader, initFrom.Raw.Data
-			} else if len(initFrom.RefUrl) > 0 {
-				if remote = strings.Contains(initFrom.RefUrl, "://"); remote {
-					prov, arg = TextureProviders.RemoteFile, initFrom.RefUrl
-				} else {
-					prov, arg = TextureProviders.LocalFile, initFrom.RefUrl
-				}
-			}
+	if len(me.InitFrom.RawData) > 0 {
+		prov, arg = TextureProviders.IoReader, me.InitFrom.RawData
+	} else if len(me.InitFrom.RefUrl) > 0 {
+		if remote = strings.Contains(me.InitFrom.RefUrl, "://"); remote {
+			prov, arg = TextureProviders.RemoteFile, me.InitFrom.RefUrl
+		} else {
+			prov, arg = TextureProviders.LocalFile, me.InitFrom.RefUrl
 		}
 	}
 	return

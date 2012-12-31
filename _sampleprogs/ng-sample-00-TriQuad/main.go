@@ -74,7 +74,4 @@ func LoadSampleScene_00_TriQuad() {
 	tri, quad = scene.RootNode.SubNodes.M["node_tri"], scene.RootNode.SubNodes.M["node_quad"]
 	tri.SetMatName("mat_cat")
 	quad.SetMatName("mat_dog")
-
-	//	upload everything
-	ng.Core.SyncUpdates()
 }

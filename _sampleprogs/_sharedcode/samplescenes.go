@@ -9,8 +9,6 @@ import (
 	ugl "github.com/go3d/go-glutil"
 	util "github.com/metaleap/go-util"
 
-	nga "github.com/go3d/go-ngine/assets"
-	ngau "github.com/go3d/go-ngine/assets/util"
 	ng "github.com/go3d/go-ngine/core"
 )
 
@@ -51,16 +49,18 @@ var (
 //	-	and links them all together to create a ready-to-use texture material.
 func AddTextureMaterials(idsUrls map[string]string) {
 	var (
-		image  *nga.FxImageDef
-		effect *nga.FxEffectDef
+	// image *ng.Texture
+	// effect *nga.FxEffectDef
 	)
 	for id, refUrl := range idsUrls {
-		image = nga.FxImageDefs.Add(ngau.NewFxImageDef("tex_"+id, refUrl))
-		effect = nga.FxEffectDefs.Add(ngau.NewFxEffectDef("fx_"+id, true, false))
-		effect.Profiles[0].NewParams.Set("sampler_"+id, ngau.NewFxSampler2D(image.DefaultInst(), nil, nil))
-		effect.Profiles[0].Common.Technique.Diffuse = ngau.NewFxColorOrTexture(ngau.NewFxTexture("sampler_"+id, "TEX0"), nil, "")
+		ng.Core.Textures.AddNew("tex_"+id, refUrl)
+		// image = nga.FxImageDefs.Add(ngau.NewFxImageDef("tex_"+id, refUrl))
 
-		nga.FxMaterialDefs.AddNew("mat_" + id).Effect.DefRef.SetIdRef("fx_" + id)
+		// effect = nga.FxEffectDefs.Add(ngau.NewFxEffectDef("fx_"+id, true, false))
+		// effect.Profiles[0].NewParams.Set("sampler_"+id, ngau.NewFxSampler2D(image.DefaultInst(), nil, nil))
+		// effect.Profiles[0].Common.Technique.Diffuse = ngau.NewFxColorOrTexture(ngau.NewFxTexture("sampler_"+id, "TEX0"), nil, "")
+
+		// nga.FxMaterialDefs.AddNew("mat_" + id).Effect.DefRef.SetIdRef("fx_" + id)
 
 		ng.Core.Materials["mat_"+id] = ng.Core.Materials.New("tex_" + id)
 	}
@@ -158,14 +158,13 @@ func SamplesMainFunc(assetLoader func()) {
 		defer ng.Dispose()
 		ng.Core.Options.SetGlClearColor(ugl.GlVec4{0.75, 0.75, 0.97, 1})
 		ng.Loop.OnSec = OnSec
-		camDef := nga.CameraDefs.AddNew("")
-		camDef.Optics.TC.Znear.F, camDef.Optics.TC.Zfar.F = 0.3, 30000
-		camDef.Optics.TC.Perspective = &nga.CameraPerspective{FovY: nga.SidF(37.8493)}
-		nga.SyncChanges()
-		Cam = ng.Core.Cameras[""]
+		Cam = ng.Core.Cameras.AddNew("")
 		CamCtl = Cam.Controller
 		assetLoader()
-		nga.SyncChanges()
+		for _, canvas := range ng.Core.Canvases {
+			canvas.SetCameraIDs("")
+		}
+		ng.Core.SyncUpdates()
 		ng.Loop.Loop()
 		PrintPostLoopSummary()
 	}

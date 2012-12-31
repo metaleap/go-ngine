@@ -1,0 +1,45 @@
+package gt
+
+type lib__T__ map[string]*rt__T__
+
+func newRt__T__(def *nga.__T__Def) (me *rt__T__) {
+	me = &rt__T__{}
+	me.__T__Def = def
+	return
+}
+
+func (me *lib__T__) dispose() {
+	for _, item := range *me {
+		item.dispose()
+	}
+	*me = nil
+}
+
+func (me *lib__T__) init() {
+	*me = lib__T__{}
+	nga.__T__Defs.OnSync = func() { me.syncLibChanges() }
+}
+
+func (me lib__T__) add(def *nga.__T__Def) (item *rt__T__) {
+	item = newRt__T__(def)
+	me[def.Id] = item
+	return
+}
+
+func (me lib__T__) syncLibChanges() {
+	var (
+		item *rt__T__
+		id   string
+	)
+	for id, item = range me {
+		if nga.__T__Defs.M[item.Id] == nil {
+			delete(me, id)
+			item.dispose()
+		}
+	}
+	for _, def := range nga.__T__Defs.M {
+		if item = me[def.Id]; item == nil {
+			item = me.add(def)
+		}
+	}
+}

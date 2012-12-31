@@ -33,7 +33,7 @@ func textureProviderIoReader(arg interface{}) (img image.Image, err error) {
 
 func textureProviderLocalFile(arg interface{}) (img image.Image, err error) {
 	var rc io.ReadCloser
-	if rc, err = Core.AssetManager.OpenLocalFile(arg.(string)); err == nil {
+	if rc, err = Core.fileIO.openLocalFile(arg.(string)); err == nil {
 		img, err = textureProviderIoReader(rc)
 	}
 	return
@@ -41,7 +41,7 @@ func textureProviderLocalFile(arg interface{}) (img image.Image, err error) {
 
 func textureProviderRemoteFile(arg interface{}) (img image.Image, err error) {
 	var rc io.ReadCloser
-	if rc, err = Core.AssetManager.OpenRemoteFile(arg.(string)); err == nil {
+	if rc, err = Core.fileIO.openRemoteFile(arg.(string)); err == nil {
 		img, err = textureProviderIoReader(rc)
 	}
 	return

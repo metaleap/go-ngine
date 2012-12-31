@@ -59,7 +59,4 @@ func LoadSampleScene_01_EmptyPlane() {
 	ngsamples.CamCtl.BeginUpdate()
 	ngsamples.CamCtl.Pos.Y = 1.6
 	ngsamples.CamCtl.EndUpdate()
-
-	//	upload everything
-	ng.Core.SyncUpdates()
 }

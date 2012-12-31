@@ -1,4 +1,0 @@
-//	Uncomment this to re-generate the pkgreflect sub-package:
-# ng-gen-assets-pkgreflect $dir
-//	Uncomment this to re-generate -gen-refsids.go:
-# ng-gen-assets-refsids $dir

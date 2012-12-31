@@ -21,3 +21,11 @@
 //	
 //	TODO pkg doc
 package core
+
+type disposable interface {
+	dispose()
+}
+
+type initable interface {
+	init()
+}

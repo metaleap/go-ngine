@@ -11,8 +11,10 @@ import (
 type EngineOptions struct {
 	//	The base directory path for asset file paths.
 	AssetRootDirPath string
+
 	//	Name for the default render technique, currently "rt_unlit_colored"
 	DefaultRenderTechnique string
+
 	//	All textures default to these params unless they have their own params set.
 	DefaultTextureParams *textureParams
 

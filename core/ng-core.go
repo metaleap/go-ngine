@@ -3,7 +3,6 @@ package core
 import (
 	gl "github.com/chsc/gogl/gl42"
 	ugl "github.com/go3d/go-glutil"
-	nga "github.com/go3d/go-ngine/assets"
 )
 
 var (
@@ -24,7 +23,7 @@ var (
 //	Consider EngineCore a "Singleton" type, only valid use is the core.Core global variable.
 //	The heart and brain of go:ngine --- a container for all runtime resources and responsible for rendering.
 type EngineCore struct {
-	AssetManager       *assetManager
+	fileIO             *fileIO
 	Cameras            cameras
 	Canvases           renderCanvases
 	DefaultCanvasIndex int
@@ -40,7 +39,7 @@ func newEngineCore(options *EngineOptions) {
 	initTechniques()
 	Core = &EngineCore{}
 	Core.Options = options
-	Core.AssetManager = newAssetManager()
+	Core.fileIO = newFileIO()
 	Core.Options.DefaultTextureParams.setAgain()
 	Core.Materials = materials{}
 	Core.Meshes = meshes{}
@@ -51,11 +50,6 @@ func newEngineCore(options *EngineOptions) {
 	curCanvas = Core.Canvases.Add(Core.Canvases.New(options.winWidth, options.winHeight))
 	curCanvas.SetCameraIDs("")
 	Core.MeshBuffers = newMeshBuffers()
-
-	nga.OnBeforeSyncAll = func() { Core.onAssetsSyncing() }
-	nga.OnAfterSyncAll = func() { Core.onAssetsSynced() }
-	nga.CameraDefs.OnSync = func() { Core.Cameras.syncAssetChanges() }
-	nga.FxImageDefs.OnSync = func() { Core.Textures.syncAssetChanges() }
 }
 
 func (me *EngineCore) dispose() {
@@ -76,13 +70,6 @@ func (me *EngineCore) dispose() {
 }
 
 func (me *EngineCore) onLoop() {
-}
-
-func (me *EngineCore) onAssetsSynced() {
-	curCanvas.SetCameraIDs("")
-}
-
-func (me *EngineCore) onAssetsSyncing() {
 }
 
 func (me *EngineCore) onRender() {
@@ -117,6 +104,9 @@ func (me *EngineCore) resizeView(viewWidth, viewHeight int) {
 func (me *EngineCore) SyncUpdates() {
 	var err error
 	for key, tex := range me.Textures {
+		if !tex.Loaded() {
+			tex.load()
+		}
 		if !tex.gpuSynced {
 			tex.GpuSync()
 			glLogLastError("EngineCore.SyncUpdates(texkey=%s)", key)

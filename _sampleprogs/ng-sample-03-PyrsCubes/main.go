@@ -156,7 +156,4 @@ func LoadSampleScene_03_PyrsCubes() {
 	ngsamples.CamCtl.BeginUpdate()
 	ngsamples.CamCtl.Pos.X, ngsamples.CamCtl.Pos.Y, ngsamples.CamCtl.Pos.Z = 35, 1.6, 24
 	ngsamples.CamCtl.EndUpdate()
-
-	//	upload everything
-	ng.Core.SyncUpdates()
 }
