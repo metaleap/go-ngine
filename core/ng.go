@@ -17,7 +17,7 @@ var (
 	Stats EngineStats
 
 	//	Your gateway for end-user input (key, mouse etc.) and "output" (window management, not the graphics themselves).
-	UserIO = newUserIO()
+	UserIO EngineUserIO
 )
 
 //	Call this to "un-init" go:ngine and to release any and all GPU or RAM resources still allocated.
