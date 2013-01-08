@@ -42,8 +42,7 @@ func newNodeTransforms(owner *Node) (me *NodeTransforms) {
 	me.matRotX.RotationX(0)
 	me.matRotY.RotationY(0)
 	me.matRotZ.RotationZ(0)
-	me.Other.Identity()
-	me.matModelView.Identity()
+	unum.Mat4Identities(&me.Other, &me.matModelView)
 	me.glMatModelView.Load(&me.matModelView)
 	return
 }

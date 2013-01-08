@@ -26,7 +26,7 @@ type shaderSrcSortables struct {
 }
 
 func (me shaderSrcSortables) mapAll() map[string]shaderSrcSortable {
-	return map[string]shaderSrcSortable{"Vertex": me.vert, "TessCtl": me.tessCtl, "TessEval": me.tessEval, "Geometry": me.geo, "Fragment": me.frag, "Compute": me.comp}
+	return map[string]shaderSrcSortable{"vertex": me.vert, "tessCtl": me.tessCtl, "tessEval": me.tessEval, "geometry": me.geo, "fragment": me.frag, "compute": me.comp}
 }
 
 func collectShaders(srcDirPath string, allShaders *shaderSrcSortables, iShaders map[string]string, stripComments bool) {
@@ -91,7 +91,7 @@ func generateShadersFile(srcDirPath, outFilePath, pkgName string, stripComments 
 		allNames               []string
 		glslOldSrc, shaderName string
 	)
-	glslSrc := "package " + pkgName + "\n\nfunc init() {\n\tvar rss = newGlShaderSources()\n"
+	glslSrc := "package " + pkgName + "\n\nfunc init() {\n\tvar rss glShaderSources\n\trss.init()\n"
 	allShaders := shaderSrcSortables{shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}}
 	iShaders := map[string]string{}
 	glslOldSrc = uio.ReadTextFile(outFilePath, false, "")
@@ -110,7 +110,7 @@ func generateShadersFile(srcDirPath, outFilePath, pkgName string, stripComments 
 			glslSrc += fmt.Sprintf("\trss.%s[\"%s\"] = %#v\n", varName, shaderName, includeShaders(shaderSource.name, shaderSource.src, iShaders))
 		}
 	}
-	if glslSrc += fmt.Sprintf("\tglShaderMan.AllSources = rss\n\tglShaderMan.AllNames = %#v\n}\n", allNames); glslSrc != glslOldSrc {
+	if glslSrc += fmt.Sprintf("\tglShaderMan.sources = rss\n\tglShaderMan.names = %#v\n}\n", allNames); glslSrc != glslOldSrc {
 		uio.WriteTextFile(outFilePath, glslSrc)
 	}
 	return true
@@ -156,7 +156,7 @@ func main() {
 	var outTime, srcTime, tmpTime int64
 	runtime.LockOSThread()
 	nginePath := os.Args[1]
-	srcDirPath, outFilePath := filepath.Join(nginePath, "core", "_glsl"), filepath.Join(nginePath, "core", "-auto-generated-glsl-src.go")
+	srcDirPath, outFilePath := filepath.Join(nginePath, "core", "_glsl"), filepath.Join(nginePath, "core", "-gen-glsl-src.go")
 	if fileInfo, err := os.Stat(outFilePath); err == nil {
 		outTime = fileInfo.ModTime().UnixNano()
 		ff := func(filePath string, rec bool) bool {

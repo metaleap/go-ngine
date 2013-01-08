@@ -1,6 +1,6 @@
 package core
 
-type scenes map[string]*Scene
+type Scenes map[string]*Scene
 
 type Scene struct {
 	RootNode *Node

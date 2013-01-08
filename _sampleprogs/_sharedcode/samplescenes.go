@@ -41,6 +41,12 @@ var (
 	sec        = 0
 )
 
+func AddScene(id string) (me *ng.Scene) {
+	me = ng.NewScene()
+	ng.Core.Libs.Scenes[""] = me
+	return
+}
+
 //	Sets up texture materials (associated and 2D samplers) with the specified IDs and image URLs.
 //	For each ID (such as "foo" and "bar"):
 //	-	creates an assets.FxImageDef with ID "tex_ID" (ie. "tex_foo" and "tex_bar")
@@ -53,7 +59,7 @@ func AddTextureMaterials(idsUrls map[string]string) {
 	// effect *nga.FxEffectDef
 	)
 	for id, refUrl := range idsUrls {
-		ng.Core.Textures.AddNew("tex_"+id, refUrl)
+		ng.Core.Libs.Textures.AddNew("tex_"+id, refUrl)
 		// image = nga.FxImageDefs.Add(ngau.NewFxImageDef("tex_"+id, refUrl))
 
 		// effect = nga.FxEffectDefs.Add(ngau.NewFxEffectDef("fx_"+id, true, false))
@@ -62,7 +68,7 @@ func AddTextureMaterials(idsUrls map[string]string) {
 
 		// nga.FxMaterialDefs.AddNew("mat_" + id).Effect.DefRef.SetIdRef("fx_" + id)
 
-		ng.Core.Materials["mat_"+id] = ng.Core.Materials.New("tex_" + id)
+		ng.Core.Libs.Materials["mat_"+id] = ng.Core.Libs.Materials.New("tex_" + id)
 	}
 }
 
@@ -122,7 +128,7 @@ func CheckToggleKeys() {
 		Cam.ToggleTechnique()
 	}
 	if ng.UserIO.KeyToggled(glfw.KeyF3) {
-		Cam.Options.ToggleGlBackfaceCulling()
+		ng.Core.Rendering.States.ToggleFaceCulling()
 	}
 	if ng.UserIO.KeyToggled(glfw.KeyF4) {
 		ng.Core.Options.DefaultTextureParams.ToggleFilter()
@@ -158,10 +164,10 @@ func SamplesMainFunc(assetLoader func()) {
 		defer ng.Dispose()
 		ng.Core.Options.SetGlClearColor(ugl.GlVec4{0.75, 0.75, 0.97, 1})
 		ng.Loop.OnSec = OnSec
-		Cam = ng.Core.Cameras.AddNew("")
-		CamCtl = Cam.Controller
+		Cam = ng.Core.Libs.Cameras.AddNew("")
+		CamCtl = &Cam.Controller
 		assetLoader()
-		for _, canvas := range ng.Core.Canvases {
+		for _, canvas := range ng.Core.Rendering.Canvases {
 			canvas.SetCameraIDs("")
 		}
 		ng.Core.SyncUpdates()

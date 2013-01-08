@@ -23,58 +23,78 @@ var (
 //	Consider EngineCore a "Singleton" type, only valid use is the core.Core global variable.
 //	The heart and brain of go:ngine --- a container for all runtime resources and responsible for rendering.
 type EngineCore struct {
-	fileIO             *fileIO
-	Cameras            cameras
-	Canvases           renderCanvases
-	DefaultCanvasIndex int
-	Materials          materials
-	MeshBuffers        *meshBuffers
-	Meshes             meshes
-	Options            *EngineOptions
-	Scenes             scenes
-	Textures           textures
-}
+	MeshBuffers *MeshBuffers
+	Options     *EngineOptions
+	Libs        struct {
+		Cameras   Cameras
+		Materials Materials
+		Meshes    Meshes
+		Scenes    Scenes
+		Textures  Textures
+	}
+	Rendering struct {
+		Canvases           RenderCanvases
+		DefaultCanvasIndex int
+		States             ugl.RenderStates
+	}
 
-func newEngineCore(options *EngineOptions) {
-	initTechniques()
-	Core = &EngineCore{}
-	Core.Options = options
-	Core.fileIO = newFileIO()
-	Core.Options.DefaultTextureParams.setAgain()
-	Core.Materials = materials{}
-	Core.Meshes = meshes{}
-	Core.Textures = textures{}
-	Core.Scenes = scenes{}
-	Core.Cameras = cameras{}
-	Core.Canvases = renderCanvases{}
-	curCanvas = Core.Canvases.Add(Core.Canvases.New(options.winWidth, options.winHeight))
-	curCanvas.SetCameraIDs("")
-	Core.MeshBuffers = newMeshBuffers()
+	isInit bool
+	fileIO fileIO
 }
 
 func (me *EngineCore) dispose() {
-	for _, cam := range me.Cameras {
+	me.isInit = false
+	for _, cam := range me.Libs.Cameras {
 		cam.dispose()
 	}
-	for _, canvas := range me.Canvases {
+	for _, canvas := range me.Rendering.Canvases {
 		canvas.Dispose()
 	}
-	for _, mesh := range me.Meshes {
+	for _, mesh := range me.Libs.Meshes {
 		mesh.GpuDelete()
 	}
-	for _, tex := range me.Textures {
+	for _, tex := range me.Libs.Textures {
 		tex.GpuDelete()
 	}
 	me.MeshBuffers.dispose()
-	techs, Core = nil, nil
+	techs = nil
+}
+
+func (me *EngineCore) init(options *EngineOptions) {
+	initTechniques()
+	me.initRenderingStates()
+	me.Options = options
+	me.Options.DefaultTextureParams.setAgain()
+	me.MeshBuffers = newMeshBuffers()
+	me.initLibs()
+	me.Rendering.Canvases = RenderCanvases{}
+	curCanvas = me.Rendering.Canvases.Add(me.Rendering.Canvases.New(options.winWidth, options.winHeight))
+	curCanvas.SetCameraIDs("")
+	me.isInit = true
+}
+
+func (me *EngineCore) initLibs() {
+	libs := &me.Libs
+	libs.Materials = Materials{}
+	libs.Meshes = Meshes{}
+	libs.Textures = Textures{}
+	libs.Scenes = Scenes{}
+	libs.Cameras = Cameras{}
+}
+
+func (me *EngineCore) initRenderingStates() {
+	rs := &me.Rendering.States
+	rs.EnableFaceCulling()
+	rs.EnableDepthTest()
+	rs.SetClearColor(0, 0, 0, 1)
 }
 
 func (me *EngineCore) onLoop() {
 }
 
 func (me *EngineCore) onRender() {
-	lastCanvIndex = len(me.Canvases) - 1
-	for curCanvIndex, curCanvas = range me.Canvases {
+	lastCanvIndex = len(me.Rendering.Canvases) - 1
+	for curCanvIndex, curCanvas = range me.Rendering.Canvases {
 		if !curCanvas.Disabled {
 			curCanvas.render()
 		}
@@ -92,18 +112,20 @@ func (me *EngineCore) onSec() {
 }
 
 func (me *EngineCore) resizeView(viewWidth, viewHeight int) {
-	defaultCanvas := me.Canvases[me.DefaultCanvasIndex]
-	me.Options.winWidth, me.Options.winHeight = viewWidth, viewHeight
-	defaultCanvas.viewWidth, defaultCanvas.viewHeight = viewWidth, viewHeight
-	for _, cam := range me.Cameras {
-		cam.ViewPort.Update()
-		cam.UpdatePerspective()
+	if me.isInit {
+		defaultCanvas := me.Rendering.Canvases[me.Rendering.DefaultCanvasIndex]
+		me.Options.winWidth, me.Options.winHeight = viewWidth, viewHeight
+		defaultCanvas.viewWidth, defaultCanvas.viewHeight = viewWidth, viewHeight
+		for _, cam := range me.Libs.Cameras {
+			cam.ViewPort.update()
+			cam.UpdatePerspective()
+		}
 	}
 }
 
 func (me *EngineCore) SyncUpdates() {
 	var err error
-	for key, tex := range me.Textures {
+	for key, tex := range me.Libs.Textures {
 		if !tex.Loaded() {
 			tex.load()
 		}
@@ -112,7 +134,7 @@ func (me *EngineCore) SyncUpdates() {
 			glLogLastError("EngineCore.SyncUpdates(texkey=%s)", key)
 		}
 	}
-	for _, mesh := range me.Meshes {
+	for _, mesh := range me.Libs.Meshes {
 		if !mesh.gpuSynced {
 			if err = mesh.GpuUpload(); err != nil {
 				logError(err)
@@ -124,7 +146,7 @@ func (me *EngineCore) SyncUpdates() {
 }
 
 func (me *EngineCore) useProgram(name string) {
-	if tmpProg = glShaderMan.AllProgs[name]; tmpProg != curProg {
+	if tmpProg = glShaderMan.progs[name]; tmpProg != curProg {
 		curProg = tmpProg
 		gl.UseProgram(curProg.Program)
 	}

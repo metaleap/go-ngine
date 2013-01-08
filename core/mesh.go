@@ -8,9 +8,9 @@ import (
 	ugl "github.com/go3d/go-glutil"
 )
 
-type meshes map[string]*Mesh
+type Meshes map[string]*Mesh
 
-func (me meshes) Add(mesh *Mesh) *Mesh {
+func (me Meshes) Add(mesh *Mesh) *Mesh {
 	if me[mesh.name] == nil {
 		me[mesh.name] = mesh
 		return mesh
@@ -18,13 +18,13 @@ func (me meshes) Add(mesh *Mesh) *Mesh {
 	return nil
 }
 
-func (me meshes) AddRange(meshes ...*Mesh) {
+func (me Meshes) AddRange(meshes ...*Mesh) {
 	for _, m := range meshes {
 		me.Add(m)
 	}
 }
 
-func (me meshes) Load(name string, provider MeshProvider, args ...interface{}) (mesh *Mesh, err error) {
+func (me Meshes) Load(name string, provider MeshProvider, args ...interface{}) (mesh *Mesh, err error) {
 	var meshData *MeshData
 	mesh = me.New(name)
 	if meshData, err = provider(args...); err == nil {
@@ -35,7 +35,7 @@ func (me meshes) Load(name string, provider MeshProvider, args ...interface{}) (
 	return
 }
 
-func (me meshes) New(name string) (mesh *Mesh) {
+func (me Meshes) New(name string) (mesh *Mesh) {
 	mesh = &Mesh{name: name, Models: models{}}
 	return mesh
 }

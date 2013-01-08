@@ -13,17 +13,17 @@ type meshBufferParams struct {
 	NumVerts, NumIndices                                                                                       int32
 }
 
-type meshBuffers struct {
+type MeshBuffers struct {
 	bufs map[string]*MeshBuffer
 }
 
-func newMeshBuffers() (me *meshBuffers) {
-	me = &meshBuffers{}
+func newMeshBuffers() (me *MeshBuffers) {
+	me = &MeshBuffers{}
 	me.bufs = map[string]*MeshBuffer{}
 	return
 }
 
-func (me *meshBuffers) Add(name string, params *meshBufferParams) (buf *MeshBuffer, err error) {
+func (me *MeshBuffers) Add(name string, params *meshBufferParams) (buf *MeshBuffer, err error) {
 	buf = me.bufs[name]
 	if buf == nil {
 		if buf, err = newMeshBuffer(name, params); err == nil {
@@ -37,33 +37,33 @@ func (me *meshBuffers) Add(name string, params *meshBufferParams) (buf *MeshBuff
 	return
 }
 
-func (me *meshBuffers) dispose() {
+func (me *MeshBuffers) dispose() {
 	for _, buf := range me.bufs {
 		buf.dispose()
 	}
 	me.bufs = map[string]*MeshBuffer{}
 }
 
-func (me *meshBuffers) FloatsPerVertex() int32 {
+func (me *MeshBuffers) FloatsPerVertex() int32 {
 	const numVertPosFloats, numVertTexCoordFloats, numVertNormalFloats int32 = 3, 2, 3
 	return numVertPosFloats + numVertNormalFloats + numVertTexCoordFloats
 }
 
-func (me *meshBuffers) MemSizePerIndex() int32 {
+func (me *MeshBuffers) MemSizePerIndex() int32 {
 	return 4
 }
 
-func (me *meshBuffers) MemSizePerVertex() int32 {
+func (me *MeshBuffers) MemSizePerVertex() int32 {
 	const sizePerFloat int32 = 4
 	return sizePerFloat * me.FloatsPerVertex()
 }
 
-func (me *meshBuffers) NewParams(numVerts, numIndices int32) (params *meshBufferParams) {
+func (me *MeshBuffers) NewParams(numVerts, numIndices int32) (params *meshBufferParams) {
 	params = &meshBufferParams{MostlyStatic: true, NumIndices: numIndices, NumVerts: numVerts}
 	return
 }
 
-func (me *meshBuffers) Remove(name string) {
+func (me *MeshBuffers) Remove(name string) {
 	if buf := me.bufs[name]; buf != nil {
 		buf.dispose()
 		delete(me.bufs, name)
@@ -76,7 +76,7 @@ type MeshBuffer struct {
 
 	offsetBaseIndex, offsetIndices, offsetVerts int32
 	name                                        string
-	meshes                                      meshes
+	meshes                                      Meshes
 	glIbo, glVbo                                gl.Uint
 	glVaos                                      map[string]gl.Uint
 }
@@ -85,7 +85,7 @@ func newMeshBuffer(name string, params *meshBufferParams) (buf *MeshBuffer, err 
 	var glVao gl.Uint
 	buf = &MeshBuffer{}
 	buf.name = name
-	buf.meshes = meshes{}
+	buf.meshes = Meshes{}
 	buf.Params = params
 	buf.glVaos = map[string]gl.Uint{}
 	buf.MemSizeIndices = Core.MeshBuffers.MemSizePerIndex() * params.NumIndices

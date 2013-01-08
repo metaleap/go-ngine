@@ -59,7 +59,7 @@ func LoadSampleScene_03_PyrsCubes() {
 	)
 
 	ng.Loop.OnLoop = onLoop
-	ngsamples.Cam.Options.BackfaceCulling = false
+	ng.Core.Rendering.States.DisableFaceCulling()
 
 	//	textures / materials
 	ngsamples.AddTextureMaterials(map[string]string{
@@ -77,30 +77,29 @@ func LoadSampleScene_03_PyrsCubes() {
 	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(36+12, 36+12)); err != nil {
 		panic(err)
 	}
-	if meshFloor, err = ng.Core.Meshes.Load("mesh_plane", ng.MeshProviders.PrefabPlane); err != nil {
+	if meshFloor, err = ng.Core.Libs.Meshes.Load("mesh_plane", ng.MeshProviders.PrefabPlane); err != nil {
 		panic(err)
 	}
 
-	if meshPyr, err = ng.Core.Meshes.Load("mesh_pyramid", ng.MeshProviders.PrefabPyramid); err != nil {
+	if meshPyr, err = ng.Core.Libs.Meshes.Load("mesh_pyramid", ng.MeshProviders.PrefabPyramid); err != nil {
 		panic(err)
 	}
 	meshPyr.Models.Default().SetMatName("mat_mosaic")
 	meshPyr.Models.Default().Clone("model_pyramid_dog").SetMatName("mat_dog")
 
-	if meshCube, err = ng.Core.Meshes.Load("mesh_cube", ng.MeshProviders.PrefabCube); err != nil {
+	if meshCube, err = ng.Core.Libs.Meshes.Load("mesh_cube", ng.MeshProviders.PrefabCube); err != nil {
 		panic(err)
 	}
 	meshCube.Models.Default().SetMatName("mat_crate")
 	meshCube.Models.Default().Clone("model_cube_cat").SetMatName("mat_cat")
 
-	ng.Core.Meshes.AddRange(meshFloor, meshPyr, meshCube)
+	ng.Core.Libs.Meshes.AddRange(meshFloor, meshPyr, meshCube)
 	bufFloor.Add(meshFloor)
 	bufRest.Add(meshCube)
 	bufRest.Add(meshPyr)
 
 	//	scene
-	scene = ng.NewScene()
-	ng.Core.Scenes[""] = scene
+	scene = ngsamples.AddScene("")
 	scene.RootNode.SubNodes.MakeN("node_floor", "mesh_plane", "", "node_pyr", "mesh_pyramid", "", "node_box", "mesh_cube", "")
 	floor, pyr, box = /* scene.RootNode.SubNodes.Get("node_floor", "node_pyr", "node_box") */ scene.RootNode.SubNodes.M["node_floor"], scene.RootNode.SubNodes.M["node_pyr"], scene.RootNode.SubNodes.M["node_box"]
 

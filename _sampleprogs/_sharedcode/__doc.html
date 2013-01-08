@@ -12,7 +12,7 @@
 		<div class="container">
 		<h1>Package github.com/go3d/go-ngine/_sampleprogs/_sharedcode</h1>
 		<div id="nav"></div>
-		2012/12/30 20:41:29 newDirectory(/target): not a package directory
+		2013/01/09 00:40:46 newDirectory(/target): not a package directory
 <!--
 	Copyright 2009 The Go Authors. All rights reserved.
 	Use of this source code is governed by a BSD-style
@@ -61,6 +61,9 @@ Some common base functionality shared by all the go:ngine example apps in _sampl
 			
 				<dd><a href="#pkg-variables">Variables</a></dd>
 			
+			
+				
+				<dd><a href="#AddScene">func AddScene(id string) (me *ng.Scene)</a></dd>
 			
 				
 				<dd><a href="#AddTextureMaterials">func AddTextureMaterials(idsUrls map[string]string)</a></dd>
@@ -140,7 +143,14 @@ Some common base functionality shared by all the go:ngine example apps in _sampl
 		
 			
 			
-			<h2 id="AddTextureMaterials">func <a href="/target/samplescenes.go?s=1521:1572#L40">AddTextureMaterials</a></h2>
+			<h2 id="AddScene">func <a href="/target/samplescenes.go?s=1062:1101#L34">AddScene</a></h2>
+			<pre>func AddScene(id string) (me *ng.Scene)</pre>
+			
+			
+		
+			
+			
+			<h2 id="AddTextureMaterials">func <a href="/target/samplescenes.go?s=1624:1675#L46">AddTextureMaterials</a></h2>
 			<pre>func AddTextureMaterials(idsUrls map[string]string)</pre>
 			<p>
 Sets up texture materials (associated and 2D samplers) with the specified IDs and image URLs.
@@ -155,7 +165,7 @@ For each ID (such as &#34;foo&#34; and &#34;bar&#34;):
 		
 			
 			
-			<h2 id="AssetRootDirPath">func <a href="/target/samplescenes.go?s=2389:2419#L60">AssetRootDirPath</a></h2>
+			<h2 id="AssetRootDirPath">func <a href="/target/samplescenes.go?s=2507:2537#L66">AssetRootDirPath</a></h2>
 			<pre>func AssetRootDirPath() string</pre>
 			<p>
 Returns the &#34;asset root directory&#34; path for go:ngine, in this case: $GOPATH/src/github.com/go3d/go-ngine/_sampleprogs/_sharedassets
@@ -165,7 +175,7 @@ Returns the &#34;asset root directory&#34; path for go:ngine, in this case: $GOP
 		
 			
 			
-			<h2 id="CheckCamCtlKeys">func <a href="/target/samplescenes.go?s=2627:2649#L65">CheckCamCtlKeys</a></h2>
+			<h2 id="CheckCamCtlKeys">func <a href="/target/samplescenes.go?s=2745:2767#L71">CheckCamCtlKeys</a></h2>
 			<pre>func CheckCamCtlKeys()</pre>
 			<p>
 Called every frame (by the parent example app) to check the state for keys controlling CamCtl to move or rotate Cam.
@@ -175,7 +185,7 @@ Called every frame (by the parent example app) to check the state for keys contr
 		
 			
 			
-			<h2 id="CheckToggleKeys">func <a href="/target/samplescenes.go?s=3679:3701#L107">CheckToggleKeys</a></h2>
+			<h2 id="CheckToggleKeys">func <a href="/target/samplescenes.go?s=3797:3819#L113">CheckToggleKeys</a></h2>
 			<pre>func CheckToggleKeys()</pre>
 			<p>
 Called every frame (by the parent example app) to check &#34;toggle keys&#34; that toggle certain options.
@@ -185,7 +195,7 @@ Called every frame (by the parent example app) to check &#34;toggle keys&#34; th
 		
 			
 			
-			<h2 id="OnSec">func <a href="/target/samplescenes.go?s=5927:5939#L164">OnSec</a></h2>
+			<h2 id="OnSec">func <a href="/target/samplescenes.go?s=6068:6080#L170">OnSec</a></h2>
 			<pre>func OnSec()</pre>
 			<p>
 Called every second by go:ngine&#39;s *core* package. Refreshes the window title and doing so, every 4 seconds shows the next one entry in KeyHints.
@@ -195,7 +205,7 @@ Called every second by go:ngine&#39;s *core* package. Refreshes the window title
 		
 			
 			
-			<h2 id="PrintPostLoopSummary">func <a href="/target/samplescenes.go?s=4215:4242#L126">PrintPostLoopSummary</a></h2>
+			<h2 id="PrintPostLoopSummary">func <a href="/target/samplescenes.go?s=4340:4367#L132">PrintPostLoopSummary</a></h2>
 			<pre>func PrintPostLoopSummary()</pre>
 			<p>
 Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent example app exits.
@@ -205,7 +215,7 @@ Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent 
 		
 			
 			
-			<h2 id="SamplesMainFunc">func <a href="/target/samplescenes.go?s=5215:5255#L142">SamplesMainFunc</a></h2>
+			<h2 id="SamplesMainFunc">func <a href="/target/samplescenes.go?s=5340:5380#L148">SamplesMainFunc</a></h2>
 			<pre>func SamplesMainFunc(assetLoader func())</pre>
 			<p>
 The *func main()* implementation for the parent example app. Initializes go:ngine, sets Cam and CamCtl, calls the specified assetLoader function, then enters the Loop.
@@ -215,7 +225,7 @@ The *func main()* implementation for the parent example app. Initializes go:ngin
 		
 			
 			
-			<h2 id="WindowTitle">func <a href="/target/samplescenes.go?s=6172:6197#L175">WindowTitle</a></h2>
+			<h2 id="WindowTitle">func <a href="/target/samplescenes.go?s=6313:6338#L181">WindowTitle</a></h2>
 			<pre>func WindowTitle() string</pre>
 			<p>
 Returns the window title to be set by OnSec().

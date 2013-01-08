@@ -45,12 +45,6 @@ type EngineStats struct {
 	fpsAll     float64
 }
 
-func newEngineStats() (me *EngineStats) {
-	me = &EngineStats{}
-	me.reset()
-	return
-}
-
 //	Returns the average number of frames-per-second since Loop.Loop() was last called.
 func (me *EngineStats) AverageFps() float64 {
 	return me.fpsAll / glfw.Time()
@@ -62,7 +56,7 @@ func (me *EngineStats) reset() {
 	me.Frame, me.FrameRenderBoth, me.FrameRenderCpu, me.FrameRenderGpu, me.FrameCoreCode, me.FrameUserCode, me.Gc = ctor(), ctor(), ctor(), ctor(), ctor(), ctor(), ctor()
 }
 
-func (me *EngineStats) TotalFrames () float64 {
+func (me *EngineStats) TotalFrames() float64 {
 	return me.fpsAll
 }
 

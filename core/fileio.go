@@ -11,11 +11,6 @@ import (
 type fileIO struct {
 }
 
-func newFileIO() (me *fileIO) {
-	me = &fileIO{}
-	return
-}
-
 func (me *fileIO) openLocalFile(absoluteOrAssetRootRelativeFilePath string) (io.ReadCloser, error) {
 	return os.Open(me.resolveLocalFilePath(absoluteOrAssetRootRelativeFilePath))
 }

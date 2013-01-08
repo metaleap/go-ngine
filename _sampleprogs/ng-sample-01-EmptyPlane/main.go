@@ -28,7 +28,7 @@ func LoadSampleScene_01_EmptyPlane() {
 	)
 
 	ng.Loop.OnLoop = onLoop
-	ngsamples.Cam.Options.BackfaceCulling = false
+	ng.Core.Rendering.States.DisableFaceCulling()
 
 	//	textures / materials
 	ngsamples.AddTextureMaterials(map[string]string{
@@ -39,16 +39,15 @@ func LoadSampleScene_01_EmptyPlane() {
 	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(100, 100)); err != nil {
 		panic(err)
 	}
-	if meshFloor, err = ng.Core.Meshes.Load("mesh_plane", ng.MeshProviders.PrefabPlane); err != nil {
+	if meshFloor, err = ng.Core.Libs.Meshes.Load("mesh_plane", ng.MeshProviders.PrefabPlane); err != nil {
 		panic(err)
 	}
 
-	ng.Core.Meshes.AddRange(meshFloor)
+	ng.Core.Libs.Meshes.AddRange(meshFloor)
 	bufRest.Add(meshFloor) // bufRest.Add(meshCube);
 
 	//	scene
-	scene = ng.NewScene()
-	ng.Core.Scenes[""] = scene
+	scene = ngsamples.AddScene("")
 	scene.RootNode.SubNodes.MakeN("node_floor", "mesh_plane", "" /*"node_box", "mesh_cube", ""*/)
 	floor = scene.RootNode.SubNodes.M["node_floor"]
 

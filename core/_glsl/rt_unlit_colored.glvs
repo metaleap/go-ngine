@@ -4,7 +4,7 @@ uniform mat4 uMatCam;
 uniform mat4 uMatModelView;
 uniform mat4 uMatProj;
 
-flat out vec3 vPos;
+smooth out vec3 vPos;
 
 void main () {
 	vPos = (aPos * 0.33) + 0.66;

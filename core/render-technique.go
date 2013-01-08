@@ -54,7 +54,7 @@ func (me *baseTechnique) onRenderNode() {
 }
 
 func (me *baseTechnique) setProg(name string, unifs []string, attrs []string) {
-	prog := glShaderMan.AllProgs[name]
+	prog := glShaderMan.progs[name]
 	prog.SetUnifLocations("uMatCam", "uMatModelView", "uMatProj")
 	if len(unifs) > 0 {
 		prog.SetUnifLocations(unifs...)
@@ -96,7 +96,7 @@ func (me *techniqueUnlitTextured) onRenderNode() {
 	if tmpMat = curNode.Material(); tmpMat != curMat {
 		if curMat = tmpMat; curMat != nil {
 			gl.ActiveTexture(gl.TEXTURE0)
-			gl.BindTexture(gl.TEXTURE_2D, Core.Textures[curMat.TexName].glTex)
+			gl.BindTexture(gl.TEXTURE_2D, Core.Libs.Textures[curMat.TexName].glTex)
 			gl.Uniform1i(curProg.UnifLocs["uTex0"], 0)
 		}
 	}

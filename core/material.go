@@ -1,13 +1,13 @@
 package core
 
-type materials map[string]*Material
+type Materials map[string]*Material
 
-func (me materials) New(texName string) (mat *Material) {
+func (me Materials) New(texName string) (mat *Material) {
 	mat = &Material{TexName: texName}
 	return
 }
 
-func (me materials) Set(name, texName string) (mat *Material) {
+func (me Materials) Set(name, texName string) (mat *Material) {
 	mat = me.New(texName)
 	me[name] = mat
 	return

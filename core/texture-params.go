@@ -41,7 +41,7 @@ func (me *textureParams) FilterAnisotropy() float64 {
 }
 
 func (me *textureParams) gpuSync() {
-	for _, tex := range Core.Textures {
+	for _, tex := range Core.Libs.Textures {
 		if (tex.Params == me) && tex.GpuSynced() {
 			gl.BindTexture(gl.TEXTURE_2D, tex.glTex)
 			me.apply(tex)

@@ -11,9 +11,8 @@ import (
 )
 
 var (
-	glBackfaceCulling = true
-	glIsInit          bool
-	glShaderMan       = newShaderManager()
+	glIsInit    bool
+	glShaderMan = newShaderManager()
 )
 
 func glDispose() {
@@ -62,13 +61,8 @@ for: <%v>.
 			if !ugl.VersionMatch(3.2) {
 				err = makeVerErr(Sfmt("%v.%v", ugl.GlVersionMajorMinor[0], ugl.GlVersionMajorMinor[1]))
 			} else {
-				gl.ClearColor(0, 0, 0, 1)
-				gl.Enable(gl.DEPTH_TEST)
 				gl.FrontFace(gl.CCW)
 				gl.CullFace(gl.BACK)
-				if glBackfaceCulling {
-					gl.Enable(gl.CULL_FACE)
-				}
 				log.Println(ugl.GlConnInfo())
 				if err = glShaderMan.compileAll(); err == nil {
 				}
@@ -86,14 +80,4 @@ for: <%v>.
 
 func glLogLastError(step string, fmtArgs ...interface{}) {
 	logError(ugl.LastError(step, fmtArgs...))
-}
-
-func glSetBackfaceCulling(val bool) {
-	if val != glBackfaceCulling {
-		if glBackfaceCulling = val; glBackfaceCulling {
-			gl.Enable(gl.CULL_FACE)
-		} else {
-			gl.Disable(gl.CULL_FACE)
-		}
-	}
 }

@@ -34,9 +34,8 @@ type EngineLoop struct {
 	OnSec func()
 }
 
-func newEngineLoop() (me *EngineLoop) {
-	me = &EngineLoop{OnSec: func() {}, OnLoop: func() {}}
-	return
+func (me *EngineLoop) init() {
+	me.OnSec, me.OnLoop = func() {}, func() {}
 }
 
 //	Initiates a rendering loop. This method returns only when the loop is stopped for whatever reason.

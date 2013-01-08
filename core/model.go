@@ -37,6 +37,6 @@ func (me *Model) render() {
 
 func (me *Model) SetMatName(newMatName string) {
 	if newMatName != me.matName {
-		me.mat, me.matName = Core.Materials[newMatName], newMatName
+		me.mat, me.matName = Core.Libs.Materials[newMatName], newMatName
 	}
 }

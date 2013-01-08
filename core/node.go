@@ -104,13 +104,13 @@ func (me *Node) render() {
 
 func (me *Node) SetMatName(newMatName string) {
 	if newMatName != me.matName {
-		me.mat, me.matName = Core.Materials[newMatName], newMatName
+		me.mat, me.matName = Core.Libs.Materials[newMatName], newMatName
 	}
 }
 
 func (me *Node) SetMeshModelName(meshName, modelName string) {
 	if meshName != me.meshName {
-		me.mesh, me.meshName = Core.Meshes[meshName], meshName
+		me.mesh, me.meshName = Core.Libs.Meshes[meshName], meshName
 		me.model, me.modelName = me.mesh.Models.Default(), ""
 	}
 	if modelName != me.modelName {

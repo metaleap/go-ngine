@@ -19,19 +19,19 @@ Canvas 3: screen
 
 */
 
-type renderCanvases []*RenderCanvas
+type RenderCanvases []*RenderCanvas
 
-func (me renderCanvases) New(viewWidth, viewHeight int) (rc *RenderCanvas) {
+func (me RenderCanvases) New(viewWidth, viewHeight int) (rc *RenderCanvas) {
 	rc = newRenderCanvas(viewWidth, viewHeight)
 	return
 }
 
-func (me *renderCanvases) Add(canvas *RenderCanvas) *RenderCanvas {
+func (me *RenderCanvases) Add(canvas *RenderCanvas) *RenderCanvas {
 	*me = append(*me, canvas)
 	return canvas
 }
 
-func (me renderCanvases) Index(canvas *RenderCanvas) int {
+func (me RenderCanvases) Index(canvas *RenderCanvas) int {
 	for curCanvIndex, curCanvas = range me {
 		if curCanvas == canvas {
 			return curCanvIndex
@@ -40,7 +40,7 @@ func (me renderCanvases) Index(canvas *RenderCanvas) int {
 	return -1
 }
 
-func (me *renderCanvases) Remove(canvas *RenderCanvas) {
+func (me *RenderCanvases) Remove(canvas *RenderCanvas) {
 	if curCanvIndex = me.Index(canvas); curCanvIndex >= 0 {
 		*me = append((*me)[:curCanvIndex], (*me)[curCanvIndex+1:]...)
 	}
@@ -74,6 +74,6 @@ func (me *RenderCanvas) render() {
 func (me *RenderCanvas) SetCameraIDs(camIDs ...string) {
 	me.camIDs, me.cams = camIDs, make([]*Camera, len(camIDs))
 	for i, camID := range me.camIDs {
-		me.cams[i] = Core.Cameras[camID]
+		me.cams[i] = Core.Libs.Cameras[camID]
 	}
 }

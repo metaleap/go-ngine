@@ -39,7 +39,6 @@ func LoadSampleScene_00_TriQuad() {
 	)
 
 	ng.Loop.OnLoop = onLoop
-	ngsamples.Cam.Options.BackfaceCulling = false
 
 	//	textures / materials
 	ngsamples.AddTextureMaterials(map[string]string{
@@ -49,13 +48,13 @@ func LoadSampleScene_00_TriQuad() {
 
 	//	meshes / models
 
-	if meshTri, err = ng.Core.Meshes.Load("mesh_tri", ng.MeshProviders.PrefabTri); err != nil {
+	if meshTri, err = ng.Core.Libs.Meshes.Load("mesh_tri", ng.MeshProviders.PrefabTri); err != nil {
 		panic(err)
 	}
-	if meshQuad, err = ng.Core.Meshes.Load("mesh_quad", ng.MeshProviders.PrefabQuad); err != nil {
+	if meshQuad, err = ng.Core.Libs.Meshes.Load("mesh_quad", ng.MeshProviders.PrefabQuad); err != nil {
 		panic(err)
 	}
-	ng.Core.Meshes.AddRange(meshTri, meshQuad)
+	ng.Core.Libs.Meshes.AddRange(meshTri, meshQuad)
 
 	if meshBuf, err = ng.Core.MeshBuffers.Add("meshbuf", ng.Core.MeshBuffers.NewParams(9, 9)); err != nil {
 		panic(err)
@@ -68,8 +67,7 @@ func LoadSampleScene_00_TriQuad() {
 	}
 
 	//	scene
-	scene = ng.NewScene()
-	ng.Core.Scenes[""] = scene
+	scene = ngsamples.AddScene("")
 	scene.RootNode.SubNodes.MakeN("node_tri", "mesh_tri", "", "node_quad", "mesh_quad", "")
 	tri, quad = scene.RootNode.SubNodes.M["node_tri"], scene.RootNode.SubNodes.M["node_quad"]
 	tri.SetMatName("mat_cat")

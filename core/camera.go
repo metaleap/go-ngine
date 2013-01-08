@@ -7,37 +7,32 @@ import (
 	unum "github.com/metaleap/go-util/num"
 )
 
-type cameras map[string]*Camera
+type Cameras map[string]*Camera
 
-func (me cameras) AddNew(id string) (cam *Camera) {
-	cam = me.New()
+func (me Cameras) AddNew(id string) (cam *Camera) {
+	cam = NewCamera()
 	me[id] = cam
 	return
 }
 
-func (me cameras) New() *Camera {
-	return newCamera()
-}
-
 type Camera struct {
-	ViewPort   *CameraViewPort
-	MatProj    *unum.Mat4
-	Options    *CameraOptions
-	Controller *Controller
+	ViewPort   CameraViewPort
+	Options    CameraOptions
+	Controller Controller
 	Disabled   bool
-	SceneName  string
 
 	technique renderTechnique
-	glMatProj *ugl.GlMat4
+	matProj   unum.Mat4
+	glmatProj ugl.GlMat4
 }
 
-func newCamera() (me *Camera) {
+func NewCamera() (me *Camera) {
 	me = &Camera{}
-	me.Options = newCameraOptions()
-	me.MatProj = &unum.Mat4{}
-	me.glMatProj = &ugl.GlMat4{}
-	me.Controller = newController()
-	me.ViewPort = newCameraViewPort(me)
+	me.Options.init()
+	me.matProj.Identity()
+	me.glmatProj.Load(&me.matProj)
+	me.Controller.init()
+	me.ViewPort.init()
 	me.UpdatePerspective()
 	me.SetTechnique(Core.Options.DefaultRenderTechnique)
 	return
@@ -47,11 +42,10 @@ func (me *Camera) dispose() {
 }
 
 func (me *Camera) render() {
-	curScene = Core.Scenes[me.SceneName]
-	glSetBackfaceCulling(me.Options.BackfaceCulling)
+	curScene = Core.Libs.Scenes[me.Options.SceneName]
 	Core.useTechnique(me.technique)
 	gl.UniformMatrix4fv(curProg.UnifLocs["uMatCam"], 1, gl.FALSE, &me.Controller.glMat[0])
-	gl.UniformMatrix4fv(curProg.UnifLocs["uMatProj"], 1, gl.FALSE, &me.glMatProj[0])
+	gl.UniformMatrix4fv(curProg.UnifLocs["uMatProj"], 1, gl.FALSE, &me.glmatProj[0])
 	me.technique.onPreRender()
 	gl.Viewport(me.ViewPort.glVpX, me.ViewPort.glVpY, me.ViewPort.glVpW, me.ViewPort.glVpH)
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
@@ -69,7 +63,7 @@ func (me *Camera) ToggleTechnique() {
 		curIndex, i int
 		tech        renderTechnique = nil
 	)
-	allNames, curTech, name := glShaderMan.AllNames, curTechnique.name(), ""
+	allNames, curTech, name := glShaderMan.names, curTechnique.name(), ""
 	for i, name = range allNames {
 		if name == curTech {
 			curIndex = i
@@ -96,41 +90,49 @@ func (me *Camera) ToggleTechnique() {
 }
 
 func (me *Camera) UpdatePerspective() {
-	me.MatProj.Perspective(me.Options.FovY, me.ViewPort.aspect, me.Options.ZNear, me.Options.ZFar)
-	me.glMatProj.Load(me.MatProj)
+	me.matProj.Perspective(me.Options.FovY, me.ViewPort.aspect, me.Options.ZNear, me.Options.ZFar)
+	me.glmatProj.Load(&me.matProj)
+}
+
+type CameraOptions struct {
+	FovY, ZFar, ZNear float64
+	SceneName         string
+}
+
+func (me *CameraOptions) init() {
+	me.FovY = 37.8493
+	me.ZFar = 30000
+	me.ZNear = 0.3
 }
 
 type CameraViewPort struct {
-	Absolute               bool
-	RelX, RelY, RelW, RelH float64
-	AbsX, AbsY, AbsW, AbsH int
+	absolute               bool
+	relX, relY, relW, relH float64
+	absX, absY, absW, absH int
 	aspect                 float64
-	cam                    *Camera
 	glVpX, glVpY           gl.Int
 	glVpW, glVpH           gl.Sizei
 }
 
-func newCameraViewPort(cam *Camera) (me *CameraViewPort) {
-	me = &CameraViewPort{cam: cam}
+func (me *CameraViewPort) init() {
 	me.SetRel(0, 0, 1, 1)
-	return
 }
 
 func (me *CameraViewPort) SetAbs(x, y, width, height int) {
-	me.Absolute, me.AbsX, me.AbsY, me.AbsW, me.AbsH = true, x, y, width, height
-	me.Update()
+	me.absolute, me.absX, me.absY, me.absW, me.absH = true, x, y, width, height
+	me.update()
 }
 
 func (me *CameraViewPort) SetRel(x, y, width, height float64) {
-	me.Absolute, me.RelX, me.RelY, me.RelW, me.RelH = false, x, y, width, height
-	me.Update()
+	me.absolute, me.relX, me.relY, me.relW, me.relH = false, x, y, width, height
+	me.update()
 }
 
-func (me *CameraViewPort) Update() {
-	if !me.Absolute {
-		me.AbsW, me.AbsH = int(me.RelW*float64(curCanvas.viewWidth)), int(me.RelH*float64(curCanvas.viewHeight))
-		me.AbsX, me.AbsY = int(me.RelX*float64(curCanvas.viewWidth)), int(me.RelY*float64(curCanvas.viewHeight))
+func (me *CameraViewPort) update() {
+	if !me.absolute {
+		me.absW, me.absH = int(me.relW*float64(curCanvas.viewWidth)), int(me.relH*float64(curCanvas.viewHeight))
+		me.absX, me.absY = int(me.relX*float64(curCanvas.viewWidth)), int(me.relY*float64(curCanvas.viewHeight))
 	}
-	me.glVpX, me.glVpY, me.glVpW, me.glVpH = gl.Int(me.AbsX), gl.Int(me.AbsY), gl.Sizei(me.AbsW), gl.Sizei(me.AbsH)
-	me.aspect = float64(me.AbsW) / float64(me.AbsH)
+	me.glVpX, me.glVpY, me.glVpW, me.glVpH = gl.Int(me.absX), gl.Int(me.absY), gl.Sizei(me.absW), gl.Sizei(me.absH)
+	me.aspect = float64(me.absW) / float64(me.absH)
 }

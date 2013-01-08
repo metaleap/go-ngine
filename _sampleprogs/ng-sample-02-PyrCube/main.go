@@ -41,7 +41,7 @@ func LoadSampleScene_02_PyrCube() {
 	)
 
 	ng.Loop.OnLoop = onLoop
-	ngsamples.Cam.Options.BackfaceCulling = false
+	ng.Core.Rendering.States.DisableFaceCulling()
 
 	//	textures / materials
 	ngsamples.AddTextureMaterials(map[string]string{
@@ -50,9 +50,9 @@ func LoadSampleScene_02_PyrCube() {
 		"mosaic":  "tex/mosaic.jpeg",
 	})
 
-	ng.Core.Materials["mat_cobbles"] = ng.Core.Materials.New("tex_cobbles")
-	ng.Core.Materials["mat_crate"] = ng.Core.Materials.New("tex_crate")
-	ng.Core.Materials["mat_mosaic"] = ng.Core.Materials.New("tex_mosaic")
+	ng.Core.Libs.Materials["mat_cobbles"] = ng.Core.Libs.Materials.New("tex_cobbles")
+	ng.Core.Libs.Materials["mat_crate"] = ng.Core.Libs.Materials.New("tex_crate")
+	ng.Core.Libs.Materials["mat_mosaic"] = ng.Core.Libs.Materials.New("tex_mosaic")
 
 	//	meshes / models
 	if bufFloor, err = ng.Core.MeshBuffers.Add("buf_floor", ng.Core.MeshBuffers.NewParams(6, 6)); err != nil {
@@ -61,16 +61,16 @@ func LoadSampleScene_02_PyrCube() {
 	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(36+12, 36+12)); err != nil {
 		panic(err)
 	}
-	if meshFloor, err = ng.Core.Meshes.Load("mesh_plane", ng.MeshProviders.PrefabPlane); err != nil {
+	if meshFloor, err = ng.Core.Libs.Meshes.Load("mesh_plane", ng.MeshProviders.PrefabPlane); err != nil {
 		panic(err)
 	}
-	if meshPyr, err = ng.Core.Meshes.Load("mesh_pyramid", ng.MeshProviders.PrefabPyramid); err != nil {
+	if meshPyr, err = ng.Core.Libs.Meshes.Load("mesh_pyramid", ng.MeshProviders.PrefabPyramid); err != nil {
 		panic(err)
 	}
-	if meshCube, err = ng.Core.Meshes.Load("mesh_cube", ng.MeshProviders.PrefabCube); err != nil {
+	if meshCube, err = ng.Core.Libs.Meshes.Load("mesh_cube", ng.MeshProviders.PrefabCube); err != nil {
 		panic(err)
 	}
-	ng.Core.Meshes.AddRange(meshFloor, meshPyr, meshCube)
+	ng.Core.Libs.Meshes.AddRange(meshFloor, meshPyr, meshCube)
 	bufFloor.Add(meshFloor)
 	bufRest.Add(meshCube)
 	bufRest.Add(meshPyr)
@@ -78,8 +78,7 @@ func LoadSampleScene_02_PyrCube() {
 	meshCube.Models.Default().SetMatName("mat_crate")
 
 	//	scene
-	scene = ng.NewScene()
-	ng.Core.Scenes[""] = scene
+	scene = ngsamples.AddScene("")
 	scene.RootNode.SubNodes.MakeN("node_floor", "mesh_plane", "", "node_pyr", "mesh_pyramid", "", "node_box", "mesh_cube", "")
 	floor, pyr, box = scene.RootNode.SubNodes.M["node_floor"], scene.RootNode.SubNodes.M["node_pyr"], scene.RootNode.SubNodes.M["node_box"]
 

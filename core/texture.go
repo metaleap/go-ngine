@@ -12,20 +12,20 @@ var (
 	asyncTextures = map[*Texture]bool{}
 )
 
-type textures map[string]*Texture
+type Textures map[string]*Texture
 
-func (me textures) AddNew(id, refUrl string) (img *Texture) {
+func (me Textures) AddNew(id, refUrl string) (img *Texture) {
 	img = me.New()
 	img.InitFrom.RefUrl = refUrl
 	me[id] = img
 	return
 }
 
-func (me textures) New() *Texture {
+func (me Textures) New() *Texture {
 	return newTexture()
 }
 
-func (me textures) NewParams(filter bool, filterAnisotropy float64) *textureParams {
+func (me Textures) NewParams(filter bool, filterAnisotropy float64) *textureParams {
 	return newTextureParams(filter, filterAnisotropy)
 }
 
