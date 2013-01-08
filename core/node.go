@@ -52,7 +52,7 @@ func (me *subNodes) Remove(name string) {
 type Node struct {
 	Disabled  bool
 	SubNodes  *subNodes
-	Transform *Transforms
+	Transform *NodeTransforms
 
 	mat                                        *Material
 	mesh                                       *Mesh
@@ -65,7 +65,7 @@ func newNode(nodeName, meshName, modelName string, parent *Node) (me *Node) {
 	me = &Node{name: nodeName, parentNode: parent}
 	me.SubNodes = newSubNodes(me)
 	me.SetMeshModelName(meshName, modelName)
-	me.Transform = newTransforms(me)
+	me.Transform = newNodeTransforms(me)
 	return
 }
 
@@ -116,18 +116,4 @@ func (me *Node) SetMeshModelName(meshName, modelName string) {
 	if modelName != me.modelName {
 		me.model, me.modelName = me.mesh.Models[modelName], modelName
 	}
-}
-
-func (me *Node) Transforms() *Transforms {
-	return me.Transform
-}
-
-func (me *Node) ChildrenUpdateMatrices() {
-	for _, me.curSubNode = range me.SubNodes.M {
-		me.curSubNode.Transform.UpdateMatrices()
-	}
-}
-
-func (me *Node) Parent() Transformable {
-	return me.parentNode
 }

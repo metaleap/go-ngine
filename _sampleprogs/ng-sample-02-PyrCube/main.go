@@ -85,7 +85,7 @@ func LoadSampleScene_02_PyrCube() {
 
 	floor.SetMatName("mat_cobbles")
 	floor.Transform.SetPosXYZ(0.1, 0, -8)
-	floor.Transform.SetScalingN(1000)
+	floor.Transform.SetScaleN(1000)
 
 	ngsamples.CamCtl.BeginUpdate()
 	ngsamples.CamCtl.Pos.Y = 1.6

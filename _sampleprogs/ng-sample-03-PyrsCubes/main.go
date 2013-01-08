@@ -126,7 +126,7 @@ func LoadSampleScene_03_PyrsCubes() {
 		}
 		pyramids[i] = scene.RootNode.SubNodes.Make(ng.Sfmt("nody_pyr_%v", i), "mesh_pyramid", str)
 		f = float64(len(pyramids) - i)
-		pyramids[i].Transform.SetScalingN((f + 1) * 2)
+		pyramids[i].Transform.SetScaleN((f + 1) * 2)
 		pyramids[i].Transform.SetPosXYZ((f+3)*-4, (f+2)*3, (f+2)*14)
 		if i > 1 {
 			if i == 2 {
@@ -144,14 +144,14 @@ func LoadSampleScene_03_PyrsCubes() {
 			pyramids[i].Transform.SetRotX(unum.DegToRad(f))
 		}
 		if i == 1 {
-			pyramids[i].Transform.SetScalingN(100)
+			pyramids[i].Transform.SetScaleN(100)
 			pyramids[i].Transform.Pos.Y += 100
 		}
 	}
 
 	floor.SetMatName("mat_cobbles")
 	floor.Transform.SetPosXYZ(0.1, 0, -8)
-	floor.Transform.SetScalingN(10000)
+	floor.Transform.SetScaleN(10000)
 
 	ngsamples.CamCtl.BeginUpdate()
 	ngsamples.CamCtl.Pos.X, ngsamples.CamCtl.Pos.Y, ngsamples.CamCtl.Pos.Z = 35, 1.6, 24

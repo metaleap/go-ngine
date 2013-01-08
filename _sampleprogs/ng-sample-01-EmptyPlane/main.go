@@ -54,7 +54,7 @@ func LoadSampleScene_01_EmptyPlane() {
 
 	floor.SetMatName("mat_cobbles")
 	floor.Transform.SetPosXYZ(0.1, 0, -8)
-	floor.Transform.SetScalingN(100)
+	floor.Transform.SetScaleN(100)
 
 	ngsamples.CamCtl.BeginUpdate()
 	ngsamples.CamCtl.Pos.Y = 1.6
