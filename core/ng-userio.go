@@ -15,8 +15,8 @@ type EngineUserIO struct {
 	KeyToggleMinDelay float64
 
 	isGlfwInit, isGlfwWindow, togglePress bool
-	lastToggles                           map[int]float64
 	keyWhich                              int
+	lastToggles                           map[int]float64
 }
 
 func (me *EngineUserIO) dispose() {

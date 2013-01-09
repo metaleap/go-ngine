@@ -4,7 +4,6 @@ import (
 	"math"
 
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
-	// nga "github.com/go3d/go-ngine/assets"
 	ng "github.com/go3d/go-ngine/core"
 	unum "github.com/metaleap/go-util/num"
 )
@@ -84,14 +83,14 @@ func LoadSampleScene_03_PyrsCubes() {
 	if meshPyr, err = ng.Core.Libs.Meshes.Load("mesh_pyramid", ng.MeshProviders.PrefabPyramid); err != nil {
 		panic(err)
 	}
-	meshPyr.Models.Default().SetMatName("mat_mosaic")
-	meshPyr.Models.Default().Clone("model_pyramid_dog").SetMatName("mat_dog")
+	meshPyr.Models.Default().SetMatID("mat_mosaic")
+	meshPyr.Models.Default().Clone("model_pyramid_dog").SetMatID("mat_dog")
 
 	if meshCube, err = ng.Core.Libs.Meshes.Load("mesh_cube", ng.MeshProviders.PrefabCube); err != nil {
 		panic(err)
 	}
-	meshCube.Models.Default().SetMatName("mat_crate")
-	meshCube.Models.Default().Clone("model_cube_cat").SetMatName("mat_cat")
+	meshCube.Models.Default().SetMatID("mat_crate")
+	meshCube.Models.Default().Clone("model_cube_cat").SetMatID("mat_cat")
 
 	ng.Core.Libs.Meshes.AddRange(meshFloor, meshPyr, meshCube)
 	bufFloor.Add(meshFloor)
@@ -113,7 +112,7 @@ func LoadSampleScene_03_PyrsCubes() {
 		f = float64(i)
 		crates[i].Transform.SetPosXYZ((f+3)*-2, (f+1)*2, (f+2)*3)
 		if i == 2 {
-			crates[i].SetMatName("mat_dog")
+			crates[i].SetMatID("mat_dog")
 		}
 	}
 
@@ -148,7 +147,7 @@ func LoadSampleScene_03_PyrsCubes() {
 		}
 	}
 
-	floor.SetMatName("mat_cobbles")
+	floor.SetMatID("mat_cobbles")
 	floor.Transform.SetPosXYZ(0.1, 0, -8)
 	floor.Transform.SetScaleN(10000)
 

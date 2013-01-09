@@ -51,7 +51,7 @@ func LoadSampleScene_01_EmptyPlane() {
 	scene.RootNode.SubNodes.MakeN("node_floor", "mesh_plane", "" /*"node_box", "mesh_cube", ""*/)
 	floor = scene.RootNode.SubNodes.M["node_floor"]
 
-	floor.SetMatName("mat_cobbles")
+	floor.SetMatID("mat_cobbles")
 	floor.Transform.SetPosXYZ(0.1, 0, -8)
 	floor.Transform.SetScaleN(100)
 

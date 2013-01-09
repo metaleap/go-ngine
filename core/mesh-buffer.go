@@ -23,16 +23,16 @@ func newMeshBuffers() (me *MeshBuffers) {
 	return
 }
 
-func (me *MeshBuffers) Add(name string, params *meshBufferParams) (buf *MeshBuffer, err error) {
-	buf = me.bufs[name]
+func (me *MeshBuffers) Add(id string, params *meshBufferParams) (buf *MeshBuffer, err error) {
+	buf = me.bufs[id]
 	if buf == nil {
-		if buf, err = newMeshBuffer(name, params); err == nil {
-			me.bufs[name] = buf
+		if buf, err = newMeshBuffer(id, params); err == nil {
+			me.bufs[id] = buf
 		} else if buf != nil {
 			buf.dispose()
 		}
 	} else {
-		err = fmt.Errorf("Cannot add a new mesh buffer with name '%v': already exists", name)
+		err = fmt.Errorf("Cannot add a new mesh buffer with ID '%v': already exists", id)
 	}
 	return
 }
@@ -63,10 +63,10 @@ func (me *MeshBuffers) NewParams(numVerts, numIndices int32) (params *meshBuffer
 	return
 }
 
-func (me *MeshBuffers) Remove(name string) {
-	if buf := me.bufs[name]; buf != nil {
+func (me *MeshBuffers) Remove(id string) {
+	if buf := me.bufs[id]; buf != nil {
 		buf.dispose()
-		delete(me.bufs, name)
+		delete(me.bufs, id)
 	}
 }
 
@@ -75,16 +75,16 @@ type MeshBuffer struct {
 	Params                          *meshBufferParams
 
 	offsetBaseIndex, offsetIndices, offsetVerts int32
-	name                                        string
+	id                                          string
 	meshes                                      Meshes
 	glIbo, glVbo                                gl.Uint
 	glVaos                                      map[string]gl.Uint
 }
 
-func newMeshBuffer(name string, params *meshBufferParams) (buf *MeshBuffer, err error) {
+func newMeshBuffer(id string, params *meshBufferParams) (buf *MeshBuffer, err error) {
 	var glVao gl.Uint
 	buf = &MeshBuffer{}
-	buf.name = name
+	buf.id = id
 	buf.meshes = Meshes{}
 	buf.Params = params
 	buf.glVaos = map[string]gl.Uint{}
@@ -102,7 +102,7 @@ func newMeshBuffer(name string, params *meshBufferParams) (buf *MeshBuffer, err 
 	gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(buf.MemSizeIndices), gl.Pointer(nil), ugl.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
 	gl.BindBuffer(gl.ARRAY_BUFFER, 0)
 	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
-	if err = ugl.LastError("newMeshBuffer(%v numVerts=%v numIndices=%v)", name, params.NumVerts, params.NumIndices); err != nil {
+	if err = ugl.LastError("newMeshBuffer(%v numVerts=%v numIndices=%v)", id, params.NumVerts, params.NumIndices); err != nil {
 		buf.dispose()
 		buf = nil
 	} else {
@@ -121,12 +121,12 @@ func newMeshBuffer(name string, params *meshBufferParams) (buf *MeshBuffer, err 
 
 func (me *MeshBuffer) Add(mesh *Mesh) (err error) {
 	if mesh.meshBuffer != nil {
-		err = fmt.Errorf("Cannot add mesh '%v' to mesh buffer '%v': already belongs to mesh buffer '%v'.", mesh.name, me.name, mesh.meshBuffer.name)
+		err = fmt.Errorf("Cannot add mesh '%v' to mesh buffer '%v': already belongs to mesh buffer '%v'.", mesh.id, me.id, mesh.meshBuffer.id)
 	} else if me.meshes.Add(mesh) != nil {
 		mesh.gpuSynced = false
 		mesh.meshBuffer = me
 	} else {
-		err = fmt.Errorf("Cannot add mesh '%v' to mesh buffer '%v': already has a mesh with that name.", mesh.name, me.name)
+		err = fmt.Errorf("Cannot add mesh '%v' to mesh buffer '%v': already has a mesh with that ID.", mesh.id, me.id)
 	}
 	return
 }
@@ -151,6 +151,6 @@ func (me *MeshBuffer) Remove(mesh *Mesh) {
 	if mesh.meshBuffer == me {
 		mesh.GpuDelete()
 		mesh.meshBuffer = nil
-		delete(me.meshes, mesh.name)
+		delete(me.meshes, mesh.id)
 	}
 }

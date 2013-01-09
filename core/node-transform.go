@@ -48,7 +48,7 @@ func newNodeTransforms(owner *Node) (me *NodeTransforms) {
 }
 
 //	Creates a final single 4x4 transformation matrix for all transformations
-//	in me. It is this matrix that is used by the rendering pipeline.
+//	in me. It is onlx this matrix that is used by the rendering runtime.
 func (me *NodeTransforms) ApplyMatrices() {
 	if me.owner.parentNode != nil {
 		me.matParent.CopyFrom(&me.owner.parentNode.Transform.matModelView)

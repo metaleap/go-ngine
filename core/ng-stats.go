@@ -11,27 +11,27 @@ type EngineStats struct {
 	FpsLastSec int
 
 	//	This TimingStats instance combines all the individual FrameFoo fields to track over time (both average and maximum) total cost per frame.
-	Frame *TimingStats
+	Frame TimingStats
 
 	//	"Rendering" consists of a CPU-side and a GPU-side cost.
 	//	This TimingStats instance combines both to track over time (both average and maximum) total rendering cost per frame.
-	FrameRenderBoth *TimingStats
+	FrameRenderBoth TimingStats
 
 	//	The CPU-side cost of rendering comprises geometry culling, and batching draw calls to the GPU.
 	//	This TimingStats instance tracks over time (both average and maximum) CPU-side rendering cost per frame.
-	FrameRenderCpu *TimingStats
+	FrameRenderCpu TimingStats
 
 	//	The GPU-side cost of rendering comprises execution of all draw calls sent by the CPU-side, plus waiting for V-sync if enabled.
 	//	This TimingStats instance tracks over time (both average and maximum) GPU-side rendering cost per frame.
-	FrameRenderGpu *TimingStats
+	FrameRenderGpu TimingStats
 
 	//	"Core code" comprises non-rendering go:ngine logic executed every frame.
 	//	This TimingStats instance tracks over time (both average and maximum) "core code" cost per frame.
-	FrameCoreCode *TimingStats
+	FrameCoreCode TimingStats
 
 	//	"User code" comprises user-specific logic executed every frame in your own EngineLoop.OnLoop() callback.
 	//	This TimingStats instance tracks over time (both average and maximum) "user code" cost per frame.
-	FrameUserCode *TimingStats
+	FrameUserCode TimingStats
 
 	//	During the Loop, the Go Garbge Collector is invoked at least and at most once per second.
 	//	
@@ -39,7 +39,7 @@ type EngineStats struct {
 	//	noticably block user interaction --- 99.9% of the time it will complete in less than 10ms (and almost-always under 1ms).
 	//	
 	//	This TimingStats instance over time tracks the maximum and average time spent on that 1x-per-second GC invokation (but does not track any other GC invokations).
-	Gc *TimingStats
+	Gc TimingStats
 
 	fpsCounter int
 	fpsAll     float64
@@ -52,8 +52,6 @@ func (me *EngineStats) AverageFps() float64 {
 
 func (me *EngineStats) reset() {
 	me.FpsLastSec, me.fpsCounter, me.fpsAll = 0, 0, 0
-	ctor := newTimingStats
-	me.Frame, me.FrameRenderBoth, me.FrameRenderCpu, me.FrameRenderGpu, me.FrameCoreCode, me.FrameUserCode, me.Gc = ctor(), ctor(), ctor(), ctor(), ctor(), ctor(), ctor()
 }
 
 func (me *EngineStats) TotalFrames() float64 {
@@ -64,11 +62,6 @@ func (me *EngineStats) TotalFrames() float64 {
 type TimingStats struct {
 	max, measuredCounter, measureStartTime, thisTime, totalAccum float64
 	comb1, comb2                                                 *TimingStats
-}
-
-func newTimingStats() (me *TimingStats) {
-	me = &TimingStats{}
-	return
 }
 
 //	Returns the average cost tracked by this performance indicator.

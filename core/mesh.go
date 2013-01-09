@@ -11,8 +11,8 @@ import (
 type Meshes map[string]*Mesh
 
 func (me Meshes) Add(mesh *Mesh) *Mesh {
-	if me[mesh.name] == nil {
-		me[mesh.name] = mesh
+	if me[mesh.id] == nil {
+		me[mesh.id] = mesh
 		return mesh
 	}
 	return nil
@@ -24,9 +24,9 @@ func (me Meshes) AddRange(meshes ...*Mesh) {
 	}
 }
 
-func (me Meshes) Load(name string, provider MeshProvider, args ...interface{}) (mesh *Mesh, err error) {
+func (me Meshes) Load(id string, provider MeshProvider, args ...interface{}) (mesh *Mesh, err error) {
 	var meshData *MeshData
-	mesh = me.New(name)
+	mesh = me.New(id)
 	if meshData, err = provider(args...); err == nil {
 		mesh.load(meshData)
 	} else {
@@ -35,19 +35,19 @@ func (me Meshes) Load(name string, provider MeshProvider, args ...interface{}) (
 	return
 }
 
-func (me Meshes) New(name string) (mesh *Mesh) {
-	mesh = &Mesh{name: name, Models: models{}}
+func (me Meshes) New(id string) (mesh *Mesh) {
+	mesh = &Mesh{id: id, Models: Models{}}
 	return mesh
 }
 
 type Mesh struct {
-	Models models
+	Models Models
 
-	name                                                             string
-	meshBuffer                                                       *MeshBuffer
 	meshBufOffsetBaseIndex, meshBufOffsetIndices, meshBufOffsetVerts int32
-	raw                                                              *meshRaw
 	gpuSynced                                                        bool
+	id                                                               string
+	meshBuffer                                                       *MeshBuffer
+	raw                                                              *meshRaw
 }
 
 func (me *Mesh) GpuDelete() {
@@ -61,12 +61,12 @@ func (me *Mesh) GpuUpload() (err error) {
 	me.GpuDelete()
 
 	if sizeVerts > gl.Sizeiptr(me.meshBuffer.MemSizeVertices) {
-		err = fmt.Errorf("Cannot upload mesh '%v': vertex size (%vB) exceeds mesh buffer's available vertex memory (%vB)", me.name, sizeVerts, me.meshBuffer.MemSizeVertices)
+		err = fmt.Errorf("Cannot upload mesh '%v': vertex size (%vB) exceeds mesh buffer's available vertex memory (%vB)", me.id, sizeVerts, me.meshBuffer.MemSizeVertices)
 	} else if sizeIndices > gl.Sizeiptr(me.meshBuffer.MemSizeIndices) {
-		err = fmt.Errorf("Cannot upload mesh '%v': index size (%vB) exceeds mesh buffer's available index memory (%vB)", me.name, sizeIndices, me.meshBuffer.MemSizeIndices)
+		err = fmt.Errorf("Cannot upload mesh '%v': index size (%vB) exceeds mesh buffer's available index memory (%vB)", me.id, sizeIndices, me.meshBuffer.MemSizeIndices)
 	} else {
 		me.meshBufOffsetBaseIndex, me.meshBufOffsetIndices, me.meshBufOffsetVerts = me.meshBuffer.offsetBaseIndex, me.meshBuffer.offsetIndices, me.meshBuffer.offsetVerts
-		fmt.Printf("Upload %v at voff=%v ioff=%v boff=%v\n", me.name, me.meshBufOffsetVerts, me.meshBufOffsetIndices, me.meshBufOffsetBaseIndex)
+		fmt.Printf("Upload %v at voff=%v ioff=%v boff=%v\n", me.id, me.meshBufOffsetVerts, me.meshBufOffsetIndices, me.meshBufOffsetBaseIndex)
 		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.meshBuffer.glIbo)
 		gl.BindBuffer(gl.ARRAY_BUFFER, me.meshBuffer.glVbo)
 		gl.BufferSubData(gl.ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetVerts), sizeVerts, gl.Pointer(&me.raw.meshVerts[0]))
@@ -76,7 +76,7 @@ func (me *Mesh) GpuUpload() (err error) {
 		me.meshBuffer.offsetBaseIndex += int32(len(me.raw.indices))
 		gl.BindBuffer(gl.ARRAY_BUFFER, 0)
 		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
-		if err = ugl.LastError("mesh[%v].GpuUpload()", me.name); err == nil {
+		if err = ugl.LastError("mesh[%v].GpuUpload()", me.id); err == nil {
 			me.gpuSynced = true
 		}
 	}
@@ -98,7 +98,7 @@ func (me *Mesh) load(meshData *MeshData) {
 		vreuse                                         int
 		ventry                                         meshVert
 	)
-	me.Models = models{}
+	me.Models = Models{}
 	me.gpuSynced = false
 	me.raw = &meshRaw{}
 	me.raw.meshVerts = make([]float32, Core.MeshBuffers.FloatsPerVertex()*numVerts)
@@ -127,7 +127,7 @@ func (me *Mesh) load(meshData *MeshData) {
 		offsetFace++
 	}
 	me.Models[""] = newModel("", me)
-	fmt.Printf("meshload(%v) gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)\n", me.name, len(me.raw.faces), len(me.raw.meshVerts), numFinalVerts, numVerts, len(me.raw.indices), vreuse)
+	fmt.Printf("meshload(%v) gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)\n", me.id, len(me.raw.faces), len(me.raw.meshVerts), numFinalVerts, numVerts, len(me.raw.indices), vreuse)
 }
 
 func (me *Mesh) Loaded() bool {

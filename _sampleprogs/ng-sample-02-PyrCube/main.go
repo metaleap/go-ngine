@@ -74,15 +74,15 @@ func LoadSampleScene_02_PyrCube() {
 	bufFloor.Add(meshFloor)
 	bufRest.Add(meshCube)
 	bufRest.Add(meshPyr)
-	meshPyr.Models.Default().SetMatName("mat_mosaic")
-	meshCube.Models.Default().SetMatName("mat_crate")
+	meshPyr.Models.Default().SetMatID("mat_mosaic")
+	meshCube.Models.Default().SetMatID("mat_crate")
 
 	//	scene
 	scene = ngsamples.AddScene("")
 	scene.RootNode.SubNodes.MakeN("node_floor", "mesh_plane", "", "node_pyr", "mesh_pyramid", "", "node_box", "mesh_cube", "")
 	floor, pyr, box = scene.RootNode.SubNodes.M["node_floor"], scene.RootNode.SubNodes.M["node_pyr"], scene.RootNode.SubNodes.M["node_box"]
 
-	floor.SetMatName("mat_cobbles")
+	floor.SetMatID("mat_cobbles")
 	floor.Transform.SetPosXYZ(0.1, 0, -8)
 	floor.Transform.SetScaleN(1000)
 

@@ -49,7 +49,7 @@ func (me *EngineLoop) Loop() {
 		glfw.SetTime(0)
 		me.SecTickLast, me.TickNow = glfw.Time(), glfw.Time()
 		Stats.reset()
-		Stats.FrameRenderBoth.comb1, Stats.FrameRenderBoth.comb2 = Stats.FrameRenderCpu, Stats.FrameRenderGpu
+		Stats.FrameRenderBoth.comb1, Stats.FrameRenderBoth.comb2 = &Stats.FrameRenderCpu, &Stats.FrameRenderGpu
 		glLogLastError("ngine.PreLoop")
 		log.Printf("Enter loop...")
 		for me.IsLooping && (glfw.WindowParam(glfw.Opened) == 1) {

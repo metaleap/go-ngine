@@ -79,18 +79,13 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Camera.ApplyMatrices">func (me *Camera) ApplyMatrices()</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Camera.SetTechnique">func (me *Camera) SetTechnique(name string)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Camera.ToggleTechnique">func (me *Camera) ToggleTechnique()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#Camera.UpdatePerspective">func (me *Camera) UpdatePerspective()</a></dd>
-				
-			
-				
-				<dd><a href="#CameraOptions">type CameraOptions</a></dd>
-				
 				
 			
 				
@@ -158,12 +153,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					
 					<dd>&nbsp; &nbsp; <a href="#Controller.TurnUp">func (me *Controller) TurnUp()</a></dd>
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#Controller.UpdateMatrix">func (me *Controller) UpdateMatrix()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#Controller.UpdateMatrixRot">func (me *Controller) UpdateMatrixRot()</a></dd>
-				
 			
 				
 				<dd><a href="#EngineCore">type EngineCore</a></dd>
@@ -193,12 +182,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					
 					<dd>&nbsp; &nbsp; <a href="#NewEngineOptions">func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions)</a></dd>
 				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineOptions.GlClearColor">func (me *EngineOptions) GlClearColor() ugl.GlVec4</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineOptions.SetGlClearColor">func (me *EngineOptions) SetGlClearColor(col ugl.GlVec4)</a></dd>
 				
 			
 				
@@ -302,7 +285,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#MeshBuffers.Add">func (me *MeshBuffers) Add(name string, params *meshBufferParams) (buf *MeshBuffer, err error)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#MeshBuffers.Add">func (me *MeshBuffers) Add(id string, params *meshBufferParams) (buf *MeshBuffer, err error)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#MeshBuffers.FloatsPerVertex">func (me *MeshBuffers) FloatsPerVertex() int32</a></dd>
@@ -317,7 +300,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#MeshBuffers.NewParams">func (me *MeshBuffers) NewParams(numVerts, numIndices int32) (params *meshBufferParams)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#MeshBuffers.Remove">func (me *MeshBuffers) Remove(name string)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#MeshBuffers.Remove">func (me *MeshBuffers) Remove(id string)</a></dd>
 				
 			
 				
@@ -344,10 +327,10 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#Meshes.AddRange">func (me Meshes) AddRange(meshes ...*Mesh)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Meshes.Load">func (me Meshes) Load(name string, provider MeshProvider, args ...interface{}) (mesh *Mesh, err error)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Meshes.Load">func (me Meshes) Load(id string, provider MeshProvider, args ...interface{}) (mesh *Mesh, err error)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Meshes.New">func (me Meshes) New(name string) (mesh *Mesh)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Meshes.New">func (me Meshes) New(id string) (mesh *Mesh)</a></dd>
 				
 			
 				
@@ -355,13 +338,21 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Model.Clone">func (me *Model) Clone(modelName string) (clonedModel *Model)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Model.MatID">func (me *Model) MatID() string</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Model.MatName">func (me *Model) MatName() string</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Model.SetMatID">func (me *Model) SetMatID(newMatID string)</a></dd>
+				
+			
+				
+				<dd><a href="#Models">type Models</a></dd>
+				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Model.SetMatName">func (me *Model) SetMatName(newMatName string)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Models.Clone">func (me Models) Clone(id, newID string) (model *Model)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Models.Default">func (me Models) Default() *Model</a></dd>
 				
 			
 				
@@ -699,15 +690,40 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.go?s=261:447#L8">Camera</a></h2>
+			<h2 id="Camera">type <a href="/target/camera.go?s=492:1452#L12">Camera</a></h2>
 			<pre>type Camera struct {
-    ViewPort   CameraViewPort
-    Options    CameraOptions
+    <span class="comment">//	If true, this camera is ignored by the rendering runtime.</span>
+    Disabled bool
+
+    <span class="comment">//	Optical and imager properties for this camera.</span>
+    Params struct {
+        <span class="comment">//	Vertical field-of-view. Defaults to 37.8493.</span>
+        <span class="comment">//	After changing this value, you must call the ApplyMatrices() method.</span>
+        FovY float64
+
+        <span class="comment">//	Distance of the far-plane from the camera. Defaults to 30000.</span>
+        <span class="comment">//	After changing this value, you must call the ApplyMatrices() method.</span>
+        ZFar float64
+
+        <span class="comment">//	Distance of the near-plane from the camera. Defaults to 0.3.</span>
+        <span class="comment">//	After changing this value, you must call the ApplyMatrices() method.</span>
+        ZNear float64
+
+        <span class="comment">//	The ID of the Scene (in Core.Libs.Scenes) this camera is looking at.</span>
+        SceneID string
+    }
+
+    <span class="comment">//	Encapsulates the position and direction of this camera.</span>
     Controller Controller
-    Disabled   bool
+
+    <span class="comment">//	The device-relative or absolute view-port for this Camera.</span>
+    ViewPort CameraViewPort
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
-			
+			<p>
+A camera embodies the eye point of the viewer looking at the visual scene.
+</p>
+
 
 			
 
@@ -717,61 +733,51 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 
 			
 				
-				<h3 id="NewCamera">func <a href="/target/camera.go?s=449:478#L19">NewCamera</a></h3>
+				<h3 id="NewCamera">func <a href="/target/camera.go?s=1519:1548#L46">NewCamera</a></h3>
 				<pre>func NewCamera() (me *Camera)</pre>
-				
+				<p>
+Initializes and returns a new Camera with default parameters.
+</p>
+
 				
 			
 
 			
 				
-				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.go?s=1219:1262#L45">SetTechnique</a></h3>
+				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=1903:1936#L62">ApplyMatrices</a></h3>
+				<pre>func (me *Camera) ApplyMatrices()</pre>
+				<p>
+Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.go?s=2581:2624#L81">SetTechnique</a></h3>
 				<pre>func (me *Camera) SetTechnique(name string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.ToggleTechnique">func (*Camera) <a href="/target/camera.go?s=1361:1396#L51">ToggleTechnique</a></h3>
+				<h3 id="Camera.ToggleTechnique">func (*Camera) <a href="/target/camera.go?s=2723:2758#L87">ToggleTechnique</a></h3>
 				<pre>func (me *Camera) ToggleTechnique()</pre>
 				
 				
 				
 			
-				
-				<h3 id="Camera.UpdatePerspective">func (*Camera) <a href="/target/camera.go?s=1942:1979#L82">UpdatePerspective</a></h3>
-				<pre>func (me *Camera) UpdatePerspective()</pre>
-				
-				
-				
-			
 		
 			
 			
-			<h2 id="CameraOptions">type <a href="/target/camera.go?s=2113:2195#L87">CameraOptions</a></h2>
-			<pre>type CameraOptions struct {
-    FovY, ZFar, ZNear float64
-    SceneName         string
-}</pre>
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="CameraViewPort">type <a href="/target/camera.go?s=2286:2501#L98">CameraViewPort</a></h2>
+			<h2 id="CameraViewPort">type <a href="/target/camera.go?s=3368:3583#L119">CameraViewPort</a></h2>
 			<pre>type CameraViewPort struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
-			
+			<p>
+Encapsulates a device-relative or absolute camera view-port.
+</p>
+
 
 			
 
@@ -783,25 +789,35 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 
 			
 				
-				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.go?s=2564:2621#L111">SetAbs</a></h3>
+				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.go?s=3709:3766#L133">SetAbs</a></h3>
 				<pre>func (me *CameraViewPort) SetAbs(x, y, width, height int)</pre>
-				
+				<p>
+Sets the absolute viewport origin and dimensions in pixels.
+</p>
+
 				
 				
 			
 				
-				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.go?s=2717:2778#L116">SetRel</a></h3>
+				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.go?s=4017:4078#L140">SetRel</a></h3>
 				<pre>func (me *CameraViewPort) SetRel(x, y, width, height float64)</pre>
-				
+				<p>
+Sets the device-relative viewport origin and dimensions, with the value 1.0
+representing the maximum extent of the viewport on that respective axis.
+</p>
+
 				
 				
 			
 		
 			
 			
-			<h2 id="Cameras">type <a href="/target/camera.go?s=132:163#L1">Cameras</a></h2>
+			<h2 id="Cameras">type <a href="/target/camera.go?s=188:219#L1">Cameras</a></h2>
 			<pre>type Cameras map[string]*Camera</pre>
-			
+			<p>
+A hash-table of Cameras. Used for Core.Libs.Cameras.
+</p>
+
 
 			
 
@@ -813,24 +829,64 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 
 			
 				
-				<h3 id="Cameras.AddNew">func (Cameras) <a href="/target/camera.go?s=165:214#L2">AddNew</a></h3>
+				<h3 id="Cameras.AddNew">func (Cameras) <a href="/target/camera.go?s=318:367#L5">AddNew</a></h3>
 				<pre>func (me Cameras) AddNew(id string) (cam *Camera)</pre>
-				
+				<p>
+Initializes a new Camera with default parameters and adds
+it to me under the specified ID.
+</p>
+
 				
 				
 			
 		
 			
 			
-			<h2 id="Controller">type <a href="/target/controller.go?s=108:453#L1">Controller</a></h2>
+			<h2 id="Controller">type <a href="/target/controller.go?s=305:1840#L3">Controller</a></h2>
 			<pre>type Controller struct {
-    Pos, Dir, UpAxis             unum.Vec3
-    MoveSpeed, MoveSpeedupFactor float64
-    TurnSpeed, TurnSpeedupFactor float64
-    MaxTurnUp, MinTurnDown       float64
+    <span class="comment">//	The position being manipulated by this Controller.</span>
+    <span class="comment">//	When manipulating this manually (outside the TurnXyz() / MoveXyz() methods),</span>
+    <span class="comment">//	do so in between calling the BeginUpdate() and EndUpdate() methods.</span>
+    Pos unum.Vec3
+
+    <span class="comment">//	The direction being manipulated by this Controller.</span>
+    <span class="comment">//	When manipulating this manually (outside the TurnXyz() / MoveXyz() methods),</span>
+    <span class="comment">//	do so in between calling the BeginUpdate() and EndUpdate() methods.</span>
+    Dir unum.Vec3
+
+    <span class="comment">//	Indicates which axis is consider &#34;upward&#34;. This is typically</span>
+    <span class="comment">//	the Y-axis, denoted by the default value (0, 1, 0).</span>
+    <span class="comment">//	When manipulating this manually (outside the TurnXyz() / MoveXyz() methods),</span>
+    <span class="comment">//	do so in between calling the BeginUpdate() and EndUpdate() methods.</span>
+    UpAxis unum.Vec3
+
+    <span class="comment">//	Speed of &#34;moving&#34; in the MoveXyz() methods, in units per second.</span>
+    <span class="comment">//	Defaults to 2.</span>
+    MoveSpeed float64
+
+    <span class="comment">//	A factor multiplied with MoveSpeed in the MoveXyz() methods. Defaults to 1.</span>
+    MoveSpeedupFactor float64
+
+    <span class="comment">//	Speed of &#34;turning&#34; in the TurnXyz() methods, in degrees per second.</span>
+    <span class="comment">//	Defaults to 90.</span>
+    TurnSpeed float64
+
+    <span class="comment">//	A factor multiplied with TurnSpeed in the TurnXyz() methods. Defaults to 1.</span>
+    TurnSpeedupFactor float64
+
+    <span class="comment">//	The maximum degree that TurnUp() allows. Defaults to 90.</span>
+    MaxTurnUp float64
+
+    <span class="comment">//	The minimum degree that TurnDown() allows. Defaults to -90.</span>
+    MinTurnDown float64
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
-			
+			<p>
+Encapsulates a position-and-direction and provides methods
+manipulating these with respect to each other (e.g. &#34;move forward&#34;
+some entity that is rotated facing some arbitrary direction).
+</p>
+
 
 			
 
@@ -842,124 +898,161 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 
 			
 				
-				<h3 id="Controller.BeginUpdate">func (*Controller) <a href="/target/controller.go?s=455:490#L13">BeginUpdate</a></h3>
+				<h3 id="Controller.BeginUpdate">func (*Controller) <a href="/target/controller.go?s=2864:2899#L79">BeginUpdate</a></h3>
 				<pre>func (me *Controller) BeginUpdate()</pre>
-				
+				<p>
+Temporarily suspends all matrix re-calculations typically occuring inside
+the MoveXyz() / TurnXyz() methods. Call this prior to multiple subsequent
+calls to any combination of those methods, and/or prior to manually modifying
+the Pos, Dir or UpAxis fields of me. Immediately afterwards, be sure to call
+EndUpdate() to apply all changes in a final matrix re-calculation.
+</p>
+
 				
 				
 			
 				
-				<h3 id="Controller.EndUpdate">func (*Controller) <a href="/target/controller.go?s=519:552#L17">EndUpdate</a></h3>
+				<h3 id="Controller.EndUpdate">func (*Controller) <a href="/target/controller.go?s=3233:3266#L87">EndUpdate</a></h3>
 				<pre>func (me *Controller) EndUpdate()</pre>
-				
+				<p>
+Applies all changes made to Pos, Dir or UpAxis since BeginUpdate() was last
+called, and recalculates this Controller&#39;s final 4x4 transformation matrix.
+Also resumes all matrix re-calculations typically occuring inside the
+MoveXyz() / TurnXyz() methods that were suspended since BeginUpdate().
+</p>
+
 				
 				
 			
 				
-				<h3 id="Controller.MoveBackward">func (*Controller) <a href="/target/controller.go?s=1404:1440#L49">MoveBackward</a></h3>
+				<h3 id="Controller.MoveBackward">func (*Controller) <a href="/target/controller.go?s=4191:4227#L120">MoveBackward</a></h3>
 				<pre>func (me *Controller) MoveBackward()</pre>
-				
+				<p>
+Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move backward&#34;.
+</p>
+
 				
 				
 			
 				
-				<h3 id="Controller.MoveDown">func (*Controller) <a href="/target/controller.go?s=1526:1558#L54">MoveDown</a></h3>
+				<h3 id="Controller.MoveDown">func (*Controller) <a href="/target/controller.go?s=4392:4424#L126">MoveDown</a></h3>
 				<pre>func (me *Controller) MoveDown()</pre>
-				
+				<p>
+Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move downward&#34;.
+</p>
+
 				
 				
 			
 				
-				<h3 id="Controller.MoveForward">func (*Controller) <a href="/target/controller.go?s=1647:1682#L59">MoveForward</a></h3>
+				<h3 id="Controller.MoveForward">func (*Controller) <a href="/target/controller.go?s=4591:4626#L132">MoveForward</a></h3>
 				<pre>func (me *Controller) MoveForward()</pre>
-				
+				<p>
+Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move forward&#34;.
+</p>
+
 				
 				
 			
 				
-				<h3 id="Controller.MoveLeft">func (*Controller) <a href="/target/controller.go?s=1768:1800#L64">MoveLeft</a></h3>
+				<h3 id="Controller.MoveLeft">func (*Controller) <a href="/target/controller.go?s=4792:4824#L138">MoveLeft</a></h3>
 				<pre>func (me *Controller) MoveLeft()</pre>
-				
+				<p>
+Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move left-ward&#34;.
+</p>
+
 				
 				
 			
 				
-				<h3 id="Controller.MoveRight">func (*Controller) <a href="/target/controller.go?s=1913:1946#L69">MoveRight</a></h3>
+				<h3 id="Controller.MoveRight">func (*Controller) <a href="/target/controller.go?s=5018:5051#L144">MoveRight</a></h3>
 				<pre>func (me *Controller) MoveRight()</pre>
-				
+				<p>
+Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move right-ward&#34;.
+</p>
+
 				
 				
 			
 				
-				<h3 id="Controller.MoveUp">func (*Controller) <a href="/target/controller.go?s=2059:2089#L74">MoveUp</a></h3>
+				<h3 id="Controller.MoveUp">func (*Controller) <a href="/target/controller.go?s=5241:5271#L150">MoveUp</a></h3>
 				<pre>func (me *Controller) MoveUp()</pre>
-				
+				<p>
+Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move upward&#34;.
+</p>
+
 				
 				
 			
 				
-				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=2178:2222#L79">StepSizeMove</a></h3>
+				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=5513:5557#L157">StepSizeMove</a></h3>
 				<pre>func (me *Controller) StepSizeMove() float64</pre>
-				
+				<p>
+Returns the current distance that a single MoveXyz() call (per loop iteration) would move.
+(Loop.TickDelta * me.MoveSpeed * me.MoveSpeedupFactor)
+</p>
+
 				
 				
 			
 				
-				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=2289:2333#L83">StepSizeTurn</a></h3>
+				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=5775:5819#L163">StepSizeTurn</a></h3>
 				<pre>func (me *Controller) StepSizeTurn() float64</pre>
-				
+				<p>
+Returns the current degrees that a single TurnXyz() call (per loop iteration) would turn.
+(Loop.TickDelta * me.TurnSpeed * me.TurnSpeedupFactor)
+</p>
+
 				
 				
 			
 				
-				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=2400:2432#L87">TurnDown</a></h3>
+				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=5964:5996#L168">TurnDown</a></h3>
 				<pre>func (me *Controller) TurnDown()</pre>
-				
+				<p>
+Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34;.
+</p>
+
 				
 				
 			
 				
-				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=2550:2582#L95">TurnLeft</a></h3>
+				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=6192:6224#L177">TurnLeft</a></h3>
 				<pre>func (me *Controller) TurnLeft()</pre>
-				
+				<p>
+Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#34;.
+</p>
+
 				
 				
 			
 				
-				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=2661:2694#L101">TurnRight</a></h3>
+				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=6382:6415#L184">TurnRight</a></h3>
 				<pre>func (me *Controller) TurnRight()</pre>
-				
+				<p>
+Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#34;.
+</p>
+
 				
 				
 			
 				
-				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=2773:2803#L107">TurnUp</a></h3>
+				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=6569:6599#L191">TurnUp</a></h3>
 				<pre>func (me *Controller) TurnUp()</pre>
-				
-				
-				
-			
-				
-				<h3 id="Controller.UpdateMatrix">func (*Controller) <a href="/target/controller.go?s=2919:2955#L115">UpdateMatrix</a></h3>
-				<pre>func (me *Controller) UpdateMatrix()</pre>
-				
-				
-				
-			
-				
-				<h3 id="Controller.UpdateMatrixRot">func (*Controller) <a href="/target/controller.go?s=3169:3208#L125">UpdateMatrixRot</a></h3>
-				<pre>func (me *Controller) UpdateMatrixRot()</pre>
-				
+				<p>
+Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34;.
+</p>
+
 				
 				
 			
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=884:1241#L15">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=884:1240#L15">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
-    Options     *EngineOptions
+    Options     EngineOptions
     Libs        struct {
         Cameras   Cameras
         Materials Materials
@@ -990,7 +1083,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3143:3178#L116">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3139:3174#L116">SyncUpdates</a></h3>
 				<pre>func (me *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -1052,7 +1145,7 @@ Initiates a rendering loop. This method returns only when the loop is stopped fo
 				
 			
 				
-				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=2931:2959#L86">Stop</a></h3>
+				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=2933:2961#L86">Stop</a></h3>
 				<pre>func (me *EngineLoop) Stop()</pre>
 				<p>
 Stops the currently running EngineLoop.Loop().
@@ -1062,7 +1155,7 @@ Stops the currently running EngineLoop.Loop().
 				
 			
 				
-				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=3074:3110#L91">Time</a></h3>
+				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=3076:3112#L91">Time</a></h3>
 				<pre>func (me *EngineLoop) Time() float64</pre>
 				<p>
 Returns the number of seconds expired ever since EngineLoop.Loop() was last called.
@@ -1074,7 +1167,7 @@ Returns the number of seconds expired ever since EngineLoop.Loop() was last call
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=263:724#L1">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=185:597#L1">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     <span class="comment">//	The base directory path for asset file paths.</span>
     AssetRootDirPath string
@@ -1100,7 +1193,7 @@ Various &#34;global&#34; (rather than use-case-specific) options.
 
 			
 				
-				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=799:927#L17">NewEngineOptions</a></h3>
+				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=672:800#L10">NewEngineOptions</a></h3>
 				<pre>func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions)</pre>
 				<p>
 Allocates, initializes and returns a new core.EngineOptions instance.
@@ -1110,56 +1203,36 @@ Allocates, initializes and returns a new core.EngineOptions instance.
 			
 
 			
-				
-				<h3 id="EngineOptions.GlClearColor">func (*EngineOptions) <a href="/target/ng-options.go?s=1301:1351#L26">GlClearColor</a></h3>
-				<pre>func (me *EngineOptions) GlClearColor() ugl.GlVec4</pre>
-				<p>
-Returns the current OpenGL &#34;clear color&#34;.
-</p>
-
-				
-				
-			
-				
-				<h3 id="EngineOptions.SetGlClearColor">func (*EngineOptions) <a href="/target/ng-options.go?s=1425:1481#L31">SetGlClearColor</a></h3>
-				<pre>func (me *EngineOptions) SetGlClearColor(col ugl.GlVec4)</pre>
-				<p>
-Changes the current OpenGL &#34;clear color&#34;
-</p>
-
-				
-				
-			
 		
 			
 			
-			<h2 id="EngineStats">type <a href="/target/ng-stats.go?s=211:2283#L1">EngineStats</a></h2>
+			<h2 id="EngineStats">type <a href="/target/ng-stats.go?s=211:2276#L1">EngineStats</a></h2>
 			<pre>type EngineStats struct {
     <span class="comment">//	Gives the total number of frames rendered during the &#34;previous&#34; (not the current) second. Good enough for just a simple-minded FPS indicator.</span>
     FpsLastSec int
 
     <span class="comment">//	This TimingStats instance combines all the individual FrameFoo fields to track over time (both average and maximum) total cost per frame.</span>
-    Frame *TimingStats
+    Frame TimingStats
 
     <span class="comment">//	&#34;Rendering&#34; consists of a CPU-side and a GPU-side cost.</span>
     <span class="comment">//	This TimingStats instance combines both to track over time (both average and maximum) total rendering cost per frame.</span>
-    FrameRenderBoth *TimingStats
+    FrameRenderBoth TimingStats
 
     <span class="comment">//	The CPU-side cost of rendering comprises geometry culling, and batching draw calls to the GPU.</span>
     <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) CPU-side rendering cost per frame.</span>
-    FrameRenderCpu *TimingStats
+    FrameRenderCpu TimingStats
 
     <span class="comment">//	The GPU-side cost of rendering comprises execution of all draw calls sent by the CPU-side, plus waiting for V-sync if enabled.</span>
     <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) GPU-side rendering cost per frame.</span>
-    FrameRenderGpu *TimingStats
+    FrameRenderGpu TimingStats
 
     <span class="comment">//	&#34;Core code&#34; comprises non-rendering go:ngine logic executed every frame.</span>
     <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;core code&#34; cost per frame.</span>
-    FrameCoreCode *TimingStats
+    FrameCoreCode TimingStats
 
     <span class="comment">//	&#34;User code&#34; comprises user-specific logic executed every frame in your own EngineLoop.OnLoop() callback.</span>
     <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;user code&#34; cost per frame.</span>
-    FrameUserCode *TimingStats
+    FrameUserCode TimingStats
 
     <span class="comment">//	During the Loop, the Go Garbge Collector is invoked at least and at most once per second.</span>
     <span class="comment">//	</span>
@@ -1167,7 +1240,7 @@ Changes the current OpenGL &#34;clear color&#34;
     <span class="comment">//	noticably block user interaction --- 99.9% of the time it will complete in less than 10ms (and almost-always under 1ms).</span>
     <span class="comment">//	</span>
     <span class="comment">//	This TimingStats instance over time tracks the maximum and average time spent on that 1x-per-second GC invokation (but does not track any other GC invokations).</span>
-    Gc *TimingStats
+    Gc TimingStats
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
@@ -1186,7 +1259,7 @@ Tracks various go:ngine performance indicators over time.
 
 			
 				
-				<h3 id="EngineStats.AverageFps">func (*EngineStats) <a href="/target/ng-stats.go?s=2371:2414#L39">AverageFps</a></h3>
+				<h3 id="EngineStats.AverageFps">func (*EngineStats) <a href="/target/ng-stats.go?s=2364:2407#L39">AverageFps</a></h3>
 				<pre>func (me *EngineStats) AverageFps() float64</pre>
 				<p>
 Returns the average number of frames-per-second since Loop.Loop() was last called.
@@ -1196,7 +1269,7 @@ Returns the average number of frames-per-second since Loop.Loop() was last calle
 				
 			
 				
-				<h3 id="EngineStats.TotalFrames">func (*EngineStats) <a href="/target/ng-stats.go?s=2731:2775#L49">TotalFrames</a></h3>
+				<h3 id="EngineStats.TotalFrames">func (*EngineStats) <a href="/target/ng-stats.go?s=2532:2576#L47">TotalFrames</a></h3>
 				<pre>func (me *EngineStats) TotalFrames() float64</pre>
 				
 				
@@ -1387,9 +1460,9 @@ Returns the width of the window in pixels.
 		
 			
 			
-			<h2 id="Mesh">type <a href="/target/mesh.go?s=714:1119#L33">Mesh</a></h2>
+			<h2 id="Mesh">type <a href="/target/mesh.go?s=700:1105#L33">Mesh</a></h2>
 			<pre>type Mesh struct {
-    Models models
+    Models Models
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			
@@ -1404,35 +1477,35 @@ Returns the width of the window in pixels.
 
 			
 				
-				<h3 id="Mesh.GpuDelete">func (*Mesh) <a href="/target/mesh.go?s=1121:1148#L43">GpuDelete</a></h3>
+				<h3 id="Mesh.GpuDelete">func (*Mesh) <a href="/target/mesh.go?s=1107:1134#L43">GpuDelete</a></h3>
 				<pre>func (me *Mesh) GpuDelete()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.GpuUpload">func (*Mesh) <a href="/target/mesh.go?s=1199:1238#L49">GpuUpload</a></h3>
+				<h3 id="Mesh.GpuUpload">func (*Mesh) <a href="/target/mesh.go?s=1185:1224#L49">GpuUpload</a></h3>
 				<pre>func (me *Mesh) GpuUpload() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.go?s=2847:2881#L76">GpuUploaded</a></h3>
+				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.go?s=2825:2859#L76">GpuUploaded</a></h3>
 				<pre>func (me *Mesh) GpuUploaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.go?s=4755:4784#L123">Loaded</a></h3>
+				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.go?s=4731:4760#L123">Loaded</a></h3>
 				<pre>func (me *Mesh) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.go?s=5203:5227#L136">Unload</a></h3>
+				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.go?s=5179:5203#L136">Unload</a></h3>
 				<pre>func (me *Mesh) Unload()</pre>
 				
 				
@@ -1441,7 +1514,7 @@ Returns the width of the window in pixels.
 		
 			
 			
-			<h2 id="MeshBuffer">type <a href="/target/mesh-buffer.go?s=1746:2135#L63">MeshBuffer</a></h2>
+			<h2 id="MeshBuffer">type <a href="/target/mesh-buffer.go?s=1728:2117#L63">MeshBuffer</a></h2>
 			<pre>type MeshBuffer struct {
     MemSizeIndices, MemSizeVertices int32
     Params                          *meshBufferParams
@@ -1459,14 +1532,14 @@ Returns the width of the window in pixels.
 
 			
 				
-				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=3647:3696#L112">Add</a></h3>
+				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=3621:3670#L112">Add</a></h3>
 				<pre>func (me *MeshBuffer) Add(mesh *Mesh) (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=4462:4502#L140">Remove</a></h3>
+				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=4424:4464#L140">Remove</a></h3>
 				<pre>func (me *MeshBuffer) Remove(mesh *Mesh)</pre>
 				
 				
@@ -1491,43 +1564,43 @@ Returns the width of the window in pixels.
 
 			
 				
-				<h3 id="MeshBuffers.Add">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=529:623#L16">Add</a></h3>
-				<pre>func (me *MeshBuffers) Add(name string, params *meshBufferParams) (buf *MeshBuffer, err error)</pre>
+				<h3 id="MeshBuffers.Add">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=529:621#L16">Add</a></h3>
+				<pre>func (me *MeshBuffers) Add(id string, params *meshBufferParams) (buf *MeshBuffer, err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffers.FloatsPerVertex">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1027:1073#L37">FloatsPerVertex</a></h3>
+				<h3 id="MeshBuffers.FloatsPerVertex">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1015:1061#L37">FloatsPerVertex</a></h3>
 				<pre>func (me *MeshBuffers) FloatsPerVertex() int32</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffers.MemSizePerIndex">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1234:1280#L42">MemSizePerIndex</a></h3>
+				<h3 id="MeshBuffers.MemSizePerIndex">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1222:1268#L42">MemSizePerIndex</a></h3>
 				<pre>func (me *MeshBuffers) MemSizePerIndex() int32</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffers.MemSizePerVertex">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1296:1343#L46">MemSizePerVertex</a></h3>
+				<h3 id="MeshBuffers.MemSizePerVertex">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1284:1331#L46">MemSizePerVertex</a></h3>
 				<pre>func (me *MeshBuffers) MemSizePerVertex() int32</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffers.NewParams">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1423:1510#L51">NewParams</a></h3>
+				<h3 id="MeshBuffers.NewParams">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1411:1498#L51">NewParams</a></h3>
 				<pre>func (me *MeshBuffers) NewParams(numVerts, numIndices int32) (params *meshBufferParams)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffers.Remove">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1616:1658#L56">Remove</a></h3>
-				<pre>func (me *MeshBuffers) Remove(name string)</pre>
+				<h3 id="MeshBuffers.Remove">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1604:1644#L56">Remove</a></h3>
+				<pre>func (me *MeshBuffers) Remove(id string)</pre>
 				
 				
 				
@@ -1605,22 +1678,22 @@ Temporary concoction.
 				
 			
 				
-				<h3 id="Meshes.AddRange">func (Meshes) <a href="/target/mesh.go?s=253:295#L11">AddRange</a></h3>
+				<h3 id="Meshes.AddRange">func (Meshes) <a href="/target/mesh.go?s=249:291#L11">AddRange</a></h3>
 				<pre>func (me Meshes) AddRange(meshes ...*Mesh)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Meshes.Load">func (Meshes) <a href="/target/mesh.go?s=344:446#L17">Load</a></h3>
-				<pre>func (me Meshes) Load(name string, provider MeshProvider, args ...interface{}) (mesh *Mesh, err error)</pre>
+				<h3 id="Meshes.Load">func (Meshes) <a href="/target/mesh.go?s=340:440#L17">Load</a></h3>
+				<pre>func (me Meshes) Load(id string, provider MeshProvider, args ...interface{}) (mesh *Mesh, err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Meshes.New">func (Meshes) <a href="/target/mesh.go?s=605:651#L28">New</a></h3>
-				<pre>func (me Meshes) New(name string) (mesh *Mesh)</pre>
+				<h3 id="Meshes.New">func (Meshes) <a href="/target/mesh.go?s=597:641#L28">New</a></h3>
+				<pre>func (me Meshes) New(id string) (mesh *Mesh)</pre>
 				
 				
 				
@@ -1628,11 +1701,20 @@ Temporary concoction.
 		
 			
 			
-			<h2 id="Model">type <a href="/target/model.go?s=99:186#L1">Model</a></h2>
+			<h2 id="Model">type <a href="/target/model.go?s=882:961#L18">Model</a></h2>
 			<pre>type Model struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
-			
+			<p>
+A Model is a parameterized instantiation of its parent Mesh geometry
+with unique appearance, material or other properties.
+</p>
+<p>
+Each Mesh provides at least one Model, the &#34;default model&#34; (with ID &#34;&#34;),
+accessible via someMesh.Models.Default(). To create new models for a Mesh,
+call someMesh.Models.Clone(&#34;sourceModelID&#34;, &#34;newModelID&#34;).
+</p>
+
 
 			
 
@@ -1644,23 +1726,57 @@ Temporary concoction.
 
 			
 				
-				<h3 id="Model.Clone">func (*Model) <a href="/target/model.go?s=289:350#L11">Clone</a></h3>
-				<pre>func (me *Model) Clone(modelName string) (clonedModel *Model)</pre>
+				<h3 id="Model.MatID">func (*Model) <a href="/target/model.go?s=1293:1324#L38">MatID</a></h3>
+				<pre>func (me *Model) MatID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Model.MatName">func (*Model) <a href="/target/model.go?s=521:554#L19">MatName</a></h3>
-				<pre>func (me *Model) MatName() string</pre>
+				<h3 id="Model.SetMatID">func (*Model) <a href="/target/model.go?s=1430:1472#L47">SetMatID</a></h3>
+				<pre>func (me *Model) SetMatID(newMatID string)</pre>
 				
 				
 				
 			
+		
+			
+			
+			<h2 id="Models">type <a href="/target/model.go?s=96:125#L1">Models</a></h2>
+			<pre>type Models map[string]*Model</pre>
+			<p>
+A hash-table of Models associated with their ID.
+Used only for Mesh.Models.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
 				
-				<h3 id="Model.SetMatName">func (*Model) <a href="/target/model.go?s=662:708#L28">SetMatName</a></h3>
-				<pre>func (me *Model) SetMatName(newMatName string)</pre>
+				<h3 id="Models.Clone">func (Models) <a href="/target/model.go?s=229:284#L1">Clone</a></h3>
+				<pre>func (me Models) Clone(id, newID string) (model *Model)</pre>
+				<p>
+Creates a copy of the Model with the specified id, and
+adds it to me under the specified newID.
+</p>
+
 				
+				
+			
+				
+				<h3 id="Models.Default">func (Models) <a href="/target/model.go?s=479:512#L8">Default</a></h3>
+				<pre>func (me Models) Default() *Model</pre>
+				<p>
+Returns the default Model (with ID &#34;&#34;) for the parent Mesh.
+</p>
+
 				
 				
 			
@@ -1770,18 +1886,18 @@ ApplyMatrices() (or OnFooChanged()) methods.
 
 			
 				
-				<h3 id="NodeTransforms.ApplyMatrices">func (*NodeTransforms) <a href="/target/node-transform.go?s=1833:1874#L42">ApplyMatrices</a></h3>
+				<h3 id="NodeTransforms.ApplyMatrices">func (*NodeTransforms) <a href="/target/node-transform.go?s=1837:1878#L42">ApplyMatrices</a></h3>
 				<pre>func (me *NodeTransforms) ApplyMatrices()</pre>
 				<p>
 Creates a final single 4x4 transformation matrix for all transformations
-in me. It is this matrix that is used by the rendering pipeline.
+in me. It is onlx this matrix that is used by the rendering runtime.
 </p>
 
 				
 				
 			
 				
-				<h3 id="NodeTransforms.OnAnyChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2540:2580#L59">OnAnyChanged</a></h3>
+				<h3 id="NodeTransforms.OnAnyChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2544:2584#L59">OnAnyChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnAnyChanged()</pre>
 				<p>
 Updates the translation matrix from the current me.Pos value.
@@ -1794,7 +1910,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnPosChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2847:2887#L72">OnPosChanged</a></h3>
+				<h3 id="NodeTransforms.OnPosChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2851:2891#L72">OnPosChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnPosChanged()</pre>
 				<p>
 Updates the translation matrix from the current me.Pos value.
@@ -1805,7 +1921,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnPosRotChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3108:3151#L80">OnPosRotChanged</a></h3>
+				<h3 id="NodeTransforms.OnPosRotChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3112:3155#L80">OnPosRotChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnPosRotChanged()</pre>
 				<p>
 Updates the translation matrix from the current me.Pos value.
@@ -1817,7 +1933,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnPosScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3374:3419#L89">OnPosScaleChanged</a></h3>
+				<h3 id="NodeTransforms.OnPosScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3378:3423#L89">OnPosScaleChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnPosScaleChanged()</pre>
 				<p>
 Updates the translation matrix from the current me.Pos value.
@@ -1829,7 +1945,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnRotChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3702:3742#L103">OnRotChanged</a></h3>
+				<h3 id="NodeTransforms.OnRotChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3706:3746#L103">OnRotChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnRotChanged()</pre>
 				<p>
 Updates the X, Y and Z axis rotation matrices from the current me.Rot value.
@@ -1840,7 +1956,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnRotScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3961:4006#L111">OnRotScaleChanged</a></h3>
+				<h3 id="NodeTransforms.OnRotScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3965:4010#L111">OnRotScaleChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnRotScaleChanged()</pre>
 				<p>
 Updates the scaling matrix from the current me.Scale value.
@@ -1852,7 +1968,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnRotXChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4253:4294#L123">OnRotXChanged</a></h3>
+				<h3 id="NodeTransforms.OnRotXChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4257:4298#L123">OnRotXChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnRotXChanged()</pre>
 				<p>
 Updates the X-axis rotation matrix from the current me.Rot.X value.
@@ -1863,7 +1979,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnRotYChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4521:4562#L134">OnRotYChanged</a></h3>
+				<h3 id="NodeTransforms.OnRotYChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4525:4566#L134">OnRotYChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnRotYChanged()</pre>
 				<p>
 Updates the Y-axis rotation matrix from the current me.Rot.Y value.
@@ -1874,7 +1990,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnRotZChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4789:4830#L145">OnRotZChanged</a></h3>
+				<h3 id="NodeTransforms.OnRotZChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4793:4834#L145">OnRotZChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnRotZChanged()</pre>
 				<p>
 Updates the Z-axis rotation matrix from the current me.Rot.Z value.
@@ -1885,7 +2001,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=5050:5092#L156">OnScaleChanged</a></h3>
+				<h3 id="NodeTransforms.OnScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=5054:5096#L156">OnScaleChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnScaleChanged()</pre>
 				<p>
 Updates the scaling matrix from the current me.Scale value.
@@ -1896,7 +2012,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnSomeChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=5596:5670#L167">OnSomeChanged</a></h3>
+				<h3 id="NodeTransforms.OnSomeChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=5600:5674#L167">OnSomeChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnSomeChanged(scale, pos, rotX, rotY, rotZ bool)</pre>
 				<p>
 If pos is true, updates the translation matrix from the current me.Pos value.
@@ -1911,7 +2027,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPos">func (*NodeTransforms) <a href="/target/node-transform.go?s=5912:5960#L187">SetPos</a></h3>
+				<h3 id="NodeTransforms.SetPos">func (*NodeTransforms) <a href="/target/node-transform.go?s=5916:5964#L187">SetPos</a></h3>
 				<pre>func (me *NodeTransforms) SetPos(pos *unum.Vec3)</pre>
 				<p>
 Sets me.Pos and calls OnPosChanged().
@@ -1921,7 +2037,7 @@ Sets me.Pos and calls OnPosChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosX">func (*NodeTransforms) <a href="/target/node-transform.go?s=6099:6146#L197">SetPosX</a></h3>
+				<h3 id="NodeTransforms.SetPosX">func (*NodeTransforms) <a href="/target/node-transform.go?s=6103:6150#L197">SetPosX</a></h3>
 				<pre>func (me *NodeTransforms) SetPosX(posX float64)</pre>
 				<p>
 Sets me.Pos.X and calls OnPosChanged().
@@ -1931,7 +2047,7 @@ Sets me.Pos.X and calls OnPosChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6229:6290#L203">SetPosXYZ</a></h3>
+				<h3 id="NodeTransforms.SetPosXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6233:6294#L203">SetPosXYZ</a></h3>
 				<pre>func (me *NodeTransforms) SetPosXYZ(posX, posY, posZ float64)</pre>
 				<p>
 Sets me.Pos and calls OnPosChanged().
@@ -1941,7 +2057,7 @@ Sets me.Pos and calls OnPosChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosY">func (*NodeTransforms) <a href="/target/node-transform.go?s=6407:6454#L209">SetPosY</a></h3>
+				<h3 id="NodeTransforms.SetPosY">func (*NodeTransforms) <a href="/target/node-transform.go?s=6411:6458#L209">SetPosY</a></h3>
 				<pre>func (me *NodeTransforms) SetPosY(posY float64)</pre>
 				<p>
 Sets me.Pos.Y and calls OnPosChanged().
@@ -1951,7 +2067,7 @@ Sets me.Pos.Y and calls OnPosChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6539:6586#L215">SetPosZ</a></h3>
+				<h3 id="NodeTransforms.SetPosZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6543:6590#L215">SetPosZ</a></h3>
 				<pre>func (me *NodeTransforms) SetPosZ(posZ float64)</pre>
 				<p>
 Sets me.Pos.Z and calls OnPosChanged().
@@ -1961,7 +2077,7 @@ Sets me.Pos.Z and calls OnPosChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRot">func (*NodeTransforms) <a href="/target/node-transform.go?s=6669:6717#L221">SetRot</a></h3>
+				<h3 id="NodeTransforms.SetRot">func (*NodeTransforms) <a href="/target/node-transform.go?s=6673:6721#L221">SetRot</a></h3>
 				<pre>func (me *NodeTransforms) SetRot(rot *unum.Vec3)</pre>
 				<p>
 Sets me.Rot and calls OnRotChanged().
@@ -1971,7 +2087,7 @@ Sets me.Rot and calls OnRotChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotX">func (*NodeTransforms) <a href="/target/node-transform.go?s=6856:6902#L231">SetRotX</a></h3>
+				<h3 id="NodeTransforms.SetRotX">func (*NodeTransforms) <a href="/target/node-transform.go?s=6860:6906#L231">SetRotX</a></h3>
 				<pre>func (me *NodeTransforms) SetRotX(rad float64)</pre>
 				<p>
 Sets me.Rot.X and calls OnRotChanged().
@@ -1981,7 +2097,7 @@ Sets me.Rot.X and calls OnRotChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6985:7046#L237">SetRotXYZ</a></h3>
+				<h3 id="NodeTransforms.SetRotXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6989:7050#L237">SetRotXYZ</a></h3>
 				<pre>func (me *NodeTransforms) SetRotXYZ(radX, radY, radZ float64)</pre>
 				<p>
 Sets me.Rot and calls OnRotChanged().
@@ -1991,7 +2107,7 @@ Sets me.Rot and calls OnRotChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotY">func (*NodeTransforms) <a href="/target/node-transform.go?s=7163:7209#L243">SetRotY</a></h3>
+				<h3 id="NodeTransforms.SetRotY">func (*NodeTransforms) <a href="/target/node-transform.go?s=7167:7213#L243">SetRotY</a></h3>
 				<pre>func (me *NodeTransforms) SetRotY(rad float64)</pre>
 				<p>
 Sets me.Rot.Y and calls OnRotChanged().
@@ -2001,7 +2117,7 @@ Sets me.Rot.Y and calls OnRotChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=7294:7340#L249">SetRotZ</a></h3>
+				<h3 id="NodeTransforms.SetRotZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=7298:7344#L249">SetRotZ</a></h3>
 				<pre>func (me *NodeTransforms) SetRotZ(rad float64)</pre>
 				<p>
 Sets me.Rot.Z and calls OnRotChanged().
@@ -2011,7 +2127,7 @@ Sets me.Rot.Z and calls OnRotChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetScale">func (*NodeTransforms) <a href="/target/node-transform.go?s=7427:7479#L255">SetScale</a></h3>
+				<h3 id="NodeTransforms.SetScale">func (*NodeTransforms) <a href="/target/node-transform.go?s=7431:7483#L255">SetScale</a></h3>
 				<pre>func (me *NodeTransforms) SetScale(scale *unum.Vec3)</pre>
 				<p>
 Sets me.Scale and calls OnScaleChanged().
@@ -2021,7 +2137,7 @@ Sets me.Scale and calls OnScaleChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetScaleN">func (*NodeTransforms) <a href="/target/node-transform.go?s=7622:7672#L265">SetScaleN</a></h3>
+				<h3 id="NodeTransforms.SetScaleN">func (*NodeTransforms) <a href="/target/node-transform.go?s=7626:7676#L265">SetScaleN</a></h3>
 				<pre>func (me *NodeTransforms) SetScaleN(scale float64)</pre>
 				<p>
 Sets me.Scale and calls OnScaleChanged().
@@ -2031,7 +2147,7 @@ Sets me.Scale and calls OnScaleChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetScaleXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=7760:7814#L270">SetScaleXYZ</a></h3>
+				<h3 id="NodeTransforms.SetScaleXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=7764:7818#L270">SetScaleXYZ</a></h3>
 				<pre>func (me *NodeTransforms) SetScaleXYZ(x, y, z float64)</pre>
 				<p>
 Sets me.Scale and calls OnScaleChanged().
@@ -2041,7 +2157,7 @@ Sets me.Scale and calls OnScaleChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.StepDelta">func (*NodeTransforms) <a href="/target/node-transform.go?s=7966:8033#L276">StepDelta</a></h3>
+				<h3 id="NodeTransforms.StepDelta">func (*NodeTransforms) <a href="/target/node-transform.go?s=7970:8037#L276">StepDelta</a></h3>
 				<pre>func (me *NodeTransforms) StepDelta(deltaPerSecond float64) float64</pre>
 				<p>
 Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
@@ -2130,11 +2246,15 @@ Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
 		
 			
 			
-			<h2 id="Scene">type <a href="/target/scene.go?s=45:82#L1">Scene</a></h2>
+			<h2 id="Scene">type <a href="/target/scene.go?s=162:238#L1">Scene</a></h2>
 			<pre>type Scene struct {
-    RootNode *Node
+    <span class="comment">//	The root Node for this scene graph.</span>
+    RootNode Node
 }</pre>
-			
+			<p>
+Represents a scene graph.
+</p>
+
 
 			
 
@@ -2144,9 +2264,12 @@ Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
 
 			
 				
-				<h3 id="NewScene">func <a href="/target/scene.go?s=84:111#L1">NewScene</a></h3>
+				<h3 id="NewScene">func <a href="/target/scene.go?s=287:314#L4">NewScene</a></h3>
 				<pre>func NewScene() (me *Scene)</pre>
-				
+				<p>
+Initializes and returns a new, empty Scene.
+</p>
+
 				
 			
 
@@ -2154,9 +2277,13 @@ Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
 		
 			
 			
-			<h2 id="Scenes">type <a href="/target/scene.go?s=14:43#L1">Scenes</a></h2>
+			<h2 id="Scenes">type <a href="/target/scene.go?s=102:131#L1">Scenes</a></h2>
 			<pre>type Scenes map[string]*Scene</pre>
-			
+			<p>
+A hash-table of Scenes associated with their IDs.
+Only used for Core.Libs.Scenes.
+</p>
+
 
 			
 
@@ -2289,7 +2416,7 @@ Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
 		
 			
 			
-			<h2 id="TimingStats">type <a href="/target/ng-stats.go?s=2880:3052#L54">TimingStats</a></h2>
+			<h2 id="TimingStats">type <a href="/target/ng-stats.go?s=2681:2853#L52">TimingStats</a></h2>
 			<pre>type TimingStats struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -2308,7 +2435,7 @@ Helps track average and maximum cost for a variety of performance indicators.
 
 			
 				
-				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/ng-stats.go?s=3195:3235#L65">Average</a></h3>
+				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/ng-stats.go?s=2922:2962#L58">Average</a></h3>
 				<pre>func (me *TimingStats) Average() float64</pre>
 				<p>
 Returns the average cost tracked by this performance indicator.
@@ -2318,7 +2445,7 @@ Returns the average cost tracked by this performance indicator.
 				
 			
 				
-				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/ng-stats.go?s=3827:3863#L88">Max</a></h3>
+				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/ng-stats.go?s=3554:3590#L81">Max</a></h3>
 				<pre>func (me *TimingStats) Max() float64</pre>
 				<p>
 Returns the maximum cost tracked by this performance indicator.

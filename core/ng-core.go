@@ -24,7 +24,7 @@ var (
 //	The heart and brain of go:ngine --- a container for all runtime resources and responsible for rendering.
 type EngineCore struct {
 	MeshBuffers *MeshBuffers
-	Options     *EngineOptions
+	Options     EngineOptions
 	Libs        struct {
 		Cameras   Cameras
 		Materials Materials
@@ -63,7 +63,7 @@ func (me *EngineCore) dispose() {
 func (me *EngineCore) init(options *EngineOptions) {
 	initTechniques()
 	me.initRenderingStates()
-	me.Options = options
+	me.Options = *options
 	me.Options.DefaultTextureParams.setAgain()
 	me.MeshBuffers = newMeshBuffers()
 	me.initLibs()
@@ -118,7 +118,7 @@ func (me *EngineCore) resizeView(viewWidth, viewHeight int) {
 		defaultCanvas.viewWidth, defaultCanvas.viewHeight = viewWidth, viewHeight
 		for _, cam := range me.Libs.Cameras {
 			cam.ViewPort.update()
-			cam.UpdatePerspective()
+			cam.ApplyMatrices()
 		}
 	}
 }

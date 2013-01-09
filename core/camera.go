@@ -7,42 +7,78 @@ import (
 	unum "github.com/metaleap/go-util/num"
 )
 
+//	A hash-table of Cameras. Used for Core.Libs.Cameras.
 type Cameras map[string]*Camera
 
+//	Initializes a new Camera with default parameters and adds
+//	it to me under the specified ID.
 func (me Cameras) AddNew(id string) (cam *Camera) {
 	cam = NewCamera()
 	me[id] = cam
 	return
 }
 
+//	A camera embodies the eye point of the viewer looking at the visual scene.
 type Camera struct {
-	ViewPort   CameraViewPort
-	Options    CameraOptions
+	//	If true, this camera is ignored by the rendering runtime.
+	Disabled bool
+
+	//	Optical and imager properties for this camera.
+	Params struct {
+		//	Vertical field-of-view. Defaults to 37.8493.
+		//	After changing this value, you must call the ApplyMatrices() method.
+		FovY float64
+
+		//	Distance of the far-plane from the camera. Defaults to 30000.
+		//	After changing this value, you must call the ApplyMatrices() method.
+		ZFar float64
+
+		//	Distance of the near-plane from the camera. Defaults to 0.3.
+		//	After changing this value, you must call the ApplyMatrices() method.
+		ZNear float64
+
+		//	The ID of the Scene (in Core.Libs.Scenes) this camera is looking at.
+		SceneID string
+	}
+
+	//	Encapsulates the position and direction of this camera.
 	Controller Controller
-	Disabled   bool
+
+	//	The device-relative or absolute view-port for this Camera.
+	ViewPort CameraViewPort
 
 	technique renderTechnique
 	matProj   unum.Mat4
 	glmatProj ugl.GlMat4
 }
 
+//	Initializes and returns a new Camera with default parameters.
 func NewCamera() (me *Camera) {
 	me = &Camera{}
-	me.Options.init()
+	opt := &me.Params
+	opt.FovY = 37.8493
+	opt.ZFar = 30000
+	opt.ZNear = 0.3
 	me.matProj.Identity()
 	me.glmatProj.Load(&me.matProj)
 	me.Controller.init()
 	me.ViewPort.init()
-	me.UpdatePerspective()
+	me.ApplyMatrices()
 	me.SetTechnique(Core.Options.DefaultRenderTechnique)
 	return
+}
+
+//	Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
+func (me *Camera) ApplyMatrices() {
+	me.matProj.Perspective(me.Params.FovY, me.ViewPort.aspect, me.Params.ZNear, me.Params.ZFar)
+	me.glmatProj.Load(&me.matProj)
 }
 
 func (me *Camera) dispose() {
 }
 
 func (me *Camera) render() {
-	curScene = Core.Libs.Scenes[me.Options.SceneName]
+	curScene = Core.Libs.Scenes[me.Params.SceneID]
 	Core.useTechnique(me.technique)
 	gl.UniformMatrix4fv(curProg.UnifLocs["uMatCam"], 1, gl.FALSE, &me.Controller.glMat[0])
 	gl.UniformMatrix4fv(curProg.UnifLocs["uMatProj"], 1, gl.FALSE, &me.glmatProj[0])
@@ -89,22 +125,7 @@ func (me *Camera) ToggleTechnique() {
 	}
 }
 
-func (me *Camera) UpdatePerspective() {
-	me.matProj.Perspective(me.Options.FovY, me.ViewPort.aspect, me.Options.ZNear, me.Options.ZFar)
-	me.glmatProj.Load(&me.matProj)
-}
-
-type CameraOptions struct {
-	FovY, ZFar, ZNear float64
-	SceneName         string
-}
-
-func (me *CameraOptions) init() {
-	me.FovY = 37.8493
-	me.ZFar = 30000
-	me.ZNear = 0.3
-}
-
+//	Encapsulates a device-relative or absolute camera view-port.
 type CameraViewPort struct {
 	absolute               bool
 	relX, relY, relW, relH float64
@@ -118,11 +139,14 @@ func (me *CameraViewPort) init() {
 	me.SetRel(0, 0, 1, 1)
 }
 
+//	Sets the absolute viewport origin and dimensions in pixels.
 func (me *CameraViewPort) SetAbs(x, y, width, height int) {
 	me.absolute, me.absX, me.absY, me.absW, me.absH = true, x, y, width, height
 	me.update()
 }
 
+//	Sets the device-relative viewport origin and dimensions, with the value 1.0
+//	representing the maximum extent of the viewport on that respective axis.
 func (me *CameraViewPort) SetRel(x, y, width, height float64) {
 	me.absolute, me.relX, me.relY, me.relW, me.relH = false, x, y, width, height
 	me.update()

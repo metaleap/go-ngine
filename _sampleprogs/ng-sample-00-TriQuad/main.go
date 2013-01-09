@@ -70,6 +70,6 @@ func LoadSampleScene_00_TriQuad() {
 	scene = ngsamples.AddScene("")
 	scene.RootNode.SubNodes.MakeN("node_tri", "mesh_tri", "", "node_quad", "mesh_quad", "")
 	tri, quad = scene.RootNode.SubNodes.M["node_tri"], scene.RootNode.SubNodes.M["node_quad"]
-	tri.SetMatName("mat_cat")
-	quad.SetMatName("mat_dog")
+	tri.SetMatID("mat_cat")
+	quad.SetMatID("mat_dog")
 }

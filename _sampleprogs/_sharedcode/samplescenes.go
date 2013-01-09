@@ -6,7 +6,6 @@ import (
 
 	glfw "github.com/go-gl/glfw"
 
-	ugl "github.com/go3d/go-glutil"
 	util "github.com/metaleap/go-util"
 
 	ng "github.com/go3d/go-ngine/core"
@@ -41,6 +40,8 @@ var (
 	sec        = 0
 )
 
+//	Creates a new core.Scene, adds it to the Scenes library under
+//	the specified ID, and returns it.
 func AddScene(id string) (me *ng.Scene) {
 	me = ng.NewScene()
 	ng.Core.Libs.Scenes[""] = me
@@ -144,13 +145,13 @@ func PrintPostLoopSummary() {
 		fmt.Printf("%v:\tAvg=%3.5f secs\tMax=%3.5f secs\n", name, timing.Average(), timing.Max())
 	}
 	fmt.Printf("Average FPS:\t\t%v (total %v over %6.2fsec.)\n", ng.Stats.AverageFps(), ng.Stats.TotalFrames(), ng.Loop.Time())
-	printStatSummary("Frame Full Loop", ng.Stats.Frame)
-	printStatSummary("Frame Render (CPU)", ng.Stats.FrameRenderCpu)
-	printStatSummary("Frame Render (GPU)", ng.Stats.FrameRenderGpu)
-	printStatSummary("Frame Render Both", ng.Stats.FrameRenderBoth)
-	printStatSummary("Frame Core Code", ng.Stats.FrameCoreCode)
-	printStatSummary("Frame User Code", ng.Stats.FrameUserCode)
-	printStatSummary("GC (max 1x/sec)", ng.Stats.Gc)
+	printStatSummary("Frame Full Loop", &ng.Stats.Frame)
+	printStatSummary("Frame Render (CPU)", &ng.Stats.FrameRenderCpu)
+	printStatSummary("Frame Render (GPU)", &ng.Stats.FrameRenderGpu)
+	printStatSummary("Frame Render Both", &ng.Stats.FrameRenderBoth)
+	printStatSummary("Frame Core Code", &ng.Stats.FrameCoreCode)
+	printStatSummary("Frame User Code", &ng.Stats.FrameUserCode)
+	printStatSummary("GC (max 1x/sec)", &ng.Stats.Gc)
 	fmt.Printf("CGO calls: %v, Goroutines: %v", runtime.NumCgoCall(), runtime.NumGoroutine())
 }
 
@@ -162,7 +163,7 @@ func SamplesMainFunc(assetLoader func()) {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
 		defer ng.Dispose()
-		ng.Core.Options.SetGlClearColor(ugl.GlVec4{0.75, 0.75, 0.97, 1})
+		ng.Core.Rendering.States.SetClearColor(0.75, 0.75, 0.97, 1)
 		ng.Loop.OnSec = OnSec
 		Cam = ng.Core.Libs.Cameras.AddNew("")
 		CamCtl = &Cam.Controller

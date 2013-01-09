@@ -1,33 +1,44 @@
 package core
 
-type models map[string]*Model
+//	A hash-table of Models associated with their ID.
+//	Used only for Mesh.Models.
+type Models map[string]*Model
 
-func (me models) Default() *Model {
+//	Returns the default Model (with ID "") for the parent Mesh.
+func (me Models) Default() *Model {
 	return me[""]
 }
 
+//	A Model is a parameterized instantiation of its parent Mesh geometry
+//	with unique appearance, material or other properties.
+//	
+//	Each Mesh provides at least one Model, the "default model" (with ID ""),
+//	accessible via someMesh.Models.Default(). To create new models for a Mesh,
+//	call someMesh.Models["sourceModelID"].Clone("newModelID").
 type Model struct {
-	mat     *Material
-	matName string
-	mesh    *Mesh
-	name    string
+	matID string
+	id    string
+	mat   *Material
+	mesh  *Mesh
 }
 
-func newModel(name string, mesh *Mesh) (me *Model) {
-	me = &Model{name: name, mesh: mesh}
+func newModel(id string, mesh *Mesh) (me *Model) {
+	me = &Model{id: id, mesh: mesh}
 	return
 }
 
-func (me *Model) Clone(modelName string) (clonedModel *Model) {
-	if (modelName != me.name) && (me.mesh.Models[modelName] == nil) {
-		clonedModel = newModel(modelName, me.mesh)
-		me.mesh.Models[modelName] = clonedModel
+//	Creates a copy of me and adds it to the parent Mesh's Models
+//	hash-table under the specified newModelID.
+func (me *Model) Clone(newModelID string) (clonedModel *Model) {
+	if (newModelID != me.id) && (me.mesh.Models[newModelID] == nil) {
+		clonedModel = newModel(newModelID, me.mesh)
+		me.mesh.Models[newModelID] = clonedModel
 	}
 	return
 }
 
-func (me *Model) MatName() string {
-	return me.matName
+func (me *Model) MatID() string {
+	return me.matID
 }
 
 func (me *Model) render() {
@@ -35,8 +46,8 @@ func (me *Model) render() {
 	me.mesh.render()
 }
 
-func (me *Model) SetMatName(newMatName string) {
-	if newMatName != me.matName {
-		me.mat, me.matName = Core.Libs.Materials[newMatName], newMatName
+func (me *Model) SetMatID(newMatID string) {
+	if newMatID != me.matID {
+		me.mat, me.matID = Core.Libs.Materials[newMatID], newMatID
 	}
 }

@@ -102,7 +102,7 @@ func (me *Node) render() {
 	}
 }
 
-func (me *Node) SetMatName(newMatName string) {
+func (me *Node) SetMatID(newMatName string) {
 	if newMatName != me.matName {
 		me.mat, me.matName = Core.Libs.Materials[newMatName], newMatName
 	}
