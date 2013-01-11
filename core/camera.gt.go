@@ -7,17 +7,6 @@ import (
 	unum "github.com/metaleap/go-util/num"
 )
 
-//	A hash-table of Cameras. Used for Core.Libs.Cameras.
-type Cameras map[string]*Camera
-
-//	Initializes a new Camera with default parameters and adds
-//	it to me under the specified ID.
-func (me Cameras) AddNew(id string) (cam *Camera) {
-	cam = NewCamera()
-	me[id] = cam
-	return
-}
-
 //	A camera embodies the eye point of the viewer looking at the visual scene.
 type Camera struct {
 	//	If true, this camera is ignored by the rendering runtime.
@@ -160,3 +149,29 @@ func (me *CameraViewPort) update() {
 	me.glVpX, me.glVpY, me.glVpW, me.glVpH = gl.Int(me.absX), gl.Int(me.absY), gl.Sizei(me.absW), gl.Sizei(me.absH)
 	me.aspect = float64(me.absW) / float64(me.absH)
 }
+
+//#begin-gt -gen-lib.gt T:Camera
+
+//	A hash-table of Cameras associated by IDs. Only for use in Core.Libs.
+type LibCameras map[string]*Camera
+
+//	Creates and initializes a new Camera with default parameters,
+//	adds it to me under the specified ID, and returns it.
+func (me LibCameras) AddNew(id string) (obj *Camera) {
+	obj = NewCamera()
+	me[id] = obj
+	return
+}
+
+func (me *LibCameras) ctor() {
+	*me = LibCameras{}
+}
+
+func (me *LibCameras) dispose() {
+	for _, o := range *me {
+		o.dispose()
+	}
+	me.ctor()
+}
+
+//#end-gt

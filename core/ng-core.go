@@ -26,7 +26,11 @@ type EngineCore struct {
 	MeshBuffers *MeshBuffers
 	Options     EngineOptions
 	Libs        struct {
-		Cameras   Cameras
+		Cameras LibCameras
+		Effects LibFxEffects
+		Images  struct {
+			I2D LibFxImage2Ds
+		}
 		Materials Materials
 		Meshes    Meshes
 		Scenes    Scenes
@@ -44,11 +48,11 @@ type EngineCore struct {
 
 func (me *EngineCore) dispose() {
 	me.isInit = false
-	for _, cam := range me.Libs.Cameras {
-		cam.dispose()
-	}
 	for _, canvas := range me.Rendering.Canvases {
 		canvas.Dispose()
+	}
+	for _, disp := range []disposable{&me.Libs.Cameras, &me.Libs.Images.I2D, &me.Libs.Effects} {
+		disp.dispose()
 	}
 	for _, mesh := range me.Libs.Meshes {
 		mesh.GpuDelete()
@@ -75,11 +79,13 @@ func (me *EngineCore) init(options *EngineOptions) {
 
 func (me *EngineCore) initLibs() {
 	libs := &me.Libs
+	for _, c := range []ctorable{&libs.Cameras, &libs.Images.I2D, &libs.Effects} {
+		c.ctor()
+	}
 	libs.Materials = Materials{}
 	libs.Meshes = Meshes{}
 	libs.Textures = Textures{}
 	libs.Scenes = Scenes{}
-	libs.Cameras = Cameras{}
 }
 
 func (me *EngineCore) initRenderingStates() {

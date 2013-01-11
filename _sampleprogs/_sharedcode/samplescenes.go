@@ -60,6 +60,7 @@ func AddTextureMaterials(idsUrls map[string]string) {
 	// effect *nga.FxEffectDef
 	)
 	for id, refUrl := range idsUrls {
+		ng.Core.Libs.Images.I2D.AddNew("img_" + id).InitFrom.RefUrl = refUrl
 		ng.Core.Libs.Textures.AddNew("tex_"+id, refUrl)
 		// image = nga.FxImageDefs.Add(ngau.NewFxImageDef("tex_"+id, refUrl))
 

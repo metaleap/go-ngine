@@ -1,0 +1,23 @@
+package gt
+
+//	A hash-table of __T__s associated by IDs. Only for use in Core.Libs.
+type Lib__T__s map[string]*__T__
+
+//	Creates and initializes a new __T__ with default parameters,
+//	adds it to me under the specified ID, and returns it.
+func (me Lib__T__s) AddNew(id string) (obj *__T__) {
+	obj = New__T__()
+	me[id] = obj
+	return
+}
+
+func (me *Lib__T__s) ctor() {
+	*me = Lib__T__s{}
+}
+
+func (me *Lib__T__s) dispose() {
+	for _, o := range *me {
+		o.dispose()
+	}
+	me.ctor()
+}

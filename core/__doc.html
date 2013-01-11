@@ -100,14 +100,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#Cameras">type Cameras</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#Cameras.AddNew">func (me Cameras) AddNew(id string) (cam *Camera)</a></dd>
-				
-			
-				
 				<dd><a href="#Controller">type Controller</a></dd>
 				
 				
@@ -234,6 +226,135 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
+				<dd><a href="#FxColorOrTexture">type FxColorOrTexture</a></dd>
+				
+				
+			
+				
+				<dd><a href="#FxEffect">type FxEffect</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewFxEffect">func NewFxEffect() (me *FxEffect)</a></dd>
+				
+				
+			
+				
+				<dd><a href="#FxImage">type FxImage</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxImage.GpuDelete">func (me *FxImage) GpuDelete()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxImage.GpuSynced">func (me *FxImage) GpuSynced() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxImage.NoAutoMips">func (me *FxImage) NoAutoMips()</a></dd>
+				
+			
+				
+				<dd><a href="#FxImage2D">type FxImage2D</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewFxImage2D">func NewFxImage2D() (me *FxImage2D)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxImage2D.Dispose">func (me *FxImage2D) Dispose()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxImage2D.GpuSync">func (me *FxImage2D) GpuSync() (err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxImage2D.Load">func (me *FxImage2D) Load(asyncNumAttempts int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxImage2D.Loaded">func (me *FxImage2D) Loaded() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxImage2D.Unload">func (me *FxImage2D) Unload()</a></dd>
+				
+			
+				
+				<dd><a href="#FxImageOnLoad">type FxImageOnLoad</a></dd>
+				
+				
+			
+				
+				<dd><a href="#FxMaterial">type FxMaterial</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewFxMaterial">func NewFxMaterial() (me *FxMaterial)</a></dd>
+				
+				
+			
+				
+				<dd><a href="#FxSampler">type FxSampler</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewFxSampler">func NewFxSampler(filtering *FxSamplerFiltering, wrapping *ugfx.SamplerWrapping) (me *FxSampler)</a></dd>
+				
+				
+			
+				
+				<dd><a href="#FxSamplerFiltering">type FxSamplerFiltering</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewFxSamplerFiltering">func NewFxSamplerFiltering(aniso float64, mag, min, mip bool) (me *FxSamplerFiltering)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxSamplerFiltering.Anisotropy">func (me *FxSamplerFiltering) Anisotropy() float64</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxSamplerFiltering.Filtering">func (me *FxSamplerFiltering) Filtering() (mag, min, mip bool)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxSamplerFiltering.SetAnisotropy">func (me *FxSamplerFiltering) SetAnisotropy(aniso float64)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxSamplerFiltering.SetFiltering">func (me *FxSamplerFiltering) SetFiltering(mag, min, mip bool)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxSamplerFiltering.SetFilteringMag">func (me *FxSamplerFiltering) SetFilteringMag(filter bool)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxSamplerFiltering.SetFilteringMin">func (me *FxSamplerFiltering) SetFilteringMin(min, mip bool)</a></dd>
+				
+			
+				
+				<dd><a href="#LibCameras">type LibCameras</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LibCameras.AddNew">func (me LibCameras) AddNew(id string) (obj *Camera)</a></dd>
+				
+			
+				
+				<dd><a href="#LibFxEffects">type LibFxEffects</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LibFxEffects.AddNew">func (me LibFxEffects) AddNew(id string) (obj *FxEffect)</a></dd>
+				
+			
+				
+				<dd><a href="#LibFxImage2Ds">type LibFxImage2Ds</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LibFxImage2Ds.AddNew">func (me LibFxImage2Ds) AddNew(id string) (obj *FxImage2D)</a></dd>
+				
+			
+				
+				<dd><a href="#LibFxMaterials">type LibFxMaterials</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LibFxMaterials.AddNew">func (me LibFxMaterials) AddNew(id string) (obj *FxMaterial)</a></dd>
+				
+			
+				
 				<dd><a href="#Material">type Material</a></dd>
 				
 				
@@ -338,6 +459,9 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Model.Clone">func (me *Model) Clone(newModelID string) (clonedModel *Model)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Model.MatID">func (me *Model) MatID() string</a></dd>
 				
 					
@@ -347,9 +471,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				<dd><a href="#Models">type Models</a></dd>
 				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#Models.Clone">func (me Models) Clone(id, newID string) (model *Model)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Models.Default">func (me Models) Default() *Model</a></dd>
@@ -372,7 +493,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#Node.MeshName">func (me *Node) MeshName() string</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Node.SetMatName">func (me *Node) SetMatName(newMatName string)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Node.SetMatID">func (me *Node) SetMatID(newMatName string)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Node.SetMeshModelName">func (me *Node) SetMeshModelName(meshName, modelName string)</a></dd>
@@ -567,13 +688,23 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/-gen-glsl-src.go">-gen-glsl-src.go</a>
 			
-				<a href="/target/camera.go">camera.go</a>
+				<a href="/target/camera.gt.go">camera.gt.go</a>
 			
 				<a href="/target/controller.go">controller.go</a>
 			
 				<a href="/target/doc.go">doc.go</a>
 			
 				<a href="/target/fileio.go">fileio.go</a>
+			
+				<a href="/target/fx-effect.gt.go">fx-effect.gt.go</a>
+			
+				<a href="/target/fx-image-2d.gt.go">fx-image-2d.gt.go</a>
+			
+				<a href="/target/fx-image.go">fx-image.go</a>
+			
+				<a href="/target/fx-material.gt.go">fx-material.gt.go</a>
+			
+				<a href="/target/fx-sampler.go">fx-sampler.go</a>
 			
 				<a href="/target/gl-core.go">gl-core.go</a>
 			
@@ -626,6 +757,12 @@ The *core* package provides go:ngine client-side core functionality such as rend
 		
 		
 			<h2 id="pkg-variables">Variables</h2>
+			
+				<pre>var (
+    FxSamplerFilteringHighMipped = NewFxSamplerFiltering(8, true, true, true)
+    FxSamplerWrappingRepeat      = ugfx.NewSamplerWrapping(ugfx.WrapKindRepeat, nil)
+)</pre>
+				
 			
 				<pre>var (
     <span class="comment">//	Manages your main-thread&#39;s &#34;game loop&#34;. You&#39;ll need to call it&#39;s Loop() method once after go:ngine initialization (see samples).</span>
@@ -690,7 +827,7 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.go?s=492:1452#L12">Camera</a></h2>
+			<h2 id="Camera">type <a href="/target/camera.gt.go?s=210:1170#L1">Camera</a></h2>
 			<pre>type Camera struct {
     <span class="comment">//	If true, this camera is ignored by the rendering runtime.</span>
     Disabled bool
@@ -733,7 +870,7 @@ A camera embodies the eye point of the viewer looking at the visual scene.
 
 			
 				
-				<h3 id="NewCamera">func <a href="/target/camera.go?s=1519:1548#L46">NewCamera</a></h3>
+				<h3 id="NewCamera">func <a href="/target/camera.gt.go?s=1237:1266#L35">NewCamera</a></h3>
 				<pre>func NewCamera() (me *Camera)</pre>
 				<p>
 Initializes and returns a new Camera with default parameters.
@@ -744,7 +881,7 @@ Initializes and returns a new Camera with default parameters.
 
 			
 				
-				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=1903:1936#L62">ApplyMatrices</a></h3>
+				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.gt.go?s=1621:1654#L51">ApplyMatrices</a></h3>
 				<pre>func (me *Camera) ApplyMatrices()</pre>
 				<p>
 Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
@@ -754,14 +891,14 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
 				
 			
 				
-				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.go?s=2581:2624#L81">SetTechnique</a></h3>
+				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.gt.go?s=2299:2342#L70">SetTechnique</a></h3>
 				<pre>func (me *Camera) SetTechnique(name string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.ToggleTechnique">func (*Camera) <a href="/target/camera.go?s=2723:2758#L87">ToggleTechnique</a></h3>
+				<h3 id="Camera.ToggleTechnique">func (*Camera) <a href="/target/camera.gt.go?s=2441:2476#L76">ToggleTechnique</a></h3>
 				<pre>func (me *Camera) ToggleTechnique()</pre>
 				
 				
@@ -770,7 +907,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
 		
 			
 			
-			<h2 id="CameraViewPort">type <a href="/target/camera.go?s=3368:3583#L119">CameraViewPort</a></h2>
+			<h2 id="CameraViewPort">type <a href="/target/camera.gt.go?s=3086:3301#L108">CameraViewPort</a></h2>
 			<pre>type CameraViewPort struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -789,7 +926,7 @@ Encapsulates a device-relative or absolute camera view-port.
 
 			
 				
-				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.go?s=3709:3766#L133">SetAbs</a></h3>
+				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.gt.go?s=3427:3484#L122">SetAbs</a></h3>
 				<pre>func (me *CameraViewPort) SetAbs(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -799,41 +936,11 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.go?s=4017:4078#L140">SetRel</a></h3>
+				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.gt.go?s=3735:3796#L129">SetRel</a></h3>
 				<pre>func (me *CameraViewPort) SetRel(x, y, width, height float64)</pre>
 				<p>
 Sets the device-relative viewport origin and dimensions, with the value 1.0
 representing the maximum extent of the viewport on that respective axis.
-</p>
-
-				
-				
-			
-		
-			
-			
-			<h2 id="Cameras">type <a href="/target/camera.go?s=188:219#L1">Cameras</a></h2>
-			<pre>type Cameras map[string]*Camera</pre>
-			<p>
-A hash-table of Cameras. Used for Core.Libs.Cameras.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="Cameras.AddNew">func (Cameras) <a href="/target/camera.go?s=318:367#L5">AddNew</a></h3>
-				<pre>func (me Cameras) AddNew(id string) (cam *Camera)</pre>
-				<p>
-Initializes a new Camera with default parameters and adds
-it to me under the specified ID.
 </p>
 
 				
@@ -1049,12 +1156,16 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34;.
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=884:1240#L15">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=884:1308#L15">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Options     EngineOptions
     Libs        struct {
-        Cameras   Cameras
+        Cameras LibCameras
+        Effects LibFxEffects
+        Images  struct {
+            I2D LibFxImage2Ds
+        }
         Materials Materials
         Meshes    Meshes
         Scenes    Scenes
@@ -1083,7 +1194,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3139:3174#L116">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3331:3366#L122">SyncUpdates</a></h3>
 				<pre>func (me *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -1412,6 +1523,407 @@ Returns the width of the window in pixels.
 		
 			
 			
+			<h2 id="FxColorOrTexture">type <a href="/target/fx-effect.gt.go?s=66:183#L1">FxColorOrTexture</a></h2>
+			<pre>type FxColorOrTexture struct {
+    Color   *ugfx.Rgba64
+    Texture struct {
+        Image2dID string
+        Sampler   *FxSampler
+    }
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="FxEffect">type <a href="/target/fx-effect.gt.go?s=185:236#L5">FxEffect</a></h2>
+			<pre>type FxEffect struct {
+    Diffuse *FxColorOrTexture
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=238:271#L9">NewFxEffect</a></h3>
+				<pre>func NewFxEffect() (me *FxEffect)</pre>
+				
+				
+			
+
+			
+		
+			
+			
+			<h2 id="FxImage">type <a href="/target/fx-image.go?s=91:531#L1">FxImage</a></h2>
+			<pre>type FxImage struct {
+    OnLoad   FxImageOnLoad
+    InitFrom struct {
+        RawData []byte
+        RefUrl  string
+    }
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="FxImage.GpuDelete">func (*FxImage) <a href="/target/fx-image.go?s=1423:1453#L43">GpuDelete</a></h3>
+				<pre>func (me *FxImage) GpuDelete()</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxImage.GpuSynced">func (*FxImage) <a href="/target/fx-image.go?s=1551:1586#L50">GpuSynced</a></h3>
+				<pre>func (me *FxImage) GpuSynced() bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxImage.NoAutoMips">func (*FxImage) <a href="/target/fx-image.go?s=1612:1643#L54">NoAutoMips</a></h3>
+				<pre>func (me *FxImage) NoAutoMips()</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="FxImage2D">type <a href="/target/fx-image-2d.gt.go?s=118:170#L2">FxImage2D</a></h2>
+			<pre>type FxImage2D struct {
+    FxImage
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=172:207#L8">NewFxImage2D</a></h3>
+				<pre>func NewFxImage2D() (me *FxImage2D)</pre>
+				
+				
+			
+
+			
+				
+				<h3 id="FxImage2D.Dispose">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=259:289#L14">Dispose</a></h3>
+				<pre>func (me *FxImage2D) Dispose()</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxImage2D.GpuSync">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=330:372#L19">GpuSync</a></h3>
+				<pre>func (me *FxImage2D) GpuSync() (err error)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxImage2D.Load">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=621:668#L26">Load</a></h3>
+				<pre>func (me *FxImage2D) Load(asyncNumAttempts int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxImage2D.Loaded">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1679:1713#L74">Loaded</a></h3>
+				<pre>func (me *FxImage2D) Loaded() bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxImage2D.Unload">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2191:2220#L91">Unload</a></h3>
+				<pre>func (me *FxImage2D) Unload()</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="FxImageOnLoad">type <a href="/target/fx-image.go?s=1671:1734#L58">FxImageOnLoad</a></h2>
+			<pre>type FxImageOnLoad func(img interface{}, err error, async bool)</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="FxMaterial">type <a href="/target/fx-material.gt.go?s=14:57#L1">FxMaterial</a></h2>
+			<pre>type FxMaterial struct {
+    EffectID string
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewFxMaterial">func <a href="/target/fx-material.gt.go?s=59:96#L1">NewFxMaterial</a></h3>
+				<pre>func NewFxMaterial() (me *FxMaterial)</pre>
+				
+				
+			
+
+			
+		
+			
+			
+			<h2 id="FxSampler">type <a href="/target/fx-sampler.go?s=298:387#L5">FxSampler</a></h2>
+			<pre>type FxSampler struct {
+    Filtering *FxSamplerFiltering
+    Wrapping  *ugfx.SamplerWrapping
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewFxSampler">func <a href="/target/fx-sampler.go?s=389:485#L10">NewFxSampler</a></h3>
+				<pre>func NewFxSampler(filtering *FxSamplerFiltering, wrapping *ugfx.SamplerWrapping) (me *FxSampler)</pre>
+				
+				
+			
+
+			
+		
+			
+			
+			<h2 id="FxSamplerFiltering">type <a href="/target/fx-sampler.go?s=558:681#L15">FxSamplerFiltering</a></h2>
+			<pre>type FxSamplerFiltering struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewFxSamplerFiltering">func <a href="/target/fx-sampler.go?s=683:769#L22">NewFxSamplerFiltering</a></h3>
+				<pre>func NewFxSamplerFiltering(aniso float64, mag, min, mip bool) (me *FxSamplerFiltering)</pre>
+				
+				
+			
+
+			
+				
+				<h3 id="FxSamplerFiltering.Anisotropy">func (*FxSamplerFiltering) <a href="/target/fx-sampler.go?s=891:941#L30">Anisotropy</a></h3>
+				<pre>func (me *FxSamplerFiltering) Anisotropy() float64</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxSamplerFiltering.Filtering">func (*FxSamplerFiltering) <a href="/target/fx-sampler.go?s=964:1026#L34">Filtering</a></h3>
+				<pre>func (me *FxSamplerFiltering) Filtering() (mag, min, mip bool)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxSamplerFiltering.SetAnisotropy">func (*FxSamplerFiltering) <a href="/target/fx-sampler.go?s=1080:1138#L39">SetAnisotropy</a></h3>
+				<pre>func (me *FxSamplerFiltering) SetAnisotropy(aniso float64)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxSamplerFiltering.SetFiltering">func (*FxSamplerFiltering) <a href="/target/fx-sampler.go?s=1300:1362#L49">SetFiltering</a></h3>
+				<pre>func (me *FxSamplerFiltering) SetFiltering(mag, min, mip bool)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxSamplerFiltering.SetFilteringMag">func (*FxSamplerFiltering) <a href="/target/fx-sampler.go?s=1423:1481#L54">SetFilteringMag</a></h3>
+				<pre>func (me *FxSamplerFiltering) SetFilteringMag(filter bool)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxSamplerFiltering.SetFilteringMin">func (*FxSamplerFiltering) <a href="/target/fx-sampler.go?s=1581:1641#L60">SetFilteringMin</a></h3>
+				<pre>func (me *FxSamplerFiltering) SetFilteringMin(min, mip bool)</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="LibCameras">type <a href="/target/camera.gt.go?s=4438:4472#L146">LibCameras</a></h2>
+			<pre>type LibCameras map[string]*Camera</pre>
+			<p>
+A hash-table of Cameras associated by IDs. Only for use in Core.Libs.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="LibCameras.AddNew">func (LibCameras) <a href="/target/camera.gt.go?s=4596:4648#L150">AddNew</a></h3>
+				<pre>func (me LibCameras) AddNew(id string) (obj *Camera)</pre>
+				<p>
+Creates and initializes a new Camera with default parameters,
+adds it to me under the specified ID, and returns it.
+</p>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=431:469#L19">LibFxEffects</a></h2>
+			<pre>type LibFxEffects map[string]*FxEffect</pre>
+			<p>
+A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=595:651#L23">AddNew</a></h3>
+				<pre>func (me LibFxEffects) AddNew(id string) (obj *FxEffect)</pre>
+				<p>
+Creates and initializes a new FxEffect with default parameters,
+adds it to me under the specified ID, and returns it.
+</p>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=3188:3228#L131">LibFxImage2Ds</a></h2>
+			<pre>type LibFxImage2Ds map[string]*FxImage2D</pre>
+			<p>
+A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3355:3413#L135">AddNew</a></h3>
+				<pre>func (me LibFxImage2Ds) AddNew(id string) (obj *FxImage2D)</pre>
+				<p>
+Creates and initializes a new FxImage2D with default parameters,
+adds it to me under the specified ID, and returns it.
+</p>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="LibFxMaterials">type <a href="/target/fx-material.gt.go?s=262:304#L7">LibFxMaterials</a></h2>
+			<pre>type LibFxMaterials map[string]*FxMaterial</pre>
+			<p>
+A hash-table of FxMaterials associated by IDs. Only for use in Core.Libs.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="LibFxMaterials.AddNew">func (LibFxMaterials) <a href="/target/fx-material.gt.go?s=432:492#L11">AddNew</a></h3>
+				<pre>func (me LibFxMaterials) AddNew(id string) (obj *FxMaterial)</pre>
+				<p>
+Creates and initializes a new FxMaterial with default parameters,
+adds it to me under the specified ID, and returns it.
+</p>
+
+				
+				
+			
+		
+			
+			
 			<h2 id="Material">type <a href="/target/material.go?s=269:309#L6">Material</a></h2>
 			<pre>type Material struct {
     TexName string
@@ -1701,7 +2213,7 @@ Temporary concoction.
 		
 			
 			
-			<h2 id="Model">type <a href="/target/model.go?s=882:961#L18">Model</a></h2>
+			<h2 id="Model">type <a href="/target/model.go?s=593:672#L8">Model</a></h2>
 			<pre>type Model struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -1712,7 +2224,7 @@ with unique appearance, material or other properties.
 <p>
 Each Mesh provides at least one Model, the &#34;default model&#34; (with ID &#34;&#34;),
 accessible via someMesh.Models.Default(). To create new models for a Mesh,
-call someMesh.Models.Clone(&#34;sourceModelID&#34;, &#34;newModelID&#34;).
+call someMesh.Models[&#34;sourceModelID&#34;].Clone(&#34;newModelID&#34;).
 </p>
 
 
@@ -1726,14 +2238,25 @@ call someMesh.Models.Clone(&#34;sourceModelID&#34;, &#34;newModelID&#34;).
 
 			
 				
-				<h3 id="Model.MatID">func (*Model) <a href="/target/model.go?s=1293:1324#L38">MatID</a></h3>
+				<h3 id="Model.Clone">func (*Model) <a href="/target/model.go?s=879:941#L22">Clone</a></h3>
+				<pre>func (me *Model) Clone(newModelID string) (clonedModel *Model)</pre>
+				<p>
+Creates a copy of me and adds it to the parent Mesh&#39;s Models
+hash-table under the specified newModelID.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.MatID">func (*Model) <a href="/target/model.go?s=1114:1145#L30">MatID</a></h3>
 				<pre>func (me *Model) MatID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Model.SetMatID">func (*Model) <a href="/target/model.go?s=1430:1472#L47">SetMatID</a></h3>
+				<h3 id="Model.SetMatID">func (*Model) <a href="/target/model.go?s=1251:1293#L39">SetMatID</a></h3>
 				<pre>func (me *Model) SetMatID(newMatID string)</pre>
 				
 				
@@ -1760,18 +2283,7 @@ Used only for Mesh.Models.
 
 			
 				
-				<h3 id="Models.Clone">func (Models) <a href="/target/model.go?s=229:284#L1">Clone</a></h3>
-				<pre>func (me Models) Clone(id, newID string) (model *Model)</pre>
-				<p>
-Creates a copy of the Model with the specified id, and
-adds it to me under the specified newID.
-</p>
-
-				
-				
-			
-				
-				<h3 id="Models.Default">func (Models) <a href="/target/model.go?s=479:512#L8">Default</a></h3>
+				<h3 id="Models.Default">func (Models) <a href="/target/model.go?s=190:223#L1">Default</a></h3>
 				<pre>func (me Models) Default() *Model</pre>
 				<p>
 Returns the default Model (with ID &#34;&#34;) for the parent Mesh.
@@ -1830,14 +2342,14 @@ Returns the default Model (with ID &#34;&#34;) for the parent Mesh.
 				
 			
 				
-				<h3 id="Node.SetMatName">func (*Node) <a href="/target/node.go?s=2322:2367#L95">SetMatName</a></h3>
-				<pre>func (me *Node) SetMatName(newMatName string)</pre>
+				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=2322:2365#L95">SetMatID</a></h3>
+				<pre>func (me *Node) SetMatID(newMatName string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMeshModelName">func (*Node) <a href="/target/node.go?s=2474:2534#L101">SetMeshModelName</a></h3>
+				<h3 id="Node.SetMeshModelName">func (*Node) <a href="/target/node.go?s=2472:2532#L101">SetMeshModelName</a></h3>
 				<pre>func (me *Node) SetMeshModelName(meshName, modelName string)</pre>
 				
 				
