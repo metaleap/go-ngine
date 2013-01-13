@@ -1613,7 +1613,7 @@ Returns the width of the window in pixels.
 		
 			
 			
-			<h2 id="FxImage2D">type <a href="/target/fx-image-2d.gt.go?s=118:170#L2">FxImage2D</a></h2>
+			<h2 id="FxImage2D">type <a href="/target/fx-image-2d.gt.go?s=127:179#L3">FxImage2D</a></h2>
 			<pre>type FxImage2D struct {
     FxImage
     <span class="comment">// contains filtered or unexported fields</span>
@@ -1628,7 +1628,7 @@ Returns the width of the window in pixels.
 
 			
 				
-				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=172:207#L8">NewFxImage2D</a></h3>
+				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=181:216#L9">NewFxImage2D</a></h3>
 				<pre>func NewFxImage2D() (me *FxImage2D)</pre>
 				
 				
@@ -1636,35 +1636,35 @@ Returns the width of the window in pixels.
 
 			
 				
-				<h3 id="FxImage2D.Dispose">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=259:289#L14">Dispose</a></h3>
+				<h3 id="FxImage2D.Dispose">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=268:298#L15">Dispose</a></h3>
 				<pre>func (me *FxImage2D) Dispose()</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.GpuSync">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=330:372#L19">GpuSync</a></h3>
+				<h3 id="FxImage2D.GpuSync">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=339:381#L20">GpuSync</a></h3>
 				<pre>func (me *FxImage2D) GpuSync() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Load">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=621:668#L26">Load</a></h3>
+				<h3 id="FxImage2D.Load">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=630:677#L27">Load</a></h3>
 				<pre>func (me *FxImage2D) Load(asyncNumAttempts int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Loaded">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1679:1713#L74">Loaded</a></h3>
+				<h3 id="FxImage2D.Loaded">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1688:1722#L75">Loaded</a></h3>
 				<pre>func (me *FxImage2D) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Unload">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2191:2220#L91">Unload</a></h3>
+				<h3 id="FxImage2D.Unload">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2217:2246#L92">Unload</a></h3>
 				<pre>func (me *FxImage2D) Unload()</pre>
 				
 				
@@ -1864,7 +1864,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=3188:3228#L131">LibFxImage2Ds</a></h2>
+			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=3214:3254#L132">LibFxImage2Ds</a></h2>
 			<pre>type LibFxImage2Ds map[string]*FxImage2D</pre>
 			<p>
 A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
@@ -1881,7 +1881,7 @@ A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3355:3413#L135">AddNew</a></h3>
+				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3381:3439#L136">AddNew</a></h3>
 				<pre>func (me LibFxImage2Ds) AddNew(id string) (obj *FxImage2D)</pre>
 				<p>
 Creates and initializes a new FxImage2D with default parameters,

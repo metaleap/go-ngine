@@ -1,6 +1,7 @@
 package core
 
 import (
+	"bytes"
 	"image"
 	"io"
 	"strings"
@@ -87,7 +88,7 @@ func (me *FxImage2D) Loaded() bool {
 
 func (me *FxImage2D) provider() (prov fxImage2DProvider, arg interface{}, remote bool) {
 	if len(me.InitFrom.RawData) > 0 {
-		prov, arg = fxImage2DProviderIoReader, me.InitFrom.RawData
+		prov, arg = fxImage2DProviderIoReader, bytes.NewReader(me.InitFrom.RawData)
 	} else if len(me.InitFrom.RefUrl) > 0 {
 		if remote = strings.Contains(me.InitFrom.RefUrl, "://"); remote {
 			prov, arg = fxImage2DProviderRemoteFile, me.InitFrom.RefUrl
