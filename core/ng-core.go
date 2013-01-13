@@ -48,16 +48,13 @@ type EngineCore struct {
 
 func (me *EngineCore) dispose() {
 	me.isInit = false
-	for _, canvas := range me.Rendering.Canvases {
-		canvas.Dispose()
-	}
-	for _, disp := range []disposable{&me.Libs.Cameras, &me.Libs.Images.I2D, &me.Libs.Effects, &me.Libs.FxMaterials} {
+	for _, disp := range []disposable{
+		&me.Rendering.Canvases,
+		&me.Libs.Cameras, &me.Libs.Images.I2D, &me.Libs.Effects, &me.Libs.FxMaterials, &me.Libs.Meshes,
+		me.MeshBuffers,
+	} {
 		disp.dispose()
 	}
-	for _, mesh := range me.Libs.Meshes {
-		mesh.GpuDelete()
-	}
-	me.MeshBuffers.dispose()
 	techs = nil
 }
 

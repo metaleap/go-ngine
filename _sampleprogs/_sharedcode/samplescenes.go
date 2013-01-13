@@ -70,7 +70,7 @@ func AddTextureMaterials(idsUrls map[string]string) {
 				img.GpuSync()
 			}
 		}
-		ng.Core.Libs.Effects.AddNew("fx_" + id).Diffuse = ng.NewFxTexture("img_"+id, nil)
+		ng.Core.Libs.Effects.AddNew("fx_" + id).Diffuse = *ng.NewFxTexture("img_"+id, nil)
 		ng.Core.Libs.FxMaterials.AddNew("mat_" + id).EffectID = "fx_" + id
 
 		// ng.Core.Libs.Textures.AddNew("tex_"+id, refUrl)

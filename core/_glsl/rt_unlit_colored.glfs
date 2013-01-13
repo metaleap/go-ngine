@@ -1,7 +1,0 @@
-smooth in vec3 vPos;
-
-out vec4 oColor;
-
-void main () {
-	oColor = vec4(vPos, 1.0);
-}

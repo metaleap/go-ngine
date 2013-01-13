@@ -28,7 +28,7 @@ func NewFxTexture(image2ID string, sampler *FxSampler) (me *FxColorOrTexture) {
 
 type FxEffect struct {
 	Ambient *FxColorOrTexture
-	Diffuse *FxColorOrTexture
+	Diffuse FxColorOrTexture
 }
 
 func (me *FxEffect) dispose() {

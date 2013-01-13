@@ -26,6 +26,13 @@ func (me RenderCanvases) New(viewWidth, viewHeight int) (rc *RenderCanvas) {
 	return
 }
 
+func (me *RenderCanvases) dispose() {
+	for _, c := range *me {
+		c.Dispose()
+	}
+	*me = RenderCanvases{}
+}
+
 func (me *RenderCanvases) Add(canvas *RenderCanvas) *RenderCanvas {
 	*me = append(*me, canvas)
 	return canvas
@@ -46,7 +53,11 @@ func (me *RenderCanvases) Remove(canvas *RenderCanvas) {
 	}
 }
 
+//	Represents a surface that can be rendered to, ie. either the
+//	screen or a render texture. Equivalent to a "framebuffer object"
+//	in OpenGL.
 type RenderCanvas struct {
+	//	If true, this RenderCanvas is ignored by the rendering runtime.
 	Disabled bool
 
 	camIDs                []string

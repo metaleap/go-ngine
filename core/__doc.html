@@ -1127,7 +1127,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3281:3316#L116">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3189:3224#L113">SyncUpdates</a></h3>
 				<pre>func (me *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -1211,12 +1211,13 @@ Returns the number of seconds expired ever since EngineLoop.Loop() was last call
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=185:479#L1">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=185:513#L1">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     <span class="comment">//	The base directory path for asset file paths.</span>
     AssetRootDirPath string
 
-    <span class="comment">//	Name for the default render technique, currently &#34;rt_unlit_colored&#34;</span>
+    <span class="comment">//	Name for the default render technique, defaults to the only</span>
+    <span class="comment">//	currently supported value &#34;rt_unlit&#34;.</span>
     DefaultRenderTechnique string
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -1234,7 +1235,7 @@ Various &#34;global&#34; (rather than use-case-specific) options.
 
 			
 				
-				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=554:682#L7">NewEngineOptions</a></h3>
+				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=588:716#L8">NewEngineOptions</a></h3>
 				<pre>func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions)</pre>
 				<p>
 Allocates, initializes and returns a new core.EngineOptions instance.
@@ -1487,10 +1488,10 @@ Returns the width of the window in pixels.
 		
 			
 			
-			<h2 id="FxEffect">type <a href="/target/fx-effect.gt.go?s=520:598#L19">FxEffect</a></h2>
+			<h2 id="FxEffect">type <a href="/target/fx-effect.gt.go?s=520:597#L19">FxEffect</a></h2>
 			<pre>type FxEffect struct {
     Ambient *FxColorOrTexture
-    Diffuse *FxColorOrTexture
+    Diffuse FxColorOrTexture
 }</pre>
 			
 
@@ -1502,7 +1503,7 @@ Returns the width of the window in pixels.
 
 			
 				
-				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=770:803#L33">NewFxEffect</a></h3>
+				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=769:802#L33">NewFxEffect</a></h3>
 				<pre>func NewFxEffect() (me *FxEffect)</pre>
 				<p>
 Initializes and returns a new FxEffect with default parameters.
@@ -1788,7 +1789,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=921:959#L40">LibFxEffects</a></h2>
+			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=920:958#L40">LibFxEffects</a></h2>
 			<pre>type LibFxEffects map[string]*FxEffect</pre>
 			<p>
 A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
@@ -1805,7 +1806,7 @@ A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=1085:1141#L44">AddNew</a></h3>
+				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=1084:1140#L44">AddNew</a></h3>
 				<pre>func (me LibFxEffects) AddNew(id string) (obj *FxEffect)</pre>
 				<p>
 Creates and initializes a new FxEffect with default parameters,
@@ -1878,7 +1879,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="Mesh">type <a href="/target/mesh.go?s=700:1105#L33">Mesh</a></h2>
+			<h2 id="Mesh">type <a href="/target/mesh.go?s=793:1198#L40">Mesh</a></h2>
 			<pre>type Mesh struct {
     Models Models
     <span class="comment">// contains filtered or unexported fields</span>
@@ -1895,35 +1896,35 @@ adds it to me under the specified ID, and returns it.
 
 			
 				
-				<h3 id="Mesh.GpuDelete">func (*Mesh) <a href="/target/mesh.go?s=1107:1134#L43">GpuDelete</a></h3>
+				<h3 id="Mesh.GpuDelete">func (*Mesh) <a href="/target/mesh.go?s=1200:1227#L50">GpuDelete</a></h3>
 				<pre>func (me *Mesh) GpuDelete()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.GpuUpload">func (*Mesh) <a href="/target/mesh.go?s=1185:1224#L49">GpuUpload</a></h3>
+				<h3 id="Mesh.GpuUpload">func (*Mesh) <a href="/target/mesh.go?s=1278:1317#L56">GpuUpload</a></h3>
 				<pre>func (me *Mesh) GpuUpload() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.go?s=2825:2859#L76">GpuUploaded</a></h3>
+				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.go?s=2918:2952#L83">GpuUploaded</a></h3>
 				<pre>func (me *Mesh) GpuUploaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.go?s=4731:4760#L123">Loaded</a></h3>
+				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.go?s=4824:4853#L130">Loaded</a></h3>
 				<pre>func (me *Mesh) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.go?s=5179:5203#L136">Unload</a></h3>
+				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.go?s=5272:5296#L143">Unload</a></h3>
 				<pre>func (me *Mesh) Unload()</pre>
 				
 				
@@ -2103,14 +2104,14 @@ Temporary concoction.
 				
 			
 				
-				<h3 id="Meshes.Load">func (Meshes) <a href="/target/mesh.go?s=340:440#L17">Load</a></h3>
+				<h3 id="Meshes.Load">func (Meshes) <a href="/target/mesh.go?s=433:533#L24">Load</a></h3>
 				<pre>func (me Meshes) Load(id string, provider MeshProvider, args ...interface{}) (mesh *Mesh, err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Meshes.New">func (Meshes) <a href="/target/mesh.go?s=597:641#L28">New</a></h3>
+				<h3 id="Meshes.New">func (Meshes) <a href="/target/mesh.go?s=690:734#L35">New</a></h3>
 				<pre>func (me Meshes) New(id string) (mesh *Mesh)</pre>
 				
 				
@@ -2587,12 +2588,18 @@ Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
 		
 			
 			
-			<h2 id="RenderCanvas">type <a href="/target/render-canvas.go?s=1003:1139#L39">RenderCanvas</a></h2>
+			<h2 id="RenderCanvas">type <a href="/target/render-canvas.go?s=1256:1460#L49">RenderCanvas</a></h2>
 			<pre>type RenderCanvas struct {
+    <span class="comment">//	If true, this RenderCanvas is ignored by the rendering runtime.</span>
     Disabled bool
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
-			
+			<p>
+Represents a surface that can be rendered to, ie. either the
+screen or a render texture. Equivalent to a &#34;framebuffer object&#34;
+in OpenGL.
+</p>
+
 
 			
 
@@ -2604,14 +2611,14 @@ Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
 
 			
 				
-				<h3 id="RenderCanvas.Dispose">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1296:1329#L53">Dispose</a></h3>
+				<h3 id="RenderCanvas.Dispose">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1617:1650#L64">Dispose</a></h3>
 				<pre>func (me *RenderCanvas) Dispose()</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.SetCameraIDs">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1456:1510#L64">SetCameraIDs</a></h3>
+				<h3 id="RenderCanvas.SetCameraIDs">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1777:1831#L75">SetCameraIDs</a></h3>
 				<pre>func (me *RenderCanvas) SetCameraIDs(camIDs ...string)</pre>
 				
 				
@@ -2634,14 +2641,14 @@ Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
 
 			
 				
-				<h3 id="RenderCanvases.Add">func (*RenderCanvases) <a href="/target/render-canvas.go?s=534:599#L19">Add</a></h3>
+				<h3 id="RenderCanvases.Add">func (*RenderCanvases) <a href="/target/render-canvas.go?s=641:706#L26">Add</a></h3>
 				<pre>func (me *RenderCanvases) Add(canvas *RenderCanvas) *RenderCanvas</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvases.Index">func (RenderCanvases) <a href="/target/render-canvas.go?s=647:703#L24">Index</a></h3>
+				<h3 id="RenderCanvases.Index">func (RenderCanvases) <a href="/target/render-canvas.go?s=754:810#L31">Index</a></h3>
 				<pre>func (me RenderCanvases) Index(canvas *RenderCanvas) int</pre>
 				
 				
@@ -2655,7 +2662,7 @@ Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
 				
 			
 				
-				<h3 id="RenderCanvases.Remove">func (*RenderCanvases) <a href="/target/render-canvas.go?s=819:873#L33">Remove</a></h3>
+				<h3 id="RenderCanvases.Remove">func (*RenderCanvases) <a href="/target/render-canvas.go?s=926:980#L40">Remove</a></h3>
 				<pre>func (me *RenderCanvases) Remove(canvas *RenderCanvas)</pre>
 				
 				

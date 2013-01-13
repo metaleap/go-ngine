@@ -15,7 +15,7 @@ type techniqueCtor func(string) renderTechnique
 
 func initTechniques() {
 	techs = map[string]renderTechnique{}
-	for techName, techMaker := range map[string]techniqueCtor{"rt_unlit_colored": newTechnique_UnlitColored, "rt_unlit_textured": newTechnique_UnlitTextured} {
+	for techName, techMaker := range map[string]techniqueCtor{ /*"rt_unlit_colored": newTechnique_UnlitColored,*/ "rt_unlit": newTechnique_Unlit} {
 		techs[techName] = techMaker(techName)
 	}
 }
@@ -67,6 +67,7 @@ func (me *baseTechnique) setProg(name string, unifs []string, attrs []string) {
 	me.prog = prog
 }
 
+/*
 type techniqueUnlitColored struct {
 	baseTechnique
 }
@@ -76,24 +77,25 @@ func newTechnique_UnlitColored(progName string) renderTechnique {
 	me.baseTechnique.setProg(progName, nil, nil)
 	return me
 }
+*/
 
-type techniqueUnlitTextured struct {
+type techniqueUnlit struct {
 	baseTechnique
 }
 
-func newTechnique_UnlitTextured(progName string) renderTechnique {
-	me := &techniqueUnlitTextured{}
+func newTechnique_Unlit(progName string) renderTechnique {
+	me := &techniqueUnlit{}
 	me.baseTechnique.setProg(progName, []string{"uTex0"}, []string{"aTexCoords"})
 	return me
 }
 
-func (me *techniqueUnlitTextured) initMeshBuffer(meshBuffer *MeshBuffer) {
+func (me *techniqueUnlit) initMeshBuffer(meshBuffer *MeshBuffer) {
 	me.baseTechnique.initMeshBuffer(meshBuffer)
 	gl.EnableVertexAttribArray(me.prog.AttrLocs["aTexCoords"])
 	gl.VertexAttribPointer(me.prog.AttrLocs["aTexCoords"], 2, gl.FLOAT, gl.FALSE, 8*4, gl.Offset(nil, 3*4))
 }
 
-func (me *techniqueUnlitTextured) onRenderNode() {
+func (me *techniqueUnlit) onRenderNode() {
 	if tmpMat = curNode.Material(); tmpMat != curMat {
 		if curMat = tmpMat; curMat != nil {
 			tmpEffect = Core.Libs.Effects[curMat.EffectID]

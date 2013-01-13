@@ -24,6 +24,13 @@ func (me Meshes) AddRange(meshes ...*Mesh) {
 	}
 }
 
+func (me *Meshes) dispose() {
+	for _, m := range *me {
+		m.GpuDelete()
+	}
+	*me = Meshes{}
+}
+
 func (me Meshes) Load(id string, provider MeshProvider, args ...interface{}) (mesh *Mesh, err error) {
 	var meshData *MeshData
 	mesh = me.New(id)
