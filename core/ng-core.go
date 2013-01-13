@@ -6,12 +6,13 @@ import (
 )
 
 var (
+	asyncResources                        = map[asyncResource]bool{}
 	curMeshBuf                            *MeshBuffer
 	curCanvIndex, lastCanvIndex, curIndex int
 	curMatKey, curStr                     string
 	curCam                                *Camera
 	curCanvas                             *RenderCanvas
-	curMat                                *Material
+	curMat                                *FxMaterial
 	curMesh                               *Mesh
 	curModel                              *Model
 	curNode                               *Node
@@ -26,15 +27,14 @@ type EngineCore struct {
 	MeshBuffers *MeshBuffers
 	Options     EngineOptions
 	Libs        struct {
-		Cameras LibCameras
-		Effects LibFxEffects
-		Images  struct {
+		Cameras     LibCameras
+		Effects     LibFxEffects
+		FxMaterials LibFxMaterials
+		Images      struct {
 			I2D LibFxImage2Ds
 		}
-		Materials Materials
-		Meshes    Meshes
-		Scenes    Scenes
-		Textures  Textures
+		Meshes Meshes
+		Scenes Scenes
 	}
 	Rendering struct {
 		Canvases           RenderCanvases
@@ -51,14 +51,11 @@ func (me *EngineCore) dispose() {
 	for _, canvas := range me.Rendering.Canvases {
 		canvas.Dispose()
 	}
-	for _, disp := range []disposable{&me.Libs.Cameras, &me.Libs.Images.I2D, &me.Libs.Effects} {
+	for _, disp := range []disposable{&me.Libs.Cameras, &me.Libs.Images.I2D, &me.Libs.Effects, &me.Libs.FxMaterials} {
 		disp.dispose()
 	}
 	for _, mesh := range me.Libs.Meshes {
 		mesh.GpuDelete()
-	}
-	for _, tex := range me.Libs.Textures {
-		tex.GpuDelete()
 	}
 	me.MeshBuffers.dispose()
 	techs = nil
@@ -68,7 +65,7 @@ func (me *EngineCore) init(options *EngineOptions) {
 	initTechniques()
 	me.initRenderingStates()
 	me.Options = *options
-	me.Options.DefaultTextureParams.setAgain()
+	// me.Options.DefaultTextureParams.setAgain()
 	me.MeshBuffers = newMeshBuffers()
 	me.initLibs()
 	me.Rendering.Canvases = RenderCanvases{}
@@ -79,12 +76,10 @@ func (me *EngineCore) init(options *EngineOptions) {
 
 func (me *EngineCore) initLibs() {
 	libs := &me.Libs
-	for _, c := range []ctorable{&libs.Cameras, &libs.Images.I2D, &libs.Effects} {
+	for _, c := range []ctorable{&libs.Cameras, &libs.Images.I2D, &libs.Effects, &libs.FxMaterials} {
 		c.ctor()
 	}
-	libs.Materials = Materials{}
 	libs.Meshes = Meshes{}
-	libs.Textures = Textures{}
 	libs.Scenes = Scenes{}
 }
 
@@ -108,11 +103,10 @@ func (me *EngineCore) onRender() {
 }
 
 func (me *EngineCore) onSec() {
-	for tex, done := range asyncTextures {
-		if done || (tex.img != nil) {
-			delete(asyncTextures, tex)
-			tex.GpuSync()
-			break
+	for r, d := range asyncResources {
+		if d {
+			delete(asyncResources, r)
+			r.onAsyncDone()
 		}
 	}
 }
@@ -130,14 +124,15 @@ func (me *EngineCore) resizeView(viewWidth, viewHeight int) {
 }
 
 func (me *EngineCore) SyncUpdates() {
-	var err error
-	for key, tex := range me.Libs.Textures {
-		if !tex.Loaded() {
-			tex.load()
-		}
-		if !tex.gpuSynced {
-			tex.GpuSync()
-			glLogLastError("EngineCore.SyncUpdates(texkey=%s)", key)
+	var (
+		err error
+		ok  bool
+	)
+	for _, img := range me.Libs.Images.I2D {
+		if !img.Loaded() {
+			if _, ok = asyncResources[img]; !ok {
+				img.Load()
+			}
 		}
 	}
 	for _, mesh := range me.Libs.Meshes {

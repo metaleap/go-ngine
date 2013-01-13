@@ -55,22 +55,26 @@ func AddScene(id string) (me *ng.Scene) {
 //	-	creates an assets.FxMaterialDef with ID "mat_ID" (ie. "mat_foo" and "mat_bar")
 //	-	and links them all together to create a ready-to-use texture material.
 func AddTextureMaterials(idsUrls map[string]string) {
-	var (
-	// image *ng.Texture
-	// effect *nga.FxEffectDef
-	)
 	for id, refUrl := range idsUrls {
-		ng.Core.Libs.Images.I2D.AddNew("img_" + id).InitFrom.RefUrl = refUrl
-		ng.Core.Libs.Textures.AddNew("tex_"+id, refUrl)
-		// image = nga.FxImageDefs.Add(ngau.NewFxImageDef("tex_"+id, refUrl))
+		img := ng.Core.Libs.Images.I2D.AddNew("img_" + id)
+		if img.InitFrom.RefUrl = refUrl; img.IsRemote() {
+			img.AsyncNumAttempts = -1
+			img.OnAsyncDone = func() {
+				if img.Loaded() {
+					img.GpuSync()
+				}
+			}
+		}
+		img.OnLoad = func(image interface{}, err error, async bool) {
+			if (err == nil) && (image != nil) && !async {
+				img.GpuSync()
+			}
+		}
+		ng.Core.Libs.Effects.AddNew("fx_" + id).Diffuse = ng.NewFxTexture("img_"+id, nil)
+		ng.Core.Libs.FxMaterials.AddNew("mat_" + id).EffectID = "fx_" + id
 
-		// effect = nga.FxEffectDefs.Add(ngau.NewFxEffectDef("fx_"+id, true, false))
-		// effect.Profiles[0].NewParams.Set("sampler_"+id, ngau.NewFxSampler2D(image.DefaultInst(), nil, nil))
-		// effect.Profiles[0].Common.Technique.Diffuse = ngau.NewFxColorOrTexture(ngau.NewFxTexture("sampler_"+id, "TEX0"), nil, "")
-
-		// nga.FxMaterialDefs.AddNew("mat_" + id).Effect.DefRef.SetIdRef("fx_" + id)
-
-		ng.Core.Libs.Materials["mat_"+id] = ng.Core.Libs.Materials.New("tex_" + id)
+		// ng.Core.Libs.Textures.AddNew("tex_"+id, refUrl)
+		// ng.Core.Libs.Materials["mat_"+id] = ng.Core.Libs.Materials.New("tex_" + id)
 	}
 }
 
@@ -133,10 +137,10 @@ func CheckToggleKeys() {
 		ng.Core.Rendering.States.ToggleFaceCulling()
 	}
 	if ng.UserIO.KeyToggled(glfw.KeyF4) {
-		ng.Core.Options.DefaultTextureParams.ToggleFilter()
+		// ng.Core.Options.DefaultTextureParams.ToggleFilter()
 	}
 	if ng.UserIO.KeyToggled(glfw.KeyF5) {
-		ng.Core.Options.DefaultTextureParams.ToggleFilterAnisotropy()
+		// ng.Core.Options.DefaultTextureParams.ToggleFilterAnisotropy()
 	}
 }
 

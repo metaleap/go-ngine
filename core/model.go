@@ -18,7 +18,7 @@ func (me Models) Default() *Model {
 type Model struct {
 	matID string
 	id    string
-	mat   *Material
+	mat   *FxMaterial
 	mesh  *Mesh
 }
 
@@ -48,6 +48,6 @@ func (me *Model) render() {
 
 func (me *Model) SetMatID(newMatID string) {
 	if newMatID != me.matID {
-		me.mat, me.matID = Core.Libs.Materials[newMatID], newMatID
+		me.mat, me.matID = Core.Libs.FxMaterials[newMatID], newMatID
 	}
 }

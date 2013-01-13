@@ -4,14 +4,20 @@ type FxMaterial struct {
 	EffectID string
 }
 
-func NewFxMaterial() (me *FxMaterial) {
-	return
-}
-
 func (me *FxMaterial) dispose() {
 }
 
+func (me *FxMaterial) init() {
+}
+
 //#begin-gt -gen-lib.gt T:FxMaterial
+
+//	Initializes and returns a new FxMaterial with default parameters.
+func NewFxMaterial() (me *FxMaterial) {
+	me = &FxMaterial{}
+	me.init()
+	return
+}
 
 //	A hash-table of FxMaterials associated by IDs. Only for use in Core.Libs.
 type LibFxMaterials map[string]*FxMaterial

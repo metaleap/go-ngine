@@ -6,8 +6,10 @@ import (
 )
 
 type FxImage struct {
-	OnLoad   FxImageOnLoad
-	InitFrom struct {
+	OnAsyncDone      func()
+	OnLoad           FxImageOnLoad
+	AsyncNumAttempts int
+	InitFrom         struct {
 		RawData []byte
 		RefUrl  string
 	}
@@ -63,6 +65,12 @@ func (me *FxImage) GpuSynced() bool {
 
 func (me *FxImage) NoAutoMips() {
 	me.noAutoMips = true
+}
+
+func (me *FxImage) onAsyncDone() {
+	if me.OnAsyncDone != nil {
+		me.OnAsyncDone()
+	}
 }
 
 type FxImageOnLoad func(img interface{}, err error, async bool)

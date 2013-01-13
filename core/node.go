@@ -54,7 +54,7 @@ type Node struct {
 	SubNodes  *subNodes
 	Transform *NodeTransforms
 
-	mat                                        *Material
+	mat                                        *FxMaterial
 	mesh                                       *Mesh
 	model                                      *Model
 	curKey, matName, meshName, modelName, name string
@@ -69,7 +69,7 @@ func newNode(nodeName, meshName, modelName string, parent *Node) (me *Node) {
 	return
 }
 
-func (me *Node) Material() *Material {
+func (me *Node) Material() *FxMaterial {
 	if me.mat != nil {
 		return me.mat
 	}
@@ -104,7 +104,7 @@ func (me *Node) render() {
 
 func (me *Node) SetMatID(newMatName string) {
 	if newMatName != me.matName {
-		me.mat, me.matName = Core.Libs.Materials[newMatName], newMatName
+		me.mat, me.matName = Core.Libs.FxMaterials[newMatName], newMatName
 	}
 }
 

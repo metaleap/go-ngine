@@ -41,9 +41,7 @@ type Camera struct {
 	glmatProj ugl.GlMat4
 }
 
-//	Initializes and returns a new Camera with default parameters.
-func NewCamera() (me *Camera) {
-	me = &Camera{}
+func (me *Camera) init() {
 	opt := &me.Params
 	opt.FovY = 37.8493
 	opt.ZFar = 30000
@@ -54,7 +52,6 @@ func NewCamera() (me *Camera) {
 	me.ViewPort.init()
 	me.ApplyMatrices()
 	me.SetTechnique(Core.Options.DefaultRenderTechnique)
-	return
 }
 
 //	Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
@@ -151,6 +148,13 @@ func (me *CameraViewPort) update() {
 }
 
 //#begin-gt -gen-lib.gt T:Camera
+
+//	Initializes and returns a new Camera with default parameters.
+func NewCamera() (me *Camera) {
+	me = &Camera{}
+	me.init()
+	return
+}
 
 //	A hash-table of Cameras associated by IDs. Only for use in Core.Libs.
 type LibCameras map[string]*Camera

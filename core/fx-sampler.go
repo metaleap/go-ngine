@@ -8,6 +8,7 @@ import (
 )
 
 var (
+	FxSamplerDefault             = NewFxSampler(FxSamplerFilteringHighMipped, FxSamplerWrappingRepeat)
 	FxSamplerFilteringHighMipped = NewFxSamplerFiltering(8, true, true, true)
 	FxSamplerWrappingRepeat      = ugfx.NewSamplerWrapping(ugfx.WrapKindRepeat, nil)
 )

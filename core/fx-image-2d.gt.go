@@ -3,6 +3,8 @@ package core
 import (
 	"bytes"
 	"image"
+	_ "image/jpeg"
+	_ "image/png"
 	"io"
 	"strings"
 
@@ -16,13 +18,11 @@ type FxImage2D struct {
 	img image.Image
 }
 
-func NewFxImage2D() (me *FxImage2D) {
-	me = &FxImage2D{}
+func (me *FxImage2D) init() {
 	me.FxImage.init()
-	return
 }
 
-func (me *FxImage2D) Dispose() {
+func (me *FxImage2D) dispose() {
 	me.FxImage.dispose()
 	me.Unload()
 }
@@ -34,20 +34,22 @@ func (me *FxImage2D) GpuSync() (err error) {
 	return
 }
 
-func (me *FxImage2D) Load(asyncNumAttempts int) {
+func (me *FxImage2D) Load() {
 	var (
 		loadAsync func()
 		err       error
 		img       image.Image
 	)
 	prov, arg, _ := me.provider()
-	if asyncNumAttempts >= 0 {
+	if me.AsyncNumAttempts != 0 {
+		asyncResources[me] = false
 		loadAsync = func() {
-			for i := 0; (i < asyncNumAttempts) || (asyncNumAttempts == 0); i++ {
+			for i := 0; (i < me.AsyncNumAttempts) || (me.AsyncNumAttempts < 0); i++ {
 				if img, err = prov(arg); err == nil {
 					break
 				}
 			}
+			asyncResources[me] = true
 			me.load_OnImg(img, err, true)
 		}
 		go loadAsync()
@@ -80,6 +82,9 @@ func (me *FxImage2D) load_OnImg(img image.Image, err error, async bool) {
 	if me.OnLoad != nil {
 		me.OnLoad(img, err, async)
 	}
+	if err != nil {
+		logError(err)
+	}
 }
 
 func (me *FxImage2D) Loaded() bool {
@@ -96,6 +101,11 @@ func (me *FxImage2D) provider() (prov fxImage2DProvider, arg interface{}, remote
 			prov, arg = fxImage2DProviderLocalFile, me.InitFrom.RefUrl
 		}
 	}
+	return
+}
+
+func (me *FxImage2D) IsRemote() (remote bool) {
+	_, _, remote = me.provider()
 	return
 }
 
@@ -137,6 +147,13 @@ func fxImage2DProviderRemoteFile(arg interface{}) (img image.Image, err error) {
 }
 
 //#begin-gt -gen-lib.gt T:FxImage2D
+
+//	Initializes and returns a new FxImage2D with default parameters.
+func NewFxImage2D() (me *FxImage2D) {
+	me = &FxImage2D{}
+	me.init()
+	return
+}
 
 //	A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
 type LibFxImage2Ds map[string]*FxImage2D

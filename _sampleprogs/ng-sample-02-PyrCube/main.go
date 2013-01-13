@@ -50,10 +50,6 @@ func LoadSampleScene_02_PyrCube() {
 		"mosaic":  "tex/mosaic.jpeg",
 	})
 
-	ng.Core.Libs.Materials["mat_cobbles"] = ng.Core.Libs.Materials.New("tex_cobbles")
-	ng.Core.Libs.Materials["mat_crate"] = ng.Core.Libs.Materials.New("tex_crate")
-	ng.Core.Libs.Materials["mat_mosaic"] = ng.Core.Libs.Materials.New("tex_mosaic")
-
 	//	meshes / models
 	if bufFloor, err = ng.Core.MeshBuffers.Add("buf_floor", ng.Core.MeshBuffers.NewParams(6, 6)); err != nil {
 		panic(err)

@@ -6,8 +6,9 @@ import (
 )
 
 var (
-	techs  map[string]renderTechnique
-	tmpMat *Material
+	techs     map[string]renderTechnique
+	tmpEffect *FxEffect
+	tmpMat    *FxMaterial
 )
 
 type techniqueCtor func(string) renderTechnique
@@ -95,8 +96,9 @@ func (me *techniqueUnlitTextured) initMeshBuffer(meshBuffer *MeshBuffer) {
 func (me *techniqueUnlitTextured) onRenderNode() {
 	if tmpMat = curNode.Material(); tmpMat != curMat {
 		if curMat = tmpMat; curMat != nil {
+			tmpEffect = Core.Libs.Effects[curMat.EffectID]
 			gl.ActiveTexture(gl.TEXTURE0)
-			gl.BindTexture(gl.TEXTURE_2D, Core.Libs.Textures[curMat.TexName].glTex)
+			gl.BindTexture(gl.TEXTURE_2D, Core.Libs.Images.I2D[tmpEffect.Diffuse.Texture.Image2ID].glTex)
 			gl.Uniform1i(curProg.UnifLocs["uTex0"], 0)
 		}
 	}

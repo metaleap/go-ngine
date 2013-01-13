@@ -1,5 +1,12 @@
 package gt
 
+//	Initializes and returns a new __T__ with default parameters.
+func New__T__() (me *__T__) {
+	me = &__T__{}
+	me.init()
+	return
+}
+
 //	A hash-table of __T__s associated by IDs. Only for use in Core.Libs.
 type Lib__T__s map[string]*__T__
 
