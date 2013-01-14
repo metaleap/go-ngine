@@ -3,7 +3,6 @@ package core
 import (
 	"math"
 
-	ugl "github.com/go3d/go-glutil"
 	unum "github.com/metaleap/go-util/num"
 )
 
@@ -51,7 +50,6 @@ type Controller struct {
 	hAngle, vAngle         float64
 	posNeg, axH, axV       unum.Vec3
 	mat, matTrans, matLook unum.Mat4
-	glMat                  ugl.GlMat4
 }
 
 func (me *Controller) applyMatrices() {
@@ -60,7 +58,6 @@ func (me *Controller) applyMatrices() {
 		me.matLook.LookAt(&me.Dir, &me.UpAxis)
 		me.matTrans.Translation(&me.posNeg)
 		me.mat.SetFromMult4(&me.matLook, &me.matTrans)
-		me.glMat.Load(&me.mat)
 	}
 }
 
@@ -105,7 +102,6 @@ func (me *Controller) init() {
 	me.MoveSpeed, me.MoveSpeedupFactor, me.TurnSpeed, me.TurnSpeedupFactor = 2, 1, 90, 1
 	me.autoUpdate, me.MaxTurnUp, me.MinTurnDown = true, 90, -90
 	unum.Mat4Identities(&me.mat, &me.matTrans, &me.matLook)
-	me.glMat.Load(&me.mat)
 	htarget := &unum.Vec3{me.Dir.X, 0, me.Dir.Z}
 	htarget.Normalize()
 	if htarget.Z >= 0 {

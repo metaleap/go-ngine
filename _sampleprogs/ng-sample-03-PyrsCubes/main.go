@@ -68,6 +68,11 @@ func LoadSampleScene_03_PyrsCubes() {
 		"cat":     "tex/cat.png",
 		"dog":     "tex/dog.png",
 	})
+	ngsamples.AddColorMaterials(map[string][]float64{
+		"yellow": []float64{1, 1, 0},
+		"green":  []float64{0, 1, 0},
+		"blue":   []float64{0, 0, 1},
+	})
 
 	//	meshes / models
 	if bufFloor, err = ng.Core.MeshBuffers.Add("buf_floor", ng.Core.MeshBuffers.NewParams(6, 6)); err != nil {
@@ -79,7 +84,7 @@ func LoadSampleScene_03_PyrsCubes() {
 	if meshFloor, err = ng.Core.Libs.Meshes.Load("mesh_plane", ng.MeshProviders.PrefabPlane); err != nil {
 		panic(err)
 	}
-
+	meshFloor.Models.Default().SetMatID("mat_cobbles")
 	if meshPyr, err = ng.Core.Libs.Meshes.Load("mesh_pyramid", ng.MeshProviders.PrefabPyramid); err != nil {
 		panic(err)
 	}
@@ -147,7 +152,7 @@ func LoadSampleScene_03_PyrsCubes() {
 		}
 	}
 
-	floor.SetMatID("mat_cobbles")
+	// pyramids[len(pyramids)-1].SetMatID("mat_yellow")
 	floor.Transform.SetPosXYZ(0.1, 0, -8)
 	floor.Transform.SetScaleN(10000)
 

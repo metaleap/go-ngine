@@ -5,10 +5,8 @@ import (
 	"runtime"
 
 	glfw "github.com/go-gl/glfw"
-
-	util "github.com/metaleap/go-util"
-
 	ng "github.com/go3d/go-ngine/core"
+	ugo "github.com/metaleap/go-util"
 )
 
 var (
@@ -48,6 +46,13 @@ func AddScene(id string) (me *ng.Scene) {
 	return
 }
 
+func AddColorMaterials(idsColors map[string][]float64) {
+	for id, col := range idsColors {
+		ng.Core.Libs.Effects.AddNew("fx_" + id).Diffuse = ng.NewFxColor(col...)
+		ng.Core.Libs.Materials.AddNew("mat_" + id).EffectID = "fx_" + id
+	}
+}
+
 //	Sets up texture materials (associated and 2D samplers) with the specified IDs and image URLs.
 //	For each ID (such as "foo" and "bar"):
 //	-	creates an assets.FxImageDef with ID "tex_ID" (ie. "tex_foo" and "tex_bar")
@@ -70,17 +75,14 @@ func AddTextureMaterials(idsUrls map[string]string) {
 				img.GpuSync()
 			}
 		}
-		ng.Core.Libs.Effects.AddNew("fx_" + id).Diffuse = *ng.NewFxTexture("img_"+id, nil)
-		ng.Core.Libs.FxMaterials.AddNew("mat_" + id).EffectID = "fx_" + id
-
-		// ng.Core.Libs.Textures.AddNew("tex_"+id, refUrl)
-		// ng.Core.Libs.Materials["mat_"+id] = ng.Core.Libs.Materials.New("tex_" + id)
+		ng.Core.Libs.Effects.AddNew("fx_" + id).Diffuse = ng.NewFxTexture("img_"+id, nil)
+		ng.Core.Libs.Materials.AddNew("mat_" + id).EffectID = "fx_" + id
 	}
 }
 
 //	Returns the "asset root directory" path for go:ngine, in this case: $GOPATH/src/github.com/go3d/go-ngine/_sampleprogs/_sharedassets
 func AssetRootDirPath() string {
-	return util.GopathSrcGithub("go3d", "go-ngine", "_sampleprogs", "_sharedassets")
+	return ugo.GopathSrcGithub("go3d", "go-ngine", "_sampleprogs", "_sharedassets")
 }
 
 //	Called every frame (by the parent example app) to check the state for keys controlling CamCtl to move or rotate Cam.

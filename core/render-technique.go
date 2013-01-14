@@ -56,7 +56,7 @@ func (me *baseTechnique) onRenderNode() {
 
 func (me *baseTechnique) setProg(name string, unifs []string, attrs []string) {
 	prog := glShaderMan.progs[name]
-	prog.SetUnifLocations("uMatCam", "uMatModelView", "uMatProj")
+	prog.SetUnifLocations("uMatModelProj")
 	if len(unifs) > 0 {
 		prog.SetUnifLocations(unifs...)
 	}
@@ -85,7 +85,7 @@ type techniqueUnlit struct {
 
 func newTechnique_Unlit(progName string) renderTechnique {
 	me := &techniqueUnlit{}
-	me.baseTechnique.setProg(progName, []string{"uTex0"}, []string{"aTexCoords"})
+	me.baseTechnique.setProg(progName, []string{"uDiffuse"}, []string{"aTexCoords"})
 	return me
 }
 
@@ -96,12 +96,13 @@ func (me *techniqueUnlit) initMeshBuffer(meshBuffer *MeshBuffer) {
 }
 
 func (me *techniqueUnlit) onRenderNode() {
+	me.baseTechnique.onRenderNode()
 	if tmpMat = curNode.Material(); tmpMat != curMat {
 		if curMat = tmpMat; curMat != nil {
 			tmpEffect = Core.Libs.Effects[curMat.EffectID]
 			gl.ActiveTexture(gl.TEXTURE0)
 			gl.BindTexture(gl.TEXTURE_2D, Core.Libs.Images.I2D[tmpEffect.Diffuse.Texture.Image2ID].glTex)
-			gl.Uniform1i(curProg.UnifLocs["uTex0"], 0)
+			gl.Uniform1i(curProg.UnifLocs["uDiffuse"], 0)
 		}
 	}
 }

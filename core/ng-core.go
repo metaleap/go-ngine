@@ -27,10 +27,10 @@ type EngineCore struct {
 	MeshBuffers *MeshBuffers
 	Options     EngineOptions
 	Libs        struct {
-		Cameras     LibCameras
-		Effects     LibFxEffects
-		FxMaterials LibFxMaterials
-		Images      struct {
+		Cameras   LibCameras
+		Effects   LibFxEffects
+		Materials LibFxMaterials
+		Images    struct {
 			I2D LibFxImage2Ds
 		}
 		Meshes Meshes
@@ -50,7 +50,7 @@ func (me *EngineCore) dispose() {
 	me.isInit = false
 	for _, disp := range []disposable{
 		&me.Rendering.Canvases,
-		&me.Libs.Cameras, &me.Libs.Images.I2D, &me.Libs.Effects, &me.Libs.FxMaterials, &me.Libs.Meshes,
+		&me.Libs.Cameras, &me.Libs.Images.I2D, &me.Libs.Effects, &me.Libs.Materials, &me.Libs.Meshes,
 		me.MeshBuffers,
 	} {
 		disp.dispose()
@@ -73,7 +73,7 @@ func (me *EngineCore) init(options *EngineOptions) {
 
 func (me *EngineCore) initLibs() {
 	libs := &me.Libs
-	for _, c := range []ctorable{&libs.Cameras, &libs.Images.I2D, &libs.Effects, &libs.FxMaterials} {
+	for _, c := range []ctorable{&libs.Cameras, &libs.Images.I2D, &libs.Effects, &libs.Materials} {
 		c.ctor()
 	}
 	libs.Meshes = Meshes{}

@@ -1,7 +1,6 @@
 package core
 
 import (
-	ugl "github.com/go3d/go-glutil"
 	unum "github.com/metaleap/go-util/num"
 )
 
@@ -29,7 +28,6 @@ type NodeTransforms struct {
 	Other unum.Mat4
 
 	matModelView, matRotX, matRotY, matRotZ, matScale, matTranslation, matParent unum.Mat4
-	glMatModelView                                                               ugl.GlMat4
 	owner                                                                        *Node
 }
 
@@ -43,7 +41,6 @@ func newNodeTransforms(owner *Node) (me *NodeTransforms) {
 	me.matRotY.RotationY(0)
 	me.matRotZ.RotationZ(0)
 	unum.Mat4Identities(&me.Other, &me.matModelView)
-	me.glMatModelView.Load(&me.matModelView)
 	return
 }
 
@@ -56,7 +53,6 @@ func (me *NodeTransforms) ApplyMatrices() {
 		me.matParent.Identity()
 	}
 	me.matModelView.SetFromMultN(&me.matParent, &me.matTranslation, &me.Other, &me.matScale, &me.matRotX, &me.matRotY, &me.matRotZ)
-	me.glMatModelView.Load(&me.matModelView)
 	for _, me.owner.curSubNode = range me.owner.SubNodes.M {
 		me.owner.curSubNode.Transform.ApplyMatrices()
 	}

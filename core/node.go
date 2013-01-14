@@ -2,6 +2,8 @@ package core
 
 import (
 	gl "github.com/chsc/gogl/gl42"
+	ugl "github.com/go3d/go-glutil"
+	unum "github.com/metaleap/go-util/num"
 )
 
 type subNodes struct {
@@ -50,6 +52,9 @@ func (me *subNodes) Remove(name string) {
 }
 
 type Node struct {
+	matModelProj   unum.Mat4
+	glMatModelProj ugl.GlMat4
+
 	Disabled  bool
 	SubNodes  *subNodes
 	Transform *NodeTransforms
@@ -57,8 +62,8 @@ type Node struct {
 	mat                                        *FxMaterial
 	mesh                                       *Mesh
 	model                                      *Model
-	curKey, matName, meshName, modelName, name string
 	curSubNode, parentNode                     *Node
+	curKey, matName, meshName, modelName, name string
 }
 
 func newNode(nodeName, meshName, modelName string, parent *Node) (me *Node) {
@@ -93,7 +98,9 @@ func (me *Node) render() {
 		curNode, curMesh, curModel = me, me.mesh, me.model
 		if me.model != nil {
 			curTechnique.onRenderNode()
-			gl.UniformMatrix4fv(curProg.UnifLocs["uMatModelView"], 1, gl.FALSE, &me.Transform.glMatModelView[0])
+			me.matModelProj.SetFromMult4(&curCam.matCamProj, &me.Transform.matModelView)
+			me.glMatModelProj.Load(&me.matModelProj)
+			gl.UniformMatrix4fv(curProg.UnifLocs["uMatModelProj"], 1, gl.FALSE, &me.glMatModelProj[0])
 			me.model.render()
 		}
 		for me.curKey, me.curSubNode = range me.SubNodes.M {
@@ -104,7 +111,7 @@ func (me *Node) render() {
 
 func (me *Node) SetMatID(newMatName string) {
 	if newMatName != me.matName {
-		me.mat, me.matName = Core.Libs.FxMaterials[newMatName], newMatName
+		me.mat, me.matName = Core.Libs.Materials[newMatName], newMatName
 	}
 }
 

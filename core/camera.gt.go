@@ -3,7 +3,6 @@ package core
 import (
 	gl "github.com/chsc/gogl/gl42"
 
-	ugl "github.com/go3d/go-glutil"
 	unum "github.com/metaleap/go-util/num"
 )
 
@@ -36,9 +35,8 @@ type Camera struct {
 	//	The device-relative or absolute view-port for this Camera.
 	ViewPort CameraViewPort
 
-	technique renderTechnique
-	matProj   unum.Mat4
-	glmatProj ugl.GlMat4
+	technique           renderTechnique
+	matCamProj, matProj unum.Mat4
 }
 
 func (me *Camera) init() {
@@ -47,7 +45,6 @@ func (me *Camera) init() {
 	opt.ZFar = 30000
 	opt.ZNear = 0.3
 	me.matProj.Identity()
-	me.glmatProj.Load(&me.matProj)
 	me.Controller.init()
 	me.ViewPort.init()
 	me.ApplyMatrices()
@@ -57,7 +54,6 @@ func (me *Camera) init() {
 //	Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
 func (me *Camera) ApplyMatrices() {
 	me.matProj.Perspective(me.Params.FovY, me.ViewPort.aspect, me.Params.ZNear, me.Params.ZFar)
-	me.glmatProj.Load(&me.matProj)
 }
 
 func (me *Camera) dispose() {
@@ -66,8 +62,10 @@ func (me *Camera) dispose() {
 func (me *Camera) render() {
 	curScene = Core.Libs.Scenes[me.Params.SceneID]
 	Core.useTechnique(me.technique)
-	gl.UniformMatrix4fv(curProg.UnifLocs["uMatCam"], 1, gl.FALSE, &me.Controller.glMat[0])
-	gl.UniformMatrix4fv(curProg.UnifLocs["uMatProj"], 1, gl.FALSE, &me.glmatProj[0])
+	me.matCamProj.SetFromMult4(&me.matProj, &me.Controller.mat)
+	//me.glMatCamProj.Load(&me.matCamProj)
+	//gl.UniformMatrix4fv(curProg.UnifLocs["uMatCamProj"], 1, gl.FALSE, &me.glMatCamProj[0])
+	// gl.UniformMatrix4fv(curProg.UnifLocs["uMatProj"], 1, gl.FALSE, &me.glmatProj[0])
 	me.technique.onPreRender()
 	gl.Viewport(me.ViewPort.glVpX, me.ViewPort.glVpY, me.ViewPort.glVpW, me.ViewPort.glVpH)
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)

@@ -12,8 +12,8 @@ type FxColorOrTexture struct {
 	}
 }
 
-func NewFxColor(col *ugfx.Rgba64) (me *FxColorOrTexture) {
-	me = &FxColorOrTexture{Color: col}
+func NewFxColor(rgba ...float64) (me *FxColorOrTexture) {
+	me = &FxColorOrTexture{Color: ugfx.NewRgba64(rgba...)}
 	return
 }
 
@@ -28,7 +28,9 @@ func NewFxTexture(image2ID string, sampler *FxSampler) (me *FxColorOrTexture) {
 
 type FxEffect struct {
 	Ambient *FxColorOrTexture
-	Diffuse FxColorOrTexture
+
+	//	The source for diffuse color information. Required.
+	Diffuse *FxColorOrTexture
 }
 
 func (me *FxEffect) dispose() {
