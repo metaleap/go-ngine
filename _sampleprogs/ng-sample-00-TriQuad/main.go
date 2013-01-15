@@ -48,13 +48,12 @@ func LoadSampleScene_00_TriQuad() {
 
 	//	meshes / models
 
-	if meshTri, err = ng.Core.Libs.Meshes.Load("mesh_tri", ng.MeshProviders.PrefabTri); err != nil {
+	if meshTri, err = ng.Core.Libs.Meshes.AddLoad("mesh_tri", ng.MeshProviderPrefabTri); err != nil {
 		panic(err)
 	}
-	if meshQuad, err = ng.Core.Libs.Meshes.Load("mesh_quad", ng.MeshProviders.PrefabQuad); err != nil {
+	if meshQuad, err = ng.Core.Libs.Meshes.AddLoad("mesh_quad", ng.MeshProviderPrefabQuad); err != nil {
 		panic(err)
 	}
-	ng.Core.Libs.Meshes.AddRange(meshTri, meshQuad)
 
 	if meshBuf, err = ng.Core.MeshBuffers.Add("meshbuf", ng.Core.MeshBuffers.NewParams(9, 9)); err != nil {
 		panic(err)

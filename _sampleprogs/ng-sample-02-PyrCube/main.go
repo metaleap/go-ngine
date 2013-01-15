@@ -57,16 +57,15 @@ func LoadSampleScene_02_PyrCube() {
 	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(36+12, 36+12)); err != nil {
 		panic(err)
 	}
-	if meshFloor, err = ng.Core.Libs.Meshes.Load("mesh_plane", ng.MeshProviders.PrefabPlane); err != nil {
+	if meshFloor, err = ng.Core.Libs.Meshes.AddLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
 		panic(err)
 	}
-	if meshPyr, err = ng.Core.Libs.Meshes.Load("mesh_pyramid", ng.MeshProviders.PrefabPyramid); err != nil {
+	if meshPyr, err = ng.Core.Libs.Meshes.AddLoad("mesh_pyramid", ng.MeshProviderPrefabPyramid); err != nil {
 		panic(err)
 	}
-	if meshCube, err = ng.Core.Libs.Meshes.Load("mesh_cube", ng.MeshProviders.PrefabCube); err != nil {
+	if meshCube, err = ng.Core.Libs.Meshes.AddLoad("mesh_cube", ng.MeshProviderPrefabCube); err != nil {
 		panic(err)
 	}
-	ng.Core.Libs.Meshes.AddRange(meshFloor, meshPyr, meshCube)
 	bufFloor.Add(meshFloor)
 	bufRest.Add(meshCube)
 	bufRest.Add(meshPyr)

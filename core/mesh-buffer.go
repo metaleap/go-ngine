@@ -76,7 +76,7 @@ type MeshBuffer struct {
 
 	offsetBaseIndex, offsetIndices, offsetVerts int32
 	id                                          string
-	meshes                                      Meshes
+	meshes                                      map[*Mesh]bool
 	glIbo, glVbo                                gl.Uint
 	glVaos                                      map[string]gl.Uint
 }
@@ -85,7 +85,7 @@ func newMeshBuffer(id string, params *meshBufferParams) (buf *MeshBuffer, err er
 	var glVao gl.Uint
 	buf = &MeshBuffer{}
 	buf.id = id
-	buf.meshes = Meshes{}
+	buf.meshes = map[*Mesh]bool{}
 	buf.Params = params
 	buf.glVaos = map[string]gl.Uint{}
 	buf.MemSizeIndices = Core.MeshBuffers.MemSizePerIndex() * params.NumIndices
@@ -122,11 +122,12 @@ func newMeshBuffer(id string, params *meshBufferParams) (buf *MeshBuffer, err er
 func (me *MeshBuffer) Add(mesh *Mesh) (err error) {
 	if mesh.meshBuffer != nil {
 		err = fmt.Errorf("Cannot add mesh '%v' to mesh buffer '%v': already belongs to mesh buffer '%v'.", mesh.id, me.id, mesh.meshBuffer.id)
-	} else if me.meshes.Add(mesh) != nil {
+	} else if !me.meshes[mesh] {
+		me.meshes[mesh] = true
 		mesh.gpuSynced = false
 		mesh.meshBuffer = me
 	} else {
-		err = fmt.Errorf("Cannot add mesh '%v' to mesh buffer '%v': already has a mesh with that ID.", mesh.id, me.id)
+		err = fmt.Errorf("Cannot add mesh '%v' to mesh buffer '%v': already added.", mesh.id, me.id)
 	}
 	return
 }
@@ -137,7 +138,7 @@ func (me *MeshBuffer) use() {
 }
 
 func (me *MeshBuffer) dispose() {
-	for _, mesh := range me.meshes {
+	for mesh, _ := range me.meshes {
 		mesh.meshBuffer, mesh.gpuSynced = nil, false
 	}
 	gl.DeleteBuffers(1, &me.glIbo)
@@ -151,6 +152,6 @@ func (me *MeshBuffer) Remove(mesh *Mesh) {
 	if mesh.meshBuffer == me {
 		mesh.GpuDelete()
 		mesh.meshBuffer = nil
-		delete(me.meshes, mesh.id)
+		delete(me.meshes, mesh)
 	}
 }

@@ -361,7 +361,29 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
+				<dd><a href="#LibMeshes">type LibMeshes</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LibMeshes.AddLoad">func (me LibMeshes) AddLoad(id string, meshProvider MeshProvider, args ...interface{}) (mesh *Mesh, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LibMeshes.AddNew">func (me LibMeshes) AddNew(id string) (obj *Mesh)</a></dd>
+				
+			
+				
+				<dd><a href="#LibScenes">type LibScenes</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LibScenes.AddNew">func (me LibScenes) AddNew(id string) (obj *Scene)</a></dd>
+				
+			
+				
 				<dd><a href="#Mesh">type Mesh</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewMesh">func NewMesh(id string) (me *Mesh)</a></dd>
 				
 				
 					
@@ -372,6 +394,9 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Mesh.GpuUploaded">func (me *Mesh) GpuUploaded() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Mesh.Load">func (me *Mesh) Load(provider MeshProvider, args ...interface{}) (err error)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Mesh.Loaded">func (me *Mesh) Loaded() bool</a></dd>
@@ -418,7 +443,42 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<dd><a href="#MeshData">type MeshData</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#MeshProviderPrefabCube">func MeshProviderPrefabCube(args ...interface{}) (meshData *MeshData, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshProviderPrefabPlane">func MeshProviderPrefabPlane(args ...interface{}) (meshData *MeshData, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshProviderPrefabPyramid">func MeshProviderPrefabPyramid(args ...interface{}) (meshData *MeshData, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshProviderPrefabQuad">func MeshProviderPrefabQuad(args ...interface{}) (meshData *MeshData, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshProviderPrefabTri">func MeshProviderPrefabTri(args ...interface{}) (meshData *MeshData, err error)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#NewMeshData">func NewMeshData() (me *MeshData)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshData.AddFaces">func (me *MeshData) AddFaces(faces ...*MeshFace3)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshData.AddNormals">func (me *MeshData) AddNormals(normals ...MeshVertAtt3)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshData.AddPositions">func (me *MeshData) AddPositions(positions ...MeshVertAtt3)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshData.AddTexCoords">func (me *MeshData) AddTexCoords(texCoords ...MeshVertAtt2)</a></dd>
+				
+			
+				
+				<dd><a href="#MeshFace3">type MeshFace3</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewMeshFace3">func NewMeshFace3(class, id string, verts ...MeshVert) (me *MeshFace3)</a></dd>
 				
 				
 			
@@ -428,20 +488,18 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#Meshes">type Meshes</a></dd>
+				<dd><a href="#MeshVert">type MeshVert</a></dd>
 				
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#Meshes.Add">func (me Meshes) Add(mesh *Mesh) *Mesh</a></dd>
+			
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#Meshes.AddRange">func (me Meshes) AddRange(meshes ...*Mesh)</a></dd>
+				<dd><a href="#MeshVertAtt2">type MeshVertAtt2</a></dd>
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#Meshes.Load">func (me Meshes) Load(id string, provider MeshProvider, args ...interface{}) (mesh *Mesh, err error)</a></dd>
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#Meshes.New">func (me Meshes) New(id string) (mesh *Mesh)</a></dd>
+			
+				
+				<dd><a href="#MeshVertAtt3">type MeshVertAtt3</a></dd>
+				
 				
 			
 				
@@ -609,11 +667,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#Scenes">type Scenes</a></dd>
-				
-				
-			
-				
 				<dd><a href="#TimingStats">type TimingStats</a></dd>
 				
 				
@@ -664,7 +717,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/mesh-provider.go">mesh-provider.go</a>
 			
-				<a href="/target/mesh.go">mesh.go</a>
+				<a href="/target/mesh.gt.go">mesh.gt.go</a>
 			
 				<a href="/target/model.go">model.go</a>
 			
@@ -688,7 +741,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/render-technique.go">render-technique.go</a>
 			
-				<a href="/target/scene.go">scene.go</a>
+				<a href="/target/scene.gt.go">scene.gt.go</a>
 			
 			</span>
 			</p>
@@ -717,12 +770,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 
     <span class="comment">//	Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window management, not the graphics themselves).</span>
     UserIO EngineUserIO
-)</pre>
-				
-			
-				<pre>var (
-    <span class="comment">//	A collection of all &#34;mesh providers&#34; known to go:ngine.</span>
-    MeshProviders = &amp;meshProviders{meshProviderPrefabCube, meshProviderPrefabPlane, meshProviderPrefabPyramid, meshProviderPrefabQuad, meshProviderPrefabTri}
 )</pre>
 				
 			
@@ -1090,7 +1137,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34;.
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=952:1360#L16">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=952:1366#L16">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Options     EngineOptions
@@ -1101,8 +1148,8 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34;.
         Images    struct {
             I2D LibFxImage2Ds
         }
-        Meshes Meshes
-        Scenes Scenes
+        Meshes LibMeshes
+        Scenes LibScenes
     }
     Rendering struct {
         Canvases           RenderCanvases
@@ -1127,7 +1174,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3179:3214#L113">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3182:3217#L111">SyncUpdates</a></h3>
 				<pre>func (me *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -1643,11 +1690,26 @@ Initializes and returns a new FxImage2D with default parameters.
 		
 			
 			
-			<h2 id="FxMaterial">type <a href="/target/fx-material.gt.go?s=14:57#L1">FxMaterial</a></h2>
+			<h2 id="FxMaterial">type <a href="/target/fx-material.gt.go?s=103:546#L1">FxMaterial</a></h2>
 			<pre>type FxMaterial struct {
-    EffectID string
+    <span class="comment">//	This effect is used by default for all faces that do not fall</span>
+    <span class="comment">//	under any of the associations in the FaceEffects field.</span>
+    DefaultEffectID string
+
+    <span class="comment">//	Associates certain individual faces or classes of faces</span>
+    <span class="comment">//	with specific effect IDs.</span>
+    FaceEffects struct {
+        <span class="comment">//	Associates face classes with effect IDs.</span>
+        ByClass map[string]string
+
+        <span class="comment">//	Associates specific face IDs with effect IDs.</span>
+        ByID map[string]string
+    }
 }</pre>
-			
+			<p>
+A material binds effects (FxEffect in Core.Libs.Effects) to geometry (Model or Node).
+</p>
+
 
 			
 
@@ -1657,7 +1719,7 @@ Initializes and returns a new FxImage2D with default parameters.
 
 			
 				
-				<h3 id="NewFxMaterial">func <a href="/target/fx-material.gt.go?s=237:274#L6">NewFxMaterial</a></h3>
+				<h3 id="NewFxMaterial">func <a href="/target/fx-material.gt.go?s=815:852#L21">NewFxMaterial</a></h3>
 				<pre>func NewFxMaterial() (me *FxMaterial)</pre>
 				<p>
 Initializes and returns a new FxMaterial with default parameters.
@@ -1851,7 +1913,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibFxMaterials">type <a href="/target/fx-material.gt.go?s=396:438#L13">LibFxMaterials</a></h2>
+			<h2 id="LibFxMaterials">type <a href="/target/fx-material.gt.go?s=974:1016#L28">LibFxMaterials</a></h2>
 			<pre>type LibFxMaterials map[string]*FxMaterial</pre>
 			<p>
 A hash-table of FxMaterials associated by IDs. Only for use in Core.Libs.
@@ -1868,7 +1930,7 @@ A hash-table of FxMaterials associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxMaterials.AddNew">func (LibFxMaterials) <a href="/target/fx-material.gt.go?s=566:626#L17">AddNew</a></h3>
+				<h3 id="LibFxMaterials.AddNew">func (LibFxMaterials) <a href="/target/fx-material.gt.go?s=1144:1204#L32">AddNew</a></h3>
 				<pre>func (me LibFxMaterials) AddNew(id string) (obj *FxMaterial)</pre>
 				<p>
 Creates and initializes a new FxMaterial with default parameters,
@@ -1881,7 +1943,74 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="Mesh">type <a href="/target/mesh.go?s=793:1198#L40">Mesh</a></h2>
+			<h2 id="LibMeshes">type <a href="/target/mesh.gt.go?s=5190:5221#L135">LibMeshes</a></h2>
+			<pre>type LibMeshes map[string]*Mesh</pre>
+			<p>
+A hash-table of Meshs associated by IDs. Only for use in Core.Libs.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="LibMeshes.AddLoad">func (LibMeshes) <a href="/target/mesh.gt.go?s=5439:5549#L145">AddLoad</a></h3>
+				<pre>func (me LibMeshes) AddLoad(id string, meshProvider MeshProvider, args ...interface{}) (mesh *Mesh, err error)</pre>
+				
+				
+				
+			
+				
+				<h3 id="LibMeshes.AddNew">func (LibMeshes) <a href="/target/mesh.gt.go?s=5343:5392#L139">AddNew</a></h3>
+				<pre>func (me LibMeshes) AddNew(id string) (obj *Mesh)</pre>
+				<p>
+Creates and initializes a new Mesh with default parameters,
+adds it to me under the specified ID, and returns it.
+</p>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="LibScenes">type <a href="/target/scene.gt.go?s=459:491#L16">LibScenes</a></h2>
+			<pre>type LibScenes map[string]*Scene</pre>
+			<p>
+A hash-table of Scenes associated by IDs. Only for use in Core.Libs.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="LibScenes.AddNew">func (LibScenes) <a href="/target/scene.gt.go?s=614:664#L20">AddNew</a></h3>
+				<pre>func (me LibScenes) AddNew(id string) (obj *Scene)</pre>
+				<p>
+Creates and initializes a new Scene with default parameters,
+adds it to me under the specified ID, and returns it.
+</p>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="Mesh">type <a href="/target/mesh.gt.go?s=100:505#L1">Mesh</a></h2>
 			<pre>type Mesh struct {
     Models Models
     <span class="comment">// contains filtered or unexported fields</span>
@@ -1895,38 +2024,54 @@ adds it to me under the specified ID, and returns it.
 			
 
 			
+				
+				<h3 id="NewMesh">func <a href="/target/mesh.gt.go?s=5040:5074#L128">NewMesh</a></h3>
+				<pre>func NewMesh(id string) (me *Mesh)</pre>
+				<p>
+Initializes and returns a new Mesh with default parameters.
+</p>
+
+				
+			
 
 			
 				
-				<h3 id="Mesh.GpuDelete">func (*Mesh) <a href="/target/mesh.go?s=1200:1227#L50">GpuDelete</a></h3>
+				<h3 id="Mesh.GpuDelete">func (*Mesh) <a href="/target/mesh.gt.go?s=681:708#L22">GpuDelete</a></h3>
 				<pre>func (me *Mesh) GpuDelete()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.GpuUpload">func (*Mesh) <a href="/target/mesh.go?s=1278:1317#L56">GpuUpload</a></h3>
+				<h3 id="Mesh.GpuUpload">func (*Mesh) <a href="/target/mesh.gt.go?s=759:798#L28">GpuUpload</a></h3>
 				<pre>func (me *Mesh) GpuUpload() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.go?s=2918:2952#L83">GpuUploaded</a></h3>
+				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.gt.go?s=2399:2433#L55">GpuUploaded</a></h3>
 				<pre>func (me *Mesh) GpuUploaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.go?s=4824:4853#L130">Loaded</a></h3>
+				<h3 id="Mesh.Load">func (*Mesh) <a href="/target/mesh.gt.go?s=2460:2536#L59">Load</a></h3>
+				<pre>func (me *Mesh) Load(provider MeshProvider, args ...interface{}) (err error)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.gt.go?s=4485:4514#L110">Loaded</a></h3>
 				<pre>func (me *Mesh) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.go?s=5272:5296#L143">Unload</a></h3>
+				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.gt.go?s=4933:4957#L123">Unload</a></h3>
 				<pre>func (me *Mesh) Unload()</pre>
 				
 				
@@ -1935,7 +2080,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="MeshBuffer">type <a href="/target/mesh-buffer.go?s=1728:2117#L63">MeshBuffer</a></h2>
+			<h2 id="MeshBuffer">type <a href="/target/mesh-buffer.go?s=1728:2125#L63">MeshBuffer</a></h2>
 			<pre>type MeshBuffer struct {
     MemSizeIndices, MemSizeVertices int32
     Params                          *meshBufferParams
@@ -1953,14 +2098,14 @@ adds it to me under the specified ID, and returns it.
 
 			
 				
-				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=3621:3670#L112">Add</a></h3>
+				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=3637:3686#L112">Add</a></h3>
 				<pre>func (me *MeshBuffer) Add(mesh *Mesh) (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=4424:4464#L140">Remove</a></h3>
+				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=4437:4477#L141">Remove</a></h3>
 				<pre>func (me *MeshBuffer) Remove(mesh *Mesh)</pre>
 				
 				
@@ -2029,9 +2174,19 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="MeshData">type <a href="/target/mesh-data.go?s=1164:1390#L42">MeshData</a></h2>
+			<h2 id="MeshData">type <a href="/target/mesh-data.go?s=2001:2227#L70">MeshData</a></h2>
 			<pre>type MeshData struct {
-    <span class="comment">// contains filtered or unexported fields</span>
+    <span class="comment">//	Vertex positions</span>
+    Positions []MeshVertAtt3
+
+    <span class="comment">//	Vertex texture coordinates</span>
+    TexCoords []MeshVertAtt2
+
+    <span class="comment">//	Vertex normals</span>
+    Normals []MeshVertAtt3
+
+    <span class="comment">//	Indexed triangle definitions</span>
+    Faces []MeshFace3
 }</pre>
 			<p>
 Represents yet-unprocessed mesh source data.
@@ -2046,7 +2201,66 @@ Represents yet-unprocessed mesh source data.
 
 			
 				
-				<h3 id="NewMeshData">func <a href="/target/mesh-data.go?s=1446:1479#L57">NewMeshData</a></h3>
+				<h3 id="MeshProviderPrefabCube">func <a href="/target/mesh-provider.go?s=309:389#L1">MeshProviderPrefabCube</a></h3>
+				<pre>func MeshProviderPrefabCube(args ...interface{}) (meshData *MeshData, err error)</pre>
+				<p>
+A MeshProvider that creates MeshData for a cube with extents -1 .. 1.
+args is ignored and err is always nil.
+The returned MeshData contains 12 triangle faces with IDs &#34;t0&#34; through &#34;t11&#34;.
+These faces are classified in 6 distinct classes: &#34;front&#34;,&#34;back&#34;,&#34;top&#34;,&#34;bottom&#34;,&#34;right&#34;,&#34;left&#34;.
+</p>
+
+				
+			
+				
+				<h3 id="MeshProviderPrefabPlane">func <a href="/target/mesh-provider.go?s=2242:2323#L19">MeshProviderPrefabPlane</a></h3>
+				<pre>func MeshProviderPrefabPlane(args ...interface{}) (meshData *MeshData, err error)</pre>
+				<p>
+A MeshProvider that creates MeshData for a flat ground plane with extents -1 .. 1.
+args is ignored and err is always nil.
+The returned MeshData contains 2 triangle faces with IDs &#34;t0&#34; through &#34;t1&#34;.
+These faces are all classified with class: &#34;plane&#34;.
+</p>
+
+				
+			
+				
+				<h3 id="MeshProviderPrefabPyramid">func <a href="/target/mesh-provider.go?s=3087:3170#L34">MeshProviderPrefabPyramid</a></h3>
+				<pre>func MeshProviderPrefabPyramid(args ...interface{}) (meshData *MeshData, err error)</pre>
+				<p>
+A MeshProvider that creates MeshData for a pyramid with extents -1 .. 1.
+args is ignored and err is always nil.
+The returned MeshData contains 4 triangle faces with IDs &#34;t0&#34; through &#34;t3&#34;.
+These faces are all classified with class: &#34;pyr&#34;.
+</p>
+
+				
+			
+				
+				<h3 id="MeshProviderPrefabQuad">func <a href="/target/mesh-provider.go?s=4186:4266#L51">MeshProviderPrefabQuad</a></h3>
+				<pre>func MeshProviderPrefabQuad(args ...interface{}) (meshData *MeshData, err error)</pre>
+				<p>
+A MeshProvider that creates MeshData for a quad with extents -1 .. 1.
+args is ignored and err is always nil.
+The returned MeshData contains 2 triangle faces with IDs &#34;t0&#34; through &#34;t1&#34;.
+These faces are all classified with class: &#34;quad&#34;.
+</p>
+
+				
+			
+				
+				<h3 id="MeshProviderPrefabTri">func <a href="/target/mesh-provider.go?s=4983:5062#L65">MeshProviderPrefabTri</a></h3>
+				<pre>func MeshProviderPrefabTri(args ...interface{}) (meshData *MeshData, err error)</pre>
+				<p>
+A MeshProvider that creates MeshData for a triangle with extents -1 .. 1.
+args is ignored and err is always nil.
+The returned MeshData contains 1 triangle face with ID &#34;t0&#34; and class &#34;tri&#34;.
+</p>
+
+				
+			
+				
+				<h3 id="NewMeshData">func <a href="/target/mesh-data.go?s=2283:2316#L85">NewMeshData</a></h3>
 				<pre>func NewMeshData() (me *MeshData)</pre>
 				<p>
 Initializes and returns a new *MeshData* instance.
@@ -2056,13 +2270,94 @@ Initializes and returns a new *MeshData* instance.
 			
 
 			
+				
+				<h3 id="MeshData.AddFaces">func (*MeshData) <a href="/target/mesh-data.go?s=2394:2443#L91">AddFaces</a></h3>
+				<pre>func (me *MeshData) AddFaces(faces ...*MeshFace3)</pre>
+				<p>
+Adds all specified Faces to this MeshData.
+</p>
+
+				
+				
+			
+				
+				<h3 id="MeshData.AddNormals">func (*MeshData) <a href="/target/mesh-data.go?s=2731:2786#L103">AddNormals</a></h3>
+				<pre>func (me *MeshData) AddNormals(normals ...MeshVertAtt3)</pre>
+				<p>
+Adds all the specified Normals to this MeshData.
+</p>
+
+				
+				
+			
+				
+				<h3 id="MeshData.AddPositions">func (*MeshData) <a href="/target/mesh-data.go?s=2563:2622#L98">AddPositions</a></h3>
+				<pre>func (me *MeshData) AddPositions(positions ...MeshVertAtt3)</pre>
+				<p>
+Adds all specified Positions to this MeshData.
+</p>
+
+				
+				
+			
+				
+				<h3 id="MeshData.AddTexCoords">func (*MeshData) <a href="/target/mesh-data.go?s=2891:2950#L108">AddTexCoords</a></h3>
+				<pre>func (me *MeshData) AddTexCoords(texCoords ...MeshVertAtt2)</pre>
+				<p>
+Adds all the specified TexCoords to this MeshData.
+</p>
+
+				
+				
+			
 		
 			
 			
-			<h2 id="MeshProvider">type <a href="/target/mesh-data.go?s=39:101#L1">MeshProvider</a></h2>
+			<h2 id="MeshFace3">type <a href="/target/mesh-data.go?s=287:515#L3">MeshFace3</a></h2>
+			<pre>type MeshFace3 struct {
+    <span class="comment">//	The indexed vertices making up this triangle.</span>
+    V [3]MeshVert
+
+    <span class="comment">//	Mesh-unique identifier for this triangle face.</span>
+    ID string
+
+    <span class="comment">//	Arbitrary classification(s) for this triangle face.</span>
+    Classes []string
+}</pre>
+			<p>
+Represents an indexed triangle.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewMeshFace3">func <a href="/target/mesh-data.go?s=733:803#L17">NewMeshFace3</a></h3>
+				<pre>func NewMeshFace3(class, id string, verts ...MeshVert) (me *MeshFace3)</pre>
+				<p>
+Creates and initializes a new MeshVert with the specified classes,
+ID and verts, and returns it. class may be empty or contain multiple
+classifications separated by spaces, which will be split into Classes.
+</p>
+
+				
+			
+
+			
+		
+			
+			
+			<h2 id="MeshProvider">type <a href="/target/mesh-data.go?s=188:250#L1">MeshProvider</a></h2>
 			<pre>type MeshProvider func(args ...interface{}) (*MeshData, error)</pre>
 			<p>
-Temporary concoction.
+Provides MeshData for constructing a Mesh. An implementation
+might load a certain file format or procedurally generate
+the returned MeshData.
 </p>
 
 
@@ -2078,9 +2373,21 @@ Temporary concoction.
 		
 			
 			
-			<h2 id="Meshes">type <a href="/target/mesh.go?s=100:128#L1">Meshes</a></h2>
-			<pre>type Meshes map[string]*Mesh</pre>
-			
+			<h2 id="MeshVert">type <a href="/target/mesh-data.go?s=1500:1687#L50">MeshVert</a></h2>
+			<pre>type MeshVert struct {
+    <span class="comment">//	Index of the vertex position</span>
+    PosIndex uint32
+
+    <span class="comment">//	Index of the texture-coordinate.</span>
+    TexCoordIndex uint32
+
+    <span class="comment">//	Index of the vertex normal.</span>
+    NormalIndex uint32
+}</pre>
+			<p>
+Represents an indexed vertex in a MeshFace3.
+</p>
+
 
 			
 
@@ -2091,33 +2398,45 @@ Temporary concoction.
 			
 
 			
-				
-				<h3 id="Meshes.Add">func (Meshes) <a href="/target/mesh.go?s=130:168#L3">Add</a></h3>
-				<pre>func (me Meshes) Add(mesh *Mesh) *Mesh</pre>
-				
-				
-				
+		
 			
-				
-				<h3 id="Meshes.AddRange">func (Meshes) <a href="/target/mesh.go?s=249:291#L11">AddRange</a></h3>
-				<pre>func (me Meshes) AddRange(meshes ...*Mesh)</pre>
-				
-				
-				
 			
-				
-				<h3 id="Meshes.Load">func (Meshes) <a href="/target/mesh.go?s=433:533#L24">Load</a></h3>
-				<pre>func (me Meshes) Load(id string, provider MeshProvider, args ...interface{}) (mesh *Mesh, err error)</pre>
-				
-				
-				
+			<h2 id="MeshVertAtt2">type <a href="/target/mesh-data.go?s=1794:1822#L63">MeshVertAtt2</a></h2>
+			<pre>type MeshVertAtt2 [2]float32</pre>
+			<p>
+Represents a 2-component vertex attribute in a MeshData.
+(such as for example texture-coordinates)
+</p>
+
+
 			
-				
-				<h3 id="Meshes.New">func (Meshes) <a href="/target/mesh.go?s=690:734#L35">New</a></h3>
-				<pre>func (me Meshes) New(id string) (mesh *Mesh)</pre>
-				
-				
-				
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="MeshVertAtt3">type <a href="/target/mesh-data.go?s=1923:1951#L67">MeshVertAtt3</a></h2>
+			<pre>type MeshVertAtt3 [3]float32</pre>
+			<p>
+Represents a 3-component vertex attribute in a MeshData
+(such as for example vertex-normals)
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
 			
 		
 			
@@ -2223,42 +2542,42 @@ Returns the default Model (with ID &#34;&#34;) for the parent Mesh.
 
 			
 				
-				<h3 id="Node.MatName">func (*Node) <a href="/target/node.go?s=1899:1931#L74">MatName</a></h3>
+				<h3 id="Node.MatName">func (*Node) <a href="/target/node.go?s=1978:2010#L78">MatName</a></h3>
 				<pre>func (me *Node) MatName() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Material">func (*Node) <a href="/target/node.go?s=1795:1833#L67">Material</a></h3>
+				<h3 id="Node.Material">func (*Node) <a href="/target/node.go?s=1874:1912#L71">Material</a></h3>
 				<pre>func (me *Node) Material() *FxMaterial</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MeshModelName">func (*Node) <a href="/target/node.go?s=2015:2053#L82">MeshModelName</a></h3>
+				<h3 id="Node.MeshModelName">func (*Node) <a href="/target/node.go?s=2094:2132#L86">MeshModelName</a></h3>
 				<pre>func (me *Node) MeshModelName() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MeshName">func (*Node) <a href="/target/node.go?s=1956:1989#L78">MeshName</a></h3>
+				<h3 id="Node.MeshName">func (*Node) <a href="/target/node.go?s=2035:2068#L82">MeshName</a></h3>
 				<pre>func (me *Node) MeshName() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=2567:2610#L102">SetMatID</a></h3>
+				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=2744:2787#L109">SetMatID</a></h3>
 				<pre>func (me *Node) SetMatID(newMatName string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMeshModelName">func (*Node) <a href="/target/node.go?s=2717:2777#L108">SetMeshModelName</a></h3>
+				<h3 id="Node.SetMeshModelName">func (*Node) <a href="/target/node.go?s=2894:2954#L115">SetMeshModelName</a></h3>
 				<pre>func (me *Node) SetMeshModelName(meshName, modelName string)</pre>
 				
 				
@@ -2673,7 +2992,7 @@ in OpenGL.
 		
 			
 			
-			<h2 id="Scene">type <a href="/target/scene.go?s=162:238#L1">Scene</a></h2>
+			<h2 id="Scene">type <a href="/target/scene.gt.go?s=43:119#L1">Scene</a></h2>
 			<pre>type Scene struct {
     <span class="comment">//	The root Node for this scene graph.</span>
     RootNode Node
@@ -2691,33 +3010,13 @@ Represents a scene graph.
 
 			
 				
-				<h3 id="NewScene">func <a href="/target/scene.go?s=287:314#L4">NewScene</a></h3>
+				<h3 id="NewScene">func <a href="/target/scene.gt.go?s=320:347#L9">NewScene</a></h3>
 				<pre>func NewScene() (me *Scene)</pre>
 				<p>
-Initializes and returns a new, empty Scene.
+Initializes and returns a new Scene with default parameters.
 </p>
 
 				
-			
-
-			
-		
-			
-			
-			<h2 id="Scenes">type <a href="/target/scene.go?s=102:131#L1">Scenes</a></h2>
-			<pre>type Scenes map[string]*Scene</pre>
-			<p>
-A hash-table of Scenes associated with their IDs.
-Only used for Core.Libs.Scenes.
-</p>
-
-
-			
-
-			
-
-			
-
 			
 
 			

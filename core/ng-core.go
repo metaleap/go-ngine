@@ -33,8 +33,8 @@ type EngineCore struct {
 		Images    struct {
 			I2D LibFxImage2Ds
 		}
-		Meshes Meshes
-		Scenes Scenes
+		Meshes LibMeshes
+		Scenes LibScenes
 	}
 	Rendering struct {
 		Canvases           RenderCanvases
@@ -50,7 +50,7 @@ func (me *EngineCore) dispose() {
 	me.isInit = false
 	for _, disp := range []disposable{
 		&me.Rendering.Canvases,
-		&me.Libs.Cameras, &me.Libs.Images.I2D, &me.Libs.Effects, &me.Libs.Materials, &me.Libs.Meshes,
+		&me.Libs.Cameras, &me.Libs.Images.I2D, &me.Libs.Effects, &me.Libs.Materials, &me.Libs.Meshes, &me.Libs.Scenes,
 		me.MeshBuffers,
 	} {
 		disp.dispose()
@@ -73,11 +73,9 @@ func (me *EngineCore) init(options *EngineOptions) {
 
 func (me *EngineCore) initLibs() {
 	libs := &me.Libs
-	for _, c := range []ctorable{&libs.Cameras, &libs.Images.I2D, &libs.Effects, &libs.Materials} {
+	for _, c := range []ctorable{&libs.Cameras, &libs.Images.I2D, &libs.Effects, &libs.Materials, &libs.Meshes, &libs.Scenes} {
 		c.ctor()
 	}
-	libs.Meshes = Meshes{}
-	libs.Scenes = Scenes{}
 }
 
 func (me *EngineCore) initRenderingStates() {

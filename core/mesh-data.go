@@ -1,10 +1,36 @@
 package core
 
-//	Temporary concoction.
+import (
+	"strings"
+)
+
+//	Provides MeshData for constructing a Mesh. An implementation
+//	might load a certain file format or procedurally generate
+//	the returned MeshData.
 type MeshProvider func(args ...interface{}) (*MeshData, error)
 
 //	Represents an indexed triangle.
-type meshFace3 [3]meshVert
+type MeshFace3 struct {
+	//	The indexed vertices making up this triangle.
+	V [3]MeshVert
+
+	//	Mesh-unique identifier for this triangle face.
+	ID string
+
+	//	Arbitrary classification(s) for this triangle face.
+	Classes []string
+}
+
+//	Creates and initializes a new MeshVert with the specified classes,
+//	ID and verts, and returns it. class may be empty or contain multiple
+//	classifications separated by spaces, which will be split into Classes.
+func NewMeshFace3(class, id string, verts ...MeshVert) (me *MeshFace3) {
+	me = &MeshFace3{ID: id, V: [3]MeshVert{verts[0], verts[1], verts[2]}}
+	if len(class) > 0 {
+		me.Classes = strings.Split(class, " ")
+	}
+	return
+}
 
 //	Represents semi-processed loaded mesh data "almost ready" to core.Mesh.GpuUpload().
 type meshRaw struct {
@@ -30,37 +56,39 @@ func newMeshRawFace() (me *meshRawFace) {
 	return
 }
 
-//	Represents an indexed vertex.
-type meshVert struct {
+//	Represents an indexed vertex in a MeshFace3.
+type MeshVert struct {
 	//	Index of the vertex position
-	posIndex uint32
+	PosIndex uint32
 
 	//	Index of the texture-coordinate.
-	texCoordIndex uint32
+	TexCoordIndex uint32
 
 	//	Index of the vertex normal.
-	normalIndex uint32
+	NormalIndex uint32
 }
 
-//	Represents a 2-component vertex attribute (such as for example texture-coordinates)
-type meshVertAtt2 [2]float32
+//	Represents a 2-component vertex attribute in a MeshData.
+//	(such as for example texture-coordinates)
+type MeshVertAtt2 [2]float32
 
-//	Represents a 3-component vertex attribute (such as for example vertex-normals)
-type meshVertAtt3 [3]float32
+//	Represents a 3-component vertex attribute in a MeshData
+//	(such as for example vertex-normals)
+type MeshVertAtt3 [3]float32
 
 //	Represents yet-unprocessed mesh source data.
 type MeshData struct {
 	//	Vertex positions
-	positions []meshVertAtt3
+	Positions []MeshVertAtt3
 
 	//	Vertex texture coordinates
-	texCoords []meshVertAtt2
+	TexCoords []MeshVertAtt2
 
 	//	Vertex normals
-	normals []meshVertAtt3
+	Normals []MeshVertAtt3
 
 	//	Indexed triangle definitions
-	faces []meshFace3
+	Faces []MeshFace3
 }
 
 //	Initializes and returns a new *MeshData* instance.
@@ -70,21 +98,23 @@ func NewMeshData() (me *MeshData) {
 }
 
 //	Adds all specified Faces to this MeshData.
-func (me *MeshData) addFaces(faces ...meshFace3) {
-	me.faces = append(me.faces, faces...)
+func (me *MeshData) AddFaces(faces ...*MeshFace3) {
+	for _, f := range faces {
+		me.Faces = append(me.Faces, *f)
+	}
 }
 
 //	Adds all specified Positions to this MeshData.
-func (me *MeshData) addPositions(positions ...meshVertAtt3) {
-	me.positions = append(me.positions, positions...)
+func (me *MeshData) AddPositions(positions ...MeshVertAtt3) {
+	me.Positions = append(me.Positions, positions...)
 }
 
 //	Adds all the specified Normals to this MeshData.
-func (me *MeshData) addNormals(normals ...meshVertAtt3) {
-	me.normals = append(me.normals, normals...)
+func (me *MeshData) AddNormals(normals ...MeshVertAtt3) {
+	me.Normals = append(me.Normals, normals...)
 }
 
 //	Adds all the specified TexCoords to this MeshData.
-func (me *MeshData) addTexCoords(texCoords ...meshVertAtt2) {
-	me.texCoords = append(me.texCoords, texCoords...)
+func (me *MeshData) AddTexCoords(texCoords ...MeshVertAtt2) {
+	me.TexCoords = append(me.TexCoords, texCoords...)
 }

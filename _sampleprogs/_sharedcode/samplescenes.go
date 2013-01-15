@@ -49,16 +49,18 @@ func AddScene(id string) (me *ng.Scene) {
 func AddColorMaterials(idsColors map[string][]float64) {
 	for id, col := range idsColors {
 		ng.Core.Libs.Effects.AddNew("fx_" + id).Diffuse = ng.NewFxColor(col...)
-		ng.Core.Libs.Materials.AddNew("mat_" + id).EffectID = "fx_" + id
+		ng.Core.Libs.Materials.AddNew("mat_" + id).DefaultEffectID = "fx_" + id
 	}
 }
 
-//	Sets up texture materials (associated and 2D samplers) with the specified IDs and image URLs.
+//	Sets up textures and associated effects/materials with the specified IDs and image URLs.
 //	For each ID (such as "foo" and "bar"):
-//	-	creates an assets.FxImageDef with ID "tex_ID" (ie. "tex_foo" and "tex_bar")
-//	-	creates an assets.FxEffectDef with ID "fx_ID" (ie. "fx_foo" and "fx_bar")
-//	-	creates an assets.FxMaterialDef with ID "mat_ID" (ie. "mat_foo" and "mat_bar")
-//	-	and links them all together to create a ready-to-use texture material.
+//	-	creates an ng.FxImage2D with ID "img_{ID}" (ie. "img_foo" and "img_bar") and
+//	adds it to ng.Core.Libs.Images.I2D
+//	-	creates an ng.FxEffect with ID "fx_{ID}" (ie. "fx_foo" and "fx_bar") and adds it
+//	to ng.Core.Libs.Effects; its Diffuse field pointing to the ng.FxImage2D
+//	-	creates an ng.FxMaterial with ID "mat_{ID}" (ie. "mat_foo" and "mat_bar") and
+//	adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffect.
 func AddTextureMaterials(idsUrls map[string]string) {
 	for id, refUrl := range idsUrls {
 		img := ng.Core.Libs.Images.I2D.AddNew("img_" + id)
@@ -76,7 +78,7 @@ func AddTextureMaterials(idsUrls map[string]string) {
 			}
 		}
 		ng.Core.Libs.Effects.AddNew("fx_" + id).Diffuse = ng.NewFxTexture("img_"+id, nil)
-		ng.Core.Libs.Materials.AddNew("mat_" + id).EffectID = "fx_" + id
+		ng.Core.Libs.Materials.AddNew("mat_" + id).DefaultEffectID = "fx_" + id
 	}
 }
 

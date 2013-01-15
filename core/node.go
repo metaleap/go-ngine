@@ -118,9 +118,13 @@ func (me *Node) SetMatID(newMatName string) {
 func (me *Node) SetMeshModelName(meshName, modelName string) {
 	if meshName != me.meshName {
 		me.mesh, me.meshName = Core.Libs.Meshes[meshName], meshName
-		me.model, me.modelName = me.mesh.Models.Default(), ""
 	}
-	if modelName != me.modelName {
-		me.model, me.modelName = me.mesh.Models[modelName], modelName
+	if me.mesh == nil {
+		me.model, me.modelName = nil, ""
+	} else {
+		me.model, me.modelName = me.mesh.Models.Default(), ""
+		if modelName != me.modelName {
+			me.model, me.modelName = me.mesh.Models[modelName], modelName
+		}
 	}
 }

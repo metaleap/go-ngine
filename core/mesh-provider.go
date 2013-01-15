@@ -1,72 +1,82 @@
 package core
 
-type meshProviders struct {
-	PrefabCube, PrefabPlane, PrefabPyramid, PrefabQuad, PrefabTri MeshProvider
-}
-
-var (
-	//	A collection of all "mesh providers" known to go:ngine.
-	MeshProviders = &meshProviders{meshProviderPrefabCube, meshProviderPrefabPlane, meshProviderPrefabPyramid, meshProviderPrefabQuad, meshProviderPrefabTri}
-)
-
-func meshProviderPrefabCube(args ...interface{}) (meshData *MeshData, err error) {
+//	A MeshProvider that creates MeshData for a cube with extents -1 .. 1.
+//	args is ignored and err is always nil.
+//	The returned MeshData contains 12 triangle faces with IDs "t0" through "t11".
+//	These faces are classified in 6 distinct classes: "front","back","top","bottom","right","left".
+func MeshProviderPrefabCube(args ...interface{}) (meshData *MeshData, err error) {
 	meshData = NewMeshData()
-	meshData.addPositions(
-		meshVertAtt3{-1, -1, 1}, meshVertAtt3{1, -1, 1}, meshVertAtt3{1, 1, 1},
-		meshVertAtt3{-1, 1, 1}, meshVertAtt3{-1, -1, -1}, meshVertAtt3{-1, 1, -1},
-		meshVertAtt3{1, 1, -1}, meshVertAtt3{1, -1, -1})
-	meshData.addTexCoords(meshVertAtt2{0, 0}, meshVertAtt2{1, 0}, meshVertAtt2{1, 1}, meshVertAtt2{0, 1})
-	meshData.addNormals(meshVertAtt3{0, 0, 1}, meshVertAtt3{0, 0, -1}, meshVertAtt3{0, 1, 0}, meshVertAtt3{0, -1, 0}, meshVertAtt3{1, 0, 0}, meshVertAtt3{-1, 0, 0})
-	meshData.addFaces(
-		meshFace3{meshVert{0, 0, 0}, meshVert{1, 1, 0}, meshVert{2, 2, 0}}, meshFace3{meshVert{0, 0, 0}, meshVert{2, 2, 0}, meshVert{3, 3, 0}}, //	front
-		meshFace3{meshVert{4, 0, 1}, meshVert{5, 1, 1}, meshVert{6, 2, 1}}, meshFace3{meshVert{4, 0, 1}, meshVert{6, 2, 1}, meshVert{7, 3, 1}}, //	back
-		meshFace3{meshVert{5, 0, 2}, meshVert{3, 1, 2}, meshVert{2, 2, 2}}, meshFace3{meshVert{5, 0, 2}, meshVert{2, 2, 2}, meshVert{6, 3, 2}}, //	top
-		meshFace3{meshVert{4, 0, 3}, meshVert{7, 1, 3}, meshVert{1, 2, 3}}, meshFace3{meshVert{4, 0, 3}, meshVert{1, 2, 3}, meshVert{0, 3, 3}}, //	bottom
-		meshFace3{meshVert{7, 0, 4}, meshVert{6, 1, 4}, meshVert{2, 2, 4}}, meshFace3{meshVert{7, 0, 4}, meshVert{2, 2, 4}, meshVert{1, 3, 4}}, //	right
-		meshFace3{meshVert{4, 0, 5}, meshVert{0, 1, 5}, meshVert{3, 2, 5}}, meshFace3{meshVert{4, 0, 5}, meshVert{3, 2, 5}, meshVert{5, 3, 5}}) //	left
+	meshData.AddPositions(
+		MeshVertAtt3{-1, -1, 1}, MeshVertAtt3{1, -1, 1}, MeshVertAtt3{1, 1, 1},
+		MeshVertAtt3{-1, 1, 1}, MeshVertAtt3{-1, -1, -1}, MeshVertAtt3{-1, 1, -1},
+		MeshVertAtt3{1, 1, -1}, MeshVertAtt3{1, -1, -1})
+	meshData.AddTexCoords(MeshVertAtt2{0, 0}, MeshVertAtt2{1, 0}, MeshVertAtt2{1, 1}, MeshVertAtt2{0, 1})
+	meshData.AddNormals(MeshVertAtt3{0, 0, 1}, MeshVertAtt3{0, 0, -1}, MeshVertAtt3{0, 1, 0}, MeshVertAtt3{0, -1, 0}, MeshVertAtt3{1, 0, 0}, MeshVertAtt3{-1, 0, 0})
+	meshData.AddFaces(
+		NewMeshFace3("front", "t0", MeshVert{0, 0, 0}, MeshVert{1, 1, 0}, MeshVert{2, 2, 0}), NewMeshFace3("front", "t1", MeshVert{0, 0, 0}, MeshVert{2, 2, 0}, MeshVert{3, 3, 0}),
+		NewMeshFace3("back", "t2", MeshVert{4, 0, 1}, MeshVert{5, 1, 1}, MeshVert{6, 2, 1}), NewMeshFace3("back", "t3", MeshVert{4, 0, 1}, MeshVert{6, 2, 1}, MeshVert{7, 3, 1}),
+		NewMeshFace3("top", "t4", MeshVert{5, 0, 2}, MeshVert{3, 1, 2}, MeshVert{2, 2, 2}), NewMeshFace3("top", "t5", MeshVert{5, 0, 2}, MeshVert{2, 2, 2}, MeshVert{6, 3, 2}),
+		NewMeshFace3("bottom", "t6", MeshVert{4, 0, 3}, MeshVert{7, 1, 3}, MeshVert{1, 2, 3}), NewMeshFace3("bottom", "t7", MeshVert{4, 0, 3}, MeshVert{1, 2, 3}, MeshVert{0, 3, 3}),
+		NewMeshFace3("right", "t8", MeshVert{7, 0, 4}, MeshVert{6, 1, 4}, MeshVert{2, 2, 4}), NewMeshFace3("right", "t9", MeshVert{7, 0, 4}, MeshVert{2, 2, 4}, MeshVert{1, 3, 4}),
+		NewMeshFace3("left", "t10", MeshVert{4, 0, 5}, MeshVert{0, 1, 5}, MeshVert{3, 2, 5}), NewMeshFace3("left", "t11", MeshVert{4, 0, 5}, MeshVert{3, 2, 5}, MeshVert{5, 3, 5}))
 	return
 }
 
-func meshProviderPrefabPlane(args ...interface{}) (meshData *MeshData, err error) {
+//	A MeshProvider that creates MeshData for a flat ground plane with extents -1 .. 1.
+//	args is ignored and err is always nil.
+//	The returned MeshData contains 2 triangle faces with IDs "t0" through "t1".
+//	These faces are all classified with class: "plane".
+func MeshProviderPrefabPlane(args ...interface{}) (meshData *MeshData, err error) {
 	meshData = NewMeshData()
-	meshData.addPositions(meshVertAtt3{-1, 0, 1}, meshVertAtt3{1, 0, 1}, meshVertAtt3{-1, 0, -1}, meshVertAtt3{1, 0, -1})
-	meshData.addTexCoords(meshVertAtt2{0, 0}, meshVertAtt2{1000, 0}, meshVertAtt2{0, 1000}, meshVertAtt2{1000, 1000})
-	meshData.addNormals(meshVertAtt3{0, 1, 0})
-	meshData.addFaces(
-		meshFace3{meshVert{0, 0, 0}, meshVert{1, 1, 0}, meshVert{2, 2, 0}},
-		meshFace3{meshVert{3, 3, 0}, meshVert{2, 2, 0}, meshVert{1, 1, 0}})
+	meshData.AddPositions(MeshVertAtt3{-1, 0, 1}, MeshVertAtt3{1, 0, 1}, MeshVertAtt3{-1, 0, -1}, MeshVertAtt3{1, 0, -1})
+	meshData.AddTexCoords(MeshVertAtt2{0, 0}, MeshVertAtt2{1000, 0}, MeshVertAtt2{0, 1000}, MeshVertAtt2{1000, 1000})
+	meshData.AddNormals(MeshVertAtt3{0, 1, 0})
+	meshData.AddFaces(
+		NewMeshFace3("plane", "t0", MeshVert{0, 0, 0}, MeshVert{1, 1, 0}, MeshVert{2, 2, 0}),
+		NewMeshFace3("plane", "t1", MeshVert{3, 3, 0}, MeshVert{2, 2, 0}, MeshVert{1, 1, 0}))
 	return
 }
 
-func meshProviderPrefabPyramid(args ...interface{}) (meshData *MeshData, err error) {
+//	A MeshProvider that creates MeshData for a pyramid with extents -1 .. 1.
+//	args is ignored and err is always nil.
+//	The returned MeshData contains 4 triangle faces with IDs "t0" through "t3".
+//	These faces are all classified with class: "pyr".
+func MeshProviderPrefabPyramid(args ...interface{}) (meshData *MeshData, err error) {
 	meshData = NewMeshData()
-	meshData.addPositions(meshVertAtt3{0, 1, 0}, meshVertAtt3{-1, -1, 1}, meshVertAtt3{1, -1, 1}, meshVertAtt3{1, -1, -1}, meshVertAtt3{-1, -1, -1})
-	meshData.addTexCoords(meshVertAtt2{0, 0}, meshVertAtt2{1, 0}, meshVertAtt2{1, 1}, meshVertAtt2{0, 1})
-	meshData.addNormals(meshVertAtt3{0, 0, 1}, meshVertAtt3{1, 0, 0}, meshVertAtt3{0, 0, -1}, meshVertAtt3{-1, 0, 0})
-	meshData.addFaces(
-		meshFace3{meshVert{0, 0, 0}, meshVert{1, 1, 0}, meshVert{2, 2, 0}},
-		meshFace3{meshVert{0, 1, 1}, meshVert{2, 2, 1}, meshVert{3, 3, 1}},
-		meshFace3{meshVert{0, 1, 2}, meshVert{3, 2, 2}, meshVert{4, 3, 2}},
-		meshFace3{meshVert{0, 0, 3}, meshVert{4, 1, 3}, meshVert{1, 2, 3}})
+	meshData.AddPositions(MeshVertAtt3{0, 1, 0}, MeshVertAtt3{-1, -1, 1}, MeshVertAtt3{1, -1, 1}, MeshVertAtt3{1, -1, -1}, MeshVertAtt3{-1, -1, -1})
+	meshData.AddTexCoords(MeshVertAtt2{0, 0}, MeshVertAtt2{1, 0}, MeshVertAtt2{1, 1}, MeshVertAtt2{0, 1})
+	meshData.AddNormals(MeshVertAtt3{0, 0, 1}, MeshVertAtt3{1, 0, 0}, MeshVertAtt3{0, 0, -1}, MeshVertAtt3{-1, 0, 0})
+	meshData.AddFaces(
+		NewMeshFace3("pyr", "t0", MeshVert{0, 0, 0}, MeshVert{1, 1, 0}, MeshVert{2, 2, 0}),
+		NewMeshFace3("pyr", "t1", MeshVert{0, 1, 1}, MeshVert{2, 2, 1}, MeshVert{3, 3, 1}),
+		NewMeshFace3("pyr", "t2", MeshVert{0, 1, 2}, MeshVert{3, 2, 2}, MeshVert{4, 3, 2}),
+		NewMeshFace3("pyr", "t3", MeshVert{0, 0, 3}, MeshVert{4, 1, 3}, MeshVert{1, 2, 3}))
 	return
 }
 
-func meshProviderPrefabQuad(args ...interface{}) (meshData *MeshData, err error) {
+//	A MeshProvider that creates MeshData for a quad with extents -1 .. 1.
+//	args is ignored and err is always nil.
+//	The returned MeshData contains 2 triangle faces with IDs "t0" through "t1".
+//	These faces are all classified with class: "quad".
+func MeshProviderPrefabQuad(args ...interface{}) (meshData *MeshData, err error) {
 	meshData = NewMeshData()
-	meshData.addPositions(meshVertAtt3{1, 1, 0}, meshVertAtt3{-1, 1, 0}, meshVertAtt3{-1, -1, 0}, meshVertAtt3{1, -1, 0})
-	meshData.addTexCoords(meshVertAtt2{-0.125, 0}, meshVertAtt2{-0.125, 3}, meshVertAtt2{1.125, 3}, meshVertAtt2{1.125, 0})
-	meshData.addNormals(meshVertAtt3{0, 0, 1})
-	meshData.addFaces(
-		meshFace3{meshVert{0, 0, 0}, meshVert{1, 1, 0}, meshVert{2, 2, 0}},
-		meshFace3{meshVert{0, 0, 0}, meshVert{2, 2, 0}, meshVert{3, 3, 0}})
+	meshData.AddPositions(MeshVertAtt3{1, 1, 0}, MeshVertAtt3{-1, 1, 0}, MeshVertAtt3{-1, -1, 0}, MeshVertAtt3{1, -1, 0})
+	meshData.AddTexCoords(MeshVertAtt2{-0.125, 0}, MeshVertAtt2{-0.125, 3}, MeshVertAtt2{1.125, 3}, MeshVertAtt2{1.125, 0})
+	meshData.AddNormals(MeshVertAtt3{0, 0, 1})
+	meshData.AddFaces(
+		NewMeshFace3("quad", "t0", MeshVert{0, 0, 0}, MeshVert{1, 1, 0}, MeshVert{2, 2, 0}),
+		NewMeshFace3("quad", "t1", MeshVert{0, 0, 0}, MeshVert{2, 2, 0}, MeshVert{3, 3, 0}))
 	return
 }
 
-func meshProviderPrefabTri(args ...interface{}) (meshData *MeshData, err error) {
+//	A MeshProvider that creates MeshData for a triangle with extents -1 .. 1.
+//	args is ignored and err is always nil.
+//	The returned MeshData contains 1 triangle face with ID "t0" and class "tri".
+func MeshProviderPrefabTri(args ...interface{}) (meshData *MeshData, err error) {
 	meshData = NewMeshData()
-	meshData.addPositions(meshVertAtt3{0, 1, 0}, meshVertAtt3{-1, -1, 0}, meshVertAtt3{1, -1, 0})
-	meshData.addTexCoords(meshVertAtt2{0, 0}, meshVertAtt2{3, 0}, meshVertAtt2{3, 2})
-	meshData.addNormals(meshVertAtt3{0, 0, 1})
-	meshData.addFaces(meshFace3{meshVert{0, 0, 0}, meshVert{1, 1, 0}, meshVert{2, 2, 0}})
+	meshData.AddPositions(MeshVertAtt3{0, 1, 0}, MeshVertAtt3{-1, -1, 0}, MeshVertAtt3{1, -1, 0})
+	meshData.AddTexCoords(MeshVertAtt2{0, 0}, MeshVertAtt2{3, 0}, MeshVertAtt2{3, 2})
+	meshData.AddNormals(MeshVertAtt3{0, 0, 1})
+	meshData.AddFaces(NewMeshFace3("tri", "t0", MeshVert{0, 0, 0}, MeshVert{1, 1, 0}, MeshVert{2, 2, 0}))
 	return
 }

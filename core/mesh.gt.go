@@ -8,45 +8,6 @@ import (
 	ugl "github.com/go3d/go-glutil"
 )
 
-type Meshes map[string]*Mesh
-
-func (me Meshes) Add(mesh *Mesh) *Mesh {
-	if me[mesh.id] == nil {
-		me[mesh.id] = mesh
-		return mesh
-	}
-	return nil
-}
-
-func (me Meshes) AddRange(meshes ...*Mesh) {
-	for _, m := range meshes {
-		me.Add(m)
-	}
-}
-
-func (me *Meshes) dispose() {
-	for _, m := range *me {
-		m.GpuDelete()
-	}
-	*me = Meshes{}
-}
-
-func (me Meshes) Load(id string, provider MeshProvider, args ...interface{}) (mesh *Mesh, err error) {
-	var meshData *MeshData
-	mesh = me.New(id)
-	if meshData, err = provider(args...); err == nil {
-		mesh.load(meshData)
-	} else {
-		mesh = nil
-	}
-	return
-}
-
-func (me Meshes) New(id string) (mesh *Mesh) {
-	mesh = &Mesh{id: id, Models: Models{}}
-	return mesh
-}
-
 type Mesh struct {
 	Models Models
 
@@ -55,6 +16,15 @@ type Mesh struct {
 	id                                                               string
 	meshBuffer                                                       *MeshBuffer
 	raw                                                              *meshRaw
+}
+
+func (me *Mesh) dispose() {
+	me.GpuDelete()
+	me.Unload()
+}
+
+func (me *Mesh) init() {
+	me.Models = Models{}
 }
 
 func (me *Mesh) GpuDelete() {
@@ -94,33 +64,41 @@ func (me *Mesh) GpuUploaded() bool {
 	return me.gpuSynced
 }
 
-func (me *Mesh) load(meshData *MeshData) {
+func (me *Mesh) Load(provider MeshProvider, args ...interface{}) (err error) {
+	var meshData *MeshData
+	if meshData, err = provider(args...); err == nil {
+		err = me.load(meshData)
+	}
+	return
+}
+
+func (me *Mesh) load(meshData *MeshData) (err error) {
 	var (
-		numVerts                                       = 3 * int32(len(meshData.faces))
+		numVerts                                       = 3 * int32(len(meshData.Faces))
 		numFinalVerts                                  = 0
 		offsetFace, ei                                 = 0, 0
-		vertsMap                                       = map[meshVert]uint32{}
+		vertsMap                                       = map[MeshVert]uint32{}
 		offsetFloat, offsetIndex, offsetVertex, vindex uint32
 		vexists                                        bool
 		vreuse                                         int
-		ventry                                         meshVert
+		ventry                                         MeshVert
 	)
 	me.Models = Models{}
 	me.gpuSynced = false
 	me.raw = &meshRaw{}
 	me.raw.meshVerts = make([]float32, Core.MeshBuffers.FloatsPerVertex()*numVerts)
 	me.raw.indices = make([]uint32, numVerts)
-	me.raw.faces = make([]*meshRawFace, len(meshData.faces))
-	for _, face := range meshData.faces {
+	me.raw.faces = make([]*meshRawFace, len(meshData.Faces))
+	for _, face := range meshData.Faces {
 		me.raw.faces[offsetFace] = newMeshRawFace()
-		for ei, ventry = range face {
+		for ei, ventry = range face.V {
 			if vindex, vexists = vertsMap[ventry]; !vexists {
 				vindex, vertsMap[ventry] = offsetVertex, offsetVertex
-				copy(me.raw.meshVerts[offsetFloat:(offsetFloat+3)], meshData.positions[ventry.posIndex][0:3])
+				copy(me.raw.meshVerts[offsetFloat:(offsetFloat+3)], meshData.Positions[ventry.PosIndex][0:3])
 				offsetFloat += 3
-				copy(me.raw.meshVerts[offsetFloat:(offsetFloat+2)], meshData.texCoords[ventry.texCoordIndex][0:2])
+				copy(me.raw.meshVerts[offsetFloat:(offsetFloat+2)], meshData.TexCoords[ventry.TexCoordIndex][0:2])
 				offsetFloat += 2
-				copy(me.raw.meshVerts[offsetFloat:(offsetFloat+3)], meshData.normals[ventry.normalIndex][0:3])
+				copy(me.raw.meshVerts[offsetFloat:(offsetFloat+3)], meshData.Normals[ventry.NormalIndex][0:3])
 				offsetFloat += 3
 				offsetVertex++
 				numFinalVerts++
@@ -133,8 +111,9 @@ func (me *Mesh) load(meshData *MeshData) {
 		}
 		offsetFace++
 	}
+	fmt.Printf("mesh{%v}.Load() gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)\n", me.id, len(me.raw.faces), len(me.raw.meshVerts), numFinalVerts, numVerts, len(me.raw.indices), vreuse)
 	me.Models[""] = newModel("", me)
-	fmt.Printf("meshload(%v) gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)\n", me.id, len(me.raw.faces), len(me.raw.meshVerts), numFinalVerts, numVerts, len(me.raw.indices), vreuse)
+	return
 }
 
 func (me *Mesh) Loaded() bool {
@@ -152,4 +131,45 @@ func (me *Mesh) render() {
 
 func (me *Mesh) Unload() {
 	me.raw = nil
+}
+
+//	Initializes and returns a new Mesh with default parameters.
+func NewMesh(id string) (me *Mesh) {
+	me = &Mesh{id: id}
+	me.init()
+	return
+}
+
+//	A hash-table of Meshs associated by IDs. Only for use in Core.Libs.
+type LibMeshes map[string]*Mesh
+
+//	Creates and initializes a new Mesh with default parameters,
+//	adds it to me under the specified ID, and returns it.
+func (me LibMeshes) AddNew(id string) (obj *Mesh) {
+	obj = NewMesh(id)
+	me[id] = obj
+	return
+}
+
+func (me LibMeshes) AddLoad(id string, meshProvider MeshProvider, args ...interface{}) (mesh *Mesh, err error) {
+	if me[id] == nil {
+		mesh = me.AddNew(id)
+		if err = mesh.Load(meshProvider, args...); err != nil {
+			delete(me, id)
+			mesh.dispose()
+			mesh = nil
+		}
+	}
+	return
+}
+
+func (me *LibMeshes) ctor() {
+	*me = LibMeshes{}
+}
+
+func (me *LibMeshes) dispose() {
+	for _, o := range *me {
+		o.dispose()
+	}
+	me.ctor()
 }

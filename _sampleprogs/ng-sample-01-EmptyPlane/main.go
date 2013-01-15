@@ -39,11 +39,10 @@ func LoadSampleScene_01_EmptyPlane() {
 	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(100, 100)); err != nil {
 		panic(err)
 	}
-	if meshFloor, err = ng.Core.Libs.Meshes.Load("mesh_plane", ng.MeshProviders.PrefabPlane); err != nil {
+	if meshFloor, err = ng.Core.Libs.Meshes.AddLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
 		panic(err)
 	}
 
-	ng.Core.Libs.Meshes.AddRange(meshFloor)
 	bufRest.Add(meshFloor) // bufRest.Add(meshCube);
 
 	//	scene

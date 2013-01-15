@@ -81,23 +81,22 @@ func LoadSampleScene_03_PyrsCubes() {
 	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(36+12, 36+12)); err != nil {
 		panic(err)
 	}
-	if meshFloor, err = ng.Core.Libs.Meshes.Load("mesh_plane", ng.MeshProviders.PrefabPlane); err != nil {
+	if meshFloor, err = ng.Core.Libs.Meshes.AddLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
 		panic(err)
 	}
 	meshFloor.Models.Default().SetMatID("mat_cobbles")
-	if meshPyr, err = ng.Core.Libs.Meshes.Load("mesh_pyramid", ng.MeshProviders.PrefabPyramid); err != nil {
+	if meshPyr, err = ng.Core.Libs.Meshes.AddLoad("mesh_pyramid", ng.MeshProviderPrefabPyramid); err != nil {
 		panic(err)
 	}
 	meshPyr.Models.Default().SetMatID("mat_mosaic")
 	meshPyr.Models.Default().Clone("model_pyramid_dog").SetMatID("mat_dog")
 
-	if meshCube, err = ng.Core.Libs.Meshes.Load("mesh_cube", ng.MeshProviders.PrefabCube); err != nil {
+	if meshCube, err = ng.Core.Libs.Meshes.AddLoad("mesh_cube", ng.MeshProviderPrefabCube); err != nil {
 		panic(err)
 	}
 	meshCube.Models.Default().SetMatID("mat_crate")
 	meshCube.Models.Default().Clone("model_cube_cat").SetMatID("mat_cat")
 
-	ng.Core.Libs.Meshes.AddRange(meshFloor, meshPyr, meshCube)
 	bufFloor.Add(meshFloor)
 	bufRest.Add(meshCube)
 	bufRest.Add(meshPyr)

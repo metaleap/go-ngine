@@ -5,6 +5,17 @@ import (
 	ugl "github.com/go3d/go-glutil"
 )
 
+/*
+
+render sorting per pass:
+
+- by VAO (first 3D, then 2D etc)
+- by material shader
+- by texture (uniform values)
+- by mesh (so multiple mesh-insts with identical material/texture are rendered together)
+
+*/
+
 var (
 	techs     map[string]renderTechnique
 	tmpEffect *FxEffect
@@ -99,7 +110,7 @@ func (me *techniqueUnlit) onRenderNode() {
 	me.baseTechnique.onRenderNode()
 	if tmpMat = curNode.Material(); tmpMat != curMat {
 		if curMat = tmpMat; curMat != nil {
-			tmpEffect = Core.Libs.Effects[curMat.EffectID]
+			tmpEffect = Core.Libs.Effects[curMat.DefaultEffectID]
 			gl.ActiveTexture(gl.TEXTURE0)
 			gl.BindTexture(gl.TEXTURE_2D, Core.Libs.Images.I2D[tmpEffect.Diffuse.Texture.Image2ID].glTex)
 			gl.Uniform1i(curProg.UnifLocs["uDiffuse"], 0)
