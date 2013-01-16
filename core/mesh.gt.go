@@ -90,7 +90,7 @@ func (me *Mesh) load(meshData *MeshData) (err error) {
 	me.raw.indices = make([]uint32, numVerts)
 	me.raw.faces = make([]*meshRawFace, len(meshData.Faces))
 	for _, face := range meshData.Faces {
-		me.raw.faces[offsetFace] = newMeshRawFace()
+		me.raw.faces[offsetFace] = newMeshRawFace(&face.MeshFaceBase)
 		for ei, ventry = range face.V {
 			if vindex, vexists = vertsMap[ventry]; !vexists {
 				vindex, vertsMap[ventry] = offsetVertex, offsetVertex
