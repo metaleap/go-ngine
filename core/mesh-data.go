@@ -13,8 +13,8 @@ type MeshFaceBase struct {
 	//	Mesh-unique identifier for this face.
 	ID string
 
-	//	Arbitrary classification(s) for this face.
-	Classes []string
+	//	Arbitrary classification tags for this face.
+	Tags []string
 }
 
 //	Represents an indexed triangle.
@@ -22,21 +22,17 @@ type MeshFace3 struct {
 	//	The indexed vertices making up this triangle.
 	V [3]MeshVert
 
-	//	ID, Classes
+	//	ID, Tags
 	MeshFaceBase
 }
 
-//	Creates and initializes a new MeshVert with the specified classes,
-//	ID and verts, and returns it. class may be empty or contain multiple
-//	classifications separated by spaces, which will be split into Classes.
-func NewMeshFace3(class, id string, verts ...MeshVert) (me *MeshFace3) {
-	me = &MeshFace3{}
-	for i := 0; i < 3; i++ {
-		me.V[i] = verts[0]
-	}
-	me.ID = id
-	if len(class) > 0 {
-		me.Classes = strings.Split(class, " ")
+//	Creates and initializes a new MeshVert with the specified tags,
+//	ID and verts, and returns it. tags may be empty or contain multiple
+//	classification tags separated by spaces, which will be split into Tags.
+func NewMeshFace3(tags, id string, verts ...MeshVert) (me *MeshFace3) {
+	me = &MeshFace3{V: [3]MeshVert{verts[0], verts[1], verts[2]}}
+	if me.ID = id; len(tags) > 0 {
+		me.Tags = strings.Split(tags, " ")
 	}
 	return
 }

@@ -3,7 +3,7 @@ package core
 //	A MeshProvider that creates MeshData for a cube with extents -1 .. 1.
 //	args is ignored and err is always nil.
 //	The returned MeshData contains 12 triangle faces with IDs "t0" through "t11".
-//	These faces are classified in 6 distinct classes: "front","back","top","bottom","right","left".
+//	These faces are classified in 6 distinct tags: "front","back","top","bottom","right","left".
 func MeshProviderPrefabCube(args ...interface{}) (meshData *MeshData, err error) {
 	meshData = NewMeshData()
 	meshData.AddPositions(
@@ -25,7 +25,7 @@ func MeshProviderPrefabCube(args ...interface{}) (meshData *MeshData, err error)
 //	A MeshProvider that creates MeshData for a flat ground plane with extents -1 .. 1.
 //	args is ignored and err is always nil.
 //	The returned MeshData contains 2 triangle faces with IDs "t0" through "t1".
-//	These faces are all classified with class: "plane".
+//	These faces are all classified with tag: "plane".
 func MeshProviderPrefabPlane(args ...interface{}) (meshData *MeshData, err error) {
 	meshData = NewMeshData()
 	meshData.AddPositions(MeshVertAtt3{-1, 0, 1}, MeshVertAtt3{1, 0, 1}, MeshVertAtt3{-1, 0, -1}, MeshVertAtt3{1, 0, -1})
@@ -40,7 +40,7 @@ func MeshProviderPrefabPlane(args ...interface{}) (meshData *MeshData, err error
 //	A MeshProvider that creates MeshData for a pyramid with extents -1 .. 1.
 //	args is ignored and err is always nil.
 //	The returned MeshData contains 4 triangle faces with IDs "t0" through "t3".
-//	These faces are all classified with class: "pyr".
+//	These faces are all classified with tag: "pyr".
 func MeshProviderPrefabPyramid(args ...interface{}) (meshData *MeshData, err error) {
 	meshData = NewMeshData()
 	meshData.AddPositions(MeshVertAtt3{0, 1, 0}, MeshVertAtt3{-1, -1, 1}, MeshVertAtt3{1, -1, 1}, MeshVertAtt3{1, -1, -1}, MeshVertAtt3{-1, -1, -1})
@@ -57,7 +57,7 @@ func MeshProviderPrefabPyramid(args ...interface{}) (meshData *MeshData, err err
 //	A MeshProvider that creates MeshData for a quad with extents -1 .. 1.
 //	args is ignored and err is always nil.
 //	The returned MeshData contains 2 triangle faces with IDs "t0" through "t1".
-//	These faces are all classified with class: "quad".
+//	These faces are all classified with tag: "quad".
 func MeshProviderPrefabQuad(args ...interface{}) (meshData *MeshData, err error) {
 	meshData = NewMeshData()
 	meshData.AddPositions(MeshVertAtt3{1, 1, 0}, MeshVertAtt3{-1, 1, 0}, MeshVertAtt3{-1, -1, 0}, MeshVertAtt3{1, -1, 0})
@@ -71,7 +71,7 @@ func MeshProviderPrefabQuad(args ...interface{}) (meshData *MeshData, err error)
 
 //	A MeshProvider that creates MeshData for a triangle with extents -1 .. 1.
 //	args is ignored and err is always nil.
-//	The returned MeshData contains 1 triangle face with ID "t0" and class "tri".
+//	The returned MeshData contains 1 triangle face with ID "t0" and tag "tri".
 func MeshProviderPrefabTri(args ...interface{}) (meshData *MeshData, err error) {
 	meshData = NewMeshData()
 	meshData.AddPositions(MeshVertAtt3{0, 1, 0}, MeshVertAtt3{-1, -1, 0}, MeshVertAtt3{1, -1, 0})

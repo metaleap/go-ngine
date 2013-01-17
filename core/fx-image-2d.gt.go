@@ -13,17 +13,17 @@ import (
 )
 
 type FxImage2D struct {
-	FxImage
+	FxImageBase
 
 	img image.Image
 }
 
 func (me *FxImage2D) init() {
-	me.FxImage.init()
+	me.FxImageBase.init()
 }
 
 func (me *FxImage2D) dispose() {
-	me.FxImage.dispose()
+	me.FxImageBase.dispose()
 	me.Unload()
 }
 

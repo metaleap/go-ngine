@@ -24,7 +24,7 @@ func (me *Mesh) dispose() {
 }
 
 func (me *Mesh) init() {
-	me.Models = Models{}
+	me.Models = Models{"": newModel("", me)}
 }
 
 func (me *Mesh) GpuDelete() {
@@ -83,7 +83,6 @@ func (me *Mesh) load(meshData *MeshData) (err error) {
 		vreuse                                         int
 		ventry                                         MeshVert
 	)
-	me.Models = Models{}
 	me.gpuSynced = false
 	me.raw = &meshRaw{}
 	me.raw.meshVerts = make([]float32, Core.MeshBuffers.FloatsPerVertex()*numVerts)
@@ -112,7 +111,6 @@ func (me *Mesh) load(meshData *MeshData) (err error) {
 		offsetFace++
 	}
 	fmt.Printf("mesh{%v}.Load() gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)\n", me.id, len(me.raw.faces), len(me.raw.meshVerts), numFinalVerts, numVerts, len(me.raw.indices), vreuse)
-	me.Models[""] = newModel("", me)
 	return
 }
 

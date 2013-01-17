@@ -4,19 +4,31 @@ import (
 	ugfx "github.com/metaleap/go-util/gfx"
 )
 
+//	Declares a source of color information:
+//	either pointing to an FxImage2D or a 64-bit RGBA color.
 type FxColorOrTexture struct {
-	Color   *ugfx.Rgba64
+	//	If set, the color is sourced from this value.
+	Color *ugfx.Rgba64
+
+	//	If Color is nil, the color is sourced from a 2D texture image.
 	Texture struct {
+		//	The ID of the FxImage2D in Core.Libs.Images.I2D
 		Image2ID string
-		Sampler  *FxSampler
+
+		//	Describes filtering and wrapping when sampling the texture image.
+		//	Defaults to FxSamplerDefault.
+		Sampler *FxSampler
 	}
 }
 
+//	Creates and returns a new FxColorOrTexture that points to the specified color.
 func NewFxColor(rgba ...float64) (me *FxColorOrTexture) {
 	me = &FxColorOrTexture{Color: ugfx.NewRgba64(rgba...)}
 	return
 }
 
+//	Creates and returns a new FxColorOrTexture that points to the specified texture image.
+//	If sampler is nil, FxSamplerDefault is used for me.Texture.Sampler.
 func NewFxTexture(image2ID string, sampler *FxSampler) (me *FxColorOrTexture) {
 	me = &FxColorOrTexture{}
 	if sampler == nil {
@@ -27,8 +39,6 @@ func NewFxTexture(image2ID string, sampler *FxSampler) (me *FxColorOrTexture) {
 }
 
 type FxEffect struct {
-	Ambient *FxColorOrTexture
-
 	//	The source for diffuse color information. Required.
 	Diffuse *FxColorOrTexture
 }

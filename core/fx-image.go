@@ -5,7 +5,7 @@ import (
 	ugl "github.com/go3d/go-glutil"
 )
 
-type FxImage struct {
+type FxImageBase struct {
 	OnAsyncDone      func()
 	OnLoad           FxImageOnLoad
 	AsyncNumAttempts int
@@ -21,15 +21,15 @@ type FxImage struct {
 	glSizedInternalFormat, glPixelDataFormat, glPixelDataType gl.Enum
 }
 
-func (me *FxImage) dispose() {
+func (me *FxImageBase) dispose() {
 	me.GpuDelete()
 }
 
-func (me *FxImage) init() {
+func (me *FxImageBase) init() {
 	me.glPixPointer = gl.Pointer(nil)
 }
 
-func (me *FxImage) gpuSync(canMip bool, glTarget gl.Enum) {
+func (me *FxImageBase) gpuSync(canMip bool, glTarget gl.Enum) {
 	me.GpuDelete()
 	gl.GenTextures(1, &me.glTex)
 	gl.BindTexture(glTarget, me.glTex)
@@ -52,22 +52,22 @@ func (me *FxImage) gpuSync(canMip bool, glTarget gl.Enum) {
 	me.glSynced = true
 }
 
-func (me *FxImage) GpuDelete() {
+func (me *FxImageBase) GpuDelete() {
 	if me.glTex != 0 {
 		gl.DeleteTextures(1, &me.glTex)
 		me.glTex, me.glSynced = 0, false
 	}
 }
 
-func (me *FxImage) GpuSynced() bool {
+func (me *FxImageBase) GpuSynced() bool {
 	return me.glSynced
 }
 
-func (me *FxImage) NoAutoMips() {
+func (me *FxImageBase) NoAutoMips() {
 	me.noAutoMips = true
 }
 
-func (me *FxImage) onAsyncDone() {
+func (me *FxImageBase) onAsyncDone() {
 	if me.OnAsyncDone != nil {
 		me.OnAsyncDone()
 	}

@@ -245,20 +245,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#FxImage">type FxImage</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#FxImage.GpuDelete">func (me *FxImage) GpuDelete()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#FxImage.GpuSynced">func (me *FxImage) GpuSynced() bool</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#FxImage.NoAutoMips">func (me *FxImage) NoAutoMips()</a></dd>
-				
-			
-				
 				<dd><a href="#FxImage2D">type FxImage2D</a></dd>
 				
 					
@@ -279,6 +265,20 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#FxImage2D.Unload">func (me *FxImage2D) Unload()</a></dd>
+				
+			
+				
+				<dd><a href="#FxImageBase">type FxImageBase</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxImageBase.GpuDelete">func (me *FxImageBase) GpuDelete()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxImageBase.GpuSynced">func (me *FxImageBase) GpuSynced() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxImageBase.NoAutoMips">func (me *FxImageBase) NoAutoMips()</a></dd>
 				
 			
 				
@@ -478,7 +478,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<dd><a href="#MeshFace3">type MeshFace3</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NewMeshFace3">func NewMeshFace3(class, id string, verts ...MeshVert) (me *MeshFace3)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NewMeshFace3">func NewMeshFace3(tags, id string, verts ...MeshVert) (me *MeshFace3)</a></dd>
 				
 				
 			
@@ -1506,15 +1506,26 @@ Returns the width of the window in pixels.
 		
 			
 			
-			<h2 id="FxColorOrTexture">type <a href="/target/fx-effect.gt.go?s=66:181#L1">FxColorOrTexture</a></h2>
+			<h2 id="FxColorOrTexture">type <a href="/target/fx-effect.gt.go?s=168:558#L1">FxColorOrTexture</a></h2>
 			<pre>type FxColorOrTexture struct {
-    Color   *ugfx.Rgba64
+    <span class="comment">//	If set, the color is sourced from this value.</span>
+    Color *ugfx.Rgba64
+
+    <span class="comment">//	If Color is nil, the color is sourced from a 2D texture image.</span>
     Texture struct {
+        <span class="comment">//	The ID of the FxImage2D in Core.Libs.Images.I2D</span>
         Image2ID string
-        Sampler  *FxSampler
+
+        <span class="comment">//	Describes filtering and wrapping when sampling the texture image.</span>
+        <span class="comment">//	Defaults to FxSamplerDefault.</span>
+        Sampler *FxSampler
     }
 }</pre>
-			
+			<p>
+Declares a source of color information:
+either pointing to an FxImage2D or a 64-bit RGBA color.
+</p>
+
 
 			
 
@@ -1524,15 +1535,22 @@ Returns the width of the window in pixels.
 
 			
 				
-				<h3 id="NewFxColor">func <a href="/target/fx-effect.gt.go?s=183:238#L5">NewFxColor</a></h3>
+				<h3 id="NewFxColor">func <a href="/target/fx-effect.gt.go?s=642:697#L15">NewFxColor</a></h3>
 				<pre>func NewFxColor(rgba ...float64) (me *FxColorOrTexture)</pre>
-				
+				<p>
+Creates and returns a new FxColorOrTexture that points to the specified color.
+</p>
+
 				
 			
 				
-				<h3 id="NewFxTexture">func <a href="/target/fx-effect.gt.go?s=308:385#L10">NewFxTexture</a></h3>
+				<h3 id="NewFxTexture">func <a href="/target/fx-effect.gt.go?s=928:1005#L22">NewFxTexture</a></h3>
 				<pre>func NewFxTexture(image2ID string, sampler *FxSampler) (me *FxColorOrTexture)</pre>
-				
+				<p>
+Creates and returns a new FxColorOrTexture that points to the specified texture image.
+If sampler is nil, FxSamplerDefault is used for me.Texture.Sampler.
+</p>
+
 				
 			
 
@@ -1540,10 +1558,8 @@ Returns the width of the window in pixels.
 		
 			
 			
-			<h2 id="FxEffect">type <a href="/target/fx-effect.gt.go?s=539:674#L19">FxEffect</a></h2>
+			<h2 id="FxEffect">type <a href="/target/fx-effect.gt.go?s=1159:1266#L31">FxEffect</a></h2>
 			<pre>type FxEffect struct {
-    Ambient *FxColorOrTexture
-
     <span class="comment">//	The source for diffuse color information. Required.</span>
     Diffuse *FxColorOrTexture
 }</pre>
@@ -1557,7 +1573,7 @@ Returns the width of the window in pixels.
 
 			
 				
-				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=846:879#L35">NewFxEffect</a></h3>
+				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=1438:1471#L45">NewFxEffect</a></h3>
 				<pre>func NewFxEffect() (me *FxEffect)</pre>
 				<p>
 Initializes and returns a new FxEffect with default parameters.
@@ -1570,8 +1586,71 @@ Initializes and returns a new FxEffect with default parameters.
 		
 			
 			
-			<h2 id="FxImage">type <a href="/target/fx-image.go?s=91:594#L1">FxImage</a></h2>
-			<pre>type FxImage struct {
+			<h2 id="FxImage2D">type <a href="/target/fx-image-2d.gt.go?s=158:214#L5">FxImage2D</a></h2>
+			<pre>type FxImage2D struct {
+    FxImageBase
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=3385:3420#L142">NewFxImage2D</a></h3>
+				<pre>func NewFxImage2D() (me *FxImage2D)</pre>
+				<p>
+Initializes and returns a new FxImage2D with default parameters.
+</p>
+
+				
+			
+
+			
+				
+				<h3 id="FxImage2D.GpuSync">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=347:389#L20">GpuSync</a></h3>
+				<pre>func (me *FxImage2D) GpuSync() (err error)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxImage2D.IsRemote">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2307:2352#L97">IsRemote</a></h3>
+				<pre>func (me *FxImage2D) IsRemote() (remote bool)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxImage2D.Load">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=638:665#L27">Load</a></h3>
+				<pre>func (me *FxImage2D) Load()</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxImage2D.Loaded">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1778:1812#L80">Loaded</a></h3>
+				<pre>func (me *FxImage2D) Loaded() bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxImage2D.Unload">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2396:2425#L102">Unload</a></h3>
+				<pre>func (me *FxImage2D) Unload()</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="FxImageBase">type <a href="/target/fx-image.go?s=91:598#L1">FxImageBase</a></h2>
+			<pre>type FxImageBase struct {
     OnAsyncDone      func()
     OnLoad           FxImageOnLoad
     AsyncNumAttempts int
@@ -1593,85 +1672,22 @@ Initializes and returns a new FxEffect with default parameters.
 
 			
 				
-				<h3 id="FxImage.GpuDelete">func (*FxImage) <a href="/target/fx-image.go?s=1486:1516#L45">GpuDelete</a></h3>
-				<pre>func (me *FxImage) GpuDelete()</pre>
+				<h3 id="FxImageBase.GpuDelete">func (*FxImageBase) <a href="/target/fx-image.go?s=1502:1536#L45">GpuDelete</a></h3>
+				<pre>func (me *FxImageBase) GpuDelete()</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage.GpuSynced">func (*FxImage) <a href="/target/fx-image.go?s=1614:1649#L52">GpuSynced</a></h3>
-				<pre>func (me *FxImage) GpuSynced() bool</pre>
+				<h3 id="FxImageBase.GpuSynced">func (*FxImageBase) <a href="/target/fx-image.go?s=1634:1673#L52">GpuSynced</a></h3>
+				<pre>func (me *FxImageBase) GpuSynced() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage.NoAutoMips">func (*FxImage) <a href="/target/fx-image.go?s=1675:1706#L56">NoAutoMips</a></h3>
-				<pre>func (me *FxImage) NoAutoMips()</pre>
-				
-				
-				
-			
-		
-			
-			
-			<h2 id="FxImage2D">type <a href="/target/fx-image-2d.gt.go?s=158:210#L5">FxImage2D</a></h2>
-			<pre>type FxImage2D struct {
-    FxImage
-    <span class="comment">// contains filtered or unexported fields</span>
-}</pre>
-			
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=3373:3408#L142">NewFxImage2D</a></h3>
-				<pre>func NewFxImage2D() (me *FxImage2D)</pre>
-				<p>
-Initializes and returns a new FxImage2D with default parameters.
-</p>
-
-				
-			
-
-			
-				
-				<h3 id="FxImage2D.GpuSync">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=335:377#L20">GpuSync</a></h3>
-				<pre>func (me *FxImage2D) GpuSync() (err error)</pre>
-				
-				
-				
-			
-				
-				<h3 id="FxImage2D.IsRemote">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2295:2340#L97">IsRemote</a></h3>
-				<pre>func (me *FxImage2D) IsRemote() (remote bool)</pre>
-				
-				
-				
-			
-				
-				<h3 id="FxImage2D.Load">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=626:653#L27">Load</a></h3>
-				<pre>func (me *FxImage2D) Load()</pre>
-				
-				
-				
-			
-				
-				<h3 id="FxImage2D.Loaded">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1766:1800#L80">Loaded</a></h3>
-				<pre>func (me *FxImage2D) Loaded() bool</pre>
-				
-				
-				
-			
-				
-				<h3 id="FxImage2D.Unload">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2384:2413#L102">Unload</a></h3>
-				<pre>func (me *FxImage2D) Unload()</pre>
+				<h3 id="FxImageBase.NoAutoMips">func (*FxImageBase) <a href="/target/fx-image.go?s=1699:1734#L56">NoAutoMips</a></h3>
+				<pre>func (me *FxImageBase) NoAutoMips()</pre>
 				
 				
 				
@@ -1679,7 +1695,7 @@ Initializes and returns a new FxImage2D with default parameters.
 		
 			
 			
-			<h2 id="FxImageOnLoad">type <a href="/target/fx-image.go?s=1822:1885#L66">FxImageOnLoad</a></h2>
+			<h2 id="FxImageOnLoad">type <a href="/target/fx-image.go?s=1854:1917#L66">FxImageOnLoad</a></h2>
 			<pre>type FxImageOnLoad func(img interface{}, err error, async bool)</pre>
 			
 
@@ -1858,7 +1874,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=997:1035#L42">LibFxEffects</a></h2>
+			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=1589:1627#L52">LibFxEffects</a></h2>
 			<pre>type LibFxEffects map[string]*FxEffect</pre>
 			<p>
 A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
@@ -1875,7 +1891,7 @@ A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=1161:1217#L46">AddNew</a></h3>
+				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=1753:1809#L56">AddNew</a></h3>
 				<pre>func (me LibFxEffects) AddNew(id string) (obj *FxEffect)</pre>
 				<p>
 Creates and initializes a new FxEffect with default parameters,
@@ -1888,7 +1904,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=3528:3568#L149">LibFxImage2Ds</a></h2>
+			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=3540:3580#L149">LibFxImage2Ds</a></h2>
 			<pre>type LibFxImage2Ds map[string]*FxImage2D</pre>
 			<p>
 A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
@@ -1905,7 +1921,7 @@ A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3695:3753#L153">AddNew</a></h3>
+				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3707:3765#L153">AddNew</a></h3>
 				<pre>func (me LibFxImage2Ds) AddNew(id string) (obj *FxImage2D)</pre>
 				<p>
 Creates and initializes a new FxImage2D with default parameters,
@@ -2179,7 +2195,7 @@ Initializes and returns a new Mesh with default parameters.
 		
 			
 			
-			<h2 id="MeshData">type <a href="/target/mesh-data.go?s=2108:2334#L82">MeshData</a></h2>
+			<h2 id="MeshData">type <a href="/target/mesh-data.go?s=2095:2321#L82">MeshData</a></h2>
 			<pre>type MeshData struct {
     <span class="comment">//	Vertex positions</span>
     Positions []MeshVertAtt3
@@ -2206,66 +2222,66 @@ Represents yet-unprocessed mesh source data.
 
 			
 				
-				<h3 id="MeshProviderPrefabCube">func <a href="/target/mesh-provider.go?s=309:389#L1">MeshProviderPrefabCube</a></h3>
+				<h3 id="MeshProviderPrefabCube">func <a href="/target/mesh-provider.go?s=306:386#L1">MeshProviderPrefabCube</a></h3>
 				<pre>func MeshProviderPrefabCube(args ...interface{}) (meshData *MeshData, err error)</pre>
 				<p>
 A MeshProvider that creates MeshData for a cube with extents -1 .. 1.
 args is ignored and err is always nil.
 The returned MeshData contains 12 triangle faces with IDs &#34;t0&#34; through &#34;t11&#34;.
-These faces are classified in 6 distinct classes: &#34;front&#34;,&#34;back&#34;,&#34;top&#34;,&#34;bottom&#34;,&#34;right&#34;,&#34;left&#34;.
+These faces are classified in 6 distinct tags: &#34;front&#34;,&#34;back&#34;,&#34;top&#34;,&#34;bottom&#34;,&#34;right&#34;,&#34;left&#34;.
 </p>
 
 				
 			
 				
-				<h3 id="MeshProviderPrefabPlane">func <a href="/target/mesh-provider.go?s=2242:2323#L19">MeshProviderPrefabPlane</a></h3>
+				<h3 id="MeshProviderPrefabPlane">func <a href="/target/mesh-provider.go?s=2237:2318#L19">MeshProviderPrefabPlane</a></h3>
 				<pre>func MeshProviderPrefabPlane(args ...interface{}) (meshData *MeshData, err error)</pre>
 				<p>
 A MeshProvider that creates MeshData for a flat ground plane with extents -1 .. 1.
 args is ignored and err is always nil.
 The returned MeshData contains 2 triangle faces with IDs &#34;t0&#34; through &#34;t1&#34;.
-These faces are all classified with class: &#34;plane&#34;.
+These faces are all classified with tag: &#34;plane&#34;.
 </p>
 
 				
 			
 				
-				<h3 id="MeshProviderPrefabPyramid">func <a href="/target/mesh-provider.go?s=3087:3170#L34">MeshProviderPrefabPyramid</a></h3>
+				<h3 id="MeshProviderPrefabPyramid">func <a href="/target/mesh-provider.go?s=3080:3163#L34">MeshProviderPrefabPyramid</a></h3>
 				<pre>func MeshProviderPrefabPyramid(args ...interface{}) (meshData *MeshData, err error)</pre>
 				<p>
 A MeshProvider that creates MeshData for a pyramid with extents -1 .. 1.
 args is ignored and err is always nil.
 The returned MeshData contains 4 triangle faces with IDs &#34;t0&#34; through &#34;t3&#34;.
-These faces are all classified with class: &#34;pyr&#34;.
+These faces are all classified with tag: &#34;pyr&#34;.
 </p>
 
 				
 			
 				
-				<h3 id="MeshProviderPrefabQuad">func <a href="/target/mesh-provider.go?s=4186:4266#L51">MeshProviderPrefabQuad</a></h3>
+				<h3 id="MeshProviderPrefabQuad">func <a href="/target/mesh-provider.go?s=4177:4257#L51">MeshProviderPrefabQuad</a></h3>
 				<pre>func MeshProviderPrefabQuad(args ...interface{}) (meshData *MeshData, err error)</pre>
 				<p>
 A MeshProvider that creates MeshData for a quad with extents -1 .. 1.
 args is ignored and err is always nil.
 The returned MeshData contains 2 triangle faces with IDs &#34;t0&#34; through &#34;t1&#34;.
-These faces are all classified with class: &#34;quad&#34;.
+These faces are all classified with tag: &#34;quad&#34;.
 </p>
 
 				
 			
 				
-				<h3 id="MeshProviderPrefabTri">func <a href="/target/mesh-provider.go?s=4983:5062#L65">MeshProviderPrefabTri</a></h3>
+				<h3 id="MeshProviderPrefabTri">func <a href="/target/mesh-provider.go?s=4972:5051#L65">MeshProviderPrefabTri</a></h3>
 				<pre>func MeshProviderPrefabTri(args ...interface{}) (meshData *MeshData, err error)</pre>
 				<p>
 A MeshProvider that creates MeshData for a triangle with extents -1 .. 1.
 args is ignored and err is always nil.
-The returned MeshData contains 1 triangle face with ID &#34;t0&#34; and class &#34;tri&#34;.
+The returned MeshData contains 1 triangle face with ID &#34;t0&#34; and tag &#34;tri&#34;.
 </p>
 
 				
 			
 				
-				<h3 id="NewMeshData">func <a href="/target/mesh-data.go?s=2390:2423#L97">NewMeshData</a></h3>
+				<h3 id="NewMeshData">func <a href="/target/mesh-data.go?s=2377:2410#L97">NewMeshData</a></h3>
 				<pre>func NewMeshData() (me *MeshData)</pre>
 				<p>
 Initializes and returns a new *MeshData* instance.
@@ -2276,7 +2292,7 @@ Initializes and returns a new *MeshData* instance.
 
 			
 				
-				<h3 id="MeshData.AddFaces">func (*MeshData) <a href="/target/mesh-data.go?s=2501:2550#L103">AddFaces</a></h3>
+				<h3 id="MeshData.AddFaces">func (*MeshData) <a href="/target/mesh-data.go?s=2488:2537#L103">AddFaces</a></h3>
 				<pre>func (me *MeshData) AddFaces(faces ...*MeshFace3)</pre>
 				<p>
 Adds all specified Faces to this MeshData.
@@ -2286,7 +2302,7 @@ Adds all specified Faces to this MeshData.
 				
 			
 				
-				<h3 id="MeshData.AddNormals">func (*MeshData) <a href="/target/mesh-data.go?s=2838:2893#L115">AddNormals</a></h3>
+				<h3 id="MeshData.AddNormals">func (*MeshData) <a href="/target/mesh-data.go?s=2825:2880#L115">AddNormals</a></h3>
 				<pre>func (me *MeshData) AddNormals(normals ...MeshVertAtt3)</pre>
 				<p>
 Adds all the specified Normals to this MeshData.
@@ -2296,7 +2312,7 @@ Adds all the specified Normals to this MeshData.
 				
 			
 				
-				<h3 id="MeshData.AddPositions">func (*MeshData) <a href="/target/mesh-data.go?s=2670:2729#L110">AddPositions</a></h3>
+				<h3 id="MeshData.AddPositions">func (*MeshData) <a href="/target/mesh-data.go?s=2657:2716#L110">AddPositions</a></h3>
 				<pre>func (me *MeshData) AddPositions(positions ...MeshVertAtt3)</pre>
 				<p>
 Adds all specified Positions to this MeshData.
@@ -2306,7 +2322,7 @@ Adds all specified Positions to this MeshData.
 				
 			
 				
-				<h3 id="MeshData.AddTexCoords">func (*MeshData) <a href="/target/mesh-data.go?s=2998:3057#L120">AddTexCoords</a></h3>
+				<h3 id="MeshData.AddTexCoords">func (*MeshData) <a href="/target/mesh-data.go?s=2985:3044#L120">AddTexCoords</a></h3>
 				<pre>func (me *MeshData) AddTexCoords(texCoords ...MeshVertAtt2)</pre>
 				<p>
 Adds all the specified TexCoords to this MeshData.
@@ -2318,12 +2334,12 @@ Adds all the specified TexCoords to this MeshData.
 		
 			
 			
-			<h2 id="MeshFace3">type <a href="/target/mesh-data.go?s=436:557#L11">MeshFace3</a></h2>
+			<h2 id="MeshFace3">type <a href="/target/mesh-data.go?s=435:553#L11">MeshFace3</a></h2>
 			<pre>type MeshFace3 struct {
     <span class="comment">//	The indexed vertices making up this triangle.</span>
     V [3]MeshVert
 
-    <span class="comment">//	ID, Classes</span>
+    <span class="comment">//	ID, Tags</span>
     MeshFaceBase
 }</pre>
 			<p>
@@ -2339,12 +2355,12 @@ Represents an indexed triangle.
 
 			
 				
-				<h3 id="NewMeshFace3">func <a href="/target/mesh-data.go?s=775:845#L22">NewMeshFace3</a></h3>
-				<pre>func NewMeshFace3(class, id string, verts ...MeshVert) (me *MeshFace3)</pre>
+				<h3 id="NewMeshFace3">func <a href="/target/mesh-data.go?s=768:837#L22">NewMeshFace3</a></h3>
+				<pre>func NewMeshFace3(tags, id string, verts ...MeshVert) (me *MeshFace3)</pre>
 				<p>
-Creates and initializes a new MeshVert with the specified classes,
-ID and verts, and returns it. class may be empty or contain multiple
-classifications separated by spaces, which will be split into Classes.
+Creates and initializes a new MeshVert with the specified tags,
+ID and verts, and returns it. tags may be empty or contain multiple
+classification tags separated by spaces, which will be split into Tags.
 </p>
 
 				
@@ -2354,13 +2370,13 @@ classifications separated by spaces, which will be split into Classes.
 		
 			
 			
-			<h2 id="MeshFaceBase">type <a href="/target/mesh-data.go?s=252:399#L2">MeshFaceBase</a></h2>
+			<h2 id="MeshFaceBase">type <a href="/target/mesh-data.go?s=252:398#L2">MeshFaceBase</a></h2>
 			<pre>type MeshFaceBase struct {
     <span class="comment">//	Mesh-unique identifier for this face.</span>
     ID string
 
-    <span class="comment">//	Arbitrary classification(s) for this face.</span>
-    Classes []string
+    <span class="comment">//	Arbitrary classification tags for this face.</span>
+    Tags []string
 }</pre>
 			
 
@@ -2397,7 +2413,7 @@ the returned MeshData.
 		
 			
 			
-			<h2 id="MeshVert">type <a href="/target/mesh-data.go?s=1607:1794#L62">MeshVert</a></h2>
+			<h2 id="MeshVert">type <a href="/target/mesh-data.go?s=1594:1781#L62">MeshVert</a></h2>
 			<pre>type MeshVert struct {
     <span class="comment">//	Index of the vertex position</span>
     PosIndex uint32
@@ -2425,7 +2441,7 @@ Represents an indexed vertex in a MeshFace3.
 		
 			
 			
-			<h2 id="MeshVertAtt2">type <a href="/target/mesh-data.go?s=1901:1929#L75">MeshVertAtt2</a></h2>
+			<h2 id="MeshVertAtt2">type <a href="/target/mesh-data.go?s=1888:1916#L75">MeshVertAtt2</a></h2>
 			<pre>type MeshVertAtt2 [2]float32</pre>
 			<p>
 Represents a 2-component vertex attribute in a MeshData.
@@ -2445,7 +2461,7 @@ Represents a 2-component vertex attribute in a MeshData.
 		
 			
 			
-			<h2 id="MeshVertAtt3">type <a href="/target/mesh-data.go?s=2030:2058#L79">MeshVertAtt3</a></h2>
+			<h2 id="MeshVertAtt3">type <a href="/target/mesh-data.go?s=2017:2045#L79">MeshVertAtt3</a></h2>
 			<pre>type MeshVertAtt3 [3]float32</pre>
 			<p>
 Represents a 3-component vertex attribute in a MeshData
