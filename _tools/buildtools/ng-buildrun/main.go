@@ -154,7 +154,6 @@ func inSlice(slice []string, val string) bool {
 
 func main() {
 	var outTime, srcTime, tmpTime int64
-	runtime.LockOSThread()
 	nginePath := os.Args[1]
 	srcDirPath, outFilePath := filepath.Join(nginePath, "core", "_glsl"), filepath.Join(nginePath, "core", "-gen-glsl-src.go")
 	if fileInfo, err := os.Stat(outFilePath); err == nil {
