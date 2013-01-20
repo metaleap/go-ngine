@@ -6,91 +6,52 @@ import (
 	unum "github.com/metaleap/go-util/num"
 )
 
-type subNodes struct {
-	M     map[string]*Node
-	owner *Node
-}
-
-func newSubNodes(owner *Node) (nodes *subNodes) {
-	nodes = &subNodes{owner: owner, M: map[string]*Node{}}
-	return
-}
-
-func (me *subNodes) Add(node *Node) {
-	if node.parentNode != nil {
-		node.parentNode.SubNodes.Remove(node.name)
-	}
-	node.parentNode = me.owner
-	me.M[node.name] = node
-}
-
-func (me *subNodes) Get(names ...string) (nodes []*Node) {
-	nodes = make([]*Node, len(names))
-	for curIndex, curStr = range names {
-		nodes[curIndex] = me.M[curStr]
-	}
-	return
-}
-
-func (me *subNodes) Make(nodeName, meshName, modelName string) (node *Node) {
-	node = newNode(nodeName, meshName, modelName, me.owner)
-	me.Add(node)
-	return
-}
-
-func (me *subNodes) MakeN(nodeMeshModelNames ...string) {
-	for i := 2; i < len(nodeMeshModelNames); i += 3 {
-		me.Make(nodeMeshModelNames[i-2], nodeMeshModelNames[i-1], nodeMeshModelNames[i])
-	}
-}
-
-func (me *subNodes) Remove(name string) {
-	if node := me.M[name]; node != nil {
-		node.parentNode = nil
-	}
-	delete(me.M, name)
-}
-
+//	Declares a point of interest in a Scene.
 type Node struct {
 	matModelProj   unum.Mat4
 	glMatModelProj ugl.GlMat4
 
-	Disabled  bool
-	SubNodes  *subNodes
-	Transform *NodeTransforms
+	//	If true, this Node is ignored by the rendering runtime.
+	Disabled bool
 
-	mat                                        *FxMaterial
-	mesh                                       *Mesh
-	model                                      *Model
-	curSubNode, parentNode                     *Node
-	curKey, matName, meshName, modelName, name string
+	//	Allows the Node to recursively define hierarchy.
+	ChildNodes Nodes
+
+	//	Encapsulates all parent-relative transformations for this Node.
+	Transform NodeTransforms
+
+	mat                                *FxMaterial
+	mesh                               *Mesh
+	model                              *Model
+	curSubNode, parentNode             *Node
+	curKey, matID, meshID, modelID, id string
 }
 
-func newNode(nodeName, meshName, modelName string, parent *Node) (me *Node) {
-	me = &Node{name: nodeName, parentNode: parent}
-	me.SubNodes = newSubNodes(me)
-	me.SetMeshModelName(meshName, modelName)
-	me.Transform = newNodeTransforms(me)
+func newNode(id, meshID, modelID string, parent *Node) (me *Node) {
+	me = &Node{id: id, parentNode: parent}
+	me.ChildNodes.init(me)
+	me.Transform.init(me)
+	me.SetMeshModelID(meshID, modelID)
 	return
 }
 
-func (me *Node) Material() *FxMaterial {
+func (me *Node) EffectiveMaterial() *FxMaterial {
 	if me.mat != nil {
 		return me.mat
 	}
 	return me.model.mat
 }
 
-func (me *Node) MatName() string {
-	return me.matName
+func (me *Node) MatID() string {
+	return me.matID
 }
 
-func (me *Node) MeshName() string {
-	return me.meshName
+func (me *Node) MeshID() string {
+	return me.meshID
 }
 
-func (me *Node) MeshModelName() string {
-	return me.modelName
+func (me *Node) ModelID() string {
+	return me.modelID
 }
 
 func (me *Node) render() {
@@ -103,28 +64,28 @@ func (me *Node) render() {
 			gl.UniformMatrix4fv(curProg.UnifLocs["uMatModelProj"], 1, gl.FALSE, &me.glMatModelProj[0])
 			me.model.render()
 		}
-		for me.curKey, me.curSubNode = range me.SubNodes.M {
+		for me.curKey, me.curSubNode = range me.ChildNodes.M {
 			me.curSubNode.render()
 		}
 	}
 }
 
-func (me *Node) SetMatID(newMatName string) {
-	if newMatName != me.matName {
-		me.mat, me.matName = Core.Libs.Materials[newMatName], newMatName
+func (me *Node) SetMatID(newMatID string) {
+	if newMatID != me.matID {
+		me.mat, me.matID = Core.Libs.Materials[newMatID], newMatID
 	}
 }
 
-func (me *Node) SetMeshModelName(meshName, modelName string) {
-	if meshName != me.meshName {
-		me.mesh, me.meshName = Core.Libs.Meshes[meshName], meshName
+func (me *Node) SetMeshModelID(meshID, modelID string) {
+	if meshID != me.meshID {
+		me.mesh, me.meshID = Core.Libs.Meshes[meshID], meshID
 	}
 	if me.mesh == nil {
-		me.model, me.modelName = nil, ""
+		me.model, me.modelID = nil, ""
 	} else {
-		me.model, me.modelName = me.mesh.Models.Default(), ""
-		if modelName != me.modelName {
-			me.model, me.modelName = me.mesh.Models[modelName], modelName
+		me.model, me.modelID = me.mesh.Models.Default(), ""
+		if modelID != me.modelID {
+			me.model, me.modelID = me.mesh.Models[modelID], modelID
 		}
 	}
 }

@@ -47,9 +47,7 @@ func LoadSampleScene_01_EmptyPlane() {
 
 	//	scene
 	scene = ngsamples.AddScene("")
-	scene.RootNode.SubNodes.MakeN("node_floor", "mesh_plane", "" /*"node_box", "mesh_cube", ""*/)
-	floor = scene.RootNode.SubNodes.M["node_floor"]
-
+	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	floor.SetMatID("mat_cobbles")
 	floor.Transform.SetPosXYZ(0.1, 0, -8)
 	floor.Transform.SetScaleN(100)

@@ -6,11 +6,11 @@ type FxMaterial struct {
 	//	under any of the associations in the FaceEffects field.
 	DefaultEffectID string
 
-	//	Associates certain individual faces or classes of faces
+	//	Associates certain individual faces or tags of faces
 	//	with specific effect IDs.
 	FaceEffects struct {
-		//	Associates face classes with effect IDs.
-		ByClass map[string]string
+		//	Associates face tags with effect IDs.
+		ByTag map[string]string
 
 		//	Associates specific face IDs with effect IDs.
 		ByID map[string]string
@@ -22,7 +22,7 @@ func (me *FxMaterial) dispose() {
 
 func (me *FxMaterial) init() {
 	me.FaceEffects.ByID = map[string]string{}
-	me.FaceEffects.ByClass = map[string]string{}
+	me.FaceEffects.ByTag = map[string]string{}
 }
 
 //#begin-gt -gen-lib.gt T:FxMaterial

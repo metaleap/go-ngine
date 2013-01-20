@@ -534,22 +534,22 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Node.MatName">func (me *Node) MatName() string</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Node.MatID">func (me *Node) MatID() string</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Node.Material">func (me *Node) Material() *FxMaterial</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Node.MeshModelName">func (me *Node) MeshModelName() string</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Node.MeshID">func (me *Node) MeshID() string</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Node.MeshName">func (me *Node) MeshName() string</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Node.ModelID">func (me *Node) ModelID() string</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Node.SetMatID">func (me *Node) SetMatID(newMatName string)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Node.SetMatID">func (me *Node) SetMatID(newMatID string)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Node.SetMeshModelName">func (me *Node) SetMeshModelName(meshName, modelName string)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Node.SetMeshModelID">func (me *Node) SetMeshModelID(meshID, modelID string)</a></dd>
 				
 			
 				
@@ -633,6 +633,28 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.StepDelta">func (me *NodeTransforms) StepDelta(deltaPerSecond float64) float64</a></dd>
+				
+			
+				
+				<dd><a href="#Nodes">type Nodes</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Nodes.Add">func (me *Nodes) Add(node *Node)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Nodes.AddNew">func (me *Nodes) AddNew(id, meshID, modelID string) (node *Node)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Nodes.Remove">func (me *Nodes) Remove(id string)</a></dd>
+				
+			
+				
+				<dd><a href="#RenderBatch">type RenderBatch</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RenderBatch.Update">func (me *RenderBatch) Update()</a></dd>
 				
 			
 				
@@ -741,6 +763,10 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<a href="/target/node-transform.go">node-transform.go</a>
 			
 				<a href="/target/node.go">node.go</a>
+			
+				<a href="/target/nodes.go">nodes.go</a>
+			
+				<a href="/target/render-batch.go">render-batch.go</a>
 			
 				<a href="/target/render-canvas.go">render-canvas.go</a>
 			
@@ -991,7 +1017,7 @@ some entity that is rotated facing some arbitrary direction).
 
 			
 				
-				<h3 id="Controller.BeginUpdate">func (*Controller) <a href="/target/controller.go?s=2771:2806#L76">BeginUpdate</a></h3>
+				<h3 id="Controller.BeginUpdate">func (*Controller) <a href="/target/controller.go?s=2774:2809#L76">BeginUpdate</a></h3>
 				<pre>func (me *Controller) BeginUpdate()</pre>
 				<p>
 Temporarily suspends all matrix re-calculations typically occuring inside
@@ -1005,7 +1031,7 @@ EndUpdate() to apply all changes in a final matrix re-calculation.
 				
 			
 				
-				<h3 id="Controller.EndUpdate">func (*Controller) <a href="/target/controller.go?s=3140:3173#L84">EndUpdate</a></h3>
+				<h3 id="Controller.EndUpdate">func (*Controller) <a href="/target/controller.go?s=3143:3176#L84">EndUpdate</a></h3>
 				<pre>func (me *Controller) EndUpdate()</pre>
 				<p>
 Applies all changes made to Pos, Dir or UpAxis since BeginUpdate() was last
@@ -1018,7 +1044,7 @@ MoveXyz() / TurnXyz() methods that were suspended since BeginUpdate().
 				
 			
 				
-				<h3 id="Controller.MoveBackward">func (*Controller) <a href="/target/controller.go?s=4074:4110#L116">MoveBackward</a></h3>
+				<h3 id="Controller.MoveBackward">func (*Controller) <a href="/target/controller.go?s=4083:4119#L116">MoveBackward</a></h3>
 				<pre>func (me *Controller) MoveBackward()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move backward&#34;.
@@ -1028,7 +1054,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move backward&#34
 				
 			
 				
-				<h3 id="Controller.MoveDown">func (*Controller) <a href="/target/controller.go?s=4275:4307#L122">MoveDown</a></h3>
+				<h3 id="Controller.MoveDown">func (*Controller) <a href="/target/controller.go?s=4287:4319#L122">MoveDown</a></h3>
 				<pre>func (me *Controller) MoveDown()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move downward&#34;.
@@ -1038,7 +1064,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move downward&#34
 				
 			
 				
-				<h3 id="Controller.MoveForward">func (*Controller) <a href="/target/controller.go?s=4474:4509#L128">MoveForward</a></h3>
+				<h3 id="Controller.MoveForward">func (*Controller) <a href="/target/controller.go?s=4489:4524#L128">MoveForward</a></h3>
 				<pre>func (me *Controller) MoveForward()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move forward&#34;.
@@ -1048,7 +1074,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move forward&#34;
 				
 			
 				
-				<h3 id="Controller.MoveLeft">func (*Controller) <a href="/target/controller.go?s=4675:4707#L134">MoveLeft</a></h3>
+				<h3 id="Controller.MoveLeft">func (*Controller) <a href="/target/controller.go?s=4693:4725#L134">MoveLeft</a></h3>
 				<pre>func (me *Controller) MoveLeft()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move left-ward&#34;.
@@ -1058,7 +1084,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move left-ward&#3
 				
 			
 				
-				<h3 id="Controller.MoveRight">func (*Controller) <a href="/target/controller.go?s=4901:4934#L140">MoveRight</a></h3>
+				<h3 id="Controller.MoveRight">func (*Controller) <a href="/target/controller.go?s=4922:4955#L140">MoveRight</a></h3>
 				<pre>func (me *Controller) MoveRight()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move right-ward&#34;.
@@ -1068,7 +1094,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move right-ward&#
 				
 			
 				
-				<h3 id="Controller.MoveUp">func (*Controller) <a href="/target/controller.go?s=5124:5154#L146">MoveUp</a></h3>
+				<h3 id="Controller.MoveUp">func (*Controller) <a href="/target/controller.go?s=5148:5178#L146">MoveUp</a></h3>
 				<pre>func (me *Controller) MoveUp()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move upward&#34;.
@@ -1078,7 +1104,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move upward&#34;.
 				
 			
 				
-				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=5396:5440#L153">StepSizeMove</a></h3>
+				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=5423:5467#L153">StepSizeMove</a></h3>
 				<pre>func (me *Controller) StepSizeMove() float64</pre>
 				<p>
 Returns the current distance that a single MoveXyz() call (per loop iteration) would move.
@@ -1089,7 +1115,7 @@ Returns the current distance that a single MoveXyz() call (per loop iteration) w
 				
 			
 				
-				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=5658:5702#L159">StepSizeTurn</a></h3>
+				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=5685:5729#L159">StepSizeTurn</a></h3>
 				<pre>func (me *Controller) StepSizeTurn() float64</pre>
 				<p>
 Returns the current degrees that a single TurnXyz() call (per loop iteration) would turn.
@@ -1100,7 +1126,7 @@ Returns the current degrees that a single TurnXyz() call (per loop iteration) wo
 				
 			
 				
-				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=5847:5879#L164">TurnDown</a></h3>
+				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=5874:5906#L164">TurnDown</a></h3>
 				<pre>func (me *Controller) TurnDown()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34;.
@@ -1110,7 +1136,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34
 				
 			
 				
-				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=6075:6107#L173">TurnLeft</a></h3>
+				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=6105:6137#L173">TurnLeft</a></h3>
 				<pre>func (me *Controller) TurnLeft()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#34;.
@@ -1120,7 +1146,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#3
 				
 			
 				
-				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=6265:6298#L180">TurnRight</a></h3>
+				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=6298:6331#L180">TurnRight</a></h3>
 				<pre>func (me *Controller) TurnRight()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#34;.
@@ -1130,7 +1156,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#
 				
 			
 				
-				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=6452:6482#L187">TurnUp</a></h3>
+				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=6488:6518#L187">TurnUp</a></h3>
 				<pre>func (me *Controller) TurnUp()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34;.
@@ -1711,17 +1737,17 @@ Initializes and returns a new FxImage2D with default parameters.
 		
 			
 			
-			<h2 id="FxMaterial">type <a href="/target/fx-material.gt.go?s=103:546#L1">FxMaterial</a></h2>
+			<h2 id="FxMaterial">type <a href="/target/fx-material.gt.go?s=103:538#L1">FxMaterial</a></h2>
 			<pre>type FxMaterial struct {
     <span class="comment">//	This effect is used by default for all faces that do not fall</span>
     <span class="comment">//	under any of the associations in the FaceEffects field.</span>
     DefaultEffectID string
 
-    <span class="comment">//	Associates certain individual faces or classes of faces</span>
+    <span class="comment">//	Associates certain individual faces or tags of faces</span>
     <span class="comment">//	with specific effect IDs.</span>
     FaceEffects struct {
-        <span class="comment">//	Associates face classes with effect IDs.</span>
-        ByClass map[string]string
+        <span class="comment">//	Associates face tags with effect IDs.</span>
+        ByTag map[string]string
 
         <span class="comment">//	Associates specific face IDs with effect IDs.</span>
         ByID map[string]string
@@ -1740,7 +1766,7 @@ A material binds effects (FxEffect in Core.Libs.Effects) to geometry (Model or N
 
 			
 				
-				<h3 id="NewFxMaterial">func <a href="/target/fx-material.gt.go?s=815:852#L21">NewFxMaterial</a></h3>
+				<h3 id="NewFxMaterial">func <a href="/target/fx-material.gt.go?s=805:842#L21">NewFxMaterial</a></h3>
 				<pre>func NewFxMaterial() (me *FxMaterial)</pre>
 				<p>
 Initializes and returns a new FxMaterial with default parameters.
@@ -1934,7 +1960,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibFxMaterials">type <a href="/target/fx-material.gt.go?s=974:1016#L28">LibFxMaterials</a></h2>
+			<h2 id="LibFxMaterials">type <a href="/target/fx-material.gt.go?s=964:1006#L28">LibFxMaterials</a></h2>
 			<pre>type LibFxMaterials map[string]*FxMaterial</pre>
 			<p>
 A hash-table of FxMaterials associated by IDs. Only for use in Core.Libs.
@@ -1951,7 +1977,7 @@ A hash-table of FxMaterials associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxMaterials.AddNew">func (LibFxMaterials) <a href="/target/fx-material.gt.go?s=1144:1204#L32">AddNew</a></h3>
+				<h3 id="LibFxMaterials.AddNew">func (LibFxMaterials) <a href="/target/fx-material.gt.go?s=1134:1194#L32">AddNew</a></h3>
 				<pre>func (me LibFxMaterials) AddNew(id string) (obj *FxMaterial)</pre>
 				<p>
 Creates and initializes a new FxMaterial with default parameters,
@@ -1964,7 +1990,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibMeshes">type <a href="/target/mesh.gt.go?s=5184:5215#L134">LibMeshes</a></h2>
+			<h2 id="LibMeshes">type <a href="/target/mesh.gt.go?s=5148:5179#L132">LibMeshes</a></h2>
 			<pre>type LibMeshes map[string]*Mesh</pre>
 			<p>
 A hash-table of Meshs associated by IDs. Only for use in Core.Libs.
@@ -1981,14 +2007,14 @@ A hash-table of Meshs associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibMeshes.AddLoad">func (LibMeshes) <a href="/target/mesh.gt.go?s=5433:5543#L144">AddLoad</a></h3>
+				<h3 id="LibMeshes.AddLoad">func (LibMeshes) <a href="/target/mesh.gt.go?s=5397:5507#L142">AddLoad</a></h3>
 				<pre>func (me LibMeshes) AddLoad(id string, meshProvider MeshProvider, args ...interface{}) (mesh *Mesh, err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="LibMeshes.AddNew">func (LibMeshes) <a href="/target/mesh.gt.go?s=5337:5386#L138">AddNew</a></h3>
+				<h3 id="LibMeshes.AddNew">func (LibMeshes) <a href="/target/mesh.gt.go?s=5301:5350#L136">AddNew</a></h3>
 				<pre>func (me LibMeshes) AddNew(id string) (obj *Mesh)</pre>
 				<p>
 Creates and initializes a new Mesh with default parameters,
@@ -2001,7 +2027,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibScenes">type <a href="/target/scene.gt.go?s=459:491#L16">LibScenes</a></h2>
+			<h2 id="LibScenes">type <a href="/target/scene.gt.go?s=503:535#L20">LibScenes</a></h2>
 			<pre>type LibScenes map[string]*Scene</pre>
 			<p>
 A hash-table of Scenes associated by IDs. Only for use in Core.Libs.
@@ -2018,7 +2044,7 @@ A hash-table of Scenes associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibScenes.AddNew">func (LibScenes) <a href="/target/scene.gt.go?s=614:664#L20">AddNew</a></h3>
+				<h3 id="LibScenes.AddNew">func (LibScenes) <a href="/target/scene.gt.go?s=658:708#L24">AddNew</a></h3>
 				<pre>func (me LibScenes) AddNew(id string) (obj *Scene)</pre>
 				<p>
 Creates and initializes a new Scene with default parameters,
@@ -2046,7 +2072,7 @@ adds it to me under the specified ID, and returns it.
 
 			
 				
-				<h3 id="NewMesh">func <a href="/target/mesh.gt.go?s=5034:5068#L127">NewMesh</a></h3>
+				<h3 id="NewMesh">func <a href="/target/mesh.gt.go?s=4998:5032#L125">NewMesh</a></h3>
 				<pre>func NewMesh(id string) (me *Mesh)</pre>
 				<p>
 Initializes and returns a new Mesh with default parameters.
@@ -2057,42 +2083,42 @@ Initializes and returns a new Mesh with default parameters.
 
 			
 				
-				<h3 id="Mesh.GpuDelete">func (*Mesh) <a href="/target/mesh.gt.go?s=617:644#L20">GpuDelete</a></h3>
+				<h3 id="Mesh.GpuDelete">func (*Mesh) <a href="/target/mesh.gt.go?s=637:664#L20">GpuDelete</a></h3>
 				<pre>func (me *Mesh) GpuDelete()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.GpuUpload">func (*Mesh) <a href="/target/mesh.gt.go?s=695:734#L26">GpuUpload</a></h3>
+				<h3 id="Mesh.GpuUpload">func (*Mesh) <a href="/target/mesh.gt.go?s=715:754#L26">GpuUpload</a></h3>
 				<pre>func (me *Mesh) GpuUpload() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.gt.go?s=2335:2369#L53">GpuUploaded</a></h3>
+				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.gt.go?s=2355:2389#L53">GpuUploaded</a></h3>
 				<pre>func (me *Mesh) GpuUploaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Load">func (*Mesh) <a href="/target/mesh.gt.go?s=2396:2472#L57">Load</a></h3>
+				<h3 id="Mesh.Load">func (*Mesh) <a href="/target/mesh.gt.go?s=2416:2492#L57">Load</a></h3>
 				<pre>func (me *Mesh) Load(provider MeshProvider, args ...interface{}) (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.gt.go?s=4479:4508#L109">Loaded</a></h3>
+				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.gt.go?s=4443:4472#L107">Loaded</a></h3>
 				<pre>func (me *Mesh) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.gt.go?s=4927:4951#L122">Unload</a></h3>
+				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.gt.go?s=4891:4915#L120">Unload</a></h3>
 				<pre>func (me *Mesh) Unload()</pre>
 				
 				
@@ -2195,7 +2221,7 @@ Initializes and returns a new Mesh with default parameters.
 		
 			
 			
-			<h2 id="MeshData">type <a href="/target/mesh-data.go?s=2095:2321#L82">MeshData</a></h2>
+			<h2 id="MeshData">type <a href="/target/mesh-data.go?s=2089:2315#L78">MeshData</a></h2>
 			<pre>type MeshData struct {
     <span class="comment">//	Vertex positions</span>
     Positions []MeshVertAtt3
@@ -2281,7 +2307,7 @@ The returned MeshData contains 1 triangle face with ID &#34;t0&#34; and tag &#34
 				
 			
 				
-				<h3 id="NewMeshData">func <a href="/target/mesh-data.go?s=2377:2410#L97">NewMeshData</a></h3>
+				<h3 id="NewMeshData">func <a href="/target/mesh-data.go?s=2371:2404#L93">NewMeshData</a></h3>
 				<pre>func NewMeshData() (me *MeshData)</pre>
 				<p>
 Initializes and returns a new *MeshData* instance.
@@ -2292,7 +2318,7 @@ Initializes and returns a new *MeshData* instance.
 
 			
 				
-				<h3 id="MeshData.AddFaces">func (*MeshData) <a href="/target/mesh-data.go?s=2488:2537#L103">AddFaces</a></h3>
+				<h3 id="MeshData.AddFaces">func (*MeshData) <a href="/target/mesh-data.go?s=2482:2531#L99">AddFaces</a></h3>
 				<pre>func (me *MeshData) AddFaces(faces ...*MeshFace3)</pre>
 				<p>
 Adds all specified Faces to this MeshData.
@@ -2302,7 +2328,7 @@ Adds all specified Faces to this MeshData.
 				
 			
 				
-				<h3 id="MeshData.AddNormals">func (*MeshData) <a href="/target/mesh-data.go?s=2825:2880#L115">AddNormals</a></h3>
+				<h3 id="MeshData.AddNormals">func (*MeshData) <a href="/target/mesh-data.go?s=2819:2874#L111">AddNormals</a></h3>
 				<pre>func (me *MeshData) AddNormals(normals ...MeshVertAtt3)</pre>
 				<p>
 Adds all the specified Normals to this MeshData.
@@ -2312,7 +2338,7 @@ Adds all the specified Normals to this MeshData.
 				
 			
 				
-				<h3 id="MeshData.AddPositions">func (*MeshData) <a href="/target/mesh-data.go?s=2657:2716#L110">AddPositions</a></h3>
+				<h3 id="MeshData.AddPositions">func (*MeshData) <a href="/target/mesh-data.go?s=2651:2710#L106">AddPositions</a></h3>
 				<pre>func (me *MeshData) AddPositions(positions ...MeshVertAtt3)</pre>
 				<p>
 Adds all specified Positions to this MeshData.
@@ -2322,7 +2348,7 @@ Adds all specified Positions to this MeshData.
 				
 			
 				
-				<h3 id="MeshData.AddTexCoords">func (*MeshData) <a href="/target/mesh-data.go?s=2985:3044#L120">AddTexCoords</a></h3>
+				<h3 id="MeshData.AddTexCoords">func (*MeshData) <a href="/target/mesh-data.go?s=2979:3038#L116">AddTexCoords</a></h3>
 				<pre>func (me *MeshData) AddTexCoords(texCoords ...MeshVertAtt2)</pre>
 				<p>
 Adds all the specified TexCoords to this MeshData.
@@ -2413,7 +2439,7 @@ the returned MeshData.
 		
 			
 			
-			<h2 id="MeshVert">type <a href="/target/mesh-data.go?s=1594:1781#L62">MeshVert</a></h2>
+			<h2 id="MeshVert">type <a href="/target/mesh-data.go?s=1588:1775#L58">MeshVert</a></h2>
 			<pre>type MeshVert struct {
     <span class="comment">//	Index of the vertex position</span>
     PosIndex uint32
@@ -2441,7 +2467,7 @@ Represents an indexed vertex in a MeshFace3.
 		
 			
 			
-			<h2 id="MeshVertAtt2">type <a href="/target/mesh-data.go?s=1888:1916#L75">MeshVertAtt2</a></h2>
+			<h2 id="MeshVertAtt2">type <a href="/target/mesh-data.go?s=1882:1910#L71">MeshVertAtt2</a></h2>
 			<pre>type MeshVertAtt2 [2]float32</pre>
 			<p>
 Represents a 2-component vertex attribute in a MeshData.
@@ -2461,7 +2487,7 @@ Represents a 2-component vertex attribute in a MeshData.
 		
 			
 			
-			<h2 id="MeshVertAtt3">type <a href="/target/mesh-data.go?s=2017:2045#L79">MeshVertAtt3</a></h2>
+			<h2 id="MeshVertAtt3">type <a href="/target/mesh-data.go?s=2011:2039#L75">MeshVertAtt3</a></h2>
 			<pre>type MeshVertAtt3 [3]float32</pre>
 			<p>
 Represents a 3-component vertex attribute in a MeshData
@@ -2563,11 +2589,11 @@ Returns the default Model (with ID &#34;&#34;) for the parent Mesh.
 		
 			
 			
-			<h2 id="Node">type <a href="/target/node.go?s=1148:1545#L44">Node</a></h2>
+			<h2 id="Node">type <a href="/target/node.go?s=131:486#L1">Node</a></h2>
 			<pre>type Node struct {
-    Disabled  bool
-    SubNodes  *subNodes
-    Transform *NodeTransforms
+    Disabled   bool
+    ChildNodes Nodes
+    Transform  NodeTransforms
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			
@@ -2582,43 +2608,43 @@ Returns the default Model (with ID &#34;&#34;) for the parent Mesh.
 
 			
 				
-				<h3 id="Node.MatName">func (*Node) <a href="/target/node.go?s=1899:1931#L74">MatName</a></h3>
-				<pre>func (me *Node) MatName() string</pre>
+				<h3 id="Node.MatID">func (*Node) <a href="/target/node.go?s=794:824#L29">MatID</a></h3>
+				<pre>func (me *Node) MatID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Material">func (*Node) <a href="/target/node.go?s=1795:1833#L67">Material</a></h3>
+				<h3 id="Node.Material">func (*Node) <a href="/target/node.go?s=690:728#L22">Material</a></h3>
 				<pre>func (me *Node) Material() *FxMaterial</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MeshModelName">func (*Node) <a href="/target/node.go?s=2015:2053#L82">MeshModelName</a></h3>
-				<pre>func (me *Node) MeshModelName() string</pre>
+				<h3 id="Node.MeshID">func (*Node) <a href="/target/node.go?s=847:878#L33">MeshID</a></h3>
+				<pre>func (me *Node) MeshID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MeshName">func (*Node) <a href="/target/node.go?s=1956:1989#L78">MeshName</a></h3>
-				<pre>func (me *Node) MeshName() string</pre>
+				<h3 id="Node.ModelID">func (*Node) <a href="/target/node.go?s=902:934#L37">ModelID</a></h3>
+				<pre>func (me *Node) ModelID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=2567:2610#L102">SetMatID</a></h3>
-				<pre>func (me *Node) SetMatID(newMatName string)</pre>
+				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=1448:1489#L57">SetMatID</a></h3>
+				<pre>func (me *Node) SetMatID(newMatID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMeshModelName">func (*Node) <a href="/target/node.go?s=2717:2777#L108">SetMeshModelName</a></h3>
-				<pre>func (me *Node) SetMeshModelName(meshName, modelName string)</pre>
+				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=1586:1640#L63">SetMeshModelID</a></h3>
+				<pre>func (me *Node) SetMeshModelID(meshID, modelID string)</pre>
 				
 				
 				
@@ -2626,7 +2652,7 @@ Returns the default Model (with ID &#34;&#34;) for the parent Mesh.
 		
 			
 			
-			<h2 id="NodeTransforms">type <a href="/target/node-transform.go?s=613:1168#L6">NodeTransforms</a></h2>
+			<h2 id="NodeTransforms">type <a href="/target/node-transform.go?s=613:1147#L6">NodeTransforms</a></h2>
 			<pre>type NodeTransforms struct {
     <span class="comment">//	Translation of the from origin, if any.</span>
     Pos unum.Vec3
@@ -2638,7 +2664,6 @@ Returns the default Model (with ID &#34;&#34;) for the parent Mesh.
     Scale unum.Vec3
 
     <span class="comment">//	An arbitrary additional transformation to apply. Defaults to the 4x4 identity matrix for &#39;none&#39;.</span>
-    <span class="comment">//	Must not be nil.</span>
     Other unum.Mat4
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -2666,7 +2691,7 @@ ApplyMatrices() (or OnFooChanged()) methods.
 
 			
 				
-				<h3 id="NodeTransforms.ApplyMatrices">func (*NodeTransforms) <a href="/target/node-transform.go?s=1673:1714#L39">ApplyMatrices</a></h3>
+				<h3 id="NodeTransforms.ApplyMatrices">func (*NodeTransforms) <a href="/target/node-transform.go?s=1679:1720#L38">ApplyMatrices</a></h3>
 				<pre>func (me *NodeTransforms) ApplyMatrices()</pre>
 				<p>
 Creates a final single 4x4 transformation matrix for all transformations
@@ -2677,7 +2702,7 @@ in me. It is onlx this matrix that is used by the rendering runtime.
 				
 			
 				
-				<h3 id="NodeTransforms.OnAnyChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2338:2378#L55">OnAnyChanged</a></h3>
+				<h3 id="NodeTransforms.OnAnyChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2346:2386#L54">OnAnyChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnAnyChanged()</pre>
 				<p>
 Updates the translation matrix from the current me.Pos value.
@@ -2690,7 +2715,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnPosChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2645:2685#L68">OnPosChanged</a></h3>
+				<h3 id="NodeTransforms.OnPosChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2653:2693#L67">OnPosChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnPosChanged()</pre>
 				<p>
 Updates the translation matrix from the current me.Pos value.
@@ -2701,7 +2726,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnPosRotChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2906:2949#L76">OnPosRotChanged</a></h3>
+				<h3 id="NodeTransforms.OnPosRotChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2914:2957#L75">OnPosRotChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnPosRotChanged()</pre>
 				<p>
 Updates the translation matrix from the current me.Pos value.
@@ -2713,7 +2738,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnPosScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3172:3217#L85">OnPosScaleChanged</a></h3>
+				<h3 id="NodeTransforms.OnPosScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3180:3225#L84">OnPosScaleChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnPosScaleChanged()</pre>
 				<p>
 Updates the translation matrix from the current me.Pos value.
@@ -2725,7 +2750,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnRotChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3500:3540#L99">OnRotChanged</a></h3>
+				<h3 id="NodeTransforms.OnRotChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3508:3548#L98">OnRotChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnRotChanged()</pre>
 				<p>
 Updates the X, Y and Z axis rotation matrices from the current me.Rot value.
@@ -2736,7 +2761,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnRotScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3759:3804#L107">OnRotScaleChanged</a></h3>
+				<h3 id="NodeTransforms.OnRotScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3767:3812#L106">OnRotScaleChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnRotScaleChanged()</pre>
 				<p>
 Updates the scaling matrix from the current me.Scale value.
@@ -2748,7 +2773,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnRotXChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4051:4092#L119">OnRotXChanged</a></h3>
+				<h3 id="NodeTransforms.OnRotXChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4059:4100#L118">OnRotXChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnRotXChanged()</pre>
 				<p>
 Updates the X-axis rotation matrix from the current me.Rot.X value.
@@ -2759,7 +2784,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnRotYChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4319:4360#L130">OnRotYChanged</a></h3>
+				<h3 id="NodeTransforms.OnRotYChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4327:4368#L129">OnRotYChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnRotYChanged()</pre>
 				<p>
 Updates the Y-axis rotation matrix from the current me.Rot.Y value.
@@ -2770,7 +2795,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnRotZChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4587:4628#L141">OnRotZChanged</a></h3>
+				<h3 id="NodeTransforms.OnRotZChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4595:4636#L140">OnRotZChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnRotZChanged()</pre>
 				<p>
 Updates the Z-axis rotation matrix from the current me.Rot.Z value.
@@ -2781,7 +2806,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4848:4890#L152">OnScaleChanged</a></h3>
+				<h3 id="NodeTransforms.OnScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4856:4898#L151">OnScaleChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnScaleChanged()</pre>
 				<p>
 Updates the scaling matrix from the current me.Scale value.
@@ -2792,7 +2817,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnSomeChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=5394:5468#L163">OnSomeChanged</a></h3>
+				<h3 id="NodeTransforms.OnSomeChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=5402:5476#L162">OnSomeChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnSomeChanged(scale, pos, rotX, rotY, rotZ bool)</pre>
 				<p>
 If pos is true, updates the translation matrix from the current me.Pos value.
@@ -2807,7 +2832,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPos">func (*NodeTransforms) <a href="/target/node-transform.go?s=5710:5758#L183">SetPos</a></h3>
+				<h3 id="NodeTransforms.SetPos">func (*NodeTransforms) <a href="/target/node-transform.go?s=5718:5766#L182">SetPos</a></h3>
 				<pre>func (me *NodeTransforms) SetPos(pos *unum.Vec3)</pre>
 				<p>
 Sets me.Pos and calls OnPosChanged().
@@ -2817,7 +2842,7 @@ Sets me.Pos and calls OnPosChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosX">func (*NodeTransforms) <a href="/target/node-transform.go?s=5897:5944#L193">SetPosX</a></h3>
+				<h3 id="NodeTransforms.SetPosX">func (*NodeTransforms) <a href="/target/node-transform.go?s=5905:5952#L192">SetPosX</a></h3>
 				<pre>func (me *NodeTransforms) SetPosX(posX float64)</pre>
 				<p>
 Sets me.Pos.X and calls OnPosChanged().
@@ -2827,7 +2852,7 @@ Sets me.Pos.X and calls OnPosChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6027:6088#L199">SetPosXYZ</a></h3>
+				<h3 id="NodeTransforms.SetPosXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6035:6096#L198">SetPosXYZ</a></h3>
 				<pre>func (me *NodeTransforms) SetPosXYZ(posX, posY, posZ float64)</pre>
 				<p>
 Sets me.Pos and calls OnPosChanged().
@@ -2837,7 +2862,7 @@ Sets me.Pos and calls OnPosChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosY">func (*NodeTransforms) <a href="/target/node-transform.go?s=6205:6252#L205">SetPosY</a></h3>
+				<h3 id="NodeTransforms.SetPosY">func (*NodeTransforms) <a href="/target/node-transform.go?s=6213:6260#L204">SetPosY</a></h3>
 				<pre>func (me *NodeTransforms) SetPosY(posY float64)</pre>
 				<p>
 Sets me.Pos.Y and calls OnPosChanged().
@@ -2847,7 +2872,7 @@ Sets me.Pos.Y and calls OnPosChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6337:6384#L211">SetPosZ</a></h3>
+				<h3 id="NodeTransforms.SetPosZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6345:6392#L210">SetPosZ</a></h3>
 				<pre>func (me *NodeTransforms) SetPosZ(posZ float64)</pre>
 				<p>
 Sets me.Pos.Z and calls OnPosChanged().
@@ -2857,7 +2882,7 @@ Sets me.Pos.Z and calls OnPosChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRot">func (*NodeTransforms) <a href="/target/node-transform.go?s=6467:6515#L217">SetRot</a></h3>
+				<h3 id="NodeTransforms.SetRot">func (*NodeTransforms) <a href="/target/node-transform.go?s=6475:6523#L216">SetRot</a></h3>
 				<pre>func (me *NodeTransforms) SetRot(rot *unum.Vec3)</pre>
 				<p>
 Sets me.Rot and calls OnRotChanged().
@@ -2867,7 +2892,7 @@ Sets me.Rot and calls OnRotChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotX">func (*NodeTransforms) <a href="/target/node-transform.go?s=6654:6700#L227">SetRotX</a></h3>
+				<h3 id="NodeTransforms.SetRotX">func (*NodeTransforms) <a href="/target/node-transform.go?s=6662:6708#L226">SetRotX</a></h3>
 				<pre>func (me *NodeTransforms) SetRotX(rad float64)</pre>
 				<p>
 Sets me.Rot.X and calls OnRotChanged().
@@ -2877,7 +2902,7 @@ Sets me.Rot.X and calls OnRotChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6783:6844#L233">SetRotXYZ</a></h3>
+				<h3 id="NodeTransforms.SetRotXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6791:6852#L232">SetRotXYZ</a></h3>
 				<pre>func (me *NodeTransforms) SetRotXYZ(radX, radY, radZ float64)</pre>
 				<p>
 Sets me.Rot and calls OnRotChanged().
@@ -2887,7 +2912,7 @@ Sets me.Rot and calls OnRotChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotY">func (*NodeTransforms) <a href="/target/node-transform.go?s=6961:7007#L239">SetRotY</a></h3>
+				<h3 id="NodeTransforms.SetRotY">func (*NodeTransforms) <a href="/target/node-transform.go?s=6969:7015#L238">SetRotY</a></h3>
 				<pre>func (me *NodeTransforms) SetRotY(rad float64)</pre>
 				<p>
 Sets me.Rot.Y and calls OnRotChanged().
@@ -2897,7 +2922,7 @@ Sets me.Rot.Y and calls OnRotChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=7092:7138#L245">SetRotZ</a></h3>
+				<h3 id="NodeTransforms.SetRotZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=7100:7146#L244">SetRotZ</a></h3>
 				<pre>func (me *NodeTransforms) SetRotZ(rad float64)</pre>
 				<p>
 Sets me.Rot.Z and calls OnRotChanged().
@@ -2907,7 +2932,7 @@ Sets me.Rot.Z and calls OnRotChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetScale">func (*NodeTransforms) <a href="/target/node-transform.go?s=7225:7277#L251">SetScale</a></h3>
+				<h3 id="NodeTransforms.SetScale">func (*NodeTransforms) <a href="/target/node-transform.go?s=7233:7285#L250">SetScale</a></h3>
 				<pre>func (me *NodeTransforms) SetScale(scale *unum.Vec3)</pre>
 				<p>
 Sets me.Scale and calls OnScaleChanged().
@@ -2917,7 +2942,7 @@ Sets me.Scale and calls OnScaleChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetScaleN">func (*NodeTransforms) <a href="/target/node-transform.go?s=7420:7470#L261">SetScaleN</a></h3>
+				<h3 id="NodeTransforms.SetScaleN">func (*NodeTransforms) <a href="/target/node-transform.go?s=7428:7478#L260">SetScaleN</a></h3>
 				<pre>func (me *NodeTransforms) SetScaleN(scale float64)</pre>
 				<p>
 Sets me.Scale and calls OnScaleChanged().
@@ -2927,7 +2952,7 @@ Sets me.Scale and calls OnScaleChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetScaleXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=7558:7612#L266">SetScaleXYZ</a></h3>
+				<h3 id="NodeTransforms.SetScaleXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=7566:7620#L265">SetScaleXYZ</a></h3>
 				<pre>func (me *NodeTransforms) SetScaleXYZ(x, y, z float64)</pre>
 				<p>
 Sets me.Scale and calls OnScaleChanged().
@@ -2937,12 +2962,83 @@ Sets me.Scale and calls OnScaleChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.StepDelta">func (*NodeTransforms) <a href="/target/node-transform.go?s=7764:7831#L272">StepDelta</a></h3>
+				<h3 id="NodeTransforms.StepDelta">func (*NodeTransforms) <a href="/target/node-transform.go?s=7772:7839#L271">StepDelta</a></h3>
 				<pre>func (me *NodeTransforms) StepDelta(deltaPerSecond float64) float64</pre>
 				<p>
 Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
 </p>
 
+				
+				
+			
+		
+			
+			
+			<h2 id="Nodes">type <a href="/target/nodes.go?s=77:277#L1">Nodes</a></h2>
+			<pre>type Nodes struct {
+    <span class="comment">//	The underlying hash-table. NOT to be modified directly.</span>
+    <span class="comment">//	ONLY use the methods defined on the Nodes type to add,</span>
+    <span class="comment">//	remove or move nodes.</span>
+    M map[string]*Node
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+A hash-table of child nodes. Only used for Node.ChildNodes.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="Nodes.Add">func (*Nodes) <a href="/target/nodes.go?s=364:396#L8">Add</a></h3>
+				<pre>func (me *Nodes) Add(node *Node)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Nodes.AddNew">func (*Nodes) <a href="/target/nodes.go?s=529:593#L16">AddNew</a></h3>
+				<pre>func (me *Nodes) AddNew(id, meshID, modelID string) (node *Node)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Nodes.Remove">func (*Nodes) <a href="/target/nodes.go?s=668:702#L22">Remove</a></h3>
+				<pre>func (me *Nodes) Remove(id string)</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="RenderBatch">type <a href="/target/render-batch.go?s=14:55#L1">RenderBatch</a></h2>
+			<pre>type RenderBatch struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="RenderBatch.Update">func (*RenderBatch) <a href="/target/render-batch.go?s=155:186#L2">Update</a></h3>
+				<pre>func (me *RenderBatch) Update()</pre>
+				
 				
 				
 			
@@ -3032,10 +3128,14 @@ in OpenGL.
 		
 			
 			
-			<h2 id="Scene">type <a href="/target/scene.gt.go?s=43:119#L1">Scene</a></h2>
+			<h2 id="Scene">type <a href="/target/scene.gt.go?s=43:163#L1">Scene</a></h2>
 			<pre>type Scene struct {
     <span class="comment">//	The root Node for this scene graph.</span>
     RootNode Node
+
+    Rendering struct {
+        Batch RenderBatch
+    }
 }</pre>
 			<p>
 Represents a scene graph.
@@ -3050,7 +3150,7 @@ Represents a scene graph.
 
 			
 				
-				<h3 id="NewScene">func <a href="/target/scene.gt.go?s=320:347#L9">NewScene</a></h3>
+				<h3 id="NewScene">func <a href="/target/scene.gt.go?s=364:391#L13">NewScene</a></h3>
 				<pre>func NewScene() (me *Scene)</pre>
 				<p>
 Initializes and returns a new Scene with default parameters.

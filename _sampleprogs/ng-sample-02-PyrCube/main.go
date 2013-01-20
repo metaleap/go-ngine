@@ -74,8 +74,9 @@ func LoadSampleScene_02_PyrCube() {
 
 	//	scene
 	scene = ngsamples.AddScene("")
-	scene.RootNode.SubNodes.MakeN("node_floor", "mesh_plane", "", "node_pyr", "mesh_pyramid", "", "node_box", "mesh_cube", "")
-	floor, pyr, box = scene.RootNode.SubNodes.M["node_floor"], scene.RootNode.SubNodes.M["node_pyr"], scene.RootNode.SubNodes.M["node_box"]
+	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
+	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyramid", "")
+	box = scene.RootNode.ChildNodes.AddNew("node_box", "mesh_cube", "")
 
 	floor.SetMatID("mat_cobbles")
 	floor.Transform.SetPosXYZ(0.1, 0, -8)

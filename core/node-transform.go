@@ -24,36 +24,35 @@ type NodeTransforms struct {
 	Scale unum.Vec3
 
 	//	An arbitrary additional transformation to apply. Defaults to the 4x4 identity matrix for 'none'.
-	//	Must not be nil.
 	Other unum.Mat4
 
 	matModelView, matRotX, matRotY, matRotZ, matScale, matTranslation, matParent unum.Mat4
 	owner                                                                        *Node
 }
 
-func newNodeTransforms(owner *Node) (me *NodeTransforms) {
-	me = &NodeTransforms{}
+func (me *NodeTransforms) init(owner *Node) {
 	me.owner = owner
 	me.Scale.X, me.Scale.Y, me.Scale.Z = 1, 1, 1
 	me.matScale.Scaling(&me.Scale)
+	//	effectively (0,0,0)
 	me.matTranslation.Translation(&me.Pos)
-	me.matRotX.RotationX(0)
-	me.matRotY.RotationY(0)
-	me.matRotZ.RotationZ(0)
+	//	all rots effectively 0
+	me.matRotX.RotationX(me.Rot.X)
+	me.matRotY.RotationY(me.Rot.Y)
+	me.matRotZ.RotationZ(me.Rot.Z)
 	unum.Mat4Identities(&me.Other, &me.matModelView)
-	return
 }
 
 //	Creates a final single 4x4 transformation matrix for all transformations
 //	in me. It is onlx this matrix that is used by the rendering runtime.
 func (me *NodeTransforms) ApplyMatrices() {
-	if me.owner.parentNode != nil {
-		me.matParent.CopyFrom(&me.owner.parentNode.Transform.matModelView)
-	} else {
+	if me.owner.parentNode == nil {
 		me.matParent.Identity()
+	} else {
+		me.matParent.CopyFrom(&me.owner.parentNode.Transform.matModelView)
 	}
 	me.matModelView.SetFromMultN(&me.matParent, &me.matTranslation, &me.Other, &me.matScale, &me.matRotX, &me.matRotY, &me.matRotZ)
-	for _, me.owner.curSubNode = range me.owner.SubNodes.M {
+	for _, me.owner.curSubNode = range me.owner.ChildNodes.M {
 		me.owner.curSubNode.Transform.ApplyMatrices()
 	}
 }

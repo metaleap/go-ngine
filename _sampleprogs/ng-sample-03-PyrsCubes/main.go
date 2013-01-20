@@ -103,8 +103,9 @@ func LoadSampleScene_03_PyrsCubes() {
 
 	//	scene
 	scene = ngsamples.AddScene("")
-	scene.RootNode.SubNodes.MakeN("node_floor", "mesh_plane", "", "node_pyr", "mesh_pyramid", "", "node_box", "mesh_cube", "")
-	floor, pyr, box = /* scene.RootNode.SubNodes.Get("node_floor", "node_pyr", "node_box") */ scene.RootNode.SubNodes.M["node_floor"], scene.RootNode.SubNodes.M["node_pyr"], scene.RootNode.SubNodes.M["node_box"]
+	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
+	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyramid", "")
+	box = scene.RootNode.ChildNodes.AddNew("node_box", "mesh_cube", "")
 
 	for i = 0; i < len(crates); i++ {
 		if i == 0 {
@@ -112,7 +113,7 @@ func LoadSampleScene_03_PyrsCubes() {
 		} else {
 			str = ""
 		}
-		crates[i] = scene.RootNode.SubNodes.Make(ng.Sfmt("node_box_%v", i), "mesh_cube", str)
+		crates[i] = scene.RootNode.ChildNodes.AddNew(ng.Sfmt("node_box_%v", i), "mesh_cube", str)
 		f = float64(i)
 		crates[i].Transform.SetPosXYZ((f+3)*-2, (f+1)*2, (f+2)*3)
 		if i == 2 {
@@ -126,7 +127,7 @@ func LoadSampleScene_03_PyrsCubes() {
 		} else {
 			str = ""
 		}
-		pyramids[i] = scene.RootNode.SubNodes.Make(ng.Sfmt("nody_pyr_%v", i), "mesh_pyramid", str)
+		pyramids[i] = scene.RootNode.ChildNodes.AddNew(ng.Sfmt("nody_pyr_%v", i), "mesh_pyramid", str)
 		f = float64(len(pyramids) - i)
 		pyramids[i].Transform.SetScaleN((f + 1) * 2)
 		pyramids[i].Transform.SetPosXYZ((f+3)*-4, (f+2)*3, (f+2)*14)

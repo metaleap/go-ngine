@@ -12,6 +12,7 @@ render sorting per pass:
 - by VAO (first 3D, then 2D etc)
 - by material shader
 - by texture (uniform values)
+- by other setunif
 - by mesh (so multiple mesh-insts with identical material/texture are rendered together)
 
 */
@@ -108,7 +109,7 @@ func (me *techniqueUnlit) initMeshBuffer(meshBuffer *MeshBuffer) {
 
 func (me *techniqueUnlit) onRenderNode() {
 	me.baseTechnique.onRenderNode()
-	if tmpMat = curNode.Material(); tmpMat != curMat {
+	if tmpMat = curNode.EffectiveMaterial(); tmpMat != curMat {
 		if curMat = tmpMat; curMat != nil {
 			tmpEffect = Core.Libs.Effects[curMat.DefaultEffectID]
 			gl.ActiveTexture(gl.TEXTURE0)

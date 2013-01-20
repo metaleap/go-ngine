@@ -52,7 +52,7 @@ type Controller struct {
 	mat, matTrans, matLook unum.Mat4
 }
 
-func (me *Controller) applyMatrices() {
+func (me *Controller) applyTranslation() {
 	if me.autoUpdate {
 		me.posNeg.SetFromNeg(&me.Pos)
 		me.matLook.LookAt(&me.Dir, &me.UpAxis)
@@ -94,7 +94,7 @@ func (me *Controller) BeginUpdate() {
 func (me *Controller) EndUpdate() {
 	me.autoUpdate = true
 	me.applyRotation()
-	me.applyMatrices()
+	me.applyTranslation()
 }
 
 func (me *Controller) init() {
@@ -119,43 +119,43 @@ func (me *Controller) init() {
 	}
 	me.vAngle = -unum.RadToDeg(math.Asin(me.Dir.Y))
 	me.applyRotation()
-	me.applyMatrices()
+	me.applyTranslation()
 }
 
 //	Recomputes Pos with regards to UpAxis and Dir to effect a "move backward".
 func (me *Controller) MoveBackward() {
 	me.Pos.SetFromAddMult1(&me.Pos, &me.Dir, me.StepSizeMove())
-	me.applyMatrices()
+	me.applyTranslation()
 }
 
 //	Recomputes Pos with regards to UpAxis and Dir to effect a "move downward".
 func (me *Controller) MoveDown() {
 	me.Pos.SetFromSubMult1(&me.Pos, &me.UpAxis, me.StepSizeMove())
-	me.applyMatrices()
+	me.applyTranslation()
 }
 
 //	Recomputes Pos with regards to UpAxis and Dir to effect a "move forward".
 func (me *Controller) MoveForward() {
 	me.Pos.SetFromSubMult1(&me.Pos, &me.Dir, me.StepSizeMove())
-	me.applyMatrices()
+	me.applyTranslation()
 }
 
 //	Recomputes Pos with regards to UpAxis and Dir to effect a "move left-ward".
 func (me *Controller) MoveLeft() {
 	me.Pos.SetFromAddMult1(&me.Pos, me.Dir.CrossNormalized(&me.UpAxis), me.StepSizeMove())
-	me.applyMatrices()
+	me.applyTranslation()
 }
 
 //	Recomputes Pos with regards to UpAxis and Dir to effect a "move right-ward".
 func (me *Controller) MoveRight() {
 	me.Pos.SetFromAddMult1(&me.Pos, me.UpAxis.CrossNormalized(&me.Dir), me.StepSizeMove())
-	me.applyMatrices()
+	me.applyTranslation()
 }
 
 //	Recomputes Pos with regards to UpAxis and Dir to effect a "move upward".
 func (me *Controller) MoveUp() {
 	me.Pos.SetFromAddMult1(&me.Pos, &me.UpAxis, me.StepSizeMove())
-	me.applyMatrices()
+	me.applyTranslation()
 }
 
 //	Returns the current distance that a single MoveXyz() call (per loop iteration) would move.
@@ -175,7 +175,7 @@ func (me *Controller) TurnDown() {
 	if me.vAngle > me.MinTurnDown {
 		me.vAngle -= me.StepSizeTurn()
 		me.applyRotation()
-		me.applyMatrices()
+		me.applyTranslation()
 	}
 }
 
@@ -183,14 +183,14 @@ func (me *Controller) TurnDown() {
 func (me *Controller) TurnLeft() {
 	me.hAngle += me.StepSizeTurn()
 	me.applyRotation()
-	me.applyMatrices()
+	me.applyTranslation()
 }
 
 //	Recomputes Dir with regards to UpAxis and Pos to effect a "turn right-ward".
 func (me *Controller) TurnRight() {
 	me.hAngle -= me.StepSizeTurn()
 	me.applyRotation()
-	me.applyMatrices()
+	me.applyTranslation()
 }
 
 //	Recomputes Dir with regards to UpAxis and Pos to effect a "turn upward".
@@ -198,6 +198,6 @@ func (me *Controller) TurnUp() {
 	if me.vAngle < me.MaxTurnUp {
 		me.vAngle += me.StepSizeTurn()
 		me.applyRotation()
-		me.applyMatrices()
+		me.applyTranslation()
 	}
 }
