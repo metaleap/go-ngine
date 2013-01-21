@@ -15,8 +15,8 @@ func (me *Nodes) init(owner *Node) {
 	me.M = map[string]*Node{}
 }
 
-//	Removes node from its previous parent Node and
-//	adds it to me.M under its ID.
+//	Removes node from its previous parent Node (if any)
+//	and adds it to me.M under its ID.
 func (me *Nodes) Add(node *Node) {
 	if node.parentNode != nil {
 		node.parentNode.ChildNodes.Remove(node.id)

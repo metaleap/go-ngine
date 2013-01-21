@@ -80,4 +80,11 @@ func (me *LibFxEffects) dispose() {
 	me.ctor()
 }
 
+func (me LibFxEffects) Remove(id string) {
+	if obj := me[id]; obj != nil {
+		obj.dispose()
+	}
+	delete(me, id)
+}
+
 //#end-gt

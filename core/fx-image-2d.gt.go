@@ -177,4 +177,11 @@ func (me *LibFxImage2Ds) dispose() {
 	me.ctor()
 }
 
+func (me LibFxImage2Ds) Remove(id string) {
+	if obj := me[id]; obj != nil {
+		obj.dispose()
+	}
+	delete(me, id)
+}
+
 //#end-gt

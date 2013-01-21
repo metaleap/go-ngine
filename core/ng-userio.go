@@ -69,7 +69,7 @@ func glfwOnWindowClose() int {
 }
 
 func glfwOnWindowResize(width, height int) {
-	Core.resizeView(width, height)
+	Core.onResizeWindow(width, height)
 }
 
 //	Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.

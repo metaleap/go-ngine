@@ -1,24 +1,26 @@
 package core
 
 import (
+	"math"
+
 	gl "github.com/chsc/gogl/gl42"
 	ugl "github.com/go3d/go-glutil"
 )
 
 var (
-	asyncResources                        = map[asyncResource]bool{}
-	curMeshBuf                            *MeshBuffer
-	curCanvIndex, lastCanvIndex, curIndex int
-	curMatKey, curStr                     string
-	curCam                                *Camera
-	curCanvas                             *RenderCanvas
-	curMat                                *FxMaterial
-	curMesh                               *Mesh
-	curModel                              *Model
-	curNode                               *Node
-	curProg, tmpProg                      *ugl.ShaderProgram
-	curTechnique                          renderTechnique
-	curScene                              *Scene
+	asyncResources         = map[asyncResource]bool{}
+	curMeshBuf             *MeshBuffer
+	curCanvIndex, curIndex int
+	curMatKey, curStr      string
+	curCam                 *Camera
+	curCanvas              *RenderCanvas
+	curMat                 *FxMaterial
+	curMesh                *Mesh
+	curModel               *Model
+	curNode                *Node
+	curProg, tmpProg       *ugl.ShaderProgram
+	curTechnique           renderTechnique
+	curScene               *Scene
 )
 
 //	Consider EngineCore a "Singleton" type, only valid use is the core.Core global variable.
@@ -37,9 +39,9 @@ type EngineCore struct {
 		Scenes LibScenes
 	}
 	Rendering struct {
-		Canvases           RenderCanvases
-		DefaultCanvasIndex int
-		States             ugl.RenderStates
+		Canvases RenderCanvases
+		PostFx   PostFx
+		States   ugl.RenderStates
 	}
 
 	isInit bool
@@ -66,7 +68,7 @@ func (me *EngineCore) init(options *EngineOptions) {
 	me.MeshBuffers = newMeshBuffers()
 	me.initLibs()
 	me.Rendering.Canvases = RenderCanvases{}
-	curCanvas = me.Rendering.Canvases.Add(me.Rendering.Canvases.New(options.winWidth, options.winHeight))
+	curCanvas = me.Rendering.Canvases.AddNew(true)
 	curCanvas.SetCameraIDs("")
 	me.isInit = true
 }
@@ -89,9 +91,8 @@ func (me *EngineCore) onLoop() {
 }
 
 func (me *EngineCore) onRender() {
-	lastCanvIndex = len(me.Rendering.Canvases) - 1
 	for curCanvIndex, curCanvas = range me.Rendering.Canvases {
-		if !curCanvas.Disabled {
+		if (curCanvas.EveryNthFrame == 1) || ((curCanvas.EveryNthFrame > 1) && (math.Mod(Stats.fpsAll, curCanvas.EveryNthFrame) == 0)) {
 			curCanvas.render()
 		}
 	}
@@ -106,11 +107,14 @@ func (me *EngineCore) onSec() {
 	}
 }
 
-func (me *EngineCore) resizeView(viewWidth, viewHeight int) {
+func (me *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 	if me.isInit {
-		defaultCanvas := me.Rendering.Canvases[me.Rendering.DefaultCanvasIndex]
 		me.Options.winWidth, me.Options.winHeight = viewWidth, viewHeight
-		defaultCanvas.viewWidth, defaultCanvas.viewHeight = viewWidth, viewHeight
+		for _, canv := range me.Rendering.Canvases {
+			if canv.viewSizeRelative {
+				canv.absViewWidth, canv.absViewHeight = int(canv.relViewWidth*float64(viewWidth)), int(canv.relViewHeight*float64(viewHeight))
+			}
+		}
 		for _, cam := range me.Libs.Cameras {
 			cam.ViewPort.update()
 			cam.ApplyMatrices()
@@ -123,6 +127,7 @@ func (me *EngineCore) SyncUpdates() {
 		err error
 		ok  bool
 	)
+	me.onResizeWindow(me.Options.winWidth, me.Options.winHeight)
 	for _, img := range me.Libs.Images.I2D {
 		if !img.Loaded() {
 			if _, ok = asyncResources[img]; !ok {

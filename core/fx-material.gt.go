@@ -56,4 +56,11 @@ func (me *LibFxMaterials) dispose() {
 	me.ctor()
 }
 
+func (me LibFxMaterials) Remove(id string) {
+	if obj := me[id]; obj != nil {
+		obj.dispose()
+	}
+	delete(me, id)
+}
+
 //#end-gt

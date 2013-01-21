@@ -8,8 +8,9 @@ import (
 
 //	A camera embodies the eye point of the viewer looking at the visual scene.
 type Camera struct {
-	//	If true, this camera is ignored by the rendering runtime.
-	Disabled bool
+	EnabledFor struct {
+		Rendering bool
+	}
 
 	//	Optical and imager properties for this camera.
 	Params struct {
@@ -40,6 +41,7 @@ type Camera struct {
 }
 
 func (me *Camera) init() {
+	me.EnabledFor.Rendering = true
 	opt := &me.Params
 	opt.FovY = 37.8493
 	opt.ZFar = 30000
@@ -60,16 +62,18 @@ func (me *Camera) dispose() {
 }
 
 func (me *Camera) render() {
-	curScene = Core.Libs.Scenes[me.Params.SceneID]
-	Core.useTechnique(me.technique)
-	me.matCamProj.SetFromMult4(&me.matProj, &me.Controller.mat)
-	//me.glMatCamProj.Load(&me.matCamProj)
-	//gl.UniformMatrix4fv(curProg.UnifLocs["uMatCamProj"], 1, gl.FALSE, &me.glMatCamProj[0])
-	// gl.UniformMatrix4fv(curProg.UnifLocs["uMatProj"], 1, gl.FALSE, &me.glmatProj[0])
-	me.technique.onPreRender()
-	gl.Viewport(me.ViewPort.glVpX, me.ViewPort.glVpY, me.ViewPort.glVpW, me.ViewPort.glVpH)
-	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-	curScene.RootNode.render()
+	if me.EnabledFor.Rendering {
+		curScene = Core.Libs.Scenes[me.Params.SceneID]
+		Core.useTechnique(me.technique)
+		me.matCamProj.SetFromMult4(&me.matProj, &me.Controller.mat)
+		//me.glMatCamProj.Load(&me.matCamProj)
+		//gl.UniformMatrix4fv(curProg.UnifLocs["uMatCamProj"], 1, gl.FALSE, &me.glMatCamProj[0])
+		// gl.UniformMatrix4fv(curProg.UnifLocs["uMatProj"], 1, gl.FALSE, &me.glmatProj[0])
+		me.technique.onPreRender()
+		gl.Viewport(me.ViewPort.glVpX, me.ViewPort.glVpY, me.ViewPort.glVpW, me.ViewPort.glVpH)
+		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+		curScene.RootNode.render()
+	}
 }
 
 func (me *Camera) SetTechnique(name string) {
@@ -138,8 +142,8 @@ func (me *CameraViewPort) SetRel(x, y, width, height float64) {
 
 func (me *CameraViewPort) update() {
 	if !me.absolute {
-		me.absW, me.absH = int(me.relW*float64(curCanvas.viewWidth)), int(me.relH*float64(curCanvas.viewHeight))
-		me.absX, me.absY = int(me.relX*float64(curCanvas.viewWidth)), int(me.relY*float64(curCanvas.viewHeight))
+		me.absW, me.absH = int(me.relW*float64(curCanvas.absViewWidth)), int(me.relH*float64(curCanvas.absViewHeight))
+		me.absX, me.absY = int(me.relX*float64(curCanvas.absViewWidth)), int(me.relY*float64(curCanvas.absViewHeight))
 	}
 	me.glVpX, me.glVpY, me.glVpW, me.glVpH = gl.Int(me.absX), gl.Int(me.absY), gl.Sizei(me.absW), gl.Sizei(me.absH)
 	me.aspect = float64(me.absW) / float64(me.absH)
@@ -174,6 +178,13 @@ func (me *LibCameras) dispose() {
 		o.dispose()
 	}
 	me.ctor()
+}
+
+func (me LibCameras) Remove(id string) {
+	if obj := me[id]; obj != nil {
+		obj.dispose()
+	}
+	delete(me, id)
 }
 
 //#end-gt

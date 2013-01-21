@@ -174,12 +174,10 @@ func SamplesMainFunc(assetLoader func()) {
 		defer ng.Dispose()
 		ng.Core.Rendering.States.SetClearColor(0.75, 0.75, 0.97, 1)
 		ng.Loop.OnSec = OnSec
-		Cam = ng.Core.Libs.Cameras.AddNew("")
+		Cam = ng.Core.Libs.Cameras.AddNew("cam")
 		CamCtl = &Cam.Controller
+		ng.Core.Rendering.Canvases[0].SetCameraIDs("cam")
 		assetLoader()
-		for _, canvas := range ng.Core.Rendering.Canvases {
-			canvas.SetCameraIDs("")
-		}
 		ng.Core.SyncUpdates()
 		ng.Loop.Loop()
 		PrintPostLoopSummary()

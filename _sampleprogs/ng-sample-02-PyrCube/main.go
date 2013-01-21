@@ -45,9 +45,13 @@ func LoadSampleScene_02_PyrCube() {
 
 	//	textures / materials
 	ngsamples.AddTextureMaterials(map[string]string{
-		"cobbles": "http://dl.dropbox.com/u/136375/go-ngine/assets/tex/cobbles.png",
+		"cobbles": "tex/cobbles.png", // "http://dl.dropbox.com/u/136375/go-ngine/assets/tex/cobbles.png",
 		"crate":   "tex/crate.jpeg",
 		"mosaic":  "tex/mosaic.jpeg",
+	})
+	ngsamples.AddColorMaterials(map[string][]float64{
+		"yellow": []float64{1, 1, 0},
+		"blue":   []float64{0, 0, 1},
 	})
 
 	//	meshes / models
@@ -71,6 +75,7 @@ func LoadSampleScene_02_PyrCube() {
 	bufRest.Add(meshPyr)
 	meshPyr.Models.Default().SetMatID("mat_mosaic")
 	meshCube.Models.Default().SetMatID("mat_crate")
+	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["back"] = "fx_mosaic"
 
 	//	scene
 	scene = ngsamples.AddScene("")

@@ -48,4 +48,11 @@ func (me *LibScenes) dispose() {
 	me.ctor()
 }
 
+func (me LibScenes) Remove(id string) {
+	if obj := me[id]; obj != nil {
+		obj.dispose()
+	}
+	delete(me, id)
+}
+
 //#end-gt
