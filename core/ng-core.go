@@ -57,6 +57,7 @@ func (me *EngineCore) dispose() {
 	} {
 		disp.dispose()
 	}
+	me.Rendering.PostFx.dispose()
 	techs = nil
 }
 
@@ -68,7 +69,8 @@ func (me *EngineCore) init(options *EngineOptions) {
 	me.MeshBuffers = newMeshBuffers()
 	me.initLibs()
 	me.Rendering.Canvases = RenderCanvases{}
-	curCanvas = me.Rendering.Canvases.AddNew(true)
+	me.Rendering.PostFx.init()
+	curCanvas = me.Rendering.Canvases.AddNew(true, true, 1, 1)
 	curCanvas.SetCameraIDs("")
 	me.isInit = true
 }
@@ -93,7 +95,24 @@ func (me *EngineCore) onLoop() {
 func (me *EngineCore) onRender() {
 	for curCanvIndex, curCanvas = range me.Rendering.Canvases {
 		if (curCanvas.EveryNthFrame == 1) || ((curCanvas.EveryNthFrame > 1) && (math.Mod(Stats.fpsAll, curCanvas.EveryNthFrame) == 0)) {
+			Core.Rendering.States.EnableDepthTest()
 			curCanvas.render()
+		}
+	}
+	Core.Rendering.States.EnableDepthTest()
+	me.Rendering.PostFx.render()
+}
+
+func (me *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
+	if me.isInit {
+		me.Options.winWidth, me.Options.winHeight = viewWidth, viewHeight
+		me.Rendering.PostFx.glWidth, me.Rendering.PostFx.glHeight = gl.Sizei(viewWidth), gl.Sizei(viewHeight)
+		for _, canv := range me.Rendering.Canvases {
+			canv.onResize(viewWidth, viewHeight)
+		}
+		for _, cam := range me.Libs.Cameras {
+			cam.ViewPort.update()
+			cam.ApplyMatrices()
 		}
 	}
 }
@@ -107,27 +126,14 @@ func (me *EngineCore) onSec() {
 	}
 }
 
-func (me *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
-	if me.isInit {
-		me.Options.winWidth, me.Options.winHeight = viewWidth, viewHeight
-		for _, canv := range me.Rendering.Canvases {
-			if canv.viewSizeRelative {
-				canv.absViewWidth, canv.absViewHeight = int(canv.relViewWidth*float64(viewWidth)), int(canv.relViewHeight*float64(viewHeight))
-			}
-		}
-		for _, cam := range me.Libs.Cameras {
-			cam.ViewPort.update()
-			cam.ApplyMatrices()
-		}
-	}
-}
-
 func (me *EngineCore) SyncUpdates() {
 	var (
 		err error
 		ok  bool
 	)
+	glLogLastError("EngineCore.SyncUpdates() -- pre")
 	me.onResizeWindow(me.Options.winWidth, me.Options.winHeight)
+	glLogLastError("EngineCore.SyncUpdates() -- resizewin")
 	for _, img := range me.Libs.Images.I2D {
 		if !img.Loaded() {
 			if _, ok = asyncResources[img]; !ok {
@@ -135,6 +141,7 @@ func (me *EngineCore) SyncUpdates() {
 			}
 		}
 	}
+	glLogLastError("EngineCore.SyncUpdates() -- imgupload")
 	for _, mesh := range me.Libs.Meshes {
 		if !mesh.gpuSynced {
 			if err = mesh.GpuUpload(); err != nil {
@@ -142,7 +149,7 @@ func (me *EngineCore) SyncUpdates() {
 			}
 		}
 	}
-	glLogLastError("EngineCore.SyncUpdates()")
+	glLogLastError("EngineCore.SyncUpdates() -- meshupload")
 	return
 }
 

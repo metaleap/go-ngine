@@ -15,7 +15,7 @@ type techniqueCtor func(string) renderTechnique
 
 func initTechniques() {
 	techs = map[string]renderTechnique{}
-	for techName, techMaker := range map[string]techniqueCtor{ /*"rt_unlit_colored": newTechnique_UnlitColored,*/ "rt_unlit": newTechnique_Unlit} {
+	for techName, techMaker := range map[string]techniqueCtor{"rt_unlit": newTechnique_Unlit} {
 		techs[techName] = techMaker(techName)
 	}
 }
@@ -66,18 +66,6 @@ func (me *baseTechnique) setProg(name string, unifs []string, attrs []string) {
 	}
 	me.prog = prog
 }
-
-/*
-type techniqueUnlitColored struct {
-	baseTechnique
-}
-
-func newTechnique_UnlitColored(progName string) renderTechnique {
-	me := &techniqueUnlitColored{}
-	me.baseTechnique.setProg(progName, nil, nil)
-	return me
-}
-*/
 
 type techniqueUnlit struct {
 	baseTechnique

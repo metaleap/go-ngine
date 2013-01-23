@@ -1,5 +1,14 @@
 package core
 
+import (
+	gl "github.com/chsc/gogl/gl42"
+	ugl "github.com/go3d/go-glutil"
+)
+
+var (
+	mainCanvas *RenderCanvas
+)
+
 //	Represents a surface (texture framebuffer) that can be rendered to.
 type RenderCanvas struct {
 	//	This MUST be an non-negative integer, it's a float64 just to avoid
@@ -13,21 +22,37 @@ type RenderCanvas struct {
 	isMain, viewSizeRelative    bool
 	absViewWidth, absViewHeight int
 	relViewWidth, relViewHeight float64
-	camIDs                      []string
-	cams                        []*Camera
+
+	frameBuf ugl.Framebuffer
+
+	camIDs []string
+	cams   []*Camera
 }
 
-func newRenderCanvas() (me *RenderCanvas) {
+func newRenderCanvas(relative bool, width, height float64) (me *RenderCanvas) {
 	me = &RenderCanvas{EveryNthFrame: 1}
-	me.SetSize(true, 1, 1)
+	me.SetSize(relative, width, height)
+	me.onResize(Core.Options.winWidth, Core.Options.winHeight)
+	me.frameBuf.Init(gl.Sizei(Core.Options.winWidth), gl.Sizei(Core.Options.winHeight), true, true)
+	me.frameBuf.AttachTexture(ugl.NewFramebufferTexture())
+	me.frameBuf.AttachRenderbuffer(ugl.NewFramebufferRenderbuffer())
+	glLogLastError("ATTACH")
 	return
 }
 
 func (me *RenderCanvas) dispose() {
+	me.frameBuf.Dispose()
 }
 
 func (me *RenderCanvas) Main() bool {
 	return me.isMain
+}
+
+func (me *RenderCanvas) onResize(viewWidth, viewHeight int) {
+	if me.viewSizeRelative {
+		me.absViewWidth, me.absViewHeight = int(me.relViewWidth*float64(viewWidth)), int(me.relViewHeight*float64(viewHeight))
+	}
+	me.frameBuf.Resize(gl.Sizei(viewWidth), gl.Sizei(viewHeight))
 }
 
 func (me *RenderCanvas) Remove() {
@@ -38,12 +63,15 @@ func (me *RenderCanvas) Remove() {
 		}
 	}
 	me.dispose()
+	mainCanvas = Core.Rendering.Canvases.Main()
 }
 
 func (me *RenderCanvas) render() {
+	me.frameBuf.Bind()
 	for _, curCam = range me.cams {
 		curCam.render()
 	}
+	me.frameBuf.Unbind()
 }
 
 func (me *RenderCanvas) SetCameraIDs(camIDs ...string) {
@@ -55,7 +83,9 @@ func (me *RenderCanvas) SetCameraIDs(camIDs ...string) {
 
 func (me *RenderCanvas) SetMain() {
 	for _, canv := range Core.Rendering.Canvases {
-		canv.isMain = (canv == me)
+		if canv.isMain = (canv == me); canv.isMain {
+			mainCanvas = canv
+		}
 	}
 }
 
@@ -76,8 +106,8 @@ func (me *RenderCanvases) dispose() {
 	*me = RenderCanvases{}
 }
 
-func (me *RenderCanvases) AddNew(isMain bool) (rc *RenderCanvas) {
-	rc = newRenderCanvas()
+func (me *RenderCanvases) AddNew(isMain bool, relative bool, width, height float64) (rc *RenderCanvas) {
+	rc = newRenderCanvas(relative, width, height)
 	*me = append(*me, rc)
 	if (!isMain) && ((len(*me) == 0) || (me.Main() == nil)) {
 		isMain = true
@@ -94,7 +124,7 @@ func (me RenderCanvases) Main() (main *RenderCanvas) {
 			return
 		}
 	}
-	main = nil
+	main = mainCanvas
 	return
 }
 

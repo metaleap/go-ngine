@@ -665,6 +665,11 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
+				<dd><a href="#PostFx">type PostFx</a></dd>
+				
+				
+			
+				
 				<dd><a href="#RenderBatch">type RenderBatch</a></dd>
 				
 				
@@ -697,7 +702,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RenderCanvases.AddNew">func (me *RenderCanvases) AddNew(isMain bool) (rc *RenderCanvas)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#RenderCanvases.AddNew">func (me *RenderCanvases) AddNew(isMain bool, relative bool, width, height float64) (rc *RenderCanvas)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#RenderCanvases.Main">func (me RenderCanvases) Main() (main *RenderCanvas)</a></dd>
@@ -784,6 +789,8 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/nodes.go">nodes.go</a>
 			
+				<a href="/target/postfx.go">postfx.go</a>
+			
 				<a href="/target/render-batch.go">render-batch.go</a>
 			
 				<a href="/target/render-canvas.go">render-canvas.go</a>
@@ -846,7 +853,7 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="Sfmt">func <a href="/target/ng.go?s=1464:1519#L45">Sfmt</a></h2>
+			<h2 id="Sfmt">func <a href="/target/ng.go?s=1498:1553#L46">Sfmt</a></h2>
 			<pre>func Sfmt(format string, fmtArgs ...interface{}) string</pre>
 			<p>
 A short-hand for fmt.Sprintf. Feel free to ignore.
@@ -1187,7 +1194,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34;.
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=766:1135#L18">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=766:1153#L18">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Options     EngineOptions
@@ -1203,6 +1210,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34;.
     }
     Rendering struct {
         Canvases RenderCanvases
+        PostFx   PostFx
         States   ugl.RenderStates
     }
     <span class="comment">// contains filtered or unexported fields</span>
@@ -1223,7 +1231,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3024:3059#L114">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3204:3239#L119">SyncUpdates</a></h3>
 				<pre>func (me *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -3093,6 +3101,27 @@ Removes the Node with the specified ID from me.M.
 		
 			
 			
+			<h2 id="PostFx">type <a href="/target/postfx.go?s=131:246#L1">PostFx</a></h2>
+			<pre>type PostFx struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+ONLY used for Core.Rendering.PostFx.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
 			<h2 id="RenderBatch">type <a href="/target/render-batch.go?s=241:282#L5">RenderBatch</a></h2>
 			<pre>type RenderBatch struct {
     <span class="comment">// contains filtered or unexported fields</span>
@@ -3118,7 +3147,7 @@ Removes the Node with the specified ID from me.M.
 		
 			
 			
-			<h2 id="RenderCanvas">type <a href="/target/render-canvas.go?s=85:607#L1">RenderCanvas</a></h2>
+			<h2 id="RenderCanvas">type <a href="/target/render-canvas.go?s=197:705#L3">RenderCanvas</a></h2>
 			<pre>type RenderCanvas struct {
     <span class="comment">//	This MUST be an non-negative integer, it&#39;s a float64 just to avoid</span>
     <span class="comment">//	type conversion. How often this RenderCanvas is included in rendering:</span>
@@ -3144,35 +3173,35 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvas.Main">func (*RenderCanvas) <a href="/target/render-canvas.go?s=765:800#L19">Main</a></h3>
+				<h3 id="RenderCanvas.Main">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1240:1275#L37">Main</a></h3>
 				<pre>func (me *RenderCanvas) Main() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=824:856#L23">Remove</a></h3>
+				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1577:1609#L48">Remove</a></h3>
 				<pre>func (me *RenderCanvas) Remove()</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.SetCameraIDs">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1102:1156#L39">SetCameraIDs</a></h3>
+				<h3 id="RenderCanvas.SetCameraIDs">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1942:1996#L67">SetCameraIDs</a></h3>
 				<pre>func (me *RenderCanvas) SetCameraIDs(camIDs ...string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.SetMain">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1299:1332#L46">SetMain</a></h3>
+				<h3 id="RenderCanvas.SetMain">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2139:2172#L74">SetMain</a></h3>
 				<pre>func (me *RenderCanvas) SetMain()</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1418:1487#L52">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2301:2370#L82">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
 				
 				
@@ -3181,7 +3210,7 @@ Represents a surface (texture framebuffer) that can be rendered to.
 		
 			
 			
-			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=1678:1713#L60">RenderCanvases</a></h2>
+			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=2561:2596#L90">RenderCanvases</a></h2>
 			<pre>type RenderCanvases []*RenderCanvas</pre>
 			
 
@@ -3195,14 +3224,14 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvases.AddNew">func (*RenderCanvases) <a href="/target/render-canvas.go?s=1822:1886#L69">AddNew</a></h3>
-				<pre>func (me *RenderCanvases) AddNew(isMain bool) (rc *RenderCanvas)</pre>
+				<h3 id="RenderCanvases.AddNew">func (*RenderCanvases) <a href="/target/render-canvas.go?s=2705:2807#L99">AddNew</a></h3>
+				<pre>func (me *RenderCanvases) AddNew(isMain bool, relative bool, width, height float64) (rc *RenderCanvas)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvases.Main">func (RenderCanvases) <a href="/target/render-canvas.go?s=2056:2108#L81">Main</a></h3>
+				<h3 id="RenderCanvases.Main">func (RenderCanvases) <a href="/target/render-canvas.go?s=3000:3052#L111">Main</a></h3>
 				<pre>func (me RenderCanvases) Main() (main *RenderCanvas)</pre>
 				
 				

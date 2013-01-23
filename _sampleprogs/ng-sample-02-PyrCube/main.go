@@ -4,7 +4,6 @@ import (
 	"math"
 
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
-	// nga "github.com/go3d/go-ngine/assets"
 	ng "github.com/go3d/go-ngine/core"
 )
 
@@ -45,7 +44,7 @@ func LoadSampleScene_02_PyrCube() {
 
 	//	textures / materials
 	ngsamples.AddTextureMaterials(map[string]string{
-		"cobbles": "tex/cobbles.png", // "http://dl.dropbox.com/u/136375/go-ngine/assets/tex/cobbles.png",
+		"cobbles": "http://dl.dropbox.com/u/136375/go-ngine/assets/tex/cobbles.png",
 		"crate":   "tex/crate.jpeg",
 		"mosaic":  "tex/mosaic.jpeg",
 	})

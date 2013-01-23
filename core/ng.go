@@ -29,13 +29,14 @@ func Dispose() {
 
 //	Initializes go:ngine; this first attempts to initialize OpenGL and then open a window to your supplied specifications with a GL 3.2-or-higher profile.
 func Init(options *EngineOptions, winTitle string) (err error) {
-	isVerErr, forceContext := false, (runtime.GOOS == "darwin")
+	isVerErr, forceContext := false, true || (runtime.GOOS == "darwin")
 tryInit:
 	if err = UserIO.init(options, winTitle, forceContext); err == nil {
 		if err, isVerErr = glInit(); err == nil {
 			Stats.reset()
 			Loop.init()
 			Core.init(options)
+			glLogLastError("INIT")
 		} else if isVerErr && !forceContext {
 			forceContext = true
 			UserIO.isGlfwInit, UserIO.isGlfwWindow = false, false
