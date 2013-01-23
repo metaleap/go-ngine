@@ -28,7 +28,6 @@ func LoadSampleScene_01_EmptyPlane() {
 	)
 
 	ng.Loop.OnLoop = onLoop
-	ng.Core.Rendering.States.DisableFaceCulling()
 
 	//	textures / materials
 	ngsamples.AddTextureMaterials(map[string]string{

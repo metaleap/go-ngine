@@ -42,7 +42,7 @@ type EngineCore struct {
 	Rendering struct {
 		Canvases RenderCanvases
 		PostFx   PostFx
-		States   ugl.RenderStates
+		states   ugl.RenderStates
 	}
 
 	isInit bool
@@ -84,8 +84,8 @@ func (me *EngineCore) initLibs() {
 }
 
 func (me *EngineCore) initRenderingStates() {
-	rs := &me.Rendering.States
-	rs.SetClearColor(0, 0, 0, 1)
+	rs := &me.Rendering.states
+	rs.ForceClearColor(me.Options.Rendering.DefaultClearColor)
 }
 
 func (me *EngineCore) onLoop() {
@@ -94,11 +94,11 @@ func (me *EngineCore) onLoop() {
 func (me *EngineCore) onRender() {
 	for curCanvIndex, curCanvas = range me.Rendering.Canvases {
 		if (curCanvas.EveryNthFrame == 1) || ((curCanvas.EveryNthFrame > 1) && (math.Mod(Stats.fpsAll, curCanvas.EveryNthFrame) == 0)) {
-			Core.Rendering.States.EnableDepthTest()
+			Core.Rendering.states.EnableDepthTest()
 			curCanvas.render()
 		}
 	}
-	Core.Rendering.States.EnableDepthTest()
+	Core.Rendering.states.EnableDepthTest()
 	me.Rendering.PostFx.render()
 }
 

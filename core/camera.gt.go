@@ -2,7 +2,7 @@ package core
 
 import (
 	gl "github.com/chsc/gogl/gl42"
-
+	ugl "github.com/go3d/go-glutil"
 	unum "github.com/metaleap/go-util/num"
 )
 
@@ -30,12 +30,16 @@ type Camera struct {
 	Controller Controller
 
 	Rendering struct {
-		DepthTest   bool
-		FaceCulling bool
-		Enabled     bool
+		Enabled bool
 
 		//	The device-relative or absolute view-port for this Camera.
 		ViewPort CameraViewPort
+
+		States struct {
+			DepthTest   bool
+			FaceCulling bool
+			ClearColor  ugl.GlVec4
+		}
 	}
 
 	technique           renderTechnique
@@ -43,7 +47,8 @@ type Camera struct {
 }
 
 func (me *Camera) init() {
-	me.Rendering.DepthTest, me.Rendering.Enabled, me.Rendering.FaceCulling = true, true, true
+	me.Rendering.States.DepthTest, me.Rendering.Enabled, me.Rendering.States.FaceCulling = true, true, true
+	me.Rendering.States.ClearColor = Core.Options.Rendering.DefaultClearColor
 	opt := &me.Params
 	opt.FovY = 37.8493
 	opt.ZFar = 30000
@@ -52,7 +57,7 @@ func (me *Camera) init() {
 	me.Controller.init()
 	me.Rendering.ViewPort.init()
 	me.ApplyMatrices()
-	me.SetTechnique(Core.Options.DefaultRenderTechnique)
+	me.SetTechnique(Core.Options.Rendering.DefaultTechnique)
 }
 
 //	Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
@@ -65,8 +70,9 @@ func (me *Camera) dispose() {
 
 func (me *Camera) render() {
 	if me.Rendering.Enabled {
-		Core.Rendering.States.SetDepthTest(me.Rendering.DepthTest)
-		Core.Rendering.States.SetFaceCulling(me.Rendering.FaceCulling)
+		Core.Rendering.states.SetClearColor(me.Rendering.States.ClearColor)
+		Core.Rendering.states.SetDepthTest(me.Rendering.States.DepthTest)
+		Core.Rendering.states.SetFaceCulling(me.Rendering.States.FaceCulling)
 		curScene = Core.Libs.Scenes[me.Params.SceneID]
 		Core.useTechnique(me.technique)
 		me.matCamProj.SetFromMult4(&me.matProj, &me.Controller.mat)

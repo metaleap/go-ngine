@@ -864,7 +864,7 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.gt.go?s=177:1140#L1">Camera</a></h2>
+			<h2 id="Camera">type <a href="/target/camera.gt.go?s=209:1219#L1">Camera</a></h2>
 			<pre>type Camera struct {
     <span class="comment">//	Optical and imager properties for this camera.</span>
     Params struct {
@@ -888,12 +888,16 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
     Controller Controller
 
     Rendering struct {
-        DepthTest   bool
-        FaceCulling bool
-        Enabled     bool
+        Enabled bool
 
         <span class="comment">//	The device-relative or absolute view-port for this Camera.</span>
         ViewPort CameraViewPort
+
+        States struct {
+            DepthTest   bool
+            FaceCulling bool
+            ClearColor  ugl.GlVec4
+        }
     }
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -910,7 +914,7 @@ A camera embodies the eye point of the viewer looking at the visual scene.
 
 			
 				
-				<h3 id="NewCamera">func <a href="/target/camera.gt.go?s=4677:4706#L149">NewCamera</a></h3>
+				<h3 id="NewCamera">func <a href="/target/camera.gt.go?s=4933:4962#L155">NewCamera</a></h3>
 				<pre>func NewCamera() (me *Camera)</pre>
 				<p>
 Initializes and returns a new Camera with default parameters.
@@ -921,7 +925,7 @@ Initializes and returns a new Camera with default parameters.
 
 			
 				
-				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.gt.go?s=1566:1599#L49">ApplyMatrices</a></h3>
+				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.gt.go?s=1738:1771#L54">ApplyMatrices</a></h3>
 				<pre>func (me *Camera) ApplyMatrices()</pre>
 				<p>
 Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
@@ -931,14 +935,14 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
 				
 			
 				
-				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.gt.go?s=2534:2577#L73">SetTechnique</a></h3>
+				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.gt.go?s=2790:2833#L79">SetTechnique</a></h3>
 				<pre>func (me *Camera) SetTechnique(name string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.ToggleTechnique">func (*Camera) <a href="/target/camera.gt.go?s=2676:2711#L79">ToggleTechnique</a></h3>
+				<h3 id="Camera.ToggleTechnique">func (*Camera) <a href="/target/camera.gt.go?s=2932:2967#L85">ToggleTechnique</a></h3>
 				<pre>func (me *Camera) ToggleTechnique()</pre>
 				
 				
@@ -947,7 +951,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
 		
 			
 			
-			<h2 id="CameraViewPort">type <a href="/target/camera.gt.go?s=3321:3536#L111">CameraViewPort</a></h2>
+			<h2 id="CameraViewPort">type <a href="/target/camera.gt.go?s=3577:3792#L117">CameraViewPort</a></h2>
 			<pre>type CameraViewPort struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -966,7 +970,7 @@ Encapsulates a device-relative or absolute camera view-port.
 
 			
 				
-				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.gt.go?s=3662:3719#L125">SetAbs</a></h3>
+				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.gt.go?s=3918:3975#L131">SetAbs</a></h3>
 				<pre>func (me *CameraViewPort) SetAbs(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -976,7 +980,7 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.gt.go?s=3970:4031#L132">SetRel</a></h3>
+				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.gt.go?s=4226:4287#L138">SetRel</a></h3>
 				<pre>func (me *CameraViewPort) SetRel(x, y, width, height float64)</pre>
 				<p>
 Sets the device-relative viewport origin and dimensions, with the value 1.0
@@ -1213,7 +1217,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34;.
     Rendering struct {
         Canvases RenderCanvases
         PostFx   PostFx
-        States   ugl.RenderStates
+        <span class="comment">// contains filtered or unexported fields</span>
     }
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -1233,7 +1237,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3203:3238#L118">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3233:3268#L118">SyncUpdates</a></h3>
 				<pre>func (me *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -1317,14 +1321,18 @@ Returns the number of seconds expired ever since EngineLoop.Loop() was last call
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=185:513#L1">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=230:610#L1">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     <span class="comment">//	The base directory path for asset file paths.</span>
     AssetRootDirPath string
 
-    <span class="comment">//	Name for the default render technique, defaults to the only</span>
-    <span class="comment">//	currently supported value &#34;rt_unlit&#34;.</span>
-    DefaultRenderTechnique string
+    Rendering struct {
+        DefaultClearColor ugl.GlVec4
+
+        <span class="comment">//	Name for the default render technique, defaults to the only</span>
+        <span class="comment">//	currently supported value &#34;rt_unlit&#34;.</span>
+        DefaultTechnique string
+    }
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
@@ -1341,7 +1349,7 @@ Various &#34;global&#34; (rather than use-case-specific) options.
 
 			
 				
-				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=588:716#L8">NewEngineOptions</a></h3>
+				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=685:813#L16">NewEngineOptions</a></h3>
 				<pre>func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions)</pre>
 				<p>
 Allocates, initializes and returns a new core.EngineOptions instance.
@@ -1655,7 +1663,7 @@ Initializes and returns a new FxEffect with default parameters.
 
 			
 				
-				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=3453:3488#L143">NewFxImage2D</a></h3>
+				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=3470:3505#L144">NewFxImage2D</a></h3>
 				<pre>func NewFxImage2D() (me *FxImage2D)</pre>
 				<p>
 Initializes and returns a new FxImage2D with default parameters.
@@ -1666,35 +1674,35 @@ Initializes and returns a new FxImage2D with default parameters.
 
 			
 				
-				<h3 id="FxImage2D.GpuSync">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=394:436#L21">GpuSync</a></h3>
+				<h3 id="FxImage2D.GpuSync">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=411:453#L22">GpuSync</a></h3>
 				<pre>func (me *FxImage2D) GpuSync() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.IsRemote">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2375:2420#L98">IsRemote</a></h3>
+				<h3 id="FxImage2D.IsRemote">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2392:2437#L99">IsRemote</a></h3>
 				<pre>func (me *FxImage2D) IsRemote() (remote bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Load">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=702:729#L28">Load</a></h3>
+				<h3 id="FxImage2D.Load">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=719:746#L29">Load</a></h3>
 				<pre>func (me *FxImage2D) Load()</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Loaded">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1846:1880#L81">Loaded</a></h3>
+				<h3 id="FxImage2D.Loaded">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1863:1897#L82">Loaded</a></h3>
 				<pre>func (me *FxImage2D) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Unload">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2464:2493#L103">Unload</a></h3>
+				<h3 id="FxImage2D.Unload">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2481:2510#L104">Unload</a></h3>
 				<pre>func (me *FxImage2D) Unload()</pre>
 				
 				
@@ -1898,7 +1906,7 @@ Initializes and returns a new FxMaterial with default parameters.
 		
 			
 			
-			<h2 id="LibCameras">type <a href="/target/camera.gt.go?s=4820:4854#L156">LibCameras</a></h2>
+			<h2 id="LibCameras">type <a href="/target/camera.gt.go?s=5076:5110#L162">LibCameras</a></h2>
 			<pre>type LibCameras map[string]*Camera</pre>
 			<p>
 A hash-table of Cameras associated by IDs. Only for use in Core.Libs.
@@ -1915,7 +1923,7 @@ A hash-table of Cameras associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibCameras.AddNew">func (LibCameras) <a href="/target/camera.gt.go?s=4978:5030#L160">AddNew</a></h3>
+				<h3 id="LibCameras.AddNew">func (LibCameras) <a href="/target/camera.gt.go?s=5234:5286#L166">AddNew</a></h3>
 				<pre>func (me LibCameras) AddNew(id string) (obj *Camera)</pre>
 				<p>
 Creates and initializes a new Camera with default parameters,
@@ -1926,7 +1934,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibCameras.Remove">func (LibCameras) <a href="/target/camera.gt.go?s=5221:5259#L177">Remove</a></h3>
+				<h3 id="LibCameras.Remove">func (LibCameras) <a href="/target/camera.gt.go?s=5477:5515#L183">Remove</a></h3>
 				<pre>func (me LibCameras) Remove(id string)</pre>
 				
 				
@@ -1972,7 +1980,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=3608:3648#L150">LibFxImage2Ds</a></h2>
+			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=3625:3665#L151">LibFxImage2Ds</a></h2>
 			<pre>type LibFxImage2Ds map[string]*FxImage2D</pre>
 			<p>
 A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
@@ -1989,7 +1997,7 @@ A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3775:3833#L154">AddNew</a></h3>
+				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3792:3850#L155">AddNew</a></h3>
 				<pre>func (me LibFxImage2Ds) AddNew(id string) (obj *FxImage2D)</pre>
 				<p>
 Creates and initializes a new FxImage2D with default parameters,
@@ -2000,7 +2008,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibFxImage2Ds.Remove">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=4036:4077#L171">Remove</a></h3>
+				<h3 id="LibFxImage2Ds.Remove">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=4053:4094#L172">Remove</a></h3>
 				<pre>func (me LibFxImage2Ds) Remove(id string)</pre>
 				
 				

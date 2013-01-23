@@ -138,7 +138,7 @@ func CheckToggleKeys() {
 		Cam.ToggleTechnique()
 	}
 	if ng.UserIO.KeyToggled(glfw.KeyF3) {
-		Cam.Rendering.FaceCulling = !Cam.Rendering.FaceCulling
+		Cam.Rendering.States.FaceCulling = !Cam.Rendering.States.FaceCulling
 	}
 	if ng.UserIO.KeyToggled(glfw.KeyF4) {
 		// ng.Core.Options.DefaultTextureParams.ToggleFilter()
@@ -172,9 +172,10 @@ func SamplesMainFunc(assetLoader func()) {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
 		defer ng.Dispose()
-		ng.Core.Rendering.States.SetClearColor(0.75, 0.75, 0.97, 1)
+		// ng.Core.Rendering.States.SetClearColor(0.75, 0.75, 0.97, 1)
 		ng.Loop.OnSec = OnSec
 		Cam = ng.Core.Libs.Cameras.AddNew("cam")
+		Cam.Rendering.States.ClearColor.Set(0.75, 0.75, 0.97, 1)
 		CamCtl = &Cam.Controller
 		ng.Core.Rendering.Canvases[0].SetCameraIDs("cam")
 		assetLoader()

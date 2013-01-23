@@ -40,7 +40,6 @@ func LoadSampleScene_02_PyrCube() {
 	)
 
 	ng.Loop.OnLoop = onLoop
-	ng.Core.Rendering.States.DisableFaceCulling()
 
 	//	textures / materials
 	ngsamples.AddTextureMaterials(map[string]string{
