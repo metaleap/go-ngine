@@ -89,7 +89,7 @@ func (me *techniqueUnlit) onRenderNode() {
 		if curMat = tmpMat; curMat != nil {
 			tmpEffect = Core.Libs.Effects[curMat.DefaultEffectID]
 			gl.ActiveTexture(gl.TEXTURE0)
-			gl.BindTexture(gl.TEXTURE_2D, Core.Libs.Images.I2D[tmpEffect.Diffuse.Texture.Image2ID].glTex)
+			Core.Libs.Images.I2D[tmpEffect.Diffuse.Texture.Image2ID].glTex.Bind()
 			gl.Uniform1i(curProg.UnifLocs["uDiffuse"], 0)
 		}
 	}

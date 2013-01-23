@@ -138,7 +138,7 @@ func CheckToggleKeys() {
 		Cam.ToggleTechnique()
 	}
 	if ng.UserIO.KeyToggled(glfw.KeyF3) {
-		ng.Core.Rendering.States.ToggleFaceCulling()
+		Cam.Rendering.FaceCulling = !Cam.Rendering.FaceCulling
 	}
 	if ng.UserIO.KeyToggled(glfw.KeyF4) {
 		// ng.Core.Options.DefaultTextureParams.ToggleFilter()

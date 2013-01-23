@@ -2,8 +2,9 @@ package core
 
 import (
 	"fmt"
-	"log"
 	"runtime"
+
+	ugl "github.com/go3d/go-glutil"
 )
 
 var (
@@ -36,7 +37,7 @@ tryInit:
 			Stats.reset()
 			Loop.init()
 			Core.init(options)
-			glLogLastError("INIT")
+			ugl.LogLastError("INIT")
 		} else if isVerErr && !forceContext {
 			forceContext = true
 			UserIO.isGlfwInit, UserIO.isGlfwWindow = false, false
@@ -44,12 +45,6 @@ tryInit:
 		}
 	}
 	return
-}
-
-func logError(err error) {
-	if err != nil {
-		log.Println(err.Error())
-	}
 }
 
 //	A short-hand for fmt.Sprintf. Feel free to ignore.

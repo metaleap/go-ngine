@@ -39,6 +39,7 @@ func LoadSampleScene_00_TriQuad() {
 	)
 
 	ng.Loop.OnLoop = onLoop
+	ngsamples.Cam.Rendering.FaceCulling = false
 
 	//	textures / materials
 	ngsamples.AddTextureMaterials(map[string]string{

@@ -24,6 +24,8 @@ func (me *PostFx) init() {
 
 func (me *PostFx) render() {
 	curProg, curMat, curTechnique, curMatKey = nil, nil, nil, ""
+	Core.Rendering.States.DisableDepthTest()
+	Core.Rendering.States.DisableFaceCulling()
 	gl.UseProgram(me.prog.Program)
 	gl.BindFramebuffer(gl.DRAW_FRAMEBUFFER, 0)
 	gl.Viewport(0, 0, me.glWidth, me.glHeight)

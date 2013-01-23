@@ -8,10 +8,6 @@ import (
 
 //	A camera embodies the eye point of the viewer looking at the visual scene.
 type Camera struct {
-	EnabledFor struct {
-		Rendering bool
-	}
-
 	//	Optical and imager properties for this camera.
 	Params struct {
 		//	Vertical field-of-view. Defaults to 37.8493.
@@ -33,36 +29,44 @@ type Camera struct {
 	//	Encapsulates the position and direction of this camera.
 	Controller Controller
 
-	//	The device-relative or absolute view-port for this Camera.
-	ViewPort CameraViewPort
+	Rendering struct {
+		DepthTest   bool
+		FaceCulling bool
+		Enabled     bool
+
+		//	The device-relative or absolute view-port for this Camera.
+		ViewPort CameraViewPort
+	}
 
 	technique           renderTechnique
 	matCamProj, matProj unum.Mat4
 }
 
 func (me *Camera) init() {
-	me.EnabledFor.Rendering = true
+	me.Rendering.DepthTest, me.Rendering.Enabled, me.Rendering.FaceCulling = true, true, true
 	opt := &me.Params
 	opt.FovY = 37.8493
 	opt.ZFar = 30000
 	opt.ZNear = 0.3
 	me.matProj.Identity()
 	me.Controller.init()
-	me.ViewPort.init()
+	me.Rendering.ViewPort.init()
 	me.ApplyMatrices()
 	me.SetTechnique(Core.Options.DefaultRenderTechnique)
 }
 
 //	Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
 func (me *Camera) ApplyMatrices() {
-	me.matProj.Perspective(me.Params.FovY, me.ViewPort.aspect, me.Params.ZNear, me.Params.ZFar)
+	me.matProj.Perspective(me.Params.FovY, me.Rendering.ViewPort.aspect, me.Params.ZNear, me.Params.ZFar)
 }
 
 func (me *Camera) dispose() {
 }
 
 func (me *Camera) render() {
-	if me.EnabledFor.Rendering {
+	if me.Rendering.Enabled {
+		Core.Rendering.States.SetDepthTest(me.Rendering.DepthTest)
+		Core.Rendering.States.SetFaceCulling(me.Rendering.FaceCulling)
 		curScene = Core.Libs.Scenes[me.Params.SceneID]
 		Core.useTechnique(me.technique)
 		me.matCamProj.SetFromMult4(&me.matProj, &me.Controller.mat)
@@ -70,7 +74,7 @@ func (me *Camera) render() {
 		//gl.UniformMatrix4fv(curProg.UnifLocs["uMatCamProj"], 1, gl.FALSE, &me.glMatCamProj[0])
 		// gl.UniformMatrix4fv(curProg.UnifLocs["uMatProj"], 1, gl.FALSE, &me.glmatProj[0])
 		me.technique.onPreRender()
-		gl.Viewport(me.ViewPort.glVpX, me.ViewPort.glVpY, me.ViewPort.glVpW, me.ViewPort.glVpH)
+		gl.Viewport(me.Rendering.ViewPort.glVpX, me.Rendering.ViewPort.glVpY, me.Rendering.ViewPort.glVpW, me.Rendering.ViewPort.glVpH)
 		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 		curScene.RootNode.render()
 	}

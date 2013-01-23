@@ -8,18 +8,20 @@ import (
 	"io"
 	"strings"
 
-	gl "github.com/chsc/gogl/gl42"
 	ugl "github.com/go3d/go-glutil"
+	ugo "github.com/metaleap/go-util"
 )
 
 type FxImage2D struct {
 	FxImageBase
 
-	img image.Image
+	glTex ugl.Texture2D
+	img   image.Image
 }
 
 func (me *FxImage2D) init() {
-	me.FxImageBase.init()
+	me.glTex.Init()
+	me.FxImageBase.init(&me.glTex.TextureBase)
 }
 
 func (me *FxImage2D) dispose() {
@@ -28,8 +30,8 @@ func (me *FxImage2D) dispose() {
 }
 
 func (me *FxImage2D) GpuSync() (err error) {
-	if err = ugl.ImageTextureProperties(me.img, &me.glTexWidth, &me.glTexHeight, &me.glTexLevels, &me.glSizedInternalFormat, &me.glPixelDataFormat, &me.glPixelDataType, &me.glPixPointer); err == nil {
-		me.gpuSync(true, gl.TEXTURE_2D)
+	if err = ugl.ImageTextureProperties(me.img, &me.glTex.Width, &me.glTex.Height, &me.glTex.NumLevels, &me.glTex.SizedInternalFormat, &me.glTex.PixelData.Format, &me.glTex.PixelData.Type, &me.glTex.PixelData.Ptr); err == nil {
+		me.gpuSync(&me.glTex)
 	}
 	return
 }
@@ -83,7 +85,7 @@ func (me *FxImage2D) load_OnImg(img image.Image, err error, async bool) {
 		me.OnLoad(img, err, async)
 	}
 	if err != nil {
-		logError(err)
+		ugo.LogError(err)
 	}
 }
 

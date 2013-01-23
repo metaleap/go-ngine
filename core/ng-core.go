@@ -5,6 +5,7 @@ import (
 
 	gl "github.com/chsc/gogl/gl42"
 	ugl "github.com/go3d/go-glutil"
+	ugo "github.com/metaleap/go-util"
 )
 
 var (
@@ -84,8 +85,6 @@ func (me *EngineCore) initLibs() {
 
 func (me *EngineCore) initRenderingStates() {
 	rs := &me.Rendering.States
-	rs.EnableFaceCulling()
-	rs.EnableDepthTest()
 	rs.SetClearColor(0, 0, 0, 1)
 }
 
@@ -111,7 +110,7 @@ func (me *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 			canv.onResize(viewWidth, viewHeight)
 		}
 		for _, cam := range me.Libs.Cameras {
-			cam.ViewPort.update()
+			cam.Rendering.ViewPort.update()
 			cam.ApplyMatrices()
 		}
 	}
@@ -131,9 +130,9 @@ func (me *EngineCore) SyncUpdates() {
 		err error
 		ok  bool
 	)
-	glLogLastError("EngineCore.SyncUpdates() -- pre")
+	ugl.LogLastError("EngineCore.SyncUpdates() -- pre")
 	me.onResizeWindow(me.Options.winWidth, me.Options.winHeight)
-	glLogLastError("EngineCore.SyncUpdates() -- resizewin")
+	ugl.LogLastError("EngineCore.SyncUpdates() -- resizewin")
 	for _, img := range me.Libs.Images.I2D {
 		if !img.Loaded() {
 			if _, ok = asyncResources[img]; !ok {
@@ -141,15 +140,15 @@ func (me *EngineCore) SyncUpdates() {
 			}
 		}
 	}
-	glLogLastError("EngineCore.SyncUpdates() -- imgupload")
+	ugl.LogLastError("EngineCore.SyncUpdates() -- imgupload")
 	for _, mesh := range me.Libs.Meshes {
 		if !mesh.gpuSynced {
 			if err = mesh.GpuUpload(); err != nil {
-				logError(err)
+				ugo.LogError(err)
 			}
 		}
 	}
-	glLogLastError("EngineCore.SyncUpdates() -- meshupload")
+	ugl.LogLastError("EngineCore.SyncUpdates() -- meshupload")
 	return
 }
 

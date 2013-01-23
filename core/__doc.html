@@ -833,7 +833,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 		
 			
 			
-			<h2 id="Dispose">func <a href="/target/ng.go?s=656:670#L14">Dispose</a></h2>
+			<h2 id="Dispose">func <a href="/target/ng.go?s=683:697#L15">Dispose</a></h2>
 			<pre>func Dispose()</pre>
 			<p>
 Call this to &#34;un-init&#34; go:ngine and to release any and all GPU or RAM resources still allocated.
@@ -843,7 +843,7 @@ Call this to &#34;un-init&#34; go:ngine and to release any and all GPU or RAM re
 		
 			
 			
-			<h2 id="Init">func <a href="/target/ng.go?s=877:939#L21">Init</a></h2>
+			<h2 id="Init">func <a href="/target/ng.go?s=904:966#L22">Init</a></h2>
 			<pre>func Init(options *EngineOptions, winTitle string) (err error)</pre>
 			<p>
 Initializes go:ngine; this first attempts to initialize OpenGL and then open a window to your supplied specifications with a GL 3.2-or-higher profile.
@@ -853,7 +853,7 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="Sfmt">func <a href="/target/ng.go?s=1498:1553#L46">Sfmt</a></h2>
+			<h2 id="Sfmt">func <a href="/target/ng.go?s=1450:1505#L41">Sfmt</a></h2>
 			<pre>func Sfmt(format string, fmtArgs ...interface{}) string</pre>
 			<p>
 A short-hand for fmt.Sprintf. Feel free to ignore.
@@ -864,12 +864,8 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.gt.go?s=177:1099#L1">Camera</a></h2>
+			<h2 id="Camera">type <a href="/target/camera.gt.go?s=177:1140#L1">Camera</a></h2>
 			<pre>type Camera struct {
-    EnabledFor struct {
-        Rendering bool
-    }
-
     <span class="comment">//	Optical and imager properties for this camera.</span>
     Params struct {
         <span class="comment">//	Vertical field-of-view. Defaults to 37.8493.</span>
@@ -891,8 +887,14 @@ A short-hand for fmt.Sprintf. Feel free to ignore.
     <span class="comment">//	Encapsulates the position and direction of this camera.</span>
     Controller Controller
 
-    <span class="comment">//	The device-relative or absolute view-port for this Camera.</span>
-    ViewPort CameraViewPort
+    Rendering struct {
+        DepthTest   bool
+        FaceCulling bool
+        Enabled     bool
+
+        <span class="comment">//	The device-relative or absolute view-port for this Camera.</span>
+        ViewPort CameraViewPort
+    }
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
@@ -908,7 +910,7 @@ A camera embodies the eye point of the viewer looking at the visual scene.
 
 			
 				
-				<h3 id="NewCamera">func <a href="/target/camera.gt.go?s=4394:4423#L145">NewCamera</a></h3>
+				<h3 id="NewCamera">func <a href="/target/camera.gt.go?s=4677:4706#L149">NewCamera</a></h3>
 				<pre>func NewCamera() (me *Camera)</pre>
 				<p>
 Initializes and returns a new Camera with default parameters.
@@ -919,7 +921,7 @@ Initializes and returns a new Camera with default parameters.
 
 			
 				
-				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.gt.go?s=1456:1489#L47">ApplyMatrices</a></h3>
+				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.gt.go?s=1566:1599#L49">ApplyMatrices</a></h3>
 				<pre>func (me *Camera) ApplyMatrices()</pre>
 				<p>
 Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
@@ -929,14 +931,14 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
 				
 			
 				
-				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.gt.go?s=2251:2294#L69">SetTechnique</a></h3>
+				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.gt.go?s=2534:2577#L73">SetTechnique</a></h3>
 				<pre>func (me *Camera) SetTechnique(name string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.ToggleTechnique">func (*Camera) <a href="/target/camera.gt.go?s=2393:2428#L75">ToggleTechnique</a></h3>
+				<h3 id="Camera.ToggleTechnique">func (*Camera) <a href="/target/camera.gt.go?s=2676:2711#L79">ToggleTechnique</a></h3>
 				<pre>func (me *Camera) ToggleTechnique()</pre>
 				
 				
@@ -945,7 +947,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
 		
 			
 			
-			<h2 id="CameraViewPort">type <a href="/target/camera.gt.go?s=3038:3253#L107">CameraViewPort</a></h2>
+			<h2 id="CameraViewPort">type <a href="/target/camera.gt.go?s=3321:3536#L111">CameraViewPort</a></h2>
 			<pre>type CameraViewPort struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -964,7 +966,7 @@ Encapsulates a device-relative or absolute camera view-port.
 
 			
 				
-				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.gt.go?s=3379:3436#L121">SetAbs</a></h3>
+				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.gt.go?s=3662:3719#L125">SetAbs</a></h3>
 				<pre>func (me *CameraViewPort) SetAbs(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -974,7 +976,7 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.gt.go?s=3687:3748#L128">SetRel</a></h3>
+				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.gt.go?s=3970:4031#L132">SetRel</a></h3>
 				<pre>func (me *CameraViewPort) SetRel(x, y, width, height float64)</pre>
 				<p>
 Sets the device-relative viewport origin and dimensions, with the value 1.0
@@ -1194,7 +1196,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34;.
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=766:1153#L18">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=801:1188#L19">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Options     EngineOptions
@@ -1231,7 +1233,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3204:3239#L119">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3203:3238#L118">SyncUpdates</a></h3>
 				<pre>func (me *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -1240,7 +1242,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 		
 			
 			
-			<h2 id="EngineLoop">type <a href="/target/ng-loop.go?s=218:993#L3">EngineLoop</a></h2>
+			<h2 id="EngineLoop">type <a href="/target/ng-loop.go?s=251:1026#L4">EngineLoop</a></h2>
 			<pre>type EngineLoop struct {
     <span class="comment">//	Set to true by EngineLoop.Loop(). Set to false to stop looping.</span>
     IsLooping bool
@@ -1280,7 +1282,7 @@ Manages your main-thread&#39;s &#34;game loop&#34;.
 
 			
 				
-				<h3 id="EngineLoop.Loop">func (*EngineLoop) <a href="/target/ng-loop.go?s=1256:1284#L34">Loop</a></h3>
+				<h3 id="EngineLoop.Loop">func (*EngineLoop) <a href="/target/ng-loop.go?s=1289:1317#L35">Loop</a></h3>
 				<pre>func (me *EngineLoop) Loop()</pre>
 				<p>
 Initiates a rendering loop. This method returns only when the loop is stopped for whatever reason.
@@ -1293,7 +1295,7 @@ Initiates a rendering loop. This method returns only when the loop is stopped fo
 				
 			
 				
-				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=2933:2961#L86">Stop</a></h3>
+				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=2970:2998#L87">Stop</a></h3>
 				<pre>func (me *EngineLoop) Stop()</pre>
 				<p>
 Stops the currently running EngineLoop.Loop().
@@ -1303,7 +1305,7 @@ Stops the currently running EngineLoop.Loop().
 				
 			
 				
-				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=3076:3112#L91">Time</a></h3>
+				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=3113:3149#L92">Time</a></h3>
 				<pre>func (me *EngineLoop) Time() float64</pre>
 				<p>
 Returns the number of seconds expired ever since EngineLoop.Loop() was last called.
@@ -1446,7 +1448,7 @@ Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window m
 
 			
 				
-				<h3 id="EngineUserIO.IifKeyF">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2184:2257#L66">IifKeyF</a></h3>
+				<h3 id="EngineUserIO.IifKeyF">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2183:2256#L66">IifKeyF</a></h3>
 				<pre>func (me *EngineUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64</pre>
 				<p>
 Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
@@ -1456,7 +1458,7 @@ Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyPressed">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2372:2420#L74">KeyPressed</a></h3>
+				<h3 id="EngineUserIO.KeyPressed">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2371:2419#L74">KeyPressed</a></h3>
 				<pre>func (me *EngineUserIO) KeyPressed(key int) bool</pre>
 				<p>
 Returns true if the specified key is pressed.
@@ -1466,7 +1468,7 @@ Returns true if the specified key is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyPressedWhich">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2511:2567#L79">KeyPressedWhich</a></h3>
+				<h3 id="EngineUserIO.KeyPressedWhich">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2510:2566#L79">KeyPressedWhich</a></h3>
 				<pre>func (me *EngineUserIO) KeyPressedWhich(keys ...int) int</pre>
 				<p>
 Returns the first in keys that is pressed.
@@ -1476,7 +1478,7 @@ Returns the first in keys that is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyToggled">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3533:3581#L109">KeyToggled</a></h3>
+				<h3 id="EngineUserIO.KeyToggled">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3532:3580#L109">KeyToggled</a></h3>
 				<pre>func (me *EngineUserIO) KeyToggled(key int) bool</pre>
 				<p>
 Returns true if the specified key has been &#34;toggled&#34;, ie. its pressed-state changed within the last me.KeyToggleMinDelay seconds.
@@ -1486,7 +1488,7 @@ Returns true if the specified key has been &#34;toggled&#34;, ie. its pressed-st
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAll2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2733:2789#L89">KeysPressedAll2</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAll2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2732:2788#L89">KeysPressedAll2</a></h3>
 				<pre>func (me *EngineUserIO) KeysPressedAll2(k1, k2 int) bool</pre>
 				<p>
 Returns true if both specified keys are pressed.
@@ -1496,7 +1498,7 @@ Returns true if both specified keys are pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAll3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2899:2959#L94">KeysPressedAll3</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAll3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2898:2958#L94">KeysPressedAll3</a></h3>
 				<pre>func (me *EngineUserIO) KeysPressedAll3(k1, k2, k3 int) bool</pre>
 				<p>
 Returns true if all three specified keys are pressed.
@@ -1506,7 +1508,7 @@ Returns true if all three specified keys are pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAny2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3094:3150#L99">KeysPressedAny2</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAny2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3093:3149#L99">KeysPressedAny2</a></h3>
 				<pre>func (me *EngineUserIO) KeysPressedAny2(k1, k2 int) bool</pre>
 				<p>
 Returns true if any of the two specified keys is pressed.
@@ -1516,7 +1518,7 @@ Returns true if any of the two specified keys is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAny3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3266:3326#L104">KeysPressedAny3</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAny3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3265:3325#L104">KeysPressedAny3</a></h3>
 				<pre>func (me *EngineUserIO) KeysPressedAny3(k1, k2, k3 int) bool</pre>
 				<p>
 Returns true if any of the three specified keys is pressed.
@@ -1526,7 +1528,7 @@ Returns true if any of the three specified keys is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.SetWinTitle">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3816:3868#L118">SetWinTitle</a></h3>
+				<h3 id="EngineUserIO.SetWinTitle">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3815:3867#L118">SetWinTitle</a></h3>
 				<pre>func (me *EngineUserIO) SetWinTitle(newTitle string)</pre>
 				<p>
 Sets the window title to newTitle.
@@ -1536,7 +1538,7 @@ Sets the window title to newTitle.
 				
 			
 				
-				<h3 id="EngineUserIO.WinHeight">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3952:3991#L123">WinHeight</a></h3>
+				<h3 id="EngineUserIO.WinHeight">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3951:3990#L123">WinHeight</a></h3>
 				<pre>func (me *EngineUserIO) WinHeight() int</pre>
 				<p>
 Returns the height of the window in pixels.
@@ -1546,7 +1548,7 @@ Returns the height of the window in pixels.
 				
 			
 				
-				<h3 id="EngineUserIO.WinWidth">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4074:4112#L128">WinWidth</a></h3>
+				<h3 id="EngineUserIO.WinWidth">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4073:4111#L128">WinWidth</a></h3>
 				<pre>func (me *EngineUserIO) WinWidth() int</pre>
 				<p>
 Returns the width of the window in pixels.
@@ -1638,7 +1640,7 @@ Initializes and returns a new FxEffect with default parameters.
 		
 			
 			
-			<h2 id="FxImage2D">type <a href="/target/fx-image-2d.gt.go?s=158:214#L5">FxImage2D</a></h2>
+			<h2 id="FxImage2D">type <a href="/target/fx-image-2d.gt.go?s=161:240#L5">FxImage2D</a></h2>
 			<pre>type FxImage2D struct {
     FxImageBase
     <span class="comment">// contains filtered or unexported fields</span>
@@ -1653,7 +1655,7 @@ Initializes and returns a new FxEffect with default parameters.
 
 			
 				
-				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=3385:3420#L142">NewFxImage2D</a></h3>
+				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=3453:3488#L143">NewFxImage2D</a></h3>
 				<pre>func NewFxImage2D() (me *FxImage2D)</pre>
 				<p>
 Initializes and returns a new FxImage2D with default parameters.
@@ -1664,35 +1666,35 @@ Initializes and returns a new FxImage2D with default parameters.
 
 			
 				
-				<h3 id="FxImage2D.GpuSync">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=347:389#L20">GpuSync</a></h3>
+				<h3 id="FxImage2D.GpuSync">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=394:436#L21">GpuSync</a></h3>
 				<pre>func (me *FxImage2D) GpuSync() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.IsRemote">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2307:2352#L97">IsRemote</a></h3>
+				<h3 id="FxImage2D.IsRemote">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2375:2420#L98">IsRemote</a></h3>
 				<pre>func (me *FxImage2D) IsRemote() (remote bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Load">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=638:665#L27">Load</a></h3>
+				<h3 id="FxImage2D.Load">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=702:729#L28">Load</a></h3>
 				<pre>func (me *FxImage2D) Load()</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Loaded">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1778:1812#L80">Loaded</a></h3>
+				<h3 id="FxImage2D.Loaded">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1846:1880#L81">Loaded</a></h3>
 				<pre>func (me *FxImage2D) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Unload">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2396:2425#L102">Unload</a></h3>
+				<h3 id="FxImage2D.Unload">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2464:2493#L103">Unload</a></h3>
 				<pre>func (me *FxImage2D) Unload()</pre>
 				
 				
@@ -1701,7 +1703,7 @@ Initializes and returns a new FxImage2D with default parameters.
 		
 			
 			
-			<h2 id="FxImageBase">type <a href="/target/fx-image.go?s=91:598#L1">FxImageBase</a></h2>
+			<h2 id="FxImageBase">type <a href="/target/fx-image.go?s=59:272#L1">FxImageBase</a></h2>
 			<pre>type FxImageBase struct {
     OnAsyncDone      func()
     OnLoad           FxImageOnLoad
@@ -1724,21 +1726,21 @@ Initializes and returns a new FxImage2D with default parameters.
 
 			
 				
-				<h3 id="FxImageBase.GpuDelete">func (*FxImageBase) <a href="/target/fx-image.go?s=1502:1536#L45">GpuDelete</a></h3>
+				<h3 id="FxImageBase.GpuDelete">func (*FxImageBase) <a href="/target/fx-image.go?s=492:526#L23">GpuDelete</a></h3>
 				<pre>func (me *FxImageBase) GpuDelete()</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageBase.GpuSynced">func (*FxImageBase) <a href="/target/fx-image.go?s=1634:1673#L52">GpuSynced</a></h3>
+				<h3 id="FxImageBase.GpuSynced">func (*FxImageBase) <a href="/target/fx-image.go?s=573:612#L28">GpuSynced</a></h3>
 				<pre>func (me *FxImageBase) GpuSynced() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageBase.NoAutoMips">func (*FxImageBase) <a href="/target/fx-image.go?s=1699:1734#L56">NoAutoMips</a></h3>
+				<h3 id="FxImageBase.NoAutoMips">func (*FxImageBase) <a href="/target/fx-image.go?s=638:673#L32">NoAutoMips</a></h3>
 				<pre>func (me *FxImageBase) NoAutoMips()</pre>
 				
 				
@@ -1747,7 +1749,7 @@ Initializes and returns a new FxImage2D with default parameters.
 		
 			
 			
-			<h2 id="FxImageOnLoad">type <a href="/target/fx-image.go?s=1854:1917#L66">FxImageOnLoad</a></h2>
+			<h2 id="FxImageOnLoad">type <a href="/target/fx-image.go?s=798:861#L42">FxImageOnLoad</a></h2>
 			<pre>type FxImageOnLoad func(img interface{}, err error, async bool)</pre>
 			
 
@@ -1896,7 +1898,7 @@ Initializes and returns a new FxMaterial with default parameters.
 		
 			
 			
-			<h2 id="LibCameras">type <a href="/target/camera.gt.go?s=4537:4571#L152">LibCameras</a></h2>
+			<h2 id="LibCameras">type <a href="/target/camera.gt.go?s=4820:4854#L156">LibCameras</a></h2>
 			<pre>type LibCameras map[string]*Camera</pre>
 			<p>
 A hash-table of Cameras associated by IDs. Only for use in Core.Libs.
@@ -1913,7 +1915,7 @@ A hash-table of Cameras associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibCameras.AddNew">func (LibCameras) <a href="/target/camera.gt.go?s=4695:4747#L156">AddNew</a></h3>
+				<h3 id="LibCameras.AddNew">func (LibCameras) <a href="/target/camera.gt.go?s=4978:5030#L160">AddNew</a></h3>
 				<pre>func (me LibCameras) AddNew(id string) (obj *Camera)</pre>
 				<p>
 Creates and initializes a new Camera with default parameters,
@@ -1924,7 +1926,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibCameras.Remove">func (LibCameras) <a href="/target/camera.gt.go?s=4938:4976#L173">Remove</a></h3>
+				<h3 id="LibCameras.Remove">func (LibCameras) <a href="/target/camera.gt.go?s=5221:5259#L177">Remove</a></h3>
 				<pre>func (me LibCameras) Remove(id string)</pre>
 				
 				
@@ -1970,7 +1972,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=3540:3580#L149">LibFxImage2Ds</a></h2>
+			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=3608:3648#L150">LibFxImage2Ds</a></h2>
 			<pre>type LibFxImage2Ds map[string]*FxImage2D</pre>
 			<p>
 A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
@@ -1987,7 +1989,7 @@ A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3707:3765#L153">AddNew</a></h3>
+				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3775:3833#L154">AddNew</a></h3>
 				<pre>func (me LibFxImage2Ds) AddNew(id string) (obj *FxImage2D)</pre>
 				<p>
 Creates and initializes a new FxImage2D with default parameters,
@@ -1998,7 +2000,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibFxImage2Ds.Remove">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3968:4009#L170">Remove</a></h3>
+				<h3 id="LibFxImage2Ds.Remove">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=4036:4077#L171">Remove</a></h3>
 				<pre>func (me LibFxImage2Ds) Remove(id string)</pre>
 				
 				
@@ -3173,35 +3175,35 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvas.Main">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1240:1275#L37">Main</a></h3>
+				<h3 id="RenderCanvas.Main">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1275:1310#L37">Main</a></h3>
 				<pre>func (me *RenderCanvas) Main() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1577:1609#L48">Remove</a></h3>
+				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1612:1644#L48">Remove</a></h3>
 				<pre>func (me *RenderCanvas) Remove()</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.SetCameraIDs">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1942:1996#L67">SetCameraIDs</a></h3>
+				<h3 id="RenderCanvas.SetCameraIDs">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1977:2031#L67">SetCameraIDs</a></h3>
 				<pre>func (me *RenderCanvas) SetCameraIDs(camIDs ...string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.SetMain">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2139:2172#L74">SetMain</a></h3>
+				<h3 id="RenderCanvas.SetMain">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2174:2207#L74">SetMain</a></h3>
 				<pre>func (me *RenderCanvas) SetMain()</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2301:2370#L82">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2336:2405#L82">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
 				
 				
@@ -3210,7 +3212,7 @@ Represents a surface (texture framebuffer) that can be rendered to.
 		
 			
 			
-			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=2561:2596#L90">RenderCanvases</a></h2>
+			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=2596:2631#L90">RenderCanvases</a></h2>
 			<pre>type RenderCanvases []*RenderCanvas</pre>
 			
 
@@ -3224,14 +3226,14 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvases.AddNew">func (*RenderCanvases) <a href="/target/render-canvas.go?s=2705:2807#L99">AddNew</a></h3>
+				<h3 id="RenderCanvases.AddNew">func (*RenderCanvases) <a href="/target/render-canvas.go?s=2740:2842#L99">AddNew</a></h3>
 				<pre>func (me *RenderCanvases) AddNew(isMain bool, relative bool, width, height float64) (rc *RenderCanvas)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvases.Main">func (RenderCanvases) <a href="/target/render-canvas.go?s=3000:3052#L111">Main</a></h3>
+				<h3 id="RenderCanvases.Main">func (RenderCanvases) <a href="/target/render-canvas.go?s=3035:3087#L111">Main</a></h3>
 				<pre>func (me RenderCanvases) Main() (main *RenderCanvas)</pre>
 				
 				

@@ -6,6 +6,7 @@ import (
 	"runtime"
 
 	glfw "github.com/go-gl/glfw"
+	ugl "github.com/go3d/go-glutil"
 )
 
 //	Consider EngineLoop a "Singleton" type, only valid use is the core.Loop global variable.
@@ -50,7 +51,7 @@ func (me *EngineLoop) Loop() {
 		me.SecTickLast, me.TickNow = glfw.Time(), glfw.Time()
 		Stats.reset()
 		Stats.FrameRenderBoth.comb1, Stats.FrameRenderBoth.comb2 = &Stats.FrameRenderCpu, &Stats.FrameRenderGpu
-		glLogLastError("ngine.PreLoop")
+		ugl.LogLastError("ngine.PreLoop")
 		log.Printf("Enter loop...")
 		for me.IsLooping && (glfw.WindowParam(glfw.Opened) == 1) {
 			//	STEP 1. Send rendering commands to the GPU / GL pipeline
@@ -88,7 +89,7 @@ func (me *EngineLoop) Loop() {
 		}
 		me.IsLooping = false
 		log.Printf("Exited loop.")
-		glLogLastError("ngine.PostLoop")
+		ugl.LogLastError("ngine.PostLoop")
 	}
 }
 

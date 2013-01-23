@@ -77,7 +77,3 @@ for: <%v>.
 	}
 	return
 }
-
-func glLogLastError(step string, fmtArgs ...interface{}) {
-	logError(ugl.LastError(step, fmtArgs...))
-}
