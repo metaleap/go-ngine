@@ -40,7 +40,7 @@ func (me *FxImageBase) GpuSynced() bool {
 }
 
 func (me *FxImageBase) NoAutoMips() {
-	me.glTex.AutoMips = false
+	me.glTex.MipMap.AutoGen = false
 }
 
 func (me *FxImageBase) onAsyncDone() {
