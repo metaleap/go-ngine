@@ -65,12 +65,8 @@ func (me *FxImage2D) load_OnImg(img image.Image, err error, async bool) {
 	me.Unload()
 	if me.img = img; me.img != nil {
 		//	If img is YCbCr or Paletted, convert to RGBA:
-		conv := false
 		switch me.img.(type) {
 		case *image.YCbCr, *image.Paletted:
-			conv = true
-		}
-		if conv {
 			nuW, nuH := me.img.Bounds().Dx(), me.img.Bounds().Dy()
 			nuImage := image.NewRGBA(image.Rect(0, 0, nuW, nuH))
 			for x := 0; x < nuW; x++ {
