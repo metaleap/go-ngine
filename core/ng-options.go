@@ -1,6 +1,8 @@
 package core
 
 import (
+	"runtime"
+
 	ugl "github.com/go3d/go-glutil"
 )
 
@@ -9,6 +11,10 @@ import (
 type EngineOptions struct {
 	//	The base directory path for asset file paths.
 	AssetRootDirPath string
+
+	Initialization struct {
+		GlCoreContext bool
+	}
 
 	Rendering struct {
 		DefaultClearColor ugl.GlVec4
@@ -25,6 +31,7 @@ type EngineOptions struct {
 //	Allocates, initializes and returns a new core.EngineOptions instance.
 func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions) {
 	me = &EngineOptions{AssetRootDirPath: assetRootDirPath}
+	me.Initialization.GlCoreContext = (runtime.GOOS == "darwin")
 	me.Rendering.DefaultClearColor = ugl.GlVec4{0, 0, 0, 1}
 	me.Rendering.DefaultTechnique = "rt_unlit"
 	me.winWidth, me.winHeight, me.winSwapInterval, me.winFullScreen = winWidth, winHeight, winSwapInterval, winFullScreen

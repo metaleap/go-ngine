@@ -161,7 +161,8 @@ func PrintPostLoopSummary() {
 	printStatSummary("Frame Core Code", &ng.Stats.FrameCoreCode)
 	printStatSummary("Frame User Code", &ng.Stats.FrameUserCode)
 	printStatSummary("GC (max 1x/sec)", &ng.Stats.Gc)
-	fmt.Printf("CGO calls: %v, Goroutines: %v", runtime.NumCgoCall(), runtime.NumGoroutine())
+	fmt.Printf("CGO calls: %v, Goroutines: %v\n\n", runtime.NumCgoCall(), runtime.NumGoroutine())
+
 }
 
 //	The *func main()* implementation for the parent example app. Initializes go:ngine, sets Cam and CamCtl, calls the specified assetLoader function, then enters the Loop.

@@ -2,7 +2,6 @@ package core
 
 import (
 	"fmt"
-	"runtime"
 
 	ugl "github.com/go3d/go-glutil"
 )
@@ -28,26 +27,37 @@ func Dispose() {
 	UserIO.dispose()
 }
 
-//	Initializes go:ngine; this first attempts to initialize OpenGL and then open a window to your supplied specifications with a GL 3.2-or-higher profile.
+//	Initializes go:ngine; this first attempts to initialize OpenGL and then open a window to your supplied specifications with a GL 3.3-or-higher profile.
 func Init(options *EngineOptions, winTitle string) (err error) {
-	isVerErr, forceContext := false, true || (runtime.GOOS == "darwin")
+	var (
+		isVerErr   = false
+		glVerIndex = len(ugl.Versions) - 1
+		glVer      float64
+	)
 tryInit:
-	if err = UserIO.init(options, winTitle, forceContext); err == nil {
+	if options.Initialization.GlCoreContext {
+		glVer = ugl.Versions[glVerIndex]
+	}
+	if err = UserIO.init(options, winTitle, glVer); err == nil {
 		if err, isVerErr = glInit(); err == nil {
 			Stats.reset()
 			Loop.init()
 			Core.init(options)
 			ugl.LogLastError("INIT")
-		} else if isVerErr && !forceContext {
-			forceContext = true
+		} else if isVerErr && !options.Initialization.GlCoreContext {
+			options.Initialization.GlCoreContext = true
 			UserIO.isGlfwInit, UserIO.isGlfwWindow = false, false
 			goto tryInit
 		}
+	} else if options.Initialization.GlCoreContext && (glVerIndex > 0) {
+		glVerIndex--
+		UserIO.isGlfwInit, UserIO.isGlfwWindow = false, false
+		goto tryInit
 	}
 	return
 }
 
-//	A short-hand for fmt.Sprintf. Feel free to ignore.
+//	A convenience short-hand for fmt.Sprintf. Feel free to ignore.
 func Sfmt(format string, fmtArgs ...interface{}) string {
 	return fmt.Sprintf(format, fmtArgs...)
 }

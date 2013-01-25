@@ -46,7 +46,7 @@ func (me *glShaderManager) compileAll() (err error) {
 		for glShaderType, shaderTypeIndex = range me.sources.enumerate() {
 			if shaderSrc = me.sources.source(glShaderType, shaderName); len(shaderSrc) > 0 {
 				glShaders[shaderTypeIndex] = gl.CreateShader(glShaderType)
-				ugl.ShaderSource(shaderName, glShaders[shaderTypeIndex], shaderSrc, defines, false, "150")
+				ugl.ShaderSource(shaderName, glShaders[shaderTypeIndex], shaderSrc, defines, false, "330")
 				gl.CompileShader(glShaders[shaderTypeIndex])
 				if gl.GetShaderiv(glShaders[shaderTypeIndex], gl.COMPILE_STATUS, &glStatus); glStatus == 0 {
 					err = fmt.Errorf("SHADER %s: %s\n", shaderName, ugl.ShaderInfoLog(glShaders[shaderTypeIndex], true))

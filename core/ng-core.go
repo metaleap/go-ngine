@@ -59,6 +59,8 @@ func (me *EngineCore) dispose() {
 		disp.dispose()
 	}
 	me.Rendering.PostFx.dispose()
+	FxSamplerNoFiltering.Dispose()
+	FxSamplerHighestFiltering.Dispose()
 	techs = nil
 }
 
@@ -86,19 +88,25 @@ func (me *EngineCore) initLibs() {
 func (me *EngineCore) initRenderingStates() {
 	rs := &me.Rendering.states
 	rs.ForceClearColor(me.Options.Rendering.DefaultClearColor)
+	FxSamplerHighestFiltering.Create()
+	FxSamplerHighestFiltering.EnableHighestFiltering(true, 8)
+	FxSamplerNoFiltering.Create()
+	FxSamplerNoFiltering.DisableAllFiltering(false)
 }
 
 func (me *EngineCore) onLoop() {
 }
 
 func (me *EngineCore) onRender() {
+	FxSamplerHighestFiltering.Bind(0)
 	for curCanvIndex, curCanvas = range me.Rendering.Canvases {
 		if (curCanvas.EveryNthFrame == 1) || ((curCanvas.EveryNthFrame > 1) && (math.Mod(Stats.fpsAll, curCanvas.EveryNthFrame) == 0)) {
 			Core.Rendering.states.EnableDepthTest()
 			curCanvas.render()
 		}
 	}
-	Core.Rendering.states.EnableDepthTest()
+	Core.Rendering.states.DisableDepthTest()
+	FxSamplerNoFiltering.Bind(0)
 	me.Rendering.PostFx.render()
 }
 

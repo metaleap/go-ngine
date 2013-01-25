@@ -4,8 +4,8 @@ import (
 	"runtime"
 
 	glfw "github.com/go-gl/glfw"
-
-	util "github.com/metaleap/go-util"
+	ugl "github.com/go3d/go-glutil"
+	ugo "github.com/metaleap/go-util"
 )
 
 //	Consider EngineUserIO a "Singleton" type, only valid use is the core.UserIO global variable.
@@ -30,7 +30,7 @@ func (me *EngineUserIO) dispose() {
 	}
 }
 
-func (me *EngineUserIO) init(opt *EngineOptions, winTitle string, forceContext bool) (err error) {
+func (me *EngineUserIO) init(opt *EngineOptions, winTitle string, forceContextVersion float64) (err error) {
 	me.KeyToggleMinDelay, me.lastToggles = 0.25, map[int]float64{}
 	if !me.isGlfwInit {
 		if err = glfw.Init(); err == nil {
@@ -39,15 +39,16 @@ func (me *EngineUserIO) init(opt *EngineOptions, winTitle string, forceContext b
 	}
 	if me.isGlfwInit && !me.isGlfwWindow {
 		glfw.OpenWindowHint(glfw.FsaaSamples, 0) // AA will be a pluggable post-processing shader
-		if forceContext {
-			glfw.OpenWindowHint(glfw.OpenGLVersionMajor, 3)
-			glfw.OpenWindowHint(glfw.OpenGLVersionMinor, 2)
+		if forceContextVersion > 0 {
+			major, minor := ugl.VersionMajorMinor(forceContextVersion)
+			glfw.OpenWindowHint(glfw.OpenGLVersionMajor, major)
+			glfw.OpenWindowHint(glfw.OpenGLVersionMinor, minor)
 			glfw.OpenWindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 			if runtime.GOOS == "darwin" {
 				glfw.OpenWindowHint(glfw.OpenGLForwardCompat, 1)
 			}
 		}
-		if err = glfw.OpenWindow(opt.winWidth, opt.winHeight, 8, 8, 8, 0, 0, 0, util.Ifi(opt.winFullScreen, glfw.Fullscreen, glfw.Windowed)); err == nil {
+		if err = glfw.OpenWindow(opt.winWidth, opt.winHeight, 8, 8, 8, 0, 0, 0, ugo.Ifi(opt.winFullScreen, glfw.Fullscreen, glfw.Windowed)); err == nil {
 			opt.winWidth, opt.winHeight = glfw.WindowSize()
 			me.isGlfwWindow = true
 		}

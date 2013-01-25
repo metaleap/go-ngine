@@ -4,25 +4,35 @@ import (
 	gl "github.com/chsc/gogl/gl42"
 
 	ugl "github.com/go3d/go-glutil"
-	ugfx "github.com/metaleap/go-util/gfx"
 )
 
 var (
-	FxSamplerDefault             = NewFxSampler(FxSamplerFilteringHighMipped, FxSamplerWrappingRepeat)
-	FxSamplerFilteringHighMipped = NewFxSamplerFiltering(8, true, true, true)
-	FxSamplerWrappingRepeat      = ugfx.NewSamplerWrapping(ugfx.WrapKindRepeat, nil)
+	FxSamplerHighestFiltering = NewFxSampler()
+	FxSamplerNoFiltering      = NewFxSampler()
 )
 
 type FxSampler struct {
-	Filtering *FxSamplerFiltering
-	Wrapping  *ugfx.SamplerWrapping
+	ugl.Sampler
 }
 
-func NewFxSampler(filtering *FxSamplerFiltering, wrapping *ugfx.SamplerWrapping) (me *FxSampler) {
-	me = &FxSampler{Filtering: filtering, Wrapping: wrapping}
+func NewFxSampler() (me *FxSampler) {
+	me = &FxSampler{}
 	return
 }
 
+func (me *FxSampler) DisableAllFiltering(allowMip bool) {
+	me.SetFilterMag(gl.NEAREST)
+	me.SetFilterMin(ugl.Ifi(allowMip, gl.NEAREST_MIPMAP_NEAREST, gl.NEAREST))
+	me.SetFilterMaxAnisotropy(1)
+}
+
+func (me *FxSampler) EnableHighestFiltering(allowMip bool, maxAniso gl.Float) {
+	me.SetFilterMag(gl.LINEAR)
+	me.SetFilterMin(ugl.Ifi(allowMip, gl.LINEAR_MIPMAP_LINEAR, gl.LINEAR))
+	me.SetFilterMaxAnisotropy(maxAniso)
+}
+
+/*
 type FxSamplerFiltering struct {
 	glAniso       gl.Float
 	glMag, glMin  gl.Int
@@ -52,7 +62,7 @@ func (me *FxSamplerFiltering) SetAnisotropy(aniso float64) {
 		if me.aniso = aniso; me.aniso > 0 {
 			me.glAniso = gl.Float(me.aniso)
 		} else {
-			me.glAniso = ugl.MaxTextureAnisotropy
+			me.glAniso = ugl.SamplerMaxFilterAnisotropy
 		}
 	}
 }
@@ -77,3 +87,4 @@ func (me *FxSamplerFiltering) SetFilteringMin(min, mip bool) {
 		}
 	}
 }
+*/

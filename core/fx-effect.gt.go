@@ -28,11 +28,11 @@ func NewFxColor(rgba ...float64) (me *FxColorOrTexture) {
 }
 
 //	Creates and returns a new FxColorOrTexture that points to the specified texture image.
-//	If sampler is nil, FxSamplerDefault is used for me.Texture.Sampler.
+//	If sampler is nil, FxSamplerHighestFiltering is used for me.Texture.Sampler.
 func NewFxTexture(image2ID string, sampler *FxSampler) (me *FxColorOrTexture) {
 	me = &FxColorOrTexture{}
 	if sampler == nil {
-		sampler = FxSamplerDefault
+		sampler = FxSamplerHighestFiltering
 	}
 	me.Texture.Image2ID, me.Texture.Sampler = image2ID, sampler
 	return
