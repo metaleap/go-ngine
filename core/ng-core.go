@@ -42,7 +42,11 @@ type EngineCore struct {
 	Rendering struct {
 		Canvases RenderCanvases
 		PostFx   PostFx
-		states   ugl.RenderStates
+		Samplers struct {
+			NoFilteringClamp    ugl.Sampler
+			FullFilteringRepeat ugl.Sampler
+		}
+		states ugl.RenderStates
 	}
 
 	isInit bool
@@ -59,8 +63,8 @@ func (me *EngineCore) dispose() {
 		disp.dispose()
 	}
 	me.Rendering.PostFx.dispose()
-	FxSamplerNoFiltering.Dispose()
-	FxSamplerHighestFiltering.Dispose()
+	me.Rendering.Samplers.FullFilteringRepeat.Dispose()
+	me.Rendering.Samplers.NoFilteringClamp.Dispose()
 	techs = nil
 }
 
@@ -86,32 +90,29 @@ func (me *EngineCore) initLibs() {
 }
 
 func (me *EngineCore) initRenderingStates() {
-	rs := &me.Rendering.states
-	rs.ForceClearColor(me.Options.Rendering.DefaultClearColor)
-	FxSamplerHighestFiltering.Create()
-	FxSamplerHighestFiltering.EnableHighestFiltering(true, 8)
-	FxSamplerNoFiltering.Create()
-	FxSamplerNoFiltering.DisableAllFiltering(false)
+	me.Rendering.states.ForceClearColor(me.Options.Rendering.DefaultClearColor)
+	me.Rendering.Samplers.FullFilteringRepeat.Create().EnableFullFiltering(true, 8).SetWrap(gl.REPEAT)
+	me.Rendering.Samplers.NoFilteringClamp.Create().DisableAllFiltering(false).SetWrap(gl.CLAMP_TO_BORDER)
 }
 
 func (me *EngineCore) onLoop() {
 }
 
 func (me *EngineCore) onRender() {
-	FxSamplerHighestFiltering.Bind(0)
+	me.Rendering.Samplers.FullFilteringRepeat.Bind(0)
 	for curCanvIndex, curCanvas = range me.Rendering.Canvases {
 		if (curCanvas.EveryNthFrame == 1) || ((curCanvas.EveryNthFrame > 1) && (math.Mod(Stats.fpsAll, curCanvas.EveryNthFrame) == 0)) {
-			Core.Rendering.states.EnableDepthTest()
 			curCanvas.render()
 		}
 	}
-	Core.Rendering.states.DisableDepthTest()
-	FxSamplerNoFiltering.Bind(0)
+	me.Rendering.Samplers.NoFilteringClamp.Bind(0)
 	me.Rendering.PostFx.render()
+	ugl.LogLastError("onrender")
 }
 
 func (me *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 	if me.isInit {
+		println("resize...")
 		me.Options.winWidth, me.Options.winHeight = viewWidth, viewHeight
 		me.Rendering.PostFx.glWidth, me.Rendering.PostFx.glHeight = gl.Sizei(viewWidth), gl.Sizei(viewHeight)
 		for _, canv := range me.Rendering.Canvases {
@@ -121,6 +122,7 @@ func (me *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 			cam.Rendering.ViewPort.update()
 			cam.ApplyMatrices()
 		}
+		ugl.LogLastError("onresize")
 	}
 }
 

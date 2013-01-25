@@ -76,44 +76,50 @@ type MeshBuffer struct {
 
 	offsetBaseIndex, offsetIndices, offsetVerts int32
 	id                                          string
-	meshes                                      map[*Mesh]bool
-	glIbo, glVbo                                gl.Uint
+	glIbo, glVbo                                ugl.Buffer
 	glVaos                                      map[string]gl.Uint
+	meshes                                      map[*Mesh]bool
 }
 
-func newMeshBuffer(id string, params *meshBufferParams) (buf *MeshBuffer, err error) {
+func newMeshBuffer(id string, params *meshBufferParams) (me *MeshBuffer, err error) {
 	var glVao gl.Uint
-	buf = &MeshBuffer{}
-	buf.id = id
-	buf.meshes = map[*Mesh]bool{}
-	buf.Params = params
-	buf.glVaos = map[string]gl.Uint{}
-	buf.MemSizeIndices = Core.MeshBuffers.MemSizePerIndex() * params.NumIndices
-	buf.MemSizeVertices = Core.MeshBuffers.MemSizePerVertex() * params.NumVerts
-	gl.GenBuffers(1, &buf.glVbo)
-	gl.GenBuffers(1, &buf.glIbo)
+	me = &MeshBuffer{}
+	me.id = id
+	me.meshes = map[*Mesh]bool{}
+	me.Params = params
+	me.glVaos = map[string]gl.Uint{}
+	me.MemSizeIndices = Core.MeshBuffers.MemSizePerIndex() * params.NumIndices
+	me.MemSizeVertices = Core.MeshBuffers.MemSizePerVertex() * params.NumVerts
+	me.glVbo.Recreate(gl.ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeVertices), gl.Pointer(nil), ugl.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
+	me.glIbo.Recreate(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeIndices), gl.Pointer(nil), ugl.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
+	// gl.GenBuffers(1, &me.glVbo)
+	// gl.GenBuffers(1, &me.glIbo)
 	for techName, _ := range techs {
 		gl.GenVertexArrays(1, &glVao)
-		buf.glVaos[techName] = glVao
+		me.glVaos[techName] = glVao
 	}
-	gl.BindBuffer(gl.ARRAY_BUFFER, buf.glVbo)
-	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, buf.glIbo)
-	gl.BufferData(gl.ARRAY_BUFFER, gl.Sizeiptr(buf.MemSizeVertices), gl.Pointer(nil), ugl.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
-	gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(buf.MemSizeIndices), gl.Pointer(nil), ugl.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
-	gl.BindBuffer(gl.ARRAY_BUFFER, 0)
-	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
+	// gl.BindBuffer(gl.ARRAY_BUFFER, me.glVbo)
+	// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.glIbo)
+	// gl.BufferData(gl.ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeVertices), gl.Pointer(nil), ugl.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
+	// gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeIndices), gl.Pointer(nil), ugl.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
+	// gl.BindBuffer(gl.ARRAY_BUFFER, 0)
+	// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
 	if err = ugl.LastError("newMeshBuffer(%v numVerts=%v numIndices=%v)", id, params.NumVerts, params.NumIndices); err != nil {
-		buf.dispose()
-		buf = nil
+		me.dispose()
+		me = nil
 	} else {
-		for techName, glVao := range buf.glVaos {
+		for techName, glVao := range me.glVaos {
 			gl.BindVertexArray(glVao)
-			gl.BindBuffer(gl.ARRAY_BUFFER, buf.glVbo)
-			gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, buf.glIbo)
-			techs[techName].initMeshBuffer(buf)
+			me.glVbo.Bind()
+			me.glIbo.Bind()
+			// gl.BindBuffer(gl.ARRAY_BUFFER, me.glVbo)
+			// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.glIbo)
+			techs[techName].initMeshBuffer(me)
 			gl.BindVertexArray(0)
-			gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
-			gl.BindBuffer(gl.ARRAY_BUFFER, 0)
+			me.glIbo.Unbind()
+			me.glVbo.Unbind()
+			// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
+			// gl.BindBuffer(gl.ARRAY_BUFFER, 0)
 		}
 	}
 	return
@@ -141,8 +147,10 @@ func (me *MeshBuffer) dispose() {
 	for mesh, _ := range me.meshes {
 		mesh.meshBuffer, mesh.gpuSynced = nil, false
 	}
-	gl.DeleteBuffers(1, &me.glIbo)
-	gl.DeleteBuffers(1, &me.glVbo)
+	me.glIbo.Dispose()
+	me.glVbo.Dispose()
+	// gl.DeleteBuffers(1, &me.glIbo)
+	// gl.DeleteBuffers(1, &me.glVbo)
 	for _, glVao := range me.glVaos {
 		gl.DeleteVertexArrays(1, &glVao)
 	}

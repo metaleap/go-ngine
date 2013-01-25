@@ -86,6 +86,10 @@ func (me *EngineLoop) Loop() {
 			glfw.SwapBuffers()
 			Stats.FrameRenderGpu.end()
 			Stats.FrameRenderBoth.combine()
+			if (UserIO.lastWinResize > 0) && ((me.TickNow - UserIO.lastWinResize) > UserIO.WinResizeMinDelay) {
+				UserIO.lastWinResize = 0
+				Core.onResizeWindow(Core.Options.winWidth, Core.Options.winHeight)
+			}
 		}
 		me.IsLooping = false
 		log.Printf("Exited loop.")

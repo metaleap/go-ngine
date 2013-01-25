@@ -1,6 +1,7 @@
 package core
 
 import (
+	ugl "github.com/go3d/go-glutil"
 	ugfx "github.com/metaleap/go-util/gfx"
 )
 
@@ -16,8 +17,8 @@ type FxColorOrTexture struct {
 		Image2ID string
 
 		//	Describes filtering and wrapping when sampling the texture image.
-		//	Defaults to FxSamplerDefault.
-		Sampler *FxSampler
+		//	Defaults to Core.Rendering.Samplers.FullFilteringRepeat.
+		Sampler *ugl.Sampler
 	}
 }
 
@@ -28,11 +29,11 @@ func NewFxColor(rgba ...float64) (me *FxColorOrTexture) {
 }
 
 //	Creates and returns a new FxColorOrTexture that points to the specified texture image.
-//	If sampler is nil, FxSamplerHighestFiltering is used for me.Texture.Sampler.
-func NewFxTexture(image2ID string, sampler *FxSampler) (me *FxColorOrTexture) {
+//	If sampler is nil, Core.Rendering.Samplers.FullFilteringRepeat is used for me.Texture.Sampler.
+func NewFxTexture(image2ID string, sampler *ugl.Sampler) (me *FxColorOrTexture) {
 	me = &FxColorOrTexture{}
 	if sampler == nil {
-		sampler = FxSamplerHighestFiltering
+		sampler = &Core.Rendering.Samplers.FullFilteringRepeat
 	}
 	me.Texture.Image2ID, me.Texture.Sampler = image2ID, sampler
 	return

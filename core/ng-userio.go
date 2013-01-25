@@ -14,8 +14,14 @@ type EngineUserIO struct {
 	//	Minimum delay for EngineUserIO.KeyToggled() method, in seconds. Defaults to 0.25.
 	KeyToggleMinDelay float64
 
+	//	Minimum delay, in seconds, to wait after the last window-resize event received from
+	//	the OS before notifying the rendering runtime of the new window dimensions.
+	//	Defaults to 0.25.
+	WinResizeMinDelay float64
+
 	isGlfwInit, isGlfwWindow, togglePress bool
 	keyWhich                              int
+	lastWinResize                         float64
 	lastToggles                           map[int]float64
 }
 
@@ -31,7 +37,7 @@ func (me *EngineUserIO) dispose() {
 }
 
 func (me *EngineUserIO) init(opt *EngineOptions, winTitle string, forceContextVersion float64) (err error) {
-	me.KeyToggleMinDelay, me.lastToggles = 0.25, map[int]float64{}
+	me.KeyToggleMinDelay, me.WinResizeMinDelay, me.lastToggles = 0.25, 0.25, map[int]float64{}
 	if !me.isGlfwInit {
 		if err = glfw.Init(); err == nil {
 			me.isGlfwInit = true
@@ -70,7 +76,8 @@ func glfwOnWindowClose() int {
 }
 
 func glfwOnWindowResize(width, height int) {
-	Core.onResizeWindow(width, height)
+	Core.Options.winWidth, Core.Options.winHeight = width, height
+	UserIO.lastWinResize = Loop.TickNow
 }
 
 //	Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.

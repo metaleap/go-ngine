@@ -44,15 +44,21 @@ func (me *Mesh) GpuUpload() (err error) {
 	} else {
 		me.meshBufOffsetBaseIndex, me.meshBufOffsetIndices, me.meshBufOffsetVerts = me.meshBuffer.offsetBaseIndex, me.meshBuffer.offsetIndices, me.meshBuffer.offsetVerts
 		fmt.Printf("Upload %v at voff=%v ioff=%v boff=%v\n", me.id, me.meshBufOffsetVerts, me.meshBufOffsetIndices, me.meshBufOffsetBaseIndex)
-		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.meshBuffer.glIbo)
-		gl.BindBuffer(gl.ARRAY_BUFFER, me.meshBuffer.glVbo)
-		gl.BufferSubData(gl.ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetVerts), sizeVerts, gl.Pointer(&me.raw.meshVerts[0]))
+		me.meshBuffer.glIbo.Bind()
+		me.meshBuffer.glVbo.Bind()
+		// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.meshBuffer.glIbo)
+		// gl.BindBuffer(gl.ARRAY_BUFFER, me.meshBuffer.glVbo)
+		// gl.BufferSubData(gl.ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetVerts), sizeVerts, gl.Pointer(&me.raw.meshVerts[0]))
+		me.meshBuffer.glVbo.Update(gl.Intptr(me.meshBufOffsetVerts), sizeVerts, gl.Pointer(&me.raw.meshVerts[0]))
 		me.meshBuffer.offsetVerts += int32(sizeVerts)
-		gl.BufferSubData(gl.ELEMENT_ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetIndices), sizeIndices, gl.Pointer(&me.raw.indices[0]))
+		// gl.BufferSubData(gl.ELEMENT_ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetIndices), sizeIndices, gl.Pointer(&me.raw.indices[0]))
+		me.meshBuffer.glIbo.Update(gl.Intptr(me.meshBufOffsetIndices), sizeIndices, gl.Pointer(&me.raw.indices[0]))
 		me.meshBuffer.offsetIndices += int32(sizeIndices)
 		me.meshBuffer.offsetBaseIndex += int32(len(me.raw.indices))
-		gl.BindBuffer(gl.ARRAY_BUFFER, 0)
-		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
+		me.meshBuffer.glIbo.Unbind()
+		me.meshBuffer.glVbo.Unbind()
+		// gl.BindBuffer(gl.ARRAY_BUFFER, 0)
+		// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
 		if err = ugl.LastError("mesh[%v].GpuUpload()", me.id); err == nil {
 			me.gpuSynced = true
 		}
