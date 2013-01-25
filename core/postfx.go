@@ -7,19 +7,19 @@ import (
 
 //	ONLY used for Core.Rendering.PostFx.
 type PostFx struct {
-	glVao             gl.Uint
+	glVao             ugl.VertexArray
 	glWidth, glHeight gl.Sizei
 	prog              *ugl.ShaderProgram
 }
 
 func (me *PostFx) dispose() {
-	gl.DeleteVertexArrays(1, &me.glVao)
+	me.glVao.Dispose()
 }
 
 func (me *PostFx) init() {
 	me.prog = glShaderMan.progs["postfx"]
 	me.prog.SetUnifLocations("uTexRendering")
-	gl.GenVertexArrays(1, &me.glVao)
+	me.glVao.Create()
 }
 
 func (me *PostFx) render() {
@@ -32,7 +32,7 @@ func (me *PostFx) render() {
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 	mainCanvas.frameBuf.BindTexture(0)
 	gl.Uniform1i(me.prog.UnifLocs["uTexRendering"], 0)
-	gl.BindVertexArray(me.glVao)
+	me.glVao.Bind()
 	gl.DrawArrays(gl.TRIANGLES, 0, 3)
-	gl.BindVertexArray(0)
+	me.glVao.Unbind()
 }
