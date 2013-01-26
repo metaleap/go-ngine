@@ -90,8 +90,8 @@ func newMeshBuffer(id string, params *meshBufferParams) (me *MeshBuffer, err err
 	me.glVaos = map[string]gl.Uint{}
 	me.MemSizeIndices = Core.MeshBuffers.MemSizePerIndex() * params.NumIndices
 	me.MemSizeVertices = Core.MeshBuffers.MemSizePerVertex() * params.NumVerts
-	me.glVbo.Recreate(gl.ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeVertices), gl.Pointer(nil), ugl.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
-	me.glIbo.Recreate(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeIndices), gl.Pointer(nil), ugl.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
+	me.glVbo.Recreate(gl.ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeVertices), gl.Pointer(nil), ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
+	me.glIbo.Recreate(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeIndices), gl.Pointer(nil), ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
 	// gl.GenBuffers(1, &me.glVbo)
 	// gl.GenBuffers(1, &me.glIbo)
 	for techName, _ := range techs {

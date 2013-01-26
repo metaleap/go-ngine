@@ -40,7 +40,7 @@ for: <%v>.
 	vMatch := "VERSION_"
 	makeVerErr := func(curVer string) error {
 		isVerErr = true
-		return fmt.Errorf(vMessage, strings.Replace(minMatch, "_", ".", -1), curVer, ugl.GlStr(gl.VENDOR), ugl.GlStr(gl.RENDERER))
+		return fmt.Errorf(vMessage, strings.Replace(minMatch, "_", ".", -1), curVer, ugl.Gl.Str(gl.VENDOR), ugl.Gl.Str(gl.RENDERER))
 	}
 	if !glIsInit {
 		if err = gl.Init(); err != nil {
@@ -51,7 +51,7 @@ for: <%v>.
 					err = nil
 				} else {
 					if vMatch > "1_0" {
-						vMatch = ugl.GlStr(gl.VERSION)
+						vMatch = ugl.Gl.Str(gl.VERSION)
 					}
 					err = makeVerErr(strings.Replace(vMatch, "_", ".", -1))
 				}
@@ -65,7 +65,7 @@ for: <%v>.
 				var dur time.Duration
 				gl.FrontFace(gl.CCW)
 				gl.CullFace(gl.BACK)
-				log.Println(ugl.GlConnInfo())
+				log.Println(ugl.Gl.ConnInfo())
 				if dur, err = glProgMan.MakeAllProgramsFromRawSources(); err == nil {
 					log.Printf("Total shader compilation time for all %v programs: %v\n", len(glProgMan.Programs), dur)
 				}

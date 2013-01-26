@@ -30,7 +30,7 @@ func (me *FxImage2D) dispose() {
 }
 
 func (me *FxImage2D) GpuSync() (err error) {
-	if err = ugl.ImageTexture2DProperties(me.img, &me.glTex.Width, &me.glTex.Height, &me.glTex.MipMap.NumLevels, &me.glTex.SizedInternalFormat, &me.glTex.PixelData.Format, &me.glTex.PixelData.Type, &me.glTex.PixelData.Ptr); err == nil {
+	if err = me.glTex.SetFromImage(me.img); err == nil {
 		me.gpuSync(&me.glTex)
 	}
 	return
