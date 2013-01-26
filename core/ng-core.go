@@ -162,7 +162,7 @@ func (me *EngineCore) SyncUpdates() {
 }
 
 func (me *EngineCore) useProgram(name string) {
-	if tmpProg = glShaderMan.progs[name]; tmpProg != curProg {
+	if tmpProg = glProgMan.Programs[name]; tmpProg != curProg {
 		curProg = tmpProg
 		curProg.Use()
 	}

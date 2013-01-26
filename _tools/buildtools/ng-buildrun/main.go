@@ -25,7 +25,7 @@ type shaderSrcSortables struct {
 }
 
 func (me shaderSrcSortables) mapAll() map[string]shaderSrcSortable {
-	return map[string]shaderSrcSortable{"vertex": me.vert, "tessCtl": me.tessCtl, "tessEval": me.tessEval, "geometry": me.geo, "fragment": me.frag, "compute": me.comp}
+	return map[string]shaderSrcSortable{"Vertex": me.vert, "TessCtl": me.tessCtl, "TessEval": me.tessEval, "Geometry": me.geo, "Fragment": me.frag, "Compute": me.comp}
 }
 
 func collectShaders(srcDirPath string, allShaders *shaderSrcSortables, iShaders map[string]string, stripComments bool) {
@@ -90,7 +90,7 @@ func generateShadersFile(srcDirPath, outFilePath, pkgName string, stripComments 
 		allNames               []string
 		glslOldSrc, shaderName string
 	)
-	glslSrc := "package " + pkgName + "\n\nfunc init() {\n\trss := &glShaderMan.sources\n"
+	glslSrc := "package " + pkgName + "\n\nfunc init() {\n\trs := &glProgMan.RawSources\n"
 	allShaders := shaderSrcSortables{shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}}
 	iShaders := map[string]string{}
 	glslOldSrc = uio.ReadTextFile(outFilePath, false, "")
@@ -106,10 +106,10 @@ func generateShadersFile(srcDirPath, outFilePath, pkgName string, stripComments 
 			if shaderName = shaderSource.name[:strings.LastIndex(shaderSource.name, ".")]; !inSlice(allNames, shaderName) {
 				allNames = append(allNames, shaderName)
 			}
-			glslSrc += fmt.Sprintf("\trss.%s[\"%s\"] = %#v\n", varName, shaderName, includeShaders(shaderSource.name, shaderSource.src, iShaders))
+			glslSrc += fmt.Sprintf("\trs.%s[\"%s\"] = %#v\n", varName, shaderName, includeShaders(shaderSource.name, shaderSource.src, iShaders))
 		}
 	}
-	if glslSrc += fmt.Sprintf("\tglShaderMan.names = %#v\n}\n", allNames); glslSrc != glslOldSrc {
+	if glslSrc += fmt.Sprintf("\tglProgMan.Names = %#v\n}\n", allNames); glslSrc != glslOldSrc {
 		uio.WriteTextFile(outFilePath, glslSrc)
 	}
 	return true

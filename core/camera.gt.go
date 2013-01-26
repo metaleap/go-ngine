@@ -97,7 +97,7 @@ func (me *Camera) ToggleTechnique() {
 		curIndex, i int
 		tech        renderTechnique = nil
 	)
-	allNames, curTech, name := glShaderMan.names, curTechnique.name(), ""
+	allNames, curTech, name := glProgMan.Names, curTechnique.name(), ""
 	for i, name = range allNames {
 		if name == curTech {
 			curIndex = i

@@ -723,8 +723,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/gl-core.go">gl-core.go</a>
 			
-				<a href="/target/gl-shaders.go">gl-shaders.go</a>
-			
 				<a href="/target/mesh-buffer.go">mesh-buffer.go</a>
 			
 				<a href="/target/mesh-data.go">mesh-data.go</a>
@@ -871,7 +869,7 @@ A camera embodies the eye point of the viewer looking at the visual scene.
 
 			
 				
-				<h3 id="NewCamera">func <a href="/target/camera.gt.go?s=4933:4962#L155">NewCamera</a></h3>
+				<h3 id="NewCamera">func <a href="/target/camera.gt.go?s=4931:4960#L155">NewCamera</a></h3>
 				<pre>func NewCamera() (me *Camera)</pre>
 				<p>
 Initializes and returns a new Camera with default parameters.
@@ -908,7 +906,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
 		
 			
 			
-			<h2 id="CameraViewPort">type <a href="/target/camera.gt.go?s=3577:3792#L117">CameraViewPort</a></h2>
+			<h2 id="CameraViewPort">type <a href="/target/camera.gt.go?s=3575:3790#L117">CameraViewPort</a></h2>
 			<pre>type CameraViewPort struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -927,7 +925,7 @@ Encapsulates a device-relative or absolute camera view-port.
 
 			
 				
-				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.gt.go?s=3918:3975#L131">SetAbs</a></h3>
+				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.gt.go?s=3916:3973#L131">SetAbs</a></h3>
 				<pre>func (me *CameraViewPort) SetAbs(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -937,7 +935,7 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.gt.go?s=4226:4287#L138">SetRel</a></h3>
+				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.gt.go?s=4224:4285#L138">SetRel</a></h3>
 				<pre>func (me *CameraViewPort) SetRel(x, y, width, height float64)</pre>
 				<p>
 Sets the device-relative viewport origin and dimensions, with the value 1.0
@@ -1785,7 +1783,7 @@ Initializes and returns a new FxMaterial with default parameters.
 		
 			
 			
-			<h2 id="LibCameras">type <a href="/target/camera.gt.go?s=5076:5110#L162">LibCameras</a></h2>
+			<h2 id="LibCameras">type <a href="/target/camera.gt.go?s=5074:5108#L162">LibCameras</a></h2>
 			<pre>type LibCameras map[string]*Camera</pre>
 			<p>
 A hash-table of Cameras associated by IDs. Only for use in Core.Libs.
@@ -1802,7 +1800,7 @@ A hash-table of Cameras associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibCameras.AddNew">func (LibCameras) <a href="/target/camera.gt.go?s=5234:5286#L166">AddNew</a></h3>
+				<h3 id="LibCameras.AddNew">func (LibCameras) <a href="/target/camera.gt.go?s=5232:5284#L166">AddNew</a></h3>
 				<pre>func (me LibCameras) AddNew(id string) (obj *Camera)</pre>
 				<p>
 Creates and initializes a new Camera with default parameters,
@@ -1813,7 +1811,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibCameras.Remove">func (LibCameras) <a href="/target/camera.gt.go?s=5477:5515#L183">Remove</a></h3>
+				<h3 id="LibCameras.Remove">func (LibCameras) <a href="/target/camera.gt.go?s=5475:5513#L183">Remove</a></h3>
 				<pre>func (me LibCameras) Remove(id string)</pre>
 				
 				

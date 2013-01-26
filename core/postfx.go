@@ -17,7 +17,7 @@ func (me *PostFx) dispose() {
 }
 
 func (me *PostFx) init() {
-	me.prog = glShaderMan.progs["postfx"]
+	me.prog = glProgMan.Programs["postfx"]
 	me.prog.SetUnifLocations("uTexRendering")
 	me.glVao.Create()
 }

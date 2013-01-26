@@ -55,7 +55,7 @@ func (me *baseTechnique) onRenderNode() {
 }
 
 func (me *baseTechnique) setProg(name string, unifs []string, attrs []string) {
-	prog := glShaderMan.progs[name]
+	prog := glProgMan.Programs[name]
 	prog.SetUnifLocations("uMatModelProj")
 	if len(unifs) > 0 {
 		prog.SetUnifLocations(unifs...)

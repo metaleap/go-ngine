@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"time"
 
 	gl "github.com/chsc/gogl/gl42"
 
@@ -11,14 +12,14 @@ import (
 )
 
 var (
-	glIsInit    bool
-	glShaderMan = newShaderManager()
+	glIsInit  bool
+	glProgMan = ugl.NewProgramManager()
 )
 
 func glDispose() {
 	if glIsInit {
 		glIsInit = false
-		glShaderMan.dispose()
+		glProgMan.Dispose()
 	}
 }
 
@@ -61,10 +62,12 @@ for: <%v>.
 			if !ugl.VersionMatch(3.3) {
 				err = makeVerErr(Sfmt("%v.%v", ugl.Support.GlVersion.MajorMinor[0], ugl.Support.GlVersion.MajorMinor[1]))
 			} else {
+				var dur time.Duration
 				gl.FrontFace(gl.CCW)
 				gl.CullFace(gl.BACK)
 				log.Println(ugl.GlConnInfo())
-				if err = glShaderMan.compileAll(); err == nil {
+				if dur, err = glProgMan.MakeAllProgramsFromRawSources(); err == nil {
+					log.Printf("Total shader compilation time for all %v programs: %v\n", len(glProgMan.Programs), dur)
 				}
 			}
 		}
