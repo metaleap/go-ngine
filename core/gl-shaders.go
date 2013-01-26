@@ -4,19 +4,21 @@ import (
 	"log"
 	"time"
 
-	gl "github.com/chsc/gogl/gl42"
-
 	ugl "github.com/go3d/go-glutil"
 )
 
 type glShaderManager struct {
 	names   []string
-	sources glShaderSources
-	progs   map[string]*ugl.Program
+	sources struct {
+		compute, fragment, geometry, tessCtl, tessEval, vertex map[string]string
+	}
+	progs map[string]*ugl.Program
 }
 
 func newShaderManager() (me *glShaderManager) {
 	me = &glShaderManager{progs: map[string]*ugl.Program{}}
+	src := &me.sources
+	src.compute, src.fragment, src.geometry, src.tessCtl, src.tessEval, src.vertex = map[string]string{}, map[string]string{}, map[string]string{}, map[string]string{}, map[string]string{}, map[string]string{}
 	return
 }
 
@@ -29,7 +31,7 @@ func (me *glShaderManager) dispose() {
 
 func (me *glShaderManager) compileAll() (err error) {
 	var prog *ugl.Program
-	src, timeStart, defines := me.sources, time.Now(), map[string]interface{}{}
+	timeStart, src, defines := time.Now(), &me.sources, map[string]interface{}{}
 	for _, name := range me.names {
 		prog = ugl.NewProgram(name)
 		prog.Create()
@@ -44,41 +46,4 @@ func (me *glShaderManager) compileAll() (err error) {
 		log.Printf("Shader compilation time: %v\n", time.Now().Sub(timeStart))
 	}
 	return
-}
-
-type glShaderSources struct {
-	compute, fragment, geometry, tessCtl, tessEval, vertex map[string]string
-}
-
-func (me *glShaderSources) enumerate() map[gl.Enum]int {
-	return map[gl.Enum]int{
-		0 /*gl.COMPUTE_SHADER*/ :  0,
-		gl.FRAGMENT_SHADER:        1,
-		gl.GEOMETRY_SHADER:        2,
-		gl.TESS_CONTROL_SHADER:    3,
-		gl.TESS_EVALUATION_SHADER: 4,
-		gl.VERTEX_SHADER:          5,
-	}
-}
-
-func (me *glShaderSources) init() {
-	me.compute, me.fragment, me.geometry, me.tessCtl, me.tessEval, me.vertex = map[string]string{}, map[string]string{}, map[string]string{}, map[string]string{}, map[string]string{}, map[string]string{}
-}
-
-func (me *glShaderSources) source(glShaderType gl.Enum, shaderName string) string {
-	switch glShaderType {
-	case gl.FRAGMENT_SHADER:
-		return me.fragment[shaderName]
-	case gl.GEOMETRY_SHADER:
-		return me.geometry[shaderName]
-	case gl.TESS_CONTROL_SHADER:
-		return me.tessCtl[shaderName]
-	case gl.TESS_EVALUATION_SHADER:
-		return me.tessEval[shaderName]
-	case gl.VERTEX_SHADER:
-		return me.vertex[shaderName]
-	default:
-		return me.compute[shaderName]
-	}
-	return ""
 }
