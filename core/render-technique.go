@@ -30,7 +30,7 @@ type renderTechnique interface {
 }
 
 type baseTechnique struct {
-	prog *ugl.ShaderProgram
+	prog *ugl.Program
 }
 
 func (me *baseTechnique) initMeshBuffer(meshBuffer *MeshBuffer) {

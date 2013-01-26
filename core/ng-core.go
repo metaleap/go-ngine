@@ -19,7 +19,7 @@ var (
 	curMesh                *Mesh
 	curModel               *Model
 	curNode                *Node
-	curProg, tmpProg       *ugl.ShaderProgram
+	curProg, tmpProg       *ugl.Program
 	curTechnique           renderTechnique
 	curScene               *Scene
 )
@@ -164,7 +164,7 @@ func (me *EngineCore) SyncUpdates() {
 func (me *EngineCore) useProgram(name string) {
 	if tmpProg = glShaderMan.progs[name]; tmpProg != curProg {
 		curProg = tmpProg
-		gl.UseProgram(curProg.Program)
+		curProg.Use()
 	}
 }
 

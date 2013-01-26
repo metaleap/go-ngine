@@ -9,7 +9,7 @@ import (
 type PostFx struct {
 	glVao             ugl.VertexArray
 	glWidth, glHeight gl.Sizei
-	prog              *ugl.ShaderProgram
+	prog              *ugl.Program
 }
 
 func (me *PostFx) dispose() {
@@ -33,7 +33,7 @@ func (me *PostFx) render() {
 	gl.Clear(gl.COLOR_BUFFER_BIT)
 	ugl.LogLastError("post-clrscr")
 	me.glVao.Bind()
-	gl.UseProgram(me.prog.Program)
+	me.prog.Use()
 	mainCanvas.frameBuf.BindTexture(0)
 	gl.Uniform1i(me.prog.UnifLocs["uTexRendering"], 0)
 	gl.DrawArrays(gl.TRIANGLES, 0, 3)

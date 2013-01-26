@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -13,75 +12,38 @@ import (
 type glShaderManager struct {
 	names   []string
 	sources glShaderSources
-	progs   map[string]*ugl.ShaderProgram
+	progs   map[string]*ugl.Program
 }
 
 func newShaderManager() (me *glShaderManager) {
-	me = &glShaderManager{progs: map[string]*ugl.ShaderProgram{}}
+	me = &glShaderManager{progs: map[string]*ugl.Program{}}
 	return
 }
 
 func (me *glShaderManager) dispose() {
-	doClean := func(sprog **ugl.ShaderProgram) {
-		if sp := *sprog; sp != nil {
-			sp.CleanUp()
-			*sprog = nil
-		}
-	}
 	for _, prog := range me.progs {
-		doClean(&prog)
+		prog.Dispose()
 	}
+	me.progs = map[string]*ugl.Program{}
 }
 
 func (me *glShaderManager) compileAll() (err error) {
-	var (
-		shaderSrc       string
-		shaderTypeIndex int
-		glShaderType    gl.Enum
-		glStatus        gl.Int
-		shaderProg      *ugl.ShaderProgram
-	)
-	timeStart, glShaders, defines := time.Now(), []gl.Uint{0, 0, 0, 0, 0, 0}, map[string]interface{}{}
-	for _, shaderName := range me.names {
-		for glShaderType, shaderTypeIndex = range me.sources.enumerate() {
-			if shaderSrc = me.sources.source(glShaderType, shaderName); len(shaderSrc) > 0 {
-				glShaders[shaderTypeIndex] = gl.CreateShader(glShaderType)
-				ugl.ShaderSource(shaderName, glShaders[shaderTypeIndex], shaderSrc, defines, false, "330")
-				gl.CompileShader(glShaders[shaderTypeIndex])
-				if gl.GetShaderiv(glShaders[shaderTypeIndex], gl.COMPILE_STATUS, &glStatus); glStatus == 0 {
-					err = fmt.Errorf("SHADER %s: %s\n", shaderName, ugl.ShaderInfoLog(glShaders[shaderTypeIndex], true))
-				}
-			} else {
-				glShaders[shaderTypeIndex] = 0
-			}
-			if err != nil {
-				break
-			}
-		}
-		if err == nil {
-			if shaderProg, err = ugl.NewShaderProgram(shaderName, glShaders[0], glShaders[1], glShaders[2], glShaders[3], glShaders[4], glShaders[5]); err == nil {
-				me.progs[shaderName] = shaderProg
-				/*
-					if shaderName == "postfx" {
-						me.Prog_PostFx = shaderProg
-					} else if shaderName == "unlit" {
-						me.Prog_Unlit = shaderProg
-					} else if shaderName == "pvlit" {
-						me.Prog_PvLit = shaderProg
-					} else if shaderName == "pplit" {
-						me.Prog_PpLit = shaderProg
-					}
-				*/
-			}
-		}
-		if err != nil {
-			break
+	var prog *ugl.Program
+	src, timeStart, defines := me.sources, time.Now(), map[string]interface{}{}
+	for _, name := range me.names {
+		prog = ugl.NewProgram(name)
+		prog.Create()
+		if err = prog.CompileAndLinkShaders(src.compute[name], src.fragment[name], src.geometry[name], src.tessCtl[name], src.tessEval[name], src.vertex[name], defines); err != nil {
+			prog.Dispose()
+			return
+		} else {
+			me.progs[name] = prog
 		}
 	}
 	if err == nil {
 		log.Printf("Shader compilation time: %v\n", time.Now().Sub(timeStart))
 	}
-	return err
+	return
 }
 
 type glShaderSources struct {
@@ -89,7 +51,14 @@ type glShaderSources struct {
 }
 
 func (me *glShaderSources) enumerate() map[gl.Enum]int {
-	return map[gl.Enum]int{0: 0, gl.FRAGMENT_SHADER: 1, gl.GEOMETRY_SHADER: 2, gl.TESS_CONTROL_SHADER: 3, gl.TESS_EVALUATION_SHADER: 4, gl.VERTEX_SHADER: 5}
+	return map[gl.Enum]int{
+		0 /*gl.COMPUTE_SHADER*/ :  0,
+		gl.FRAGMENT_SHADER:        1,
+		gl.GEOMETRY_SHADER:        2,
+		gl.TESS_CONTROL_SHADER:    3,
+		gl.TESS_EVALUATION_SHADER: 4,
+		gl.VERTEX_SHADER:          5,
+	}
 }
 
 func (me *glShaderSources) init() {

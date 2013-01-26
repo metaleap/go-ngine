@@ -24,7 +24,7 @@ func glDispose() {
 
 func glInit() (err error, isVerErr bool) {
 	const (
-		minMatch = "3_2"
+		minMatch = "3_3"
 		vMessage = `Minimum required OpenGL version is %v, but your
 graphics-card driver (or your OS) currently
 only provides OpenGL version %v.
