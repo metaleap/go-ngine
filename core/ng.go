@@ -31,12 +31,12 @@ func Dispose() {
 func Init(options *EngineOptions, winTitle string) (err error) {
 	var (
 		isVerErr   = false
-		glVerIndex = len(ugl.Versions) - 1
+		glVerIndex = len(ugl.KnownVersions) - 1
 		glVer      float64
 	)
 tryInit:
 	if options.Initialization.GlCoreContext {
-		glVer = ugl.Versions[glVerIndex]
+		glVer = ugl.KnownVersions[glVerIndex]
 	}
 	if err = UserIO.init(options, winTitle, glVer); err == nil {
 		if err, isVerErr = glInit(); err == nil {

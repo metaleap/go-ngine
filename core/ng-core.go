@@ -112,7 +112,6 @@ func (me *EngineCore) onRender() {
 
 func (me *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 	if me.isInit {
-		println("resize...")
 		me.Options.winWidth, me.Options.winHeight = viewWidth, viewHeight
 		me.Rendering.PostFx.glWidth, me.Rendering.PostFx.glHeight = gl.Sizei(viewWidth), gl.Sizei(viewHeight)
 		for _, canv := range me.Rendering.Canvases {
@@ -122,7 +121,7 @@ func (me *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 			cam.Rendering.ViewPort.update()
 			cam.ApplyMatrices()
 		}
-		ugl.LogLastError("onresize")
+		ugl.LogLastError("onResizeWindow")
 	}
 }
 

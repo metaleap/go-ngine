@@ -59,7 +59,7 @@ for: <%v>.
 		if err == nil {
 			ugl.Init()
 			if !ugl.VersionMatch(3.3) {
-				err = makeVerErr(Sfmt("%v.%v", ugl.GlVersionMajorMinor[0], ugl.GlVersionMajorMinor[1]))
+				err = makeVerErr(Sfmt("%v.%v", ugl.Support.GlVersion.MajorMinor[0], ugl.Support.GlVersion.MajorMinor[1]))
 			} else {
 				gl.FrontFace(gl.CCW)
 				gl.CullFace(gl.BACK)
