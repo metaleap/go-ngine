@@ -1,8 +1,8 @@
-uniform sampler2D uTexRendering;
+uniform sampler2DRect uTexRendering;
 
 out vec4 oColor;
 
 void main () {
-	vec4 cTex = texelFetch(uTexRendering, ivec2(gl_FragCoord.xy), 0);
+	vec4 cTex = texture(uTexRendering, gl_FragCoord.xy);
 	oColor = vec4(cTex.rgb, 1);
 }

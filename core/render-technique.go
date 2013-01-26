@@ -21,7 +21,7 @@ func initTechniques() {
 }
 
 type renderTechnique interface {
-	initMeshBuffer(meshBuffer *MeshBuffer)
+	initMeshBuffer(*MeshBuffer) []*ugl.VertexAttribPointer
 	name() string
 	onPreRender()
 	onRenderMesh()
@@ -33,9 +33,9 @@ type baseTechnique struct {
 	prog *ugl.Program
 }
 
-func (me *baseTechnique) initMeshBuffer(meshBuffer *MeshBuffer) {
-	gl.EnableVertexAttribArray(me.prog.AttrLocs["aPos"])
-	gl.VertexAttribPointer(me.prog.AttrLocs["aPos"], 3, gl.FLOAT, gl.FALSE, 8*4, gl.Pointer(nil))
+func (me *baseTechnique) initMeshBuffer(meshBuffer *MeshBuffer) (atts []*ugl.VertexAttribPointer) {
+	atts = append(atts, ugl.NewVertexAttribPointer("aPos", me.prog.AttrLocs["aPos"], 3, 8*4, gl.Pointer(nil)))
+	return
 }
 
 func (me *baseTechnique) name() string {
@@ -77,10 +77,10 @@ func newTechnique_Unlit(progName string) renderTechnique {
 	return me
 }
 
-func (me *techniqueUnlit) initMeshBuffer(meshBuffer *MeshBuffer) {
-	me.baseTechnique.initMeshBuffer(meshBuffer)
-	gl.EnableVertexAttribArray(me.prog.AttrLocs["aTexCoords"])
-	gl.VertexAttribPointer(me.prog.AttrLocs["aTexCoords"], 2, gl.FLOAT, gl.FALSE, 8*4, gl.Offset(nil, 3*4))
+func (me *techniqueUnlit) initMeshBuffer(meshBuffer *MeshBuffer) (atts []*ugl.VertexAttribPointer) {
+	atts = me.baseTechnique.initMeshBuffer(meshBuffer)
+	atts = append(atts, ugl.NewVertexAttribPointer("aTexCoords", me.prog.AttrLocs["aTexCoords"], 2, 8*4, gl.Offset(nil, 3*4)))
+	return
 }
 
 func (me *techniqueUnlit) onRenderNode() {

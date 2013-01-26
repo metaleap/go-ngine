@@ -77,49 +77,31 @@ type MeshBuffer struct {
 	offsetBaseIndex, offsetIndices, offsetVerts int32
 	id                                          string
 	glIbo, glVbo                                ugl.Buffer
-	glVaos                                      map[string]gl.Uint
+	glVaos                                      map[string]*ugl.VertexArray
 	meshes                                      map[*Mesh]bool
 }
 
 func newMeshBuffer(id string, params *meshBufferParams) (me *MeshBuffer, err error) {
-	var glVao gl.Uint
 	me = &MeshBuffer{}
 	me.id = id
 	me.meshes = map[*Mesh]bool{}
 	me.Params = params
-	me.glVaos = map[string]gl.Uint{}
+	me.glVaos = map[string]*ugl.VertexArray{}
 	me.MemSizeIndices = Core.MeshBuffers.MemSizePerIndex() * params.NumIndices
 	me.MemSizeVertices = Core.MeshBuffers.MemSizePerVertex() * params.NumVerts
 	me.glVbo.Recreate(gl.ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeVertices), gl.Pointer(nil), ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
 	me.glIbo.Recreate(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeIndices), gl.Pointer(nil), ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
-	// gl.GenBuffers(1, &me.glVbo)
-	// gl.GenBuffers(1, &me.glIbo)
 	for techName, _ := range techs {
-		gl.GenVertexArrays(1, &glVao)
+		glVao := &ugl.VertexArray{}
+		glVao.Create()
 		me.glVaos[techName] = glVao
 	}
-	// gl.BindBuffer(gl.ARRAY_BUFFER, me.glVbo)
-	// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.glIbo)
-	// gl.BufferData(gl.ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeVertices), gl.Pointer(nil), ugl.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
-	// gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeIndices), gl.Pointer(nil), ugl.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
-	// gl.BindBuffer(gl.ARRAY_BUFFER, 0)
-	// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
 	if err = ugl.LastError("newMeshBuffer(%v numVerts=%v numIndices=%v)", id, params.NumVerts, params.NumIndices); err != nil {
 		me.dispose()
 		me = nil
 	} else {
 		for techName, glVao := range me.glVaos {
-			gl.BindVertexArray(glVao)
-			me.glVbo.Bind()
-			me.glIbo.Bind()
-			// gl.BindBuffer(gl.ARRAY_BUFFER, me.glVbo)
-			// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.glIbo)
-			techs[techName].initMeshBuffer(me)
-			gl.BindVertexArray(0)
-			me.glIbo.Unbind()
-			me.glVbo.Unbind()
-			// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
-			// gl.BindBuffer(gl.ARRAY_BUFFER, 0)
+			glVao.Setup(techs[techName].initMeshBuffer(me), &me.glVbo, &me.glIbo)
 		}
 	}
 	return
@@ -140,7 +122,7 @@ func (me *MeshBuffer) Add(mesh *Mesh) (err error) {
 
 func (me *MeshBuffer) use() {
 	curMeshBuf = me
-	gl.BindVertexArray(me.glVaos[curTechnique.name()])
+	me.glVaos[curTechnique.name()].Bind()
 }
 
 func (me *MeshBuffer) dispose() {
@@ -149,11 +131,10 @@ func (me *MeshBuffer) dispose() {
 	}
 	me.glIbo.Dispose()
 	me.glVbo.Dispose()
-	// gl.DeleteBuffers(1, &me.glIbo)
-	// gl.DeleteBuffers(1, &me.glVbo)
 	for _, glVao := range me.glVaos {
-		gl.DeleteVertexArrays(1, &glVao)
+		glVao.Dispose()
 	}
+	me.glVaos = map[string]*ugl.VertexArray{}
 }
 
 func (me *MeshBuffer) Remove(mesh *Mesh) {
