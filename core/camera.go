@@ -106,7 +106,9 @@ func (me *Camera) render() {
 		me.technique.onPreRender()
 		gl.Scissor(me.Rendering.ViewPort.glVpX, me.Rendering.ViewPort.glVpY, me.Rendering.ViewPort.glVpW, me.Rendering.ViewPort.glVpH)
 		gl.Viewport(me.Rendering.ViewPort.glVpX, me.Rendering.ViewPort.glVpY, me.Rendering.ViewPort.glVpW, me.Rendering.ViewPort.glVpH)
-		gl.Clear(me.Rendering.States.ClearFlags)
+		if me.Rendering.States.ClearColor[3] > 0 {
+			gl.Clear(me.Rendering.States.ClearFlags)
+		}
 		curScene.RootNode.render()
 		Core.Rendering.states.ForceDisableScissorTest()
 	}
