@@ -74,31 +74,18 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				<dd><a href="#Camera">type Camera</a></dd>
 				
-				
-			
-				
-				<dd><a href="#Camera2D">type Camera2D</a></dd>
+					
+					<dd>&nbsp; &nbsp; <a href="#NewCamera2D">func NewCamera2D() (me *Camera)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NewCamera2D">func NewCamera2D() (me *Camera2D)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NewCamera3D">func NewCamera3D() (me *Camera)</a></dd>
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Camera2D.SetTechnique">func (me *Camera2D) SetTechnique(name string)</a></dd>
-				
-			
-				
-				<dd><a href="#Camera3D">type Camera3D</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Camera.ApplyMatrices">func (me *Camera) ApplyMatrices()</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NewCamera3D">func NewCamera3D() (me *Camera3D)</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#Camera3D.ApplyMatrices">func (me *Camera3D) ApplyMatrices()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#Camera3D.SetTechnique">func (me *Camera3D) SetTechnique(name string)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Camera.SetTechnique">func (me *Camera) SetTechnique(name string)</a></dd>
 				
 			
 				
@@ -110,6 +97,20 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#CameraViewPort.SetRel">func (me *CameraViewPort) SetRel(x, y, width, height float64)</a></dd>
+				
+			
+				
+				<dd><a href="#Cameras">type Cameras</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Cameras.Add">func (me *Cameras) Add(camera *Camera) *Camera</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Cameras.Insert">func (me *Cameras) Insert(camera *Camera, index int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Cameras.Remove">func (me *Cameras) Remove(camera *Camera)</a></dd>
 				
 			
 				
@@ -317,28 +318,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					
 					<dd>&nbsp; &nbsp; <a href="#NewFxMaterial">func NewFxMaterial() (me *FxMaterial)</a></dd>
 				
-				
-			
-				
-				<dd><a href="#LibCamera2Ds">type LibCamera2Ds</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#LibCamera2Ds.AddNew">func (me LibCamera2Ds) AddNew(id string) (obj *Camera2D)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#LibCamera2Ds.Remove">func (me LibCamera2Ds) Remove(id string)</a></dd>
-				
-			
-				
-				<dd><a href="#LibCamera3Ds">type LibCamera3Ds</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#LibCamera3Ds.AddNew">func (me LibCamera3Ds) AddNew(id string) (obj *Camera3D)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#LibCamera3Ds.Remove">func (me LibCamera3Ds) Remove(id string)</a></dd>
 				
 			
 				
@@ -690,9 +669,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.Remove">func (me *RenderCanvas) Remove()</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.SetCameraIDs">func (me *RenderCanvas) SetCameraIDs(camIDs ...string)</a></dd>
-				
-					
 					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.SetMain">func (me *RenderCanvas) SetMain()</a></dd>
 				
 					
@@ -742,10 +718,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<a href="/target/-gen-glsl-src.go">-gen-glsl-src.go</a>
 			
 				<a href="/target/camera.go">camera.go</a>
-			
-				<a href="/target/camera2d.gt.go">camera2d.gt.go</a>
-			
-				<a href="/target/camera3d.gt.go">camera3d.gt.go</a>
 			
 				<a href="/target/controller.go">controller.go</a>
 			
@@ -859,79 +831,14 @@ A convenience short-hand for fmt.Sprintf. Feel free to ignore.
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.go?s=58:93#L1">Camera</a></h2>
-			<pre>type Camera interface {
-    <span class="comment">// contains filtered or unexported methods</span>
-}</pre>
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="Camera2D">type <a href="/target/camera2d.gt.go?s=169:514#L1">Camera2D</a></h2>
-			<pre>type Camera2D struct {
-    Rendering struct {
-        Enabled bool
-
-        <span class="comment">//	The device-relative or absolute view-port for this Camera.</span>
-        ViewPort CameraViewPort
-
-        <span class="comment">//	The ID of the Scene (in Core.Libs.Scenes) this camera is looking at.</span>
-        SceneID string
-
-        States struct {
-            ugl.RenderStatesBag
-            ClearFlags gl.Bitfield
-        }
-    }
-    <span class="comment">// contains filtered or unexported fields</span>
-}</pre>
-			<p>
-A camera embodies the eye point of the viewer looking at the visual scene.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="NewCamera2D">func <a href="/target/camera2d.gt.go?s=1772:1805#L53">NewCamera2D</a></h3>
-				<pre>func NewCamera2D() (me *Camera2D)</pre>
-				<p>
-Initializes and returns a new Camera2D with default parameters.
-</p>
-
-				
-			
-
-			
-				
-				<h3 id="Camera2D.SetTechnique">func (*Camera2D) <a href="/target/camera2d.gt.go?s=1525:1570#L44">SetTechnique</a></h3>
-				<pre>func (me *Camera2D) SetTechnique(name string)</pre>
-				
-				
-				
-			
-		
-			
-			
-			<h2 id="Camera3D">type <a href="/target/camera3d.gt.go?s=209:1204#L1">Camera3D</a></h2>
-			<pre>type Camera3D struct {
+			<h2 id="Camera">type <a href="/target/camera.go?s=209:1347#L1">Camera</a></h2>
+			<pre>type Camera struct {
     <span class="comment">//	Optical and imager properties for this camera.</span>
-    Params struct {
+    Perspective struct {
+        <span class="comment">//	Whether this is a perspective-projection camera. Defaults to true.</span>
+        <span class="comment">//	If false, no projection transformation is applied.</span>
+        Use bool
+
         <span class="comment">//	Vertical field-of-view. Defaults to 37.8493.</span>
         <span class="comment">//	After changing this value, you must call the ApplyMatrices() method.</span>
         FovY float64
@@ -977,10 +884,19 @@ A camera embodies the eye point of the viewer looking at the visual scene.
 
 			
 				
-				<h3 id="NewCamera3D">func <a href="/target/camera3d.gt.go?s=3225:3258#L91">NewCamera3D</a></h3>
-				<pre>func NewCamera3D() (me *Camera3D)</pre>
+				<h3 id="NewCamera2D">func <a href="/target/camera.go?s=1413:1444#L43">NewCamera2D</a></h3>
+				<pre>func NewCamera2D() (me *Camera)</pre>
 				<p>
-Initializes and returns a new Camera3D with default parameters.
+Initializes and returns a new Camera without any projection.
+</p>
+
+				
+			
+				
+				<h3 id="NewCamera3D">func <a href="/target/camera.go?s=1559:1590#L50">NewCamera3D</a></h3>
+				<pre>func NewCamera3D() (me *Camera)</pre>
+				<p>
+Initializes and returns a new Camera with perspective projection.
 </p>
 
 				
@@ -988,18 +904,18 @@ Initializes and returns a new Camera3D with default parameters.
 
 			
 				
-				<h3 id="Camera3D.ApplyMatrices">func (*Camera3D) <a href="/target/camera3d.gt.go?s=1842:1877#L56">ApplyMatrices</a></h3>
-				<pre>func (me *Camera3D) ApplyMatrices()</pre>
+				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=2399:2432#L79">ApplyMatrices</a></h3>
+				<pre>func (me *Camera) ApplyMatrices()</pre>
 				<p>
-Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
+Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.
 </p>
 
 				
 				
 			
 				
-				<h3 id="Camera3D.SetTechnique">func (*Camera3D) <a href="/target/camera3d.gt.go?s=2978:3023#L82">SetTechnique</a></h3>
-				<pre>func (me *Camera3D) SetTechnique(name string)</pre>
+				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.go?s=3544:3587#L105">SetTechnique</a></h3>
+				<pre>func (me *Camera) SetTechnique(name string)</pre>
 				
 				
 				
@@ -1007,7 +923,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
 		
 			
 			
-			<h2 id="CameraViewPort">type <a href="/target/camera.go?s=159:374#L2">CameraViewPort</a></h2>
+			<h2 id="CameraViewPort">type <a href="/target/camera.go?s=4379:4594#L147">CameraViewPort</a></h2>
 			<pre>type CameraViewPort struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -1026,7 +942,7 @@ Encapsulates a device-relative or absolute camera view-port.
 
 			
 				
-				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.go?s=500:557#L16">SetAbs</a></h3>
+				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.go?s=4720:4777#L161">SetAbs</a></h3>
 				<pre>func (me *CameraViewPort) SetAbs(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -1036,13 +952,50 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.go?s=808:869#L23">SetRel</a></h3>
+				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.go?s=5028:5089#L168">SetRel</a></h3>
 				<pre>func (me *CameraViewPort) SetRel(x, y, width, height float64)</pre>
 				<p>
 Sets the device-relative viewport origin and dimensions, with the value 1.0
 representing the maximum extent of the viewport on that respective axis.
 </p>
 
+				
+				
+			
+		
+			
+			
+			<h2 id="Cameras">type <a href="/target/camera.go?s=3686:3708#L111">Cameras</a></h2>
+			<pre>type Cameras []*Camera</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="Cameras.Add">func (*Cameras) <a href="/target/camera.go?s=3710:3756#L113">Add</a></h3>
+				<pre>func (me *Cameras) Add(camera *Camera) *Camera</pre>
+				
+				
+				
+			
+				
+				<h3 id="Cameras.Insert">func (*Cameras) <a href="/target/camera.go?s=3873:3925#L123">Insert</a></h3>
+				<pre>func (me *Cameras) Insert(camera *Camera, index int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=4144:4185#L137">Remove</a></h3>
+				<pre>func (me *Cameras) Remove(camera *Camera)</pre>
+				
 				
 				
 			
@@ -1296,12 +1249,11 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=857:1338#L21">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=795:1251#L19">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Options     EngineOptions
     Libs        struct {
-        Cameras   LibCamera3Ds
         Effects   LibFxEffects
         Materials LibFxMaterials
         Images    struct {
@@ -1337,7 +1289,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3798:3833#L130">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3558:3593#L122">SyncUpdates</a></h3>
 				<pre>func (me *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -1924,80 +1876,6 @@ Initializes and returns a new FxMaterial with default parameters.
 				
 			
 
-			
-		
-			
-			
-			<h2 id="LibCamera2Ds">type <a href="/target/camera2d.gt.go?s=1923:1961#L60">LibCamera2Ds</a></h2>
-			<pre>type LibCamera2Ds map[string]*Camera2D</pre>
-			<p>
-A hash-table of Camera2Ds associated by IDs. Only for use in Core.Libs.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="LibCamera2Ds.AddNew">func (LibCamera2Ds) <a href="/target/camera2d.gt.go?s=2087:2143#L64">AddNew</a></h3>
-				<pre>func (me LibCamera2Ds) AddNew(id string) (obj *Camera2D)</pre>
-				<p>
-Creates and initializes a new Camera2D with default parameters,
-adds it to me under the specified ID, and returns it.
-</p>
-
-				
-				
-			
-				
-				<h3 id="LibCamera2Ds.Remove">func (LibCamera2Ds) <a href="/target/camera2d.gt.go?s=2342:2382#L81">Remove</a></h3>
-				<pre>func (me LibCamera2Ds) Remove(id string)</pre>
-				
-				
-				
-			
-		
-			
-			
-			<h2 id="LibCamera3Ds">type <a href="/target/camera3d.gt.go?s=3376:3414#L98">LibCamera3Ds</a></h2>
-			<pre>type LibCamera3Ds map[string]*Camera3D</pre>
-			<p>
-A hash-table of Camera3Ds associated by IDs. Only for use in Core.Libs.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="LibCamera3Ds.AddNew">func (LibCamera3Ds) <a href="/target/camera3d.gt.go?s=3540:3596#L102">AddNew</a></h3>
-				<pre>func (me LibCamera3Ds) AddNew(id string) (obj *Camera3D)</pre>
-				<p>
-Creates and initializes a new Camera3D with default parameters,
-adds it to me under the specified ID, and returns it.
-</p>
-
-				
-				
-			
-				
-				<h3 id="LibCamera3Ds.Remove">func (LibCamera3Ds) <a href="/target/camera3d.gt.go?s=3795:3835#L119">Remove</a></h3>
-				<pre>func (me LibCamera3Ds) Remove(id string)</pre>
-				
-				
-				
 			
 		
 			
@@ -2775,14 +2653,14 @@ Declares a point of interest in a Scene.
 				
 			
 				
-				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=1795:1836#L67">SetMatID</a></h3>
+				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=1778:1819#L67">SetMatID</a></h3>
 				<pre>func (me *Node) SetMatID(newMatID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=1933:1987#L73">SetMeshModelID</a></h3>
+				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=1916:1970#L73">SetMeshModelID</a></h3>
 				<pre>func (me *Node) SetMeshModelID(meshID, modelID string)</pre>
 				
 				
@@ -3216,7 +3094,7 @@ ONLY used for Core.Rendering.PostFx.
 		
 			
 			
-			<h2 id="RenderCanvas">type <a href="/target/render-canvas.go?s=197:704#L3">RenderCanvas</a></h2>
+			<h2 id="RenderCanvas">type <a href="/target/render-canvas.go?s=197:687#L3">RenderCanvas</a></h2>
 			<pre>type RenderCanvas struct {
     <span class="comment">//	This MUST be an non-negative integer, it&#39;s a float64 just to avoid</span>
     <span class="comment">//	type conversion. How often this RenderCanvas is included in rendering:</span>
@@ -3225,6 +3103,8 @@ ONLY used for Core.Rendering.PostFx.
     <span class="comment">//	8 = every 8th frame</span>
     <span class="comment">//	0 = RenderCanvas is disabled for rendering</span>
     EveryNthFrame float64
+
+    Cameras Cameras
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
@@ -3242,35 +3122,28 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvas.Main">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1288:1323#L37">Main</a></h3>
+				<h3 id="RenderCanvas.Main">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1271:1306#L36">Main</a></h3>
 				<pre>func (me *RenderCanvas) Main() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1625:1657#L48">Remove</a></h3>
+				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1701:1733#L51">Remove</a></h3>
 				<pre>func (me *RenderCanvas) Remove()</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.SetCameraIDs">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1990:2044#L67">SetCameraIDs</a></h3>
-				<pre>func (me *RenderCanvas) SetCameraIDs(camIDs ...string)</pre>
-				
-				
-				
-			
-				
-				<h3 id="RenderCanvas.SetMain">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2186:2219#L74">SetMain</a></h3>
+				<h3 id="RenderCanvas.SetMain">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2069:2102#L70">SetMain</a></h3>
 				<pre>func (me *RenderCanvas) SetMain()</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2348:2417#L82">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2231:2300#L78">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
 				
 				
@@ -3279,7 +3152,7 @@ Represents a surface (texture framebuffer) that can be rendered to.
 		
 			
 			
-			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=2608:2643#L90">RenderCanvases</a></h2>
+			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=2491:2526#L86">RenderCanvases</a></h2>
 			<pre>type RenderCanvases []*RenderCanvas</pre>
 			
 
@@ -3293,14 +3166,14 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvases.AddNew">func (*RenderCanvases) <a href="/target/render-canvas.go?s=2752:2854#L99">AddNew</a></h3>
+				<h3 id="RenderCanvases.AddNew">func (*RenderCanvases) <a href="/target/render-canvas.go?s=2635:2737#L95">AddNew</a></h3>
 				<pre>func (me *RenderCanvases) AddNew(isMain bool, relative bool, width, height float64) (rc *RenderCanvas)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvases.Main">func (RenderCanvases) <a href="/target/render-canvas.go?s=3047:3099#L111">Main</a></h3>
+				<h3 id="RenderCanvases.Main">func (RenderCanvases) <a href="/target/render-canvas.go?s=2930:2982#L107">Main</a></h3>
 				<pre>func (me RenderCanvases) Main() (main *RenderCanvas)</pre>
 				
 				

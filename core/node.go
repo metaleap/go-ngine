@@ -59,8 +59,8 @@ func (me *Node) render() {
 		curNode, curMesh, curModel = me, me.mesh, me.model
 		if me.model != nil {
 			curTechnique.onRenderNode()
-			if curCam3d, ok = curCam.(*Camera3D); ok {
-				me.matModelProj.SetFromMult4(&curCam3d.matCamProj, &me.Transform.matModelView)
+			if curCam.Perspective.Use {
+				me.matModelProj.SetFromMult4(&curCam.matCamProj, &me.Transform.matModelView)
 			} else {
 				me.matModelProj = me.Transform.matModelView
 			}

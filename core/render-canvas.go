@@ -19,14 +19,13 @@ type RenderCanvas struct {
 	//	0 = RenderCanvas is disabled for rendering
 	EveryNthFrame float64
 
+	Cameras Cameras
+
 	isMain, viewSizeRelative    bool
 	absViewWidth, absViewHeight int
 	relViewWidth, relViewHeight float64
 
 	frameBuf ugl.Framebuffer
-
-	camIDs []string
-	cams   []Camera
 }
 
 func newRenderCanvas(relative bool, width, height float64) (me *RenderCanvas) {
@@ -53,6 +52,10 @@ func (me *RenderCanvas) onResize(viewWidth, viewHeight int) {
 		me.absViewWidth, me.absViewHeight = int(me.relViewWidth*float64(viewWidth)), int(me.relViewHeight*float64(viewHeight))
 	}
 	me.frameBuf.Resize(gl.Sizei(viewWidth), gl.Sizei(viewHeight))
+	for _, cam := range me.Cameras {
+		cam.Rendering.ViewPort.update()
+		cam.ApplyMatrices()
+	}
 }
 
 func (me *RenderCanvas) Remove() {
@@ -68,17 +71,10 @@ func (me *RenderCanvas) Remove() {
 
 func (me *RenderCanvas) render() {
 	me.frameBuf.Bind()
-	for _, curCam = range me.cams {
+	for _, curCam = range me.Cameras {
 		curCam.render()
 	}
 	me.frameBuf.Unbind()
-}
-
-func (me *RenderCanvas) SetCameraIDs(camIDs ...string) {
-	me.camIDs, me.cams = camIDs, make([]Camera, len(camIDs))
-	for i, camID := range me.camIDs {
-		me.cams[i] = Core.Libs.Cameras[camID]
-	}
 }
 
 func (me *RenderCanvas) SetMain() {

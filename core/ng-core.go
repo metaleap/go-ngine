@@ -11,11 +11,9 @@ import (
 var (
 	asyncResources         = map[asyncResource]bool{}
 	curMeshBuf             *MeshBuffer
-	ok                     bool
 	curCanvIndex, curIndex int
 	curMatKey, curStr      string
-	curCam                 Camera
-	curCam3d               *Camera3D
+	curCam                 *Camera
 	curCanvas              *RenderCanvas
 	curMat                 *FxMaterial
 	curMesh                *Mesh
@@ -32,7 +30,6 @@ type EngineCore struct {
 	MeshBuffers *MeshBuffers
 	Options     EngineOptions
 	Libs        struct {
-		Cameras   LibCamera3Ds
 		Effects   LibFxEffects
 		Materials LibFxMaterials
 		Images    struct {
@@ -59,7 +56,7 @@ func (me *EngineCore) dispose() {
 	me.isInit = false
 	for _, disp := range []disposable{
 		&me.Rendering.Canvases,
-		&me.Libs.Cameras, &me.Libs.Images.I2D, &me.Libs.Effects, &me.Libs.Materials, &me.Libs.Meshes, &me.Libs.Scenes,
+		&me.Libs.Images.I2D, &me.Libs.Effects, &me.Libs.Materials, &me.Libs.Meshes, &me.Libs.Scenes,
 		me.MeshBuffers,
 	} {
 		disp.dispose()
@@ -80,14 +77,13 @@ func (me *EngineCore) init(options *EngineOptions) {
 	me.Rendering.Canvases = RenderCanvases{}
 	me.Rendering.PostFx.init()
 	curCanvas = me.Rendering.Canvases.AddNew(true, true, 1, 1)
-	curCam = me.Libs.Cameras.AddNew("")
-	curCanvas.SetCameraIDs("")
+	curCam = curCanvas.Cameras.Add(NewCamera3D())
 	me.isInit = true
 }
 
 func (me *EngineCore) initLibs() {
 	libs := &me.Libs
-	for _, c := range []ctorable{&libs.Cameras, &libs.Images.I2D, &libs.Effects, &libs.Materials, &libs.Meshes, &libs.Scenes} {
+	for _, c := range []ctorable{&libs.Images.I2D, &libs.Effects, &libs.Materials, &libs.Meshes, &libs.Scenes} {
 		c.ctor()
 	}
 }
@@ -119,10 +115,6 @@ func (me *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 		me.Rendering.PostFx.glWidth, me.Rendering.PostFx.glHeight = gl.Sizei(viewWidth), gl.Sizei(viewHeight)
 		for _, canv := range me.Rendering.Canvases {
 			canv.onResize(viewWidth, viewHeight)
-		}
-		for _, cam := range me.Libs.Cameras {
-			cam.Rendering.ViewPort.update()
-			cam.ApplyMatrices()
 		}
 		ugl.LogLastError("onResizeWindow")
 	}

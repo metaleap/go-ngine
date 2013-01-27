@@ -11,7 +11,7 @@ import (
 
 var (
 	//	The primary camera
-	Cam *ng.Camera3D
+	Cam *ng.Camera
 
 	//	Controller for the primary camera
 	CamCtl *ng.Controller
@@ -174,7 +174,7 @@ func SamplesMainFunc(assetLoader func()) {
 	} else {
 		defer ng.Dispose()
 		ng.Loop.OnSec = OnSec
-		Cam = ng.Core.Libs.Cameras[""]
+		Cam = ng.Core.Rendering.Canvases[0].Cameras[0]
 		Cam.Rendering.States.ClearColor.Set(0.75, 0.75, 0.97, 1)
 		CamCtl = &Cam.Controller
 		assetLoader()

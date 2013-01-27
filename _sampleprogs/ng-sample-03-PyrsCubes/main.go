@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	camBackMirror   *ng.Camera3D
+	camBackMirror   *ng.Camera
 	camBackRotAxis  unum.Vec3
 	floor, pyr, box *ng.Node
 	crates          [3]*ng.Node
@@ -63,14 +63,14 @@ func LoadSampleScene_03_PyrsCubes() {
 	)
 
 	ngsamples.AddScene("empty")
-	camBackMirror = ng.Core.Libs.Cameras.AddNew("back")
+	camBackMirror = ng.Core.Rendering.Canvases[0].Cameras.Add(ng.NewCamera3D())
 	camBackMirror.Rendering.States.ClearColor.Set(0.25, 0.25, 0.66, 1)
 	camBackMirror.Rendering.ViewPort.SetRel(0.7, 0.7, 0.25, 0.25)
 	camBackMirror.Rendering.SceneID = ""
-	ng.Core.Rendering.Canvases[0].SetCameraIDs("", "back")
 
 	ng.Loop.OnLoop = onLoop
 	ngsamples.Cam.Rendering.States.FaceCulling = false
+	camBackMirror.Rendering.States.FaceCulling = false
 
 	//	textures / materials
 	ngsamples.AddTextureMaterials(map[string]string{
