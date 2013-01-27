@@ -75,7 +75,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<dd><a href="#Camera">type Camera</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NewCamera2D">func NewCamera2D() (me *Camera)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NewCamera2D">func NewCamera2D(depth bool) (me *Camera)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#NewCamera3D">func NewCamera3D() (me *Camera)</a></dd>
@@ -884,8 +884,8 @@ A camera embodies the eye point of the viewer looking at the visual scene.
 
 			
 				
-				<h3 id="NewCamera2D">func <a href="/target/camera.go?s=1413:1444#L43">NewCamera2D</a></h3>
-				<pre>func NewCamera2D() (me *Camera)</pre>
+				<h3 id="NewCamera2D">func <a href="/target/camera.go?s=1413:1454#L43">NewCamera2D</a></h3>
+				<pre>func NewCamera2D(depth bool) (me *Camera)</pre>
 				<p>
 Initializes and returns a new Camera without any projection.
 </p>
@@ -893,7 +893,7 @@ Initializes and returns a new Camera without any projection.
 				
 			
 				
-				<h3 id="NewCamera3D">func <a href="/target/camera.go?s=1559:1590#L50">NewCamera3D</a></h3>
+				<h3 id="NewCamera3D">func <a href="/target/camera.go?s=1576:1607#L50">NewCamera3D</a></h3>
 				<pre>func NewCamera3D() (me *Camera)</pre>
 				<p>
 Initializes and returns a new Camera with perspective projection.
@@ -904,7 +904,7 @@ Initializes and returns a new Camera with perspective projection.
 
 			
 				
-				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=2399:2432#L79">ApplyMatrices</a></h3>
+				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=2459:2492#L80">ApplyMatrices</a></h3>
 				<pre>func (me *Camera) ApplyMatrices()</pre>
 				<p>
 Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.
@@ -914,7 +914,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 				
 			
 				
-				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.go?s=3544:3587#L105">SetTechnique</a></h3>
+				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.go?s=3604:3647#L106">SetTechnique</a></h3>
 				<pre>func (me *Camera) SetTechnique(name string)</pre>
 				
 				
@@ -923,7 +923,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 		
 			
 			
-			<h2 id="CameraViewPort">type <a href="/target/camera.go?s=4379:4594#L147">CameraViewPort</a></h2>
+			<h2 id="CameraViewPort">type <a href="/target/camera.go?s=4439:4654#L148">CameraViewPort</a></h2>
 			<pre>type CameraViewPort struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -942,7 +942,7 @@ Encapsulates a device-relative or absolute camera view-port.
 
 			
 				
-				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.go?s=4720:4777#L161">SetAbs</a></h3>
+				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.go?s=4780:4837#L162">SetAbs</a></h3>
 				<pre>func (me *CameraViewPort) SetAbs(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -952,7 +952,7 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.go?s=5028:5089#L168">SetRel</a></h3>
+				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.go?s=5088:5149#L169">SetRel</a></h3>
 				<pre>func (me *CameraViewPort) SetRel(x, y, width, height float64)</pre>
 				<p>
 Sets the device-relative viewport origin and dimensions, with the value 1.0
@@ -965,7 +965,7 @@ representing the maximum extent of the viewport on that respective axis.
 		
 			
 			
-			<h2 id="Cameras">type <a href="/target/camera.go?s=3686:3708#L111">Cameras</a></h2>
+			<h2 id="Cameras">type <a href="/target/camera.go?s=3746:3768#L112">Cameras</a></h2>
 			<pre>type Cameras []*Camera</pre>
 			
 
@@ -979,21 +979,21 @@ representing the maximum extent of the viewport on that respective axis.
 
 			
 				
-				<h3 id="Cameras.Add">func (*Cameras) <a href="/target/camera.go?s=3710:3756#L113">Add</a></h3>
+				<h3 id="Cameras.Add">func (*Cameras) <a href="/target/camera.go?s=3770:3816#L114">Add</a></h3>
 				<pre>func (me *Cameras) Add(camera *Camera) *Camera</pre>
 				
 				
 				
 			
 				
-				<h3 id="Cameras.Insert">func (*Cameras) <a href="/target/camera.go?s=3873:3925#L123">Insert</a></h3>
+				<h3 id="Cameras.Insert">func (*Cameras) <a href="/target/camera.go?s=3933:3985#L124">Insert</a></h3>
 				<pre>func (me *Cameras) Insert(camera *Camera, index int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=4144:4185#L137">Remove</a></h3>
+				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=4204:4245#L138">Remove</a></h3>
 				<pre>func (me *Cameras) Remove(camera *Camera)</pre>
 				
 				
@@ -2304,7 +2304,7 @@ These faces are all classified with tag: &#34;quad&#34;.
 				
 			
 				
-				<h3 id="MeshProviderPrefabTri">func <a href="/target/mesh-provider.go?s=4972:5051#L65">MeshProviderPrefabTri</a></h3>
+				<h3 id="MeshProviderPrefabTri">func <a href="/target/mesh-provider.go?s=4954:5033#L65">MeshProviderPrefabTri</a></h3>
 				<pre>func MeshProviderPrefabTri(args ...interface{}) (meshData *MeshData, err error)</pre>
 				<p>
 A MeshProvider that creates MeshData for a triangle with extents -1 .. 1.

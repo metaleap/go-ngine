@@ -61,7 +61,7 @@ func MeshProviderPrefabPyramid(args ...interface{}) (meshData *MeshData, err err
 func MeshProviderPrefabQuad(args ...interface{}) (meshData *MeshData, err error) {
 	meshData = NewMeshData()
 	meshData.AddPositions(MeshVertAtt3{1, 1, 0}, MeshVertAtt3{-1, 1, 0}, MeshVertAtt3{-1, -1, 0}, MeshVertAtt3{1, -1, 0})
-	meshData.AddTexCoords(MeshVertAtt2{-0.125, 0}, MeshVertAtt2{-0.125, 3}, MeshVertAtt2{1.125, 3}, MeshVertAtt2{1.125, 0})
+	meshData.AddTexCoords(MeshVertAtt2{0, 0}, MeshVertAtt2{0, 1}, MeshVertAtt2{1, 1}, MeshVertAtt2{1, 0})
 	meshData.AddNormals(MeshVertAtt3{0, 0, 1})
 	meshData.AddFaces(
 		NewMeshFace3("quad", "t0", MeshVert{0, 0, 0}, MeshVert{1, 1, 0}, MeshVert{2, 2, 0}),

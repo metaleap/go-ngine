@@ -9,8 +9,18 @@ import (
 )
 
 var (
-	camBackMirror   *ng.Camera
-	camBackRotAxis  unum.Vec3
+	gui2d struct {
+		cam      *ng.Camera
+		scene    *ng.Scene
+		dog      *ng.Node
+		cat      *ng.Node
+		quadMesh *ng.Mesh
+		meshBuf  *ng.MeshBuffer
+	}
+
+	camBackMirror  *ng.Camera
+	camBackRotAxis unum.Vec3
+
 	floor, pyr, box *ng.Node
 	crates          [3]*ng.Node
 	pyramids        [4]*ng.Node
@@ -35,6 +45,12 @@ func onLoop() {
 	pyr.Transform.Pos.Set(-13.75, 2*math.Sin(ng.Loop.TickNow), 2)
 	pyr.Transform.OnPosRotChanged()
 
+	gui2d.dog.Transform.Rot.Y -= 0.005
+	gui2d.dog.Transform.Rot.Z += 0.001
+	gui2d.dog.Transform.OnRotChanged()
+	gui2d.cat.Transform.Rot.X += 0.003
+	gui2d.cat.Transform.OnRotXChanged()
+
 	box.Transform.Rot.Y += 0.0004
 	box.Transform.Rot.Z += 0.0006
 	box.Transform.Pos.Set(-8.125, 2*math.Cos(ng.Loop.TickNow), -2)
@@ -53,6 +69,44 @@ func onLoop() {
 	pyramids[1].Transform.SetPosZ(math.Cos(ng.Loop.TickNow) * 1000)
 }
 
+func setupGui2D() (err error) {
+	gui2d.scene = ngsamples.AddScene("gui2d")
+	gui2d.cam = ng.Core.Rendering.Canvases[0].Cameras.Add(ng.NewCamera2D(true))
+	gui2d.cam.Perspective.FovY *= 4
+	gui2d.cam.ApplyMatrices()
+	gui2d.cam.Rendering.States.ClearColor.Set(0.75, 0.25, 0.1, 1)
+	gui2d.cam.Rendering.States.FaceCulling = false
+	gui2d.cam.Rendering.ViewPort.SetAbs(32, 32, 160, 160)
+	gui2d.cam.Rendering.SceneID = "gui2d"
+
+	if gui2d.meshBuf, err = ng.Core.MeshBuffers.Add("buf_quad", ng.Core.MeshBuffers.NewParams(6, 6)); err != nil {
+		return
+	}
+
+	if gui2d.quadMesh, err = ng.Core.Libs.Meshes.AddLoad("mesh_quad", ng.MeshProviderPrefabQuad); err != nil {
+		return
+	}
+
+	if err = gui2d.meshBuf.Add(gui2d.quadMesh); err != nil {
+		return
+	}
+
+	gui2d.quadMesh.Models.Default().SetMatID("mat_dog")
+
+	gui2d.dog = gui2d.scene.RootNode.ChildNodes.AddNew("gui_dog", "mesh_quad", "")
+	gui2d.dog.Transform.SetScaleN(0.85)
+	gui2d.dog.Transform.SetRotZ(unum.DegToRad(90))
+
+	gui2d.quadMesh.Models.Default().Clone("model_cat").SetMatID("mat_cat")
+	gui2d.cat = gui2d.scene.RootNode.ChildNodes.AddNew("gui_cat", "mesh_quad", "model_cat")
+	gui2d.cat.Transform.SetScaleN(0.85)
+	gui2d.cat.Transform.SetRotZ(unum.DegToRad(90))
+
+	gui2d.dog.Transform.SetPosZ(0.1)
+	gui2d.cat.Transform.SetPosZ(0.11)
+	return
+}
+
 func LoadSampleScene_03_PyrsCubes() {
 	var (
 		err                          error
@@ -62,7 +116,6 @@ func LoadSampleScene_03_PyrsCubes() {
 		str                          string
 	)
 
-	ngsamples.AddScene("empty")
 	camBackMirror = ng.Core.Rendering.Canvases[0].Cameras.Add(ng.NewCamera3D())
 	camBackMirror.Rendering.States.ClearColor.Set(0.25, 0.25, 0.66, 1)
 	camBackMirror.Rendering.ViewPort.SetRel(0.7, 0.7, 0.25, 0.25)
@@ -85,6 +138,10 @@ func LoadSampleScene_03_PyrsCubes() {
 		"green":  []float64{0, 1, 0},
 		"blue":   []float64{0, 0, 1},
 	})
+
+	if err = setupGui2D(); err != nil {
+		panic(err)
+	}
 
 	//	meshes / models
 	if bufFloor, err = ng.Core.MeshBuffers.Add("buf_floor", ng.Core.MeshBuffers.NewParams(6, 6)); err != nil {

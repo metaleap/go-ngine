@@ -50,25 +50,25 @@ type Camera struct {
 }
 
 //	Initializes and returns a new Camera without any projection.
-func NewCamera2D() (me *Camera) {
+func NewCamera2D(depth bool) (me *Camera) {
 	me = &Camera{}
-	me.init(false)
+	me.init(false, depth)
 	return
 }
 
 //	Initializes and returns a new Camera with perspective projection.
 func NewCamera3D() (me *Camera) {
 	me = &Camera{}
-	me.init(true)
+	me.init(true, true)
 	return
 }
 
-func (me *Camera) init(persp3d bool) {
+func (me *Camera) init(persp3d bool, depth bool) {
 	rend := &me.Rendering
 	rend.Enabled = true
-	rend.States.DepthTest, rend.States.FaceCulling, rend.States.ScissorTest, rend.States.StencilTest = persp3d, true, false, false
+	rend.States.DepthTest, rend.States.FaceCulling, rend.States.ScissorTest, rend.States.StencilTest = depth, true, false, false
 	rend.States.ClearColor = Core.Options.Rendering.DefaultClearColor
-	if persp3d {
+	if depth {
 		rend.States.ClearFlags = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT
 	} else {
 		rend.States.ClearFlags = gl.COLOR_BUFFER_BIT
