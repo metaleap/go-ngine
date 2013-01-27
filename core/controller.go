@@ -158,6 +158,18 @@ func (me *Controller) MoveUp() {
 	me.applyTranslation()
 }
 
+func (me *Controller) rotH(deg float64) {
+	me.hAngle += deg
+	me.applyRotation()
+	me.applyTranslation()
+}
+
+func (me *Controller) rotV(deg float64) {
+	me.vAngle += deg
+	me.applyRotation()
+	me.applyTranslation()
+}
+
 //	Returns the current distance that a single MoveXyz() call (per loop iteration) would move.
 //	(Loop.TickDelta * me.MoveSpeed * me.MoveSpeedupFactor)
 func (me *Controller) StepSizeMove() float64 {
@@ -170,34 +182,46 @@ func (me *Controller) StepSizeTurn() float64 {
 	return Loop.TickDelta * me.TurnSpeed * me.TurnSpeedupFactor
 }
 
-//	Recomputes Dir with regards to UpAxis and Pos to effect a "turn downward".
+//	Recomputes Dir with regards to UpAxis and Pos to effect a "turn downward" by me.StepSizeTurn() degrees.
 func (me *Controller) TurnDown() {
+	me.TurnDownBy(me.StepSizeTurn())
+}
+
+//	Recomputes Dir with regards to UpAxis and Pos to effect a "turn downward" by the specified degrees.
+func (me *Controller) TurnDownBy(deg float64) {
 	if me.vAngle > me.MinTurnDown {
-		me.vAngle -= me.StepSizeTurn()
-		me.applyRotation()
-		me.applyTranslation()
+		me.rotV(-deg)
 	}
 }
 
-//	Recomputes Dir with regards to UpAxis and Pos to effect a "turn left-ward".
+//	Recomputes Dir with regards to UpAxis and Pos to effect a "turn left-ward" by me.StepSizeTurn() degrees.
 func (me *Controller) TurnLeft() {
-	me.hAngle += me.StepSizeTurn()
-	me.applyRotation()
-	me.applyTranslation()
+	me.TurnLeftBy(me.StepSizeTurn())
 }
 
-//	Recomputes Dir with regards to UpAxis and Pos to effect a "turn right-ward".
+//	Recomputes Dir with regards to UpAxis and Pos to effect a "turn left-ward" by the specified degrees.
+func (me *Controller) TurnLeftBy(deg float64) {
+	me.rotH(deg)
+}
+
+//	Recomputes Dir with regards to UpAxis and Pos to effect a "turn right-ward" by me.StepSizeTurn() degrees.
 func (me *Controller) TurnRight() {
-	me.hAngle -= me.StepSizeTurn()
-	me.applyRotation()
-	me.applyTranslation()
+	me.TurnRightBy(me.StepSizeTurn())
 }
 
-//	Recomputes Dir with regards to UpAxis and Pos to effect a "turn upward".
+//	Recomputes Dir with regards to UpAxis and Pos to effect a "turn right-ward" by the specified degrees.
+func (me *Controller) TurnRightBy(deg float64) {
+	me.rotH(-deg)
+}
+
+//	Recomputes Dir with regards to UpAxis and Pos to effect a "turn upward" by me.StepSizeTurn() degrees.
 func (me *Controller) TurnUp() {
+	me.TurnUpBy(me.StepSizeTurn())
+}
+
+//	Recomputes Dir with regards to UpAxis and Pos to effect a "turn upward" by the specified degress.
+func (me *Controller) TurnUpBy(deg float64) {
 	if me.vAngle < me.MaxTurnUp {
-		me.vAngle += me.StepSizeTurn()
-		me.applyRotation()
-		me.applyTranslation()
+		me.rotV(deg)
 	}
 }

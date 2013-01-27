@@ -26,7 +26,7 @@ type RenderCanvas struct {
 	frameBuf ugl.Framebuffer
 
 	camIDs []string
-	cams   []*Camera
+	cams   []Camera
 }
 
 func newRenderCanvas(relative bool, width, height float64) (me *RenderCanvas) {
@@ -75,7 +75,7 @@ func (me *RenderCanvas) render() {
 }
 
 func (me *RenderCanvas) SetCameraIDs(camIDs ...string) {
-	me.camIDs, me.cams = camIDs, make([]*Camera, len(camIDs))
+	me.camIDs, me.cams = camIDs, make([]Camera, len(camIDs))
 	for i, camID := range me.camIDs {
 		me.cams[i] = Core.Libs.Cameras[camID]
 	}

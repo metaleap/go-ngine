@@ -11,9 +11,11 @@ import (
 var (
 	asyncResources         = map[asyncResource]bool{}
 	curMeshBuf             *MeshBuffer
+	ok                     bool
 	curCanvIndex, curIndex int
 	curMatKey, curStr      string
-	curCam                 *Camera
+	curCam                 Camera
+	curCam3d               *Camera3D
 	curCanvas              *RenderCanvas
 	curMat                 *FxMaterial
 	curMesh                *Mesh
@@ -30,7 +32,7 @@ type EngineCore struct {
 	MeshBuffers *MeshBuffers
 	Options     EngineOptions
 	Libs        struct {
-		Cameras   LibCameras
+		Cameras   LibCamera3Ds
 		Effects   LibFxEffects
 		Materials LibFxMaterials
 		Images    struct {
@@ -78,6 +80,7 @@ func (me *EngineCore) init(options *EngineOptions) {
 	me.Rendering.Canvases = RenderCanvases{}
 	me.Rendering.PostFx.init()
 	curCanvas = me.Rendering.Canvases.AddNew(true, true, 1, 1)
+	curCam = me.Libs.Cameras.AddNew("")
 	curCanvas.SetCameraIDs("")
 	me.isInit = true
 }

@@ -19,9 +19,13 @@ type EngineOptions struct {
 	Rendering struct {
 		DefaultClearColor ugl.GlVec4
 
-		//	Name for the default render technique, defaults to the only
-		//	currently supported value "rt_unlit".
-		DefaultTechnique string
+		//	Name for the default render technique of a Camera2D,
+		//	defaults to the currently only implementation "rt_unlit3".
+		DefaultTechnique2D string
+
+		//	Name for the default render technique of a Camera3D,
+		//	defaults to the currently only implementation "rt_unlit3".
+		DefaultTechnique3D string
 	}
 
 	glTextureAnisotropy, winFullScreen   bool
@@ -33,7 +37,7 @@ func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInter
 	me = &EngineOptions{AssetRootDirPath: assetRootDirPath}
 	me.Initialization.GlCoreContext = true || (runtime.GOOS == "darwin")
 	me.Rendering.DefaultClearColor = ugl.GlVec4{0, 0, 0, 1}
-	me.Rendering.DefaultTechnique = "rt_unlit"
+	me.Rendering.DefaultTechnique3D, me.Rendering.DefaultTechnique3D = "rt_unlit3", "rt_unlit3"
 	me.winWidth, me.winHeight, me.winSwapInterval, me.winFullScreen = winWidth, winHeight, winSwapInterval, winFullScreen
 	return
 }

@@ -9,6 +9,8 @@ import (
 )
 
 var (
+	camBackMirror   *ng.Camera3D
+	camBackRotAxis  unum.Vec3
 	floor, pyr, box *ng.Node
 	crates          [3]*ng.Node
 	pyramids        [4]*ng.Node
@@ -17,10 +19,13 @@ var (
 )
 
 func main() {
+	camBackRotAxis.Y = 1
 	ngsamples.SamplesMainFunc(LoadSampleScene_03_PyrsCubes)
 }
 
 func onLoop() {
+	camBackMirror.Controller = ngsamples.Cam.Controller
+	camBackMirror.Controller.TurnRightBy(180)
 	ngsamples.CheckToggleKeys()
 	ngsamples.CheckCamCtlKeys()
 
@@ -56,6 +61,13 @@ func LoadSampleScene_03_PyrsCubes() {
 		bufFloor, bufRest            *ng.MeshBuffer
 		str                          string
 	)
+
+	ngsamples.AddScene("empty")
+	camBackMirror = ng.Core.Libs.Cameras.AddNew("back")
+	camBackMirror.Rendering.States.ClearColor.Set(0.25, 0.25, 0.66, 1)
+	camBackMirror.Rendering.ViewPort.SetRel(0.7, 0.7, 0.25, 0.25)
+	camBackMirror.Rendering.SceneID = ""
+	ng.Core.Rendering.Canvases[0].SetCameraIDs("", "back")
 
 	ng.Loop.OnLoop = onLoop
 	ngsamples.Cam.Rendering.States.FaceCulling = false

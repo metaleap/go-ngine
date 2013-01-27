@@ -152,13 +152,19 @@ func inSlice(slice []string, val string) bool {
 }
 
 func main() {
-	var outTime, srcTime, tmpTime int64
+	var (
+		outTime, srcTime, tmpTime int64
+	)
 	nginePath := os.Args[1]
 	srcDirPath, outFilePath := filepath.Join(nginePath, "core", "_glsl"), filepath.Join(nginePath, "core", "-gen-glsl-src.go")
 	if fileInfo, err := os.Stat(outFilePath); err == nil {
 		outTime = fileInfo.ModTime().UnixNano()
+	} else {
+		outTime = 0
+	}
+	if outTime > 0 {
 		ff := func(filePath string, rec bool) bool {
-			if fileInfo, err = os.Stat(filePath); (err == nil) && !fileInfo.IsDir() {
+			if fileInfo, err := os.Stat(filePath); (err == nil) && !fileInfo.IsDir() {
 				if tmpTime = fileInfo.ModTime().UnixNano(); tmpTime > srcTime {
 					srcTime = tmpTime
 				}
@@ -167,7 +173,7 @@ func main() {
 		}
 		uio.WalkDirectory(srcDirPath, "", ff, true)
 	}
-	if srcTime > outTime {
+	if (outTime == 0) || (srcTime > outTime) {
 		fmt.Printf("Re-merging changed shader files inside %v into %v... ", strings.Replace(srcDirPath, nginePath, ".", -1), strings.Replace(outFilePath, nginePath, ".", -1))
 		generateShadersFile(srcDirPath, outFilePath, "core", true)
 		fmt.Println("DONE.")

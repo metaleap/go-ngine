@@ -15,7 +15,7 @@ type techniqueCtor func(string) renderTechnique
 
 func initTechniques() {
 	techs = map[string]renderTechnique{}
-	for techName, techMaker := range map[string]techniqueCtor{"rt_unlit": newTechnique_Unlit} {
+	for techName, techMaker := range map[string]techniqueCtor{"rt_unlit3": newTechnique_Unlit} {
 		techs[techName] = techMaker(techName)
 	}
 }

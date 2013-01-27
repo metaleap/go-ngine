@@ -59,7 +59,11 @@ func (me *Node) render() {
 		curNode, curMesh, curModel = me, me.mesh, me.model
 		if me.model != nil {
 			curTechnique.onRenderNode()
-			me.matModelProj.SetFromMult4(&curCam.matCamProj, &me.Transform.matModelView)
+			if curCam3d, ok = curCam.(*Camera3D); ok {
+				me.matModelProj.SetFromMult4(&curCam3d.matCamProj, &me.Transform.matModelView)
+			} else {
+				me.matModelProj = me.Transform.matModelView
+			}
 			me.glMatModelProj.Load(&me.matModelProj)
 			gl.UniformMatrix4fv(curProg.UnifLocs["uMatModelProj"], 1, gl.FALSE, &me.glMatModelProj[0])
 			me.model.render()

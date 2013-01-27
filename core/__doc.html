@@ -74,18 +74,31 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				<dd><a href="#Camera">type Camera</a></dd>
 				
+				
+			
+				
+				<dd><a href="#Camera2D">type Camera2D</a></dd>
+				
 					
-					<dd>&nbsp; &nbsp; <a href="#NewCamera">func NewCamera() (me *Camera)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NewCamera2D">func NewCamera2D() (me *Camera2D)</a></dd>
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Camera.ApplyMatrices">func (me *Camera) ApplyMatrices()</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Camera2D.SetTechnique">func (me *Camera2D) SetTechnique(name string)</a></dd>
+				
+			
+				
+				<dd><a href="#Camera3D">type Camera3D</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Camera.SetTechnique">func (me *Camera) SetTechnique(name string)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NewCamera3D">func NewCamera3D() (me *Camera3D)</a></dd>
+				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Camera.ToggleTechnique">func (me *Camera) ToggleTechnique()</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Camera3D.ApplyMatrices">func (me *Camera3D) ApplyMatrices()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Camera3D.SetTechnique">func (me *Camera3D) SetTechnique(name string)</a></dd>
 				
 			
 				
@@ -137,13 +150,25 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#Controller.TurnDown">func (me *Controller) TurnDown()</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Controller.TurnDownBy">func (me *Controller) TurnDownBy(deg float64)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Controller.TurnLeft">func (me *Controller) TurnLeft()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.TurnLeftBy">func (me *Controller) TurnLeftBy(deg float64)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Controller.TurnRight">func (me *Controller) TurnRight()</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Controller.TurnRightBy">func (me *Controller) TurnRightBy(deg float64)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Controller.TurnUp">func (me *Controller) TurnUp()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.TurnUpBy">func (me *Controller) TurnUpBy(deg float64)</a></dd>
 				
 			
 				
@@ -295,14 +320,25 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#LibCameras">type LibCameras</a></dd>
+				<dd><a href="#LibCamera2Ds">type LibCamera2Ds</a></dd>
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#LibCameras.AddNew">func (me LibCameras) AddNew(id string) (obj *Camera)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#LibCamera2Ds.AddNew">func (me LibCamera2Ds) AddNew(id string) (obj *Camera2D)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#LibCameras.Remove">func (me LibCameras) Remove(id string)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#LibCamera2Ds.Remove">func (me LibCamera2Ds) Remove(id string)</a></dd>
+				
+			
+				
+				<dd><a href="#LibCamera3Ds">type LibCamera3Ds</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LibCamera3Ds.AddNew">func (me LibCamera3Ds) AddNew(id string) (obj *Camera3D)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LibCamera3Ds.Remove">func (me LibCamera3Ds) Remove(id string)</a></dd>
 				
 			
 				
@@ -705,7 +741,11 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/-gen-glsl-src.go">-gen-glsl-src.go</a>
 			
-				<a href="/target/camera.gt.go">camera.gt.go</a>
+				<a href="/target/camera.go">camera.go</a>
+			
+				<a href="/target/camera2d.gt.go">camera2d.gt.go</a>
+			
+				<a href="/target/camera3d.gt.go">camera3d.gt.go</a>
 			
 				<a href="/target/controller.go">controller.go</a>
 			
@@ -819,39 +859,38 @@ A convenience short-hand for fmt.Sprintf. Feel free to ignore.
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.gt.go?s=209:1219#L1">Camera</a></h2>
-			<pre>type Camera struct {
-    <span class="comment">//	Optical and imager properties for this camera.</span>
-    Params struct {
-        <span class="comment">//	Vertical field-of-view. Defaults to 37.8493.</span>
-        <span class="comment">//	After changing this value, you must call the ApplyMatrices() method.</span>
-        FovY float64
+			<h2 id="Camera">type <a href="/target/camera.go?s=58:93#L1">Camera</a></h2>
+			<pre>type Camera interface {
+    <span class="comment">// contains filtered or unexported methods</span>
+}</pre>
+			
 
-        <span class="comment">//	Distance of the far-plane from the camera. Defaults to 30000.</span>
-        <span class="comment">//	After changing this value, you must call the ApplyMatrices() method.</span>
-        ZFar float64
+			
 
-        <span class="comment">//	Distance of the near-plane from the camera. Defaults to 0.3.</span>
-        <span class="comment">//	After changing this value, you must call the ApplyMatrices() method.</span>
-        ZNear float64
+			
 
-        <span class="comment">//	The ID of the Scene (in Core.Libs.Scenes) this camera is looking at.</span>
-        SceneID string
-    }
+			
 
-    <span class="comment">//	Encapsulates the position and direction of this camera.</span>
-    Controller Controller
+			
 
+			
+		
+			
+			
+			<h2 id="Camera2D">type <a href="/target/camera2d.gt.go?s=169:514#L1">Camera2D</a></h2>
+			<pre>type Camera2D struct {
     Rendering struct {
         Enabled bool
 
         <span class="comment">//	The device-relative or absolute view-port for this Camera.</span>
         ViewPort CameraViewPort
 
+        <span class="comment">//	The ID of the Scene (in Core.Libs.Scenes) this camera is looking at.</span>
+        SceneID string
+
         States struct {
-            DepthTest   bool
-            FaceCulling bool
-            ClearColor  ugl.GlVec4
+            ugl.RenderStatesBag
+            ClearFlags gl.Bitfield
         }
     }
     <span class="comment">// contains filtered or unexported fields</span>
@@ -869,10 +908,10 @@ A camera embodies the eye point of the viewer looking at the visual scene.
 
 			
 				
-				<h3 id="NewCamera">func <a href="/target/camera.gt.go?s=4931:4960#L155">NewCamera</a></h3>
-				<pre>func NewCamera() (me *Camera)</pre>
+				<h3 id="NewCamera2D">func <a href="/target/camera2d.gt.go?s=1772:1805#L53">NewCamera2D</a></h3>
+				<pre>func NewCamera2D() (me *Camera2D)</pre>
 				<p>
-Initializes and returns a new Camera with default parameters.
+Initializes and returns a new Camera2D with default parameters.
 </p>
 
 				
@@ -880,8 +919,77 @@ Initializes and returns a new Camera with default parameters.
 
 			
 				
-				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.gt.go?s=1738:1771#L54">ApplyMatrices</a></h3>
-				<pre>func (me *Camera) ApplyMatrices()</pre>
+				<h3 id="Camera2D.SetTechnique">func (*Camera2D) <a href="/target/camera2d.gt.go?s=1525:1570#L44">SetTechnique</a></h3>
+				<pre>func (me *Camera2D) SetTechnique(name string)</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="Camera3D">type <a href="/target/camera3d.gt.go?s=209:1204#L1">Camera3D</a></h2>
+			<pre>type Camera3D struct {
+    <span class="comment">//	Optical and imager properties for this camera.</span>
+    Params struct {
+        <span class="comment">//	Vertical field-of-view. Defaults to 37.8493.</span>
+        <span class="comment">//	After changing this value, you must call the ApplyMatrices() method.</span>
+        FovY float64
+
+        <span class="comment">//	Distance of the far-plane from the camera. Defaults to 30000.</span>
+        <span class="comment">//	After changing this value, you must call the ApplyMatrices() method.</span>
+        ZFar float64
+
+        <span class="comment">//	Distance of the near-plane from the camera. Defaults to 0.3.</span>
+        <span class="comment">//	After changing this value, you must call the ApplyMatrices() method.</span>
+        ZNear float64
+    }
+
+    <span class="comment">//	Encapsulates the position and direction of this camera.</span>
+    Controller Controller
+
+    Rendering struct {
+        Enabled bool
+
+        <span class="comment">//	The device-relative or absolute view-port for this Camera.</span>
+        ViewPort CameraViewPort
+
+        <span class="comment">//	The ID of the Scene (in Core.Libs.Scenes) this camera is looking at.</span>
+        SceneID string
+
+        States struct {
+            ugl.RenderStatesBag
+            ClearFlags gl.Bitfield
+        }
+    }
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+A camera embodies the eye point of the viewer looking at the visual scene.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewCamera3D">func <a href="/target/camera3d.gt.go?s=3225:3258#L91">NewCamera3D</a></h3>
+				<pre>func NewCamera3D() (me *Camera3D)</pre>
+				<p>
+Initializes and returns a new Camera3D with default parameters.
+</p>
+
+				
+			
+
+			
+				
+				<h3 id="Camera3D.ApplyMatrices">func (*Camera3D) <a href="/target/camera3d.gt.go?s=1842:1877#L56">ApplyMatrices</a></h3>
+				<pre>func (me *Camera3D) ApplyMatrices()</pre>
 				<p>
 Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
 </p>
@@ -890,15 +998,8 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
 				
 			
 				
-				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.gt.go?s=2790:2833#L79">SetTechnique</a></h3>
-				<pre>func (me *Camera) SetTechnique(name string)</pre>
-				
-				
-				
-			
-				
-				<h3 id="Camera.ToggleTechnique">func (*Camera) <a href="/target/camera.gt.go?s=2932:2967#L85">ToggleTechnique</a></h3>
-				<pre>func (me *Camera) ToggleTechnique()</pre>
+				<h3 id="Camera3D.SetTechnique">func (*Camera3D) <a href="/target/camera3d.gt.go?s=2978:3023#L82">SetTechnique</a></h3>
+				<pre>func (me *Camera3D) SetTechnique(name string)</pre>
 				
 				
 				
@@ -906,7 +1007,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Params.
 		
 			
 			
-			<h2 id="CameraViewPort">type <a href="/target/camera.gt.go?s=3575:3790#L117">CameraViewPort</a></h2>
+			<h2 id="CameraViewPort">type <a href="/target/camera.go?s=159:374#L2">CameraViewPort</a></h2>
 			<pre>type CameraViewPort struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -925,7 +1026,7 @@ Encapsulates a device-relative or absolute camera view-port.
 
 			
 				
-				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.gt.go?s=3916:3973#L131">SetAbs</a></h3>
+				<h3 id="CameraViewPort.SetAbs">func (*CameraViewPort) <a href="/target/camera.go?s=500:557#L16">SetAbs</a></h3>
 				<pre>func (me *CameraViewPort) SetAbs(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -935,7 +1036,7 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.gt.go?s=4224:4285#L138">SetRel</a></h3>
+				<h3 id="CameraViewPort.SetRel">func (*CameraViewPort) <a href="/target/camera.go?s=808:869#L23">SetRel</a></h3>
 				<pre>func (me *CameraViewPort) SetRel(x, y, width, height float64)</pre>
 				<p>
 Sets the device-relative viewport origin and dimensions, with the value 1.0
@@ -1091,7 +1192,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move upward&#34;.
 				
 			
 				
-				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=5423:5467#L153">StepSizeMove</a></h3>
+				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=5635:5679#L165">StepSizeMove</a></h3>
 				<pre>func (me *Controller) StepSizeMove() float64</pre>
 				<p>
 Returns the current distance that a single MoveXyz() call (per loop iteration) would move.
@@ -1102,7 +1203,7 @@ Returns the current distance that a single MoveXyz() call (per loop iteration) w
 				
 			
 				
-				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=5685:5729#L159">StepSizeTurn</a></h3>
+				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=5897:5941#L171">StepSizeTurn</a></h3>
 				<pre>func (me *Controller) StepSizeTurn() float64</pre>
 				<p>
 Returns the current degrees that a single TurnXyz() call (per loop iteration) would turn.
@@ -1113,40 +1214,80 @@ Returns the current degrees that a single TurnXyz() call (per loop iteration) wo
 				
 			
 				
-				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=5874:5906#L164">TurnDown</a></h3>
+				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=6115:6147#L176">TurnDown</a></h3>
 				<pre>func (me *Controller) TurnDown()</pre>
 				<p>
-Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34;.
+Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34; by me.StepSizeTurn() degrees.
 </p>
 
 				
 				
 			
 				
-				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=6105:6137#L173">TurnLeft</a></h3>
+				<h3 id="Controller.TurnDownBy">func (*Controller) <a href="/target/controller.go?s=6290:6335#L181">TurnDownBy</a></h3>
+				<pre>func (me *Controller) TurnDownBy(deg float64)</pre>
+				<p>
+Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34; by the specified degrees.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=6501:6533#L188">TurnLeft</a></h3>
 				<pre>func (me *Controller) TurnLeft()</pre>
 				<p>
-Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#34;.
+Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#34; by me.StepSizeTurn() degrees.
 </p>
 
 				
 				
 			
 				
-				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=6298:6331#L180">TurnRight</a></h3>
+				<h3 id="Controller.TurnLeftBy">func (*Controller) <a href="/target/controller.go?s=6677:6722#L193">TurnLeftBy</a></h3>
+				<pre>func (me *Controller) TurnLeftBy(deg float64)</pre>
+				<p>
+Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#34; by the specified degrees.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=6851:6884#L198">TurnRight</a></h3>
 				<pre>func (me *Controller) TurnRight()</pre>
 				<p>
-Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#34;.
+Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#34; by me.StepSizeTurn() degrees.
 </p>
 
 				
 				
 			
 				
-				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=6488:6518#L187">TurnUp</a></h3>
+				<h3 id="Controller.TurnRightBy">func (*Controller) <a href="/target/controller.go?s=7030:7076#L203">TurnRightBy</a></h3>
+				<pre>func (me *Controller) TurnRightBy(deg float64)</pre>
+				<p>
+Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#34; by the specified degrees.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=7202:7232#L208">TurnUp</a></h3>
 				<pre>func (me *Controller) TurnUp()</pre>
 				<p>
-Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34;.
+Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; by me.StepSizeTurn() degrees.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Controller.TurnUpBy">func (*Controller) <a href="/target/controller.go?s=7371:7414#L213">TurnUpBy</a></h3>
+				<pre>func (me *Controller) TurnUpBy(deg float64)</pre>
+				<p>
+Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; by the specified degress.
 </p>
 
 				
@@ -1155,12 +1296,12 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34;.
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=795:1274#L19">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=857:1338#L21">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Options     EngineOptions
     Libs        struct {
-        Cameras   LibCameras
+        Cameras   LibCamera3Ds
         Effects   LibFxEffects
         Materials LibFxMaterials
         Images    struct {
@@ -1196,7 +1337,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3697:3732#L127">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3798:3833#L130">SyncUpdates</a></h3>
 				<pre>func (me *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -1280,7 +1421,7 @@ Returns the number of seconds expired ever since EngineLoop.Loop() was last call
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=242:672#L1">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=242:839#L1">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     <span class="comment">//	The base directory path for asset file paths.</span>
     AssetRootDirPath string
@@ -1292,9 +1433,13 @@ Returns the number of seconds expired ever since EngineLoop.Loop() was last call
     Rendering struct {
         DefaultClearColor ugl.GlVec4
 
-        <span class="comment">//	Name for the default render technique, defaults to the only</span>
-        <span class="comment">//	currently supported value &#34;rt_unlit&#34;.</span>
-        DefaultTechnique string
+        <span class="comment">//	Name for the default render technique of a Camera2D,</span>
+        <span class="comment">//	defaults to the currently only implementation &#34;rt_unlit3&#34;.</span>
+        DefaultTechnique2D string
+
+        <span class="comment">//	Name for the default render technique of a Camera3D,</span>
+        <span class="comment">//	defaults to the currently only implementation &#34;rt_unlit3&#34;.</span>
+        DefaultTechnique3D string
     }
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -1312,7 +1457,7 @@ Various &#34;global&#34; (rather than use-case-specific) options.
 
 			
 				
-				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=747:875#L22">NewEngineOptions</a></h3>
+				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=914:1042#L26">NewEngineOptions</a></h3>
 				<pre>func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions)</pre>
 				<p>
 Allocates, initializes and returns a new core.EngineOptions instance.
@@ -1783,10 +1928,10 @@ Initializes and returns a new FxMaterial with default parameters.
 		
 			
 			
-			<h2 id="LibCameras">type <a href="/target/camera.gt.go?s=5074:5108#L162">LibCameras</a></h2>
-			<pre>type LibCameras map[string]*Camera</pre>
+			<h2 id="LibCamera2Ds">type <a href="/target/camera2d.gt.go?s=1923:1961#L60">LibCamera2Ds</a></h2>
+			<pre>type LibCamera2Ds map[string]*Camera2D</pre>
 			<p>
-A hash-table of Cameras associated by IDs. Only for use in Core.Libs.
+A hash-table of Camera2Ds associated by IDs. Only for use in Core.Libs.
 </p>
 
 
@@ -1800,10 +1945,10 @@ A hash-table of Cameras associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibCameras.AddNew">func (LibCameras) <a href="/target/camera.gt.go?s=5232:5284#L166">AddNew</a></h3>
-				<pre>func (me LibCameras) AddNew(id string) (obj *Camera)</pre>
+				<h3 id="LibCamera2Ds.AddNew">func (LibCamera2Ds) <a href="/target/camera2d.gt.go?s=2087:2143#L64">AddNew</a></h3>
+				<pre>func (me LibCamera2Ds) AddNew(id string) (obj *Camera2D)</pre>
 				<p>
-Creates and initializes a new Camera with default parameters,
+Creates and initializes a new Camera2D with default parameters,
 adds it to me under the specified ID, and returns it.
 </p>
 
@@ -1811,8 +1956,45 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibCameras.Remove">func (LibCameras) <a href="/target/camera.gt.go?s=5475:5513#L183">Remove</a></h3>
-				<pre>func (me LibCameras) Remove(id string)</pre>
+				<h3 id="LibCamera2Ds.Remove">func (LibCamera2Ds) <a href="/target/camera2d.gt.go?s=2342:2382#L81">Remove</a></h3>
+				<pre>func (me LibCamera2Ds) Remove(id string)</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="LibCamera3Ds">type <a href="/target/camera3d.gt.go?s=3376:3414#L98">LibCamera3Ds</a></h2>
+			<pre>type LibCamera3Ds map[string]*Camera3D</pre>
+			<p>
+A hash-table of Camera3Ds associated by IDs. Only for use in Core.Libs.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="LibCamera3Ds.AddNew">func (LibCamera3Ds) <a href="/target/camera3d.gt.go?s=3540:3596#L102">AddNew</a></h3>
+				<pre>func (me LibCamera3Ds) AddNew(id string) (obj *Camera3D)</pre>
+				<p>
+Creates and initializes a new Camera3D with default parameters,
+adds it to me under the specified ID, and returns it.
+</p>
+
+				
+				
+			
+				
+				<h3 id="LibCamera3Ds.Remove">func (LibCamera3Ds) <a href="/target/camera3d.gt.go?s=3795:3835#L119">Remove</a></h3>
+				<pre>func (me LibCamera3Ds) Remove(id string)</pre>
 				
 				
 				
@@ -2093,14 +2275,14 @@ Initializes and returns a new Mesh with default parameters.
 
 			
 				
-				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=3421:3470#L107">Add</a></h3>
+				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=3228:3277#L100">Add</a></h3>
 				<pre>func (me *MeshBuffer) Add(mesh *Mesh) (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=4210:4250#L137">Remove</a></h3>
+				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=4017:4057#L130">Remove</a></h3>
 				<pre>func (me *MeshBuffer) Remove(mesh *Mesh)</pre>
 				
 				
@@ -2593,14 +2775,14 @@ Declares a point of interest in a Scene.
 				
 			
 				
-				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=1681:1722#L63">SetMatID</a></h3>
+				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=1795:1836#L67">SetMatID</a></h3>
 				<pre>func (me *Node) SetMatID(newMatID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=1819:1873#L69">SetMeshModelID</a></h3>
+				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=1933:1987#L73">SetMeshModelID</a></h3>
 				<pre>func (me *Node) SetMeshModelID(meshID, modelID string)</pre>
 				
 				
@@ -3034,7 +3216,7 @@ ONLY used for Core.Rendering.PostFx.
 		
 			
 			
-			<h2 id="RenderCanvas">type <a href="/target/render-canvas.go?s=197:705#L3">RenderCanvas</a></h2>
+			<h2 id="RenderCanvas">type <a href="/target/render-canvas.go?s=197:704#L3">RenderCanvas</a></h2>
 			<pre>type RenderCanvas struct {
     <span class="comment">//	This MUST be an non-negative integer, it&#39;s a float64 just to avoid</span>
     <span class="comment">//	type conversion. How often this RenderCanvas is included in rendering:</span>
@@ -3060,35 +3242,35 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvas.Main">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1289:1324#L37">Main</a></h3>
+				<h3 id="RenderCanvas.Main">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1288:1323#L37">Main</a></h3>
 				<pre>func (me *RenderCanvas) Main() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1626:1658#L48">Remove</a></h3>
+				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1625:1657#L48">Remove</a></h3>
 				<pre>func (me *RenderCanvas) Remove()</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.SetCameraIDs">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1991:2045#L67">SetCameraIDs</a></h3>
+				<h3 id="RenderCanvas.SetCameraIDs">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1990:2044#L67">SetCameraIDs</a></h3>
 				<pre>func (me *RenderCanvas) SetCameraIDs(camIDs ...string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.SetMain">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2188:2221#L74">SetMain</a></h3>
+				<h3 id="RenderCanvas.SetMain">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2186:2219#L74">SetMain</a></h3>
 				<pre>func (me *RenderCanvas) SetMain()</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2350:2419#L82">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2348:2417#L82">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
 				
 				
@@ -3097,7 +3279,7 @@ Represents a surface (texture framebuffer) that can be rendered to.
 		
 			
 			
-			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=2610:2645#L90">RenderCanvases</a></h2>
+			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=2608:2643#L90">RenderCanvases</a></h2>
 			<pre>type RenderCanvases []*RenderCanvas</pre>
 			
 
@@ -3111,14 +3293,14 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvases.AddNew">func (*RenderCanvases) <a href="/target/render-canvas.go?s=2754:2856#L99">AddNew</a></h3>
+				<h3 id="RenderCanvases.AddNew">func (*RenderCanvases) <a href="/target/render-canvas.go?s=2752:2854#L99">AddNew</a></h3>
 				<pre>func (me *RenderCanvases) AddNew(isMain bool, relative bool, width, height float64) (rc *RenderCanvas)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvases.Main">func (RenderCanvases) <a href="/target/render-canvas.go?s=3049:3101#L111">Main</a></h3>
+				<h3 id="RenderCanvases.Main">func (RenderCanvases) <a href="/target/render-canvas.go?s=3047:3099#L111">Main</a></h3>
 				<pre>func (me RenderCanvases) Main() (main *RenderCanvas)</pre>
 				
 				

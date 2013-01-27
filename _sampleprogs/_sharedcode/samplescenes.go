@@ -11,7 +11,7 @@ import (
 
 var (
 	//	The primary camera
-	Cam *ng.Camera
+	Cam *ng.Camera3D
 
 	//	Controller for the primary camera
 	CamCtl *ng.Controller
@@ -42,7 +42,7 @@ var (
 //	the specified ID, and returns it.
 func AddScene(id string) (me *ng.Scene) {
 	me = ng.NewScene()
-	ng.Core.Libs.Scenes[""] = me
+	ng.Core.Libs.Scenes[id] = me
 	return
 }
 
@@ -135,7 +135,7 @@ func CheckToggleKeys() {
 		ng.Loop.Stop()
 	}
 	if ng.UserIO.KeyToggled(glfw.KeyF2) {
-		Cam.ToggleTechnique()
+		// Cam.ToggleTechnique()
 	}
 	if ng.UserIO.KeyToggled(glfw.KeyF3) {
 		Cam.Rendering.States.FaceCulling = !Cam.Rendering.States.FaceCulling
@@ -173,12 +173,10 @@ func SamplesMainFunc(assetLoader func()) {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
 		defer ng.Dispose()
-		// ng.Core.Rendering.States.SetClearColor(0.75, 0.75, 0.97, 1)
 		ng.Loop.OnSec = OnSec
-		Cam = ng.Core.Libs.Cameras.AddNew("cam")
+		Cam = ng.Core.Libs.Cameras[""]
 		Cam.Rendering.States.ClearColor.Set(0.75, 0.75, 0.97, 1)
 		CamCtl = &Cam.Controller
-		ng.Core.Rendering.Canvases[0].SetCameraIDs("cam")
 		assetLoader()
 		ng.Core.SyncUpdates()
 		ng.Loop.Loop()
