@@ -56,8 +56,7 @@ func (me *Node) ModelID() string {
 
 func (me *Node) render() {
 	if !me.Disabled {
-		curNode, curMesh, curModel = me, me.mesh, me.model
-		if me.model != nil {
+		if curNode, curMesh, curModel = me, me.mesh, me.model; curModel != nil {
 			curTechnique.onRenderNode()
 			if curCam.Perspective.Use {
 				me.matModelProj.SetFromMult4(&curCam.matCamProj, &me.Transform.matModelView)
