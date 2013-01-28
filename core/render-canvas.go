@@ -33,7 +33,7 @@ func newRenderCanvas(relative bool, width, height float64) (me *RenderCanvas) {
 	me.SetSize(relative, width, height)
 	me.onResize(Core.Options.winWidth, Core.Options.winHeight)
 	me.frameBuf.Create(gl.Sizei(Core.Options.winWidth), gl.Sizei(Core.Options.winHeight), true, true)
-	me.frameBuf.AttachRendertexture(ugl.NewFramebufferRendertexture())
+	me.frameBuf.AttachRendertexture(ugl.NewFramebufferRendertexture(true))
 	me.frameBuf.AttachRenderbuffer(ugl.NewFramebufferRenderbuffer())
 	ugl.LogLastError("newRenderCanvas(%v x %v)", width, height)
 	return
