@@ -93,27 +93,6 @@ func (me *Camera) ApplyMatrices() {
 func (me *Camera) dispose() {
 }
 
-func (me *Camera) render() {
-	if me.Rendering.Enabled {
-		Core.Rendering.states.Apply(&me.Rendering.States.RenderStatesBag)
-		Core.Rendering.states.ForceEnableScissorTest()
-		curScene = Core.Libs.Scenes[me.Rendering.SceneID]
-		Core.useTechnique(me.technique)
-		me.matCamProj.SetFromMult4(&me.matProj, &me.Controller.mat)
-		//me.glMatCamProj.Load(&me.matCamProj)
-		//gl.UniformMatrix4fv(curProg.UnifLocs["uMatCamProj"], 1, gl.FALSE, &me.glMatCamProj[0])
-		// gl.UniformMatrix4fv(curProg.UnifLocs["uMatProj"], 1, gl.FALSE, &me.glmatProj[0])
-		me.technique.onPreRender()
-		gl.Scissor(me.Rendering.ViewPort.glVpX, me.Rendering.ViewPort.glVpY, me.Rendering.ViewPort.glVpW, me.Rendering.ViewPort.glVpH)
-		gl.Viewport(me.Rendering.ViewPort.glVpX, me.Rendering.ViewPort.glVpY, me.Rendering.ViewPort.glVpW, me.Rendering.ViewPort.glVpH)
-		if me.Rendering.States.ClearColor[3] > 0 {
-			gl.Clear(me.Rendering.States.ClearFlags)
-		}
-		curScene.RootNode.render()
-		Core.Rendering.states.ForceDisableScissorTest()
-	}
-}
-
 func (me *Camera) SetTechnique(name string) {
 	if (me.technique == nil) || (me.technique.name() != name) {
 		me.technique = techs[name]

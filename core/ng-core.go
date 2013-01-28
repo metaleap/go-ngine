@@ -1,8 +1,6 @@
 package core
 
 import (
-	"math"
-
 	gl "github.com/chsc/gogl/gl42"
 	ugl "github.com/go3d/go-glutil"
 )
@@ -95,23 +93,6 @@ func (me *EngineCore) initRenderingStates() {
 }
 
 func (me *EngineCore) onLoop() {
-}
-
-func (me *EngineCore) onRender() {
-	me.Rendering.Samplers.FullFilteringRepeat.Bind(0)
-	for curCanvIndex, curCanvas = range me.Rendering.Canvases {
-		if (curCanvas.EveryNthFrame == 1) || ((curCanvas.EveryNthFrame > 1) && (math.Mod(Stats.fpsAll, curCanvas.EveryNthFrame) == 0)) {
-			curCanvas.render()
-		}
-	}
-	me.Rendering.Samplers.NoFilteringClamp.Bind(0)
-	me.Rendering.PostFx.render()
-	ugl.LogLastError("onrender")
-}
-
-//	prepares all renderBatches for the next onRender() call...
-func (me *EngineCore) onPreRender() {
-
 }
 
 func (me *EngineCore) onResizeWindow(viewWidth, viewHeight int) {

@@ -1,7 +1,6 @@
 package core
 
 import (
-	gl "github.com/chsc/gogl/gl42"
 	ugl "github.com/go3d/go-glutil"
 	unum "github.com/metaleap/go-util/num"
 )
@@ -52,25 +51,6 @@ func (me *Node) MeshID() string {
 
 func (me *Node) ModelID() string {
 	return me.modelID
-}
-
-func (me *Node) render() {
-	if !me.Disabled {
-		if curNode, curMesh, curModel = me, me.mesh, me.model; curModel != nil {
-			curTechnique.onRenderNode()
-			if curCam.Perspective.Use {
-				me.matModelProj.SetFromMult4(&curCam.matCamProj, &me.Transform.matModelView)
-			} else {
-				me.matModelProj = me.Transform.matModelView
-			}
-			me.glMatModelProj.Load(&me.matModelProj)
-			gl.UniformMatrix4fv(curProg.UnifLocs["uMatModelProj"], 1, gl.FALSE, &me.glMatModelProj[0])
-			me.model.render()
-		}
-		for me.curKey, me.curSubNode = range me.ChildNodes.M {
-			me.curSubNode.render()
-		}
-	}
 }
 
 func (me *Node) SetMatID(newMatID string) {

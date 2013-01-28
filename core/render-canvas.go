@@ -73,14 +73,6 @@ func (me *RenderCanvas) Remove() {
 	mainCanvas = Core.Rendering.Canvases.Main()
 }
 
-func (me *RenderCanvas) render() {
-	me.frameBuf.Bind()
-	for _, curCam = range me.Cameras {
-		curCam.render()
-	}
-	me.frameBuf.Unbind()
-}
-
 //	Declares me the primary / "main" render canvas (if multiple render canvases are present).
 //	The "main" render canvas is the one whose output image is blitted to the screen / window by Core.Rendering.PostFx.
 func (me *RenderCanvas) SetMain() {
