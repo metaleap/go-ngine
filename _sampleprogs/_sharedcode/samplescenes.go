@@ -183,7 +183,6 @@ func SamplesMainFunc(assetLoader func()) {
 	runtime.LockOSThread()
 
 	opt := ng.NewEngineOptions(AssetRootDirPath(), 1280, 720, 0, false)
-	opt.Diagnostics.Log.MeshUploadInfo = true
 
 	if err := ng.Init(opt, "Loading Sample App..."); err != nil {
 		fmt.Printf("ABORT:\n%v\n", err)
@@ -213,5 +212,5 @@ func OnSec() {
 
 //	Returns the window title to be set by OnSec().
 func WindowTitle() string {
-	return ng.Sfmt("%v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", ng.Stats.FpsLastSec, ng.UserIO.WinWidth(), ng.UserIO.WinHeight(), KeyHints[curKeyHint], CamCtl.Pos, CamCtl.Dir)
+	return fmt.Sprintf("%v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", ng.Stats.FpsLastSec, ng.UserIO.WinWidth(), ng.UserIO.WinHeight(), KeyHints[curKeyHint], CamCtl.Pos, CamCtl.Dir)
 }

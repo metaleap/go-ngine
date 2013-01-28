@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	ugl "github.com/go3d/go-glutil"
-	ugo "github.com/metaleap/go-util"
 )
 
 type FxImage2D struct {
@@ -81,7 +80,7 @@ func (me *FxImage2D) load_OnImg(img image.Image, err error, async bool) {
 		me.OnLoad(img, err, async)
 	}
 	if err != nil {
-		ugo.LogError(err)
+		Diag.LogErr(err)
 	}
 }
 

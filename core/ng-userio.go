@@ -8,6 +8,11 @@ import (
 	ugo "github.com/metaleap/go-util"
 )
 
+var (
+	//	Your gateway for end-user input (key, mouse etc.) and "output" (window management, not the graphics themselves).
+	UserIO EngineUserIO
+)
+
 //	Consider EngineUserIO a "Singleton" type, only valid use is the core.UserIO global variable.
 //	Your gateway for end-user input (key, mouse etc.) and "output" (window management, not the graphics themselves).
 type EngineUserIO struct {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math"
 
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
@@ -137,7 +138,7 @@ func LoadSampleScene_03_PyrsCubes() {
 		} else {
 			str = ""
 		}
-		crates[i] = scene.RootNode.ChildNodes.AddNew(ng.Sfmt("node_box_%v", i), "mesh_cube", str)
+		crates[i] = scene.RootNode.ChildNodes.AddNew(fmt.Sprintf("node_box_%v", i), "mesh_cube", str)
 		f = float64(i)
 		crates[i].Transform.SetPosXYZ((f+3)*-2, (f+1)*2, (f+2)*3)
 		if i == 2 {
@@ -151,7 +152,7 @@ func LoadSampleScene_03_PyrsCubes() {
 		} else {
 			str = ""
 		}
-		pyramids[i] = scene.RootNode.ChildNodes.AddNew(ng.Sfmt("nody_pyr_%v", i), "mesh_pyramid", str)
+		pyramids[i] = scene.RootNode.ChildNodes.AddNew(fmt.Sprintf("nody_pyr_%v", i), "mesh_pyramid", str)
 		f = float64(len(pyramids) - i)
 		pyramids[i].Transform.SetScaleN((f + 1) * 2)
 		pyramids[i].Transform.SetPosXYZ((f+3)*-4, (f+2)*3, (f+2)*14)

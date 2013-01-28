@@ -6,19 +6,9 @@ import (
 	ugl "github.com/go3d/go-glutil"
 )
 
-var (
-	//	Manages your main-thread's "game loop". You'll need to call it's Loop() method once after go:ngine initialization (see samples).
-	Loop EngineLoop
-
-	//	The heart and brain of go:ngine --- a container for all runtime resources and responsible for rendering.
-	Core EngineCore
-
-	//	Tracks various go:ngine performance counters over time.
-	Stats EngineStats
-
-	//	Your gateway for end-user input (key, mouse etc.) and "output" (window management, not the graphics themselves).
-	UserIO EngineUserIO
-)
+func init() {
+	Diag.LogCategories = LogCatAll
+}
 
 //	Call this to "un-init" go:ngine and to release any and all GPU or RAM resources still allocated.
 func Dispose() {
@@ -34,6 +24,7 @@ func Init(options *EngineOptions, initialWinTitle string) (err error) {
 		glVerIndex = len(ugl.KnownVersions) - 1
 		glVer      float64
 	)
+	Core.Options = *options
 tryInit:
 	if options.Initialization.GlCoreContext {
 		glVer = ugl.KnownVersions[glVerIndex]
@@ -42,7 +33,7 @@ tryInit:
 		if err, isVerErr = glInit(); err == nil {
 			Stats.reset()
 			Loop.init()
-			Core.init(options)
+			Core.init()
 			ugl.LogLastError("INIT")
 		} else if isVerErr && !options.Initialization.GlCoreContext {
 			options.Initialization.GlCoreContext = true
@@ -57,7 +48,10 @@ tryInit:
 	return
 }
 
-//	A convenience short-hand for fmt.Sprintf. Feel free to ignore.
-func Sfmt(format string, fmtArgs ...interface{}) string {
+func fmtErr(format string, fmtArgs ...interface{}) error {
+	return fmt.Errorf(format, fmtArgs...)
+}
+
+func fmtStr(format string, fmtArgs ...interface{}) string {
 	return fmt.Sprintf(format, fmtArgs...)
 }

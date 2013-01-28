@@ -1,8 +1,6 @@
 package core
 
 import (
-	"fmt"
-
 	gl "github.com/chsc/gogl/gl42"
 
 	ugl "github.com/go3d/go-glutil"
@@ -32,7 +30,7 @@ func (me *MeshBuffers) Add(id string, params *meshBufferParams) (buf *MeshBuffer
 			buf.dispose()
 		}
 	} else {
-		err = fmt.Errorf("Cannot add a new mesh buffer with ID '%v': already exists", id)
+		err = fmtErr("Cannot add a new mesh buffer with ID '%v': already exists", id)
 	}
 	return
 }
@@ -109,13 +107,13 @@ func newMeshBuffer(id string, params *meshBufferParams) (me *MeshBuffer, err err
 
 func (me *MeshBuffer) Add(mesh *Mesh) (err error) {
 	if mesh.meshBuffer != nil {
-		err = fmt.Errorf("Cannot add mesh '%v' to mesh buffer '%v': already belongs to mesh buffer '%v'.", mesh.id, me.id, mesh.meshBuffer.id)
+		err = fmtErr("Cannot add mesh '%v' to mesh buffer '%v': already belongs to mesh buffer '%v'.", mesh.id, me.id, mesh.meshBuffer.id)
 	} else if !me.meshes[mesh] {
 		me.meshes[mesh] = true
 		mesh.gpuSynced = false
 		mesh.meshBuffer = me
 	} else {
-		err = fmt.Errorf("Cannot add mesh '%v' to mesh buffer '%v': already added.", mesh.id, me.id)
+		err = fmtErr("Cannot add mesh '%v' to mesh buffer '%v': already added.", mesh.id, me.id)
 	}
 	return
 }

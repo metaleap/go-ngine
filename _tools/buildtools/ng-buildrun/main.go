@@ -90,7 +90,7 @@ func generateShadersFile(srcDirPath, outFilePath, pkgName string, stripComments 
 		allNames               []string
 		glslOldSrc, shaderName string
 	)
-	glslSrc := "package " + pkgName + "\n\nfunc init() {\n\trs := &glProgMan.RawSources\n"
+	glslSrc := "package " + pkgName + "\n\nfunc init() {\n\tglc.progMan.Reset()\n\trs := &glc.progMan.RawSources\n"
 	allShaders := shaderSrcSortables{shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}}
 	iShaders := map[string]string{}
 	glslOldSrc = uio.ReadTextFile(outFilePath, false, "")
@@ -109,7 +109,7 @@ func generateShadersFile(srcDirPath, outFilePath, pkgName string, stripComments 
 			glslSrc += fmt.Sprintf("\trs.%s[\"%s\"] = %#v\n", varName, shaderName, includeShaders(shaderSource.name, shaderSource.src, iShaders))
 		}
 	}
-	if glslSrc += fmt.Sprintf("\tglProgMan.Names = %#v\n}\n", allNames); glslSrc != glslOldSrc {
+	if glslSrc += fmt.Sprintf("\tglc.progMan.Names = %#v\n}\n", allNames); glslSrc != glslOldSrc {
 		uio.WriteTextFile(outFilePath, glslSrc)
 	}
 	return true

@@ -4,6 +4,11 @@ import (
 	glfw "github.com/go-gl/glfw"
 )
 
+var (
+	//	Tracks various go:ngine performance counters over time.
+	Stats EngineStats
+)
+
 //	Consider EngineStats a "Singleton" type, only valid use is the core.Stats global variable.
 //	Tracks various go:ngine performance indicators over time.
 type EngineStats struct {

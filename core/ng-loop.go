@@ -1,12 +1,16 @@
 package core
 
 import (
-	"log"
 	"math"
 	"runtime"
 
 	glfw "github.com/go-gl/glfw"
 	ugl "github.com/go3d/go-glutil"
+)
+
+var (
+	//	Manages your main-thread's "game loop". You'll need to call it's Loop() method once after go:ngine initialization (see samples).
+	Loop EngineLoop
 )
 
 //	Consider EngineLoop a "Singleton" type, only valid use is the core.Loop global variable.
@@ -52,9 +56,9 @@ func (me *EngineLoop) Loop() {
 		Stats.reset()
 		Stats.FrameRenderBoth.comb1, Stats.FrameRenderBoth.comb2 = &Stats.FrameRenderCpu, &Stats.FrameRenderGpu
 		ugl.LogLastError("ngine.PreLoop")
-		log.Printf("Enter loop...")
+		Diag.LogMisc("Enter loop...")
 		for me.IsLooping && (glfw.WindowParam(glfw.Opened) == 1) {
-			//	STEP 1. Send rendering commands to the GPU / GL pipeline
+			//	STEP 1. Send rendering commands (batched together in the previous onPreRender) to the GPU / GL pipeline
 			Stats.FrameRenderCpu.begin()
 			Core.onRender()
 			Stats.FrameRenderCpu.end()
@@ -81,6 +85,8 @@ func (me *EngineLoop) Loop() {
 			Stats.FrameUserCode.begin()
 			me.OnLoop()
 			Stats.FrameUserCode.end()
+			//	Prepare next frame: cull & batch
+			Core.onPreRender()
 			//	STEP 3. Swap buffers -- also waits for GPU to finish commands sent in Step 1, and for V-sync (if set).
 			Stats.FrameRenderGpu.begin()
 			glfw.SwapBuffers()
@@ -92,7 +98,7 @@ func (me *EngineLoop) Loop() {
 			}
 		}
 		me.IsLooping = false
-		log.Printf("Exited loop.")
+		Diag.LogMisc("Exited loop.")
 		ugl.LogLastError("ngine.PostLoop")
 	}
 }

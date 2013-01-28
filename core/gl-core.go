@@ -1,8 +1,6 @@
 package core
 
 import (
-	"fmt"
-	"log"
 	"strings"
 	"time"
 
@@ -12,14 +10,16 @@ import (
 )
 
 var (
-	glIsInit  bool
-	glProgMan = ugl.NewProgramManager()
+	glc struct {
+		isInit  bool
+		progMan ugl.ProgramManager
+	}
 )
 
 func glDispose() {
-	if glIsInit {
-		glIsInit = false
-		glProgMan.Dispose()
+	if glc.isInit {
+		glc.isInit = false
+		glc.progMan.Reset()
 	}
 }
 
@@ -40,9 +40,9 @@ for: <%v>.
 	vMatch := "VERSION_"
 	makeVerErr := func(curVer string) error {
 		isVerErr = true
-		return fmt.Errorf(vMessage, strings.Replace(minMatch, "_", ".", -1), curVer, ugl.Gl.Str(gl.VENDOR), ugl.Gl.Str(gl.RENDERER))
+		return fmtErr(vMessage, strings.Replace(minMatch, "_", ".", -1), curVer, ugl.Gl.Str(gl.VENDOR), ugl.Gl.Str(gl.RENDERER))
 	}
-	if !glIsInit {
+	if !glc.isInit {
 		if err = gl.Init(); err != nil {
 			// 	check for a message such as "unable to initialize VERSION_4_0"
 			if vPos := strings.Index(err.Error(), vMatch); vPos >= 0 {
@@ -60,14 +60,14 @@ for: <%v>.
 		if err == nil {
 			ugl.Init()
 			if !ugl.VersionMatch(3.3) {
-				err = makeVerErr(Sfmt("%v.%v", ugl.Support.GlVersion.MajorMinor[0], ugl.Support.GlVersion.MajorMinor[1]))
+				err = makeVerErr(fmtStr("%v.%v", ugl.Support.GlVersion.MajorMinor[0], ugl.Support.GlVersion.MajorMinor[1]))
 			} else {
 				var dur time.Duration
 				gl.FrontFace(gl.CCW)
 				gl.CullFace(gl.BACK)
-				log.Println(ugl.Gl.ConnInfo())
-				if dur, err = glProgMan.MakeProgramsFromRawSources(true); err == nil {
-					log.Printf("Total shader compilation time for all %v programs: %v\n", len(glProgMan.Programs), dur)
+				Diag.LogMisc(ugl.Gl.ConnInfo())
+				if dur, err = glc.progMan.MakeProgramsFromRawSources(true); err == nil {
+					Diag.LogShaders("Total shader compilation time for all %v programs: %v\n", len(glc.progMan.Programs), dur)
 				}
 			}
 		}
@@ -75,7 +75,7 @@ for: <%v>.
 			err = ugl.LastError("nglcore.Init")
 		}
 		if err == nil {
-			glIsInit = true
+			glc.isInit = true
 		}
 	}
 	return

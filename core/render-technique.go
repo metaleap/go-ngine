@@ -55,7 +55,7 @@ func (me *baseTechnique) onRenderNode() {
 }
 
 func (me *baseTechnique) setProg(name string, unifs []string, attrs []string) {
-	prog := glProgMan.Programs[name]
+	prog := glc.progMan.Programs[name]
 	prog.SetUnifLocations("uMatModelProj")
 	if len(unifs) > 0 {
 		prog.SetUnifLocations(unifs...)
@@ -88,7 +88,6 @@ func (me *techniqueUnlit) onRenderNode() {
 	if tmpMat = curNode.EffectiveMaterial(); tmpMat != curMat {
 		if curMat = tmpMat; curMat != nil {
 			tmpEffect = Core.Libs.Effects[curMat.DefaultEffectID]
-			gl.ActiveTexture(gl.TEXTURE0)
 			Core.Libs.Images.I2D[tmpEffect.Diffuse.Texture.Image2ID].glTex.Bind()
 			gl.Uniform1i(curProg.UnifLocs["uDiffuse"], 0)
 		}

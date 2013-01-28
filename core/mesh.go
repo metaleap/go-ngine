@@ -1,9 +1,6 @@
 package core
 
 import (
-	"fmt"
-	"log"
-
 	gl "github.com/chsc/gogl/gl42"
 
 	ugl "github.com/go3d/go-glutil"
@@ -39,14 +36,12 @@ func (me *Mesh) GpuUpload() (err error) {
 	me.GpuDelete()
 
 	if sizeVerts > gl.Sizeiptr(me.meshBuffer.MemSizeVertices) {
-		err = fmt.Errorf("Cannot upload mesh '%v': vertex size (%vB) exceeds mesh buffer's available vertex memory (%vB)", me.id, sizeVerts, me.meshBuffer.MemSizeVertices)
+		err = fmtErr("Cannot upload mesh '%v': vertex size (%vB) exceeds mesh buffer's available vertex memory (%vB)", me.id, sizeVerts, me.meshBuffer.MemSizeVertices)
 	} else if sizeIndices > gl.Sizeiptr(me.meshBuffer.MemSizeIndices) {
-		err = fmt.Errorf("Cannot upload mesh '%v': index size (%vB) exceeds mesh buffer's available index memory (%vB)", me.id, sizeIndices, me.meshBuffer.MemSizeIndices)
+		err = fmtErr("Cannot upload mesh '%v': index size (%vB) exceeds mesh buffer's available index memory (%vB)", me.id, sizeIndices, me.meshBuffer.MemSizeIndices)
 	} else {
 		me.meshBufOffsetBaseIndex, me.meshBufOffsetIndices, me.meshBufOffsetVerts = me.meshBuffer.offsetBaseIndex, me.meshBuffer.offsetIndices, me.meshBuffer.offsetVerts
-		if Core.Options.Diagnostics.Log.MeshUploadInfo {
-			log.Printf("Upload %v at voff=%v ioff=%v boff=%v", me.id, me.meshBufOffsetVerts, me.meshBufOffsetIndices, me.meshBufOffsetBaseIndex)
-		}
+		Diag.LogMeshes("Upload %v at voff=%v ioff=%v boff=%v", me.id, me.meshBufOffsetVerts, me.meshBufOffsetIndices, me.meshBufOffsetBaseIndex)
 		me.meshBuffer.glIbo.Bind()
 		me.meshBuffer.glVbo.Bind()
 		// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.meshBuffer.glIbo)
@@ -119,9 +114,7 @@ func (me *Mesh) load(meshData *MeshData) (err error) {
 		}
 		offsetFace++
 	}
-	if Core.Options.Diagnostics.Log.MeshUploadInfo {
-		log.Printf("mesh{%v}.Load() gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)", me.id, len(me.raw.faces), len(me.raw.meshVerts), numFinalVerts, numVerts, len(me.raw.indices), vreuse)
-	}
+	Diag.LogMeshes("mesh{%v}.Load() gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)", me.id, len(me.raw.faces), len(me.raw.meshVerts), numFinalVerts, numVerts, len(me.raw.indices), vreuse)
 	return
 }
 

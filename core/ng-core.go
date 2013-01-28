@@ -5,10 +5,12 @@ import (
 
 	gl "github.com/chsc/gogl/gl42"
 	ugl "github.com/go3d/go-glutil"
-	ugo "github.com/metaleap/go-util"
 )
 
 var (
+	//	The heart and brain of go:ngine --- a container for all runtime resources and responsible for rendering.
+	Core EngineCore
+
 	asyncResources         = map[asyncResource]bool{}
 	curMeshBuf             *MeshBuffer
 	curCanvIndex, curIndex int
@@ -67,11 +69,9 @@ func (me *EngineCore) dispose() {
 	techs = nil
 }
 
-func (me *EngineCore) init(options *EngineOptions) {
+func (me *EngineCore) init() {
 	initTechniques()
 	me.initRenderingStates()
-	me.Options = *options
-	// me.Options.DefaultTextureParams.setAgain()
 	me.MeshBuffers = newMeshBuffers()
 	me.initLibs()
 	me.Rendering.Canvases = RenderCanvases{}
@@ -107,6 +107,11 @@ func (me *EngineCore) onRender() {
 	me.Rendering.Samplers.NoFilteringClamp.Bind(0)
 	me.Rendering.PostFx.render()
 	ugl.LogLastError("onrender")
+}
+
+//	prepares all renderBatches for the next onRender() call...
+func (me *EngineCore) onPreRender() {
+
 }
 
 func (me *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
@@ -148,7 +153,7 @@ func (me *EngineCore) SyncUpdates() {
 	for _, mesh := range me.Libs.Meshes {
 		if !mesh.gpuSynced {
 			if err = mesh.GpuUpload(); err != nil {
-				ugo.LogError(err)
+				Diag.LogErr(err)
 			}
 		}
 	}
@@ -157,7 +162,7 @@ func (me *EngineCore) SyncUpdates() {
 }
 
 func (me *EngineCore) useProgram(name string) {
-	if tmpProg = glProgMan.Programs[name]; tmpProg != curProg {
+	if tmpProg = glc.progMan.Programs[name]; tmpProg != curProg {
 		curProg = tmpProg
 		curProg.Use()
 	}

@@ -1,7 +1,6 @@
 package core
 
 import (
-	"log"
 	"strings"
 	"time"
 
@@ -38,18 +37,18 @@ func (me *PostFx) ApplyEffects() (err error) {
 		dur   time.Duration
 		pname = postFxProgName
 	)
-	for defName, _ := range glProgMan.Defines {
+	for defName, _ := range glc.progMan.Defines {
 		if strings.HasPrefix(defName, "FX_") {
-			delete(glProgMan.Defines, defName)
+			delete(glc.progMan.Defines, defName)
 		}
 	}
 	for name, _ := range me.effects {
-		glProgMan.Defines["FX_"+name] = 1
+		glc.progMan.Defines["FX_"+name] = 1
 		pname += ("__" + name)
 	}
-	if glProgMan.CloneRawSources(postFxProgName, pname) {
-		if dur, err = glProgMan.MakeProgramsFromRawSources(true, pname); err == nil {
-			log.Printf("Built new shader program '%s' in %v", pname, dur)
+	if glc.progMan.CloneRawSources(postFxProgName, pname) {
+		if dur, err = glc.progMan.MakeProgramsFromRawSources(true, pname); err == nil {
+			Diag.LogShaders("Built new shader program '%s' in %v", pname, dur)
 		}
 	}
 	if err == nil {
@@ -81,7 +80,7 @@ func (me *PostFx) init() {
 }
 
 func (me *PostFx) setProg(progName string) {
-	me.prog = glProgMan.Programs[progName]
+	me.prog = glc.progMan.Programs[progName]
 	me.prog.SetUnifLocations("uTexRendering")
 }
 
@@ -92,9 +91,9 @@ func (me *PostFx) render() {
 	//Core.Rendering.Samplers.NoFilteringClamp.Bind(0)
 	gl.BindFramebuffer(gl.FRAMEBUFFER, 0)
 	gl.Viewport(0, 0, me.glWidth, me.glHeight)
-	ugl.LogLastError("pre-clrscr")
+	// ugl.LogLastError("pre-clrscr")
 	gl.Clear(gl.COLOR_BUFFER_BIT)
-	ugl.LogLastError("post-clrscr")
+	// ugl.LogLastError("post-clrscr")
 	me.glVao.Bind()
 	me.prog.Use()
 	mainCanvas.frameBuf.BindTexture(0)

@@ -4,10 +4,6 @@ package core
 type Scene struct {
 	//	The root Node for this scene graph.
 	RootNode Node
-
-	Rendering struct {
-		Batch RenderBatch
-	}
 }
 
 func (me *Scene) dispose() {
