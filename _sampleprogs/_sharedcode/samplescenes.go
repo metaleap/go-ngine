@@ -143,7 +143,7 @@ func CheckToggleKeys() {
 	}
 	if ng.UserIO.KeyToggled(glfw.KeyF3) {
 		ng.Core.Rendering.PostFx.ToggleEffect("Grayscale")
-		if err := ng.Core.Rendering.PostFx.RebuildShader(); err != nil {
+		if err := ng.Core.Rendering.PostFx.ApplyEffects(); err != nil {
 			panic(err)
 		}
 	}
