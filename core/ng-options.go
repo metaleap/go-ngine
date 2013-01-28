@@ -12,6 +12,12 @@ type EngineOptions struct {
 	//	The base directory path for asset file paths.
 	AssetRootDirPath string
 
+	Diagnostics struct {
+		Log struct {
+			MeshUploadInfo bool
+		}
+	}
+
 	Initialization struct {
 		GlCoreContext bool
 	}

@@ -28,7 +28,7 @@ func Dispose() {
 }
 
 //	Initializes go:ngine; this first attempts to initialize OpenGL and then open a window to your supplied specifications with a GL 3.3-or-higher profile.
-func Init(options *EngineOptions, winTitle string) (err error) {
+func Init(options *EngineOptions, initialWinTitle string) (err error) {
 	var (
 		isVerErr   = false
 		glVerIndex = len(ugl.KnownVersions) - 1
@@ -38,7 +38,7 @@ tryInit:
 	if options.Initialization.GlCoreContext {
 		glVer = ugl.KnownVersions[glVerIndex]
 	}
-	if err = UserIO.init(options, winTitle, glVer); err == nil {
+	if err = UserIO.init(options, initialWinTitle, glVer); err == nil {
 		if err, isVerErr = glInit(); err == nil {
 			Stats.reset()
 			Loop.init()

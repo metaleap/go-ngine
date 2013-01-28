@@ -11,12 +11,12 @@ var (
 
 //	Represents a surface (texture framebuffer) that can be rendered to.
 type RenderCanvas struct {
-	//	This MUST be an non-negative integer, it's a float64 just to avoid
+	//	This should be an non-negative integer, it's a float64 just to avoid a
 	//	type conversion. How often this RenderCanvas is included in rendering:
 	//	1 = every frame (this is the default value)
 	//	2 = every 2nd frame
 	//	8 = every 8th frame
-	//	0 = RenderCanvas is disabled for rendering
+	//	0 = this RenderCanvas is disabled for rendering
 	EveryNthFrame float64
 
 	Cameras Cameras
@@ -43,6 +43,8 @@ func (me *RenderCanvas) dispose() {
 	me.frameBuf.Dispose()
 }
 
+//	Returns whether me is the primary / "main" render canvas (if multiple render canvases are present).
+//	The "main" render canvas is the one whose output image is blitted to the screen / window by Core.Rendering.PostFx.
 func (me *RenderCanvas) Main() bool {
 	return me.isMain
 }
@@ -58,6 +60,8 @@ func (me *RenderCanvas) onResize(viewWidth, viewHeight int) {
 	}
 }
 
+//	Removes me from Core.Rendering.Canvases and deletes its associated GPU resources.
+//	This renders me invalid for further use.
 func (me *RenderCanvas) Remove() {
 	sl := Core.Rendering.Canvases
 	for i, c := range sl {
@@ -77,6 +81,8 @@ func (me *RenderCanvas) render() {
 	me.frameBuf.Unbind()
 }
 
+//	Declares me the primary / "main" render canvas (if multiple render canvases are present).
+//	The "main" render canvas is the one whose output image is blitted to the screen / window by Core.Rendering.PostFx.
 func (me *RenderCanvas) SetMain() {
 	for _, canv := range Core.Rendering.Canvases {
 		if canv.isMain = (canv == me); canv.isMain {
@@ -85,6 +91,9 @@ func (me *RenderCanvas) SetMain() {
 	}
 }
 
+//	Sets the 2 dimensions of this render canvas.
+//	If relative is true, width and height are interpreted relative to the resolution of the OpenGL context's default framebuffer, with 1 being 100%.
+//	Otherwise, width and height are absolute pixel dimensions.
 func (me *RenderCanvas) SetSize(relative bool, width, height float64) {
 	if me.viewSizeRelative = relative; me.viewSizeRelative {
 		me.relViewWidth, me.relViewHeight = width, height
@@ -93,6 +102,7 @@ func (me *RenderCanvas) SetSize(relative bool, width, height float64) {
 	}
 }
 
+//	Only used for Core.Rendering.Canvases.
 type RenderCanvases []*RenderCanvas
 
 func (me *RenderCanvases) dispose() {
@@ -102,6 +112,8 @@ func (me *RenderCanvases) dispose() {
 	*me = RenderCanvases{}
 }
 
+//	Adds a new RenderCanvas and returns it.
+//	The relative, width and height values are passed to a call to SetSize().
 func (me *RenderCanvases) AddNew(isMain bool, relative bool, width, height float64) (rc *RenderCanvas) {
 	rc = newRenderCanvas(relative, width, height)
 	*me = append(*me, rc)
@@ -114,6 +126,8 @@ func (me *RenderCanvases) AddNew(isMain bool, relative bool, width, height float
 	return
 }
 
+//	Returns whatever RenderCanvas in me is currently declared the primary / "main" render canvas (if multiple render canvases are present).
+//	The "main" render canvas is the one whose output image is blitted to the screen / window by Core.Rendering.PostFx.
 func (me RenderCanvases) Main() (main *RenderCanvas) {
 	for _, main = range me {
 		if main.isMain {

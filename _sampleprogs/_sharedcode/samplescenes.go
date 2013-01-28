@@ -23,7 +23,7 @@ var (
 	//	Also every 4 seconds shows the next one in a number of "key hints" defined here:
 	KeyHints = []string{
 		"[F2]  --  Toggle Backface Culling",
-		"[F3]  --  Toggle grayscale effect",
+		"[F3]  --  Pause/Resume",
 		"[W][S]  --  Camera rise / sink",
 		"[A][D]  --  Camera strafe left / right",
 		"[<][>]  --  Camera turn left / right",
@@ -33,6 +33,7 @@ var (
 	}
 
 	curKeyHint = 0
+	paused     = false
 	sec        = 0
 )
 
@@ -93,7 +94,9 @@ func AssetRootDirPath() string {
 
 //	Called every frame (by the parent example app) to check the state for keys controlling CamCtl to move or rotate Cam.
 func CheckCamCtlKeys() {
-	CamCtl.MoveSpeedupFactor = 1
+	if CamCtl.MoveSpeedupFactor = 1; paused {
+		return
+	}
 	if ng.UserIO.KeyPressed(glfw.KeyLshift) {
 		CamCtl.MoveSpeedupFactor = 10
 	} else if ng.UserIO.KeyPressed(glfw.KeyRshift) {
@@ -142,10 +145,19 @@ func CheckToggleKeys() {
 		Cam.Rendering.States.FaceCulling = !Cam.Rendering.States.FaceCulling
 	}
 	if ng.UserIO.KeyToggled(glfw.KeyF3) {
-		ng.Core.Rendering.PostFx.ToggleEffect("Grayscale")
-		if err := ng.Core.Rendering.PostFx.ApplyEffects(); err != nil {
-			panic(err)
-		}
+		PauseResume()
+	}
+}
+
+func PauseResume() {
+	canv := ng.Core.Rendering.Canvases.Main()
+	if paused = ng.Core.Rendering.PostFx.ToggleEffect("Grayscale"); paused {
+		canv.EveryNthFrame = 0
+	} else {
+		canv.EveryNthFrame = 1
+	}
+	if err := ng.Core.Rendering.PostFx.ApplyEffects(); err != nil {
+		ugo.LogError(err)
 	}
 }
 
@@ -170,7 +182,10 @@ func PrintPostLoopSummary() {
 func SamplesMainFunc(assetLoader func()) {
 	runtime.LockOSThread()
 
-	if err := ng.Init(ng.NewEngineOptions(AssetRootDirPath(), 1280, 720, 0, false), "Loading Sample..."); err != nil {
+	opt := ng.NewEngineOptions(AssetRootDirPath(), 1280, 720, 0, false)
+	opt.Diagnostics.Log.MeshUploadInfo = true
+
+	if err := ng.Init(opt, "Loading Sample App..."); err != nil {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
 		defer ng.Dispose()

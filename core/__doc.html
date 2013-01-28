@@ -65,7 +65,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<dd><a href="#Dispose">func Dispose()</a></dd>
 			
 				
-				<dd><a href="#Init">func Init(options *EngineOptions, winTitle string) (err error)</a></dd>
+				<dd><a href="#Init">func Init(options *EngineOptions, initialWinTitle string) (err error)</a></dd>
 			
 				
 				<dd><a href="#Sfmt">func Sfmt(format string, fmtArgs ...interface{}) string</a></dd>
@@ -650,16 +650,16 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#PostFx.ApplyEffects">func (me *PostFx) ApplyEffects() (err error)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#PostFx.DisableEffect">func (me *PostFx) DisableEffect(name string)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#PostFx.EnableEffect">func (me *PostFx) EnableEffect(name string) (effect *PostFxEffect)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#PostFx.RebuildShader">func (me *PostFx) RebuildShader() (err error)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#PostFx.ToggleEffect">func (me *PostFx) ToggleEffect(name string)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#PostFx.ToggleEffect">func (me *PostFx) ToggleEffect(name string) (enabled bool)</a></dd>
 				
 			
 				
@@ -827,8 +827,8 @@ Call this to &#34;un-init&#34; go:ngine and to release any and all GPU or RAM re
 		
 			
 			
-			<h2 id="Init">func <a href="/target/ng.go?s=893:955#L21">Init</a></h2>
-			<pre>func Init(options *EngineOptions, winTitle string) (err error)</pre>
+			<h2 id="Init">func <a href="/target/ng.go?s=893:962#L21">Init</a></h2>
+			<pre>func Init(options *EngineOptions, initialWinTitle string) (err error)</pre>
 			<p>
 Initializes go:ngine; this first attempts to initialize OpenGL and then open a window to your supplied specifications with a GL 3.3-or-higher profile.
 </p>
@@ -837,7 +837,7 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="Sfmt">func <a href="/target/ng.go?s=1759:1814#L51">Sfmt</a></h2>
+			<h2 id="Sfmt">func <a href="/target/ng.go?s=1773:1828#L51">Sfmt</a></h2>
 			<pre>func Sfmt(format string, fmtArgs ...interface{}) string</pre>
 			<p>
 A convenience short-hand for fmt.Sprintf. Feel free to ignore.
@@ -1390,10 +1390,16 @@ Returns the number of seconds expired ever since EngineLoop.Loop() was last call
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=242:839#L1">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=242:907#L1">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     <span class="comment">//	The base directory path for asset file paths.</span>
     AssetRootDirPath string
+
+    Diagnostics struct {
+        Log struct {
+            MeshUploadInfo bool
+        }
+    }
 
     Initialization struct {
         GlCoreContext bool
@@ -1426,7 +1432,7 @@ Various &#34;global&#34; (rather than use-case-specific) options.
 
 			
 				
-				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=914:1042#L26">NewEngineOptions</a></h3>
+				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=982:1110#L32">NewEngineOptions</a></h3>
 				<pre>func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions)</pre>
 				<p>
 Allocates, initializes and returns a new core.EngineOptions instance.
@@ -2008,7 +2014,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibMeshes">type <a href="/target/mesh.go?s=5504:5535#L138">LibMeshes</a></h2>
+			<h2 id="LibMeshes">type <a href="/target/mesh.go?s=5617:5648#L143">LibMeshes</a></h2>
 			<pre>type LibMeshes map[string]*Mesh</pre>
 			<p>
 A hash-table of Meshs associated by IDs. Only for use in Core.Libs.
@@ -2025,14 +2031,14 @@ A hash-table of Meshs associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibMeshes.AddLoad">func (LibMeshes) <a href="/target/mesh.go?s=5753:5863#L148">AddLoad</a></h3>
+				<h3 id="LibMeshes.AddLoad">func (LibMeshes) <a href="/target/mesh.go?s=5866:5976#L153">AddLoad</a></h3>
 				<pre>func (me LibMeshes) AddLoad(id string, meshProvider MeshProvider, args ...interface{}) (mesh *Mesh, err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="LibMeshes.AddNew">func (LibMeshes) <a href="/target/mesh.go?s=5657:5706#L142">AddNew</a></h3>
+				<h3 id="LibMeshes.AddNew">func (LibMeshes) <a href="/target/mesh.go?s=5770:5819#L147">AddNew</a></h3>
 				<pre>func (me LibMeshes) AddNew(id string) (obj *Mesh)</pre>
 				<p>
 Creates and initializes a new Mesh with default parameters,
@@ -2082,7 +2088,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="Mesh">type <a href="/target/mesh.go?s=100:505#L1">Mesh</a></h2>
+			<h2 id="Mesh">type <a href="/target/mesh.go?s=107:512#L2">Mesh</a></h2>
 			<pre>type Mesh struct {
     Models Models
     <span class="comment">// contains filtered or unexported fields</span>
@@ -2097,7 +2103,7 @@ adds it to me under the specified ID, and returns it.
 
 			
 				
-				<h3 id="NewMesh">func <a href="/target/mesh.go?s=5354:5388#L131">NewMesh</a></h3>
+				<h3 id="NewMesh">func <a href="/target/mesh.go?s=5467:5501#L136">NewMesh</a></h3>
 				<pre>func NewMesh(id string) (me *Mesh)</pre>
 				<p>
 Initializes and returns a new Mesh with default parameters.
@@ -2108,42 +2114,42 @@ Initializes and returns a new Mesh with default parameters.
 
 			
 				
-				<h3 id="Mesh.GpuDelete">func (*Mesh) <a href="/target/mesh.go?s=637:664#L20">GpuDelete</a></h3>
+				<h3 id="Mesh.GpuDelete">func (*Mesh) <a href="/target/mesh.go?s=644:671#L21">GpuDelete</a></h3>
 				<pre>func (me *Mesh) GpuDelete()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.GpuUpload">func (*Mesh) <a href="/target/mesh.go?s=715:754#L26">GpuUpload</a></h3>
+				<h3 id="Mesh.GpuUpload">func (*Mesh) <a href="/target/mesh.go?s=722:761#L27">GpuUpload</a></h3>
 				<pre>func (me *Mesh) GpuUpload() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.go?s=2711:2745#L59">GpuUploaded</a></h3>
+				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.go?s=2772:2806#L62">GpuUploaded</a></h3>
 				<pre>func (me *Mesh) GpuUploaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Load">func (*Mesh) <a href="/target/mesh.go?s=2772:2848#L63">Load</a></h3>
+				<h3 id="Mesh.Load">func (*Mesh) <a href="/target/mesh.go?s=2833:2909#L66">Load</a></h3>
 				<pre>func (me *Mesh) Load(provider MeshProvider, args ...interface{}) (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.go?s=4799:4828#L113">Loaded</a></h3>
+				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.go?s=4912:4941#L118">Loaded</a></h3>
 				<pre>func (me *Mesh) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.go?s=5247:5271#L126">Unload</a></h3>
+				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.go?s=5360:5384#L131">Unload</a></h3>
 				<pre>func (me *Mesh) Unload()</pre>
 				
 				
@@ -3065,12 +3071,15 @@ Removes the Node with the specified ID from me.M.
 		
 			
 			
-			<h2 id="PostFx">type <a href="/target/postfx.go?s=221:382#L8">PostFx</a></h2>
+			<h2 id="PostFx">type <a href="/target/postfx.go?s=545:706#L12">PostFx</a></h2>
 			<pre>type PostFx struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
 ONLY used for Core.Rendering.PostFx.
+Represents the final shading stage in a rendered frame and is always used, but initially all effects are disabled.
+Always takes the image produced by the Core.Rendering.Canvases.Main render canvas and blits it to the screen,
+applying the currently enabled effects, if any.
 </p>
 
 
@@ -3084,37 +3093,55 @@ ONLY used for Core.Rendering.PostFx.
 
 			
 				
-				<h3 id="PostFx.DisableEffect">func (*PostFx) <a href="/target/postfx.go?s=437:481#L19">DisableEffect</a></h3>
+				<h3 id="PostFx.ApplyEffects">func (*PostFx) <a href="/target/postfx.go?s=1055:1099#L26">ApplyEffects</a></h3>
+				<pre>func (me *PostFx) ApplyEffects() (err error)</pre>
+				<p>
+Switches me to a postfx shader program that has all effects enabled as specified
+by all previous DisableEffect() / EnableEffect() / ToggleEffect() calls since the last ApplyEffects() call.
+If that shader program does not yet exist, builds it. If that fails, a non-nil err is returned.
+</p>
+
+				
+				
+			
+				
+				<h3 id="PostFx.DisableEffect">func (*PostFx) <a href="/target/postfx.go?s=1832:1876#L53">DisableEffect</a></h3>
 				<pre>func (me *PostFx) DisableEffect(name string)</pre>
-				
+				<p>
+Deactivates the specified post-processing full-screen effect.
+After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), be sure to call ApplyEffects() once.
+</p>
+
 				
 				
 			
 				
-				<h3 id="PostFx.EnableEffect">func (*PostFx) <a href="/target/postfx.go?s=513:579#L23">EnableEffect</a></h3>
+				<h3 id="PostFx.EnableEffect">func (*PostFx) <a href="/target/postfx.go?s=2091:2157#L59">EnableEffect</a></h3>
 				<pre>func (me *PostFx) EnableEffect(name string) (effect *PostFxEffect)</pre>
-				
-				
-				
-			
-				
-				<h3 id="PostFx.RebuildShader">func (*PostFx) <a href="/target/postfx.go?s=947:992#L42">RebuildShader</a></h3>
-				<pre>func (me *PostFx) RebuildShader() (err error)</pre>
-				
+				<p>
+Activates the specified post-processing full-screen effect.
+After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), be sure to call ApplyEffects() once.
+</p>
+
 				
 				
 			
 				
-				<h3 id="PostFx.ToggleEffect">func (*PostFx) <a href="/target/postfx.go?s=2119:2162#L85">ToggleEffect</a></h3>
-				<pre>func (me *PostFx) ToggleEffect(name string)</pre>
-				
+				<h3 id="PostFx.ToggleEffect">func (*PostFx) <a href="/target/postfx.go?s=3403:3461#L99">ToggleEffect</a></h3>
+				<pre>func (me *PostFx) ToggleEffect(name string) (enabled bool)</pre>
+				<p>
+Activates or deactivates the specified post-processing full-screen effect.
+After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), be sure to call ApplyEffects() once.
+Returns whether this call has activated (true) or deactivated (false) the specified effect.
+</p>
+
 				
 				
 			
 		
 			
 			
-			<h2 id="PostFxEffect">type <a href="/target/postfx.go?s=151:179#L4">PostFxEffect</a></h2>
+			<h2 id="PostFxEffect">type <a href="/target/postfx.go?s=151:221#L4">PostFxEffect</a></h2>
 			<pre>type PostFxEffect struct {
 }</pre>
 			
@@ -3156,14 +3183,14 @@ ONLY used for Core.Rendering.PostFx.
 		
 			
 			
-			<h2 id="RenderCanvas">type <a href="/target/render-canvas.go?s=197:687#L3">RenderCanvas</a></h2>
+			<h2 id="RenderCanvas">type <a href="/target/render-canvas.go?s=197:696#L3">RenderCanvas</a></h2>
 			<pre>type RenderCanvas struct {
-    <span class="comment">//	This MUST be an non-negative integer, it&#39;s a float64 just to avoid</span>
+    <span class="comment">//	This should be an non-negative integer, it&#39;s a float64 just to avoid a</span>
     <span class="comment">//	type conversion. How often this RenderCanvas is included in rendering:</span>
     <span class="comment">//	1 = every frame (this is the default value)</span>
     <span class="comment">//	2 = every 2nd frame</span>
     <span class="comment">//	8 = every 8th frame</span>
-    <span class="comment">//	0 = RenderCanvas is disabled for rendering</span>
+    <span class="comment">//	0 = this RenderCanvas is disabled for rendering</span>
     EveryNthFrame float64
 
     Cameras Cameras
@@ -3184,39 +3211,59 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvas.Main">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1271:1306#L36">Main</a></h3>
+				<h3 id="RenderCanvas.Main">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1501:1536#L38">Main</a></h3>
 				<pre>func (me *RenderCanvas) Main() bool</pre>
-				
+				<p>
+Returns whether me is the primary / &#34;main&#34; render canvas (if multiple render canvases are present).
+The &#34;main&#34; render canvas is the one whose output image is blitted to the screen / window by Core.Rendering.PostFx.
+</p>
+
 				
 				
 			
 				
-				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1701:1733#L51">Remove</a></h3>
+				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2060:2092#L55">Remove</a></h3>
 				<pre>func (me *RenderCanvas) Remove()</pre>
-				
+				<p>
+Removes me from Core.Rendering.Canvases and deletes its associated GPU resources.
+This renders me invalid for further use.
+</p>
+
 				
 				
 			
 				
-				<h3 id="RenderCanvas.SetMain">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2069:2102#L70">SetMain</a></h3>
+				<h3 id="RenderCanvas.SetMain">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2639:2672#L76">SetMain</a></h3>
 				<pre>func (me *RenderCanvas) SetMain()</pre>
-				
+				<p>
+Declares me the primary / &#34;main&#34; render canvas (if multiple render canvases are present).
+The &#34;main&#34; render canvas is the one whose output image is blitted to the screen / window by Core.Rendering.PostFx.
+</p>
+
 				
 				
 			
 				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2231:2300#L78">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3059:3128#L87">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
-				
+				<p>
+Sets the 2 dimensions of this render canvas.
+If relative is true, width and height are interpreted relative to the resolution of the OpenGL context&#39;s default framebuffer, with 1 being 100%.
+Otherwise, width and height are absolute pixel dimensions.
+</p>
+
 				
 				
 			
 		
 			
 			
-			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=2491:2526#L86">RenderCanvases</a></h2>
+			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3361:3396#L96">RenderCanvases</a></h2>
 			<pre>type RenderCanvases []*RenderCanvas</pre>
-			
+			<p>
+Only used for Core.Rendering.Canvases.
+</p>
+
 
 			
 
@@ -3228,16 +3275,24 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvases.AddNew">func (*RenderCanvases) <a href="/target/render-canvas.go?s=2635:2737#L95">AddNew</a></h3>
+				<h3 id="RenderCanvases.AddNew">func (*RenderCanvases) <a href="/target/render-canvas.go?s=3624:3726#L107">AddNew</a></h3>
 				<pre>func (me *RenderCanvases) AddNew(isMain bool, relative bool, width, height float64) (rc *RenderCanvas)</pre>
-				
+				<p>
+Adds a new RenderCanvas and returns it.
+The relative, width and height values are passed to a call to SetSize().
+</p>
+
 				
 				
 			
 				
-				<h3 id="RenderCanvases.Main">func (RenderCanvases) <a href="/target/render-canvas.go?s=2930:2982#L107">Main</a></h3>
+				<h3 id="RenderCanvases.Main">func (RenderCanvases) <a href="/target/render-canvas.go?s=4176:4228#L121">Main</a></h3>
 				<pre>func (me RenderCanvases) Main() (main *RenderCanvas)</pre>
-				
+				<p>
+Returns whatever RenderCanvas in me is currently declared the primary / &#34;main&#34; render canvas (if multiple render canvases are present).
+The &#34;main&#34; render canvas is the one whose output image is blitted to the screen / window by Core.Rendering.PostFx.
+</p>
+
 				
 				
 			

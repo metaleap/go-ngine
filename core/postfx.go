@@ -49,7 +49,7 @@ func (me *PostFx) ApplyEffects() (err error) {
 	}
 	if glProgMan.CloneRawSources(postFxProgName, pname) {
 		if dur, err = glProgMan.MakeProgramsFromRawSources(true, pname); err == nil {
-			log.Printf("Built new shader program '%s' in %vs", pname, dur)
+			log.Printf("Built new shader program '%s' in %v", pname, dur)
 		}
 	}
 	if err == nil {
@@ -105,11 +105,13 @@ func (me *PostFx) render() {
 
 //	Activates or deactivates the specified post-processing full-screen effect.
 //	After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), be sure to call ApplyEffects() once.
-func (me *PostFx) ToggleEffect(name string) {
+//	Returns whether this call has activated (true) or deactivated (false) the specified effect.
+func (me *PostFx) ToggleEffect(name string) (enabled bool) {
 	if effect := me.effects[name]; effect == nil {
-		effect = &PostFxEffect{}
+		enabled, effect = true, &PostFxEffect{}
 		me.effects[name] = effect
 	} else {
 		delete(me.effects, name)
 	}
+	return
 }
