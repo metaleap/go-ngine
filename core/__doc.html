@@ -649,6 +649,23 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<dd><a href="#PostFx">type PostFx</a></dd>
 				
 				
+					
+					<dd>&nbsp; &nbsp; <a href="#PostFx.DisableEffect">func (me *PostFx) DisableEffect(name string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#PostFx.EnableEffect">func (me *PostFx) EnableEffect(name string) (effect *PostFxEffect)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#PostFx.RebuildShader">func (me *PostFx) RebuildShader() (err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#PostFx.ToggleEffect">func (me *PostFx) ToggleEffect(name string)</a></dd>
+				
+			
+				
+				<dd><a href="#PostFxEffect">type PostFxEffect</a></dd>
+				
+				
 			
 				
 				<dd><a href="#RenderBatch">type RenderBatch</a></dd>
@@ -1728,7 +1745,7 @@ Initializes and returns a new FxEffect with default parameters.
 
 			
 				
-				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=3252:3287#L140">NewFxImage2D</a></h3>
+				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=3253:3288#L141">NewFxImage2D</a></h3>
 				<pre>func NewFxImage2D() (me *FxImage2D)</pre>
 				<p>
 Initializes and returns a new FxImage2D with default parameters.
@@ -1917,7 +1934,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=3407:3447#L147">LibFxImage2Ds</a></h2>
+			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=3408:3448#L148">LibFxImage2Ds</a></h2>
 			<pre>type LibFxImage2Ds map[string]*FxImage2D</pre>
 			<p>
 A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
@@ -1934,7 +1951,7 @@ A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3574:3632#L151">AddNew</a></h3>
+				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3575:3633#L152">AddNew</a></h3>
 				<pre>func (me LibFxImage2Ds) AddNew(id string) (obj *FxImage2D)</pre>
 				<p>
 Creates and initializes a new FxImage2D with default parameters,
@@ -1945,7 +1962,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibFxImage2Ds.Remove">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3835:3876#L168">Remove</a></h3>
+				<h3 id="LibFxImage2Ds.Remove">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3836:3877#L169">Remove</a></h3>
 				<pre>func (me LibFxImage2Ds) Remove(id string)</pre>
 				
 				
@@ -3048,7 +3065,7 @@ Removes the Node with the specified ID from me.M.
 		
 			
 			
-			<h2 id="PostFx">type <a href="/target/postfx.go?s=131:248#L1">PostFx</a></h2>
+			<h2 id="PostFx">type <a href="/target/postfx.go?s=221:382#L8">PostFx</a></h2>
 			<pre>type PostFx struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -3056,6 +3073,51 @@ Removes the Node with the specified ID from me.M.
 ONLY used for Core.Rendering.PostFx.
 </p>
 
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="PostFx.DisableEffect">func (*PostFx) <a href="/target/postfx.go?s=437:481#L19">DisableEffect</a></h3>
+				<pre>func (me *PostFx) DisableEffect(name string)</pre>
+				
+				
+				
+			
+				
+				<h3 id="PostFx.EnableEffect">func (*PostFx) <a href="/target/postfx.go?s=513:579#L23">EnableEffect</a></h3>
+				<pre>func (me *PostFx) EnableEffect(name string) (effect *PostFxEffect)</pre>
+				
+				
+				
+			
+				
+				<h3 id="PostFx.RebuildShader">func (*PostFx) <a href="/target/postfx.go?s=947:992#L42">RebuildShader</a></h3>
+				<pre>func (me *PostFx) RebuildShader() (err error)</pre>
+				
+				
+				
+			
+				
+				<h3 id="PostFx.ToggleEffect">func (*PostFx) <a href="/target/postfx.go?s=2119:2162#L85">ToggleEffect</a></h3>
+				<pre>func (me *PostFx) ToggleEffect(name string)</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="PostFxEffect">type <a href="/target/postfx.go?s=151:179#L4">PostFxEffect</a></h2>
+			<pre>type PostFxEffect struct {
+}</pre>
+			
 
 			
 

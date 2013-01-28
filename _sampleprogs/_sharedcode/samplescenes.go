@@ -22,10 +22,8 @@ var (
 	//	OnSec() changes the window title every second to display FPS etc.
 	//	Also every 4 seconds shows the next one in a number of "key hints" defined here:
 	KeyHints = []string{
-		"[F2]  --  Toggle Render Technique",
-		"[F3]  --  Toggle Backface Culling",
-		"[F4]  --  Toggle Texture Filtering",
-		"[F5]  --  Increase Filtering Anisotropy",
+		"[F2]  --  Toggle Backface Culling",
+		"[F3]  --  Toggle grayscale effect",
 		"[W][S]  --  Camera rise / sink",
 		"[A][D]  --  Camera strafe left / right",
 		"[<][>]  --  Camera turn left / right",
@@ -46,6 +44,12 @@ func AddScene(id string) (me *ng.Scene) {
 	return
 }
 
+//	Sets up plain-color effects/materials with the specified IDs.
+//	For each ID (such as "foo" and "bar"):
+//	-	creates an ng.FxEffect with ID "fx_{ID}" (ie. "fx_foo" and "fx_bar") and adds it
+//	to ng.Core.Libs.Effects; its Diffuse field pointing to the color
+//	-	creates an ng.FxMaterial with ID "mat_{ID}" (ie. "mat_foo" and "mat_bar") and
+//	adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffect.
 func AddColorMaterials(idsColors map[string][]float64) {
 	for id, col := range idsColors {
 		ng.Core.Libs.Effects.AddNew("fx_" + id).Diffuse = ng.NewFxColor(col...)
@@ -135,16 +139,13 @@ func CheckToggleKeys() {
 		ng.Loop.Stop()
 	}
 	if ng.UserIO.KeyToggled(glfw.KeyF2) {
-		// Cam.ToggleTechnique()
-	}
-	if ng.UserIO.KeyToggled(glfw.KeyF3) {
 		Cam.Rendering.States.FaceCulling = !Cam.Rendering.States.FaceCulling
 	}
-	if ng.UserIO.KeyToggled(glfw.KeyF4) {
-		// ng.Core.Options.DefaultTextureParams.ToggleFilter()
-	}
-	if ng.UserIO.KeyToggled(glfw.KeyF5) {
-		// ng.Core.Options.DefaultTextureParams.ToggleFilterAnisotropy()
+	if ng.UserIO.KeyToggled(glfw.KeyF3) {
+		ng.Core.Rendering.PostFx.ToggleEffect("Grayscale")
+		if err := ng.Core.Rendering.PostFx.RebuildShader(); err != nil {
+			panic(err)
+		}
 	}
 }
 
@@ -165,7 +166,7 @@ func PrintPostLoopSummary() {
 
 }
 
-//	The *func main()* implementation for the parent example app. Initializes go:ngine, sets Cam and CamCtl, calls the specified assetLoader function, then enters the Loop.
+//	The *func main()* implementation for the parent example app. Initializes go:ngine, sets Cam and CamCtl, calls the specified assetLoader function, then enters The Loop.
 func SamplesMainFunc(assetLoader func()) {
 	runtime.LockOSThread()
 
@@ -175,7 +176,7 @@ func SamplesMainFunc(assetLoader func()) {
 		defer ng.Dispose()
 		ng.Loop.OnSec = OnSec
 		Cam = ng.Core.Rendering.Canvases[0].Cameras[0]
-		Cam.Rendering.States.ClearColor.Set(0.75, 0.75, 0.97, 1)
+		Cam.Rendering.States.ClearColor.Set(0.5, 0.6, 0.85, 1)
 		CamCtl = &Cam.Controller
 		assetLoader()
 		ng.Core.SyncUpdates()
@@ -184,9 +185,9 @@ func SamplesMainFunc(assetLoader func()) {
 	}
 }
 
-//	Called every second by go:ngine's *core* package. Refreshes the window title and doing so, every 4 seconds shows the next one entry in KeyHints.
+//	Called every second by go:ngine's *core* package. Refreshes the window title and doing so, every 3 seconds shows the next one entry in KeyHints.
 func OnSec() {
-	if sec++; sec == 4 {
+	if sec++; sec == 3 {
 		sec = 0
 		if curKeyHint++; (curKeyHint > MaxKeyHint) || (curKeyHint >= (len(KeyHints))) {
 			curKeyHint = 0

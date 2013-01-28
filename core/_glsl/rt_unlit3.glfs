@@ -2,8 +2,8 @@ in vec2 vTexCoords;
 
 uniform sampler2D uDiffuse;
 
-out vec4 oColor;
+out vec3 oColor;
 
 void main () {
-	oColor = texture(uDiffuse, vTexCoords);
+	oColor = texture(uDiffuse, vTexCoords).rgb;
 }

@@ -1,8 +1,20 @@
 uniform sampler2DRect uTexRendering;
 
-out vec4 oColor;
+out vec3 oColor;
 
-void main () {
-	vec4 cTex = texture(uTexRendering, gl_FragCoord.xy);
-	oColor = vec4(cTex.rgb, 1);
+void Grayscale() {
+	oColor.rgb = vec3((oColor.r * 0.3) + (oColor.g * 0.59) + (oColor.b * 0.11));
+}
+
+void TestEffect() {
+	oColor.r = 1;
+}
+
+void main() {
+	oColor = texture(uTexRendering, gl_FragCoord.xy).rgb;
+
+#ifdef FX_Grayscale
+	Grayscale();
+#endif
+
 }

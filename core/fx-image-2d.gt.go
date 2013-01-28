@@ -124,6 +124,7 @@ func fxImage2DProviderIoReader(arg interface{}) (img image.Image, err error) {
 	}
 	if reader, ok = arg.(io.Reader); ok {
 		img, _, err = image.Decode(reader)
+
 	}
 	return
 }

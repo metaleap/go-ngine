@@ -66,7 +66,7 @@ for: <%v>.
 				gl.FrontFace(gl.CCW)
 				gl.CullFace(gl.BACK)
 				log.Println(ugl.Gl.ConnInfo())
-				if dur, err = glProgMan.MakeAllProgramsFromRawSources(true); err == nil {
+				if dur, err = glProgMan.MakeProgramsFromRawSources(true); err == nil {
 					log.Printf("Total shader compilation time for all %v programs: %v\n", len(glProgMan.Programs), dur)
 				}
 			}
