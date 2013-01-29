@@ -7,8 +7,8 @@ import (
 
 //	Declares a point of interest in a Scene.
 type Node struct {
-	matModelProj   unum.Mat4
-	glMatModelProj ugl.GlMat4
+	// matModelProj   unum.Mat4
+	// glMatModelProj ugl.GlMat4
 
 	//	If true, this Node is ignored by the rendering runtime.
 	Disabled bool
@@ -23,11 +23,18 @@ type Node struct {
 	mesh                               *Mesh
 	model                              *Model
 	curSubNode, parentNode             *Node
+	matModelProjs                      map[*Camera]*unum.Mat4
+	glMatModelProjs                    map[*Camera]*ugl.GlMat4
 	curKey, matID, meshID, modelID, id string
 }
 
 func newNode(id, meshID, modelID string, parent *Node) (me *Node) {
 	me = &Node{id: id, parentNode: parent}
+	me.matModelProjs = map[*Camera]*unum.Mat4{}
+	me.glMatModelProjs = map[*Camera]*ugl.GlMat4{}
+	Core.Rendering.Canvases.Walk(func(cam *Camera) {
+		me.initMat(cam)
+	})
 	me.ChildNodes.init(me)
 	me.Transform.init(me)
 	me.SetMeshModelID(meshID, modelID)
@@ -39,6 +46,11 @@ func (me *Node) EffectiveMaterial() *FxMaterial {
 		return me.mat
 	}
 	return me.model.mat
+}
+
+func (me *Node) initMat(cam *Camera) {
+	mat := unum.NewMat4Identity()
+	me.matModelProjs[cam], me.glMatModelProjs[cam] = mat, ugl.NewGlMat4(mat)
 }
 
 func (me *Node) MatID() string {
@@ -70,5 +82,12 @@ func (me *Node) SetMeshModelID(meshID, modelID string) {
 		if modelID != me.modelID {
 			me.model, me.modelID = me.mesh.Models[modelID], modelID
 		}
+	}
+}
+
+func (me *Node) Walk(onNode func(*Node)) {
+	onNode(me)
+	for me.curKey, me.curSubNode = range me.ChildNodes.M {
+		me.curSubNode.Walk(onNode)
 	}
 }

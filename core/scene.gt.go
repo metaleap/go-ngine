@@ -13,6 +13,12 @@ func (me *Scene) init() {
 	me.RootNode = *newNode("", "", "", nil)
 }
 
+func (me LibScenes) Walk(onNode func(*Node)) {
+	for _, curScene = range me {
+		curScene.RootNode.Walk(onNode)
+	}
+}
+
 //#begin-gt -gen-lib.gt T:Scene
 
 //	Initializes and returns a new Scene with default parameters.

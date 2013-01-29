@@ -136,6 +136,14 @@ func (me RenderCanvases) Main() (main *RenderCanvas) {
 	return
 }
 
+func (me RenderCanvases) Walk(onCam func(*Camera)) {
+	for _, curCanvas = range me {
+		for _, curCam = range curCanvas.Cameras {
+			onCam(curCam)
+		}
+	}
+}
+
 /*
 
 Canvas 1: lo-res, 2-fx, LDR render
