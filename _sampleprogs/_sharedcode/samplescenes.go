@@ -168,11 +168,11 @@ func PrintPostLoopSummary() {
 	}
 	fmt.Printf("Average FPS:\t\t%v (total %v over %6.2fsec.)\n", ng.Stats.AverageFps(), ng.Stats.TotalFrames(), ng.Loop.Time())
 	printStatSummary("Frame Full Loop", &ng.Stats.Frame)
+	printStatSummary("Frame User Code", &ng.Stats.FrameAppCode)
+	printStatSummary("Frame Prep Code", &ng.Stats.FramePrepCode)
 	printStatSummary("Frame Render (CPU)", &ng.Stats.FrameRenderCpu)
 	printStatSummary("Frame Render (GPU)", &ng.Stats.FrameRenderGpu)
 	printStatSummary("Frame Render Both", &ng.Stats.FrameRenderBoth)
-	printStatSummary("Frame Core Code", &ng.Stats.FrameCoreCode)
-	printStatSummary("Frame User Code", &ng.Stats.FrameUserCode)
 	printStatSummary("GC (max 1x/sec)", &ng.Stats.Gc)
 	fmt.Printf("CGO calls: %v, Goroutines: %v\n\n", runtime.NumCgoCall(), runtime.NumGoroutine())
 

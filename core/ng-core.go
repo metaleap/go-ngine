@@ -91,9 +91,6 @@ func (me *EngineCore) initRenderingStates() {
 	me.Rendering.Samplers.NoFilteringClamp.Create().DisableAllFiltering(false).SetWrap(gl.CLAMP_TO_BORDER)
 }
 
-func (me *EngineCore) onLoop() {
-}
-
 func (me *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 	if me.isInit {
 		me.Options.winWidth, me.Options.winHeight = viewWidth, viewHeight

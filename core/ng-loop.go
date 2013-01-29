@@ -79,14 +79,13 @@ func (me *EngineLoop) Loop() {
 				runtime.GC()
 				Stats.Gc.end()
 			}
-			Stats.FrameCoreCode.begin()
-			Core.onLoop()
-			Stats.FrameCoreCode.end()
-			Stats.FrameUserCode.begin()
+			Stats.FrameAppCode.begin()
 			me.OnLoop()
-			Stats.FrameUserCode.end()
+			Stats.FrameAppCode.end()
 			//	Prepare next frame: cull & batch
+			Stats.FramePrepCode.begin()
 			Core.onPreRender()
+			Stats.FramePrepCode.end()
 			//	STEP 3. Swap buffers -- also waits for GPU to finish commands sent in Step 1, and for V-sync (if set).
 			Stats.FrameRenderGpu.begin()
 			glfw.SwapBuffers()

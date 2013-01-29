@@ -12,31 +12,41 @@ var (
 //	Consider EngineStats a "Singleton" type, only valid use is the core.Stats global variable.
 //	Tracks various go:ngine performance indicators over time.
 type EngineStats struct {
-	//	Gives the total number of frames rendered during the "previous" (not the current) second. Good enough for just a simple-minded FPS indicator.
+	//	Gives the total number of frames rendered during the "previous"
+	//	(not the current) second. Good enough for just a simple-minded FPS indicator.
 	FpsLastSec int
 
-	//	This TimingStats instance combines all the individual FrameFoo fields to track over time (both average and maximum) total cost per frame.
+	//	This TimingStats instance combines all the individual FrameFoo fields
+	//	to track over time (both average and maximum) total cost per frame.
 	Frame TimingStats
 
 	//	"Rendering" consists of a CPU-side and a GPU-side cost.
-	//	This TimingStats instance combines both to track over time (both average and maximum) total rendering cost per frame.
+	//	This TimingStats instance combines both to track over time
+	//	(both average and maximum) total rendering cost per frame.
 	FrameRenderBoth TimingStats
 
-	//	The CPU-side cost of rendering comprises geometry culling, and batching draw calls to the GPU.
-	//	This TimingStats instance tracks over time (both average and maximum) CPU-side rendering cost per frame.
+	//	The CPU-side cost of rendering comprises sending pre-batched
+	//	rendering commands (prepared by the "prep" stage) to the GPU.
+	//	This TimingStats instance tracks over time (both average
+	//	and maximum) CPU-side rendering cost per frame.
 	FrameRenderCpu TimingStats
 
-	//	The GPU-side cost of rendering comprises execution of all draw calls sent by the CPU-side, plus waiting for V-sync if enabled.
-	//	This TimingStats instance tracks over time (both average and maximum) GPU-side rendering cost per frame.
+	//	The GPU-side cost of rendering comprises execution of all draw calls
+	//	sent by the CPU-side, plus waiting for V-sync if enabled.
+	//	This TimingStats instance tracks over time (both average
+	//	and maximum) GPU-side rendering cost per frame.
 	FrameRenderGpu TimingStats
 
-	//	"Core code" comprises non-rendering go:ngine logic executed every frame.
-	//	This TimingStats instance tracks over time (both average and maximum) "core code" cost per frame.
-	FrameCoreCode TimingStats
+	//	"Prep code" comprises all go:ngine logic executed every frame to prepare
+	//	a batch of rendering commands for the next (not current) frame (including culling).
+	//	This TimingStats instance tracks over time (both average and maximum) "prep code" cost per frame.
+	FramePrepCode TimingStats
 
-	//	"User code" comprises user-specific logic executed every frame in your own EngineLoop.OnLoop() callback.
-	//	This TimingStats instance tracks over time (both average and maximum) "user code" cost per frame.
-	FrameUserCode TimingStats
+	//	"App code" comprises (mostly user-specific) logic executed every frame such as
+	//	that in your own EngineLoop.OnLoop() callback. (Technically all code that isn't
+	//	rendering or render-prep and that may freely modify dynamic Cameras, Nodes etc.)
+	//	This TimingStats instance tracks over time (both average and maximum) "app code" cost per frame.
+	FrameAppCode TimingStats
 
 	//	During the Loop, the Go Garbge Collector is invoked at least and at most once per second.
 	//	

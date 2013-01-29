@@ -188,6 +188,9 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogErr">func (me *EngineDiag) LogErr(err error)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogIfGlErr">func (me *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{})</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogMeshes">func (me *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{})</a></dd>
 				
 					
@@ -1324,7 +1327,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3093:3128#L110">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3057:3092#L107">SyncUpdates</a></h3>
 				<pre>func (me *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -1333,7 +1336,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 		
 			
 			
-			<h2 id="EngineDiag">type <a href="/target/ng-diag.go?s=440:535#L15">EngineDiag</a></h2>
+			<h2 id="EngineDiag">type <a href="/target/ng-diag.go?s=473:568#L16">EngineDiag</a></h2>
 			<pre>type EngineDiag struct {
     LogCategories       EngineDiagLogCategory
     LogErrorsDuringLoop bool
@@ -1350,35 +1353,42 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 
 			
 				
-				<h3 id="EngineDiag.Log">func (*EngineDiag) <a href="/target/ng-diag.go?s=537:625#L20">Log</a></h3>
+				<h3 id="EngineDiag.Log">func (*EngineDiag) <a href="/target/ng-diag.go?s=570:658#L21">Log</a></h3>
 				<pre>func (me *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=702:741#L26">LogErr</a></h3>
+				<h3 id="EngineDiag.LogErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=735:774#L27">LogErr</a></h3>
 				<pre>func (me *EngineDiag) LogErr(err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogMeshes">func (*EngineDiag) <a href="/target/ng-diag.go?s=766:833#L30">LogMeshes</a></h3>
+				<h3 id="EngineDiag.LogIfGlErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=799:867#L31">LogIfGlErr</a></h3>
+				<pre>func (me *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{})</pre>
+				
+				
+				
+			
+				
+				<h3 id="EngineDiag.LogMeshes">func (*EngineDiag) <a href="/target/ng-diag.go?s=908:975#L35">LogMeshes</a></h3>
 				<pre>func (me *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogMisc">func (*EngineDiag) <a href="/target/ng-diag.go?s=879:944#L34">LogMisc</a></h3>
+				<h3 id="EngineDiag.LogMisc">func (*EngineDiag) <a href="/target/ng-diag.go?s=1021:1086#L39">LogMisc</a></h3>
 				<pre>func (me *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogShaders">func (*EngineDiag) <a href="/target/ng-diag.go?s=991:1059#L38">LogShaders</a></h3>
+				<h3 id="EngineDiag.LogShaders">func (*EngineDiag) <a href="/target/ng-diag.go?s=1133:1201#L43">LogShaders</a></h3>
 				<pre>func (me *EngineDiag) LogShaders(fmt string, fmtArgs ...interface{})</pre>
 				
 				
@@ -1387,7 +1397,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 		
 			
 			
-			<h2 id="EngineDiagLogCategory">type <a href="/target/ng-diag.go?s=69:99#L1">EngineDiagLogCategory</a></h2>
+			<h2 id="EngineDiagLogCategory">type <a href="/target/ng-diag.go?s=102:132#L1">EngineDiagLogCategory</a></h2>
 			<pre>type EngineDiagLogCategory int</pre>
 			
 
@@ -1470,7 +1480,7 @@ Initiates a rendering loop. This method returns only when the loop is stopped fo
 				
 			
 				
-				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=3432:3460#L97">Stop</a></h3>
+				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=3413:3441#L96">Stop</a></h3>
 				<pre>func (me *EngineLoop) Stop()</pre>
 				<p>
 Stops the currently running EngineLoop.Loop().
@@ -1480,7 +1490,7 @@ Stops the currently running EngineLoop.Loop().
 				
 			
 				
-				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=3575:3611#L102">Time</a></h3>
+				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=3556:3592#L101">Time</a></h3>
 				<pre>func (me *EngineLoop) Time() float64</pre>
 				<p>
 Returns the number of seconds expired ever since EngineLoop.Loop() was last called.
@@ -1492,7 +1502,7 @@ Returns the number of seconds expired ever since EngineLoop.Loop() was last call
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=242:839#L1">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=242:882#L1">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     <span class="comment">//	The base directory path for asset file paths.</span>
     AssetRootDirPath string
@@ -1511,6 +1521,10 @@ Returns the number of seconds expired ever since EngineLoop.Loop() was last call
         <span class="comment">//	Name for the default render technique of a Camera3D,</span>
         <span class="comment">//	defaults to the currently only implementation &#34;rt_unlit3&#34;.</span>
         DefaultTechnique3D string
+
+        PostFx struct {
+            TextureRect bool
+        }
     }
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -1528,7 +1542,7 @@ Various &#34;global&#34; (rather than use-case-specific) options.
 
 			
 				
-				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=914:1042#L26">NewEngineOptions</a></h3>
+				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=957:1085#L30">NewEngineOptions</a></h3>
 				<pre>func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions)</pre>
 				<p>
 Allocates, initializes and returns a new core.EngineOptions instance.
@@ -1541,33 +1555,43 @@ Allocates, initializes and returns a new core.EngineOptions instance.
 		
 			
 			
-			<h2 id="EngineStats">type <a href="/target/ng-stats.go?s=299:2364#L4">EngineStats</a></h2>
+			<h2 id="EngineStats">type <a href="/target/ng-stats.go?s=299:2649#L4">EngineStats</a></h2>
 			<pre>type EngineStats struct {
-    <span class="comment">//	Gives the total number of frames rendered during the &#34;previous&#34; (not the current) second. Good enough for just a simple-minded FPS indicator.</span>
+    <span class="comment">//	Gives the total number of frames rendered during the &#34;previous&#34;</span>
+    <span class="comment">//	(not the current) second. Good enough for just a simple-minded FPS indicator.</span>
     FpsLastSec int
 
-    <span class="comment">//	This TimingStats instance combines all the individual FrameFoo fields to track over time (both average and maximum) total cost per frame.</span>
+    <span class="comment">//	This TimingStats instance combines all the individual FrameFoo fields</span>
+    <span class="comment">//	to track over time (both average and maximum) total cost per frame.</span>
     Frame TimingStats
 
     <span class="comment">//	&#34;Rendering&#34; consists of a CPU-side and a GPU-side cost.</span>
-    <span class="comment">//	This TimingStats instance combines both to track over time (both average and maximum) total rendering cost per frame.</span>
+    <span class="comment">//	This TimingStats instance combines both to track over time</span>
+    <span class="comment">//	(both average and maximum) total rendering cost per frame.</span>
     FrameRenderBoth TimingStats
 
-    <span class="comment">//	The CPU-side cost of rendering comprises geometry culling, and batching draw calls to the GPU.</span>
-    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) CPU-side rendering cost per frame.</span>
+    <span class="comment">//	The CPU-side cost of rendering comprises sending pre-batched</span>
+    <span class="comment">//	rendering commands (prepared by the &#34;prep&#34; stage) to the GPU.</span>
+    <span class="comment">//	This TimingStats instance tracks over time (both average</span>
+    <span class="comment">//	and maximum) CPU-side rendering cost per frame.</span>
     FrameRenderCpu TimingStats
 
-    <span class="comment">//	The GPU-side cost of rendering comprises execution of all draw calls sent by the CPU-side, plus waiting for V-sync if enabled.</span>
-    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) GPU-side rendering cost per frame.</span>
+    <span class="comment">//	The GPU-side cost of rendering comprises execution of all draw calls</span>
+    <span class="comment">//	sent by the CPU-side, plus waiting for V-sync if enabled.</span>
+    <span class="comment">//	This TimingStats instance tracks over time (both average</span>
+    <span class="comment">//	and maximum) GPU-side rendering cost per frame.</span>
     FrameRenderGpu TimingStats
 
-    <span class="comment">//	&#34;Core code&#34; comprises non-rendering go:ngine logic executed every frame.</span>
-    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;core code&#34; cost per frame.</span>
-    FrameCoreCode TimingStats
+    <span class="comment">//	&#34;Prep code&#34; comprises all go:ngine logic executed every frame to prepare</span>
+    <span class="comment">//	a batch of rendering commands for the next (not current) frame (including culling).</span>
+    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;prep code&#34; cost per frame.</span>
+    FramePrepCode TimingStats
 
-    <span class="comment">//	&#34;User code&#34; comprises user-specific logic executed every frame in your own EngineLoop.OnLoop() callback.</span>
-    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;user code&#34; cost per frame.</span>
-    FrameUserCode TimingStats
+    <span class="comment">//	&#34;App code&#34; comprises (mostly user-specific) logic executed every frame such as</span>
+    <span class="comment">//	that in your own EngineLoop.OnLoop() callback. (Technically all code that isn&#39;t</span>
+    <span class="comment">//	rendering or render-prep and that may freely modify dynamic Cameras, Nodes etc.)</span>
+    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;app code&#34; cost per frame.</span>
+    FrameAppCode TimingStats
 
     <span class="comment">//	During the Loop, the Go Garbge Collector is invoked at least and at most once per second.</span>
     <span class="comment">//	</span>
@@ -1600,7 +1624,7 @@ Tracks various go:ngine performance indicators over time.
 
 			
 				
-				<h3 id="EngineStats.AverageFps">func (*EngineStats) <a href="/target/ng-stats.go?s=2452:2495#L44">AverageFps</a></h3>
+				<h3 id="EngineStats.AverageFps">func (*EngineStats) <a href="/target/ng-stats.go?s=2737:2780#L54">AverageFps</a></h3>
 				<pre>func (me *EngineStats) AverageFps() float64</pre>
 				<p>
 Returns the average number of frames-per-second since Loop.Loop() was last called.
@@ -1610,7 +1634,7 @@ Returns the average number of frames-per-second since Loop.Loop() was last calle
 				
 			
 				
-				<h3 id="EngineStats.TotalFrames">func (*EngineStats) <a href="/target/ng-stats.go?s=2620:2664#L52">TotalFrames</a></h3>
+				<h3 id="EngineStats.TotalFrames">func (*EngineStats) <a href="/target/ng-stats.go?s=2905:2949#L62">TotalFrames</a></h3>
 				<pre>func (me *EngineStats) TotalFrames() float64</pre>
 				
 				
@@ -2735,7 +2759,7 @@ Returns the default Model (with ID &#34;&#34;) for the parent Mesh.
 		
 			
 			
-			<h2 id="Node">type <a href="/target/node.go?s=143:803#L1">Node</a></h2>
+			<h2 id="Node">type <a href="/target/node.go?s=143:877#L1">Node</a></h2>
 			<pre>type Node struct {
 
     <span class="comment">//	If true, this Node is ignored by the rendering runtime.</span>
@@ -2763,49 +2787,49 @@ Declares a point of interest in a Scene.
 
 			
 				
-				<h3 id="Node.EffectiveMaterial">func (*Node) <a href="/target/node.go?s=1172:1219#L34">EffectiveMaterial</a></h3>
+				<h3 id="Node.EffectiveMaterial">func (*Node) <a href="/target/node.go?s=1246:1293#L41">EffectiveMaterial</a></h3>
 				<pre>func (me *Node) EffectiveMaterial() *FxMaterial</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MatID">func (*Node) <a href="/target/node.go?s=1432:1462#L46">MatID</a></h3>
+				<h3 id="Node.MatID">func (*Node) <a href="/target/node.go?s=1506:1536#L53">MatID</a></h3>
 				<pre>func (me *Node) MatID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MeshID">func (*Node) <a href="/target/node.go?s=1485:1516#L50">MeshID</a></h3>
+				<h3 id="Node.MeshID">func (*Node) <a href="/target/node.go?s=1559:1590#L57">MeshID</a></h3>
 				<pre>func (me *Node) MeshID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.ModelID">func (*Node) <a href="/target/node.go?s=1540:1572#L54">ModelID</a></h3>
+				<h3 id="Node.ModelID">func (*Node) <a href="/target/node.go?s=1614:1646#L61">ModelID</a></h3>
 				<pre>func (me *Node) ModelID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=1597:1638#L58">SetMatID</a></h3>
+				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=1671:1712#L65">SetMatID</a></h3>
 				<pre>func (me *Node) SetMatID(newMatID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=1735:1789#L64">SetMeshModelID</a></h3>
+				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=1809:1863#L71">SetMeshModelID</a></h3>
 				<pre>func (me *Node) SetMeshModelID(meshID, modelID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2093:2133#L78">Walk</a></h3>
+				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2167:2207#L85">Walk</a></h3>
 				<pre>func (me *Node) Walk(onNode func(*Node))</pre>
 				
 				
@@ -3280,13 +3304,13 @@ Returns whether this call has activated (true) or deactivated (false) the specif
 		
 			
 			
-			<h2 id="RenderCanvas">type <a href="/target/render-canvas.go?s=206:705#L5">RenderCanvas</a></h2>
+			<h2 id="RenderCanvas">type <a href="/target/render-canvas.go?s=206:731#L5">RenderCanvas</a></h2>
 			<pre>type RenderCanvas struct {
     <span class="comment">//	This should be an non-negative integer, it&#39;s a float64 just to avoid a</span>
     <span class="comment">//	type conversion. How often this RenderCanvas is included in rendering:</span>
     <span class="comment">//	1 = every frame (this is the default value)</span>
     <span class="comment">//	2 = every 2nd frame</span>
-    <span class="comment">//	8 = every 8th frame</span>
+    <span class="comment">//	3, 5, 8 etc. = every 3rd, 5th, 8th etc. frame</span>
     <span class="comment">//	0 = this RenderCanvas is disabled for rendering</span>
     EveryNthFrame float64
 
@@ -3308,7 +3332,7 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvas.Main">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1514:1549#L40">Main</a></h3>
+				<h3 id="RenderCanvas.Main">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1577:1612#L40">Main</a></h3>
 				<pre>func (me *RenderCanvas) Main() bool</pre>
 				<p>
 Returns whether me is the primary / &#34;main&#34; render canvas (if multiple render canvases are present).
@@ -3319,7 +3343,7 @@ The &#34;main&#34; render canvas is the one whose output image is blitted to the
 				
 			
 				
-				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2073:2105#L57">Remove</a></h3>
+				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2136:2168#L57">Remove</a></h3>
 				<pre>func (me *RenderCanvas) Remove()</pre>
 				<p>
 Removes me from Core.Rendering.Canvases and deletes its associated GPU resources.
@@ -3330,7 +3354,7 @@ This renders me invalid for further use.
 				
 			
 				
-				<h3 id="RenderCanvas.SetMain">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2678:2711#L74">SetMain</a></h3>
+				<h3 id="RenderCanvas.SetMain">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2741:2774#L74">SetMain</a></h3>
 				<pre>func (me *RenderCanvas) SetMain()</pre>
 				<p>
 Declares me the primary / &#34;main&#34; render canvas (if multiple render canvases are present).
@@ -3341,7 +3365,7 @@ The &#34;main&#34; render canvas is the one whose output image is blitted to the
 				
 			
 				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3098:3167#L85">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3161:3230#L85">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
 				<p>
 Sets the 2 dimensions of this render canvas.
@@ -3355,7 +3379,7 @@ Otherwise, width and height are absolute pixel dimensions.
 		
 			
 			
-			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3400:3435#L94">RenderCanvases</a></h2>
+			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3463:3498#L94">RenderCanvases</a></h2>
 			<pre>type RenderCanvases []*RenderCanvas</pre>
 			<p>
 Only used for Core.Rendering.Canvases.
@@ -3372,7 +3396,7 @@ Only used for Core.Rendering.Canvases.
 
 			
 				
-				<h3 id="RenderCanvases.AddNew">func (*RenderCanvases) <a href="/target/render-canvas.go?s=3663:3765#L105">AddNew</a></h3>
+				<h3 id="RenderCanvases.AddNew">func (*RenderCanvases) <a href="/target/render-canvas.go?s=3726:3828#L105">AddNew</a></h3>
 				<pre>func (me *RenderCanvases) AddNew(isMain bool, relative bool, width, height float64) (rc *RenderCanvas)</pre>
 				<p>
 Adds a new RenderCanvas and returns it.
@@ -3383,7 +3407,7 @@ The relative, width and height values are passed to a call to SetSize().
 				
 			
 				
-				<h3 id="RenderCanvases.Main">func (RenderCanvases) <a href="/target/render-canvas.go?s=4215:4267#L119">Main</a></h3>
+				<h3 id="RenderCanvases.Main">func (RenderCanvases) <a href="/target/render-canvas.go?s=4278:4330#L119">Main</a></h3>
 				<pre>func (me RenderCanvases) Main() (main *RenderCanvas)</pre>
 				<p>
 Returns whatever RenderCanvas in me is currently declared the primary / &#34;main&#34; render canvas (if multiple render canvases are present).
@@ -3394,7 +3418,7 @@ The &#34;main&#34; render canvas is the one whose output image is blitted to the
 				
 			
 				
-				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4362:4412#L129">Walk</a></h3>
+				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4425:4475#L129">Walk</a></h3>
 				<pre>func (me RenderCanvases) Walk(onCam func(*Camera))</pre>
 				
 				
@@ -3434,7 +3458,7 @@ Initializes and returns a new Scene with default parameters.
 		
 			
 			
-			<h2 id="TimingStats">type <a href="/target/ng-stats.go?s=2769:2941#L57">TimingStats</a></h2>
+			<h2 id="TimingStats">type <a href="/target/ng-stats.go?s=3054:3226#L67">TimingStats</a></h2>
 			<pre>type TimingStats struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -3453,7 +3477,7 @@ Helps track average and maximum cost for a variety of performance indicators.
 
 			
 				
-				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/ng-stats.go?s=3010:3050#L63">Average</a></h3>
+				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/ng-stats.go?s=3295:3335#L73">Average</a></h3>
 				<pre>func (me *TimingStats) Average() float64</pre>
 				<p>
 Returns the average cost tracked by this performance indicator.
@@ -3463,7 +3487,7 @@ Returns the average cost tracked by this performance indicator.
 				
 			
 				
-				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/ng-stats.go?s=3642:3678#L86">Max</a></h3>
+				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/ng-stats.go?s=3927:3963#L96">Max</a></h3>
 				<pre>func (me *TimingStats) Max() float64</pre>
 				<p>
 Returns the maximum cost tracked by this performance indicator.
