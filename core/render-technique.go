@@ -23,9 +23,6 @@ func initTechniques() {
 type renderTechnique interface {
 	initMeshBuffer(*MeshBuffer) []*ugl.VertexAttribPointer
 	name() string
-	onPreRender()
-	onRenderMesh()
-	onRenderMeshModel()
 	onRenderNode()
 }
 
@@ -40,15 +37,6 @@ func (me *baseTechnique) initMeshBuffer(meshBuffer *MeshBuffer) (atts []*ugl.Ver
 
 func (me *baseTechnique) name() string {
 	return me.prog.Name
-}
-
-func (me *baseTechnique) onPreRender() {
-}
-
-func (me *baseTechnique) onRenderMesh() {
-}
-
-func (me *baseTechnique) onRenderMeshModel() {
 }
 
 func (me *baseTechnique) onRenderNode() {

@@ -16,11 +16,15 @@ const (
 )
 
 var (
-	Diag EngineDiagnostics
+	Diag = EngineDiagnostics{
+		LogCategories:       LogCatAll,
+		LogErrorsDuringLoop: true,
+	}
 )
 
 type EngineDiagnostics struct {
-	LogCategories LogCategory
+	LogCategories       LogCategory
+	LogErrorsDuringLoop bool
 }
 
 func (me *EngineDiagnostics) Log(cat LogCategory, fmt string, fmtArgs ...interface{}) {

@@ -62,7 +62,7 @@ func (me *EngineLoop) Loop() {
 			Stats.FrameRenderCpu.begin()
 			Core.onRender()
 			Stats.FrameRenderCpu.end()
-			//	STEP 2. While those are sent (and executed GPU-side), do other non-rendering CPU-side stuff
+			//	STEP 2. While those are processed GPU-side, do other non-rendering CPU-side stuff
 			Stats.fpsCounter++
 			Stats.fpsAll++
 			me.TickLast = me.TickNow

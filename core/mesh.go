@@ -122,15 +122,6 @@ func (me *Mesh) Loaded() bool {
 	return me.raw != nil
 }
 
-func (me *Mesh) render() {
-	if curMeshBuf != me.meshBuffer {
-		me.meshBuffer.use()
-	}
-	curTechnique.onRenderMesh()
-	gl.DrawElementsBaseVertex(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Offset(nil, uintptr(me.meshBufOffsetIndices)), gl.Int(me.meshBufOffsetBaseIndex))
-	// gl.DrawElements(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Pointer(nil))
-}
-
 func (me *Mesh) Unload() {
 	me.raw = nil
 }

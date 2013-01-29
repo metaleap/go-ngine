@@ -9,19 +9,18 @@ var (
 	//	The heart and brain of go:ngine --- a container for all runtime resources and responsible for rendering.
 	Core EngineCore
 
-	asyncResources         = map[asyncResource]bool{}
-	curMeshBuf             *MeshBuffer
-	curCanvIndex, curIndex int
-	curMatKey, curStr      string
-	curCam                 *Camera
-	curCanvas              *RenderCanvas
-	curMat                 *FxMaterial
-	curMesh                *Mesh
-	curModel               *Model
-	curNode                *Node
-	curProg, tmpProg       *ugl.Program
-	curTechnique           renderTechnique
-	curScene               *Scene
+	asyncResources   = map[asyncResource]bool{}
+	curMeshBuf       *MeshBuffer
+	curMatKey        string
+	curCam           *Camera
+	curCanvas        *RenderCanvas
+	curMat           *FxMaterial
+	curMesh          *Mesh
+	curModel         *Model
+	curNode          *Node
+	curProg, tmpProg *ugl.Program
+	curTechnique     renderTechnique
+	curScene         *Scene
 )
 
 //	Consider EngineCore a "Singleton" type, only valid use is the core.Core global variable.
@@ -107,6 +106,9 @@ func (me *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 }
 
 func (me *EngineCore) onSec() {
+	if Diag.LogErrorsDuringLoop {
+		ugl.LogLastError("onSec")
+	}
 	for r, d := range asyncResources {
 		if d {
 			delete(asyncResources, r)

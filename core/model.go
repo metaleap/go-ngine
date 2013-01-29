@@ -41,11 +41,6 @@ func (me *Model) MatID() string {
 	return me.matID
 }
 
-func (me *Model) render() {
-	curTechnique.onRenderMeshModel()
-	me.mesh.render()
-}
-
 func (me *Model) SetMatID(newMatID string) {
 	if newMatID != me.matID {
 		me.mat, me.matID = Core.Libs.Materials[newMatID], newMatID

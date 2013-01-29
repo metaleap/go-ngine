@@ -1,6 +1,8 @@
 package core
 
 import (
+	"math"
+
 	gl "github.com/chsc/gogl/gl42"
 	ugl "github.com/go3d/go-glutil"
 )
@@ -71,6 +73,10 @@ func (me *RenderCanvas) Remove() {
 	}
 	me.dispose()
 	mainCanvas = Core.Rendering.Canvases.Main()
+}
+
+func (me *RenderCanvas) renderThisFrame() bool {
+	return (me.EveryNthFrame == 1) || ((me.EveryNthFrame > 1) && (math.Mod(Stats.fpsAll, me.EveryNthFrame) == 0))
 }
 
 //	Declares me the primary / "main" render canvas (if multiple render canvases are present).

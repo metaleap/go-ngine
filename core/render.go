@@ -1,22 +1,18 @@
 package core
 
 import (
-	"math"
-
 	gl "github.com/chsc/gogl/gl42"
-	ugl "github.com/go3d/go-glutil"
 )
 
 func (me *EngineCore) onRender() {
 	me.Rendering.Samplers.FullFilteringRepeat.Bind(0)
-	for curCanvIndex, curCanvas = range me.Rendering.Canvases {
-		if (curCanvas.EveryNthFrame == 1) || ((curCanvas.EveryNthFrame > 1) && (math.Mod(Stats.fpsAll, curCanvas.EveryNthFrame) == 0)) {
+	for _, curCanvas = range me.Rendering.Canvases {
+		if curCanvas.renderThisFrame() {
 			curCanvas.render()
 		}
 	}
 	me.Rendering.Samplers.NoFilteringClamp.Bind(0)
 	me.Rendering.PostFx.render()
-	ugl.LogLastError("onrender")
 }
 
 func (me *RenderCanvas) render() {
@@ -37,7 +33,6 @@ func (me *Camera) render() {
 		//me.glMatCamProj.Load(&me.matCamProj)
 		//gl.UniformMatrix4fv(curProg.UnifLocs["uMatCamProj"], 1, gl.FALSE, &me.glMatCamProj[0])
 		// gl.UniformMatrix4fv(curProg.UnifLocs["uMatProj"], 1, gl.FALSE, &me.glmatProj[0])
-		me.technique.onPreRender()
 		gl.Scissor(me.Rendering.ViewPort.glVpX, me.Rendering.ViewPort.glVpY, me.Rendering.ViewPort.glVpW, me.Rendering.ViewPort.glVpH)
 		gl.Viewport(me.Rendering.ViewPort.glVpX, me.Rendering.ViewPort.glVpY, me.Rendering.ViewPort.glVpW, me.Rendering.ViewPort.glVpH)
 		if me.Rendering.States.ClearColor[3] > 0 {
@@ -65,4 +60,34 @@ func (me *Node) render() {
 			me.curSubNode.render()
 		}
 	}
+}
+
+func (me *Model) render() {
+	me.mesh.render()
+}
+
+func (me *Mesh) render() {
+	if curMeshBuf != me.meshBuffer {
+		me.meshBuffer.use()
+	}
+	gl.DrawElementsBaseVertex(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Offset(nil, uintptr(me.meshBufOffsetIndices)), gl.Int(me.meshBufOffsetBaseIndex))
+	// gl.DrawElements(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Pointer(nil))
+}
+
+func (me *PostFx) render() {
+	curProg, curMat, curTechnique, curMatKey = nil, nil, nil, ""
+	Core.Rendering.states.DisableDepthTest()
+	Core.Rendering.states.DisableFaceCulling()
+	//Core.Rendering.Samplers.NoFilteringClamp.Bind(0)
+	gl.BindFramebuffer(gl.FRAMEBUFFER, 0)
+	gl.Viewport(0, 0, me.glWidth, me.glHeight)
+	// ugl.LogLastError("pre-clrscr")
+	gl.Clear(gl.COLOR_BUFFER_BIT)
+	// ugl.LogLastError("post-clrscr")
+	me.glVao.Bind()
+	me.prog.Use()
+	mainCanvas.frameBuf.BindTexture(0)
+	gl.Uniform1i(me.prog.UnifLocs["uTexRendering"], 0)
+	gl.DrawArrays(gl.TRIANGLES, 0, 3)
+	me.glVao.Unbind()
 }

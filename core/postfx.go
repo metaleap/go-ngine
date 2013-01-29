@@ -84,24 +84,6 @@ func (me *PostFx) setProg(progName string) {
 	me.prog.SetUnifLocations("uTexRendering")
 }
 
-func (me *PostFx) render() {
-	curProg, curMat, curTechnique, curMatKey = nil, nil, nil, ""
-	Core.Rendering.states.DisableDepthTest()
-	Core.Rendering.states.DisableFaceCulling()
-	//Core.Rendering.Samplers.NoFilteringClamp.Bind(0)
-	gl.BindFramebuffer(gl.FRAMEBUFFER, 0)
-	gl.Viewport(0, 0, me.glWidth, me.glHeight)
-	// ugl.LogLastError("pre-clrscr")
-	gl.Clear(gl.COLOR_BUFFER_BIT)
-	// ugl.LogLastError("post-clrscr")
-	me.glVao.Bind()
-	me.prog.Use()
-	mainCanvas.frameBuf.BindTexture(0)
-	gl.Uniform1i(me.prog.UnifLocs["uTexRendering"], 0)
-	gl.DrawArrays(gl.TRIANGLES, 0, 3)
-	me.glVao.Unbind()
-}
-
 //	Activates or deactivates the specified post-processing full-screen effect.
 //	After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), be sure to call ApplyEffects() once.
 //	Returns whether this call has activated (true) or deactivated (false) the specified effect.

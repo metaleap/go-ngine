@@ -6,10 +6,6 @@ import (
 	ugl "github.com/go3d/go-glutil"
 )
 
-func init() {
-	Diag.LogCategories = LogCatAll
-}
-
 //	Call this to "un-init" go:ngine and to release any and all GPU or RAM resources still allocated.
 func Dispose() {
 	Core.dispose()
