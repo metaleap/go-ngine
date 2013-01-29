@@ -12,7 +12,7 @@
 		<div class="container">
 		<h1>Package github.com/go3d/go-ngine/_sampleprogs/_sharedcode</h1>
 		<div id="nav"></div>
-		2013/01/29 19:26:09 newDirectory(/target): not a package directory
+		2013/01/30 02:55:07 newDirectory(/target): not a package directory
 <!--
 	Copyright 2009 The Go Authors. All rights reserved.
 	Use of this source code is governed by a BSD-style
@@ -81,6 +81,12 @@ Some common base functionality shared by all the go:ngine example apps in _sampl
 				<dd><a href="#CheckToggleKeys">func CheckToggleKeys()</a></dd>
 			
 				
+				<dd><a href="#HandleCamCtlKeys">func HandleCamCtlKeys()</a></dd>
+			
+				
+				<dd><a href="#HandleToggleKeys">func HandleToggleKeys()</a></dd>
+			
+				
 				<dd><a href="#OnSec">func OnSec()</a></dd>
 			
 				
@@ -104,6 +110,17 @@ Some common base functionality shared by all the go:ngine example apps in _sampl
 					<dd>&nbsp; &nbsp; <a href="#Gui2D.Setup">func (me *Gui2D) Setup() (err error)</a></dd>
 				
 			
+				
+				<dd><a href="#RearMirror">type RearMirror</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RearMirror.OnApp">func (me *RearMirror) OnApp()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RearMirror.Setup">func (me *RearMirror) Setup()</a></dd>
+				
+			
 			
 		</dl>
 
@@ -118,7 +135,11 @@ Some common base functionality shared by all the go:ngine example apps in _sampl
 			
 				<a href="/target/gui2d.go">gui2d.go</a>
 			
+				<a href="/target/rear-mirror.go">rear-mirror.go</a>
+			
 				<a href="/target/samplescenes.go">samplescenes.go</a>
+			
+				<a href="/target/user-input.go">user-input.go</a>
 			
 			</span>
 			</p>
@@ -153,11 +174,25 @@ Some common base functionality shared by all the go:ngine example apps in _sampl
 )</pre>
 				
 			
+				<pre>var (
+    Keys struct {
+        Pressed map[int]bool
+        Toggled map[int]bool
+
+        CheckFor struct {
+            Pressed []int
+            Toggled []int
+        }
+        <span class="comment">// contains filtered or unexported fields</span>
+    }
+)</pre>
+				
+			
 		
 		
 			
 			
-			<h2 id="AddColorMaterials">func <a href="/target/samplescenes.go?s=1586:1640#L44">AddColorMaterials</a></h2>
+			<h2 id="AddColorMaterials">func <a href="/target/samplescenes.go?s=1556:1610#L43">AddColorMaterials</a></h2>
 			<pre>func AddColorMaterials(idsColors map[string][]float64)</pre>
 			<p>
 Sets up plain-color effects/materials with the specified IDs.
@@ -172,7 +207,7 @@ adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffe
 		
 			
 			
-			<h2 id="AddScene">func <a href="/target/samplescenes.go?s=1052:1091#L32">AddScene</a></h2>
+			<h2 id="AddScene">func <a href="/target/samplescenes.go?s=1022:1061#L31">AddScene</a></h2>
 			<pre>func AddScene(id string) (me *ng.Scene)</pre>
 			<p>
 Creates a new core.Scene, adds it to the Scenes library under
@@ -183,7 +218,7 @@ the specified ID, and returns it.
 		
 			
 			
-			<h2 id="AddTextureMaterials">func <a href="/target/samplescenes.go?s=2416:2467#L59">AddTextureMaterials</a></h2>
+			<h2 id="AddTextureMaterials">func <a href="/target/samplescenes.go?s=2386:2437#L58">AddTextureMaterials</a></h2>
 			<pre>func AddTextureMaterials(idsUrls map[string]string)</pre>
 			<p>
 Sets up textures and associated effects/materials with the specified IDs and image URLs.
@@ -200,7 +235,7 @@ adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffe
 		
 			
 			
-			<h2 id="AssetRootDirPath">func <a href="/target/samplescenes.go?s=3164:3194#L81">AssetRootDirPath</a></h2>
+			<h2 id="AssetRootDirPath">func <a href="/target/samplescenes.go?s=3134:3164#L80">AssetRootDirPath</a></h2>
 			<pre>func AssetRootDirPath() string</pre>
 			<p>
 Returns the &#34;asset root directory&#34; path for go:ngine, in this case: $GOPATH/src/github.com/go3d/go-ngine/_sampleprogs/_sharedassets
@@ -210,7 +245,7 @@ Returns the &#34;asset root directory&#34; path for go:ngine, in this case: $GOP
 		
 			
 			
-			<h2 id="CheckCamCtlKeys">func <a href="/target/samplescenes.go?s=3401:3423#L86">CheckCamCtlKeys</a></h2>
+			<h2 id="CheckCamCtlKeys">func <a href="/target/user-input.go?s=731:753#L23">CheckCamCtlKeys</a></h2>
 			<pre>func CheckCamCtlKeys()</pre>
 			<p>
 Called every frame (by the parent example app) to check the state for keys controlling CamCtl to move or rotate Cam.
@@ -220,7 +255,7 @@ Called every frame (by the parent example app) to check the state for keys contr
 		
 			
 			
-			<h2 id="CheckToggleKeys">func <a href="/target/samplescenes.go?s=4478:4500#L130">CheckToggleKeys</a></h2>
+			<h2 id="CheckToggleKeys">func <a href="/target/user-input.go?s=971:993#L30">CheckToggleKeys</a></h2>
 			<pre>func CheckToggleKeys()</pre>
 			<p>
 Called every frame (by the parent example app) to check &#34;toggle keys&#34; that toggle certain options.
@@ -230,7 +265,21 @@ Called every frame (by the parent example app) to check &#34;toggle keys&#34; th
 		
 			
 			
-			<h2 id="OnSec">func <a href="/target/samplescenes.go?s=6840:6852#L194">OnSec</a></h2>
+			<h2 id="HandleCamCtlKeys">func <a href="/target/user-input.go?s=1109:1132#L36">HandleCamCtlKeys</a></h2>
+			<pre>func HandleCamCtlKeys()</pre>
+			
+			
+		
+			
+			
+			<h2 id="HandleToggleKeys">func <a href="/target/user-input.go?s=2032:2055#L78">HandleToggleKeys</a></h2>
+			<pre>func HandleToggleKeys()</pre>
+			
+			
+		
+			
+			
+			<h2 id="OnSec">func <a href="/target/samplescenes.go?s=5455:5467#L137">OnSec</a></h2>
 			<pre>func OnSec()</pre>
 			<p>
 Called every second by go:ngine&#39;s *core* package. Refreshes the window title and doing so, every 3 seconds shows the next one entry in KeyHints.
@@ -240,14 +289,14 @@ Called every second by go:ngine&#39;s *core* package. Refreshes the window title
 		
 			
 			
-			<h2 id="PauseResume">func <a href="/target/samplescenes.go?s=4737:4755#L142">PauseResume</a></h2>
+			<h2 id="PauseResume">func <a href="/target/samplescenes.go?s=3251:3269#L84">PauseResume</a></h2>
 			<pre>func PauseResume()</pre>
 			
 			
 		
 			
 			
-			<h2 id="PrintPostLoopSummary">func <a href="/target/samplescenes.go?s=5127:5154#L155">PrintPostLoopSummary</a></h2>
+			<h2 id="PrintPostLoopSummary">func <a href="/target/samplescenes.go?s=3641:3668#L97">PrintPostLoopSummary</a></h2>
 			<pre>func PrintPostLoopSummary()</pre>
 			<p>
 Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent example app exits.
@@ -257,7 +306,7 @@ Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent 
 		
 			
 			
-			<h2 id="SamplesMainFunc">func <a href="/target/samplescenes.go?s=6137:6177#L172">SamplesMainFunc</a></h2>
+			<h2 id="SamplesMainFunc">func <a href="/target/samplescenes.go?s=4678:4718#L114">SamplesMainFunc</a></h2>
 			<pre>func SamplesMainFunc(assetLoader func())</pre>
 			<p>
 The *func main()* implementation for the parent example app. Initializes go:ngine, sets Cam and CamCtl, calls the specified assetLoader function, then enters The Loop.
@@ -267,7 +316,7 @@ The *func main()* implementation for the parent example app. Initializes go:ngin
 		
 			
 			
-			<h2 id="WindowTitle">func <a href="/target/samplescenes.go?s=7085:7110#L205">WindowTitle</a></h2>
+			<h2 id="WindowTitle">func <a href="/target/samplescenes.go?s=5700:5725#L148">WindowTitle</a></h2>
 			<pre>func WindowTitle() string</pre>
 			<p>
 Returns the window title to be set by OnSec().
@@ -296,6 +345,39 @@ Returns the window title to be set by OnSec().
 				
 				<h3 id="Gui2D.Setup">func (*Gui2D) <a href="/target/gui2d.go?s=152:188#L2">Setup</a></h3>
 				<pre>func (me *Gui2D) Setup() (err error)</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="RearMirror">type <a href="/target/rear-mirror.go?s=110:181#L1">RearMirror</a></h2>
+			<pre>type RearMirror struct {
+    Cam        *ng.Camera
+    CamRotAxis unum.Vec3
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="RearMirror.OnApp">func (*RearMirror) <a href="/target/rear-mirror.go?s=183:212#L3">OnApp</a></h3>
+				<pre>func (me *RearMirror) OnApp()</pre>
+				
+				
+				
+			
+				
+				<h3 id="RearMirror.Setup">func (*RearMirror) <a href="/target/rear-mirror.go?s=290:319#L8">Setup</a></h3>
+				<pre>func (me *RearMirror) Setup()</pre>
 				
 				
 				

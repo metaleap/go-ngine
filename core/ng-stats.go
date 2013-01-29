@@ -43,10 +43,19 @@ type EngineStats struct {
 	FramePrepCode TimingStats
 
 	//	"App code" comprises (mostly user-specific) logic executed every frame such as
-	//	that in your own EngineLoop.OnLoop() callback. (Technically all code that isn't
+	//	that in your own EngineLoop.OnApp() callback. (Technically all code that isn't
 	//	rendering or render-prep and that may freely modify dynamic Cameras, Nodes etc.)
+	//	Unlike "input code", "app code" always runs in its own thread (the "app thread").
 	//	This TimingStats instance tracks over time (both average and maximum) "app code" cost per frame.
 	FrameAppCode TimingStats
+
+	//	"Input code" comprises user-specific logic executed every frame via your own
+	//	EngineLoop.OnInput() callback. This should be kept to a minimum to fully enjoy
+	//	the benefits of multi-threading. Main use-cases are calls resulting in GPU state
+	//	changes (such as toggling effects in Core.Rendering.PostFx) and working with UserIO
+	//	to check for user input -- but execute logic resulting from that input in OnApp()!
+	//	This TimingStats instance tracks over time (both average and maximum) "input code" cost per frame.
+	FrameInputCode TimingStats
 
 	//	During the Loop, the Go Garbge Collector is invoked at least and at most once per second.
 	//	

@@ -19,13 +19,6 @@ type Node struct {
 	//	Encapsulates all parent-relative transformations for this Node.
 	Transform NodeTransforms
 
-	threadStates struct {
-		prerender struct {
-		}
-		render struct {
-		}
-	}
-
 	mat                                *FxMaterial
 	mesh                               *Mesh
 	model                              *Model

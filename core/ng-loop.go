@@ -16,31 +16,56 @@ var (
 //	Consider EngineLoop a "Singleton" type, only valid use is the core.Loop global variable.
 //	Manages your main-thread's "game loop".
 type EngineLoop struct {
-	//	Set to true by EngineLoop.Loop(). Set to false to stop looping.
+	//	Set to true by Loop.Loop(). Set to false to stop looping.
 	IsLooping bool
 
-	//	The tick-time when the EngineLoop.OnSec() callback was last invoked.
+	//	The tick-time when the Loop.OnSec() callback was last invoked.
 	SecTickLast float64
 
-	//	While EngineLoop.Loop() is running, is set to the current "tick-time":
-	//	the time in seconds expired ever since EngineLoop.Loop() was last called.
+	//	While Loop.Loop() is running, is set to the current "tick-time":
+	//	the time in seconds expired ever since Loop.Loop() was last called.
 	TickNow float64
 
-	//	While EngineLoop.Loop() is running, is set to the previous tick-time.
+	//	While Loop.Loop() is running, is set to the previous tick-time.
 	TickLast float64
 
 	//	The delta between TickLast and TickNow.
 	TickDelta float64
 
-	//	While EngineLoop.Loop() is running, this callback is invoked every loop iteration (ie. once per frame).
-	OnLoop func()
+	//	While Loop.Loop() is running, this callback is invoked (in its own "app thread")
+	//	every loop iteration (ie. once per frame).
+	//	This callback may run in parallel with OnSec(), but never with OnInput().
+	OnApp func()
 
-	//	While EngineLoop.Loop() is running, this callback is invoked at least and at most once per second.
+	//	While Loop.Loop() is running, this callback is invoked (on the main windowing thread)
+	//	every loop iteration (ie. once per frame).
+	//	This callback is guaranteed to never run in parallel with
+	//	(and always after) the OnApp() and OnSec() callbacks.
+	OnInput func()
+
+	//	While Loop.Loop() is running, this callback is invoked (on the main windowing thread)
+	//	at least and at most once per second.
+	//	Caution: unlike OnInput(), this callback most likely runs in parallel with your OnApp() callback.
 	OnSec func()
+
+	//	Defaults to false, because multi-threaded rendering is so
+	//	much Win with go-routines on today's multi-core machines...
+	SingleThreaded bool
+
+	//	If true, Loop() waits for the app and prep threads to finish before swapping buffers.
+	//	If false, Loop() allows the app and prep threads to continue running while swapping buffers.
+	//	Defaults to false. Setting this to true may prove beneficial if your OnApp() callback
+	//	isn't doing any computationally intensive work.
+	SwapLast bool
+
+	threadBusy struct {
+		app, prep bool
+	}
 }
 
 func (me *EngineLoop) init() {
-	me.OnSec, me.OnLoop = func() {}, func() {}
+	me.OnSec, me.OnApp, me.OnInput = func() {}, func() {}, func() {}
+	me.SingleThreaded = true
 }
 
 //	Initiates a rendering loop. This method returns only when the loop is stopped for whatever reason.
@@ -58,11 +83,18 @@ func (me *EngineLoop) Loop() {
 		ugl.LogLastError("ngine.PreLoop")
 		Diag.LogMisc("Enter loop...")
 		for me.IsLooping && (glfw.WindowParam(glfw.Opened) == 1) {
-			//	STEP 1. Send rendering commands (batched together in the previous onPreRender) to the GPU / GL pipeline
+			//	STEP 0. Fire off the prep thread (for next frame) and app thread (for next-after-next frame).
+			if !me.SingleThreaded {
+				go me.loopThreadApp()
+				go me.loopThreadPrep()
+			}
+
+			//	STEP 1. Send rendering commands (batched together in the previous prep thread) to the GPU / GL pipeline
 			Stats.FrameRenderCpu.begin()
 			Core.onRender()
 			Stats.FrameRenderCpu.end()
-			//	STEP 2. While those are processed GPU-side, do other non-rendering CPU-side stuff
+
+			//	STEP 2. While those are processed GPU-side, do some minor non-rendering CPU-side stuff
 			Stats.fpsCounter++
 			Stats.fpsAll++
 			me.TickLast = me.TickNow
@@ -79,18 +111,28 @@ func (me *EngineLoop) Loop() {
 				runtime.GC()
 				Stats.Gc.end()
 			}
-			Stats.FrameAppCode.begin()
-			me.OnLoop()
-			Stats.FrameAppCode.end()
-			//	Prepare next frame: cull & batch
-			Stats.FramePrepCode.begin()
-			Core.onPreRender()
-			Stats.FramePrepCode.end()
-			//	STEP 3. Swap buffers -- also waits for GPU to finish commands sent in Step 1, and for V-sync (if set).
-			Stats.FrameRenderGpu.begin()
-			glfw.SwapBuffers()
-			Stats.FrameRenderGpu.end()
+
+			//	STEP 3, 4 & 5:
+			//	Swap buffers -- also waits for GPU to finish commands sent in Step 1, and for V-sync (if set).
+			//	Call OnInput() -- for main-thread user code without affecting the OnApp thread
+			//	Wait for threads -- waits until both app and prep threads are done and copies stage states around.
+			if me.SingleThreaded {
+				me.loopThreadApp()
+				me.loopThreadPrep()
+				me.loopOnInput()
+				me.loopSwap()
+			} else if me.SwapLast {
+				me.loopWaitForThreads()
+				me.loopOnInput()
+				me.loopSwap()
+			} else {
+				me.loopSwap()
+				me.loopWaitForThreads()
+				me.loopOnInput()
+			}
 			Stats.FrameRenderBoth.combine()
+
+			//	This is best handled right here in between the most-recent swap and before the next frame rendering.
 			if (UserIO.lastWinResize > 0) && ((me.TickNow - UserIO.lastWinResize) > UserIO.WinResizeMinDelay) {
 				UserIO.lastWinResize = 0
 				Core.onResizeWindow(Core.Options.winWidth, Core.Options.winHeight)
@@ -102,12 +144,48 @@ func (me *EngineLoop) Loop() {
 	}
 }
 
-//	Stops the currently running EngineLoop.Loop().
+func (me *EngineLoop) loopOnInput() {
+	Stats.FrameInputCode.begin()
+	glfw.PollEvents()
+	me.OnInput()
+	Stats.FrameInputCode.end()
+}
+
+func (_ *EngineLoop) loopSwap() {
+	Stats.FrameRenderGpu.begin()
+	glfw.SwapBuffers()
+	Stats.FrameRenderGpu.end()
+}
+
+func (me *EngineLoop) loopThreadApp() {
+	me.threadBusy.app = true
+	Stats.FrameAppCode.begin()
+	me.OnApp()
+	Stats.FrameAppCode.end()
+	me.threadBusy.app = false
+}
+
+func (me *EngineLoop) loopThreadPrep() {
+	me.threadBusy.prep = true
+	Stats.FramePrepCode.begin()
+	Core.onPrep()
+	Stats.FramePrepCode.end()
+	me.threadBusy.prep = false
+}
+
+func (me *EngineLoop) loopWaitForThreads() {
+	for me.threadBusy.app && me.threadBusy.prep && me.IsLooping {
+		runtime.Gosched()
+	}
+	//	when both are done: copy prep results to render stage, then app results to prep stage
+}
+
+//	Stops the currently running Loop.Loop().
 func (me *EngineLoop) Stop() {
 	me.IsLooping = false
 }
 
-//	Returns the number of seconds expired ever since EngineLoop.Loop() was last called.
-func (me *EngineLoop) Time() float64 {
+//	Returns the number of seconds expired ever since Loop.Loop() was last called.
+func (_ *EngineLoop) Time() float64 {
 	return glfw.Time()
 }

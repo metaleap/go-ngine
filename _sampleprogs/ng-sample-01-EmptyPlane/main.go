@@ -14,7 +14,7 @@ func main() {
 	ngsamples.SamplesMainFunc(LoadSampleScene_01_EmptyPlane)
 }
 
-func onLoop() {
+func onApp() {
 	ngsamples.CheckToggleKeys()
 	ngsamples.CheckCamCtlKeys()
 }
@@ -27,7 +27,7 @@ func LoadSampleScene_01_EmptyPlane() {
 		bufRest   *ng.MeshBuffer
 	)
 
-	ng.Loop.OnLoop = onLoop
+	ng.Loop.OnApp = onApp
 
 	//	textures / materials
 	ngsamples.AddTextureMaterials(map[string]string{

@@ -70,6 +70,7 @@ func (me *EngineUserIO) init(opt *EngineOptions, winTitle string, forceContextVe
 		glfw.SetWindowCloseCallback(glfwOnWindowClose)
 		glfw.SetWindowSizeCallback(glfwOnWindowResize)
 		// glfw.Disable(glfw.MouseCursor)
+		glfw.Disable(glfw.AutoPollEvents)
 		glfw.Enable(glfw.StickyKeys)
 	}
 	return

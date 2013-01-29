@@ -4,15 +4,15 @@ import (
 	"fmt"
 	"math"
 
+	glfw "github.com/go-gl/glfw"
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
 	ng "github.com/go3d/go-ngine/core"
 	unum "github.com/metaleap/go-util/num"
 )
 
 var (
-	gui2d          ngsamples.Gui2D
-	camBackMirror  *ng.Camera
-	camBackRotAxis unum.Vec3
+	gui2d      ngsamples.Gui2D
+	rearMirror ngsamples.RearMirror
 
 	floor, pyr, box *ng.Node
 	crates          [3]*ng.Node
@@ -22,15 +22,23 @@ var (
 )
 
 func main() {
-	camBackRotAxis.Y = 1
+	ngsamples.Keys.CheckFor.Toggled = append(ngsamples.Keys.CheckFor.Toggled, glfw.KeyF4)
 	ngsamples.SamplesMainFunc(LoadSampleScene_03_PyrsCubes)
 }
 
-func onLoop() {
-	camBackMirror.Controller = ngsamples.Cam.Controller
-	camBackMirror.Controller.TurnRightBy(180)
-	ngsamples.CheckToggleKeys()
+func onInput() {
 	ngsamples.CheckCamCtlKeys()
+	ngsamples.CheckToggleKeys()
+	ngsamples.HandleToggleKeys()
+	if ngsamples.Keys.Toggled[glfw.KeyF4] {
+		rearMirror.Cam.Rendering.Enabled = !rearMirror.Cam.Rendering.Enabled
+	}
+	rearMirror.Cam.Rendering.States.FaceCulling = ngsamples.Cam.Rendering.States.FaceCulling
+}
+
+func onApp() {
+	ngsamples.HandleCamCtlKeys()
+	rearMirror.OnApp()
 
 	//	animate mesh nodes
 	pyr.Transform.Rot.X -= 0.0005
@@ -71,15 +79,10 @@ func LoadSampleScene_03_PyrsCubes() {
 		str                          string
 	)
 
-	camBackMirror = ng.Core.Rendering.Canvases[0].Cameras.Add(ng.NewCamera3D())
-	camBackMirror.Rendering.States.ClearColor.Set(0.125, 0.125, 0.33, 1)
-	camBackMirror.Rendering.ViewPort.SetRel(0.66, 0.66, 0.33, 0.33)
-	camBackMirror.Rendering.SceneID = ""
-	camBackMirror.Perspective.FovY *= 2
-
-	ng.Loop.OnLoop = onLoop
+	ng.Loop.OnApp = onApp
+	ng.Loop.OnInput = onInput
 	ngsamples.Cam.Rendering.States.FaceCulling = false
-	camBackMirror.Rendering.States.FaceCulling = false
+	rearMirror.Setup()
 
 	//	textures / materials
 	ngsamples.AddTextureMaterials(map[string]string{

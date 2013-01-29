@@ -84,7 +84,7 @@ func collectShaders(srcDirPath string, allShaders *shaderSrcSortables, iShaders 
 	}
 }
 
-func generateShadersFile(srcDirPath, outFilePath, pkgName string, stripComments bool) bool {
+func generateShadersFile(srcDirPath, outFilePath, pkgName string, stripComments bool) (err error) {
 	var (
 		shaderSource           shaderSrc
 		allNames               []string
@@ -110,9 +110,9 @@ func generateShadersFile(srcDirPath, outFilePath, pkgName string, stripComments 
 		}
 	}
 	if glslSrc += fmt.Sprintf("\tglc.progMan.Names = %#v\n}\n", allNames); glslSrc != glslOldSrc {
-		uio.WriteTextFile(outFilePath, glslSrc)
+		err = uio.WriteTextFile(outFilePath, glslSrc)
 	}
-	return true
+	return
 }
 
 func includeShaders(fileName, shaderSource string, iShaders map[string]string) string {
@@ -175,7 +175,10 @@ func main() {
 	}
 	if (outTime == 0) || (srcTime > outTime) {
 		fmt.Printf("Re-merging changed shader files inside %v into %v... ", strings.Replace(srcDirPath, nginePath, ".", -1), strings.Replace(outFilePath, nginePath, ".", -1))
-		generateShadersFile(srcDirPath, outFilePath, "core", true)
-		fmt.Println("DONE.")
+		if err := generateShadersFile(srcDirPath, outFilePath, "core", true); err == nil {
+			fmt.Println("DONE.")
+		} else {
+			panic(err)
+		}
 	}
 }

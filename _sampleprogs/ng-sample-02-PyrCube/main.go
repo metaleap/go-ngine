@@ -15,7 +15,7 @@ func main() {
 	ngsamples.SamplesMainFunc(LoadSampleScene_02_PyrCube)
 }
 
-func onLoop() {
+func onApp() {
 	ngsamples.CheckToggleKeys()
 	ngsamples.CheckCamCtlKeys()
 
@@ -39,7 +39,7 @@ func LoadSampleScene_02_PyrCube() {
 		bufFloor, bufRest            *ng.MeshBuffer
 	)
 
-	ng.Loop.OnLoop = onLoop
+	ng.Loop.OnApp = onApp
 
 	//	textures / materials
 	ngsamples.AddTextureMaterials(map[string]string{

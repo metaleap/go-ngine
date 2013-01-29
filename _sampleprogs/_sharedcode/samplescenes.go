@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"runtime"
 
-	glfw "github.com/go-gl/glfw"
 	ng "github.com/go3d/go-ngine/core"
 	ugo "github.com/metaleap/go-util"
 )
@@ -92,63 +91,6 @@ func AssetRootDirPath() string {
 	return ugo.GopathSrcGithub("go3d", "go-ngine", "_sampleprogs", "_sharedassets")
 }
 
-//	Called every frame (by the parent example app) to check the state for keys controlling CamCtl to move or rotate Cam.
-func CheckCamCtlKeys() {
-	if CamCtl.MoveSpeedupFactor = 1; paused {
-		return
-	}
-	if ng.UserIO.KeyPressed(glfw.KeyLshift) {
-		CamCtl.MoveSpeedupFactor = 10
-	} else if ng.UserIO.KeyPressed(glfw.KeyRshift) {
-		CamCtl.MoveSpeedupFactor = 100
-	} else if ng.UserIO.KeyPressed(glfw.KeyLalt) {
-		CamCtl.MoveSpeedupFactor = 0.1
-	}
-	if ng.UserIO.KeyPressed(glfw.KeyUp) {
-		CamCtl.MoveForward()
-	}
-	if ng.UserIO.KeyPressed(glfw.KeyDown) {
-		CamCtl.MoveBackward()
-	}
-	if ng.UserIO.KeyPressed('A') {
-		CamCtl.MoveLeft()
-	}
-	if ng.UserIO.KeyPressed('D') {
-		CamCtl.MoveRight()
-	}
-	if ng.UserIO.KeyPressed('W') {
-		CamCtl.MoveUp()
-	}
-	if ng.UserIO.KeyPressed('S') {
-		CamCtl.MoveDown()
-	}
-	if ng.UserIO.KeyPressed(glfw.KeyLeft) {
-		CamCtl.TurnLeft()
-	}
-	if ng.UserIO.KeyPressed(glfw.KeyRight) {
-		CamCtl.TurnRight()
-	}
-	if ng.UserIO.KeysPressedAny2(glfw.KeyPageup, glfw.KeyKP9) {
-		CamCtl.TurnUp()
-	}
-	if ng.UserIO.KeysPressedAny2(glfw.KeyPagedown, glfw.KeyKP3) {
-		CamCtl.TurnDown()
-	}
-}
-
-//	Called every frame (by the parent example app) to check "toggle keys" that toggle certain options.
-func CheckToggleKeys() {
-	if ng.UserIO.KeyPressed(glfw.KeyEsc) {
-		ng.Loop.Stop()
-	}
-	if ng.UserIO.KeyToggled(glfw.KeyF2) {
-		Cam.Rendering.States.FaceCulling = !Cam.Rendering.States.FaceCulling
-	}
-	if ng.UserIO.KeyToggled(glfw.KeyF3) {
-		PauseResume()
-	}
-}
-
 func PauseResume() {
 	canv := ng.Core.Rendering.Canvases.Main()
 	if paused = ng.Core.Rendering.PostFx.ToggleEffect("Grayscale"); paused {
@@ -164,28 +106,29 @@ func PauseResume() {
 //	Prints a summary of go:ngine's *Stats* performance counters when the parent example app exits.
 func PrintPostLoopSummary() {
 	printStatSummary := func(name string, timing *ng.TimingStats) {
-		fmt.Printf("%v:\tAvg=%3.5f secs\tMax=%3.5f secs\n", name, timing.Average(), timing.Max())
+		fmt.Printf("%v:\t\tAvg=%3.5f secs\tMax=%3.5f secs\n", name, timing.Average(), timing.Max())
 	}
 	fmt.Printf("Average FPS:\t\t%v (total %v over %6.2fsec.)\n", ng.Stats.AverageFps(), ng.Stats.TotalFrames(), ng.Loop.Time())
 	printStatSummary("Frame Full Loop", &ng.Stats.Frame)
-	printStatSummary("Frame User Code", &ng.Stats.FrameAppCode)
+	printStatSummary("Frame OnApp Code", &ng.Stats.FrameAppCode)
+	printStatSummary("Frame OnInput Code", &ng.Stats.FrameAppCode)
 	printStatSummary("Frame Prep Code", &ng.Stats.FramePrepCode)
 	printStatSummary("Frame Render (CPU)", &ng.Stats.FrameRenderCpu)
 	printStatSummary("Frame Render (GPU)", &ng.Stats.FrameRenderGpu)
 	printStatSummary("Frame Render Both", &ng.Stats.FrameRenderBoth)
 	printStatSummary("GC (max 1x/sec)", &ng.Stats.Gc)
-	fmt.Printf("CGO calls: %v, Goroutines: %v\n\n", runtime.NumCgoCall(), runtime.NumGoroutine())
-
+	fmt.Printf("CGO calls: %v\n\n", runtime.NumCgoCall())
 }
 
 //	The *func main()* implementation for the parent example app. Initializes go:ngine, sets Cam and CamCtl, calls the specified assetLoader function, then enters The Loop.
 func SamplesMainFunc(assetLoader func()) {
 	runtime.LockOSThread()
+	runtime.GOMAXPROCS(1)
 
 	opt := ng.NewEngineOptions(AssetRootDirPath(), 1280, 720, 0, false)
 	// opt.Rendering.PostFx.TextureRect = true
 
-	if err := ng.Init(opt, "Loading Sample App..."); err != nil {
+	if err := ng.Init(opt, fmt.Sprintf("Loading sample app... (%v CPU cores)", runtime.GOMAXPROCS(0))); err != nil {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
 		defer ng.Dispose()
