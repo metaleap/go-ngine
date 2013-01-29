@@ -3,48 +3,53 @@ package core
 import (
 	"log"
 
+	ugl "github.com/go3d/go-glutil"
 	ugo "github.com/metaleap/go-util"
 )
 
-type LogCategory int
+type EngineDiagLogCategory int
 
 const (
-	LogCatMisc    LogCategory = 1
-	LogCatMeshes  LogCategory = 2
-	LogCatShaders LogCategory = 4
-	LogCatAll     LogCategory = LogCatMeshes | LogCatMisc | LogCatShaders
+	DiagLogCatMisc    EngineDiagLogCategory = 1
+	DiagLogMeshes     EngineDiagLogCategory = 2
+	DiagLogCatShaders EngineDiagLogCategory = 4
+	DiagLogCatAll     EngineDiagLogCategory = DiagLogMeshes | DiagLogCatMisc | DiagLogCatShaders
 )
 
 var (
-	Diag = EngineDiagnostics{
-		LogCategories:       LogCatAll,
+	Diag = EngineDiag{
+		LogCategories:       DiagLogCatAll,
 		LogErrorsDuringLoop: true,
 	}
 )
 
-type EngineDiagnostics struct {
-	LogCategories       LogCategory
+type EngineDiag struct {
+	LogCategories       EngineDiagLogCategory
 	LogErrorsDuringLoop bool
 }
 
-func (me *EngineDiagnostics) Log(cat LogCategory, fmt string, fmtArgs ...interface{}) {
+func (me *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{}) {
 	if (me.LogCategories & cat) == cat {
 		log.Printf(fmt, fmtArgs...)
 	}
 }
 
-func (me *EngineDiagnostics) LogErr(err error) {
+func (me *EngineDiag) LogErr(err error) {
 	ugo.LogError(err)
 }
 
-func (me *EngineDiagnostics) LogMeshes(fmt string, fmtArgs ...interface{}) {
-	me.Log(LogCatMeshes, fmt, fmtArgs...)
+func (me *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{}) {
+	ugl.LogLastError(fmt, fmtArgs...)
 }
 
-func (me *EngineDiagnostics) LogMisc(fmt string, fmtArgs ...interface{}) {
-	me.Log(LogCatMisc, fmt, fmtArgs...)
+func (me *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{}) {
+	me.Log(DiagLogMeshes, fmt, fmtArgs...)
 }
 
-func (me *EngineDiagnostics) LogShaders(fmt string, fmtArgs ...interface{}) {
-	me.Log(LogCatShaders, fmt, fmtArgs...)
+func (me *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{}) {
+	me.Log(DiagLogCatMisc, fmt, fmtArgs...)
+}
+
+func (me *EngineDiag) LogShaders(fmt string, fmtArgs ...interface{}) {
+	me.Log(DiagLogCatShaders, fmt, fmtArgs...)
 }

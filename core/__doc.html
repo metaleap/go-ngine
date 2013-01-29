@@ -178,23 +178,28 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#EngineDiagnostics">type EngineDiagnostics</a></dd>
+				<dd><a href="#EngineDiag">type EngineDiag</a></dd>
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiagnostics.Log">func (me *EngineDiagnostics) Log(cat LogCategory, fmt string, fmtArgs ...interface{})</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineDiag.Log">func (me *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{})</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiagnostics.LogErr">func (me *EngineDiagnostics) LogErr(err error)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogErr">func (me *EngineDiag) LogErr(err error)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiagnostics.LogMeshes">func (me *EngineDiagnostics) LogMeshes(fmt string, fmtArgs ...interface{})</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogMeshes">func (me *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{})</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiagnostics.LogMisc">func (me *EngineDiagnostics) LogMisc(fmt string, fmtArgs ...interface{})</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogMisc">func (me *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{})</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiagnostics.LogShaders">func (me *EngineDiagnostics) LogShaders(fmt string, fmtArgs ...interface{})</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogShaders">func (me *EngineDiag) LogShaders(fmt string, fmtArgs ...interface{})</a></dd>
+				
+			
+				
+				<dd><a href="#EngineDiagLogCategory">type EngineDiagLogCategory</a></dd>
+				
 				
 			
 				
@@ -393,11 +398,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#LibScenes.Walk">func (me LibScenes) Walk(onNode func(*Node))</a></dd>
-				
-			
-				
-				<dd><a href="#LogCategory">type LogCategory</a></dd>
-				
 				
 			
 				
@@ -828,8 +828,8 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			<h2 id="pkg-variables">Variables</h2>
 			
 				<pre>var (
-    Diag = EngineDiagnostics{
-        LogCategories:       LogCatAll,
+    Diag = EngineDiag{
+        LogCategories:       DiagLogCatAll,
         LogErrorsDuringLoop: true,
     }
 )</pre>
@@ -1333,9 +1333,9 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 		
 			
 			
-			<h2 id="EngineDiagnostics">type <a href="/target/ng-diag.go?s=368:460#L15">EngineDiagnostics</a></h2>
-			<pre>type EngineDiagnostics struct {
-    LogCategories       LogCategory
+			<h2 id="EngineDiag">type <a href="/target/ng-diag.go?s=440:535#L15">EngineDiag</a></h2>
+			<pre>type EngineDiag struct {
+    LogCategories       EngineDiagLogCategory
     LogErrorsDuringLoop bool
 }</pre>
 			
@@ -1350,39 +1350,63 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 
 			
 				
-				<h3 id="EngineDiagnostics.Log">func (*EngineDiagnostics) <a href="/target/ng-diag.go?s=462:547#L20">Log</a></h3>
-				<pre>func (me *EngineDiagnostics) Log(cat LogCategory, fmt string, fmtArgs ...interface{})</pre>
+				<h3 id="EngineDiag.Log">func (*EngineDiag) <a href="/target/ng-diag.go?s=537:625#L20">Log</a></h3>
+				<pre>func (me *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiagnostics.LogErr">func (*EngineDiagnostics) <a href="/target/ng-diag.go?s=624:670#L26">LogErr</a></h3>
-				<pre>func (me *EngineDiagnostics) LogErr(err error)</pre>
+				<h3 id="EngineDiag.LogErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=702:741#L26">LogErr</a></h3>
+				<pre>func (me *EngineDiag) LogErr(err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiagnostics.LogMeshes">func (*EngineDiagnostics) <a href="/target/ng-diag.go?s=695:769#L30">LogMeshes</a></h3>
-				<pre>func (me *EngineDiagnostics) LogMeshes(fmt string, fmtArgs ...interface{})</pre>
+				<h3 id="EngineDiag.LogMeshes">func (*EngineDiag) <a href="/target/ng-diag.go?s=766:833#L30">LogMeshes</a></h3>
+				<pre>func (me *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiagnostics.LogMisc">func (*EngineDiagnostics) <a href="/target/ng-diag.go?s=814:886#L34">LogMisc</a></h3>
-				<pre>func (me *EngineDiagnostics) LogMisc(fmt string, fmtArgs ...interface{})</pre>
+				<h3 id="EngineDiag.LogMisc">func (*EngineDiag) <a href="/target/ng-diag.go?s=879:944#L34">LogMisc</a></h3>
+				<pre>func (me *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiagnostics.LogShaders">func (*EngineDiagnostics) <a href="/target/ng-diag.go?s=929:1004#L38">LogShaders</a></h3>
-				<pre>func (me *EngineDiagnostics) LogShaders(fmt string, fmtArgs ...interface{})</pre>
+				<h3 id="EngineDiag.LogShaders">func (*EngineDiag) <a href="/target/ng-diag.go?s=991:1059#L38">LogShaders</a></h3>
+				<pre>func (me *EngineDiag) LogShaders(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
+			
+		
+			
+			
+			<h2 id="EngineDiagLogCategory">type <a href="/target/ng-diag.go?s=69:99#L1">EngineDiagLogCategory</a></h2>
+			<pre>type EngineDiagLogCategory int</pre>
+			
+
+			
+				<pre>const (
+    DiagLogCatMisc    EngineDiagLogCategory = 1
+    DiagLogMeshes     EngineDiagLogCategory = 2
+    DiagLogCatShaders EngineDiagLogCategory = 4
+    DiagLogCatAll     EngineDiagLogCategory = DiagLogMeshes | DiagLogCatMisc | DiagLogCatShaders
+)</pre>
+				
+			
+
+			
+
+			
+
+			
+
 			
 		
 			
@@ -2175,30 +2199,6 @@ adds it to me under the specified ID, and returns it.
 				
 				
 				
-			
-		
-			
-			
-			<h2 id="LogCategory">type <a href="/target/ng-diag.go?s=69:89#L1">LogCategory</a></h2>
-			<pre>type LogCategory int</pre>
-			
-
-			
-				<pre>const (
-    LogCatMisc    LogCategory = 1
-    LogCatMeshes  LogCategory = 2
-    LogCatShaders LogCategory = 4
-    LogCatAll     LogCategory = LogCatMeshes | LogCatMisc | LogCatShaders
-)</pre>
-				
-			
-
-			
-
-			
-
-			
-
 			
 		
 			

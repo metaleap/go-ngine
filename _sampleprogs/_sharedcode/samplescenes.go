@@ -183,6 +183,7 @@ func SamplesMainFunc(assetLoader func()) {
 	runtime.LockOSThread()
 
 	opt := ng.NewEngineOptions(AssetRootDirPath(), 1280, 720, 0, false)
+	// opt.Rendering.PostFx.TextureRect = true
 
 	if err := ng.Init(opt, "Loading Sample App..."); err != nil {
 		fmt.Printf("ABORT:\n%v\n", err)

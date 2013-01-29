@@ -17,7 +17,7 @@ type RenderCanvas struct {
 	//	type conversion. How often this RenderCanvas is included in rendering:
 	//	1 = every frame (this is the default value)
 	//	2 = every 2nd frame
-	//	8 = every 8th frame
+	//	3, 5, 8 etc. = every 3rd, 5th, 8th etc. frame
 	//	0 = this RenderCanvas is disabled for rendering
 	EveryNthFrame float64
 
@@ -35,7 +35,7 @@ func newRenderCanvas(relative bool, width, height float64) (me *RenderCanvas) {
 	me.SetSize(relative, width, height)
 	me.onResize(Core.Options.winWidth, Core.Options.winHeight)
 	me.frameBuf.Create(gl.Sizei(Core.Options.winWidth), gl.Sizei(Core.Options.winHeight), true, true)
-	me.frameBuf.AttachRendertexture(ugl.NewFramebufferRendertexture(true))
+	me.frameBuf.AttachRendertexture(ugl.NewFramebufferRendertexture(Core.Options.Rendering.PostFx.TextureRect))
 	me.frameBuf.AttachRenderbuffer(ugl.NewFramebufferRenderbuffer())
 	ugl.LogLastError("newRenderCanvas(%v x %v)", width, height)
 	return

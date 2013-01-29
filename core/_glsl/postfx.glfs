@@ -1,4 +1,8 @@
+#ifdef PostFx_TextureRect
 uniform sampler2DRect uTexRendering;
+#else
+uniform sampler2D uTexRendering;
+#endif
 
 out vec3 oColor;
 
@@ -11,7 +15,12 @@ void TestEffect() {
 }
 
 void main() {
+
+#ifdef PostFx_TextureRect
 	oColor = texture(uTexRendering, gl_FragCoord.xy).rgb;
+#else
+	oColor = texelFetch(uTexRendering, ivec2(gl_FragCoord.xy), 0).rgb;
+#endif
 
 #ifdef FX_Grayscale
 	Grayscale();

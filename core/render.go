@@ -69,7 +69,7 @@ func (me *PostFx) render() {
 	curProg, curMat, curTechnique, curMatKey = nil, nil, nil, ""
 	Core.Rendering.states.DisableDepthTest()
 	Core.Rendering.states.DisableFaceCulling()
-	//Core.Rendering.Samplers.NoFilteringClamp.Bind(0)
+	Core.Rendering.Samplers.NoFilteringClamp.Bind(0)
 	gl.BindFramebuffer(gl.FRAMEBUFFER, 0)
 	gl.Viewport(0, 0, me.glWidth, me.glHeight)
 	// ugl.LogLastError("pre-clrscr")

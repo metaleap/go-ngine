@@ -26,6 +26,10 @@ type EngineOptions struct {
 		//	Name for the default render technique of a Camera3D,
 		//	defaults to the currently only implementation "rt_unlit3".
 		DefaultTechnique3D string
+
+		PostFx struct {
+			TextureRect bool
+		}
 	}
 
 	glTextureAnisotropy, winFullScreen   bool
@@ -35,7 +39,7 @@ type EngineOptions struct {
 //	Allocates, initializes and returns a new core.EngineOptions instance.
 func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions) {
 	me = &EngineOptions{AssetRootDirPath: assetRootDirPath}
-	me.Initialization.GlCoreContext = true || (runtime.GOOS == "darwin")
+	me.Initialization.GlCoreContext = (runtime.GOOS == "darwin")
 	me.Rendering.DefaultClearColor = ugl.GlVec4{0, 0, 0, 1}
 	me.Rendering.DefaultTechnique3D, me.Rendering.DefaultTechnique3D = "rt_unlit3", "rt_unlit3"
 	me.winWidth, me.winHeight, me.winSwapInterval, me.winFullScreen = winWidth, winHeight, winSwapInterval, winFullScreen
