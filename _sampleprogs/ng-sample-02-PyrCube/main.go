@@ -15,9 +15,14 @@ func main() {
 	ngsamples.SamplesMainFunc(LoadSampleScene_02_PyrCube)
 }
 
-func onApp() {
-	ngsamples.CheckToggleKeys()
+func onInput() {
 	ngsamples.CheckCamCtlKeys()
+	ngsamples.CheckToggleKeys()
+	ngsamples.HandleToggleKeys()
+}
+
+func onApp() {
+	ngsamples.HandleCamCtlKeys()
 
 	//	animate mesh nodes
 	pyr.Transform.Rot.X -= 0.0005
@@ -39,7 +44,7 @@ func LoadSampleScene_02_PyrCube() {
 		bufFloor, bufRest            *ng.MeshBuffer
 	)
 
-	ng.Loop.OnApp = onApp
+	ng.Loop.OnApp, ng.Loop.OnInput = onApp, onInput
 
 	//	textures / materials
 	ngsamples.AddTextureMaterials(map[string]string{

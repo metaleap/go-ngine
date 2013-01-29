@@ -21,10 +21,10 @@ var (
 func init() {
 	Keys.Pressed = map[int]bool{}
 	Keys.Toggled = map[int]bool{}
-	Keys.CheckFor.Toggled = []int{glfw.KeyF2, glfw.KeyF3}
+	Keys.CheckFor.Toggled = []int{glfw.KeyF2, glfw.KeyF3, glfw.KeyEsc}
 	Keys.CheckFor.Pressed = []int{
 		glfw.KeyLalt, glfw.KeyLshift, glfw.KeyRshift, 'W', 'A', 'S', 'D',
-		glfw.KeyEsc, glfw.KeyLeft, glfw.KeyRight, glfw.KeyUp, glfw.KeyDown,
+		glfw.KeyLeft, glfw.KeyRight, glfw.KeyUp, glfw.KeyDown,
 		glfw.KeyPagedown, glfw.KeyPageup, glfw.KeyKP9, glfw.KeyKP3,
 	}
 }
@@ -86,7 +86,7 @@ func HandleCamCtlKeys() {
 }
 
 func HandleToggleKeys() {
-	if Keys.Pressed[glfw.KeyEsc] {
+	if Keys.Toggled[glfw.KeyEsc] {
 		ng.Loop.Stop()
 	}
 	if Keys.Toggled[glfw.KeyF2] {
