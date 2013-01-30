@@ -110,8 +110,8 @@ func PrintPostLoopSummary() {
 	}
 	fmt.Printf("Average FPS:\t\t%v (total %v over %6.2fsec.)\n", ng.Stats.AverageFps(), ng.Stats.TotalFrames(), ng.Loop.Time())
 	printStatSummary("Frame Full Loop", &ng.Stats.Frame)
-	printStatSummary("Frame OnApp Code", &ng.Stats.FrameAppCode)
-	printStatSummary("Frame OnInput Code", &ng.Stats.FrameAppCode)
+	printStatSummary("Frame OnAppThread", &ng.Stats.FrameAppThread)
+	printStatSummary("Frame OnWinThread", &ng.Stats.FrameWinThread)
 	printStatSummary("Frame Prep Code", &ng.Stats.FramePrepCode)
 	printStatSummary("Frame Render (CPU)", &ng.Stats.FrameRenderCpu)
 	printStatSummary("Frame Render (GPU)", &ng.Stats.FrameRenderGpu)
@@ -123,7 +123,7 @@ func PrintPostLoopSummary() {
 //	The *func main()* implementation for the parent example app. Initializes go:ngine, sets Cam and CamCtl, calls the specified assetLoader function, then enters The Loop.
 func SamplesMainFunc(assetLoader func()) {
 	runtime.LockOSThread()
-	runtime.GOMAXPROCS(1)
+	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	opt := ng.NewEngineOptions(AssetRootDirPath(), 1280, 720, 0, false)
 	// opt.Rendering.PostFx.TextureRect = true

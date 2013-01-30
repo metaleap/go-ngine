@@ -6,9 +6,7 @@ import (
 )
 
 var (
-	techs     map[string]renderTechnique
-	tmpEffect *FxEffect
-	tmpMat    *FxMaterial
+	techs map[string]renderTechnique
 )
 
 type techniqueCtor func(string) renderTechnique
@@ -73,11 +71,11 @@ func (me *techniqueUnlit) initMeshBuffer(meshBuffer *MeshBuffer) (atts []*ugl.Ve
 
 func (me *techniqueUnlit) onRenderNode() {
 	me.baseTechnique.onRenderNode()
-	if tmpMat = curNode.EffectiveMaterial(); tmpMat != curMat {
-		if curMat = tmpMat; curMat != nil {
-			tmpEffect = Core.Libs.Effects[curMat.DefaultEffectID]
-			Core.Libs.Images.I2D[tmpEffect.Diffuse.Texture.Image2ID].glTex.Bind()
-			gl.Uniform1i(curProg.UnifLocs["uDiffuse"], 0)
+	if thrRend.tmpMat = thrRend.curNode.EffectiveMaterial(); thrRend.tmpMat != thrRend.curMat {
+		if thrRend.curMat = thrRend.tmpMat; thrRend.curMat != nil {
+			thrRend.tmpEffect = Core.Libs.Effects[thrRend.curMat.DefaultEffectID]
+			Core.Libs.Images.I2D[thrRend.tmpEffect.Diffuse.Texture.Image2ID].glTex.Bind()
+			gl.Uniform1i(thrRend.curProg.UnifLocs["uDiffuse"], 0)
 		}
 	}
 }

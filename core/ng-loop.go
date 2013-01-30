@@ -34,27 +34,23 @@ type EngineLoop struct {
 
 	//	While Loop.Loop() is running, this callback is invoked (in its own "app thread")
 	//	every loop iteration (ie. once per frame).
-	//	This callback may run in parallel with OnSec(), but never with OnInput().
-	OnApp func()
+	//	This callback may run in parallel with OnSec(), but never with OnWinThread().
+	OnAppThread func()
 
 	//	While Loop.Loop() is running, this callback is invoked (on the main windowing thread)
 	//	every loop iteration (ie. once per frame).
 	//	This callback is guaranteed to never run in parallel with
-	//	(and always after) the OnApp() and OnSec() callbacks.
-	OnInput func()
+	//	(and always after) the OnAppThread() and OnSec() callbacks.
+	OnWinThread func()
 
 	//	While Loop.Loop() is running, this callback is invoked (on the main windowing thread)
 	//	at least and at most once per second.
-	//	Caution: unlike OnInput(), this callback most likely runs in parallel with your OnApp() callback.
+	//	Caution: unlike OnWinThread(), this callback most likely runs in parallel with your OnAppThread() callback.
 	OnSec func()
-
-	//	Defaults to false, because multi-threaded rendering is so
-	//	much Win with go-routines on today's multi-core machines...
-	SingleThreaded bool
 
 	//	If true, Loop() waits for the app and prep threads to finish before swapping buffers.
 	//	If false, Loop() allows the app and prep threads to continue running while swapping buffers.
-	//	Defaults to false. Setting this to true may prove beneficial if your OnApp() callback
+	//	Defaults to false. Setting this to true may prove beneficial if your OnAppThread() callback
 	//	isn't doing any computationally intensive work.
 	SwapLast bool
 
@@ -64,8 +60,7 @@ type EngineLoop struct {
 }
 
 func (me *EngineLoop) init() {
-	me.OnSec, me.OnApp, me.OnInput = func() {}, func() {}, func() {}
-	me.SingleThreaded = true
+	me.OnSec, me.OnAppThread, me.OnWinThread = func() {}, func() {}, func() {}
 }
 
 //	Initiates a rendering loop. This method returns only when the loop is stopped for whatever reason.
@@ -82,12 +77,12 @@ func (me *EngineLoop) Loop() {
 		Stats.FrameRenderBoth.comb1, Stats.FrameRenderBoth.comb2 = &Stats.FrameRenderCpu, &Stats.FrameRenderGpu
 		ugl.LogLastError("ngine.PreLoop")
 		Diag.LogMisc("Enter loop...")
+		Core.copyAppToPrep()
+		Core.copyPrepToRend()
 		for me.IsLooping && (glfw.WindowParam(glfw.Opened) == 1) {
 			//	STEP 0. Fire off the prep thread (for next frame) and app thread (for next-after-next frame).
-			if !me.SingleThreaded {
-				go me.loopThreadApp()
-				go me.loopThreadPrep()
-			}
+			go me.loopThreadApp()
+			go me.loopThreadPrep()
 
 			//	STEP 1. Send rendering commands (batched together in the previous prep thread) to the GPU / GL pipeline
 			Stats.FrameRenderCpu.begin()
@@ -114,21 +109,16 @@ func (me *EngineLoop) Loop() {
 
 			//	STEP 3, 4 & 5:
 			//	Swap buffers -- also waits for GPU to finish commands sent in Step 1, and for V-sync (if set).
-			//	Call OnInput() -- for main-thread user code without affecting the OnApp thread
+			//	Call OnWinThread() -- for main-thread user code without affecting the OnAppThread thread
 			//	Wait for threads -- waits until both app and prep threads are done and copies stage states around.
-			if me.SingleThreaded {
-				me.loopThreadApp()
-				me.loopThreadPrep()
-				me.loopOnInput()
-				me.loopSwap()
-			} else if me.SwapLast {
+			if me.SwapLast {
 				me.loopWaitForThreads()
-				me.loopOnInput()
+				me.loopOnWinThread()
 				me.loopSwap()
 			} else {
 				me.loopSwap()
 				me.loopWaitForThreads()
-				me.loopOnInput()
+				me.loopOnWinThread()
 			}
 			Stats.FrameRenderBoth.combine()
 
@@ -144,11 +134,11 @@ func (me *EngineLoop) Loop() {
 	}
 }
 
-func (me *EngineLoop) loopOnInput() {
-	Stats.FrameInputCode.begin()
+func (me *EngineLoop) loopOnWinThread() {
+	Stats.FrameWinThread.begin()
 	glfw.PollEvents()
-	me.OnInput()
-	Stats.FrameInputCode.end()
+	me.OnWinThread()
+	Stats.FrameWinThread.end()
 }
 
 func (_ *EngineLoop) loopSwap() {
@@ -159,9 +149,9 @@ func (_ *EngineLoop) loopSwap() {
 
 func (me *EngineLoop) loopThreadApp() {
 	me.threadBusy.app = true
-	Stats.FrameAppCode.begin()
-	me.OnApp()
-	Stats.FrameAppCode.end()
+	Stats.FrameAppThread.begin()
+	me.OnAppThread()
+	Stats.FrameAppThread.end()
 	me.threadBusy.app = false
 }
 
@@ -174,10 +164,14 @@ func (me *EngineLoop) loopThreadPrep() {
 }
 
 func (me *EngineLoop) loopWaitForThreads() {
-	for me.threadBusy.app && me.threadBusy.prep && me.IsLooping {
+	for me.threadBusy.prep && me.IsLooping {
 		runtime.Gosched()
 	}
-	//	when both are done: copy prep results to render stage, then app results to prep stage
+	Core.copyPrepToRend()
+	for me.threadBusy.app && me.IsLooping {
+		runtime.Gosched()
+	}
+	Core.copyAppToPrep()
 }
 
 //	Stops the currently running Loop.Loop().

@@ -18,12 +18,12 @@ func main() {
 	ngsamples.SamplesMainFunc(LoadSampleScene_00_TriQuad)
 }
 
-func onInput() {
+func onWinThread() {
 	ngsamples.CheckToggleKeys()
 	ngsamples.HandleToggleKeys()
 }
 
-func onApp() {
+func onAppThread() {
 	tri.Transform.Rot.X -= 0.005
 	tri.Transform.Rot.Y -= 0.005
 	tri.Transform.Pos.Set(-3.75, 1*math.Sin(ng.Loop.TickNow), 1)
@@ -42,7 +42,7 @@ func LoadSampleScene_00_TriQuad() {
 		meshBuf           *ng.MeshBuffer
 	)
 
-	ng.Loop.OnApp, ng.Loop.OnInput = onApp, onInput
+	ng.Loop.OnAppThread, ng.Loop.OnWinThread = onAppThread, onWinThread
 	ngsamples.Cam.Rendering.States.FaceCulling = false
 
 	//	textures / materials

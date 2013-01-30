@@ -43,14 +43,14 @@ func (me *FxImage2D) Load() {
 	)
 	prov, arg, _ := me.provider()
 	if me.AsyncNumAttempts != 0 {
-		asyncResources[me] = false
+		thrRend.asyncResources[me] = false
 		loadAsync = func() {
 			for i := 0; (i < me.AsyncNumAttempts) || (me.AsyncNumAttempts < 0); i++ {
 				if img, err = prov(arg); err == nil {
 					break
 				}
 			}
-			asyncResources[me] = true
+			thrRend.asyncResources[me] = true
 			me.load_OnImg(img, err, true)
 		}
 		go loadAsync()

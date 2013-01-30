@@ -8,19 +8,6 @@ import (
 var (
 	//	The heart and brain of go:ngine --- a container for all runtime resources and responsible for rendering.
 	Core EngineCore
-
-	asyncResources   = map[asyncResource]bool{}
-	curMeshBuf       *MeshBuffer
-	curMatKey        string
-	curCam           *Camera
-	curCanvas        *RenderCanvas
-	curMat           *FxMaterial
-	curMesh          *Mesh
-	curModel         *Model
-	curNode          *Node
-	curProg, tmpProg *ugl.Program
-	curTechnique     renderTechnique
-	curScene         *Scene
 )
 
 //	Consider EngineCore a "Singleton" type, only valid use is the core.Core global variable.
@@ -73,8 +60,7 @@ func (me *EngineCore) init() {
 	me.initLibs()
 	me.Rendering.Canvases = RenderCanvases{}
 	me.Rendering.PostFx.init()
-	curCanvas = me.Rendering.Canvases.AddNew(true, true, 1, 1)
-	curCam = curCanvas.Cameras.Add(NewCamera3D())
+	me.Rendering.Canvases.AddNew(true, true, 1, 1).AddNewCamera3D()
 	me.isInit = true
 }
 
@@ -106,9 +92,9 @@ func (me *EngineCore) onSec() {
 	if Diag.LogErrorsDuringLoop {
 		ugl.LogLastError("onSec")
 	}
-	for r, d := range asyncResources {
+	for r, d := range thrRend.asyncResources {
 		if d {
-			delete(asyncResources, r)
+			delete(thrRend.asyncResources, r)
 			r.onAsyncDone()
 		}
 	}
@@ -124,7 +110,7 @@ func (me *EngineCore) SyncUpdates() {
 	ugl.LogLastError("EngineCore.SyncUpdates() -- resizewin")
 	for _, img := range me.Libs.Images.I2D {
 		if !img.Loaded() {
-			if _, ok = asyncResources[img]; !ok {
+			if _, ok = thrRend.asyncResources[img]; !ok {
 				img.Load()
 			}
 		}
@@ -142,16 +128,16 @@ func (me *EngineCore) SyncUpdates() {
 }
 
 func (me *EngineCore) useProgram(name string) {
-	if tmpProg = glc.progMan.Programs[name]; tmpProg != curProg {
-		curProg = tmpProg
-		curProg.Use()
+	if thrRend.tmpProg = glc.progMan.Programs[name]; thrRend.tmpProg != thrRend.curProg {
+		thrRend.curProg = thrRend.tmpProg
+		thrRend.curProg.Use()
 	}
 }
 
 func (me *EngineCore) useTechnique(technique renderTechnique) {
-	if technique != curTechnique {
-		curMeshBuf = nil
-		curTechnique = technique
-		me.useProgram(curTechnique.name())
+	if technique != thrRend.curTechnique {
+		thrRend.curMeshBuf = nil
+		thrRend.curTechnique = technique
+		me.useProgram(thrRend.curTechnique.name())
 	}
 }

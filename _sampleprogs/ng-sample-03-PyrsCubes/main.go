@@ -26,17 +26,17 @@ func main() {
 	ngsamples.SamplesMainFunc(LoadSampleScene_03_PyrsCubes)
 }
 
-func onInput() {
+func onWinThread() {
 	ngsamples.CheckCamCtlKeys()
 	ngsamples.CheckToggleKeys()
 	ngsamples.HandleToggleKeys()
 	if ngsamples.Keys.Toggled[glfw.KeyF4] {
-		rearMirror.Cam.Rendering.Enabled = !rearMirror.Cam.Rendering.Enabled
+		rearMirror.Cam.Enabled = !rearMirror.Cam.Enabled
 	}
 	rearMirror.Cam.Rendering.States.FaceCulling = ngsamples.Cam.Rendering.States.FaceCulling
 }
 
-func onApp() {
+func onAppThread() {
 	ngsamples.HandleCamCtlKeys()
 	rearMirror.OnApp()
 
@@ -79,8 +79,7 @@ func LoadSampleScene_03_PyrsCubes() {
 		str                          string
 	)
 
-	ng.Loop.OnApp = onApp
-	ng.Loop.OnInput = onInput
+	ng.Loop.OnAppThread, ng.Loop.OnWinThread = onAppThread, onWinThread
 	ngsamples.Cam.Rendering.States.FaceCulling = false
 	rearMirror.Setup()
 

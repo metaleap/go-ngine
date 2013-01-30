@@ -30,57 +30,62 @@ type Camera struct {
 	//	Encapsulates the position and direction of this camera.
 	Controller Controller
 
-	Rendering struct {
-		Enabled bool
+	Enabled bool
 
+	Rendering struct {
 		//	The device-relative or absolute view-port for this Camera.
-		ViewPort CameraViewPort
+		Viewport CameraViewport
 
 		//	The ID of the Scene (in Core.Libs.Scenes) this camera is looking at.
 		SceneID string
 
-		States struct {
-			ugl.RenderStatesBag
-			ClearFlags gl.Bitfield
-		}
+		States ugl.RenderStatesBag
 	}
 
-	technique           renderTechnique
-	matCamProj, matProj unum.Mat4
+	thrApp struct {
+		matProj unum.Mat4
+	}
+	thrPrep struct {
+		matCamProj, matProj unum.Mat4
+	}
+	thrRend struct {
+		states    ugl.RenderStatesBag
+		technique renderTechnique
+	}
 }
 
-//	Initializes and returns a new Camera without any projection.
-func NewCamera2D(depth bool) (me *Camera) {
+func newCamera2D(canv *RenderCanvas, depth bool) (me *Camera) {
 	me = &Camera{}
-	me.init(false, depth)
+	me.init(canv, false, depth)
 	return
 }
 
-//	Initializes and returns a new Camera with perspective projection.
-func NewCamera3D() (me *Camera) {
+func newCamera3D(canv *RenderCanvas) (me *Camera) {
 	me = &Camera{}
-	me.init(true, true)
+	me.init(canv, true, true)
 	return
 }
 
-func (me *Camera) init(persp3d bool, depth bool) {
+func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool) {
+	me.Enabled = true
 	rend := &me.Rendering
-	rend.Enabled = true
-	rend.States.DepthTest, rend.States.FaceCulling, rend.States.ScissorTest, rend.States.StencilTest = depth, true, false, false
+	rend.Viewport.canvas = canv
+	rend.States.DepthTest, rend.States.FaceCulling, rend.States.StencilTest = depth, true, false
 	rend.States.ClearColor = Core.Options.Rendering.DefaultClearColor
 	if depth {
-		rend.States.ClearFlags = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT
+		rend.States.Other.ClearBits = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT
 	} else {
-		rend.States.ClearFlags = gl.COLOR_BUFFER_BIT
+		rend.States.Other.ClearBits = gl.COLOR_BUFFER_BIT
 	}
 	persp := &me.Perspective
 	persp.Use = persp3d
 	persp.FovY = 37.8493
 	persp.ZFar = 30000
 	persp.ZNear = 0.3
-	me.matProj.Identity()
+	me.thrApp.matProj.Identity()
+	me.thrPrep.matProj.Identity()
 	me.Controller.init()
-	rend.ViewPort.init()
+	rend.Viewport.init()
 	me.ApplyMatrices()
 	me.SetTechnique(Core.Options.Rendering.DefaultTechnique3D)
 	Core.Libs.Scenes.Walk(func(node *Node) {
@@ -90,43 +95,19 @@ func (me *Camera) init(persp3d bool, depth bool) {
 
 //	Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.
 func (me *Camera) ApplyMatrices() {
-	me.matProj.Perspective(me.Perspective.FovY, me.Rendering.ViewPort.aspect, me.Perspective.ZNear, me.Perspective.ZFar)
+	me.thrApp.matProj.Perspective(me.Perspective.FovY, me.Rendering.Viewport.aspect, me.Perspective.ZNear, me.Perspective.ZFar)
 }
 
 func (me *Camera) dispose() {
 }
 
 func (me *Camera) SetTechnique(name string) {
-	if (me.technique == nil) || (me.technique.name() != name) {
-		me.technique = techs[name]
+	if (me.thrRend.technique == nil) || (me.thrRend.technique.name() != name) {
+		me.thrRend.technique = techs[name]
 	}
 }
 
 type Cameras []*Camera
-
-func (me *Cameras) Add(camera *Camera) *Camera {
-	for _, cam := range *me {
-		if cam == camera {
-			return cam
-		}
-	}
-	*me = append(*me, camera)
-	return camera
-}
-
-func (me *Cameras) Insert(camera *Camera, index int) {
-	if index >= len(*me) {
-		me.Add(camera)
-	} else {
-		for _, cam := range *me {
-			if cam == camera {
-				return
-			}
-		}
-		pre, post := (*me)[:index], (*me)[index:]
-		*me = append(append(pre, camera), post...)
-	}
-}
 
 func (me *Cameras) Remove(camera *Camera) {
 	for i, cam := range *me {
@@ -134,44 +115,45 @@ func (me *Cameras) Remove(camera *Camera) {
 			pre, post := (*me)[:i], (*me)[i+1:]
 			*me = append(pre, post...)
 			Core.Libs.Scenes.Walk(func(node *Node) {
-				delete(node.matModelProjs, cam)
-				delete(node.glMatModelProjs, cam)
+				delete(node.thrPrep.matModelProjs, cam)
+				delete(node.thrPrep.glMatModelProjs, cam)
 			})
 		}
 	}
 }
 
 //	Encapsulates a device-relative or absolute camera view-port.
-type CameraViewPort struct {
+type CameraViewport struct {
 	absolute               bool
 	relX, relY, relW, relH float64
 	absX, absY, absW, absH int
 	aspect                 float64
 	glVpX, glVpY           gl.Int
 	glVpW, glVpH           gl.Sizei
+	canvas                 *RenderCanvas
 }
 
-func (me *CameraViewPort) init() {
+func (me *CameraViewport) init() {
 	me.SetRel(0, 0, 1, 1)
 }
 
 //	Sets the absolute viewport origin and dimensions in pixels.
-func (me *CameraViewPort) SetAbs(x, y, width, height int) {
+func (me *CameraViewport) SetAbs(x, y, width, height int) {
 	me.absolute, me.absX, me.absY, me.absW, me.absH = true, x, y, width, height
 	me.update()
 }
 
 //	Sets the device-relative viewport origin and dimensions, with the value 1.0
 //	representing the maximum extent of the viewport on that respective axis.
-func (me *CameraViewPort) SetRel(x, y, width, height float64) {
+func (me *CameraViewport) SetRel(x, y, width, height float64) {
 	me.absolute, me.relX, me.relY, me.relW, me.relH = false, x, y, width, height
 	me.update()
 }
 
-func (me *CameraViewPort) update() {
+func (me *CameraViewport) update() {
 	if !me.absolute {
-		me.absW, me.absH = int(me.relW*float64(curCanvas.absViewWidth)), int(me.relH*float64(curCanvas.absViewHeight))
-		me.absX, me.absY = int(me.relX*float64(curCanvas.absViewWidth)), int(me.relY*float64(curCanvas.absViewHeight))
+		me.absW, me.absH = int(me.relW*float64(me.canvas.absViewWidth)), int(me.relH*float64(me.canvas.absViewHeight))
+		me.absX, me.absY = int(me.relX*float64(me.canvas.absViewWidth)), int(me.relY*float64(me.canvas.absViewHeight))
 	}
 	me.glVpX, me.glVpY, me.glVpW, me.glVpH = gl.Int(me.absX), gl.Int(me.absY), gl.Sizei(me.absW), gl.Sizei(me.absH)
 	me.aspect = float64(me.absW) / float64(me.absH)

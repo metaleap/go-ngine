@@ -6,9 +6,9 @@ import (
 
 func (me *EngineCore) onRender() {
 	me.Rendering.Samplers.FullFilteringRepeat.Bind(0)
-	for _, curCanvas = range me.Rendering.Canvases {
-		if curCanvas.renderThisFrame() {
-			curCanvas.render()
+	for _, thrRend.curCanv = range me.Rendering.Canvases {
+		if thrRend.curCanv.renderThisFrame() {
+			thrRend.curCanv.render()
 		}
 	}
 	me.Rendering.Samplers.NoFilteringClamp.Bind(0)
@@ -17,38 +17,38 @@ func (me *EngineCore) onRender() {
 
 func (me *RenderCanvas) render() {
 	me.frameBuf.Bind()
-	for _, curCam = range me.Cameras {
-		curCam.render()
+	for _, thrRend.curCam = range me.Cameras {
+		thrRend.curCam.render()
 	}
 	me.frameBuf.Unbind()
 }
 
 func (me *Camera) render() {
-	if me.Rendering.Enabled {
-		Core.Rendering.states.Apply(&me.Rendering.States.RenderStatesBag)
+	if me.Enabled {
+		Core.Rendering.states.Apply(&me.thrRend.states)
 		Core.Rendering.states.ForceEnableScissorTest()
-		curScene = Core.Libs.Scenes[me.Rendering.SceneID]
-		Core.useTechnique(me.technique)
+		thrRend.curScene = Core.Libs.Scenes[me.Rendering.SceneID]
+		Core.useTechnique(me.thrRend.technique)
 		// me.matCamProj.SetFromMult4(&me.matProj, &me.Controller.mat)
-		gl.Scissor(me.Rendering.ViewPort.glVpX, me.Rendering.ViewPort.glVpY, me.Rendering.ViewPort.glVpW, me.Rendering.ViewPort.glVpH)
-		gl.Viewport(me.Rendering.ViewPort.glVpX, me.Rendering.ViewPort.glVpY, me.Rendering.ViewPort.glVpW, me.Rendering.ViewPort.glVpH)
-		if me.Rendering.States.ClearColor[3] > 0 {
-			gl.Clear(me.Rendering.States.ClearFlags)
+		gl.Scissor(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
+		gl.Viewport(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
+		if me.thrRend.states.ClearColor[3] > 0 {
+			gl.Clear(me.thrRend.states.Other.ClearBits)
 		}
-		curScene.RootNode.render()
+		thrRend.curScene.RootNode.render()
 		Core.Rendering.states.ForceDisableScissorTest()
 	}
 }
 
 func (me *Node) render() {
-	if !me.Disabled {
-		if curNode, curMesh, curModel = me, me.mesh, me.model; curModel != nil {
-			curTechnique.onRenderNode()
-			gl.UniformMatrix4fv(curProg.UnifLocs["uMatModelProj"], 1, gl.FALSE, &me.glMatModelProjs[curCam][0])
+	if me.Enabled {
+		if thrRend.curNode = me; me.model != nil {
+			thrRend.curTechnique.onRenderNode()
+			gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uMatModelProj"], 1, gl.FALSE, &me.thrRend.glMatModelProjs[thrRend.curCam][0])
 			me.model.render()
 		}
-		for me.curKey, me.curSubNode = range me.ChildNodes.M {
-			me.curSubNode.render()
+		for me.thrRend.curId, me.thrRend.curSubNode = range me.ChildNodes.M {
+			me.thrRend.curSubNode.render()
 		}
 	}
 }
@@ -58,7 +58,7 @@ func (me *Model) render() {
 }
 
 func (me *Mesh) render() {
-	if curMeshBuf != me.meshBuffer {
+	if thrRend.curMeshBuf != me.meshBuffer {
 		me.meshBuffer.use()
 	}
 	gl.DrawElementsBaseVertex(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Offset(nil, uintptr(me.meshBufOffsetIndices)), gl.Int(me.meshBufOffsetBaseIndex))
@@ -66,7 +66,7 @@ func (me *Mesh) render() {
 }
 
 func (me *PostFx) render() {
-	curProg, curMat, curTechnique, curMatKey = nil, nil, nil, ""
+	thrRend.curProg, thrRend.curMat, thrRend.curTechnique, thrRend.curMatId = nil, nil, nil, ""
 	Core.Rendering.states.DisableDepthTest()
 	Core.Rendering.states.DisableFaceCulling()
 	Core.Rendering.Samplers.NoFilteringClamp.Bind(0)

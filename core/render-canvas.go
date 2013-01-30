@@ -41,6 +41,18 @@ func newRenderCanvas(relative bool, width, height float64) (me *RenderCanvas) {
 	return
 }
 
+func (me *RenderCanvas) AddNewCamera2D(allowOverlaps bool) (cam *Camera) {
+	cam = newCamera2D(me, allowOverlaps)
+	me.Cameras = append(me.Cameras, cam)
+	return
+}
+
+func (me *RenderCanvas) AddNewCamera3D() (cam *Camera) {
+	cam = newCamera3D(me)
+	me.Cameras = append(me.Cameras, cam)
+	return
+}
+
 func (me *RenderCanvas) dispose() {
 	me.frameBuf.Dispose()
 }
@@ -57,7 +69,7 @@ func (me *RenderCanvas) onResize(viewWidth, viewHeight int) {
 	}
 	me.frameBuf.Resize(gl.Sizei(viewWidth), gl.Sizei(viewHeight))
 	for _, cam := range me.Cameras {
-		cam.Rendering.ViewPort.update()
+		cam.Rendering.Viewport.update()
 		cam.ApplyMatrices()
 	}
 }
@@ -137,9 +149,9 @@ func (me RenderCanvases) Main() (main *RenderCanvas) {
 }
 
 func (me RenderCanvases) Walk(onCam func(*Camera)) {
-	for _, curCanvas = range me {
-		for _, curCam = range curCanvas.Cameras {
-			onCam(curCam)
+	for _, canv := range me {
+		for _, cam := range canv.Cameras {
+			onCam(cam)
 		}
 	}
 }

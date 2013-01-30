@@ -46,10 +46,17 @@ type Controller struct {
 	//	The minimum degree that TurnDown() allows. Defaults to -90.
 	MinTurnDown float64
 
-	autoUpdate             bool
-	hAngle, vAngle         float64
-	posNeg, axH, axV       unum.Vec3
-	mat, matTrans, matLook unum.Mat4
+	thrApp struct {
+		mat unum.Mat4
+	}
+	thrPrep struct {
+		mat unum.Mat4
+	}
+
+	autoUpdate        bool
+	hAngle, vAngle    float64
+	posNeg, axH, axV  unum.Vec3
+	matTrans, matLook unum.Mat4
 }
 
 func (me *Controller) applyTranslation() {
@@ -57,7 +64,7 @@ func (me *Controller) applyTranslation() {
 		me.posNeg.SetFromNeg(&me.Pos)
 		me.matLook.LookAt(&me.Dir, &me.UpAxis)
 		me.matTrans.Translation(&me.posNeg)
-		me.mat.SetFromMult4(&me.matLook, &me.matTrans)
+		me.thrApp.mat.SetFromMult4(&me.matLook, &me.matTrans)
 	}
 }
 
@@ -101,7 +108,7 @@ func (me *Controller) init() {
 	me.Dir.Z, me.UpAxis.Y = 1, 1
 	me.MoveSpeed, me.MoveSpeedupFactor, me.TurnSpeed, me.TurnSpeedupFactor = 2, 1, 90, 1
 	me.autoUpdate, me.MaxTurnUp, me.MinTurnDown = true, 90, -90
-	unum.Mat4Identities(&me.mat, &me.matTrans, &me.matLook)
+	unum.Mat4Identities(&me.thrPrep.mat, &me.thrApp.mat, &me.matTrans, &me.matLook)
 	htarget := &unum.Vec3{me.Dir.X, 0, me.Dir.Z}
 	htarget.Normalize()
 	if htarget.Z >= 0 {

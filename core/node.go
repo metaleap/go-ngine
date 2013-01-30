@@ -10,8 +10,8 @@ type Node struct {
 	// matModelProj   unum.Mat4
 	// glMatModelProj ugl.GlMat4
 
-	//	If true, this Node is ignored by the rendering runtime.
-	Disabled bool
+	//	Defaults to true. If false, this Node is ignored by the rendering runtime.
+	Enabled bool
 
 	//	Allows the Node to recursively define hierarchy.
 	ChildNodes Nodes
@@ -19,19 +19,31 @@ type Node struct {
 	//	Encapsulates all parent-relative transformations for this Node.
 	Transform NodeTransforms
 
-	mat                                *FxMaterial
-	mesh                               *Mesh
-	model                              *Model
-	curSubNode, parentNode             *Node
-	matModelProjs                      map[*Camera]*unum.Mat4
-	glMatModelProjs                    map[*Camera]*ugl.GlMat4
-	curKey, matID, meshID, modelID, id string
+	thrPrep struct {
+		curId           string
+		curSubNode      *Node
+		matModelView    unum.Mat4
+		model           *Model
+		matModelProjs   map[*Camera]*unum.Mat4
+		glMatModelProjs map[*Camera]*ugl.GlMat4
+	}
+	thrRend struct {
+		curId           string
+		curSubNode      *Node
+		glMatModelProjs map[*Camera]*ugl.GlMat4
+	}
+
+	mat                               *FxMaterial
+	mesh                              *Mesh
+	model                             *Model
+	curSubNode, parentNode            *Node
+	curID, matID, meshID, modelID, id string
 }
 
 func newNode(id, meshID, modelID string, parent *Node) (me *Node) {
-	me = &Node{id: id, parentNode: parent}
-	me.matModelProjs = map[*Camera]*unum.Mat4{}
-	me.glMatModelProjs = map[*Camera]*ugl.GlMat4{}
+	me = &Node{id: id, parentNode: parent, Enabled: true}
+	me.thrPrep.matModelProjs = map[*Camera]*unum.Mat4{}
+	me.thrPrep.glMatModelProjs = map[*Camera]*ugl.GlMat4{}
 	Core.Rendering.Canvases.Walk(func(cam *Camera) {
 		me.initMat(cam)
 	})
@@ -50,7 +62,7 @@ func (me *Node) EffectiveMaterial() *FxMaterial {
 
 func (me *Node) initMat(cam *Camera) {
 	mat := unum.NewMat4Identity()
-	me.matModelProjs[cam], me.glMatModelProjs[cam] = mat, ugl.NewGlMat4(mat)
+	me.thrPrep.matModelProjs[cam], me.thrPrep.glMatModelProjs[cam] = mat, ugl.NewGlMat4(mat)
 }
 
 func (me *Node) MatID() string {
@@ -87,7 +99,7 @@ func (me *Node) SetMeshModelID(meshID, modelID string) {
 
 func (me *Node) Walk(onNode func(*Node)) {
 	onNode(me)
-	for me.curKey, me.curSubNode = range me.ChildNodes.M {
+	for me.curID, me.curSubNode = range me.ChildNodes.M {
 		me.curSubNode.Walk(onNode)
 	}
 }
