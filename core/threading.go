@@ -68,9 +68,10 @@ func (me *Camera) copyAppToPrep() {
 }
 
 func (me *Camera) copyPrepToRend() {
+	me.thrRend.matCamProj = me.thrPrep.matCamProj
 	me.thrRend.states = me.Rendering.States
-	if thrRend.curScene = Core.Libs.Scenes[me.Rendering.SceneID]; thrRend.curScene != nil {
-		thrRend.curScene.RootNode.copyPrepToRend()
+	if thrPrep.curScene = Core.Libs.Scenes[me.Rendering.SceneID]; thrPrep.curScene != nil {
+		thrPrep.curScene.RootNode.copyPrepToRend()
 	}
 }
 
@@ -83,7 +84,7 @@ func (me *Node) copyAppToPrep() {
 }
 
 func (me *Node) copyPrepToRend() {
-	me.thrRend.glMatModelProjs = me.thrPrep.glMatModelProjs
+	me.thrRend.matModelView = me.thrPrep.matModelView
 	for _, me.thrPrep.curSubNode = range me.ChildNodes.M {
 		me.thrPrep.curSubNode.copyPrepToRend()
 	}

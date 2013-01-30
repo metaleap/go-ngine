@@ -49,8 +49,9 @@ type Camera struct {
 		matCamProj, matProj unum.Mat4
 	}
 	thrRend struct {
-		states    ugl.RenderStatesBag
-		technique renderTechnique
+		matCamProj unum.Mat4
+		states     ugl.RenderStatesBag
+		technique  renderTechnique
 	}
 }
 
@@ -88,9 +89,6 @@ func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool) {
 	rend.Viewport.init()
 	me.ApplyMatrices()
 	me.SetTechnique(Core.Options.Rendering.DefaultTechnique3D)
-	Core.Libs.Scenes.Walk(func(node *Node) {
-		node.initMat(me)
-	})
 }
 
 //	Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.
@@ -114,10 +112,6 @@ func (me *Cameras) Remove(camera *Camera) {
 		if cam == camera {
 			pre, post := (*me)[:i], (*me)[i+1:]
 			*me = append(pre, post...)
-			Core.Libs.Scenes.Walk(func(node *Node) {
-				delete(node.thrPrep.matModelProjs, cam)
-				delete(node.thrPrep.glMatModelProjs, cam)
-			})
 		}
 	}
 }

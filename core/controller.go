@@ -53,34 +53,39 @@ type Controller struct {
 		mat unum.Mat4
 	}
 
-	autoUpdate        bool
-	hAngle, vAngle    float64
-	posNeg, axH, axV  unum.Vec3
-	matTrans, matLook unum.Mat4
+	autoUpdate     bool
+	hAngle, vAngle float64
 }
 
 func (me *Controller) applyTranslation() {
 	if me.autoUpdate {
-		me.posNeg.SetFromNeg(&me.Pos)
-		me.matLook.LookAt(&me.Dir, &me.UpAxis)
-		me.matTrans.Translation(&me.posNeg)
-		me.thrApp.mat.SetFromMult4(&me.matLook, &me.matTrans)
+		var (
+			matTrans, matLook unum.Mat4
+			posNeg            unum.Vec3
+		)
+		posNeg.SetFromNeg(&me.Pos)
+		matLook.LookAt(&me.Dir, &me.UpAxis)
+		matTrans.Translation(&posNeg)
+		me.thrApp.mat.SetFromMult4(&matLook, &matTrans)
 	}
 }
 
 func (me *Controller) applyRotation() {
 	if me.autoUpdate {
-		me.axV.X, me.axV.Y, me.axV.Z = 0, 1, 0
+		var (
+			axH, axV unum.Vec3
+		)
+		axV.X, axV.Y, axV.Z = 0, 1, 0
 		me.Dir.X, me.Dir.Y, me.Dir.Z = 1, 0, 0
-		me.Dir.RotateDeg(me.hAngle, &me.axV)
+		me.Dir.RotateDeg(me.hAngle, &axV)
 		me.Dir.Normalize()
 
-		me.axH = *me.axV.Cross(&me.Dir)
-		me.axH.Normalize()
-		me.Dir.RotateDeg(me.vAngle, &me.axH)
+		axH = *axV.Cross(&me.Dir)
+		axH.Normalize()
+		me.Dir.RotateDeg(me.vAngle, &axH)
 		me.Dir.Normalize()
 
-		me.UpAxis = *me.Dir.Cross(&me.axH)
+		me.UpAxis = *me.Dir.Cross(&axH)
 		me.UpAxis.Normalize()
 	}
 }
@@ -92,6 +97,17 @@ func (me *Controller) applyRotation() {
 //	EndUpdate() to apply all changes in a final matrix re-calculation.
 func (me *Controller) BeginUpdate() {
 	me.autoUpdate = false
+}
+
+func (me *Controller) CopyFrom(ctl *Controller) {
+	copy := *ctl
+	copy.thrPrep = me.thrPrep
+	*me = copy
+	// me.autoUpdate = false
+	// me.Pos, me.Dir, me.UpAxis = ctl.Pos, ctl.Dir, ctl.UpAxis
+	// me.MoveSpeed, me.MoveSpeedupFactor, me.TurnSpeed, me.TurnSpeedupFactor = ctl.MoveSpeed, ctl.MoveSpeedupFactor, ctl.TurnSpeed, ctl.TurnSpeedupFactor
+	// me.MaxTurnUp, me.MinTurnDown, me.thrApp.mat, me.hAngle, me.vAngle = ctl.MaxTurnUp, ctl.MinTurnDown, ctl.thrApp.mat, ctl.hAngle, ctl.vAngle
+	// me.autoUpdate = ctl.autoUpdate
 }
 
 //	Applies all changes made to Pos, Dir or UpAxis since BeginUpdate() was last
@@ -108,7 +124,7 @@ func (me *Controller) init() {
 	me.Dir.Z, me.UpAxis.Y = 1, 1
 	me.MoveSpeed, me.MoveSpeedupFactor, me.TurnSpeed, me.TurnSpeedupFactor = 2, 1, 90, 1
 	me.autoUpdate, me.MaxTurnUp, me.MinTurnDown = true, 90, -90
-	unum.Mat4Identities(&me.thrPrep.mat, &me.thrApp.mat, &me.matTrans, &me.matLook)
+	unum.Mat4Identities(&me.thrPrep.mat, &me.thrApp.mat)
 	htarget := &unum.Vec3{me.Dir.X, 0, me.Dir.Z}
 	htarget.Normalize()
 	if htarget.Z >= 0 {

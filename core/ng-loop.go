@@ -81,6 +81,7 @@ func (me *EngineLoop) Loop() {
 		Core.copyPrepToRend()
 		for me.IsLooping && (glfw.WindowParam(glfw.Opened) == 1) {
 			//	STEP 0. Fire off the prep thread (for next frame) and app thread (for next-after-next frame).
+			me.threadBusy.app, me.threadBusy.prep = true, true
 			go me.loopThreadApp()
 			go me.loopThreadPrep()
 
@@ -148,7 +149,6 @@ func (_ *EngineLoop) loopSwap() {
 }
 
 func (me *EngineLoop) loopThreadApp() {
-	me.threadBusy.app = true
 	Stats.FrameAppThread.begin()
 	me.OnAppThread()
 	Stats.FrameAppThread.end()
@@ -156,7 +156,6 @@ func (me *EngineLoop) loopThreadApp() {
 }
 
 func (me *EngineLoop) loopThreadPrep() {
-	me.threadBusy.prep = true
 	Stats.FramePrepThread.begin()
 	Core.onPrep()
 	Stats.FramePrepThread.end()
@@ -166,11 +165,11 @@ func (me *EngineLoop) loopThreadPrep() {
 func (me *EngineLoop) loopWaitForThreads() {
 	Stats.FrameThreadSync.begin()
 	for me.threadBusy.prep && me.IsLooping {
-		runtime.Gosched()
+		// runtime.Gosched()
 	}
 	Core.copyPrepToRend()
 	for me.threadBusy.app && me.IsLooping {
-		runtime.Gosched()
+		// runtime.Gosched()
 	}
 	Core.copyAppToPrep()
 	Stats.FrameThreadSync.end()

@@ -5,6 +5,10 @@ import (
 	unum "github.com/metaleap/go-util/num"
 )
 
+type nodeCameraGlMats map[*Camera]*ugl.GlMat4
+
+type nodeCameraMats map[*Camera]*unum.Mat4
+
 //	Declares a point of interest in a Scene.
 type Node struct {
 	// matModelProj   unum.Mat4
@@ -20,17 +24,17 @@ type Node struct {
 	Transform NodeTransforms
 
 	thrPrep struct {
-		curId           string
-		curSubNode      *Node
-		matModelView    unum.Mat4
-		model           *Model
-		matModelProjs   map[*Camera]*unum.Mat4
-		glMatModelProjs map[*Camera]*ugl.GlMat4
+		curId        string
+		curSubNode   *Node
+		matModelView unum.Mat4
+		model        *Model
 	}
 	thrRend struct {
-		curId           string
-		curSubNode      *Node
-		glMatModelProjs map[*Camera]*ugl.GlMat4
+		curId          string
+		curSubNode     *Node
+		matModelView   unum.Mat4
+		matModelProj   unum.Mat4
+		glMatModelProj ugl.GlMat4
 	}
 
 	mat                               *FxMaterial
@@ -42,11 +46,6 @@ type Node struct {
 
 func newNode(id, meshID, modelID string, parent *Node) (me *Node) {
 	me = &Node{id: id, parentNode: parent, Enabled: true}
-	me.thrPrep.matModelProjs = map[*Camera]*unum.Mat4{}
-	me.thrPrep.glMatModelProjs = map[*Camera]*ugl.GlMat4{}
-	Core.Rendering.Canvases.Walk(func(cam *Camera) {
-		me.initMat(cam)
-	})
 	me.ChildNodes.init(me)
 	me.Transform.init(me)
 	me.SetMeshModelID(meshID, modelID)
@@ -58,11 +57,6 @@ func (me *Node) EffectiveMaterial() *FxMaterial {
 		return me.mat
 	}
 	return me.model.mat
-}
-
-func (me *Node) initMat(cam *Camera) {
-	mat := unum.NewMat4Identity()
-	me.thrPrep.matModelProjs[cam], me.thrPrep.glMatModelProjs[cam] = mat, ugl.NewGlMat4(mat)
 }
 
 func (me *Node) MatID() string {

@@ -139,7 +139,7 @@ func SamplesMainFunc(assetLoader func()) {
 		CamCtl = &Cam.Controller
 		assetLoader()
 		ng.Core.SyncUpdates()
-		ng.Loop.SwapLast = true // because our OnAppThread() isn't doing any heavy stuff
+		// ng.Loop.SwapLast = true // because our OnAppThread() isn't doing any heavy stuff
 		ng.Loop.Loop()
 		PrintPostLoopSummary()
 	}

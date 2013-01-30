@@ -44,7 +44,13 @@ func (me *Node) render() {
 	if me.Enabled {
 		if thrRend.curNode = me; me.model != nil {
 			thrRend.curTechnique.onRenderNode()
-			gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uMatModelProj"], 1, gl.FALSE, &me.thrRend.glMatModelProjs[thrRend.curCam][0])
+			if thrRend.curCam.Perspective.Use {
+				me.thrRend.matModelProj.SetFromMult4(&thrRend.curCam.thrRend.matCamProj, &me.thrRend.matModelView)
+			} else {
+				me.thrRend.matModelProj = me.thrRend.matModelView
+			}
+			me.thrRend.glMatModelProj.Load(&me.thrRend.matModelProj)
+			gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uMatModelProj"], 1, gl.FALSE, &me.thrRend.glMatModelProj[0])
 			me.model.render()
 		}
 		for me.thrRend.curId, me.thrRend.curSubNode = range me.ChildNodes.M {

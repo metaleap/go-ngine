@@ -25,14 +25,6 @@ func (me *Camera) onPrep() {
 
 func (me *Node) onPrep() {
 	if me.Enabled {
-		if thrPrep.curNode = me; me.thrPrep.model != nil {
-			if thrPrep.curCam.Perspective.Use {
-				me.thrPrep.matModelProjs[thrPrep.curCam].SetFromMult4(&thrPrep.curCam.thrPrep.matCamProj, &me.thrPrep.matModelView)
-			} else {
-				*me.thrPrep.matModelProjs[thrPrep.curCam] = me.thrPrep.matModelView
-			}
-			me.thrPrep.glMatModelProjs[thrPrep.curCam].Load(me.thrPrep.matModelProjs[thrPrep.curCam])
-		}
 		for me.thrPrep.curId, me.thrPrep.curSubNode = range me.ChildNodes.M {
 			me.thrPrep.curSubNode.onPrep()
 		}
