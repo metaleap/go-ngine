@@ -37,10 +37,10 @@ type EngineStats struct {
 	//	and maximum) GPU-side rendering cost per frame.
 	FrameRenderGpu TimingStats
 
-	//	"Prep code" comprises all go:ngine logic executed every frame to prepare
-	//	a batch of rendering commands for the next (not current) frame (including culling).
+	//	"Prep code" comprises all go:ngine logic executed every frame to cull geometry
+	//	and prepare a batch of rendering commands for the next (not current) frame.
 	//	This TimingStats instance tracks over time (both average and maximum) "prep code" cost per frame.
-	FramePrepCode TimingStats
+	FramePrepThread TimingStats
 
 	//	"App code" comprises (mostly user-specific) logic executed every frame in your
 	//	Loop.OnAppThread() callback. Such code may freely modify dynamic Cameras, Nodes etc.
@@ -55,6 +55,12 @@ type EngineStats struct {
 	//	to check for user input -- but execute logic resulting from that input in OnApp()!
 	//	This TimingStats instance tracks over time (both average and maximum) "input code" cost per frame.
 	FrameWinThread TimingStats
+
+	//	When CPU-side rendering is completed, Loop waits for the app thread and prep thread
+	//	to finish (either before or after GPU-side rendering depending on Loop.SwapLast).
+	//	It then copies prep results to the render thread and app results to the prep thread.
+	//	This TimingStats instance tracks over time (both average and maximum) "thread sync" cost per frame.
+	FrameThreadSync TimingStats
 
 	//	During the Loop, the Go Garbge Collector is invoked at least and at most once per second.
 	//	

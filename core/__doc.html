@@ -1458,7 +1458,7 @@ Initiates a rendering loop. This method returns only when the loop is stopped fo
 				
 			
 				
-				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=5538:5566#L166">Stop</a></h3>
+				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=5649:5677#L170">Stop</a></h3>
 				<pre>func (me *EngineLoop) Stop()</pre>
 				<p>
 Stops the currently running Loop.Loop().
@@ -1468,7 +1468,7 @@ Stops the currently running Loop.Loop().
 				
 			
 				
-				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=5675:5710#L171">Time</a></h3>
+				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=5786:5821#L175">Time</a></h3>
 				<pre>func (_ *EngineLoop) Time() float64</pre>
 				<p>
 Returns the number of seconds expired ever since Loop.Loop() was last called.
@@ -1533,7 +1533,7 @@ Allocates, initializes and returns a new core.EngineOptions instance.
 		
 			
 			
-			<h2 id="EngineStats">type <a href="/target/ng-stats.go?s=299:3239#L4">EngineStats</a></h2>
+			<h2 id="EngineStats">type <a href="/target/ng-stats.go?s=299:3636#L4">EngineStats</a></h2>
 			<pre>type EngineStats struct {
     <span class="comment">//	Gives the total number of frames rendered during the &#34;previous&#34;</span>
     <span class="comment">//	(not the current) second. Good enough for just a simple-minded FPS indicator.</span>
@@ -1560,10 +1560,10 @@ Allocates, initializes and returns a new core.EngineOptions instance.
     <span class="comment">//	and maximum) GPU-side rendering cost per frame.</span>
     FrameRenderGpu TimingStats
 
-    <span class="comment">//	&#34;Prep code&#34; comprises all go:ngine logic executed every frame to prepare</span>
-    <span class="comment">//	a batch of rendering commands for the next (not current) frame (including culling).</span>
+    <span class="comment">//	&#34;Prep code&#34; comprises all go:ngine logic executed every frame to cull geometry</span>
+    <span class="comment">//	and prepare a batch of rendering commands for the next (not current) frame.</span>
     <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;prep code&#34; cost per frame.</span>
-    FramePrepCode TimingStats
+    FramePrepThread TimingStats
 
     <span class="comment">//	&#34;App code&#34; comprises (mostly user-specific) logic executed every frame in your</span>
     <span class="comment">//	Loop.OnAppThread() callback. Such code may freely modify dynamic Cameras, Nodes etc.</span>
@@ -1578,6 +1578,12 @@ Allocates, initializes and returns a new core.EngineOptions instance.
     <span class="comment">//	to check for user input -- but execute logic resulting from that input in OnApp()!</span>
     <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;input code&#34; cost per frame.</span>
     FrameWinThread TimingStats
+
+    <span class="comment">//	When CPU-side rendering is completed, Loop waits for the app thread and prep thread</span>
+    <span class="comment">//	to finish (either before or after GPU-side rendering depending on Loop.SwapLast).</span>
+    <span class="comment">//	It then copies prep results to the render thread and app results to the prep thread.</span>
+    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;thread sync&#34; cost per frame.</span>
+    FrameThreadSync TimingStats
 
     <span class="comment">//	During the Loop, the Go Garbge Collector is invoked at least and at most once per second.</span>
     <span class="comment">//	</span>
@@ -1610,7 +1616,7 @@ Tracks various go:ngine performance indicators over time.
 
 			
 				
-				<h3 id="EngineStats.AverageFps">func (*EngineStats) <a href="/target/ng-stats.go?s=3327:3370#L62">AverageFps</a></h3>
+				<h3 id="EngineStats.AverageFps">func (*EngineStats) <a href="/target/ng-stats.go?s=3724:3767#L68">AverageFps</a></h3>
 				<pre>func (me *EngineStats) AverageFps() float64</pre>
 				<p>
 Returns the average number of frames-per-second since Loop.Loop() was last called.
@@ -1620,7 +1626,7 @@ Returns the average number of frames-per-second since Loop.Loop() was last calle
 				
 			
 				
-				<h3 id="EngineStats.TotalFrames">func (*EngineStats) <a href="/target/ng-stats.go?s=3495:3539#L70">TotalFrames</a></h3>
+				<h3 id="EngineStats.TotalFrames">func (*EngineStats) <a href="/target/ng-stats.go?s=3892:3936#L76">TotalFrames</a></h3>
 				<pre>func (me *EngineStats) TotalFrames() float64</pre>
 				
 				
@@ -3458,7 +3464,7 @@ Initializes and returns a new Scene with default parameters.
 		
 			
 			
-			<h2 id="TimingStats">type <a href="/target/ng-stats.go?s=3644:3816#L75">TimingStats</a></h2>
+			<h2 id="TimingStats">type <a href="/target/ng-stats.go?s=4041:4213#L81">TimingStats</a></h2>
 			<pre>type TimingStats struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -3477,7 +3483,7 @@ Helps track average and maximum cost for a variety of performance indicators.
 
 			
 				
-				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/ng-stats.go?s=3885:3925#L81">Average</a></h3>
+				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/ng-stats.go?s=4282:4322#L87">Average</a></h3>
 				<pre>func (me *TimingStats) Average() float64</pre>
 				<p>
 Returns the average cost tracked by this performance indicator.
@@ -3487,7 +3493,7 @@ Returns the average cost tracked by this performance indicator.
 				
 			
 				
-				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/ng-stats.go?s=4517:4553#L104">Max</a></h3>
+				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/ng-stats.go?s=4914:4950#L110">Max</a></h3>
 				<pre>func (me *TimingStats) Max() float64</pre>
 				<p>
 Returns the maximum cost tracked by this performance indicator.

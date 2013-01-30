@@ -157,13 +157,14 @@ func (me *EngineLoop) loopThreadApp() {
 
 func (me *EngineLoop) loopThreadPrep() {
 	me.threadBusy.prep = true
-	Stats.FramePrepCode.begin()
+	Stats.FramePrepThread.begin()
 	Core.onPrep()
-	Stats.FramePrepCode.end()
+	Stats.FramePrepThread.end()
 	me.threadBusy.prep = false
 }
 
 func (me *EngineLoop) loopWaitForThreads() {
+	Stats.FrameThreadSync.begin()
 	for me.threadBusy.prep && me.IsLooping {
 		runtime.Gosched()
 	}
@@ -172,6 +173,7 @@ func (me *EngineLoop) loopWaitForThreads() {
 		runtime.Gosched()
 	}
 	Core.copyAppToPrep()
+	Stats.FrameThreadSync.end()
 }
 
 //	Stops the currently running Loop.Loop().

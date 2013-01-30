@@ -112,7 +112,8 @@ func PrintPostLoopSummary() {
 	printStatSummary("Frame Full Loop", &ng.Stats.Frame)
 	printStatSummary("Frame OnAppThread", &ng.Stats.FrameAppThread)
 	printStatSummary("Frame OnWinThread", &ng.Stats.FrameWinThread)
-	printStatSummary("Frame Prep Code", &ng.Stats.FramePrepCode)
+	printStatSummary("Frame Prep Thread", &ng.Stats.FramePrepThread)
+	printStatSummary("Frame Thread Sync", &ng.Stats.FrameThreadSync)
 	printStatSummary("Frame Render (CPU)", &ng.Stats.FrameRenderCpu)
 	printStatSummary("Frame Render (GPU)", &ng.Stats.FrameRenderGpu)
 	printStatSummary("Frame Render Both", &ng.Stats.FrameRenderBoth)
@@ -138,6 +139,7 @@ func SamplesMainFunc(assetLoader func()) {
 		CamCtl = &Cam.Controller
 		assetLoader()
 		ng.Core.SyncUpdates()
+		ng.Loop.SwapLast = true // because our OnAppThread() isn't doing any heavy stuff
 		ng.Loop.Loop()
 		PrintPostLoopSummary()
 	}
