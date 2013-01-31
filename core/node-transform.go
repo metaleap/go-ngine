@@ -5,30 +5,30 @@ import (
 )
 
 //	Represents one or more transformations of a Node.
-//	This is only used by Node objects, which initialize their NodeTransforms with the
-//	proper defaults and associate themselves with their NodeTransforms. (Any other
-//	NodeTransforms are invalid.)
+//	This is only used by Node objects, which initialize their NodeTransform with the
+//	proper defaults and associate themselves with their NodeTransform. (Any other
+//	NodeTransform are invalid.)
 //	
-//	A single NodeTransforms encapsulates an unexported 4x4 matrix that is recalculated
-//	from its exported fields via the SetFoo() or ApplyMatrices() methods.
-type NodeTransforms struct {
-	//	Translation of the from origin, if any.
+//	A single NodeTransform encapsulates an unexported 4x4 matrix that is recalculated
+//	from its exported fields via the AddFoo(), SetFoo() or ApplyMatrices() methods.
+type NodeTransform struct {
+	//	Translation of the from origin.
 	Pos unum.Vec3
 
-	//	Rotation for each axis in radians, if any.
+	//	Rotation for each axis in radians.
 	Rot unum.Vec3
 
 	//	Scaling of this node, if any. Defaults to (1, 1, 1) for no scaling.
 	Scale unum.Vec3
 
-	//	An arbitrary additional transformation to apply. Defaults to the 4x4 identity matrix for 'none'.
+	//	An arbitrary additional transformation to apply, if any.
 	Other *unum.Mat4
 
 	matModelView unum.Mat4
 	owner        *Node
 }
 
-func (me *NodeTransforms) init(owner *Node) {
+func (me *NodeTransform) init(owner *Node) {
 	me.owner = owner
 	me.Scale.X, me.Scale.Y, me.Scale.Z = 1, 1, 1
 	me.matModelView.Identity()
@@ -36,22 +36,20 @@ func (me *NodeTransforms) init(owner *Node) {
 }
 
 //	Adds the specified vector to me.Rot and calls ApplyMatrices().
-func (me *NodeTransforms) AddRot(rot *unum.Vec3) {
-	if rot != nil {
-		me.Rot.Add(rot)
-		me.ApplyMatrices()
-	}
+func (me *NodeTransform) AddRot(rot *unum.Vec3) {
+	me.Rot.Add(rot)
+	me.ApplyMatrices()
 }
 
 //	Adds the specified values to me.Rot and calls ApplyMatrices().
-func (me *NodeTransforms) AddRotXYZ(x, y, z float64) {
+func (me *NodeTransform) AddRotXYZ(x, y, z float64) {
 	me.Rot.Add3(x, y, z)
 	me.ApplyMatrices()
 }
 
 //	Updates the internal 4x4 transformation matrix for all transformations
 //	in me. It is only this matrix that is used by the rendering runtime.
-func (me *NodeTransforms) ApplyMatrices() {
+func (me *NodeTransform) ApplyMatrices() {
 	thrApp.nodeTrans.matScale.Scaling(&me.Scale)
 	thrApp.nodeTrans.matTrans.Translation(&me.Pos)
 	thrApp.nodeTrans.matRotX.RotationX(&thrApp.numBag, me.Rot.X)
@@ -69,95 +67,83 @@ func (me *NodeTransforms) ApplyMatrices() {
 }
 
 //	Sets me.Pos and calls ApplyMatrices().
-func (me *NodeTransforms) SetPos(pos *unum.Vec3) {
-	if pos != nil {
-		me.Pos = *pos
-		me.ApplyMatrices()
-	} else {
-		me.SetPosXYZ(0, 0, 0)
-	}
+func (me *NodeTransform) SetPos(pos *unum.Vec3) {
+	me.Pos = *pos
+	me.ApplyMatrices()
 }
 
 //	Sets me.Pos.X and calls ApplyMatrices().
-func (me *NodeTransforms) SetPosX(posX float64) {
+func (me *NodeTransform) SetPosX(posX float64) {
 	me.Pos.X = posX
 	me.ApplyMatrices()
 }
 
 //	Sets me.Pos and calls ApplyMatrices().
-func (me *NodeTransforms) SetPosXYZ(posX, posY, posZ float64) {
+func (me *NodeTransform) SetPosXYZ(posX, posY, posZ float64) {
 	me.Pos.X, me.Pos.Y, me.Pos.Z = posX, posY, posZ
 	me.ApplyMatrices()
 }
 
 //	Sets me.Pos.Y and calls ApplyMatrices().
-func (me *NodeTransforms) SetPosY(posY float64) {
+func (me *NodeTransform) SetPosY(posY float64) {
 	me.Pos.Y = posY
 	me.ApplyMatrices()
 }
 
 //	Sets me.Pos.Z and calls ApplyMatrices().
-func (me *NodeTransforms) SetPosZ(posZ float64) {
+func (me *NodeTransform) SetPosZ(posZ float64) {
 	me.Pos.Z = posZ
 	me.ApplyMatrices()
 }
 
 //	Sets me.Rot and calls ApplyMatrices().
-func (me *NodeTransforms) SetRot(rot *unum.Vec3) {
-	if rot != nil {
-		me.Rot = *rot
-		me.ApplyMatrices()
-	} else {
-		me.SetRotXYZ(0, 0, 0)
-	}
+func (me *NodeTransform) SetRot(rot *unum.Vec3) {
+	me.Rot = *rot
+	me.ApplyMatrices()
 }
 
 //	Sets me.Rot.X and calls ApplyMatrices().
-func (me *NodeTransforms) SetRotX(rad float64) {
+func (me *NodeTransform) SetRotX(rad float64) {
 	me.Rot.X = rad
 	me.ApplyMatrices()
 }
 
 //	Sets me.Rot and calls ApplyMatrices().
-func (me *NodeTransforms) SetRotXYZ(radX, radY, radZ float64) {
+func (me *NodeTransform) SetRotXYZ(radX, radY, radZ float64) {
 	me.Rot.X, me.Rot.Y, me.Rot.Z = radX, radY, radZ
 	me.ApplyMatrices()
 }
 
 //	Sets me.Rot.Y and calls ApplyMatrices().
-func (me *NodeTransforms) SetRotY(rad float64) {
+func (me *NodeTransform) SetRotY(rad float64) {
 	me.Rot.Y = rad
 	me.ApplyMatrices()
 }
 
 //	Sets me.Rot.Z and calls ApplyMatrices().
-func (me *NodeTransforms) SetRotZ(rad float64) {
+func (me *NodeTransform) SetRotZ(rad float64) {
 	me.Rot.Z = rad
 	me.ApplyMatrices()
 }
 
 //	Sets me.Scale and calls ApplyMatrices().
-func (me *NodeTransforms) SetScale(scale *unum.Vec3) {
-	if scale != nil {
-		me.Scale = *scale
-		me.ApplyMatrices()
-	} else {
-		me.SetScaleN(1)
-	}
+func (me *NodeTransform) SetScale(scale *unum.Vec3) {
+	me.Scale = *scale
+	me.ApplyMatrices()
 }
 
 //	Sets me.Scale and calls ApplyMatrices().
-func (me *NodeTransforms) SetScaleN(scale float64) {
+func (me *NodeTransform) SetScaleN(scale float64) {
 	me.SetScaleXYZ(scale, scale, scale)
 }
 
 //	Sets me.Scale and calls ApplyMatrices().
-func (me *NodeTransforms) SetScaleXYZ(x, y, z float64) {
+func (me *NodeTransform) SetScaleXYZ(x, y, z float64) {
 	me.Scale.X, me.Scale.Y, me.Scale.Z = x, y, z
 	me.ApplyMatrices()
 }
 
 //	Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
-func (me *NodeTransforms) StepDelta(deltaPerSecond float64) float64 {
+func (me *NodeTransform) StepDelta(deltaPerSecond float64) float64 {
 	return Loop.TickDelta * deltaPerSecond
 }

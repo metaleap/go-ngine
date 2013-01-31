@@ -591,59 +591,59 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#NodeTransforms">type NodeTransforms</a></dd>
+				<dd><a href="#NodeTransform">type NodeTransform</a></dd>
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.AddRot">func (me *NodeTransforms) AddRot(rot *unum.Vec3)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.AddRot">func (me *NodeTransform) AddRot(rot *unum.Vec3)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.AddRotXYZ">func (me *NodeTransforms) AddRotXYZ(x, y, z float64)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.AddRotXYZ">func (me *NodeTransform) AddRotXYZ(x, y, z float64)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.ApplyMatrices">func (me *NodeTransforms) ApplyMatrices()</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.ApplyMatrices">func (me *NodeTransform) ApplyMatrices()</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.SetPos">func (me *NodeTransforms) SetPos(pos *unum.Vec3)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetPos">func (me *NodeTransform) SetPos(pos *unum.Vec3)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.SetPosX">func (me *NodeTransforms) SetPosX(posX float64)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetPosX">func (me *NodeTransform) SetPosX(posX float64)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.SetPosXYZ">func (me *NodeTransforms) SetPosXYZ(posX, posY, posZ float64)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetPosXYZ">func (me *NodeTransform) SetPosXYZ(posX, posY, posZ float64)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.SetPosY">func (me *NodeTransforms) SetPosY(posY float64)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetPosY">func (me *NodeTransform) SetPosY(posY float64)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.SetPosZ">func (me *NodeTransforms) SetPosZ(posZ float64)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetPosZ">func (me *NodeTransform) SetPosZ(posZ float64)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.SetRot">func (me *NodeTransforms) SetRot(rot *unum.Vec3)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetRot">func (me *NodeTransform) SetRot(rot *unum.Vec3)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.SetRotX">func (me *NodeTransforms) SetRotX(rad float64)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetRotX">func (me *NodeTransform) SetRotX(rad float64)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.SetRotXYZ">func (me *NodeTransforms) SetRotXYZ(radX, radY, radZ float64)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetRotXYZ">func (me *NodeTransform) SetRotXYZ(radX, radY, radZ float64)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.SetRotY">func (me *NodeTransforms) SetRotY(rad float64)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetRotY">func (me *NodeTransform) SetRotY(rad float64)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.SetRotZ">func (me *NodeTransforms) SetRotZ(rad float64)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetRotZ">func (me *NodeTransform) SetRotZ(rad float64)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.SetScale">func (me *NodeTransforms) SetScale(scale *unum.Vec3)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetScale">func (me *NodeTransform) SetScale(scale *unum.Vec3)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.SetScaleN">func (me *NodeTransforms) SetScaleN(scale float64)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetScaleN">func (me *NodeTransform) SetScaleN(scale float64)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.SetScaleXYZ">func (me *NodeTransforms) SetScaleXYZ(x, y, z float64)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetScaleXYZ">func (me *NodeTransform) SetScaleXYZ(x, y, z float64)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.StepDelta">func (me *NodeTransforms) StepDelta(deltaPerSecond float64) float64</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.StepDelta">func (me *NodeTransform) StepDelta(deltaPerSecond float64) float64</a></dd>
 				
 			
 				
@@ -2801,7 +2801,7 @@ Returns the default Model (with ID &#34;&#34;) for the parent Mesh.
 		
 			
 			
-			<h2 id="Node">type <a href="/target/node.go?s=236:1110#L3">Node</a></h2>
+			<h2 id="Node">type <a href="/target/node.go?s=236:1109#L3">Node</a></h2>
 			<pre>type Node struct {
     <span class="comment">//	Defaults to true. If false, this Node is ignored by the rendering runtime.</span>
     Enabled bool
@@ -2810,7 +2810,7 @@ Returns the default Model (with ID &#34;&#34;) for the parent Mesh.
     ChildNodes Nodes
 
     <span class="comment">//	Encapsulates all parent-relative transformations for this Node.</span>
-    Transform NodeTransforms
+    Transform NodeTransform
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
@@ -2828,56 +2828,56 @@ Declares a point of interest in a Scene.
 
 			
 				
-				<h3 id="Node.EffectiveMaterial">func (*Node) <a href="/target/node.go?s=1380:1427#L48">EffectiveMaterial</a></h3>
+				<h3 id="Node.EffectiveMaterial">func (*Node) <a href="/target/node.go?s=1379:1426#L48">EffectiveMaterial</a></h3>
 				<pre>func (me *Node) EffectiveMaterial() *FxMaterial</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MatID">func (*Node) <a href="/target/node.go?s=1867:1897#L68">MatID</a></h3>
+				<h3 id="Node.MatID">func (*Node) <a href="/target/node.go?s=1866:1896#L68">MatID</a></h3>
 				<pre>func (me *Node) MatID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MeshID">func (*Node) <a href="/target/node.go?s=1920:1951#L72">MeshID</a></h3>
+				<h3 id="Node.MeshID">func (*Node) <a href="/target/node.go?s=1919:1950#L72">MeshID</a></h3>
 				<pre>func (me *Node) MeshID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.ModelID">func (*Node) <a href="/target/node.go?s=1975:2007#L76">ModelID</a></h3>
+				<h3 id="Node.ModelID">func (*Node) <a href="/target/node.go?s=1974:2006#L76">ModelID</a></h3>
 				<pre>func (me *Node) ModelID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2032:2067#L80">Root</a></h3>
+				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2031:2066#L80">Root</a></h3>
 				<pre>func (me *Node) Root() (root *Node)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=2163:2204#L89">SetMatID</a></h3>
+				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=2162:2203#L89">SetMatID</a></h3>
 				<pre>func (me *Node) SetMatID(newMatID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=2301:2355#L95">SetMeshModelID</a></h3>
+				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=2300:2354#L95">SetMeshModelID</a></h3>
 				<pre>func (me *Node) SetMeshModelID(meshID, modelID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2659:2699#L109">Walk</a></h3>
+				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2658:2698#L109">Walk</a></h3>
 				<pre>func (me *Node) Walk(onNode func(*Node))</pre>
 				
 				
@@ -2886,30 +2886,30 @@ Declares a point of interest in a Scene.
 		
 			
 			
-			<h2 id="NodeTransforms">type <a href="/target/node-transform.go?s=481:888#L4">NodeTransforms</a></h2>
-			<pre>type NodeTransforms struct {
-    <span class="comment">//	Translation of the from origin, if any.</span>
+			<h2 id="NodeTransform">type <a href="/target/node-transform.go?s=487:837#L4">NodeTransform</a></h2>
+			<pre>type NodeTransform struct {
+    <span class="comment">//	Translation of the from origin.</span>
     Pos unum.Vec3
 
-    <span class="comment">//	Rotation for each axis in radians, if any.</span>
+    <span class="comment">//	Rotation for each axis in radians.</span>
     Rot unum.Vec3
 
     <span class="comment">//	Scaling of this node, if any. Defaults to (1, 1, 1) for no scaling.</span>
     Scale unum.Vec3
 
-    <span class="comment">//	An arbitrary additional transformation to apply. Defaults to the 4x4 identity matrix for &#39;none&#39;.</span>
+    <span class="comment">//	An arbitrary additional transformation to apply, if any.</span>
     Other *unum.Mat4
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
 Represents one or more transformations of a Node.
-This is only used by Node objects, which initialize their NodeTransforms with the
-proper defaults and associate themselves with their NodeTransforms. (Any other
-NodeTransforms are invalid.)
+This is only used by Node objects, which initialize their NodeTransform with the
+proper defaults and associate themselves with their NodeTransform. (Any other
+NodeTransform are invalid.)
 </p>
 <p>
-A single NodeTransforms encapsulates an unexported 4x4 matrix that is recalculated
-from its exported fields via the SetFoo() or ApplyMatrices() methods.
+A single NodeTransform encapsulates an unexported 4x4 matrix that is recalculated
+from its exported fields via the AddFoo(), SetFoo() or ApplyMatrices() methods.
 </p>
 
 
@@ -2923,8 +2923,8 @@ from its exported fields via the SetFoo() or ApplyMatrices() methods.
 
 			
 				
-				<h3 id="NodeTransforms.AddRot">func (*NodeTransforms) <a href="/target/node-transform.go?s=1117:1165#L29">AddRot</a></h3>
-				<pre>func (me *NodeTransforms) AddRot(rot *unum.Vec3)</pre>
+				<h3 id="NodeTransform.AddRot">func (*NodeTransform) <a href="/target/node-transform.go?s=1065:1112#L29">AddRot</a></h3>
+				<pre>func (me *NodeTransform) AddRot(rot *unum.Vec3)</pre>
 				<p>
 Adds the specified vector to me.Rot and calls ApplyMatrices().
 </p>
@@ -2933,8 +2933,8 @@ Adds the specified vector to me.Rot and calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.AddRotXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=1296:1348#L37">AddRotXYZ</a></h3>
-				<pre>func (me *NodeTransforms) AddRotXYZ(x, y, z float64)</pre>
+				<h3 id="NodeTransform.AddRotXYZ">func (*NodeTransform) <a href="/target/node-transform.go?s=1221:1272#L35">AddRotXYZ</a></h3>
+				<pre>func (me *NodeTransform) AddRotXYZ(x, y, z float64)</pre>
 				<p>
 Adds the specified values to me.Rot and calls ApplyMatrices().
 </p>
@@ -2943,8 +2943,8 @@ Adds the specified values to me.Rot and calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.ApplyMatrices">func (*NodeTransforms) <a href="/target/node-transform.go?s=1542:1583#L44">ApplyMatrices</a></h3>
-				<pre>func (me *NodeTransforms) ApplyMatrices()</pre>
+				<h3 id="NodeTransform.ApplyMatrices">func (*NodeTransform) <a href="/target/node-transform.go?s=1466:1506#L42">ApplyMatrices</a></h3>
+				<pre>func (me *NodeTransform) ApplyMatrices()</pre>
 				<p>
 Updates the internal 4x4 transformation matrix for all transformations
 in me. It is only this matrix that is used by the rendering runtime.
@@ -2954,8 +2954,8 @@ in me. It is only this matrix that is used by the rendering runtime.
 				
 			
 				
-				<h3 id="NodeTransforms.SetPos">func (*NodeTransforms) <a href="/target/node-transform.go?s=2413:2461#L62">SetPos</a></h3>
-				<pre>func (me *NodeTransforms) SetPos(pos *unum.Vec3)</pre>
+				<h3 id="NodeTransform.SetPos">func (*NodeTransform) <a href="/target/node-transform.go?s=2336:2383#L60">SetPos</a></h3>
+				<pre>func (me *NodeTransform) SetPos(pos *unum.Vec3)</pre>
 				<p>
 Sets me.Pos and calls ApplyMatrices().
 </p>
@@ -2964,8 +2964,8 @@ Sets me.Pos and calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosX">func (*NodeTransforms) <a href="/target/node-transform.go?s=2602:2649#L72">SetPosX</a></h3>
-				<pre>func (me *NodeTransforms) SetPosX(posX float64)</pre>
+				<h3 id="NodeTransform.SetPosX">func (*NodeTransform) <a href="/target/node-transform.go?s=2468:2514#L66">SetPosX</a></h3>
+				<pre>func (me *NodeTransform) SetPosX(posX float64)</pre>
 				<p>
 Sets me.Pos.X and calls ApplyMatrices().
 </p>
@@ -2974,8 +2974,8 @@ Sets me.Pos.X and calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=2734:2795#L78">SetPosXYZ</a></h3>
-				<pre>func (me *NodeTransforms) SetPosXYZ(posX, posY, posZ float64)</pre>
+				<h3 id="NodeTransform.SetPosXYZ">func (*NodeTransform) <a href="/target/node-transform.go?s=2599:2659#L72">SetPosXYZ</a></h3>
+				<pre>func (me *NodeTransform) SetPosXYZ(posX, posY, posZ float64)</pre>
 				<p>
 Sets me.Pos and calls ApplyMatrices().
 </p>
@@ -2984,8 +2984,8 @@ Sets me.Pos and calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosY">func (*NodeTransforms) <a href="/target/node-transform.go?s=2914:2961#L84">SetPosY</a></h3>
-				<pre>func (me *NodeTransforms) SetPosY(posY float64)</pre>
+				<h3 id="NodeTransform.SetPosY">func (*NodeTransform) <a href="/target/node-transform.go?s=2778:2824#L78">SetPosY</a></h3>
+				<pre>func (me *NodeTransform) SetPosY(posY float64)</pre>
 				<p>
 Sets me.Pos.Y and calls ApplyMatrices().
 </p>
@@ -2994,8 +2994,8 @@ Sets me.Pos.Y and calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=3048:3095#L90">SetPosZ</a></h3>
-				<pre>func (me *NodeTransforms) SetPosZ(posZ float64)</pre>
+				<h3 id="NodeTransform.SetPosZ">func (*NodeTransform) <a href="/target/node-transform.go?s=2911:2957#L84">SetPosZ</a></h3>
+				<pre>func (me *NodeTransform) SetPosZ(posZ float64)</pre>
 				<p>
 Sets me.Pos.Z and calls ApplyMatrices().
 </p>
@@ -3004,8 +3004,8 @@ Sets me.Pos.Z and calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRot">func (*NodeTransforms) <a href="/target/node-transform.go?s=3180:3228#L96">SetRot</a></h3>
-				<pre>func (me *NodeTransforms) SetRot(rot *unum.Vec3)</pre>
+				<h3 id="NodeTransform.SetRot">func (*NodeTransform) <a href="/target/node-transform.go?s=3042:3089#L90">SetRot</a></h3>
+				<pre>func (me *NodeTransform) SetRot(rot *unum.Vec3)</pre>
 				<p>
 Sets me.Rot and calls ApplyMatrices().
 </p>
@@ -3014,8 +3014,8 @@ Sets me.Rot and calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotX">func (*NodeTransforms) <a href="/target/node-transform.go?s=3369:3415#L106">SetRotX</a></h3>
-				<pre>func (me *NodeTransforms) SetRotX(rad float64)</pre>
+				<h3 id="NodeTransform.SetRotX">func (*NodeTransform) <a href="/target/node-transform.go?s=3174:3219#L96">SetRotX</a></h3>
+				<pre>func (me *NodeTransform) SetRotX(rad float64)</pre>
 				<p>
 Sets me.Rot.X and calls ApplyMatrices().
 </p>
@@ -3024,8 +3024,8 @@ Sets me.Rot.X and calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=3499:3560#L112">SetRotXYZ</a></h3>
-				<pre>func (me *NodeTransforms) SetRotXYZ(radX, radY, radZ float64)</pre>
+				<h3 id="NodeTransform.SetRotXYZ">func (*NodeTransform) <a href="/target/node-transform.go?s=3303:3363#L102">SetRotXYZ</a></h3>
+				<pre>func (me *NodeTransform) SetRotXYZ(radX, radY, radZ float64)</pre>
 				<p>
 Sets me.Rot and calls ApplyMatrices().
 </p>
@@ -3034,8 +3034,8 @@ Sets me.Rot and calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotY">func (*NodeTransforms) <a href="/target/node-transform.go?s=3679:3725#L118">SetRotY</a></h3>
-				<pre>func (me *NodeTransforms) SetRotY(rad float64)</pre>
+				<h3 id="NodeTransform.SetRotY">func (*NodeTransform) <a href="/target/node-transform.go?s=3482:3527#L108">SetRotY</a></h3>
+				<pre>func (me *NodeTransform) SetRotY(rad float64)</pre>
 				<p>
 Sets me.Rot.Y and calls ApplyMatrices().
 </p>
@@ -3044,8 +3044,8 @@ Sets me.Rot.Y and calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=3811:3857#L124">SetRotZ</a></h3>
-				<pre>func (me *NodeTransforms) SetRotZ(rad float64)</pre>
+				<h3 id="NodeTransform.SetRotZ">func (*NodeTransform) <a href="/target/node-transform.go?s=3613:3658#L114">SetRotZ</a></h3>
+				<pre>func (me *NodeTransform) SetRotZ(rad float64)</pre>
 				<p>
 Sets me.Rot.Z and calls ApplyMatrices().
 </p>
@@ -3054,8 +3054,8 @@ Sets me.Rot.Z and calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.SetScale">func (*NodeTransforms) <a href="/target/node-transform.go?s=3943:3995#L130">SetScale</a></h3>
-				<pre>func (me *NodeTransforms) SetScale(scale *unum.Vec3)</pre>
+				<h3 id="NodeTransform.SetScale">func (*NodeTransform) <a href="/target/node-transform.go?s=3744:3795#L120">SetScale</a></h3>
+				<pre>func (me *NodeTransform) SetScale(scale *unum.Vec3)</pre>
 				<p>
 Sets me.Scale and calls ApplyMatrices().
 </p>
@@ -3064,8 +3064,8 @@ Sets me.Scale and calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.SetScaleN">func (*NodeTransforms) <a href="/target/node-transform.go?s=4136:4186#L140">SetScaleN</a></h3>
-				<pre>func (me *NodeTransforms) SetScaleN(scale float64)</pre>
+				<h3 id="NodeTransform.SetScaleN">func (*NodeTransform) <a href="/target/node-transform.go?s=3884:3933#L126">SetScaleN</a></h3>
+				<pre>func (me *NodeTransform) SetScaleN(scale float64)</pre>
 				<p>
 Sets me.Scale and calls ApplyMatrices().
 </p>
@@ -3074,8 +3074,8 @@ Sets me.Scale and calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.SetScaleXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=4273:4327#L145">SetScaleXYZ</a></h3>
-				<pre>func (me *NodeTransforms) SetScaleXYZ(x, y, z float64)</pre>
+				<h3 id="NodeTransform.SetScaleXYZ">func (*NodeTransform) <a href="/target/node-transform.go?s=4020:4073#L131">SetScaleXYZ</a></h3>
+				<pre>func (me *NodeTransform) SetScaleXYZ(x, y, z float64)</pre>
 				<p>
 Sets me.Scale and calls ApplyMatrices().
 </p>
@@ -3084,8 +3084,8 @@ Sets me.Scale and calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.StepDelta">func (*NodeTransforms) <a href="/target/node-transform.go?s=4478:4545#L151">StepDelta</a></h3>
-				<pre>func (me *NodeTransforms) StepDelta(deltaPerSecond float64) float64</pre>
+				<h3 id="NodeTransform.StepDelta">func (*NodeTransform) <a href="/target/node-transform.go?s=4224:4290#L137">StepDelta</a></h3>
+				<pre>func (me *NodeTransform) StepDelta(deltaPerSecond float64) float64</pre>
 				<p>
 Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
 </p>

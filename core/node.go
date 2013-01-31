@@ -18,7 +18,7 @@ type Node struct {
 	ChildNodes Nodes
 
 	//	Encapsulates all parent-relative transformations for this Node.
-	Transform NodeTransforms
+	Transform NodeTransform
 
 	thrPrep struct {
 		copyDone, done bool
