@@ -12,7 +12,10 @@ var (
 			matTrans, matLook unum.Mat4
 			posNeg, axis      unum.Vec3
 		}
-		numBag unum.Bag
+		numBag    unum.Bag
+		nodeTrans struct {
+			matParent, matTrans, matScale, matRotX, matRotY, matRotZ unum.Mat4
+		}
 	}
 	thrPrep struct {
 		curCam   *Camera

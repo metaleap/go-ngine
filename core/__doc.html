@@ -595,40 +595,13 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.AddRot">func (me *NodeTransforms) AddRot(rot *unum.Vec3)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.AddRotXYZ">func (me *NodeTransforms) AddRotXYZ(x, y, z float64)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.ApplyMatrices">func (me *NodeTransforms) ApplyMatrices()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.OnAnyChanged">func (me *NodeTransforms) OnAnyChanged()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.OnPosChanged">func (me *NodeTransforms) OnPosChanged()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.OnPosRotChanged">func (me *NodeTransforms) OnPosRotChanged()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.OnPosScaleChanged">func (me *NodeTransforms) OnPosScaleChanged()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.OnRotChanged">func (me *NodeTransforms) OnRotChanged()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.OnRotScaleChanged">func (me *NodeTransforms) OnRotScaleChanged()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.OnRotXChanged">func (me *NodeTransforms) OnRotXChanged()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.OnRotYChanged">func (me *NodeTransforms) OnRotYChanged()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.OnRotZChanged">func (me *NodeTransforms) OnRotZChanged()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.OnScaleChanged">func (me *NodeTransforms) OnScaleChanged()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.OnSomeChanged">func (me *NodeTransforms) OnSomeChanged(scale, pos, rotX, rotY, rotZ bool)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#NodeTransforms.SetPos">func (me *NodeTransforms) SetPos(pos *unum.Vec3)</a></dd>
@@ -2828,9 +2801,8 @@ Returns the default Model (with ID &#34;&#34;) for the parent Mesh.
 		
 			
 			
-			<h2 id="Node">type <a href="/target/node.go?s=236:1288#L3">Node</a></h2>
+			<h2 id="Node">type <a href="/target/node.go?s=236:1110#L3">Node</a></h2>
 			<pre>type Node struct {
-
     <span class="comment">//	Defaults to true. If false, this Node is ignored by the rendering runtime.</span>
     Enabled bool
 
@@ -2856,56 +2828,56 @@ Declares a point of interest in a Scene.
 
 			
 				
-				<h3 id="Node.EffectiveMaterial">func (*Node) <a href="/target/node.go?s=1558:1605#L54">EffectiveMaterial</a></h3>
+				<h3 id="Node.EffectiveMaterial">func (*Node) <a href="/target/node.go?s=1380:1427#L48">EffectiveMaterial</a></h3>
 				<pre>func (me *Node) EffectiveMaterial() *FxMaterial</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MatID">func (*Node) <a href="/target/node.go?s=2045:2075#L74">MatID</a></h3>
+				<h3 id="Node.MatID">func (*Node) <a href="/target/node.go?s=1867:1897#L68">MatID</a></h3>
 				<pre>func (me *Node) MatID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MeshID">func (*Node) <a href="/target/node.go?s=2098:2129#L78">MeshID</a></h3>
+				<h3 id="Node.MeshID">func (*Node) <a href="/target/node.go?s=1920:1951#L72">MeshID</a></h3>
 				<pre>func (me *Node) MeshID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.ModelID">func (*Node) <a href="/target/node.go?s=2153:2185#L82">ModelID</a></h3>
+				<h3 id="Node.ModelID">func (*Node) <a href="/target/node.go?s=1975:2007#L76">ModelID</a></h3>
 				<pre>func (me *Node) ModelID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2210:2245#L86">Root</a></h3>
+				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2032:2067#L80">Root</a></h3>
 				<pre>func (me *Node) Root() (root *Node)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=2341:2382#L95">SetMatID</a></h3>
+				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=2163:2204#L89">SetMatID</a></h3>
 				<pre>func (me *Node) SetMatID(newMatID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=2479:2533#L101">SetMeshModelID</a></h3>
+				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=2301:2355#L95">SetMeshModelID</a></h3>
 				<pre>func (me *Node) SetMeshModelID(meshID, modelID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2837:2877#L115">Walk</a></h3>
+				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2659:2699#L109">Walk</a></h3>
 				<pre>func (me *Node) Walk(onNode func(*Node))</pre>
 				
 				
@@ -2914,7 +2886,7 @@ Declares a point of interest in a Scene.
 		
 			
 			
-			<h2 id="NodeTransforms">type <a href="/target/node-transform.go?s=613:1147#L6">NodeTransforms</a></h2>
+			<h2 id="NodeTransforms">type <a href="/target/node-transform.go?s=481:888#L4">NodeTransforms</a></h2>
 			<pre>type NodeTransforms struct {
     <span class="comment">//	Translation of the from origin, if any.</span>
     Pos unum.Vec3
@@ -2926,7 +2898,7 @@ Declares a point of interest in a Scene.
     Scale unum.Vec3
 
     <span class="comment">//	An arbitrary additional transformation to apply. Defaults to the 4x4 identity matrix for &#39;none&#39;.</span>
-    Other unum.Mat4
+    Other *unum.Mat4
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
@@ -2936,10 +2908,8 @@ proper defaults and associate themselves with their NodeTransforms. (Any other
 NodeTransforms are invalid.)
 </p>
 <p>
-A single NodeTransforms encapsulates a number of private 4x4 matrices that are
-set from its exported fields via the SetFoo() or OnFooChanged() methods, and
-are multiplied together into a final single 4x4 transformation matrix via the
-ApplyMatrices() (or OnFooChanged()) methods.
+A single NodeTransforms encapsulates an unexported 4x4 matrix that is recalculated
+from its exported fields via the SetFoo() or ApplyMatrices() methods.
 </p>
 
 
@@ -2953,278 +2923,168 @@ ApplyMatrices() (or OnFooChanged()) methods.
 
 			
 				
-				<h3 id="NodeTransforms.ApplyMatrices">func (*NodeTransforms) <a href="/target/node-transform.go?s=1727:1768#L38">ApplyMatrices</a></h3>
+				<h3 id="NodeTransforms.AddRot">func (*NodeTransforms) <a href="/target/node-transform.go?s=1117:1165#L29">AddRot</a></h3>
+				<pre>func (me *NodeTransforms) AddRot(rot *unum.Vec3)</pre>
+				<p>
+Adds the specified vector to me.Rot and calls ApplyMatrices().
+</p>
+
+				
+				
+			
+				
+				<h3 id="NodeTransforms.AddRotXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=1296:1348#L37">AddRotXYZ</a></h3>
+				<pre>func (me *NodeTransforms) AddRotXYZ(x, y, z float64)</pre>
+				<p>
+Adds the specified values to me.Rot and calls ApplyMatrices().
+</p>
+
+				
+				
+			
+				
+				<h3 id="NodeTransforms.ApplyMatrices">func (*NodeTransforms) <a href="/target/node-transform.go?s=1542:1583#L44">ApplyMatrices</a></h3>
 				<pre>func (me *NodeTransforms) ApplyMatrices()</pre>
 				<p>
-Creates a final single 4x4 transformation matrix for all transformations
-in me. It is onlx this matrix that is used by the rendering runtime.
+Updates the internal 4x4 transformation matrix for all transformations
+in me. It is only this matrix that is used by the rendering runtime.
 </p>
 
 				
 				
 			
 				
-				<h3 id="NodeTransforms.OnAnyChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2410:2450#L54">OnAnyChanged</a></h3>
-				<pre>func (me *NodeTransforms) OnAnyChanged()</pre>
-				<p>
-Updates the translation matrix from the current me.Pos value.
-Updates the scaling matrix from the current me.Scale value.
-Updates the X, Y and Z axis rotation matrices from the current me.Rot value.
-Then calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransforms.OnPosChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2717:2757#L67">OnPosChanged</a></h3>
-				<pre>func (me *NodeTransforms) OnPosChanged()</pre>
-				<p>
-Updates the translation matrix from the current me.Pos value.
-Then calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransforms.OnPosRotChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2978:3021#L75">OnPosRotChanged</a></h3>
-				<pre>func (me *NodeTransforms) OnPosRotChanged()</pre>
-				<p>
-Updates the translation matrix from the current me.Pos value.
-Updates the X, Y and Z axis rotation matrices from the current me.Rot value.
-Then calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransforms.OnPosScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3244:3289#L84">OnPosScaleChanged</a></h3>
-				<pre>func (me *NodeTransforms) OnPosScaleChanged()</pre>
-				<p>
-Updates the translation matrix from the current me.Pos value.
-Updates the scaling matrix from the current me.Scale value.
-Then calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransforms.OnRotChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3572:3612#L98">OnRotChanged</a></h3>
-				<pre>func (me *NodeTransforms) OnRotChanged()</pre>
-				<p>
-Updates the X, Y and Z axis rotation matrices from the current me.Rot value.
-Then calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransforms.OnRotScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3831:3876#L106">OnRotScaleChanged</a></h3>
-				<pre>func (me *NodeTransforms) OnRotScaleChanged()</pre>
-				<p>
-Updates the scaling matrix from the current me.Scale value.
-Updates the X, Y and Z axis rotation matrices from the current me.Rot value.
-Then calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransforms.OnRotXChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4139:4180#L118">OnRotXChanged</a></h3>
-				<pre>func (me *NodeTransforms) OnRotXChanged()</pre>
-				<p>
-Updates the X-axis rotation matrix from the current me.Rot.X value.
-Then calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransforms.OnRotYChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4423:4464#L129">OnRotYChanged</a></h3>
-				<pre>func (me *NodeTransforms) OnRotYChanged()</pre>
-				<p>
-Updates the Y-axis rotation matrix from the current me.Rot.Y value.
-Then calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransforms.OnRotZChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4707:4748#L140">OnRotZChanged</a></h3>
-				<pre>func (me *NodeTransforms) OnRotZChanged()</pre>
-				<p>
-Updates the Z-axis rotation matrix from the current me.Rot.Z value.
-Then calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransforms.OnScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4968:5010#L151">OnScaleChanged</a></h3>
-				<pre>func (me *NodeTransforms) OnScaleChanged()</pre>
-				<p>
-Updates the scaling matrix from the current me.Scale value.
-Then calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransforms.OnSomeChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=5514:5588#L162">OnSomeChanged</a></h3>
-				<pre>func (me *NodeTransforms) OnSomeChanged(scale, pos, rotX, rotY, rotZ bool)</pre>
-				<p>
-If pos is true, updates the translation matrix from the current me.Pos value.
-If scale is true, updates the scaling matrix from the current me.Scale value.
-If rotX is true, updates the X-axis rotation matrix from the current me.Rot.X value.
-If rotY is true, updates the Y-axis rotation matrix from the current me.Rot.Y value.
-If rotZ is true, updates the Z-axis rotation matrix from the current me.Rot.Z value.
-Then calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransforms.SetPos">func (*NodeTransforms) <a href="/target/node-transform.go?s=5830:5878#L182">SetPos</a></h3>
+				<h3 id="NodeTransforms.SetPos">func (*NodeTransforms) <a href="/target/node-transform.go?s=2413:2461#L62">SetPos</a></h3>
 				<pre>func (me *NodeTransforms) SetPos(pos *unum.Vec3)</pre>
 				<p>
-Sets me.Pos and calls OnPosChanged().
+Sets me.Pos and calls ApplyMatrices().
 </p>
 
 				
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosX">func (*NodeTransforms) <a href="/target/node-transform.go?s=6017:6064#L192">SetPosX</a></h3>
+				<h3 id="NodeTransforms.SetPosX">func (*NodeTransforms) <a href="/target/node-transform.go?s=2602:2649#L72">SetPosX</a></h3>
 				<pre>func (me *NodeTransforms) SetPosX(posX float64)</pre>
 				<p>
-Sets me.Pos.X and calls OnPosChanged().
+Sets me.Pos.X and calls ApplyMatrices().
 </p>
 
 				
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6147:6208#L198">SetPosXYZ</a></h3>
+				<h3 id="NodeTransforms.SetPosXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=2734:2795#L78">SetPosXYZ</a></h3>
 				<pre>func (me *NodeTransforms) SetPosXYZ(posX, posY, posZ float64)</pre>
 				<p>
-Sets me.Pos and calls OnPosChanged().
+Sets me.Pos and calls ApplyMatrices().
 </p>
 
 				
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosY">func (*NodeTransforms) <a href="/target/node-transform.go?s=6325:6372#L204">SetPosY</a></h3>
+				<h3 id="NodeTransforms.SetPosY">func (*NodeTransforms) <a href="/target/node-transform.go?s=2914:2961#L84">SetPosY</a></h3>
 				<pre>func (me *NodeTransforms) SetPosY(posY float64)</pre>
 				<p>
-Sets me.Pos.Y and calls OnPosChanged().
+Sets me.Pos.Y and calls ApplyMatrices().
 </p>
 
 				
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6457:6504#L210">SetPosZ</a></h3>
+				<h3 id="NodeTransforms.SetPosZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=3048:3095#L90">SetPosZ</a></h3>
 				<pre>func (me *NodeTransforms) SetPosZ(posZ float64)</pre>
 				<p>
-Sets me.Pos.Z and calls OnPosChanged().
+Sets me.Pos.Z and calls ApplyMatrices().
 </p>
 
 				
 				
 			
 				
-				<h3 id="NodeTransforms.SetRot">func (*NodeTransforms) <a href="/target/node-transform.go?s=6587:6635#L216">SetRot</a></h3>
+				<h3 id="NodeTransforms.SetRot">func (*NodeTransforms) <a href="/target/node-transform.go?s=3180:3228#L96">SetRot</a></h3>
 				<pre>func (me *NodeTransforms) SetRot(rot *unum.Vec3)</pre>
 				<p>
-Sets me.Rot and calls OnRotChanged().
+Sets me.Rot and calls ApplyMatrices().
 </p>
 
 				
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotX">func (*NodeTransforms) <a href="/target/node-transform.go?s=6774:6820#L226">SetRotX</a></h3>
+				<h3 id="NodeTransforms.SetRotX">func (*NodeTransforms) <a href="/target/node-transform.go?s=3369:3415#L106">SetRotX</a></h3>
 				<pre>func (me *NodeTransforms) SetRotX(rad float64)</pre>
 				<p>
-Sets me.Rot.X and calls OnRotChanged().
+Sets me.Rot.X and calls ApplyMatrices().
 </p>
 
 				
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6903:6964#L232">SetRotXYZ</a></h3>
+				<h3 id="NodeTransforms.SetRotXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=3499:3560#L112">SetRotXYZ</a></h3>
 				<pre>func (me *NodeTransforms) SetRotXYZ(radX, radY, radZ float64)</pre>
 				<p>
-Sets me.Rot and calls OnRotChanged().
+Sets me.Rot and calls ApplyMatrices().
 </p>
 
 				
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotY">func (*NodeTransforms) <a href="/target/node-transform.go?s=7081:7127#L238">SetRotY</a></h3>
+				<h3 id="NodeTransforms.SetRotY">func (*NodeTransforms) <a href="/target/node-transform.go?s=3679:3725#L118">SetRotY</a></h3>
 				<pre>func (me *NodeTransforms) SetRotY(rad float64)</pre>
 				<p>
-Sets me.Rot.Y and calls OnRotChanged().
+Sets me.Rot.Y and calls ApplyMatrices().
 </p>
 
 				
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=7212:7258#L244">SetRotZ</a></h3>
+				<h3 id="NodeTransforms.SetRotZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=3811:3857#L124">SetRotZ</a></h3>
 				<pre>func (me *NodeTransforms) SetRotZ(rad float64)</pre>
 				<p>
-Sets me.Rot.Z and calls OnRotChanged().
+Sets me.Rot.Z and calls ApplyMatrices().
 </p>
 
 				
 				
 			
 				
-				<h3 id="NodeTransforms.SetScale">func (*NodeTransforms) <a href="/target/node-transform.go?s=7345:7397#L250">SetScale</a></h3>
+				<h3 id="NodeTransforms.SetScale">func (*NodeTransforms) <a href="/target/node-transform.go?s=3943:3995#L130">SetScale</a></h3>
 				<pre>func (me *NodeTransforms) SetScale(scale *unum.Vec3)</pre>
 				<p>
-Sets me.Scale and calls OnScaleChanged().
+Sets me.Scale and calls ApplyMatrices().
 </p>
 
 				
 				
 			
 				
-				<h3 id="NodeTransforms.SetScaleN">func (*NodeTransforms) <a href="/target/node-transform.go?s=7540:7590#L260">SetScaleN</a></h3>
+				<h3 id="NodeTransforms.SetScaleN">func (*NodeTransforms) <a href="/target/node-transform.go?s=4136:4186#L140">SetScaleN</a></h3>
 				<pre>func (me *NodeTransforms) SetScaleN(scale float64)</pre>
 				<p>
-Sets me.Scale and calls OnScaleChanged().
+Sets me.Scale and calls ApplyMatrices().
 </p>
 
 				
 				
 			
 				
-				<h3 id="NodeTransforms.SetScaleXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=7678:7732#L265">SetScaleXYZ</a></h3>
+				<h3 id="NodeTransforms.SetScaleXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=4273:4327#L145">SetScaleXYZ</a></h3>
 				<pre>func (me *NodeTransforms) SetScaleXYZ(x, y, z float64)</pre>
 				<p>
-Sets me.Scale and calls OnScaleChanged().
+Sets me.Scale and calls ApplyMatrices().
 </p>
 
 				
 				
 			
 				
-				<h3 id="NodeTransforms.StepDelta">func (*NodeTransforms) <a href="/target/node-transform.go?s=7884:7951#L271">StepDelta</a></h3>
+				<h3 id="NodeTransforms.StepDelta">func (*NodeTransforms) <a href="/target/node-transform.go?s=4478:4545#L151">StepDelta</a></h3>
 				<pre>func (me *NodeTransforms) StepDelta(deltaPerSecond float64) float64</pre>
 				<p>
 Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.

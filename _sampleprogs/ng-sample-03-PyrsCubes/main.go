@@ -45,29 +45,24 @@ func onAppThread() {
 	rearMirror.OnApp()
 
 	//	animate mesh nodes
-	pyr.Transform.Rot.X -= 0.0005
-	pyr.Transform.Rot.Y -= 0.0005
-	pyr.Transform.Pos.Set(-13.75, 2*math.Sin(ng.Loop.TickNow), 2)
-	pyr.Transform.OnPosRotChanged()
-
-	gui2d.Dog.Transform.Rot.Y -= 0.005
-	gui2d.Dog.Transform.Rot.Z += 0.001
-	gui2d.Dog.Transform.OnRotChanged()
+	gui2d.Dog.Transform.Rot.Add3(0, -0.005, 0.001)
+	gui2d.Dog.Transform.ApplyMatrices()
 	gui2d.Cat.Transform.Rot.X += 0.003
-	gui2d.Cat.Transform.OnRotXChanged()
+	gui2d.Cat.Transform.ApplyMatrices()
 
-	box.Transform.Rot.Y += 0.0004
-	box.Transform.Rot.Z += 0.0006
+	pyr.Transform.Rot.Add3(-0.0005, -0.0005, 0)
+	pyr.Transform.Pos.Set(-13.75, 2*math.Sin(ng.Loop.TickNow), 2)
+	pyr.Transform.ApplyMatrices()
+
+	box.Transform.Rot.Add3(0.0004, 0, 0.0006)
 	box.Transform.Pos.Set(-8.125, 2*math.Cos(ng.Loop.TickNow), -2)
-	box.Transform.OnPosRotChanged()
+	box.Transform.ApplyMatrices()
 
 	for i = 0; i < len(crates); i++ {
 		f = float64(i)
 		f = (f + 1) * (f + 1)
-		crates[i].Transform.Rot.X += f * 0.00001
-		crates[i].Transform.Rot.Y += f * 0.0001
-		crates[i].Transform.Rot.Z += f * 0.001
-		crates[i].Transform.OnRotChanged()
+		crates[i].Transform.Rot.Add3(f*0.00001, f*0.0001, f*0.001)
+		crates[i].Transform.ApplyMatrices()
 	}
 
 	pyramids[0].Transform.SetPosX(math.Sin(ng.Loop.TickNow) * 100)

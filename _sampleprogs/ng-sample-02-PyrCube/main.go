@@ -26,15 +26,13 @@ func onAppThread() {
 		ngsamples.HandleCamCtlKeys()
 
 		//	animate mesh nodes
-		pyr.Transform.Rot.X -= 0.0005
-		pyr.Transform.Rot.Y -= 0.0005
+		pyr.Transform.Rot.Add3(-0.0005, -0.0005, 0)
 		pyr.Transform.Pos.Set(-13.75, 2*math.Sin(ng.Loop.TickNow), 2)
-		pyr.Transform.OnPosRotChanged()
+		pyr.Transform.ApplyMatrices()
 
-		box.Transform.Rot.Y += 0.0004
-		box.Transform.Rot.Z += 0.0006
+		box.Transform.Rot.Add3(0, 0.0004, 0.0006)
 		box.Transform.Pos.Set(-8.125, 2*math.Cos(ng.Loop.TickNow), -2)
-		box.Transform.OnPosRotChanged()
+		box.Transform.ApplyMatrices()
 	}
 }
 
