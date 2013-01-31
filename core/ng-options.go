@@ -46,7 +46,7 @@ func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInter
 	me.Misc.DefaultControllerParams = NewControllerParams()
 	me.Initialization.GlCoreContext = (runtime.GOOS == "darwin")
 	me.Rendering.DefaultClearColor = ugl.GlVec4{0, 0, 0, 1}
-	me.Rendering.DefaultTechnique3D, me.Rendering.DefaultTechnique3D = "rt_unlit3", "rt_unlit3"
+	me.Rendering.DefaultTechnique2D, me.Rendering.DefaultTechnique3D = "rt_unlit3", "rt_unlit3"
 	me.winWidth, me.winHeight, me.winSwapInterval, me.winFullScreen = winWidth, winHeight, winSwapInterval, winFullScreen
 	return
 }
