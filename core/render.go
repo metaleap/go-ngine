@@ -29,7 +29,6 @@ func (me *Camera) render() {
 		Core.Rendering.states.ForceEnableScissorTest()
 		thrRend.curScene = Core.Libs.Scenes[me.Rendering.SceneID]
 		Core.useTechnique(me.thrRend.technique)
-		// me.matCamProj.SetFromMult4(&me.matProj, &me.Controller.mat)
 		gl.Scissor(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
 		gl.Viewport(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
 		if me.thrRend.states.ClearColor[3] > 0 {

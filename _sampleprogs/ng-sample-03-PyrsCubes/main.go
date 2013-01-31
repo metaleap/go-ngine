@@ -22,6 +22,7 @@ var (
 )
 
 func main() {
+	ngsamples.KeyHints = append([]string{"[F4]  --  Toggle Rear-Mirror Camera"}, ngsamples.KeyHints...)
 	ngsamples.Keys.CheckFor.Toggled = append(ngsamples.Keys.CheckFor.Toggled, glfw.KeyF4)
 	ngsamples.SamplesMainFunc(LoadSampleScene_03_PyrsCubes)
 }

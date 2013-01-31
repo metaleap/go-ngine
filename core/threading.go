@@ -49,13 +49,17 @@ func (me *EngineCore) copyPrepToRend() {
 
 func (me *RenderCanvas) copyAppToPrep() {
 	for _, thrPrep.curCam = range me.Cameras {
-		thrPrep.curCam.copyAppToPrep()
+		if thrPrep.curCam.Enabled {
+			thrPrep.curCam.copyAppToPrep()
+		}
 	}
 }
 
 func (me *RenderCanvas) copyPrepToRend() {
 	for _, thrPrep.curCam = range me.Cameras {
-		thrPrep.curCam.copyPrepToRend()
+		if thrPrep.curCam.Enabled {
+			thrPrep.curCam.copyPrepToRend()
+		}
 	}
 }
 

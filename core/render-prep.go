@@ -1,6 +1,5 @@
 package core
 
-//	prepares all renderBatches for the next onRender() call...
 func (me *EngineCore) onPrep() {
 	for _, thrPrep.curCanv = range me.Rendering.Canvases {
 		if thrPrep.curCanv.renderThisFrame() {
@@ -18,15 +17,15 @@ func (me *RenderCanvas) onPrep() {
 func (me *Camera) onPrep() {
 	if me.Enabled {
 		me.thrPrep.matCamProj.SetFromMult4(&me.thrPrep.matProj, &me.Controller.thrPrep.mat)
-		thrPrep.curScene = Core.Libs.Scenes[me.Rendering.SceneID]
-		thrPrep.curScene.RootNode.onPrep()
+		// thrPrep.curScene = Core.Libs.Scenes[me.Rendering.SceneID]
+		// thrPrep.curScene.RootNode.onPrep()
 	}
 }
 
-func (me *Node) onPrep() {
-	if me.Enabled {
-		for me.thrPrep.curId, me.thrPrep.curSubNode = range me.ChildNodes.M {
-			me.thrPrep.curSubNode.onPrep()
-		}
-	}
-}
+// func (me *Node) onPrep() {
+// 	if me.Enabled {
+// 		for me.thrPrep.curId, me.thrPrep.curSubNode = range me.ChildNodes.M {
+// 			me.thrPrep.curSubNode.onPrep()
+// 		}
+// 	}
+// }
