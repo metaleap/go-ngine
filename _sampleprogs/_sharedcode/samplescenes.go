@@ -39,9 +39,11 @@ var (
 
 //	Creates a new core.Scene, adds it to the Scenes library under
 //	the specified ID, and returns it.
-func AddScene(id string) (me *ng.Scene) {
+func AddScene(id string, mainCamScene bool) (me *ng.Scene) {
 	me = ng.NewScene()
-	ng.Core.Libs.Scenes[id] = me
+	if ng.Core.Libs.Scenes[id] = me; mainCamScene {
+		Cam.SetScene(id)
+	}
 	return
 }
 
@@ -159,5 +161,5 @@ func OnSec() {
 
 //	Returns the window title to be set by OnSec().
 func WindowTitle() string {
-	return fmt.Sprintf("%v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", ng.Stats.FpsLastSec, ng.UserIO.WinWidth(), ng.UserIO.WinHeight(), KeyHints[curKeyHint], CamCtl.Pos.String(), CamCtl.Dir.String())
+	return fmt.Sprintf("%v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", ng.Stats.FpsLastSec, ng.UserIO.WinWidth(), ng.UserIO.WinHeight(), KeyHints[curKeyHint], CamCtl.Pos.String(), CamCtl.Dir().String())
 }

@@ -17,15 +17,24 @@ func (me *RenderCanvas) onPrep() {
 func (me *Camera) onPrep() {
 	if me.Enabled {
 		me.thrPrep.matCamProj.SetFromMult4(&me.thrPrep.matProj, &me.Controller.thrPrep.mat)
-		// thrPrep.curScene = Core.Libs.Scenes[me.Rendering.SceneID]
-		// thrPrep.curScene.RootNode.onPrep()
+		if thrPrep.curScene = me.scene; thrPrep.curScene != nil {
+			thrPrep.curScene.RootNode.onPrep()
+		}
 	}
 }
 
-// func (me *Node) onPrep() {
-// 	if me.Enabled {
-// 		for me.thrPrep.curId, me.thrPrep.curSubNode = range me.ChildNodes.M {
-// 			me.thrPrep.curSubNode.onPrep()
-// 		}
-// 	}
-// }
+func (me *Node) onPrep() {
+	if me.Enabled && !me.thrPrep.done {
+		me.thrPrep.done, me.thrPrep.copyDone, me.thrRend.copyDone = true, false, false
+		for me.thrPrep.tmpCam, me.thrPrep.tmpMat = range me.thrPrep.matProjs {
+			if me.thrPrep.tmpCam.Perspective.Use {
+				me.thrPrep.tmpMat.SetFromMult4(&me.thrPrep.tmpCam.thrPrep.matCamProj, &me.thrPrep.matModelView)
+			} else {
+				me.thrPrep.tmpMat.CopyFrom(&me.thrPrep.matModelView)
+			}
+		}
+		for me.thrPrep.curId, me.thrPrep.curSubNode = range me.ChildNodes.M {
+			me.thrPrep.curSubNode.onPrep()
+		}
+	}
+}

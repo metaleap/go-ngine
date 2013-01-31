@@ -36,11 +36,10 @@ type Camera struct {
 		//	The device-relative or absolute view-port for this Camera.
 		Viewport CameraViewport
 
-		//	The ID of the Scene (in Core.Libs.Scenes) this camera is looking at.
-		SceneID string
-
 		States ugl.RenderStatesBag
 	}
+
+	scene *Scene
 
 	thrApp struct {
 		matProj unum.Mat4
@@ -49,9 +48,8 @@ type Camera struct {
 		matCamProj, matProj unum.Mat4
 	}
 	thrRend struct {
-		matCamProj unum.Mat4
-		states     ugl.RenderStatesBag
-		technique  renderTechnique
+		states    ugl.RenderStatesBag
+		technique renderTechnique
 	}
 }
 
@@ -96,7 +94,36 @@ func (me *Camera) ApplyMatrices() {
 	me.thrApp.matProj.Perspective(&thrApp.numBag, me.Perspective.FovY, me.Rendering.Viewport.aspect, me.Perspective.ZNear, me.Perspective.ZFar)
 }
 
+func (me *Camera) clearNodeMats() {
+	if me.scene != nil {
+		me.scene.RootNode.Walk(func(node *Node) {
+			delete(node.thrPrep.matProjs, me)
+			delete(node.thrRend.matProjs, me)
+		})
+	}
+}
+
 func (me *Camera) dispose() {
+	me.clearNodeMats()
+}
+
+func (me *Camera) Scene() *Scene {
+	return me.scene
+}
+
+func (me *Camera) setScene(scene *Scene) {
+	if scene != me.scene {
+		me.clearNodeMats()
+		if me.scene = scene; me.scene != nil {
+			me.scene.RootNode.Walk(func(node *Node) {
+				node.initProjMat(me)
+			})
+		}
+	}
+}
+
+func (me *Camera) SetScene(id string) {
+	me.setScene(Core.Libs.Scenes[id])
 }
 
 func (me *Camera) SetTechnique(name string) {

@@ -7,10 +7,15 @@ type Scene struct {
 }
 
 func (me *Scene) dispose() {
+	Core.Rendering.Canvases.Walk(func(cam *Camera) {
+		if cam.scene == me {
+			cam.setScene(nil)
+		}
+	})
 }
 
 func (me *Scene) init() {
-	me.RootNode = *newNode("", "", "", nil)
+	me.RootNode = *newNode("", "", "", nil, me)
 }
 
 func (me LibScenes) Walk(onNode func(*Node)) {

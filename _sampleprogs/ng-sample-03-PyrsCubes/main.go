@@ -133,7 +133,8 @@ func LoadSampleScene_03_PyrsCubes() {
 	bufRest.Add(meshPyr)
 
 	//	scene
-	scene = ngsamples.AddScene("")
+	scene = ngsamples.AddScene("", true)
+	rearMirror.Cam.SetScene("")
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyramid", "")
 	box = scene.RootNode.ChildNodes.AddNew("node_box", "mesh_cube", "")

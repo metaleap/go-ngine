@@ -50,7 +50,7 @@ func LoadSampleScene_01_EmptyPlane() {
 	bufRest.Add(meshFloor) // bufRest.Add(meshCube);
 
 	//	scene
-	scene = ngsamples.AddScene("")
+	scene = ngsamples.AddScene("", true)
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	floor.SetMatID("mat_cobbles")
 	floor.Transform.SetPosXYZ(0.1, 0, -8)

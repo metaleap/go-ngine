@@ -16,6 +16,10 @@ type EngineOptions struct {
 		GlCoreContext bool
 	}
 
+	Misc struct {
+		DefaultControllerParams *ControllerParams
+	}
+
 	Rendering struct {
 		DefaultClearColor ugl.GlVec4
 
@@ -39,6 +43,7 @@ type EngineOptions struct {
 //	Allocates, initializes and returns a new core.EngineOptions instance.
 func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions) {
 	me = &EngineOptions{AssetRootDirPath: assetRootDirPath}
+	me.Misc.DefaultControllerParams = NewControllerParams()
 	me.Initialization.GlCoreContext = (runtime.GOOS == "darwin")
 	me.Rendering.DefaultClearColor = ugl.GlVec4{0, 0, 0, 1}
 	me.Rendering.DefaultTechnique3D, me.Rendering.DefaultTechnique3D = "rt_unlit3", "rt_unlit3"

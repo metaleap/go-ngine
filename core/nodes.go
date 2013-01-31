@@ -28,7 +28,7 @@ func (me *Nodes) Add(node *Node) {
 //	Creates a new Node with the specified ID, binds it to the
 //	specified Mesh and Model, adds it to me.M and returns it.
 func (me *Nodes) AddNew(id, meshID, modelID string) (node *Node) {
-	node = newNode(id, meshID, modelID, me.owner)
+	node = newNode(id, meshID, modelID, me.owner, me.owner.rootScene)
 	me.Add(node)
 	return
 }

@@ -15,36 +15,13 @@ type Controller struct {
 	//	do so in between calling the BeginUpdate() and EndUpdate() methods.
 	Pos unum.Vec3
 
-	//	The direction being manipulated by this Controller.
-	//	When manipulating this manually (outside the TurnXyz() / MoveXyz() methods),
-	//	do so in between calling the BeginUpdate() and EndUpdate() methods.
-	Dir unum.Vec3
-
 	//	Indicates which axis is consider "upward". This is typically
 	//	the Y-axis, denoted by the default value (0, 1, 0).
 	//	When manipulating this manually (outside the TurnXyz() / MoveXyz() methods),
 	//	do so in between calling the BeginUpdate() and EndUpdate() methods.
 	UpAxis unum.Vec3
 
-	//	Speed of "moving" in the MoveXyz() methods, in units per second.
-	//	Defaults to 2.
-	MoveSpeed float64
-
-	//	A factor multiplied with MoveSpeed in the MoveXyz() methods. Defaults to 1.
-	MoveSpeedupFactor float64
-
-	//	Speed of "turning" in the TurnXyz() methods, in degrees per second.
-	//	Defaults to 90.
-	TurnSpeed float64
-
-	//	A factor multiplied with TurnSpeed in the TurnXyz() methods. Defaults to 1.
-	TurnSpeedupFactor float64
-
-	//	The maximum degree that TurnUp() allows. Defaults to 90.
-	MaxTurnUp float64
-
-	//	The minimum degree that TurnDown() allows. Defaults to -90.
-	MinTurnDown float64
+	Params *ControllerParams
 
 	thrApp struct {
 		mat unum.Mat4
@@ -53,6 +30,7 @@ type Controller struct {
 		mat unum.Mat4
 	}
 
+	dir            unum.Vec3
 	autoUpdate     bool
 	hAngle, vAngle float64
 }
@@ -60,7 +38,7 @@ type Controller struct {
 func (me *Controller) applyTranslation() {
 	if me.autoUpdate {
 		thrApp.ctlTmps.posNeg.SetFromNeg(&me.Pos)
-		thrApp.ctlTmps.matLook.LookAt(&thrApp.numBag, &me.Dir, &me.UpAxis)
+		thrApp.ctlTmps.matLook.LookAt(&thrApp.numBag, &me.dir, &me.UpAxis)
 		thrApp.ctlTmps.matTrans.Translation(&thrApp.ctlTmps.posNeg)
 		me.thrApp.mat.SetFromMult4(&thrApp.ctlTmps.matLook, &thrApp.ctlTmps.matTrans)
 	}
@@ -69,16 +47,16 @@ func (me *Controller) applyTranslation() {
 func (me *Controller) applyRotation() {
 	if me.autoUpdate {
 		thrApp.ctlTmps.axis.Set(0, 1, 0)
-		me.Dir.Set(1, 0, 0)
-		me.Dir.RotateDeg(&thrApp.numBag, me.hAngle, &thrApp.ctlTmps.axis)
-		me.Dir.Normalize()
+		me.dir.Set(1, 0, 0)
+		me.dir.RotateDeg(&thrApp.numBag, me.hAngle, &thrApp.ctlTmps.axis)
+		me.dir.Normalize()
 
-		thrApp.ctlTmps.axis.SetFromCross(&me.Dir)
+		thrApp.ctlTmps.axis.SetFromCross(&me.dir)
 		thrApp.ctlTmps.axis.Normalize()
-		me.Dir.RotateDeg(&thrApp.numBag, me.vAngle, &thrApp.ctlTmps.axis)
-		me.Dir.Normalize()
+		me.dir.RotateDeg(&thrApp.numBag, me.vAngle, &thrApp.ctlTmps.axis)
+		me.dir.Normalize()
 
-		me.UpAxis = *me.Dir.Cross(&thrApp.ctlTmps.axis)
+		me.UpAxis = *me.dir.Cross(&thrApp.ctlTmps.axis)
 		me.UpAxis.Normalize()
 	}
 }
@@ -96,11 +74,13 @@ func (me *Controller) CopyFrom(ctl *Controller) {
 	thrApp.ctlTmps.tmpCopy = *ctl
 	thrApp.ctlTmps.tmpCopy.thrPrep = me.thrPrep
 	*me = thrApp.ctlTmps.tmpCopy
-	// me.autoUpdate = false
-	// me.Pos, me.Dir, me.UpAxis = ctl.Pos, ctl.Dir, ctl.UpAxis
-	// me.MoveSpeed, me.MoveSpeedupFactor, me.TurnSpeed, me.TurnSpeedupFactor = ctl.MoveSpeed, ctl.MoveSpeedupFactor, ctl.TurnSpeed, ctl.TurnSpeedupFactor
-	// me.MaxTurnUp, me.MinTurnDown, me.thrApp.mat, me.hAngle, me.vAngle = ctl.MaxTurnUp, ctl.MinTurnDown, ctl.thrApp.mat, ctl.hAngle, ctl.vAngle
-	// me.autoUpdate = ctl.autoUpdate
+}
+
+//	The direction being manipulated by this Controller.
+//	CAUTION: this returns a pointer to the direction vector to avoid a copy, but it's
+//	NOT meant to be modified, as the vector is re-computed by the TurnFoo() methods.
+func (me *Controller) Dir() *unum.Vec3 {
+	return &me.dir
 }
 
 //	Applies all changes made to Pos, Dir or UpAxis since BeginUpdate() was last
@@ -114,11 +94,10 @@ func (me *Controller) EndUpdate() {
 }
 
 func (me *Controller) init() {
-	me.Dir.Z, me.UpAxis.Y = 1, 1
-	me.MoveSpeed, me.MoveSpeedupFactor, me.TurnSpeed, me.TurnSpeedupFactor = 2, 1, 90, 1
-	me.autoUpdate, me.MaxTurnUp, me.MinTurnDown = true, 90, -90
+	me.Params = Core.Options.Misc.DefaultControllerParams
+	me.autoUpdate, me.dir.Z, me.UpAxis.Y = true, 1, 1
 	unum.Mat4Identities(&me.thrPrep.mat, &me.thrApp.mat)
-	htarget := &unum.Vec3{me.Dir.X, 0, me.Dir.Z}
+	htarget := &unum.Vec3{me.dir.X, 0, me.dir.Z}
 	htarget.Normalize()
 	if htarget.Z >= 0 {
 		if htarget.X >= 0 {
@@ -133,18 +112,18 @@ func (me *Controller) init() {
 			me.hAngle = 90 + unum.RadToDeg(math.Asin(-htarget.Z))
 		}
 	}
-	me.vAngle = -unum.RadToDeg(math.Asin(me.Dir.Y))
+	me.vAngle = -unum.RadToDeg(math.Asin(me.dir.Y))
 	me.applyRotation()
 	me.applyTranslation()
 }
 
 //	Recomputes Pos with regards to UpAxis and Dir to effect a "move backward".
 func (me *Controller) MoveBackward() {
-	me.Pos.SetFromAddMult1(&me.Pos, &me.Dir, me.StepSizeMove())
+	me.Pos.SetFromAddMult1(&me.Pos, &me.dir, me.StepSizeMove())
 	me.applyTranslation()
 }
 
-//	Recomputes Pos with regards to UpAxis and Dir to effect a "move downward".
+//	Recomputes Pos with regards to UpAxis to effect a "move downward".
 func (me *Controller) MoveDown() {
 	me.Pos.SetFromSubMult1(&me.Pos, &me.UpAxis, me.StepSizeMove())
 	me.applyTranslation()
@@ -152,23 +131,23 @@ func (me *Controller) MoveDown() {
 
 //	Recomputes Pos with regards to UpAxis and Dir to effect a "move forward".
 func (me *Controller) MoveForward() {
-	me.Pos.SetFromSubMult1(&me.Pos, &me.Dir, me.StepSizeMove())
+	me.Pos.SetFromSubMult1(&me.Pos, &me.dir, me.StepSizeMove())
 	me.applyTranslation()
 }
 
 //	Recomputes Pos with regards to UpAxis and Dir to effect a "move left-ward".
 func (me *Controller) MoveLeft() {
-	me.Pos.SetFromAddMult1(&me.Pos, me.Dir.CrossNormalized(&me.UpAxis), me.StepSizeMove())
+	me.Pos.SetFromAddMult1(&me.Pos, me.dir.CrossNormalized(&me.UpAxis), me.StepSizeMove())
 	me.applyTranslation()
 }
 
 //	Recomputes Pos with regards to UpAxis and Dir to effect a "move right-ward".
 func (me *Controller) MoveRight() {
-	me.Pos.SetFromAddMult1(&me.Pos, me.UpAxis.CrossNormalized(&me.Dir), me.StepSizeMove())
+	me.Pos.SetFromAddMult1(&me.Pos, me.UpAxis.CrossNormalized(&me.dir), me.StepSizeMove())
 	me.applyTranslation()
 }
 
-//	Recomputes Pos with regards to UpAxis and Dir to effect a "move upward".
+//	Recomputes Pos with regards to UpAxis to effect a "move upward".
 func (me *Controller) MoveUp() {
 	me.Pos.SetFromAddMult1(&me.Pos, &me.UpAxis, me.StepSizeMove())
 	me.applyTranslation()
@@ -187,15 +166,15 @@ func (me *Controller) rotV(deg float64) {
 }
 
 //	Returns the current distance that a single MoveXyz() call (per loop iteration) would move.
-//	(Loop.TickDelta * me.MoveSpeed * me.MoveSpeedupFactor)
+//	(Loop.TickDelta * me.Params.MoveSpeed * me.Params.MoveSpeedupFactor)
 func (me *Controller) StepSizeMove() float64 {
-	return Loop.TickDelta * me.MoveSpeed * me.MoveSpeedupFactor
+	return Loop.TickDelta * me.Params.MoveSpeed * me.Params.MoveSpeedupFactor
 }
 
 //	Returns the current degrees that a single TurnXyz() call (per loop iteration) would turn.
-//	(Loop.TickDelta * me.TurnSpeed * me.TurnSpeedupFactor)
+//	(Loop.TickDelta * me.Params.TurnSpeed * me.Params.TurnSpeedupFactor)
 func (me *Controller) StepSizeTurn() float64 {
-	return Loop.TickDelta * me.TurnSpeed * me.TurnSpeedupFactor
+	return Loop.TickDelta * me.Params.TurnSpeed * me.Params.TurnSpeedupFactor
 }
 
 //	Recomputes Dir with regards to UpAxis and Pos to effect a "turn downward" by me.StepSizeTurn() degrees.
@@ -205,7 +184,7 @@ func (me *Controller) TurnDown() {
 
 //	Recomputes Dir with regards to UpAxis and Pos to effect a "turn downward" by the specified degrees.
 func (me *Controller) TurnDownBy(deg float64) {
-	if me.vAngle > me.MinTurnDown {
+	if me.vAngle > me.Params.MinTurnDown {
 		me.rotV(-deg)
 	}
 }
@@ -237,7 +216,36 @@ func (me *Controller) TurnUp() {
 
 //	Recomputes Dir with regards to UpAxis and Pos to effect a "turn upward" by the specified degress.
 func (me *Controller) TurnUpBy(deg float64) {
-	if me.vAngle < me.MaxTurnUp {
+	if me.vAngle < me.Params.MaxTurnUp {
 		me.rotV(deg)
 	}
+}
+
+type ControllerParams struct {
+	//	Speed of "moving" in the MoveXyz() methods, in units per second.
+	//	Defaults to 2.
+	MoveSpeed float64
+
+	//	A factor multiplied with MoveSpeed in the MoveXyz() methods. Defaults to 1.
+	MoveSpeedupFactor float64
+
+	//	Speed of "turning" in the TurnXyz() methods, in degrees per second.
+	//	Defaults to 90.
+	TurnSpeed float64
+
+	//	A factor multiplied with TurnSpeed in the TurnXyz() methods. Defaults to 1.
+	TurnSpeedupFactor float64
+
+	//	The maximum degree that TurnUp() allows. Defaults to 90.
+	MaxTurnUp float64
+
+	//	The minimum degree that TurnDown() allows. Defaults to -90.
+	MinTurnDown float64
+}
+
+func NewControllerParams() (me *ControllerParams) {
+	me = &ControllerParams{}
+	me.MoveSpeed, me.MoveSpeedupFactor, me.TurnSpeed, me.TurnSpeedupFactor = 2, 1, 90, 1
+	me.MaxTurnUp, me.MinTurnDown = 90, -90
+	return
 }

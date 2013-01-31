@@ -83,7 +83,7 @@ func LoadSampleScene_02_PyrCube() {
 	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["back"] = "fx_mosaic"
 
 	//	scene
-	scene = ngsamples.AddScene("")
+	scene = ngsamples.AddScene("", true)
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyramid", "")
 	box = scene.RootNode.ChildNodes.AddNew("node_box", "mesh_cube", "")

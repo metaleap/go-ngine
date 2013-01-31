@@ -27,14 +27,15 @@ func (me *Camera) render() {
 	if me.Enabled {
 		Core.Rendering.states.Apply(&me.thrRend.states)
 		Core.Rendering.states.ForceEnableScissorTest()
-		thrRend.curScene = Core.Libs.Scenes[me.Rendering.SceneID]
 		Core.useTechnique(me.thrRend.technique)
 		gl.Scissor(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
 		gl.Viewport(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
 		if me.thrRend.states.ClearColor[3] > 0 {
 			gl.Clear(me.thrRend.states.Other.ClearBits)
 		}
-		thrRend.curScene.RootNode.render()
+		if thrRend.curScene = me.scene; thrRend.curScene != nil {
+			thrRend.curScene.RootNode.render()
+		}
 		Core.Rendering.states.ForceDisableScissorTest()
 	}
 }
@@ -43,13 +44,7 @@ func (me *Node) render() {
 	if me.Enabled {
 		if thrRend.curNode = me; me.model != nil {
 			thrRend.curTechnique.onRenderNode()
-			if thrRend.curCam.Perspective.Use {
-				me.thrRend.matModelProj.SetFromMult4(&thrRend.curCam.thrRend.matCamProj, &me.thrRend.matModelView)
-			} else {
-				me.thrRend.matModelProj = me.thrRend.matModelView
-			}
-			me.thrRend.glMatModelProj.Load(&me.thrRend.matModelProj)
-			gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uMatModelProj"], 1, gl.FALSE, &me.thrRend.glMatModelProj[0])
+			gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uMatModelProj"], 1, gl.FALSE, &me.thrRend.matProjs[thrRend.curCam][0])
 			me.model.render()
 		}
 		for me.thrRend.curId, me.thrRend.curSubNode = range me.ChildNodes.M {

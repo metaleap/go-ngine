@@ -46,13 +46,13 @@ func CheckToggleKeys() {
 }
 
 func HandleCamCtlKeys() {
-	if CamCtl.MoveSpeedupFactor = 1; !Paused {
+	if CamCtl.Params.MoveSpeedupFactor = 1; !Paused {
 		if Keys.Pressed[glfw.KeyLshift] {
-			CamCtl.MoveSpeedupFactor = 10
+			CamCtl.Params.MoveSpeedupFactor = 10
 		} else if Keys.Pressed[glfw.KeyRshift] {
-			CamCtl.MoveSpeedupFactor = 100
+			CamCtl.Params.MoveSpeedupFactor = 100
 		} else if Keys.Pressed[glfw.KeyLalt] {
-			CamCtl.MoveSpeedupFactor = 0.1
+			CamCtl.Params.MoveSpeedupFactor = 0.1
 		}
 		if Keys.Pressed[glfw.KeyUp] {
 			CamCtl.MoveForward()

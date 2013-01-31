@@ -75,30 +75,38 @@ func (me *RenderCanvas) copyPrepToRend() {
 func (me *Camera) copyAppToPrep() {
 	me.thrPrep.matProj = me.thrApp.matProj
 	me.Controller.thrPrep.mat = me.Controller.thrApp.mat
-	if thrPrep.curScene = Core.Libs.Scenes[me.Rendering.SceneID]; thrPrep.curScene != nil {
+	if thrPrep.curScene = me.scene; thrPrep.curScene != nil {
 		thrPrep.curScene.RootNode.copyAppToPrep()
 	}
 }
 
 func (me *Camera) copyPrepToRend() {
-	me.thrRend.matCamProj = me.thrPrep.matCamProj
 	me.thrRend.states = me.Rendering.States
-	if thrPrep.curScene = Core.Libs.Scenes[me.Rendering.SceneID]; thrPrep.curScene != nil {
+	if thrPrep.curScene = me.scene; thrPrep.curScene != nil {
 		thrPrep.curScene.RootNode.copyPrepToRend()
 	}
 }
 
 func (me *Node) copyAppToPrep() {
-	me.thrPrep.model = me.model
-	me.thrPrep.matModelView = me.Transform.matModelView
-	for _, me.thrPrep.curSubNode = range me.ChildNodes.M {
-		me.thrPrep.curSubNode.copyAppToPrep()
+	if !me.thrPrep.copyDone {
+		me.thrPrep.copyDone = true
+		me.thrPrep.model = me.model
+		me.thrPrep.matModelView = me.Transform.matModelView
+		for _, me.thrPrep.curSubNode = range me.ChildNodes.M {
+			me.thrPrep.curSubNode.copyAppToPrep()
+		}
 	}
 }
 
 func (me *Node) copyPrepToRend() {
-	me.thrRend.matModelView = me.thrPrep.matModelView
-	for _, me.thrPrep.curSubNode = range me.ChildNodes.M {
-		me.thrPrep.curSubNode.copyPrepToRend()
+	if !me.thrRend.copyDone {
+		me.thrRend.copyDone = true
+		for me.thrPrep.tmpCam, me.thrPrep.tmpMat = range me.thrPrep.matProjs {
+			me.thrRend.matProjs[me.thrPrep.tmpCam].Load(me.thrPrep.tmpMat)
+		}
+		for _, me.thrPrep.curSubNode = range me.ChildNodes.M {
+			me.thrPrep.curSubNode.copyPrepToRend()
+		}
+		me.thrPrep.done = false
 	}
 }

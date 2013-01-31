@@ -14,12 +14,12 @@ func (me *Gui2D) Setup() (err error) {
 		meshBuf  *ng.MeshBuffer
 		quadMesh *ng.Mesh
 	)
-	scene := AddScene("gui2d")
+	scene := AddScene("gui2d", false)
 	cam := ng.Core.Rendering.Canvases[0].AddNewCamera2D(true)
 	cam.Rendering.States.ClearColor.Set(0.75, 0.25, 0.1, 1)
 	cam.Rendering.States.FaceCulling = false
 	cam.Rendering.Viewport.SetAbs(32, 32, 160, 160)
-	cam.Rendering.SceneID = "gui2d"
+	cam.SetScene("gui2d")
 
 	if meshBuf, err = ng.Core.MeshBuffers.Add("buf_quad", ng.Core.MeshBuffers.NewParams(6, 6)); err != nil {
 		return
