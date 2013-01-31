@@ -18,6 +18,8 @@ var (
 	//	The maximum index for KeyHints when cycling through it in OnSec()
 	MaxKeyHint = len(KeyHints) - 1
 
+	Paused = false
+
 	//	OnSec() changes the window title every second to display FPS etc.
 	//	Also every 4 seconds shows the next one in a number of "key hints" defined here:
 	KeyHints = []string{
@@ -32,7 +34,6 @@ var (
 	}
 
 	curKeyHint = 0
-	paused     = false
 	sec        = 0
 )
 
@@ -93,7 +94,7 @@ func AssetRootDirPath() string {
 
 func PauseResume() {
 	canv := ng.Core.Rendering.Canvases.Main()
-	if paused = ng.Core.Rendering.PostFx.ToggleEffect("Grayscale"); paused {
+	if Paused = ng.Core.Rendering.PostFx.ToggleEffect("Grayscale"); Paused {
 		canv.EveryNthFrame = 0
 	} else {
 		canv.EveryNthFrame = 1

@@ -59,33 +59,26 @@ type Controller struct {
 
 func (me *Controller) applyTranslation() {
 	if me.autoUpdate {
-		var (
-			matTrans, matLook unum.Mat4
-			posNeg            unum.Vec3
-		)
-		posNeg.SetFromNeg(&me.Pos)
-		matLook.LookAt(&me.Dir, &me.UpAxis)
-		matTrans.Translation(&posNeg)
-		me.thrApp.mat.SetFromMult4(&matLook, &matTrans)
+		thrApp.ctlTmps.posNeg.SetFromNeg(&me.Pos)
+		thrApp.ctlTmps.matLook.LookAt(&thrApp.numBag, &me.Dir, &me.UpAxis)
+		thrApp.ctlTmps.matTrans.Translation(&thrApp.ctlTmps.posNeg)
+		me.thrApp.mat.SetFromMult4(&thrApp.ctlTmps.matLook, &thrApp.ctlTmps.matTrans)
 	}
 }
 
 func (me *Controller) applyRotation() {
 	if me.autoUpdate {
-		var (
-			axH, axV unum.Vec3
-		)
-		axV.X, axV.Y, axV.Z = 0, 1, 0
-		me.Dir.X, me.Dir.Y, me.Dir.Z = 1, 0, 0
-		me.Dir.RotateDeg(me.hAngle, &axV)
+		thrApp.ctlTmps.axis.Set(0, 1, 0)
+		me.Dir.Set(1, 0, 0)
+		me.Dir.RotateDeg(&thrApp.numBag, me.hAngle, &thrApp.ctlTmps.axis)
 		me.Dir.Normalize()
 
-		axH = *axV.Cross(&me.Dir)
-		axH.Normalize()
-		me.Dir.RotateDeg(me.vAngle, &axH)
+		thrApp.ctlTmps.axis.SetFromCross(&me.Dir)
+		thrApp.ctlTmps.axis.Normalize()
+		me.Dir.RotateDeg(&thrApp.numBag, me.vAngle, &thrApp.ctlTmps.axis)
 		me.Dir.Normalize()
 
-		me.UpAxis = *me.Dir.Cross(&axH)
+		me.UpAxis = *me.Dir.Cross(&thrApp.ctlTmps.axis)
 		me.UpAxis.Normalize()
 	}
 }
@@ -100,9 +93,9 @@ func (me *Controller) BeginUpdate() {
 }
 
 func (me *Controller) CopyFrom(ctl *Controller) {
-	copy := *ctl
-	copy.thrPrep = me.thrPrep
-	*me = copy
+	thrApp.ctlTmps.tmpCopy = *ctl
+	thrApp.ctlTmps.tmpCopy.thrPrep = me.thrPrep
+	*me = thrApp.ctlTmps.tmpCopy
 	// me.autoUpdate = false
 	// me.Pos, me.Dir, me.UpAxis = ctl.Pos, ctl.Dir, ctl.UpAxis
 	// me.MoveSpeed, me.MoveSpeedupFactor, me.TurnSpeed, me.TurnSpeedupFactor = ctl.MoveSpeed, ctl.MoveSpeedupFactor, ctl.TurnSpeed, ctl.TurnSpeedupFactor

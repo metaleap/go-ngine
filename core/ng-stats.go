@@ -37,37 +37,38 @@ type EngineStats struct {
 	//	and maximum) GPU-side rendering cost per frame.
 	FrameRenderGpu TimingStats
 
-	//	"Prep code" comprises all go:ngine logic executed every frame to cull geometry
-	//	and prepare a batch of rendering commands for the next (not current) frame.
+	//	"Prep code" comprises all go:ngine logic executed every frame in parallel to cull
+	//	geometry and prepare a batch of rendering commands for the next (not current) frame.
 	//	This TimingStats instance tracks over time (both average and maximum) "prep code" cost per frame.
 	FramePrepThread TimingStats
 
-	//	"App code" comprises (mostly user-specific) logic executed every frame in your
-	//	Loop.OnAppThread() callback. Such code may freely modify dynamic Cameras, Nodes etc.
-	//	Unlike OnWinThread() core, "app code" always runs in its own thread in parallel to the prep and main threads.
+	//	"App code" comprises (mostly user-specific) logic executed every frame in parallel in
+	//	your Loop.OnAppThread() callback. Such code may freely modify dynamic Cameras, Nodes etc.
+	//	Unlike OnWinThread() code, "app code" always runs in its own thread in parallel to the prep and main threads.
 	//	This TimingStats instance tracks over time (both average and maximum) "app code" cost per frame.
 	FrameAppThread TimingStats
 
-	//	"Input code" comprises user-specific logic executed every frame via your own
+	//	"Windowing/GPU/IO code" comprises user-specific logic executed every frame via your own
 	//	Loop.OnWinThread() callback. This should be kept to a minimum to fully enjoy
 	//	the benefits of multi-threading. Main use-cases are calls resulting in GPU state
 	//	changes (such as toggling effects in Core.Rendering.PostFx) and working with UserIO
-	//	to check for user input -- but execute logic resulting from that input in OnApp()!
+	//	to poll for user input -- but do consider executing resulting logic in your OnAppThread().
 	//	This TimingStats instance tracks over time (both average and maximum) "input code" cost per frame.
 	FrameWinThread TimingStats
 
 	//	When CPU-side rendering is completed, Loop waits for the app thread and prep thread
 	//	to finish (either before or after GPU-side rendering depending on Loop.SwapLast).
-	//	It then copies prep results to the render thread and app results to the prep thread.
+	//	It then moves "prep results" to the render thread and "app results" to the prep thread.
 	//	This TimingStats instance tracks over time (both average and maximum) "thread sync" cost per frame.
 	FrameThreadSync TimingStats
 
 	//	During the Loop, the Go Garbge Collector is invoked at least and at most once per second.
 	//	
 	//	Forcing GC "that often" practically guarantees it will almost never have so much work to do as to
-	//	noticably block user interaction --- 99.9% of the time it will complete in less than 10ms (and almost-always under 1ms).
+	//	noticably block user interaction --- typically well below 10ms, most often around 1ms.
 	//	
-	//	This TimingStats instance over time tracks the maximum and average time spent on that 1x-per-second GC invokation (but does not track any other GC invokations).
+	//	This TimingStats instance over time tracks the maximum and average time spent on that
+	//	1x-per-second-during-Loop GC invokation (but does not track any other GC invokations).
 	Gc TimingStats
 
 	fpsCounter int

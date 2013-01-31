@@ -31,8 +31,10 @@ func init() {
 
 //	Called every frame (by the parent example app) to check the state for keys controlling CamCtl to move or rotate Cam.
 func CheckCamCtlKeys() {
-	for _, Keys.tmp = range Keys.CheckFor.Pressed {
-		Keys.Pressed[Keys.tmp] = ng.UserIO.KeyPressed(Keys.tmp)
+	if !Paused {
+		for _, Keys.tmp = range Keys.CheckFor.Pressed {
+			Keys.Pressed[Keys.tmp] = ng.UserIO.KeyPressed(Keys.tmp)
+		}
 	}
 }
 
@@ -44,7 +46,7 @@ func CheckToggleKeys() {
 }
 
 func HandleCamCtlKeys() {
-	if CamCtl.MoveSpeedupFactor = 1; !paused {
+	if CamCtl.MoveSpeedupFactor = 1; !Paused {
 		if Keys.Pressed[glfw.KeyLshift] {
 			CamCtl.MoveSpeedupFactor = 10
 		} else if Keys.Pressed[glfw.KeyRshift] {

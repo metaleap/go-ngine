@@ -37,9 +37,9 @@ func (me *NodeTransforms) init(owner *Node) {
 	//	effectively (0,0,0)
 	me.matTranslation.Translation(&me.Pos)
 	//	all rots effectively 0
-	me.matRotX.RotationX(me.Rot.X)
-	me.matRotY.RotationY(me.Rot.Y)
-	me.matRotZ.RotationZ(me.Rot.Z)
+	me.matRotX.RotationX(&thrApp.numBag, me.Rot.X)
+	me.matRotY.RotationY(&thrApp.numBag, me.Rot.Y)
+	me.matRotZ.RotationZ(&thrApp.numBag, me.Rot.Z)
 	unum.Mat4Identities(&me.Other, &me.matModelView)
 }
 
@@ -51,7 +51,7 @@ func (me *NodeTransforms) ApplyMatrices() {
 	} else {
 		me.matParent.CopyFrom(&me.owner.parentNode.Transform.matModelView)
 	}
-	me.matModelView.SetFromMultN(&me.matParent, &me.matTranslation, &me.Other, &me.matScale, &me.matRotX, &me.matRotY, &me.matRotZ)
+	me.matModelView.SetFromMultN(&thrApp.numBag, &me.matParent, &me.matTranslation, &me.Other, &me.matScale, &me.matRotX, &me.matRotY, &me.matRotZ)
 	for _, me.owner.curSubNode = range me.owner.ChildNodes.M {
 		me.owner.curSubNode.Transform.ApplyMatrices()
 	}
@@ -120,7 +120,7 @@ func (me *NodeTransforms) OnRotScaleChanged() {
 }
 
 func (me *NodeTransforms) onRotXChanged() {
-	me.matRotX.RotationX(me.Rot.X)
+	me.matRotX.RotationX(&thrApp.numBag, me.Rot.X)
 }
 
 //	Updates the X-axis rotation matrix from the current me.Rot.X value.
@@ -131,7 +131,7 @@ func (me *NodeTransforms) OnRotXChanged() {
 }
 
 func (me *NodeTransforms) onRotYChanged() {
-	me.matRotY.RotationY(me.Rot.Y)
+	me.matRotY.RotationY(&thrApp.numBag, me.Rot.Y)
 }
 
 //	Updates the Y-axis rotation matrix from the current me.Rot.Y value.
@@ -142,7 +142,7 @@ func (me *NodeTransforms) OnRotYChanged() {
 }
 
 func (me *NodeTransforms) onRotZChanged() {
-	me.matRotZ.RotationZ(me.Rot.Z)
+	me.matRotZ.RotationZ(&thrApp.numBag, me.Rot.Z)
 }
 
 //	Updates the Z-axis rotation matrix from the current me.Rot.Z value.

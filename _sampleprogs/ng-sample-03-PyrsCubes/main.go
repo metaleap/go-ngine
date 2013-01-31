@@ -38,6 +38,9 @@ func onWinThread() {
 }
 
 func onAppThread() {
+	if ngsamples.Paused {
+		return
+	}
 	ngsamples.HandleCamCtlKeys()
 	rearMirror.OnApp()
 

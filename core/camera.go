@@ -93,7 +93,7 @@ func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool) {
 
 //	Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.
 func (me *Camera) ApplyMatrices() {
-	me.thrApp.matProj.Perspective(me.Perspective.FovY, me.Rendering.Viewport.aspect, me.Perspective.ZNear, me.Perspective.ZFar)
+	me.thrApp.matProj.Perspective(&thrApp.numBag, me.Perspective.FovY, me.Rendering.Viewport.aspect, me.Perspective.ZNear, me.Perspective.ZFar)
 }
 
 func (me *Camera) dispose() {

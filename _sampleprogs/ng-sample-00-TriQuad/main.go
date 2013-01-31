@@ -24,14 +24,16 @@ func onWinThread() {
 }
 
 func onAppThread() {
-	tri.Transform.Rot.X -= 0.005
-	tri.Transform.Rot.Y -= 0.005
-	tri.Transform.Pos.Set(-3.75, 1*math.Sin(ng.Loop.TickNow), 1)
-	tri.Transform.OnPosRotChanged()
-	quad.Transform.Rot.Y += 0.0001
-	quad.Transform.Rot.Z += 0.0001
-	quad.Transform.Pos.Set(-4.125, 1*math.Cos(ng.Loop.TickNow), 0)
-	quad.Transform.OnPosRotChanged()
+	if !ngsamples.Paused {
+		tri.Transform.Rot.X -= 0.005
+		tri.Transform.Rot.Y -= 0.005
+		tri.Transform.Pos.Set(-3.75, 1*math.Sin(ng.Loop.TickNow), 1)
+		tri.Transform.OnPosRotChanged()
+		quad.Transform.Rot.Y += 0.0001
+		quad.Transform.Rot.Z += 0.0001
+		quad.Transform.Pos.Set(-4.125, 1*math.Cos(ng.Loop.TickNow), 0)
+		quad.Transform.OnPosRotChanged()
+	}
 }
 
 func LoadSampleScene_00_TriQuad() {

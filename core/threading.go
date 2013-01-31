@@ -2,9 +2,18 @@ package core
 
 import (
 	ugl "github.com/go3d/go-glutil"
+	unum "github.com/metaleap/go-util/num"
 )
 
 var (
+	thrApp struct {
+		ctlTmps struct {
+			tmpCopy           Controller
+			matTrans, matLook unum.Mat4
+			posNeg, axis      unum.Vec3
+		}
+		numBag unum.Bag
+	}
 	thrPrep struct {
 		curCam   *Camera
 		curCanv  *RenderCanvas

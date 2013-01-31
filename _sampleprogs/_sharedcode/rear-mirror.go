@@ -11,8 +11,10 @@ type RearMirror struct {
 }
 
 func (me *RearMirror) OnApp() {
-	me.Cam.Controller.CopyFrom(&Cam.Controller)
-	me.Cam.Controller.TurnRightBy(180)
+	if !Paused {
+		me.Cam.Controller.CopyFrom(&Cam.Controller)
+		me.Cam.Controller.TurnRightBy(180)
+	}
 }
 
 func (me *RearMirror) Setup() {

@@ -924,7 +924,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 				
 			
 				
-				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.go?s=2695:2738#L92">SetTechnique</a></h3>
+				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.go?s=2711:2754#L92">SetTechnique</a></h3>
 				<pre>func (me *Camera) SetTechnique(name string)</pre>
 				
 				
@@ -933,7 +933,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 		
 			
 			
-			<h2 id="CameraViewport">type <a href="/target/camera.go?s=3120:3373#L110">CameraViewport</a></h2>
+			<h2 id="CameraViewport">type <a href="/target/camera.go?s=3136:3389#L110">CameraViewport</a></h2>
 			<pre>type CameraViewport struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -952,7 +952,7 @@ Encapsulates a device-relative or absolute camera view-port.
 
 			
 				
-				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=3499:3556#L125">SetAbs</a></h3>
+				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=3515:3572#L125">SetAbs</a></h3>
 				<pre>func (me *CameraViewport) SetAbs(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -962,7 +962,7 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=3807:3868#L132">SetRel</a></h3>
+				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=3823:3884#L132">SetRel</a></h3>
 				<pre>func (me *CameraViewport) SetRel(x, y, width, height float64)</pre>
 				<p>
 Sets the device-relative viewport origin and dimensions, with the value 1.0
@@ -975,7 +975,7 @@ representing the maximum extent of the viewport on that respective axis.
 		
 			
 			
-			<h2 id="Cameras">type <a href="/target/camera.go?s=2861:2883#L98">Cameras</a></h2>
+			<h2 id="Cameras">type <a href="/target/camera.go?s=2877:2899#L98">Cameras</a></h2>
 			<pre>type Cameras []*Camera</pre>
 			
 
@@ -989,7 +989,7 @@ representing the maximum extent of the viewport on that respective axis.
 
 			
 				
-				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=2885:2926#L100">Remove</a></h3>
+				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=2901:2942#L100">Remove</a></h3>
 				<pre>func (me *Cameras) Remove(camera *Camera)</pre>
 				
 				
@@ -1054,7 +1054,7 @@ some entity that is rotated facing some arbitrary direction).
 
 			
 				
-				<h3 id="Controller.BeginUpdate">func (*Controller) <a href="/target/controller.go?s=3289:3324#L96">BeginUpdate</a></h3>
+				<h3 id="Controller.BeginUpdate">func (*Controller) <a href="/target/controller.go?s=2928:2963#L81">BeginUpdate</a></h3>
 				<pre>func (me *Controller) BeginUpdate()</pre>
 				<p>
 Temporarily suspends all matrix re-calculations typically occuring inside
@@ -1068,14 +1068,14 @@ EndUpdate() to apply all changes in a final matrix re-calculation.
 				
 			
 				
-				<h3 id="Controller.CopyFrom">func (*Controller) <a href="/target/controller.go?s=1764:1811#L50">CopyFrom</a></h3>
+				<h3 id="Controller.CopyFrom">func (*Controller) <a href="/target/controller.go?s=2992:3039#L85">CopyFrom</a></h3>
 				<pre>func (me *Controller) CopyFrom(ctl *Controller)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Controller.EndUpdate">func (*Controller) <a href="/target/controller.go?s=3658:3691#L104">EndUpdate</a></h3>
+				<h3 id="Controller.EndUpdate">func (*Controller) <a href="/target/controller.go?s=3873:3906#L100">EndUpdate</a></h3>
 				<pre>func (me *Controller) EndUpdate()</pre>
 				<p>
 Applies all changes made to Pos, Dir or UpAxis since BeginUpdate() was last
@@ -1088,7 +1088,7 @@ MoveXyz() / TurnXyz() methods that were suspended since BeginUpdate().
 				
 			
 				
-				<h3 id="Controller.MoveBackward">func (*Controller) <a href="/target/controller.go?s=4595:4631#L136">MoveBackward</a></h3>
+				<h3 id="Controller.MoveBackward">func (*Controller) <a href="/target/controller.go?s=4810:4846#L132">MoveBackward</a></h3>
 				<pre>func (me *Controller) MoveBackward()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move backward&#34;.
@@ -1098,7 +1098,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move backward&#34
 				
 			
 				
-				<h3 id="Controller.MoveDown">func (*Controller) <a href="/target/controller.go?s=4799:4831#L142">MoveDown</a></h3>
+				<h3 id="Controller.MoveDown">func (*Controller) <a href="/target/controller.go?s=5014:5046#L138">MoveDown</a></h3>
 				<pre>func (me *Controller) MoveDown()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move downward&#34;.
@@ -1108,7 +1108,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move downward&#34
 				
 			
 				
-				<h3 id="Controller.MoveForward">func (*Controller) <a href="/target/controller.go?s=5001:5036#L148">MoveForward</a></h3>
+				<h3 id="Controller.MoveForward">func (*Controller) <a href="/target/controller.go?s=5216:5251#L144">MoveForward</a></h3>
 				<pre>func (me *Controller) MoveForward()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move forward&#34;.
@@ -1118,7 +1118,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move forward&#34;
 				
 			
 				
-				<h3 id="Controller.MoveLeft">func (*Controller) <a href="/target/controller.go?s=5205:5237#L154">MoveLeft</a></h3>
+				<h3 id="Controller.MoveLeft">func (*Controller) <a href="/target/controller.go?s=5420:5452#L150">MoveLeft</a></h3>
 				<pre>func (me *Controller) MoveLeft()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move left-ward&#34;.
@@ -1128,7 +1128,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move left-ward&#3
 				
 			
 				
-				<h3 id="Controller.MoveRight">func (*Controller) <a href="/target/controller.go?s=5434:5467#L160">MoveRight</a></h3>
+				<h3 id="Controller.MoveRight">func (*Controller) <a href="/target/controller.go?s=5649:5682#L156">MoveRight</a></h3>
 				<pre>func (me *Controller) MoveRight()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move right-ward&#34;.
@@ -1138,7 +1138,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move right-ward&#
 				
 			
 				
-				<h3 id="Controller.MoveUp">func (*Controller) <a href="/target/controller.go?s=5660:5690#L166">MoveUp</a></h3>
+				<h3 id="Controller.MoveUp">func (*Controller) <a href="/target/controller.go?s=5875:5905#L162">MoveUp</a></h3>
 				<pre>func (me *Controller) MoveUp()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move upward&#34;.
@@ -1148,7 +1148,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move upward&#34;.
 				
 			
 				
-				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=6147:6191#L185">StepSizeMove</a></h3>
+				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=6362:6406#L181">StepSizeMove</a></h3>
 				<pre>func (me *Controller) StepSizeMove() float64</pre>
 				<p>
 Returns the current distance that a single MoveXyz() call (per loop iteration) would move.
@@ -1159,7 +1159,7 @@ Returns the current distance that a single MoveXyz() call (per loop iteration) w
 				
 			
 				
-				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=6409:6453#L191">StepSizeTurn</a></h3>
+				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=6624:6668#L187">StepSizeTurn</a></h3>
 				<pre>func (me *Controller) StepSizeTurn() float64</pre>
 				<p>
 Returns the current degrees that a single TurnXyz() call (per loop iteration) would turn.
@@ -1170,7 +1170,7 @@ Returns the current degrees that a single TurnXyz() call (per loop iteration) wo
 				
 			
 				
-				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=6627:6659#L196">TurnDown</a></h3>
+				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=6842:6874#L192">TurnDown</a></h3>
 				<pre>func (me *Controller) TurnDown()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34; by me.StepSizeTurn() degrees.
@@ -1180,7 +1180,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34
 				
 			
 				
-				<h3 id="Controller.TurnDownBy">func (*Controller) <a href="/target/controller.go?s=6802:6847#L201">TurnDownBy</a></h3>
+				<h3 id="Controller.TurnDownBy">func (*Controller) <a href="/target/controller.go?s=7017:7062#L197">TurnDownBy</a></h3>
 				<pre>func (me *Controller) TurnDownBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34; by the specified degrees.
@@ -1190,7 +1190,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34
 				
 			
 				
-				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=7013:7045#L208">TurnLeft</a></h3>
+				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=7228:7260#L204">TurnLeft</a></h3>
 				<pre>func (me *Controller) TurnLeft()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#34; by me.StepSizeTurn() degrees.
@@ -1200,7 +1200,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#3
 				
 			
 				
-				<h3 id="Controller.TurnLeftBy">func (*Controller) <a href="/target/controller.go?s=7189:7234#L213">TurnLeftBy</a></h3>
+				<h3 id="Controller.TurnLeftBy">func (*Controller) <a href="/target/controller.go?s=7404:7449#L209">TurnLeftBy</a></h3>
 				<pre>func (me *Controller) TurnLeftBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#34; by the specified degrees.
@@ -1210,7 +1210,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#3
 				
 			
 				
-				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=7363:7396#L218">TurnRight</a></h3>
+				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=7578:7611#L214">TurnRight</a></h3>
 				<pre>func (me *Controller) TurnRight()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#34; by me.StepSizeTurn() degrees.
@@ -1220,7 +1220,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#
 				
 			
 				
-				<h3 id="Controller.TurnRightBy">func (*Controller) <a href="/target/controller.go?s=7542:7588#L223">TurnRightBy</a></h3>
+				<h3 id="Controller.TurnRightBy">func (*Controller) <a href="/target/controller.go?s=7757:7803#L219">TurnRightBy</a></h3>
 				<pre>func (me *Controller) TurnRightBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#34; by the specified degrees.
@@ -1230,7 +1230,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#
 				
 			
 				
-				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=7714:7744#L228">TurnUp</a></h3>
+				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=7929:7959#L224">TurnUp</a></h3>
 				<pre>func (me *Controller) TurnUp()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; by me.StepSizeTurn() degrees.
@@ -1240,7 +1240,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 				
 			
 				
-				<h3 id="Controller.TurnUpBy">func (*Controller) <a href="/target/controller.go?s=7883:7926#L233">TurnUpBy</a></h3>
+				<h3 id="Controller.TurnUpBy">func (*Controller) <a href="/target/controller.go?s=8098:8141#L229">TurnUpBy</a></h3>
 				<pre>func (me *Controller) TurnUpBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; by the specified degress.
@@ -1543,7 +1543,7 @@ Allocates, initializes and returns a new core.EngineOptions instance.
 		
 			
 			
-			<h2 id="EngineStats">type <a href="/target/ng-stats.go?s=299:3636#L4">EngineStats</a></h2>
+			<h2 id="EngineStats">type <a href="/target/ng-stats.go?s=299:3664#L4">EngineStats</a></h2>
 			<pre>type EngineStats struct {
     <span class="comment">//	Gives the total number of frames rendered during the &#34;previous&#34;</span>
     <span class="comment">//	(not the current) second. Good enough for just a simple-minded FPS indicator.</span>
@@ -1570,37 +1570,38 @@ Allocates, initializes and returns a new core.EngineOptions instance.
     <span class="comment">//	and maximum) GPU-side rendering cost per frame.</span>
     FrameRenderGpu TimingStats
 
-    <span class="comment">//	&#34;Prep code&#34; comprises all go:ngine logic executed every frame to cull geometry</span>
-    <span class="comment">//	and prepare a batch of rendering commands for the next (not current) frame.</span>
+    <span class="comment">//	&#34;Prep code&#34; comprises all go:ngine logic executed every frame in parallel to cull</span>
+    <span class="comment">//	geometry and prepare a batch of rendering commands for the next (not current) frame.</span>
     <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;prep code&#34; cost per frame.</span>
     FramePrepThread TimingStats
 
-    <span class="comment">//	&#34;App code&#34; comprises (mostly user-specific) logic executed every frame in your</span>
-    <span class="comment">//	Loop.OnAppThread() callback. Such code may freely modify dynamic Cameras, Nodes etc.</span>
-    <span class="comment">//	Unlike OnWinThread() core, &#34;app code&#34; always runs in its own thread in parallel to the prep and main threads.</span>
+    <span class="comment">//	&#34;App code&#34; comprises (mostly user-specific) logic executed every frame in parallel in</span>
+    <span class="comment">//	your Loop.OnAppThread() callback. Such code may freely modify dynamic Cameras, Nodes etc.</span>
+    <span class="comment">//	Unlike OnWinThread() code, &#34;app code&#34; always runs in its own thread in parallel to the prep and main threads.</span>
     <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;app code&#34; cost per frame.</span>
     FrameAppThread TimingStats
 
-    <span class="comment">//	&#34;Input code&#34; comprises user-specific logic executed every frame via your own</span>
+    <span class="comment">//	&#34;Windowing/GPU/IO code&#34; comprises user-specific logic executed every frame via your own</span>
     <span class="comment">//	Loop.OnWinThread() callback. This should be kept to a minimum to fully enjoy</span>
     <span class="comment">//	the benefits of multi-threading. Main use-cases are calls resulting in GPU state</span>
     <span class="comment">//	changes (such as toggling effects in Core.Rendering.PostFx) and working with UserIO</span>
-    <span class="comment">//	to check for user input -- but execute logic resulting from that input in OnApp()!</span>
+    <span class="comment">//	to poll for user input -- but do consider executing resulting logic in your OnAppThread().</span>
     <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;input code&#34; cost per frame.</span>
     FrameWinThread TimingStats
 
     <span class="comment">//	When CPU-side rendering is completed, Loop waits for the app thread and prep thread</span>
     <span class="comment">//	to finish (either before or after GPU-side rendering depending on Loop.SwapLast).</span>
-    <span class="comment">//	It then copies prep results to the render thread and app results to the prep thread.</span>
+    <span class="comment">//	It then moves &#34;prep results&#34; to the render thread and &#34;app results&#34; to the prep thread.</span>
     <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;thread sync&#34; cost per frame.</span>
     FrameThreadSync TimingStats
 
     <span class="comment">//	During the Loop, the Go Garbge Collector is invoked at least and at most once per second.</span>
     <span class="comment">//	</span>
     <span class="comment">//	Forcing GC &#34;that often&#34; practically guarantees it will almost never have so much work to do as to</span>
-    <span class="comment">//	noticably block user interaction --- 99.9% of the time it will complete in less than 10ms (and almost-always under 1ms).</span>
+    <span class="comment">//	noticably block user interaction --- typically well below 10ms, most often around 1ms.</span>
     <span class="comment">//	</span>
-    <span class="comment">//	This TimingStats instance over time tracks the maximum and average time spent on that 1x-per-second GC invokation (but does not track any other GC invokations).</span>
+    <span class="comment">//	This TimingStats instance over time tracks the maximum and average time spent on that</span>
+    <span class="comment">//	1x-per-second-during-Loop GC invokation (but does not track any other GC invokations).</span>
     Gc TimingStats
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -1626,7 +1627,7 @@ Tracks various go:ngine performance indicators over time.
 
 			
 				
-				<h3 id="EngineStats.AverageFps">func (*EngineStats) <a href="/target/ng-stats.go?s=3724:3767#L68">AverageFps</a></h3>
+				<h3 id="EngineStats.AverageFps">func (*EngineStats) <a href="/target/ng-stats.go?s=3752:3795#L69">AverageFps</a></h3>
 				<pre>func (me *EngineStats) AverageFps() float64</pre>
 				<p>
 Returns the average number of frames-per-second since Loop.Loop() was last called.
@@ -1636,7 +1637,7 @@ Returns the average number of frames-per-second since Loop.Loop() was last calle
 				
 			
 				
-				<h3 id="EngineStats.TotalFrames">func (*EngineStats) <a href="/target/ng-stats.go?s=3892:3936#L76">TotalFrames</a></h3>
+				<h3 id="EngineStats.TotalFrames">func (*EngineStats) <a href="/target/ng-stats.go?s=3920:3964#L77">TotalFrames</a></h3>
 				<pre>func (me *EngineStats) TotalFrames() float64</pre>
 				
 				
@@ -2879,7 +2880,7 @@ ApplyMatrices() (or OnFooChanged()) methods.
 
 			
 				
-				<h3 id="NodeTransforms.ApplyMatrices">func (*NodeTransforms) <a href="/target/node-transform.go?s=1679:1720#L38">ApplyMatrices</a></h3>
+				<h3 id="NodeTransforms.ApplyMatrices">func (*NodeTransforms) <a href="/target/node-transform.go?s=1727:1768#L38">ApplyMatrices</a></h3>
 				<pre>func (me *NodeTransforms) ApplyMatrices()</pre>
 				<p>
 Creates a final single 4x4 transformation matrix for all transformations
@@ -2890,7 +2891,7 @@ in me. It is onlx this matrix that is used by the rendering runtime.
 				
 			
 				
-				<h3 id="NodeTransforms.OnAnyChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2346:2386#L54">OnAnyChanged</a></h3>
+				<h3 id="NodeTransforms.OnAnyChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2410:2450#L54">OnAnyChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnAnyChanged()</pre>
 				<p>
 Updates the translation matrix from the current me.Pos value.
@@ -2903,7 +2904,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnPosChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2653:2693#L67">OnPosChanged</a></h3>
+				<h3 id="NodeTransforms.OnPosChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2717:2757#L67">OnPosChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnPosChanged()</pre>
 				<p>
 Updates the translation matrix from the current me.Pos value.
@@ -2914,7 +2915,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnPosRotChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2914:2957#L75">OnPosRotChanged</a></h3>
+				<h3 id="NodeTransforms.OnPosRotChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=2978:3021#L75">OnPosRotChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnPosRotChanged()</pre>
 				<p>
 Updates the translation matrix from the current me.Pos value.
@@ -2926,7 +2927,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnPosScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3180:3225#L84">OnPosScaleChanged</a></h3>
+				<h3 id="NodeTransforms.OnPosScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3244:3289#L84">OnPosScaleChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnPosScaleChanged()</pre>
 				<p>
 Updates the translation matrix from the current me.Pos value.
@@ -2938,7 +2939,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnRotChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3508:3548#L98">OnRotChanged</a></h3>
+				<h3 id="NodeTransforms.OnRotChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3572:3612#L98">OnRotChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnRotChanged()</pre>
 				<p>
 Updates the X, Y and Z axis rotation matrices from the current me.Rot value.
@@ -2949,7 +2950,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnRotScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3767:3812#L106">OnRotScaleChanged</a></h3>
+				<h3 id="NodeTransforms.OnRotScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=3831:3876#L106">OnRotScaleChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnRotScaleChanged()</pre>
 				<p>
 Updates the scaling matrix from the current me.Scale value.
@@ -2961,7 +2962,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnRotXChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4059:4100#L118">OnRotXChanged</a></h3>
+				<h3 id="NodeTransforms.OnRotXChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4139:4180#L118">OnRotXChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnRotXChanged()</pre>
 				<p>
 Updates the X-axis rotation matrix from the current me.Rot.X value.
@@ -2972,7 +2973,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnRotYChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4327:4368#L129">OnRotYChanged</a></h3>
+				<h3 id="NodeTransforms.OnRotYChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4423:4464#L129">OnRotYChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnRotYChanged()</pre>
 				<p>
 Updates the Y-axis rotation matrix from the current me.Rot.Y value.
@@ -2983,7 +2984,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnRotZChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4595:4636#L140">OnRotZChanged</a></h3>
+				<h3 id="NodeTransforms.OnRotZChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4707:4748#L140">OnRotZChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnRotZChanged()</pre>
 				<p>
 Updates the Z-axis rotation matrix from the current me.Rot.Z value.
@@ -2994,7 +2995,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4856:4898#L151">OnScaleChanged</a></h3>
+				<h3 id="NodeTransforms.OnScaleChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=4968:5010#L151">OnScaleChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnScaleChanged()</pre>
 				<p>
 Updates the scaling matrix from the current me.Scale value.
@@ -3005,7 +3006,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.OnSomeChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=5402:5476#L162">OnSomeChanged</a></h3>
+				<h3 id="NodeTransforms.OnSomeChanged">func (*NodeTransforms) <a href="/target/node-transform.go?s=5514:5588#L162">OnSomeChanged</a></h3>
 				<pre>func (me *NodeTransforms) OnSomeChanged(scale, pos, rotX, rotY, rotZ bool)</pre>
 				<p>
 If pos is true, updates the translation matrix from the current me.Pos value.
@@ -3020,7 +3021,7 @@ Then calls ApplyMatrices().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPos">func (*NodeTransforms) <a href="/target/node-transform.go?s=5718:5766#L182">SetPos</a></h3>
+				<h3 id="NodeTransforms.SetPos">func (*NodeTransforms) <a href="/target/node-transform.go?s=5830:5878#L182">SetPos</a></h3>
 				<pre>func (me *NodeTransforms) SetPos(pos *unum.Vec3)</pre>
 				<p>
 Sets me.Pos and calls OnPosChanged().
@@ -3030,7 +3031,7 @@ Sets me.Pos and calls OnPosChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosX">func (*NodeTransforms) <a href="/target/node-transform.go?s=5905:5952#L192">SetPosX</a></h3>
+				<h3 id="NodeTransforms.SetPosX">func (*NodeTransforms) <a href="/target/node-transform.go?s=6017:6064#L192">SetPosX</a></h3>
 				<pre>func (me *NodeTransforms) SetPosX(posX float64)</pre>
 				<p>
 Sets me.Pos.X and calls OnPosChanged().
@@ -3040,7 +3041,7 @@ Sets me.Pos.X and calls OnPosChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6035:6096#L198">SetPosXYZ</a></h3>
+				<h3 id="NodeTransforms.SetPosXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6147:6208#L198">SetPosXYZ</a></h3>
 				<pre>func (me *NodeTransforms) SetPosXYZ(posX, posY, posZ float64)</pre>
 				<p>
 Sets me.Pos and calls OnPosChanged().
@@ -3050,7 +3051,7 @@ Sets me.Pos and calls OnPosChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosY">func (*NodeTransforms) <a href="/target/node-transform.go?s=6213:6260#L204">SetPosY</a></h3>
+				<h3 id="NodeTransforms.SetPosY">func (*NodeTransforms) <a href="/target/node-transform.go?s=6325:6372#L204">SetPosY</a></h3>
 				<pre>func (me *NodeTransforms) SetPosY(posY float64)</pre>
 				<p>
 Sets me.Pos.Y and calls OnPosChanged().
@@ -3060,7 +3061,7 @@ Sets me.Pos.Y and calls OnPosChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetPosZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6345:6392#L210">SetPosZ</a></h3>
+				<h3 id="NodeTransforms.SetPosZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6457:6504#L210">SetPosZ</a></h3>
 				<pre>func (me *NodeTransforms) SetPosZ(posZ float64)</pre>
 				<p>
 Sets me.Pos.Z and calls OnPosChanged().
@@ -3070,7 +3071,7 @@ Sets me.Pos.Z and calls OnPosChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRot">func (*NodeTransforms) <a href="/target/node-transform.go?s=6475:6523#L216">SetRot</a></h3>
+				<h3 id="NodeTransforms.SetRot">func (*NodeTransforms) <a href="/target/node-transform.go?s=6587:6635#L216">SetRot</a></h3>
 				<pre>func (me *NodeTransforms) SetRot(rot *unum.Vec3)</pre>
 				<p>
 Sets me.Rot and calls OnRotChanged().
@@ -3080,7 +3081,7 @@ Sets me.Rot and calls OnRotChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotX">func (*NodeTransforms) <a href="/target/node-transform.go?s=6662:6708#L226">SetRotX</a></h3>
+				<h3 id="NodeTransforms.SetRotX">func (*NodeTransforms) <a href="/target/node-transform.go?s=6774:6820#L226">SetRotX</a></h3>
 				<pre>func (me *NodeTransforms) SetRotX(rad float64)</pre>
 				<p>
 Sets me.Rot.X and calls OnRotChanged().
@@ -3090,7 +3091,7 @@ Sets me.Rot.X and calls OnRotChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6791:6852#L232">SetRotXYZ</a></h3>
+				<h3 id="NodeTransforms.SetRotXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=6903:6964#L232">SetRotXYZ</a></h3>
 				<pre>func (me *NodeTransforms) SetRotXYZ(radX, radY, radZ float64)</pre>
 				<p>
 Sets me.Rot and calls OnRotChanged().
@@ -3100,7 +3101,7 @@ Sets me.Rot and calls OnRotChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotY">func (*NodeTransforms) <a href="/target/node-transform.go?s=6969:7015#L238">SetRotY</a></h3>
+				<h3 id="NodeTransforms.SetRotY">func (*NodeTransforms) <a href="/target/node-transform.go?s=7081:7127#L238">SetRotY</a></h3>
 				<pre>func (me *NodeTransforms) SetRotY(rad float64)</pre>
 				<p>
 Sets me.Rot.Y and calls OnRotChanged().
@@ -3110,7 +3111,7 @@ Sets me.Rot.Y and calls OnRotChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetRotZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=7100:7146#L244">SetRotZ</a></h3>
+				<h3 id="NodeTransforms.SetRotZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=7212:7258#L244">SetRotZ</a></h3>
 				<pre>func (me *NodeTransforms) SetRotZ(rad float64)</pre>
 				<p>
 Sets me.Rot.Z and calls OnRotChanged().
@@ -3120,7 +3121,7 @@ Sets me.Rot.Z and calls OnRotChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetScale">func (*NodeTransforms) <a href="/target/node-transform.go?s=7233:7285#L250">SetScale</a></h3>
+				<h3 id="NodeTransforms.SetScale">func (*NodeTransforms) <a href="/target/node-transform.go?s=7345:7397#L250">SetScale</a></h3>
 				<pre>func (me *NodeTransforms) SetScale(scale *unum.Vec3)</pre>
 				<p>
 Sets me.Scale and calls OnScaleChanged().
@@ -3130,7 +3131,7 @@ Sets me.Scale and calls OnScaleChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetScaleN">func (*NodeTransforms) <a href="/target/node-transform.go?s=7428:7478#L260">SetScaleN</a></h3>
+				<h3 id="NodeTransforms.SetScaleN">func (*NodeTransforms) <a href="/target/node-transform.go?s=7540:7590#L260">SetScaleN</a></h3>
 				<pre>func (me *NodeTransforms) SetScaleN(scale float64)</pre>
 				<p>
 Sets me.Scale and calls OnScaleChanged().
@@ -3140,7 +3141,7 @@ Sets me.Scale and calls OnScaleChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.SetScaleXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=7566:7620#L265">SetScaleXYZ</a></h3>
+				<h3 id="NodeTransforms.SetScaleXYZ">func (*NodeTransforms) <a href="/target/node-transform.go?s=7678:7732#L265">SetScaleXYZ</a></h3>
 				<pre>func (me *NodeTransforms) SetScaleXYZ(x, y, z float64)</pre>
 				<p>
 Sets me.Scale and calls OnScaleChanged().
@@ -3150,7 +3151,7 @@ Sets me.Scale and calls OnScaleChanged().
 				
 			
 				
-				<h3 id="NodeTransforms.StepDelta">func (*NodeTransforms) <a href="/target/node-transform.go?s=7772:7839#L271">StepDelta</a></h3>
+				<h3 id="NodeTransforms.StepDelta">func (*NodeTransforms) <a href="/target/node-transform.go?s=7884:7951#L271">StepDelta</a></h3>
 				<pre>func (me *NodeTransforms) StepDelta(deltaPerSecond float64) float64</pre>
 				<p>
 Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
@@ -3474,7 +3475,7 @@ Initializes and returns a new Scene with default parameters.
 		
 			
 			
-			<h2 id="TimingStats">type <a href="/target/ng-stats.go?s=4041:4213#L81">TimingStats</a></h2>
+			<h2 id="TimingStats">type <a href="/target/ng-stats.go?s=4069:4241#L82">TimingStats</a></h2>
 			<pre>type TimingStats struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -3493,7 +3494,7 @@ Helps track average and maximum cost for a variety of performance indicators.
 
 			
 				
-				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/ng-stats.go?s=4282:4322#L87">Average</a></h3>
+				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/ng-stats.go?s=4310:4350#L88">Average</a></h3>
 				<pre>func (me *TimingStats) Average() float64</pre>
 				<p>
 Returns the average cost tracked by this performance indicator.
@@ -3503,7 +3504,7 @@ Returns the average cost tracked by this performance indicator.
 				
 			
 				
-				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/ng-stats.go?s=4914:4950#L110">Max</a></h3>
+				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/ng-stats.go?s=4942:4978#L111">Max</a></h3>
 				<pre>func (me *TimingStats) Max() float64</pre>
 				<p>
 Returns the maximum cost tracked by this performance indicator.
