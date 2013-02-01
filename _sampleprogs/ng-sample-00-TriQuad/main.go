@@ -4,8 +4,6 @@ import (
 	"math"
 
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
-	// nga "github.com/go3d/go-ngine/assets"
-	// ngau "github.com/go3d/go-ngine/assets/util"
 	ng "github.com/go3d/go-ngine/core"
 )
 

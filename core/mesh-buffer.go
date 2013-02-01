@@ -1,9 +1,9 @@
 package core
 
 import (
-	gl "github.com/chsc/gogl/gl42"
+	gl "github.com/go3d/go-opengl/gogl"
 
-	ugl "github.com/go3d/go-glutil"
+	ugl "github.com/go3d/go-opengl/util"
 )
 
 type meshBufferParams struct {

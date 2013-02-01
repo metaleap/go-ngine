@@ -1,8 +1,8 @@
 package core
 
 import (
-	gl "github.com/chsc/gogl/gl42"
-	ugl "github.com/go3d/go-glutil"
+	gl "github.com/go3d/go-opengl/gogl"
+	ugl "github.com/go3d/go-opengl/util"
 	unum "github.com/metaleap/go-util/num"
 )
 

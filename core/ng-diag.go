@@ -3,7 +3,7 @@ package core
 import (
 	"log"
 
-	ugl "github.com/go3d/go-glutil"
+	ugl "github.com/go3d/go-opengl/util"
 	ugo "github.com/metaleap/go-util"
 )
 

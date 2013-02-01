@@ -1,7 +1,7 @@
 package core
 
 import (
-	ugl "github.com/go3d/go-glutil"
+	ugl "github.com/go3d/go-opengl/util"
 )
 
 type FxImageBase struct {

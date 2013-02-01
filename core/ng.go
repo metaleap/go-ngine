@@ -3,7 +3,7 @@ package core
 import (
 	"fmt"
 
-	ugl "github.com/go3d/go-glutil"
+	ugl "github.com/go3d/go-opengl/util"
 )
 
 //	Call this to "un-init" go:ngine and to release any and all GPU or RAM resources still allocated.

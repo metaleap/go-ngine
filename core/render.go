@@ -1,7 +1,7 @@
 package core
 
 import (
-	gl "github.com/chsc/gogl/gl42"
+	gl "github.com/go3d/go-opengl/gogl"
 )
 
 func (me *EngineCore) onRender() {

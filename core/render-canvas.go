@@ -3,8 +3,8 @@ package core
 import (
 	"math"
 
-	gl "github.com/chsc/gogl/gl42"
-	ugl "github.com/go3d/go-glutil"
+	gl "github.com/go3d/go-opengl/gogl"
+	ugl "github.com/go3d/go-opengl/util"
 )
 
 var (

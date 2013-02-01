@@ -2,7 +2,6 @@ package main
 
 import (
 	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
-	// nga "github.com/go3d/go-ngine/assets"
 	ng "github.com/go3d/go-ngine/core"
 )
 

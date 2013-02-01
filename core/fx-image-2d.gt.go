@@ -8,7 +8,7 @@ import (
 	"io"
 	"strings"
 
-	ugl "github.com/go3d/go-glutil"
+	ugl "github.com/go3d/go-opengl/util"
 )
 
 type FxImage2D struct {

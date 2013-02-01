@@ -27,32 +27,31 @@ var (
 	specDoc     *xmlx.Document
 )
 
-func checkGoFile(filePath string, recurse bool) bool {
-	var (
-		fset       = token.NewFileSet()
-		astFile    *ast.File
-		err        error
-		hasGoglImp = false
-	)
-	if strings.Index(filePath, "_trash") >= 0 {
-		return recurse
-	}
-	if astFile, err = parser.ParseFile(fset, filePath, nil, parser.ImportsOnly); err != nil {
-		panic(err)
-	}
-	for _, s := range astFile.Imports {
-		if hasGoglImp = (strings.Index(s.Path.Value, "github.com/chsc/gogl/") >= 0); hasGoglImp {
-			break
-		}
-	}
-	if hasGoglImp {
-		if astFile, err = parser.ParseFile(fset, filePath, nil, 0); err != nil {
+func checkGoFile(_ *uio.DirWalker, filePath string, isDir bool) bool {
+	if strings.HasSuffix(filePath, ".go") {
+		var (
+			fset       = token.NewFileSet()
+			astFile    *ast.File
+			err        error
+			hasGoglImp = false
+		)
+		if astFile, err = parser.ParseFile(fset, filePath, nil, parser.ImportsOnly); err != nil {
 			panic(err)
 		}
-		curFilePath = filePath
-		ast.Inspect(astFile, inspectNode)
+		for _, s := range astFile.Imports {
+			if hasGoglImp = (strings.Index(s.Path.Value, "github.com/go3d/go-opengl/api/") >= 0); hasGoglImp {
+				break
+			}
+		}
+		if hasGoglImp {
+			if astFile, err = parser.ParseFile(fset, filePath, nil, 0); err != nil {
+				panic(err)
+			}
+			curFilePath = filePath
+			ast.Inspect(astFile, inspectNode)
+		}
 	}
-	return recurse
+	return true
 }
 
 func inspectNode(node ast.Node) bool {
@@ -103,7 +102,9 @@ func main() {
 	)
 	loadSpecXml()
 	enumNodes, funcNodes := specDoc.SelectNodesRecursive("*", "enum"), specDoc.SelectNodesRecursive("*", "function")
-	uio.WalkDirectory(util.GopathSrcGithub("go3d"), ".go", checkGoFile, true)
+	if errs := uio.NewDirWalker(nil, checkGoFile).Walk(util.GopathSrcGithub("go3d")); len(errs) > 0 {
+		panic(errs[0])
+	}
 	for glName, _ := range glNames {
 		kind, ver = "", ""
 		for _, enode := range enumNodes {

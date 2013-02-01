@@ -3,7 +3,7 @@ package core
 import (
 	"runtime"
 
-	ugl "github.com/go3d/go-glutil"
+	ugl "github.com/go3d/go-opengl/util"
 )
 
 //	Consider EngineOptions a "Singleton" type, only valid use is the one instance you created for core.Init().

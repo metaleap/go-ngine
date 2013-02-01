@@ -5,7 +5,7 @@ import (
 	"runtime"
 
 	glfw "github.com/go-gl/glfw"
-	ugl "github.com/go3d/go-glutil"
+	ugl "github.com/go3d/go-opengl/util"
 )
 
 var (
