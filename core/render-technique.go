@@ -1,7 +1,7 @@
 package core
 
 import (
-	gl "github.com/go3d/go-opengl/gogl"
+	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
 )
 
@@ -29,7 +29,7 @@ type baseTechnique struct {
 }
 
 func (me *baseTechnique) initMeshBuffer(meshBuffer *MeshBuffer) (atts []*ugl.VertexAttribPointer) {
-	atts = append(atts, ugl.NewVertexAttribPointer("aPos", me.prog.AttrLocs["aPos"], 3, 8*4, gl.Pointer(nil)))
+	atts = append(atts, ugl.NewVertexAttribPointer("aPos", me.prog.AttrLocs["aPos"], 3, 8*4, gl.Ptr(nil)))
 	return
 }
 
@@ -65,7 +65,7 @@ func newTechnique_Unlit(progName string) renderTechnique {
 
 func (me *techniqueUnlit) initMeshBuffer(meshBuffer *MeshBuffer) (atts []*ugl.VertexAttribPointer) {
 	atts = me.baseTechnique.initMeshBuffer(meshBuffer)
-	atts = append(atts, ugl.NewVertexAttribPointer("aTexCoords", me.prog.AttrLocs["aTexCoords"], 2, 8*4, gl.Offset(nil, 3*4)))
+	atts = append(atts, ugl.NewVertexAttribPointer("aTexCoords", me.prog.AttrLocs["aTexCoords"], 2, 8*4, gl.Util.PtrOffset(nil, 3*4)))
 	return
 }
 

@@ -39,7 +39,7 @@ func checkGoFile(_ *uio.DirWalker, filePath string, isDir bool) bool {
 			panic(err)
 		}
 		for _, s := range astFile.Imports {
-			if hasGoglImp = (strings.Index(s.Path.Value, "github.com/go3d/go-opengl/api/") >= 0); hasGoglImp {
+			if hasGoglImp = (strings.Index(s.Path.Value, "github.com/go3d/go-opengl/core/") >= 0); hasGoglImp {
 				break
 			}
 		}

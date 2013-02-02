@@ -1,7 +1,7 @@
 package core
 
 import (
-	gl "github.com/go3d/go-opengl/gogl"
+	gl "github.com/go3d/go-opengl/core"
 
 	ugl "github.com/go3d/go-opengl/util"
 )
@@ -46,11 +46,11 @@ func (me *Mesh) GpuUpload() (err error) {
 		me.meshBuffer.glVbo.Bind()
 		// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, me.meshBuffer.glIbo)
 		// gl.BindBuffer(gl.ARRAY_BUFFER, me.meshBuffer.glVbo)
-		// gl.BufferSubData(gl.ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetVerts), sizeVerts, gl.Pointer(&me.raw.meshVerts[0]))
-		me.meshBuffer.glVbo.Update(gl.Intptr(me.meshBufOffsetVerts), sizeVerts, gl.Pointer(&me.raw.meshVerts[0]))
+		// gl.BufferSubData(gl.ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetVerts), sizeVerts, gl.Ptr(&me.raw.meshVerts[0]))
+		me.meshBuffer.glVbo.Update(gl.Intptr(me.meshBufOffsetVerts), sizeVerts, gl.Ptr(&me.raw.meshVerts[0]))
 		me.meshBuffer.offsetVerts += int32(sizeVerts)
-		// gl.BufferSubData(gl.ELEMENT_ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetIndices), sizeIndices, gl.Pointer(&me.raw.indices[0]))
-		me.meshBuffer.glIbo.Update(gl.Intptr(me.meshBufOffsetIndices), sizeIndices, gl.Pointer(&me.raw.indices[0]))
+		// gl.BufferSubData(gl.ELEMENT_ARRAY_BUFFER, gl.Intptr(me.meshBufOffsetIndices), sizeIndices, gl.Ptr(&me.raw.indices[0]))
+		me.meshBuffer.glIbo.Update(gl.Intptr(me.meshBufOffsetIndices), sizeIndices, gl.Ptr(&me.raw.indices[0]))
 		me.meshBuffer.offsetIndices += int32(sizeIndices)
 		me.meshBuffer.offsetBaseIndex += int32(len(me.raw.indices))
 		me.meshBuffer.glIbo.Unbind()

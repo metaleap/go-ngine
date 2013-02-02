@@ -3,7 +3,7 @@ package core
 import (
 	"math"
 
-	gl "github.com/go3d/go-opengl/gogl"
+	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
 )
 
@@ -34,7 +34,7 @@ func newRenderCanvas(relative bool, width, height float64) (me *RenderCanvas) {
 	me = &RenderCanvas{EveryNthFrame: 1}
 	me.SetSize(relative, width, height)
 	me.onResize(Core.Options.winWidth, Core.Options.winHeight)
-	me.frameBuf.Create(gl.Sizei(Core.Options.winWidth), gl.Sizei(Core.Options.winHeight), true, true)
+	me.frameBuf.Create(gl.Sizei(Core.Options.winWidth), gl.Sizei(Core.Options.winHeight), false)
 	me.frameBuf.AttachRendertexture(ugl.NewFramebufferRendertexture(Core.Options.Rendering.PostFx.TextureRect))
 	me.frameBuf.AttachRenderbuffer(ugl.NewFramebufferRenderbuffer())
 	ugl.LogLastError("newRenderCanvas(%v x %v)", width, height)

@@ -4,7 +4,7 @@ import (
 	"strings"
 	"time"
 
-	gl "github.com/go3d/go-opengl/gogl"
+	gl "github.com/go3d/go-opengl/core"
 
 	ugl "github.com/go3d/go-opengl/util"
 )
@@ -43,7 +43,8 @@ for: <%v>.
 		return fmtErr(vMessage, strings.Replace(minMatch, "_", ".", -1), curVer, ugl.Gl.Str(gl.VENDOR), ugl.Gl.Str(gl.RENDERER))
 	}
 	if !glc.isInit {
-		if err = gl.Init(); err != nil {
+		if !gl.Util.Init() {
+			err = fmtErr("OpenGL 3.3+ initialization failed.")
 			// 	check for a message such as "unable to initialize VERSION_4_0"
 			if vPos := strings.Index(err.Error(), vMatch); vPos >= 0 {
 				vMatch = err.Error()[vPos+len(vMatch):]
