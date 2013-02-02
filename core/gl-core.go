@@ -1,7 +1,6 @@
 package core
 
 import (
-	"strings"
 	"time"
 
 	gl "github.com/go3d/go-opengl/core"
@@ -25,40 +24,31 @@ func glDispose() {
 
 func glInit() (err error, isVerErr bool) {
 	const (
-		minMatch = "3_3"
-		vMessage = `Minimum required OpenGL version is %v, but your
-graphics-card driver (or your OS) currently
-only provides OpenGL version %v.
+		vMessage = `Minimum required OpenGL version is %s, but your
+graphics driver (or your computer's OS) currently
+only provides OpenGL version %s.
 
-*HOW TO FIX THIS*:
-Simply visit the <%v> website.
-Look for their "driver downloads" pages and follow their
-instructions to find & download the newest driver version
-for: <%v>.
+Most likely your computer is just missing some
+recent system updates.
+
+*HOW TO RESOLVE*:
+Google for "how to find and download the latest
+driver for %s",
+or simply visit the <%s> website,
+look for their "driver downloads" pages and follow
+their instructions to find & download the latest
+driver for: <%s>.
 `
 	)
-	vMatch := "VERSION_"
 	makeVerErr := func(curVer string) error {
 		isVerErr = true
-		return fmtErr(vMessage, strings.Replace(minMatch, "_", ".", -1), curVer, ugl.Gl.Str(gl.VENDOR), ugl.Gl.Str(gl.RENDERER))
+		return fmtErr(vMessage, "3.3", curVer, ugl.Gl.Str(gl.VENDOR)+" "+ugl.Gl.Str(gl.RENDERER), ugl.Gl.Str(gl.VENDOR), ugl.Gl.Str(gl.RENDERER))
 	}
 	if !glc.isInit {
 		if !gl.Util.Init() {
 			err = fmtErr("OpenGL 3.3+ initialization failed.")
-			// 	check for a message such as "unable to initialize VERSION_4_0"
-			if vPos := strings.Index(err.Error(), vMatch); vPos >= 0 {
-				vMatch = err.Error()[vPos+len(vMatch):]
-				if vMatch > minMatch {
-					err = nil
-				} else {
-					if vMatch > "1_0" {
-						vMatch = ugl.Gl.Str(gl.VERSION)
-					}
-					err = makeVerErr(strings.Replace(vMatch, "_", ".", -1))
-				}
-			}
-		}
-		if err == nil {
+		} else {
+			// return makeVerErr(fmtStr("%v.%v", ugl.Support.GlVersion.MajorMinor[0], ugl.Support.GlVersion.MajorMinor[1])), true
 			ugl.Init()
 			if !ugl.VersionMatch(3.3) {
 				err = makeVerErr(fmtStr("%v.%v", ugl.Support.GlVersion.MajorMinor[0], ugl.Support.GlVersion.MajorMinor[1]))
@@ -76,7 +66,7 @@ for: <%v>.
 			}
 		}
 		if err == nil {
-			err = ugl.LastError("nglcore.Init")
+			err = gl.Util.Error("ng-gl-core.Init")
 		}
 		if err == nil {
 			glc.isInit = true

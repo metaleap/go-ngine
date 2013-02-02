@@ -2,8 +2,6 @@ package core
 
 import (
 	gl "github.com/go3d/go-opengl/core"
-
-	ugl "github.com/go3d/go-opengl/util"
 )
 
 type Mesh struct {
@@ -57,7 +55,7 @@ func (me *Mesh) GpuUpload() (err error) {
 		me.meshBuffer.glVbo.Unbind()
 		// gl.BindBuffer(gl.ARRAY_BUFFER, 0)
 		// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
-		if err = ugl.LastError("mesh[%v].GpuUpload()", me.id); err == nil {
+		if err = gl.Util.Error("mesh[%v].GpuUpload()", me.id); err == nil {
 			me.gpuSynced = true
 		}
 	}

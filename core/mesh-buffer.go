@@ -94,7 +94,7 @@ func newMeshBuffer(id string, params *meshBufferParams) (me *MeshBuffer, err err
 		glVao.Create()
 		me.glVaos[techName] = glVao
 	}
-	if err = ugl.LastError("newMeshBuffer(%v numVerts=%v numIndices=%v)", id, params.NumVerts, params.NumIndices); err != nil {
+	if err = gl.Util.Error("newMeshBuffer(%v numVerts=%v numIndices=%v)", id, params.NumVerts, params.NumIndices); err != nil {
 		me.dispose()
 		me = nil
 	} else {
