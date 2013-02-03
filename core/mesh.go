@@ -44,13 +44,15 @@ func (me *Mesh) GpuUpload() (err error) {
 		defer me.meshBuffer.glIbo.Unbind()
 		me.meshBuffer.glVbo.Bind()
 		defer me.meshBuffer.glVbo.Unbind()
-		me.meshBuffer.glVbo.SubData(gl.Intptr(me.meshBufOffsetVerts), sizeVerts, gl.Ptr(&me.raw.meshVerts[0]))
-		me.meshBuffer.offsetVerts += int32(sizeVerts)
-		me.meshBuffer.glIbo.SubData(gl.Intptr(me.meshBufOffsetIndices), sizeIndices, gl.Ptr(&me.raw.indices[0]))
-		me.meshBuffer.offsetIndices += int32(sizeIndices)
-		me.meshBuffer.offsetBaseIndex += int32(len(me.raw.indices))
-		if err = gl.Util.Error("mesh[%v].GpuUpload()", me.id); err == nil {
-			me.gpuSynced = true
+		if err = me.meshBuffer.glVbo.SubData(gl.Intptr(me.meshBufOffsetVerts), sizeVerts, gl.Ptr(&me.raw.meshVerts[0])); err == nil {
+			me.meshBuffer.offsetVerts += int32(sizeVerts)
+			if err = me.meshBuffer.glIbo.SubData(gl.Intptr(me.meshBufOffsetIndices), sizeIndices, gl.Ptr(&me.raw.indices[0])); err == nil {
+				me.meshBuffer.offsetIndices += int32(sizeIndices)
+				me.meshBuffer.offsetBaseIndex += int32(len(me.raw.indices))
+				if err == nil {
+					me.gpuSynced = true
+				}
+			}
 		}
 	}
 	return

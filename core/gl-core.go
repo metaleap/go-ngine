@@ -1,19 +1,31 @@
 package core
 
 import (
+	"runtime"
 	"time"
 
 	gl "github.com/go3d/go-opengl/core"
-
 	ugl "github.com/go3d/go-opengl/util"
+	ugo "github.com/metaleap/go-util"
+	ustr "github.com/metaleap/go-util/str"
+)
+
+const (
+	glMinVer    = 3.3
+	glMinVerStr = "3.3"
 )
 
 var (
 	glc struct {
-		isInit  bool
-		progMan ugl.ProgramManager
+		lastBadVer string
+		isInit     bool
+		progMan    ugl.ProgramManager
 	}
 )
+
+func init() {
+	glc.lastBadVer = "0"
+}
 
 func glDispose() {
 	if glc.isInit {
@@ -22,36 +34,17 @@ func glDispose() {
 	}
 }
 
-func glInit() (err error, isVerErr bool) {
-	const (
-		vMessage = `Minimum required OpenGL version is %s, but your
-graphics driver (or your computer's OS) currently
-only provides OpenGL version %s.
-
-Most likely your computer is just missing some
-recent system updates.
-
-*HOW TO RESOLVE*:
-Google for "how to find and download the latest
-driver for %s",
-or simply visit the <%s> website,
-look for their "driver downloads" pages and follow
-their instructions to find & download the latest
-driver for: <%s>.
-`
-	)
-	makeVerErr := func(curVer string) error {
-		isVerErr = true
-		return fmtErr(vMessage, "3.3", curVer, ugl.Gl.Str(gl.VENDOR)+" "+ugl.Gl.Str(gl.RENDERER), ugl.Gl.Str(gl.VENDOR), ugl.Gl.Str(gl.RENDERER))
-	}
+func glInit() (err error, badVer string) {
 	if !glc.isInit {
 		if !gl.Util.Init() {
-			err = fmtErr("OpenGL 3.3+ initialization failed.")
+			badVer = glc.lastBadVer
+			return
 		} else {
-			// return makeVerErr(fmtStr("%v.%v", ugl.Support.GlVersion.MajorMinor[0], ugl.Support.GlVersion.MajorMinor[1])), true
 			ugl.Init()
-			if !ugl.VersionMatch(3.3) {
-				err = makeVerErr(fmtStr("%v.%v", ugl.Support.GlVersion.MajorMinor[0], ugl.Support.GlVersion.MajorMinor[1]))
+			if !ugl.VersionMatch(glMinVer) {
+				badVer = fmtStr("%v.%v", ugl.Support.GlVersion.MajorMinor[0], ugl.Support.GlVersion.MajorMinor[1])
+				glc.lastBadVer = badVer
+				return
 			} else {
 				var dur time.Duration
 				gl.FrontFace(gl.CCW)
@@ -73,4 +66,14 @@ driver for: <%s>.
 		}
 	}
 	return
+}
+
+func glVersionErrorMessage(minVer, curVer string) string {
+	return ustr.Replace(Core.Options.Initialization.BadVersionMessage, map[string]string{
+		"{MINVER}": minVer,
+		"{CURVER}": curVer,
+		"{OS}":     ugo.OSName(runtime.GOOS),
+		"{GPU}":    ugl.Gl.Str(gl.RENDERER),
+		"{VENDOR}": ugl.Gl.Str(gl.VENDOR),
+	})
 }

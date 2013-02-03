@@ -75,13 +75,18 @@ func AddTextureMaterials(idsUrls map[string]string) {
 			img.AsyncNumAttempts = -1
 			img.OnAsyncDone = func() {
 				if img.Loaded() {
-					img.GpuSync()
+					if err := img.GpuSync(); err != nil {
+						panic(err)
+					}
 				}
 			}
 		}
 		img.OnLoad = func(image interface{}, err error, async bool) {
 			if (err == nil) && (image != nil) && !async {
-				img.GpuSync()
+				err = img.GpuSync()
+			}
+			if err != nil {
+				panic(err)
 			}
 		}
 		ng.Core.Libs.Effects.AddNew("fx_" + id).Diffuse = ng.NewFxTexture("img_"+id, nil)
@@ -129,7 +134,10 @@ func SamplesMainFunc(assetLoader func()) {
 	runtime.LockOSThread()
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	opt := ng.NewEngineOptions(AssetRootDirPath(), 1280, 720, 0, false)
+	width, height, fullscreen := 1280, 720, false
+	// width, height, fullscreen := 1920, 1080, true
+	opt := ng.NewEngineOptions(AssetRootDirPath(), width, height, 0, fullscreen)
+	opt.Initialization.GlCoreContext = true
 	// opt.Rendering.PostFx.TextureRect = true
 
 	if err := ng.Init(opt, fmt.Sprintf("Loading sample app... (%v CPU cores)", runtime.GOMAXPROCS(0))); err != nil {

@@ -59,7 +59,8 @@ func (me *EngineUserIO) init(opt *EngineOptions, winTitle string, forceContextVe
 				glfw.OpenWindowHint(glfw.OpenGLForwardCompat, 1)
 			}
 		}
-		if err = glfw.OpenWindow(opt.winWidth, opt.winHeight, 8, 8, 8, 0, 0, 0, ugo.Ifi(opt.winFullScreen, glfw.Fullscreen, glfw.Windowed)); err == nil {
+		winInit := &opt.Initialization.Window
+		if err = glfw.OpenWindow(opt.winWidth, opt.winHeight, winInit.Rbits, winInit.Gbits, winInit.Bbits, winInit.Abits, winInit.DepthBits, winInit.StencilBits, ugo.Ifi(opt.winFullScreen, glfw.Fullscreen, glfw.Windowed)); err == nil {
 			opt.winWidth, opt.winHeight = glfw.WindowSize()
 			me.isGlfwWindow = true
 		}

@@ -25,9 +25,11 @@ func (me *FxImageBase) init(glTex *ugl.TextureBase) {
 	me.glTex = glTex
 }
 
-func (me *FxImageBase) gpuSync(tex ugl.Texture) {
-	tex.Recreate()
-	me.glSynced = true
+func (me *FxImageBase) gpuSync(tex ugl.Texture) (err error) {
+	if err = tex.Recreate(); err == nil {
+		me.glSynced = true
+	}
+	return
 }
 
 func (me *FxImageBase) GpuDelete() {

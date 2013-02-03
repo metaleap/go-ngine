@@ -30,7 +30,7 @@ func (me *FxImage2D) dispose() {
 
 func (me *FxImage2D) GpuSync() (err error) {
 	if err = me.glTex.SetFromImage(me.img); err == nil {
-		me.gpuSync(&me.glTex)
+		err = me.gpuSync(&me.glTex)
 	}
 	return
 }

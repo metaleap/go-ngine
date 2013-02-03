@@ -79,6 +79,7 @@ func (me *EngineLoop) Loop() {
 		Diag.LogMisc("Enter loop...")
 		Core.copyAppToPrep()
 		Core.copyPrepToRend()
+		Stats.enabled = false // Allow a "warm-up phase" for the first few frames (1sec max or less)
 		for me.IsLooping && (glfw.WindowParam(glfw.Opened) == 1) {
 			//	STEP 0. Fire off the prep thread (for next frame) and app thread (for next-after-next frame).
 			me.threadBusy.app, me.threadBusy.prep = true, true
@@ -106,6 +107,7 @@ func (me *EngineLoop) Loop() {
 				Stats.Gc.begin()
 				runtime.GC()
 				Stats.Gc.end()
+				Stats.enabled = true
 			}
 
 			//	STEP 3, 4 & 5:

@@ -87,19 +87,28 @@ func newMeshBuffer(id string, params *meshBufferParams) (me *MeshBuffer, err err
 	me.glVaos = map[string]*ugl.VertexArray{}
 	me.MemSizeIndices = Core.MeshBuffers.MemSizePerIndex() * params.NumIndices
 	me.MemSizeVertices = Core.MeshBuffers.MemSizePerVertex() * params.NumVerts
-	me.glVbo.Recreate(gl.ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeVertices), gl.Ptr(nil), ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
-	me.glIbo.Recreate(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeIndices), gl.Ptr(nil), ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
-	for techName, _ := range techs {
-		glVao := &ugl.VertexArray{}
-		glVao.Create()
-		me.glVaos[techName] = glVao
+	if err = me.glVbo.Recreate(gl.ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeVertices), gl.Ptr(nil), ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW)); err == nil {
+		if err = me.glIbo.Recreate(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeIndices), gl.Ptr(nil), ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW)); err == nil {
+			for techName, _ := range techs {
+				glVao := &ugl.VertexArray{}
+				if err = glVao.Create(); err != nil {
+					break
+				}
+				me.glVaos[techName] = glVao
+			}
+		}
 	}
-	if err = gl.Util.Error("newMeshBuffer(%v numVerts=%v numIndices=%v)", id, params.NumVerts, params.NumIndices); err != nil {
+	//	err = gl.Util.Error("newMeshBuffer(%v numVerts=%v numIndices=%v)", id, params.NumVerts, params.NumIndices)
+	if err != nil {
 		me.dispose()
 		me = nil
 	} else {
 		for techName, glVao := range me.glVaos {
-			glVao.Setup(techs[techName].initMeshBuffer(me), &me.glVbo, &me.glIbo)
+			if err = glVao.Setup(techs[techName].initMeshBuffer(me), &me.glVbo, &me.glIbo); err != nil {
+				me.dispose()
+				me = nil
+				break
+			}
 		}
 	}
 	return
