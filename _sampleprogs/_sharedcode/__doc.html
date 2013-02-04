@@ -12,7 +12,7 @@
 		<div class="container">
 		<h1>Package github.com/go3d/go-ngine/_sampleprogs/_sharedcode</h1>
 		<div id="nav"></div>
-		2013/02/04 01:46:58 newDirectory(/target): not a package directory
+		2013/02/05 00:50:52 newDirectory(/target): not a package directory
 <!--
 	Copyright 2009 The Go Authors. All rights reserved.
 	Use of this source code is governed by a BSD-style
@@ -75,16 +75,13 @@ Some common base functionality shared by all the go:ngine example apps in _sampl
 				<dd><a href="#AssetRootDirPath">func AssetRootDirPath() string</a></dd>
 			
 				
+				<dd><a href="#CheckAndHandleToggleKeys">func CheckAndHandleToggleKeys()</a></dd>
+			
+				
 				<dd><a href="#CheckCamCtlKeys">func CheckCamCtlKeys()</a></dd>
 			
 				
-				<dd><a href="#CheckToggleKeys">func CheckToggleKeys()</a></dd>
-			
-				
 				<dd><a href="#HandleCamCtlKeys">func HandleCamCtlKeys()</a></dd>
-			
-				
-				<dd><a href="#HandleToggleKeys">func HandleToggleKeys()</a></dd>
 			
 				
 				<dd><a href="#OnSec">func OnSec()</a></dd>
@@ -97,6 +94,9 @@ Some common base functionality shared by all the go:ngine example apps in _sampl
 			
 				
 				<dd><a href="#SamplesMainFunc">func SamplesMainFunc(assetLoader func())</a></dd>
+			
+				
+				<dd><a href="#ToggleRetro">func ToggleRetro()</a></dd>
 			
 				
 				<dd><a href="#WindowTitle">func WindowTitle() string</a></dd>
@@ -156,16 +156,20 @@ Some common base functionality shared by all the go:ngine example apps in _sampl
     <span class="comment">//	Controller for the primary camera</span>
     CamCtl *ng.Controller
 
+    Paused bool
+)</pre>
+				
+			
+				<pre>var (
     <span class="comment">//	The maximum index for KeyHints when cycling through it in OnSec()</span>
     MaxKeyHint = len(KeyHints) - 1
-
-    Paused = false
 
     <span class="comment">//	OnSec() changes the window title every second to display FPS etc.</span>
     <span class="comment">//	Also every 4 seconds shows the next one in a number of &#34;key hints&#34; defined here:</span>
     KeyHints = []string{
         &#34;[F2]  --  Toggle Backface Culling&#34;,
         &#34;[F3]  --  Pause/Resume&#34;,
+        &#34;[F4]  --  Retro Mode&#34;,
         &#34;[W][S]  --  Camera rise / sink&#34;,
         &#34;[A][D]  --  Camera strafe left / right&#34;,
         &#34;[&lt;][&gt;]  --  Camera turn left / right&#34;,
@@ -173,17 +177,12 @@ Some common base functionality shared by all the go:ngine example apps in _sampl
         &#34;[PgUp][PgDn]  --  Camera turn up / down&#34;,
         &#34;[Alt][LShift][RShift]  --  Camera move-speed x 0.1 / 10 / 100&#34;,
     }
-)</pre>
-				
-			
-				<pre>var (
+
     Keys struct {
         Pressed map[int]bool
-        Toggled map[int]bool
 
         CheckFor struct {
             Pressed []int
-            Toggled []int
         }
         <span class="comment">// contains filtered or unexported fields</span>
     }
@@ -194,7 +193,7 @@ Some common base functionality shared by all the go:ngine example apps in _sampl
 		
 			
 			
-			<h2 id="AddColorMaterials">func <a href="/target/samplescenes.go?s=1613:1667#L46">AddColorMaterials</a></h2>
+			<h2 id="AddColorMaterials">func <a href="/target/samplescenes.go?s=984:1038#L30">AddColorMaterials</a></h2>
 			<pre>func AddColorMaterials(idsColors map[string][]float64)</pre>
 			<p>
 Sets up plain-color effects/materials with the specified IDs.
@@ -209,7 +208,7 @@ adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffe
 		
 			
 			
-			<h2 id="AddScene">func <a href="/target/samplescenes.go?s=1019:1077#L32">AddScene</a></h2>
+			<h2 id="AddScene">func <a href="/target/samplescenes.go?s=390:448#L16">AddScene</a></h2>
 			<pre>func AddScene(id string, mainCamScene bool) (me *ng.Scene)</pre>
 			<p>
 Creates a new core.Scene, adds it to the Scenes library under
@@ -220,7 +219,7 @@ the specified ID, and returns it.
 		
 			
 			
-			<h2 id="AddTextureMaterials">func <a href="/target/samplescenes.go?s=2443:2494#L61">AddTextureMaterials</a></h2>
+			<h2 id="AddTextureMaterials">func <a href="/target/samplescenes.go?s=1814:1865#L45">AddTextureMaterials</a></h2>
 			<pre>func AddTextureMaterials(idsUrls map[string]string)</pre>
 			<p>
 Sets up textures and associated effects/materials with the specified IDs and image URLs.
@@ -237,7 +236,7 @@ adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffe
 		
 			
 			
-			<h2 id="AssetRootDirPath">func <a href="/target/samplescenes.go?s=3284:3314#L88">AssetRootDirPath</a></h2>
+			<h2 id="AssetRootDirPath">func <a href="/target/samplescenes.go?s=2655:2685#L72">AssetRootDirPath</a></h2>
 			<pre>func AssetRootDirPath() string</pre>
 			<p>
 Returns the &#34;asset root directory&#34; path for go:ngine, in this case: $GOPATH/src/github.com/go3d/go-ngine/_sampleprogs/_sharedassets
@@ -247,7 +246,14 @@ Returns the &#34;asset root directory&#34; path for go:ngine, in this case: $GOP
 		
 			
 			
-			<h2 id="CheckCamCtlKeys">func <a href="/target/user-input.go?s=731:753#L23">CheckCamCtlKeys</a></h2>
+			<h2 id="CheckAndHandleToggleKeys">func <a href="/target/user-input.go?s=1409:1440#L44">CheckAndHandleToggleKeys</a></h2>
+			<pre>func CheckAndHandleToggleKeys()</pre>
+			
+			
+		
+			
+			
+			<h2 id="CheckCamCtlKeys">func <a href="/target/user-input.go?s=1251:1273#L36">CheckCamCtlKeys</a></h2>
 			<pre>func CheckCamCtlKeys()</pre>
 			<p>
 Called every frame (by the parent example app) to check the state for keys controlling CamCtl to move or rotate Cam.
@@ -257,31 +263,14 @@ Called every frame (by the parent example app) to check the state for keys contr
 		
 			
 			
-			<h2 id="CheckToggleKeys">func <a href="/target/user-input.go?s=991:1013#L32">CheckToggleKeys</a></h2>
-			<pre>func CheckToggleKeys()</pre>
-			<p>
-Called every frame (by the parent example app) to check &#34;toggle keys&#34; that toggle certain options.
-</p>
-
-			
-		
-			
-			
-			<h2 id="HandleCamCtlKeys">func <a href="/target/user-input.go?s=1129:1152#L38">HandleCamCtlKeys</a></h2>
+			<h2 id="HandleCamCtlKeys">func <a href="/target/user-input.go?s=1725:1748#L60">HandleCamCtlKeys</a></h2>
 			<pre>func HandleCamCtlKeys()</pre>
 			
 			
 		
 			
 			
-			<h2 id="HandleToggleKeys">func <a href="/target/user-input.go?s=2080:2103#L80">HandleToggleKeys</a></h2>
-			<pre>func HandleToggleKeys()</pre>
-			
-			
-		
-			
-			
-			<h2 id="OnSec">func <a href="/target/samplescenes.go?s=5927:5939#L150">OnSec</a></h2>
+			<h2 id="OnSec">func <a href="/target/samplescenes.go?s=2920:2932#L77">OnSec</a></h2>
 			<pre>func OnSec()</pre>
 			<p>
 Called every second by go:ngine&#39;s *core* package. Refreshes the window title and doing so, every 3 seconds shows the next one entry in KeyHints.
@@ -291,14 +280,14 @@ Called every second by go:ngine&#39;s *core* package. Refreshes the window title
 		
 			
 			
-			<h2 id="PauseResume">func <a href="/target/samplescenes.go?s=3401:3419#L92">PauseResume</a></h2>
+			<h2 id="PauseResume">func <a href="/target/samplescenes.go?s=3115:3133#L87">PauseResume</a></h2>
 			<pre>func PauseResume()</pre>
 			
 			
 		
 			
 			
-			<h2 id="PrintPostLoopSummary">func <a href="/target/samplescenes.go?s=3791:3818#L105">PrintPostLoopSummary</a></h2>
+			<h2 id="PrintPostLoopSummary">func <a href="/target/samplescenes.go?s=3505:3532#L100">PrintPostLoopSummary</a></h2>
 			<pre>func PrintPostLoopSummary()</pre>
 			<p>
 Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent example app exits.
@@ -308,7 +297,7 @@ Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent 
 		
 			
 			
-			<h2 id="SamplesMainFunc">func <a href="/target/samplescenes.go?s=4902:4942#L123">SamplesMainFunc</a></h2>
+			<h2 id="SamplesMainFunc">func <a href="/target/samplescenes.go?s=4616:4656#L118">SamplesMainFunc</a></h2>
 			<pre>func SamplesMainFunc(assetLoader func())</pre>
 			<p>
 The *func main()* implementation for the parent example app. Initializes go:ngine, sets Cam and CamCtl, calls the specified assetLoader function, then enters The Loop.
@@ -318,7 +307,14 @@ The *func main()* implementation for the parent example app. Initializes go:ngin
 		
 			
 			
-			<h2 id="WindowTitle">func <a href="/target/samplescenes.go?s=6172:6197#L161">WindowTitle</a></h2>
+			<h2 id="ToggleRetro">func <a href="/target/samplescenes.go?s=5493:5511#L144">ToggleRetro</a></h2>
+			<pre>func ToggleRetro()</pre>
+			
+			
+		
+			
+			
+			<h2 id="WindowTitle">func <a href="/target/samplescenes.go?s=5726:5751#L153">WindowTitle</a></h2>
 			<pre>func WindowTitle() string</pre>
 			<p>
 Returns the window title to be set by OnSec().

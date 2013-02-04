@@ -695,6 +695,9 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.AddNewCamera3D">func (me *RenderCanvas) AddNewCamera3D() (cam *Camera)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.CurrentAbsoluteSize">func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.Main">func (me *RenderCanvas) Main() bool</a></dd>
 				
 					
@@ -3296,21 +3299,28 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvas.AddNewCamera2D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1299:1371#L34">AddNewCamera2D</a></h3>
+				<h3 id="RenderCanvas.AddNewCamera2D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1369:1441#L38">AddNewCamera2D</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCamera2D(allowOverlaps bool) (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.AddNewCamera3D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1461:1515#L40">AddNewCamera3D</a></h3>
+				<h3 id="RenderCanvas.AddNewCamera3D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1531:1585#L44">AddNewCamera3D</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCamera3D() (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.Main">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1873:1908#L52">Main</a></h3>
+				<h3 id="RenderCanvas.CurrentAbsoluteSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1239:1304#L33">CurrentAbsoluteSize</a></h3>
+				<pre>func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="RenderCanvas.Main">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1943:1978#L56">Main</a></h3>
 				<pre>func (me *RenderCanvas) Main() bool</pre>
 				<p>
 Returns whether me is the primary / &#34;main&#34; render canvas (if multiple render canvases are present).
@@ -3321,7 +3331,7 @@ The &#34;main&#34; render canvas is the one whose output image is blitted to the
 				
 			
 				
-				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2432:2464#L69">Remove</a></h3>
+				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2514:2546#L73">Remove</a></h3>
 				<pre>func (me *RenderCanvas) Remove()</pre>
 				<p>
 Removes me from Core.Rendering.Canvases and deletes its associated GPU resources.
@@ -3332,7 +3342,7 @@ This renders me invalid for further use.
 				
 			
 				
-				<h3 id="RenderCanvas.SetMain">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3037:3070#L86">SetMain</a></h3>
+				<h3 id="RenderCanvas.SetMain">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3119:3152#L90">SetMain</a></h3>
 				<pre>func (me *RenderCanvas) SetMain()</pre>
 				<p>
 Declares me the primary / &#34;main&#34; render canvas (if multiple render canvases are present).
@@ -3343,7 +3353,7 @@ The &#34;main&#34; render canvas is the one whose output image is blitted to the
 				
 			
 				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3457:3526#L97">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3539:3608#L101">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
 				<p>
 Sets the 2 dimensions of this render canvas.
@@ -3357,7 +3367,7 @@ Otherwise, width and height are absolute pixel dimensions.
 		
 			
 			
-			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3759:3794#L106">RenderCanvases</a></h2>
+			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3901:3936#L111">RenderCanvases</a></h2>
 			<pre>type RenderCanvases []*RenderCanvas</pre>
 			<p>
 Only used for Core.Rendering.Canvases.
@@ -3374,7 +3384,7 @@ Only used for Core.Rendering.Canvases.
 
 			
 				
-				<h3 id="RenderCanvases.AddNew">func (*RenderCanvases) <a href="/target/render-canvas.go?s=4022:4124#L117">AddNew</a></h3>
+				<h3 id="RenderCanvases.AddNew">func (*RenderCanvases) <a href="/target/render-canvas.go?s=4164:4266#L122">AddNew</a></h3>
 				<pre>func (me *RenderCanvases) AddNew(isMain bool, relative bool, width, height float64) (rc *RenderCanvas)</pre>
 				<p>
 Adds a new RenderCanvas and returns it.
@@ -3385,7 +3395,7 @@ The relative, width and height values are passed to a call to SetSize().
 				
 			
 				
-				<h3 id="RenderCanvases.Main">func (RenderCanvases) <a href="/target/render-canvas.go?s=4574:4626#L131">Main</a></h3>
+				<h3 id="RenderCanvases.Main">func (RenderCanvases) <a href="/target/render-canvas.go?s=4716:4768#L136">Main</a></h3>
 				<pre>func (me RenderCanvases) Main() (main *RenderCanvas)</pre>
 				<p>
 Returns whatever RenderCanvas in me is currently declared the primary / &#34;main&#34; render canvas (if multiple render canvases are present).
@@ -3396,7 +3406,7 @@ The &#34;main&#34; render canvas is the one whose output image is blitted to the
 				
 			
 				
-				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4721:4771#L141">Walk</a></h3>
+				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4863:4913#L146">Walk</a></h3>
 				<pre>func (me RenderCanvases) Walk(onCam func(*Camera))</pre>
 				
 				

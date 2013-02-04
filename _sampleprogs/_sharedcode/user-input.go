@@ -6,13 +6,28 @@ import (
 )
 
 var (
+	//	The maximum index for KeyHints when cycling through it in OnSec()
+	MaxKeyHint = len(KeyHints) - 1
+
+	//	OnSec() changes the window title every second to display FPS etc.
+	//	Also every 4 seconds shows the next one in a number of "key hints" defined here:
+	KeyHints = []string{
+		"[F2]  --  Toggle Backface Culling",
+		"[F3]  --  Pause/Resume",
+		"[F4]  --  Retro Mode",
+		"[W][S]  --  Camera rise / sink",
+		"[A][D]  --  Camera strafe left / right",
+		"[<][>]  --  Camera turn left / right",
+		"[^][v]  --  Camera move forward / backward",
+		"[PgUp][PgDn]  --  Camera turn up / down",
+		"[Alt][LShift][RShift]  --  Camera move-speed x 0.1 / 10 / 100",
+	}
+
 	Keys struct {
 		Pressed map[int]bool
-		Toggled map[int]bool
 
 		CheckFor struct {
 			Pressed []int
-			Toggled []int
 		}
 		tmp int
 	}
@@ -20,8 +35,6 @@ var (
 
 func init() {
 	Keys.Pressed = map[int]bool{}
-	Keys.Toggled = map[int]bool{}
-	Keys.CheckFor.Toggled = []int{glfw.KeyF2, glfw.KeyF3, glfw.KeyEsc}
 	Keys.CheckFor.Pressed = []int{
 		glfw.KeyLalt, glfw.KeyLshift, glfw.KeyRshift, 'W', 'A', 'S', 'D',
 		glfw.KeyLeft, glfw.KeyRight, glfw.KeyUp, glfw.KeyDown,
@@ -38,10 +51,19 @@ func CheckCamCtlKeys() {
 	}
 }
 
-//	Called every frame (by the parent example app) to check "toggle keys" that toggle certain options.
-func CheckToggleKeys() {
-	for _, Keys.tmp = range Keys.CheckFor.Toggled {
-		Keys.Toggled[Keys.tmp] = ng.UserIO.KeyToggled(Keys.tmp)
+func CheckAndHandleToggleKeys() {
+	in := &ng.UserIO
+	if in.KeyToggled(glfw.KeyEsc) {
+		ng.Loop.Stop()
+	}
+	if in.KeyToggled(glfw.KeyF2) {
+		Cam.Rendering.States.FaceCulling = !Cam.Rendering.States.FaceCulling
+	}
+	if in.KeyToggled(glfw.KeyF3) {
+		PauseResume()
+	}
+	if in.KeyToggled(glfw.KeyF4) {
+		ToggleRetro()
 	}
 }
 
@@ -84,17 +106,5 @@ func HandleCamCtlKeys() {
 		if Keys.Pressed[glfw.KeyPagedown] || Keys.Pressed[glfw.KeyKP3] {
 			CamCtl.TurnDown()
 		}
-	}
-}
-
-func HandleToggleKeys() {
-	if Keys.Toggled[glfw.KeyEsc] {
-		ng.Loop.Stop()
-	}
-	if Keys.Toggled[glfw.KeyF2] {
-		Cam.Rendering.States.FaceCulling = !Cam.Rendering.States.FaceCulling
-	}
-	if Keys.Toggled[glfw.KeyF3] {
-		PauseResume()
 	}
 }

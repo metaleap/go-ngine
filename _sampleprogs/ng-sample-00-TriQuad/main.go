@@ -17,8 +17,7 @@ func main() {
 }
 
 func onWinThread() {
-	ngsamples.CheckToggleKeys()
-	ngsamples.HandleToggleKeys()
+	ngsamples.CheckAndHandleToggleKeys()
 }
 
 func onAppThread() {

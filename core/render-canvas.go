@@ -33,11 +33,15 @@ type RenderCanvas struct {
 func newRenderCanvas(relative bool, width, height float64) (me *RenderCanvas) {
 	me = &RenderCanvas{EveryNthFrame: 1}
 	me.SetSize(relative, width, height)
-	me.onResize(Core.Options.winWidth, Core.Options.winHeight)
 	me.frameBuf.Create(gl.Sizei(Core.Options.winWidth), gl.Sizei(Core.Options.winHeight), false)
 	me.frameBuf.AttachRendertexture(ugl.NewFramebufferRendertexture(Core.Options.Rendering.PostFx.TextureRect))
 	me.frameBuf.AttachRenderbuffer(ugl.NewFramebufferRenderbuffer())
 	ugl.LogLastError("newRenderCanvas(%v x %v)", width, height)
+	return
+}
+
+func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int) {
+	width, height = me.absViewWidth, me.absViewHeight
 	return
 }
 
@@ -67,7 +71,7 @@ func (me *RenderCanvas) onResize(viewWidth, viewHeight int) {
 	if me.viewSizeRelative {
 		me.absViewWidth, me.absViewHeight = int(me.relViewWidth*float64(viewWidth)), int(me.relViewHeight*float64(viewHeight))
 	}
-	me.frameBuf.Resize(gl.Sizei(viewWidth), gl.Sizei(viewHeight))
+	me.frameBuf.Resize(gl.Sizei(me.absViewWidth), gl.Sizei(me.absViewHeight))
 	for _, cam := range me.Cameras {
 		cam.Rendering.Viewport.update()
 		cam.ApplyMatrices()
@@ -110,6 +114,7 @@ func (me *RenderCanvas) SetSize(relative bool, width, height float64) {
 	} else {
 		me.absViewWidth, me.absViewHeight = int(width), int(height)
 	}
+	me.onResize(Core.Options.winWidth, Core.Options.winHeight)
 }
 
 //	Only used for Core.Rendering.Canvases.

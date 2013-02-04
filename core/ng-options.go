@@ -69,6 +69,8 @@ func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInter
 	init := &me.Initialization
 	init.GlCoreContext, init.BadVersionMessage = (runtime.GOOS == "darwin"), DefaultBadVersionMessage
 	init.Window.Rbits, init.Window.Gbits, init.Window.Bbits = 8, 8, 8
+	// this depth-bits should be 0 really: since there's no depth involved in the final postfx-pass -- but then Intel cards bug out badly
+	init.Window.DepthBits = 8
 	rend := &me.Rendering
 	rend.DefaultClearColor = ugl.GlVec4{0, 0, 0, 1}
 	rend.DefaultTechnique2D, rend.DefaultTechnique3D = "rt_unlit3", "rt_unlit3"

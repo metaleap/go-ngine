@@ -22,16 +22,14 @@ var (
 )
 
 func main() {
-	ngsamples.KeyHints = append([]string{"[F4]  --  Toggle Rear-Mirror Camera"}, ngsamples.KeyHints...)
-	ngsamples.Keys.CheckFor.Toggled = append(ngsamples.Keys.CheckFor.Toggled, glfw.KeyF4)
+	ngsamples.KeyHints = append([]string{"[F12]  --  Toggle Rear-Mirror Camera"}, ngsamples.KeyHints...)
 	ngsamples.SamplesMainFunc(LoadSampleScene_03_PyrsCubes)
 }
 
 func onWinThread() {
 	ngsamples.CheckCamCtlKeys()
-	ngsamples.CheckToggleKeys()
-	ngsamples.HandleToggleKeys()
-	if ngsamples.Keys.Toggled[glfw.KeyF4] {
+	ngsamples.CheckAndHandleToggleKeys()
+	if ng.UserIO.KeyToggled(glfw.KeyF12) {
 		rearMirror.Cam.Enabled = !rearMirror.Cam.Enabled
 	}
 	rearMirror.Cam.Rendering.States.FaceCulling = ngsamples.Cam.Rendering.States.FaceCulling

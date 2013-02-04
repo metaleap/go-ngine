@@ -15,23 +15,7 @@ var (
 	//	Controller for the primary camera
 	CamCtl *ng.Controller
 
-	//	The maximum index for KeyHints when cycling through it in OnSec()
-	MaxKeyHint = len(KeyHints) - 1
-
-	Paused = false
-
-	//	OnSec() changes the window title every second to display FPS etc.
-	//	Also every 4 seconds shows the next one in a number of "key hints" defined here:
-	KeyHints = []string{
-		"[F2]  --  Toggle Backface Culling",
-		"[F3]  --  Pause/Resume",
-		"[W][S]  --  Camera rise / sink",
-		"[A][D]  --  Camera strafe left / right",
-		"[<][>]  --  Camera turn left / right",
-		"[^][v]  --  Camera move forward / backward",
-		"[PgUp][PgDn]  --  Camera turn up / down",
-		"[Alt][LShift][RShift]  --  Camera move-speed x 0.1 / 10 / 100",
-	}
+	Paused, retro bool
 
 	curKeyHint = 0
 	sec        = 0
@@ -99,6 +83,17 @@ func AssetRootDirPath() string {
 	return ugo.GopathSrcGithub("go3d", "go-ngine", "_sampleprogs", "_sharedassets")
 }
 
+//	Called every second by go:ngine's *core* package. Refreshes the window title and doing so, every 3 seconds shows the next one entry in KeyHints.
+func OnSec() {
+	if sec++; sec == 3 {
+		sec = 0
+		if curKeyHint++; (curKeyHint > MaxKeyHint) || (curKeyHint >= (len(KeyHints))) {
+			curKeyHint = 0
+		}
+	}
+	ng.UserIO.SetWinTitle(WindowTitle())
+}
+
 func PauseResume() {
 	canv := ng.Core.Rendering.Canvases.Main()
 	if Paused = ng.Core.Rendering.PostFx.ToggleEffect("Grayscale"); Paused {
@@ -156,18 +151,16 @@ func SamplesMainFunc(assetLoader func()) {
 	}
 }
 
-//	Called every second by go:ngine's *core* package. Refreshes the window title and doing so, every 3 seconds shows the next one entry in KeyHints.
-func OnSec() {
-	if sec++; sec == 3 {
-		sec = 0
-		if curKeyHint++; (curKeyHint > MaxKeyHint) || (curKeyHint >= (len(KeyHints))) {
-			curKeyHint = 0
-		}
+func ToggleRetro() {
+	if retro = !retro; retro {
+		ng.Core.Rendering.Canvases.Main().SetSize(true, 0.25, 0.25)
+	} else {
+		ng.Core.Rendering.Canvases.Main().SetSize(true, 1, 1)
 	}
-	ng.UserIO.SetWinTitle(WindowTitle())
 }
 
 //	Returns the window title to be set by OnSec().
 func WindowTitle() string {
-	return fmt.Sprintf("%v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", ng.Stats.FpsLastSec, ng.UserIO.WinWidth(), ng.UserIO.WinHeight(), KeyHints[curKeyHint], CamCtl.Pos.String(), CamCtl.Dir().String())
+	cw, ch := ng.Core.Rendering.Canvases.Main().CurrentAbsoluteSize()
+	return fmt.Sprintf("%v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", ng.Stats.FpsLastSec, cw, ch, KeyHints[curKeyHint], CamCtl.Pos.String(), CamCtl.Dir().String())
 }
