@@ -55,17 +55,17 @@ type Camera struct {
 
 func newCamera2D(canv *RenderCanvas, depth bool) (me *Camera) {
 	me = &Camera{}
-	me.init(canv, false, depth)
+	me.init(canv, false, depth, Core.Options.Rendering.DefaultTechnique2D)
 	return
 }
 
 func newCamera3D(canv *RenderCanvas) (me *Camera) {
 	me = &Camera{}
-	me.init(canv, true, true)
+	me.init(canv, true, true, Core.Options.Rendering.DefaultTechnique3D)
 	return
 }
 
-func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool) {
+func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool, techniqueName string) {
 	me.Enabled = true
 	rend := &me.Rendering
 	rend.Viewport.canvas = canv
@@ -76,17 +76,12 @@ func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool) {
 	} else {
 		rend.States.Other.ClearBits = gl.COLOR_BUFFER_BIT
 	}
-	persp := &me.Perspective
-	persp.Use = persp3d
-	persp.FovY = 37.8493
-	persp.ZFar = 30000
-	persp.ZNear = 0.3
-	me.thrApp.matProj.Identity()
-	me.thrPrep.matProj.Identity()
+	me.Perspective.Use, me.Perspective.FovY, me.Perspective.ZFar, me.Perspective.ZNear = persp3d, 37.8493, 30000, 0.3
+	unum.Mat4Identities(&me.thrApp.matProj, &me.thrPrep.matProj)
 	me.Controller.init()
 	rend.Viewport.init()
 	me.ApplyMatrices()
-	me.SetTechnique(Core.Options.Rendering.DefaultTechnique3D)
+	me.SetTechnique(techniqueName)
 }
 
 //	Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.

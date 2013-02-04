@@ -3,6 +3,7 @@ package core
 import (
 	"math"
 	"runtime"
+	"sync"
 
 	glfw "github.com/go-gl/glfw"
 	ugl "github.com/go3d/go-opengl/util"
@@ -55,7 +56,7 @@ type EngineLoop struct {
 	SwapLast bool
 
 	threadBusy struct {
-		app, prep bool
+		app, prep sync.WaitGroup
 	}
 }
 
@@ -82,8 +83,9 @@ func (me *EngineLoop) Loop() {
 		Stats.enabled = false // Allow a "warm-up phase" for the first few frames (1sec max or less)
 		for me.IsLooping && (glfw.WindowParam(glfw.Opened) == 1) {
 			//	STEP 0. Fire off the prep thread (for next frame) and app thread (for next-after-next frame).
-			me.threadBusy.app, me.threadBusy.prep = true, true
+			me.threadBusy.app.Add(1)
 			go me.loopThreadApp()
+			me.threadBusy.prep.Add(1)
 			go me.loopThreadPrep()
 
 			//	STEP 1. Send rendering commands (batched together in the previous prep thread) to the GPU / GL pipeline
@@ -154,25 +156,21 @@ func (me *EngineLoop) loopThreadApp() {
 	Stats.FrameAppThread.begin()
 	me.OnAppThread()
 	Stats.FrameAppThread.end()
-	me.threadBusy.app = false
+	me.threadBusy.app.Done()
 }
 
 func (me *EngineLoop) loopThreadPrep() {
 	Stats.FramePrepThread.begin()
 	Core.onPrep()
 	Stats.FramePrepThread.end()
-	me.threadBusy.prep = false
+	me.threadBusy.prep.Done()
 }
 
 func (me *EngineLoop) loopWaitForThreads() {
 	Stats.FrameThreadSync.begin()
-	for me.threadBusy.prep && me.IsLooping {
-		// runtime.Gosched()
-	}
+	me.threadBusy.prep.Wait()
 	Core.copyPrepToRend()
-	for me.threadBusy.app && me.IsLooping {
-		// runtime.Gosched()
-	}
+	me.threadBusy.app.Wait()
 	Core.copyAppToPrep()
 	Stats.FrameThreadSync.end()
 }
