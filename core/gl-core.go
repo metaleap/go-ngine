@@ -49,7 +49,7 @@ func glInit() (err error, badVer string) {
 				var dur time.Duration
 				gl.FrontFace(gl.CCW)
 				gl.CullFace(gl.BACK)
-				Diag.LogMisc(ugl.Gl.ConnInfo())
+				Diag.LogMisc(ugl.Util.ConnInfo())
 				if Core.Options.Rendering.PostFx.TextureRect {
 					glc.progMan.Defines["PostFx_TextureRect"] = 1
 				}
@@ -59,7 +59,7 @@ func glInit() (err error, badVer string) {
 			}
 		}
 		if err == nil {
-			err = gl.Util.Error("ng-gl-core.Init")
+			err = ugl.Util.Error("ng-gl-core.Init")
 		}
 		if err == nil {
 			glc.isInit = true
@@ -73,7 +73,7 @@ func glVersionErrorMessage(minVer, curVer string) string {
 		"{MINVER}": minVer,
 		"{CURVER}": curVer,
 		"{OS}":     ugo.OSName(runtime.GOOS),
-		"{GPU}":    ugl.Gl.Str(gl.RENDERER),
-		"{VENDOR}": ugl.Gl.Str(gl.VENDOR),
+		"{GPU}":    ugl.Util.Str(gl.RENDERER),
+		"{VENDOR}": ugl.Util.Str(gl.VENDOR),
 	})
 }
