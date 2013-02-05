@@ -26,17 +26,21 @@ func (me *RenderCanvas) render() {
 func (me *Camera) render() {
 	if me.Enabled {
 		Core.Rendering.states.Apply(&me.thrRend.states)
-		Core.Rendering.states.ForceEnableScissorTest()
-		Core.useTechnique(me.thrRend.technique)
-		gl.Scissor(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
-		gl.Viewport(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
-		if me.thrRend.states.ClearColor[3] > 0 {
-			gl.Clear(me.thrRend.states.Other.ClearBits)
+		if me.Rendering.Viewport.shouldScissor {
+			Core.Rendering.states.ForceEnableScissorTest()
 		}
+		Core.useTechnique(me.thrRend.technique)
+		if me.Rendering.Viewport.shouldScissor {
+			gl.Scissor(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
+		}
+		gl.Viewport(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
+		gl.Clear(me.thrRend.states.Other.ClearBits)
 		if thrRend.curScene = me.scene; thrRend.curScene != nil {
 			thrRend.curScene.RootNode.render()
 		}
-		Core.Rendering.states.ForceDisableScissorTest()
+		if me.Rendering.Viewport.shouldScissor {
+			Core.Rendering.states.ForceDisableScissorTest()
+		}
 	}
 }
 

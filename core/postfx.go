@@ -77,6 +77,7 @@ func (me *PostFx) init() {
 	me.effects = map[string]*PostFxEffect{}
 	me.glVao.Create()
 	me.setProg(postFxProgName)
+	me.glVao.Setup(nil)
 }
 
 func (me *PostFx) setProg(progName string) {

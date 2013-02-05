@@ -184,7 +184,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineCore.SyncUpdates">func (me *EngineCore) SyncUpdates()</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineCore.SyncUpdates">func (_ *EngineCore) SyncUpdates()</a></dd>
 				
 			
 				
@@ -192,22 +192,22 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiag.Log">func (me *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{})</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineDiag.Log">func (_ *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{})</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogErr">func (me *EngineDiag) LogErr(err error)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogErr">func (_ *EngineDiag) LogErr(err error)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogIfGlErr">func (me *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{})</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogIfGlErr">func (_ *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{})</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogMeshes">func (me *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{})</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogMeshes">func (_ *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{})</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogMisc">func (me *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{})</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogMisc">func (_ *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{})</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogShaders">func (me *EngineDiag) LogShaders(fmt string, fmtArgs ...interface{})</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogShaders">func (_ *EngineDiag) LogShaders(fmt string, fmtArgs ...interface{})</a></dd>
 				
 			
 				
@@ -220,10 +220,10 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineLoop.Loop">func (me *EngineLoop) Loop()</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineLoop.Loop">func (_ *EngineLoop) Loop()</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineLoop.Stop">func (me *EngineLoop) Stop()</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineLoop.Stop">func (_ *EngineLoop) Stop()</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#EngineLoop.Time">func (_ *EngineLoop) Time() float64</a></dd>
@@ -242,10 +242,10 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineStats.AverageFps">func (me *EngineStats) AverageFps() float64</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineStats.AverageFps">func (_ *EngineStats) AverageFps() float64</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineStats.TotalFrames">func (me *EngineStats) TotalFrames() float64</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineStats.TotalFrames">func (_ *EngineStats) TotalFrames() float64</a></dd>
 				
 			
 				
@@ -253,37 +253,37 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.IifKeyF">func (me *EngineUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.IifKeyF">func (_ *EngineUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeyPressed">func (me *EngineUserIO) KeyPressed(key int) bool</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeyPressed">func (_ *EngineUserIO) KeyPressed(key int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeyPressedWhich">func (me *EngineUserIO) KeyPressedWhich(keys ...int) int</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeyPressedWhich">func (_ *EngineUserIO) KeyPressedWhich(keys ...int) int</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeyToggled">func (me *EngineUserIO) KeyToggled(key int) bool</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeyToggled">func (_ *EngineUserIO) KeyToggled(key int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeysPressedAll2">func (me *EngineUserIO) KeysPressedAll2(k1, k2 int) bool</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeysPressedAll2">func (_ *EngineUserIO) KeysPressedAll2(k1, k2 int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeysPressedAll3">func (me *EngineUserIO) KeysPressedAll3(k1, k2, k3 int) bool</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeysPressedAll3">func (_ *EngineUserIO) KeysPressedAll3(k1, k2, k3 int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeysPressedAny2">func (me *EngineUserIO) KeysPressedAny2(k1, k2 int) bool</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeysPressedAny2">func (_ *EngineUserIO) KeysPressedAny2(k1, k2 int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeysPressedAny3">func (me *EngineUserIO) KeysPressedAny3(k1, k2, k3 int) bool</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeysPressedAny3">func (_ *EngineUserIO) KeysPressedAny3(k1, k2, k3 int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.SetWinTitle">func (me *EngineUserIO) SetWinTitle(newTitle string)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.SetWinTitle">func (_ *EngineUserIO) SetWinTitle(newTitle string)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.WinHeight">func (me *EngineUserIO) WinHeight() int</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.WinHeight">func (_ *EngineUserIO) WinHeight() int</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.WinWidth">func (me *EngineUserIO) WinWidth() int</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.WinWidth">func (_ *EngineUserIO) WinWidth() int</a></dd>
 				
 			
 				
@@ -964,7 +964,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 		
 			
 			
-			<h2 id="CameraViewport">type <a href="/target/camera.go?s=3688:3941#L132">CameraViewport</a></h2>
+			<h2 id="CameraViewport">type <a href="/target/camera.go?s=3688:3948#L132">CameraViewport</a></h2>
 			<pre>type CameraViewport struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -983,7 +983,7 @@ Encapsulates a device-relative or absolute camera view-port.
 
 			
 				
-				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=4067:4124#L147">SetAbs</a></h3>
+				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=4074:4131#L147">SetAbs</a></h3>
 				<pre>func (me *CameraViewport) SetAbs(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -993,7 +993,7 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=4375:4436#L154">SetRel</a></h3>
+				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=4383:4444#L154">SetRel</a></h3>
 				<pre>func (me *CameraViewport) SetRel(x, y, width, height float64)</pre>
 				<p>
 Sets the device-relative viewport origin and dimensions, with the value 1.0
@@ -1314,7 +1314,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=436:892#L5">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=423:879#L5">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Options     EngineOptions
@@ -1339,8 +1339,8 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
-Consider EngineCore a &#34;Singleton&#34; type, only valid use is the core.Core global variable.
-The heart and brain of go:ngine --- a container for all runtime resources and responsible for rendering.
+EngineCore is a singleton type, only used for the core.Core package-global exported variable.
+It is only aware of that instance and does not support any other EngineCore instances.
 </p>
 
 
@@ -1360,8 +1360,8 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=2689:2724#L93">SyncUpdates</a></h3>
-				<pre>func (me *EngineCore) SyncUpdates()</pre>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=2728:2762#L93">SyncUpdates</a></h3>
+				<pre>func (_ *EngineCore) SyncUpdates()</pre>
 				
 				
 				
@@ -1369,12 +1369,16 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 		
 			
 			
-			<h2 id="EngineDiag">type <a href="/target/ng-diag.go?s=478:573#L16">EngineDiag</a></h2>
+			<h2 id="EngineDiag">type <a href="/target/ng-diag.go?s=665:760#L18">EngineDiag</a></h2>
 			<pre>type EngineDiag struct {
     LogCategories       EngineDiagLogCategory
     LogErrorsDuringLoop bool
 }</pre>
-			
+			<p>
+EngineDiag is a singleton type, only used for the core.Diag package-global exported variable.
+It is only aware of that instance and does not support any other EngineDiag instances.
+</p>
+
 
 			
 
@@ -1386,43 +1390,43 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 
 			
 				
-				<h3 id="EngineDiag.Log">func (*EngineDiag) <a href="/target/ng-diag.go?s=575:663#L21">Log</a></h3>
-				<pre>func (me *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{})</pre>
+				<h3 id="EngineDiag.Log">func (*EngineDiag) <a href="/target/ng-diag.go?s=762:849#L23">Log</a></h3>
+				<pre>func (_ *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=740:779#L27">LogErr</a></h3>
-				<pre>func (me *EngineDiag) LogErr(err error)</pre>
+				<h3 id="EngineDiag.LogErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=928:966#L29">LogErr</a></h3>
+				<pre>func (_ *EngineDiag) LogErr(err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogIfGlErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=804:872#L31">LogIfGlErr</a></h3>
-				<pre>func (me *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{})</pre>
+				<h3 id="EngineDiag.LogIfGlErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=991:1058#L33">LogIfGlErr</a></h3>
+				<pre>func (_ *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogMeshes">func (*EngineDiag) <a href="/target/ng-diag.go?s=913:980#L35">LogMeshes</a></h3>
-				<pre>func (me *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{})</pre>
+				<h3 id="EngineDiag.LogMeshes">func (*EngineDiag) <a href="/target/ng-diag.go?s=1099:1165#L37">LogMeshes</a></h3>
+				<pre>func (_ *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogMisc">func (*EngineDiag) <a href="/target/ng-diag.go?s=1026:1091#L39">LogMisc</a></h3>
-				<pre>func (me *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{})</pre>
+				<h3 id="EngineDiag.LogMisc">func (*EngineDiag) <a href="/target/ng-diag.go?s=1213:1277#L41">LogMisc</a></h3>
+				<pre>func (_ *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogShaders">func (*EngineDiag) <a href="/target/ng-diag.go?s=1138:1206#L43">LogShaders</a></h3>
-				<pre>func (me *EngineDiag) LogShaders(fmt string, fmtArgs ...interface{})</pre>
+				<h3 id="EngineDiag.LogShaders">func (*EngineDiag) <a href="/target/ng-diag.go?s=1326:1393#L45">LogShaders</a></h3>
+				<pre>func (_ *EngineDiag) LogShaders(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
@@ -1454,13 +1458,13 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 		
 			
 			
-			<h2 id="EngineLoop">type <a href="/target/ng-loop.go?s=408:2112#L8">EngineLoop</a></h2>
+			<h2 id="EngineLoop">type <a href="/target/ng-loop.go?s=452:2155#L7">EngineLoop</a></h2>
 			<pre>type EngineLoop struct {
     <span class="comment">//	Set to true by Loop.Loop(). Set to false to stop looping.</span>
     IsLooping bool
 
     <span class="comment">//	The tick-time when the Loop.OnSec() callback was last invoked.</span>
-    SecTickLast float64
+    SecTickLast int
 
     <span class="comment">//	While Loop.Loop() is running, is set to the current &#34;tick-time&#34;:</span>
     <span class="comment">//	the time in seconds expired ever since Loop.Loop() was last called.</span>
@@ -1487,16 +1491,10 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
     <span class="comment">//	at least and at most once per second, a useful entry point for non-real-time periodically recurring code.</span>
     <span class="comment">//	Caution: unlike OnWinThread(), this callback runs in parallel with your OnAppThread() callback.</span>
     OnSec func()
-
-    <span class="comment">//	If true (default), Loop() waits for the app and prep threads to finish &amp; sync before</span>
-    <span class="comment">//	first calling OnWinThread() and finally waiting for GPU vsync/buffer-swap.</span>
-    <span class="comment">//	If false, Loop() allows the app and prep threads to continue running while waiting</span>
-    <span class="comment">//	for GPU vsync/buffer-swap; then OnWinThread() is called when all of those 3 waits are over.</span>
-    SwapLast bool
 }</pre>
 			<p>
-Consider EngineLoop a &#34;Singleton&#34; type, only valid use is the core.Loop global variable.
-Manages your main-thread&#39;s &#34;game loop&#34;.
+EngineLoop is a singleton type, only used for the core.Loop package-global exported variable.
+It is only aware of that instance and does not support any other EngineLoop instances.
 </p>
 
 
@@ -1516,8 +1514,8 @@ Manages your main-thread&#39;s &#34;game loop&#34;.
 
 			
 				
-				<h3 id="EngineLoop.Loop">func (*EngineLoop) <a href="/target/ng-loop.go?s=2775:2803#L63">Loop</a></h3>
-				<pre>func (me *EngineLoop) Loop()</pre>
+				<h3 id="EngineLoop.Loop">func (*EngineLoop) <a href="/target/ng-loop.go?s=2455:2482#L54">Loop</a></h3>
+				<pre>func (_ *EngineLoop) Loop()</pre>
 				<p>
 Initiates a rendering loop. This method returns only when the loop is stopped for whatever reason.
 </p>
@@ -1529,8 +1527,8 @@ Initiates a rendering loop. This method returns only when the loop is stopped fo
 				
 			
 				
-				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=5813:5841#L172">Stop</a></h3>
-				<pre>func (me *EngineLoop) Stop()</pre>
+				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=6073:6100#L178">Stop</a></h3>
+				<pre>func (_ *EngineLoop) Stop()</pre>
 				<p>
 Stops the currently running Loop.Loop().
 </p>
@@ -1539,7 +1537,7 @@ Stops the currently running Loop.Loop().
 				
 			
 				
-				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=5950:5985#L177">Time</a></h3>
+				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=6211:6246#L183">Time</a></h3>
 				<pre>func (_ *EngineLoop) Time() float64</pre>
 				<p>
 Returns the number of seconds expired ever since Loop.Loop() was last called.
@@ -1551,13 +1549,22 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=711:1536#L19">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=931:2130#L21">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     <span class="comment">//	The base directory path for asset file paths.</span>
     AssetRootDirPath string
 
     Initialization struct {
-        GlCoreContext     bool
+        GlContext struct {
+            <span class="comment">//	Required on Mac OS X, not necessary elsewhere.</span>
+            <span class="comment">//	While potentially slightly beneficial with recent GL drivers, might also fail with somewhat outdated ones.</span>
+            <span class="comment">//	Defaults to true on Mac OS X, to false elsewhere.</span>
+            CoreProfile bool
+
+            <span class="comment">//	Required on Mac OS X, not recommended elsewhere.</span>
+            <span class="comment">//	Defaults to true on Mac OS X, to false elsewhere.</span>
+            ForwardCompat bool
+        }
         BadVersionMessage string
         Window            struct {
             Rbits, Gbits, Bbits, Abits, DepthBits, StencilBits int
@@ -1572,11 +1579,11 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
         DefaultClearColor ugl.GlVec4
 
         <span class="comment">//	Name for the default render technique of a Camera2D,</span>
-        <span class="comment">//	defaults to the currently only implementation &#34;rt_unlit3&#34;.</span>
+        <span class="comment">//	defaults to the currently only implementation &#34;rt_unlit&#34;.</span>
         DefaultTechnique2D string
 
         <span class="comment">//	Name for the default render technique of a Camera3D,</span>
-        <span class="comment">//	defaults to the currently only implementation &#34;rt_unlit3&#34;.</span>
+        <span class="comment">//	defaults to the currently only implementation &#34;rt_unlit&#34;.</span>
         DefaultTechnique3D string
 
         PostFx struct {
@@ -1586,8 +1593,10 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
-Consider EngineOptions a &#34;Singleton&#34; type, only valid use is the one instance you created for core.Init().
-Various &#34;global&#34; (rather than use-case-specific) options.
+Only valid initialization for an EngineOptions is NewEngineOptions().
+This object is passed to the core.Init() function which immediately copies it to Core.Options.
+All subsequent option reads and writes are exclusively from and to Core.Options, the copy you initially
+received from NewEngineOptions() is no longer used. Slightly confusing, but there&#39;s a reason for this design.
 </p>
 
 
@@ -1599,7 +1608,7 @@ Various &#34;global&#34; (rather than use-case-specific) options.
 
 			
 				
-				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=1611:1739#L56">NewEngineOptions</a></h3>
+				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=2205:2333#L67">NewEngineOptions</a></h3>
 				<pre>func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions)</pre>
 				<p>
 Allocates, initializes and returns a new core.EngineOptions instance.
@@ -1696,8 +1705,8 @@ Tracks various go:ngine performance indicators over time.
 
 			
 				
-				<h3 id="EngineStats.AverageFps">func (*EngineStats) <a href="/target/ng-stats.go?s=3769:3812#L70">AverageFps</a></h3>
-				<pre>func (me *EngineStats) AverageFps() float64</pre>
+				<h3 id="EngineStats.AverageFps">func (*EngineStats) <a href="/target/ng-stats.go?s=3769:3811#L70">AverageFps</a></h3>
+				<pre>func (_ *EngineStats) AverageFps() float64</pre>
 				<p>
 Returns the average number of frames-per-second since Loop.Loop() was last called.
 </p>
@@ -1706,8 +1715,8 @@ Returns the average number of frames-per-second since Loop.Loop() was last calle
 				
 			
 				
-				<h3 id="EngineStats.TotalFrames">func (*EngineStats) <a href="/target/ng-stats.go?s=3937:3981#L78">TotalFrames</a></h3>
-				<pre>func (me *EngineStats) TotalFrames() float64</pre>
+				<h3 id="EngineStats.TotalFrames">func (*EngineStats) <a href="/target/ng-stats.go?s=3939:3982#L78">TotalFrames</a></h3>
+				<pre>func (_ *EngineStats) TotalFrames() float64</pre>
 				
 				
 				
@@ -1748,8 +1757,8 @@ Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window m
 
 			
 				
-				<h3 id="EngineUserIO.IifKeyF">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2971:3044#L81">IifKeyF</a></h3>
-				<pre>func (me *EngineUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64</pre>
+				<h3 id="EngineUserIO.IifKeyF">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3141:3213#L84">IifKeyF</a></h3>
+				<pre>func (_ *EngineUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64</pre>
 				<p>
 Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
 </p>
@@ -1758,8 +1767,8 @@ Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyPressed">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3159:3207#L89">KeyPressed</a></h3>
-				<pre>func (me *EngineUserIO) KeyPressed(key int) bool</pre>
+				<h3 id="EngineUserIO.KeyPressed">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3332:3379#L92">KeyPressed</a></h3>
+				<pre>func (_ *EngineUserIO) KeyPressed(key int) bool</pre>
 				<p>
 Returns true if the specified key is pressed.
 </p>
@@ -1768,8 +1777,8 @@ Returns true if the specified key is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyPressedWhich">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3298:3354#L94">KeyPressedWhich</a></h3>
-				<pre>func (me *EngineUserIO) KeyPressedWhich(keys ...int) int</pre>
+				<h3 id="EngineUserIO.KeyPressedWhich">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3470:3525#L97">KeyPressedWhich</a></h3>
+				<pre>func (_ *EngineUserIO) KeyPressedWhich(keys ...int) int</pre>
 				<p>
 Returns the first in keys that is pressed.
 </p>
@@ -1778,8 +1787,8 @@ Returns the first in keys that is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyToggled">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4320:4368#L124">KeyToggled</a></h3>
-				<pre>func (me *EngineUserIO) KeyToggled(key int) bool</pre>
+				<h3 id="EngineUserIO.KeyToggled">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4543:4590#L127">KeyToggled</a></h3>
+				<pre>func (_ *EngineUserIO) KeyToggled(key int) bool</pre>
 				<p>
 Returns true if the specified key has been &#34;toggled&#34;, ie. its pressed-state changed within the last me.KeyToggleMinDelay seconds.
 </p>
@@ -1788,8 +1797,8 @@ Returns true if the specified key has been &#34;toggled&#34;, ie. its pressed-st
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAll2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3520:3576#L104">KeysPressedAll2</a></h3>
-				<pre>func (me *EngineUserIO) KeysPressedAll2(k1, k2 int) bool</pre>
+				<h3 id="EngineUserIO.KeysPressedAll2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3707:3762#L107">KeysPressedAll2</a></h3>
+				<pre>func (_ *EngineUserIO) KeysPressedAll2(k1, k2 int) bool</pre>
 				<p>
 Returns true if both specified keys are pressed.
 </p>
@@ -1798,8 +1807,8 @@ Returns true if both specified keys are pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAll3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3686:3746#L109">KeysPressedAll3</a></h3>
-				<pre>func (me *EngineUserIO) KeysPressedAll3(k1, k2, k3 int) bool</pre>
+				<h3 id="EngineUserIO.KeysPressedAll3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3880:3939#L112">KeysPressedAll3</a></h3>
+				<pre>func (_ *EngineUserIO) KeysPressedAll3(k1, k2, k3 int) bool</pre>
 				<p>
 Returns true if all three specified keys are pressed.
 </p>
@@ -1808,8 +1817,8 @@ Returns true if all three specified keys are pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAny2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3881:3937#L114">KeysPressedAny2</a></h3>
-				<pre>func (me *EngineUserIO) KeysPressedAny2(k1, k2 int) bool</pre>
+				<h3 id="EngineUserIO.KeysPressedAny2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4086:4141#L117">KeysPressedAny2</a></h3>
+				<pre>func (_ *EngineUserIO) KeysPressedAny2(k1, k2 int) bool</pre>
 				<p>
 Returns true if any of the two specified keys is pressed.
 </p>
@@ -1818,8 +1827,8 @@ Returns true if any of the two specified keys is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAny3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4053:4113#L119">KeysPressedAny3</a></h3>
-				<pre>func (me *EngineUserIO) KeysPressedAny3(k1, k2, k3 int) bool</pre>
+				<h3 id="EngineUserIO.KeysPressedAny3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4265:4324#L122">KeysPressedAny3</a></h3>
+				<pre>func (_ *EngineUserIO) KeysPressedAny3(k1, k2, k3 int) bool</pre>
 				<p>
 Returns true if any of the three specified keys is pressed.
 </p>
@@ -1828,8 +1837,8 @@ Returns true if any of the three specified keys is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.SetWinTitle">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4603:4655#L133">SetWinTitle</a></h3>
-				<pre>func (me *EngineUserIO) SetWinTitle(newTitle string)</pre>
+				<h3 id="EngineUserIO.SetWinTitle">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4849:4900#L136">SetWinTitle</a></h3>
+				<pre>func (_ *EngineUserIO) SetWinTitle(newTitle string)</pre>
 				<p>
 Sets the window title to newTitle.
 </p>
@@ -1838,8 +1847,8 @@ Sets the window title to newTitle.
 				
 			
 				
-				<h3 id="EngineUserIO.WinHeight">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4739:4778#L138">WinHeight</a></h3>
-				<pre>func (me *EngineUserIO) WinHeight() int</pre>
+				<h3 id="EngineUserIO.WinHeight">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4984:5022#L141">WinHeight</a></h3>
+				<pre>func (_ *EngineUserIO) WinHeight() int</pre>
 				<p>
 Returns the height of the window in pixels.
 </p>
@@ -1848,8 +1857,8 @@ Returns the height of the window in pixels.
 				
 			
 				
-				<h3 id="EngineUserIO.WinWidth">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4861:4899#L143">WinWidth</a></h3>
-				<pre>func (me *EngineUserIO) WinWidth() int</pre>
+				<h3 id="EngineUserIO.WinWidth">func (*EngineUserIO) <a href="/target/ng-userio.go?s=5105:5142#L146">WinWidth</a></h3>
+				<pre>func (_ *EngineUserIO) WinWidth() int</pre>
 				<p>
 Returns the width of the window in pixels.
 </p>
@@ -3239,7 +3248,7 @@ After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), 
 				
 			
 				
-				<h3 id="PostFx.ToggleEffect">func (*PostFx) <a href="/target/postfx.go?s=2838:2896#L80">ToggleEffect</a></h3>
+				<h3 id="PostFx.ToggleEffect">func (*PostFx) <a href="/target/postfx.go?s=2859:2917#L81">ToggleEffect</a></h3>
 				<pre>func (me *PostFx) ToggleEffect(name string) (enabled bool)</pre>
 				<p>
 Activates or deactivates the specified post-processing full-screen effect.
@@ -3445,7 +3454,7 @@ Initializes and returns a new Scene with default parameters.
 		
 			
 			
-			<h2 id="TimingStats">type <a href="/target/ng-stats.go?s=4086:4258#L83">TimingStats</a></h2>
+			<h2 id="TimingStats">type <a href="/target/ng-stats.go?s=4090:4262#L83">TimingStats</a></h2>
 			<pre>type TimingStats struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -3464,7 +3473,7 @@ Helps track average and maximum cost for a variety of performance indicators.
 
 			
 				
-				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/ng-stats.go?s=4327:4367#L89">Average</a></h3>
+				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/ng-stats.go?s=4331:4371#L89">Average</a></h3>
 				<pre>func (me *TimingStats) Average() float64</pre>
 				<p>
 Returns the average cost tracked by this performance indicator.
@@ -3474,7 +3483,7 @@ Returns the average cost tracked by this performance indicator.
 				
 			
 				
-				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/ng-stats.go?s=5011:5047#L116">Max</a></h3>
+				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/ng-stats.go?s=5015:5051#L116">Max</a></h3>
 				<pre>func (me *TimingStats) Max() float64</pre>
 				<p>
 Returns the maximum cost tracked by this performance indicator.

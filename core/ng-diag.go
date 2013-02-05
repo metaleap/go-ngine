@@ -23,33 +23,35 @@ var (
 	}
 )
 
+//	EngineDiag is a singleton type, only used for the core.Diag package-global exported variable.
+//	It is only aware of that instance and does not support any other EngineDiag instances.
 type EngineDiag struct {
 	LogCategories       EngineDiagLogCategory
 	LogErrorsDuringLoop bool
 }
 
-func (me *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{}) {
-	if (me.LogCategories & cat) == cat {
+func (_ *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{}) {
+	if (Diag.LogCategories & cat) == cat {
 		log.Printf(fmt, fmtArgs...)
 	}
 }
 
-func (me *EngineDiag) LogErr(err error) {
+func (_ *EngineDiag) LogErr(err error) {
 	ugo.LogError(err)
 }
 
-func (me *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{}) {
+func (_ *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{}) {
 	ugl.LogLastError(fmt, fmtArgs...)
 }
 
-func (me *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{}) {
-	me.Log(DiagLogMeshes, fmt, fmtArgs...)
+func (_ *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{}) {
+	Diag.Log(DiagLogMeshes, fmt, fmtArgs...)
 }
 
-func (me *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{}) {
-	me.Log(DiagLogCatMisc, fmt, fmtArgs...)
+func (_ *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{}) {
+	Diag.Log(DiagLogCatMisc, fmt, fmtArgs...)
 }
 
-func (me *EngineDiag) LogShaders(fmt string, fmtArgs ...interface{}) {
-	me.Log(DiagLogCatShaders, fmt, fmtArgs...)
+func (_ *EngineDiag) LogShaders(fmt string, fmtArgs ...interface{}) {
+	Diag.Log(DiagLogCatShaders, fmt, fmtArgs...)
 }

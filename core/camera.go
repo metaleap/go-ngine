@@ -140,13 +140,13 @@ func (me *Cameras) Remove(camera *Camera) {
 
 //	Encapsulates a device-relative or absolute camera view-port.
 type CameraViewport struct {
-	absolute               bool
-	relX, relY, relW, relH float64
-	absX, absY, absW, absH int
-	aspect                 float64
-	glVpX, glVpY           gl.Int
-	glVpW, glVpH           gl.Sizei
-	canvas                 *RenderCanvas
+	relative, shouldScissor bool
+	relX, relY, relW, relH  float64
+	absX, absY, absW, absH  int
+	aspect                  float64
+	glVpX, glVpY            gl.Int
+	glVpW, glVpH            gl.Sizei
+	canvas                  *RenderCanvas
 }
 
 func (me *CameraViewport) init() {
@@ -155,19 +155,20 @@ func (me *CameraViewport) init() {
 
 //	Sets the absolute viewport origin and dimensions in pixels.
 func (me *CameraViewport) SetAbs(x, y, width, height int) {
-	me.absolute, me.absX, me.absY, me.absW, me.absH = true, x, y, width, height
+	me.relative, me.absX, me.absY, me.absW, me.absH = false, x, y, width, height
 	me.update()
 }
 
 //	Sets the device-relative viewport origin and dimensions, with the value 1.0
 //	representing the maximum extent of the viewport on that respective axis.
 func (me *CameraViewport) SetRel(x, y, width, height float64) {
-	me.absolute, me.relX, me.relY, me.relW, me.relH = false, x, y, width, height
+	me.relative, me.relX, me.relY, me.relW, me.relH = true, x, y, width, height
 	me.update()
 }
 
 func (me *CameraViewport) update() {
-	if !me.absolute {
+	me.shouldScissor = !(me.relative && me.relX == 0 && me.relY == 0 && me.relW == 1 && me.relH == 1)
+	if me.relative {
 		me.absW, me.absH = int(me.relW*float64(me.canvas.absViewWidth)), int(me.relH*float64(me.canvas.absViewHeight))
 		me.absX, me.absY = int(me.relX*float64(me.canvas.absViewWidth)), int(me.relY*float64(me.canvas.absViewHeight))
 	}

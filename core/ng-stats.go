@@ -77,16 +77,16 @@ type EngineStats struct {
 }
 
 //	Returns the average number of frames-per-second since Loop.Loop() was last called.
-func (me *EngineStats) AverageFps() float64 {
-	return me.fpsAll / glfw.Time()
+func (_ *EngineStats) AverageFps() float64 {
+	return Stats.fpsAll / glfw.Time()
 }
 
-func (me *EngineStats) reset() {
-	me.FpsLastSec, me.fpsCounter, me.fpsAll = 0, 0, 0
+func (_ *EngineStats) reset() {
+	Stats.FpsLastSec, Stats.fpsCounter, Stats.fpsAll = 0, 0, 0
 }
 
-func (me *EngineStats) TotalFrames() float64 {
-	return me.fpsAll
+func (_ *EngineStats) TotalFrames() float64 {
+	return Stats.fpsAll
 }
 
 //	Helps track average and maximum cost for a variety of performance indicators.

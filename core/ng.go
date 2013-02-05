@@ -22,21 +22,21 @@ func Init(options *EngineOptions, initialWinTitle string) (err error) {
 	)
 	Core.Options = *options
 tryInit:
-	if options.Initialization.GlCoreContext {
+	if Core.Options.Initialization.GlContext.CoreProfile {
 		glVer = ugl.KnownVersions[glVerIndex]
 	}
-	if err = UserIO.init(options, initialWinTitle, glVer); err == nil {
+	if err = UserIO.init(initialWinTitle, glVer); err == nil {
 		if err, badVer = glInit(); err == nil && len(badVer) == 0 {
 			Stats.reset()
 			Loop.init()
 			Core.init()
 			ugl.LogLastError("INIT")
-		} else if len(badVer) > 0 && !options.Initialization.GlCoreContext {
-			options.Initialization.GlCoreContext = true
+		} else if len(badVer) > 0 && !Core.Options.Initialization.GlContext.CoreProfile {
+			Core.Options.Initialization.GlContext.CoreProfile = true
 			UserIO.isGlfwInit, UserIO.isGlfwWindow = false, false
 			goto tryInit
 		}
-	} else if options.Initialization.GlCoreContext && (glVerIndex > 0) {
+	} else if Core.Options.Initialization.GlContext.CoreProfile && (glVerIndex > 0) {
 		glVerIndex--
 		UserIO.isGlfwInit, UserIO.isGlfwWindow = false, false
 		goto tryInit

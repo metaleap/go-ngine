@@ -18,7 +18,6 @@ var (
 	//	Do not set this field directly, only use PauseResume() to toggle it and effect the associated render-state changes.
 	Paused bool
 
-	sampleOnWin            func()
 	retro, refreshWinTitle bool
 	curKeyHint             = 0
 	sec                    = 0
@@ -93,16 +92,8 @@ func OnSec() {
 		if curKeyHint++; (curKeyHint > MaxKeyHint) || (curKeyHint >= (len(KeyHints))) {
 			curKeyHint = 0
 		}
-		refreshWinTitle = true
 	}
-}
-
-func onWin() {
-	if refreshWinTitle {
-		refreshWinTitle = false
-		ng.UserIO.SetWinTitle(WindowTitle())
-	}
-	sampleOnWin()
+	ng.UserIO.SetWinTitle(WindowTitle())
 }
 
 //	Pauses rendering or resumes from the current pause.
@@ -147,15 +138,14 @@ func SamplesMainFunc(assetLoader, onAppThread, onWinThread func()) {
 	opt := ng.NewEngineOptions(AssetRootDirPath(), width, height, 0, fullscreen)
 
 	// while the default for this (force core on Macs only) is optimal for "production" apps,
-	// for the sample apps we force core profile to ensure all go:ngine GL code is fully core-profile compatible:
-	opt.Initialization.GlCoreContext = true
+	// for the sample apps we force core profile to ensure all of go:ngine's GL code is fully core-profile compatible:
+	opt.Initialization.GlContext.CoreProfile = true
 
 	if err := ng.Init(opt, fmt.Sprintf("Loading sample app... (%v CPU cores)", runtime.GOMAXPROCS(0))); err != nil {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
 		defer ng.Dispose()
-		sampleOnWin = onWinThread
-		ng.Loop.OnSec, ng.Loop.OnAppThread, ng.Loop.OnWinThread = OnSec, onAppThread, onWin
+		ng.Loop.OnSec, ng.Loop.OnAppThread, ng.Loop.OnWinThread = OnSec, onAppThread, onWinThread
 		Cam = ng.Core.Rendering.Canvases[0].Cameras[0]
 		Cam.Rendering.States.ClearColor.Set(0.5, 0.6, 0.85, 1)
 		CamCtl = &Cam.Controller

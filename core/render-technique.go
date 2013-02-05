@@ -9,68 +9,76 @@ var (
 	techs map[string]renderTechnique
 )
 
-type techniqueCtor func(string) renderTechnique
-
-func initTechniques() {
-	techs = map[string]renderTechnique{}
-	for techName, techMaker := range map[string]techniqueCtor{"rt_unlit3": newTechnique_Unlit} {
-		techs[techName] = techMaker(techName)
-	}
-}
-
 type renderTechnique interface {
 	initMeshBuffer(*MeshBuffer) []*ugl.VertexAttribPointer
 	name() string
 	onRenderNode()
 }
 
-type baseTechnique struct {
+type techniqueCtor func(string) renderTechnique
+
+func initTechniques() {
+	techs = map[string]renderTechnique{}
+	for techName, techMaker := range map[string]techniqueCtor{"rt_quad": newRenderTechniqueQuad, "rt_unlit": newRenderTechniqueUnlit} {
+		techs[techName] = techMaker(techName)
+	}
+}
+
+type renderTechniqueBase struct {
 	prog *ugl.Program
 }
 
-func (me *baseTechnique) initMeshBuffer(meshBuffer *MeshBuffer) (atts []*ugl.VertexAttribPointer) {
-	atts = append(atts, ugl.NewVertexAttribPointer("aPos", me.prog.AttrLocs["aPos"], 3, 8*4, gl.Ptr(nil)))
+func (me *renderTechniqueBase) initMeshBuffer(MeshBuffer *MeshBuffer) (atts []*ugl.VertexAttribPointer) {
 	return
 }
 
-func (me *baseTechnique) name() string {
+func (me *renderTechniqueBase) onRenderNode() {
+}
+
+func (me *renderTechniqueBase) name() string {
 	return me.prog.Name
 }
 
-func (me *baseTechnique) onRenderNode() {
-}
-
-func (me *baseTechnique) setProg(name string, unifs []string, attrs []string) {
+func (me *renderTechniqueBase) setProg(name string, unifs []string, attrs []string) {
 	prog := glc.progMan.Programs[name]
-	prog.SetUnifLocations("uMatModelProj")
 	if len(unifs) > 0 {
 		prog.SetUnifLocations(unifs...)
 	}
-	prog.SetAttrLocations("aPos")
 	if len(attrs) > 0 {
 		prog.SetAttrLocations(attrs...)
 	}
 	me.prog = prog
 }
 
-type techniqueUnlit struct {
-	baseTechnique
+type renderTechniqueQuad struct {
+	renderTechniqueBase
 }
 
-func newTechnique_Unlit(progName string) renderTechnique {
-	me := &techniqueUnlit{}
-	me.baseTechnique.setProg(progName, []string{"uDiffuse"}, []string{"aTexCoords"})
+func newRenderTechniqueQuad(progName string) renderTechnique {
+	me := &renderTechniqueQuad{}
+	me.renderTechniqueBase.setProg(progName, []string{"uTexRendering"}, nil)
 	return me
 }
 
-func (me *techniqueUnlit) initMeshBuffer(meshBuffer *MeshBuffer) (atts []*ugl.VertexAttribPointer) {
-	atts = me.baseTechnique.initMeshBuffer(meshBuffer)
-	atts = append(atts, ugl.NewVertexAttribPointer("aTexCoords", me.prog.AttrLocs["aTexCoords"], 2, 8*4, gl.Util.PtrOffset(nil, 3*4)))
+type renderTechniqueUnlit struct {
+	renderTechniqueBase
+}
+
+func newRenderTechniqueUnlit(progName string) renderTechnique {
+	me := &renderTechniqueUnlit{}
+	me.renderTechniqueBase.setProg(progName, []string{"uMatModelProj", "uDiffuse"}, []string{"aPos", "aTexCoords"})
+	return me
+}
+
+func (me *renderTechniqueUnlit) initMeshBuffer(meshBuffer *MeshBuffer) (atts []*ugl.VertexAttribPointer) {
+	atts = append(atts,
+		ugl.NewVertexAttribPointer("aPos", me.prog.AttrLocs["aPos"], 3, 8*4, gl.Ptr(nil)),
+		ugl.NewVertexAttribPointer("aTexCoords", me.prog.AttrLocs["aTexCoords"], 2, 8*4, gl.Util.PtrOffset(nil, 3*4)),
+	)
 	return
 }
 
-func (me *techniqueUnlit) onRenderNode() {
-	me.baseTechnique.onRenderNode()
+func (me *renderTechniqueUnlit) onRenderNode() {
 	if thrRend.tmpMat = thrRend.curNode.EffectiveMaterial(); thrRend.tmpMat != thrRend.curMat {
 		if thrRend.curMat = thrRend.tmpMat; thrRend.curMat != nil {
 			thrRend.tmpEffect = Core.Libs.Effects[thrRend.curMat.DefaultEffectID]
