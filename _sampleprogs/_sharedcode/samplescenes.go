@@ -18,9 +18,10 @@ var (
 	//	Do not set this field directly, only use PauseResume() to toggle it and effect the associated render-state changes.
 	Paused bool
 
-	retro      bool
-	curKeyHint = 0
-	sec        = 0
+	sampleOnWin            func()
+	retro, refreshWinTitle bool
+	curKeyHint             = 0
+	sec                    = 0
 )
 
 //	Creates a new core.Scene, adds it to the Scenes library under
@@ -92,8 +93,16 @@ func OnSec() {
 		if curKeyHint++; (curKeyHint > MaxKeyHint) || (curKeyHint >= (len(KeyHints))) {
 			curKeyHint = 0
 		}
+		refreshWinTitle = true
 	}
-	ng.UserIO.SetWinTitle(WindowTitle())
+}
+
+func onWin() {
+	if refreshWinTitle {
+		refreshWinTitle = false
+		ng.UserIO.SetWinTitle(WindowTitle())
+	}
+	sampleOnWin()
 }
 
 //	Pauses rendering or resumes from the current pause.
@@ -145,7 +154,8 @@ func SamplesMainFunc(assetLoader, onAppThread, onWinThread func()) {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
 		defer ng.Dispose()
-		ng.Loop.OnSec, ng.Loop.OnAppThread, ng.Loop.OnWinThread = OnSec, onAppThread, onWinThread
+		sampleOnWin = onWinThread
+		ng.Loop.OnSec, ng.Loop.OnAppThread, ng.Loop.OnWinThread = OnSec, onAppThread, onWin
 		Cam = ng.Core.Rendering.Canvases[0].Cameras[0]
 		Cam.Rendering.States.ClearColor.Set(0.5, 0.6, 0.85, 1)
 		CamCtl = &Cam.Controller
