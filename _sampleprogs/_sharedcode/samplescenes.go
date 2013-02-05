@@ -15,8 +15,10 @@ var (
 	//	Controller for the primary camera
 	CamCtl *ng.Controller
 
-	Paused, retro bool
+	//	Do not set this field directly, only use PauseResume() to toggle it and effect the associated render-state changes.
+	Paused bool
 
+	retro      bool
 	curKeyHint = 0
 	sec        = 0
 )
@@ -94,6 +96,8 @@ func OnSec() {
 	ng.UserIO.SetWinTitle(WindowTitle())
 }
 
+//	Pauses rendering or resumes from the current pause.
+//	When paused, the frame last rendered is frozen and rendered in a gray-scale effect.
 func PauseResume() {
 	canv := ng.Core.Rendering.Canvases.Main()
 	if Paused = ng.Core.Rendering.PostFx.ToggleEffect("Grayscale"); Paused {
@@ -125,7 +129,7 @@ func PrintPostLoopSummary() {
 }
 
 //	The *func main()* implementation for the parent example app. Initializes go:ngine, sets Cam and CamCtl, calls the specified assetLoader function, then enters The Loop.
-func SamplesMainFunc(assetLoader func()) {
+func SamplesMainFunc(assetLoader, onAppThread, onWinThread func()) {
 	runtime.LockOSThread()
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
@@ -141,7 +145,7 @@ func SamplesMainFunc(assetLoader func()) {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
 		defer ng.Dispose()
-		ng.Loop.OnSec = OnSec
+		ng.Loop.OnSec, ng.Loop.OnAppThread, ng.Loop.OnWinThread = OnSec, onAppThread, onWinThread
 		Cam = ng.Core.Rendering.Canvases[0].Cameras[0]
 		Cam.Rendering.States.ClearColor.Set(0.5, 0.6, 0.85, 1)
 		CamCtl = &Cam.Controller

@@ -22,9 +22,8 @@ var (
 )
 
 func main() {
-	ngsamples.KeyHints = append(ngsamples.KeyHints, "[F12]  --  Toggle Rear-Mirror Camera")
-	ngsamples.MaxKeyHint++
-	ngsamples.SamplesMainFunc(LoadSampleScene_03_PyrsCubes)
+	ngsamples.AddKeyHint("F12", "Toggle 'Rear-View-Mirror' Camera")
+	ngsamples.SamplesMainFunc(setupSampleScene_03_PyrsCubes, onAppThread, onWinThread)
 }
 
 func onWinThread() {
@@ -33,7 +32,7 @@ func onWinThread() {
 	if ng.UserIO.KeyToggled(glfw.KeyF12) {
 		rearMirror.Cam.Enabled = !rearMirror.Cam.Enabled
 	}
-	rearMirror.Cam.Rendering.States.FaceCulling = ngsamples.Cam.Rendering.States.FaceCulling
+	rearMirror.OnWin()
 }
 
 func onAppThread() {
@@ -68,7 +67,7 @@ func onAppThread() {
 	pyramids[1].Transform.SetPosZ(math.Cos(ng.Loop.TickNow) * 1000)
 }
 
-func LoadSampleScene_03_PyrsCubes() {
+func setupSampleScene_03_PyrsCubes() {
 	var (
 		err                          error
 		scene                        *ng.Scene
@@ -77,8 +76,6 @@ func LoadSampleScene_03_PyrsCubes() {
 		str                          string
 	)
 
-	ng.Loop.OnAppThread, ng.Loop.OnWinThread = onAppThread, onWinThread
-	ngsamples.Cam.Rendering.States.FaceCulling = false
 	rearMirror.Setup()
 
 	//	textures / materials
@@ -88,11 +85,6 @@ func LoadSampleScene_03_PyrsCubes() {
 		"mosaic":  "tex/mosaic.jpeg",
 		"cat":     "tex/cat.png",
 		"dog":     "tex/dog.png",
-	})
-	ngsamples.AddColorMaterials(map[string][]float64{
-		"yellow": []float64{1, 1, 0},
-		"green":  []float64{0, 1, 0},
-		"blue":   []float64{0, 0, 1},
 	})
 
 	if err = gui2d.Setup(); err != nil {
@@ -178,7 +170,6 @@ func LoadSampleScene_03_PyrsCubes() {
 		}
 	}
 
-	// pyramids[len(pyramids)-1].SetMatID("mat_yellow")
 	floor.Transform.SetPosXYZ(0.1, 0, -8)
 	floor.Transform.SetScaleN(10000)
 

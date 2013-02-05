@@ -12,7 +12,7 @@ var (
 )
 
 func main() {
-	ngsamples.SamplesMainFunc(LoadSampleScene_02_PyrCube)
+	ngsamples.SamplesMainFunc(setupSampleScene_02_PyrCube, onAppThread, onWinThread)
 }
 
 func onWinThread() {
@@ -35,7 +35,7 @@ func onAppThread() {
 	}
 }
 
-func LoadSampleScene_02_PyrCube() {
+func setupSampleScene_02_PyrCube() {
 	var (
 		err                          error
 		scene                        *ng.Scene
@@ -43,17 +43,11 @@ func LoadSampleScene_02_PyrCube() {
 		bufFloor, bufRest            *ng.MeshBuffer
 	)
 
-	ng.Loop.OnAppThread, ng.Loop.OnWinThread = onAppThread, onWinThread
-
 	//	textures / materials
 	ngsamples.AddTextureMaterials(map[string]string{
 		"cobbles": "http://dl.dropbox.com/u/136375/go-ngine/assets/tex/cobbles.png",
 		"crate":   "tex/crate.jpeg",
 		"mosaic":  "tex/mosaic.jpeg",
-	})
-	ngsamples.AddColorMaterials(map[string][]float64{
-		"yellow": []float64{1, 1, 0},
-		"blue":   []float64{0, 0, 1},
 	})
 
 	//	meshes / models

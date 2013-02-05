@@ -69,7 +69,7 @@ func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool, techniqueNa
 	me.Enabled = true
 	rend := &me.Rendering
 	rend.Viewport.canvas = canv
-	rend.States.DepthTest, rend.States.FaceCulling, rend.States.StencilTest = depth, true, false
+	rend.States.DepthTest, rend.States.FaceCulling, rend.States.StencilTest = depth, false, false
 	rend.States.ClearColor = Core.Options.Rendering.DefaultClearColor
 	if depth {
 		rend.States.Other.ClearBits = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT

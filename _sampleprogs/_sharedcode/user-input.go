@@ -23,34 +23,49 @@ var (
 		"[Alt][LShift][RShift]  --  Camera move-speed x 0.1 / 10 / 100",
 	}
 
+	//	Because checking for key-presses happens in onWinThread() but handling such key presses
+	//	(typically resulting in matrix remultiplications and other CPU work) happens in onAppThread,
+	//	this struct helps keep track of both which keys to check in the first place, and their
+	//	latest press-state.
 	Keys struct {
+		//	Updated by CheckCamCtlKeys(), contains the latest press-states of the keys in CheckForPressed.
 		Pressed map[int]bool
 
-		CheckFor struct {
-			Pressed []int
-		}
+		//	Contains the keys that CheckCamCtlKeys() will poll and update in Pressed.
+		CheckForPressed []int
+
 		tmp int
 	}
 )
 
 func init() {
 	Keys.Pressed = map[int]bool{}
-	Keys.CheckFor.Pressed = []int{
+	Keys.CheckForPressed = []int{
 		glfw.KeyLalt, glfw.KeyLshift, glfw.KeyRshift, 'W', 'A', 'S', 'D',
 		glfw.KeyLeft, glfw.KeyRight, glfw.KeyUp, glfw.KeyDown,
 		glfw.KeyPagedown, glfw.KeyPageup, glfw.KeyKP9, glfw.KeyKP3,
 	}
 }
 
-//	Called every frame (by the parent example app) to check the state for keys controlling CamCtl to move or rotate Cam.
+//	Key hints are shown in the window title bar, a new one every few seconds.
+//	This function adds a new hint to be included in that rotation.
+func AddKeyHint(key, hint string) {
+	KeyHints = append(KeyHints, "["+key+"]  --  "+hint)
+	MaxKeyHint = len(KeyHints) - 1
+}
+
+//	To be called every frame (by the parent example app, ONLY in onWinThread()!) to collect key-press
+//	states for controlling (in HandleCamCtlKeys() in onAppThread()!) CamCtl to move or rotate Cam.
 func CheckCamCtlKeys() {
 	if !Paused {
-		for _, Keys.tmp = range Keys.CheckFor.Pressed {
+		for _, Keys.tmp = range Keys.CheckForPressed {
 			Keys.Pressed[Keys.tmp] = ng.UserIO.KeyPressed(Keys.tmp)
 		}
 	}
 }
 
+//	To be called every frame (by the parent example app, ONLY in onWinThread()!) to
+//	check AND handle key-toggle states for F2, F3 etc. function keys and Esc.
 func CheckAndHandleToggleKeys() {
 	in := &ng.UserIO
 	if in.KeyToggled(glfw.KeyEsc) {
@@ -67,6 +82,8 @@ func CheckAndHandleToggleKeys() {
 	}
 }
 
+//	To be called every frame (by the parent example app, ONLY in onAppThread()!) to process key-press
+//	states (from the previous CheckCamCtlKeys() call) for controlling CamCtl to move or rotate Cam.
 func HandleCamCtlKeys() {
 	if CamCtl.Params.MoveSpeedupFactor = 1; !Paused {
 		if Keys.Pressed[glfw.KeyLshift] {

@@ -10,7 +10,7 @@ var (
 )
 
 func main() {
-	ngsamples.SamplesMainFunc(LoadSampleScene_01_EmptyPlane)
+	ngsamples.SamplesMainFunc(setupSampleScene_01_EmptyPlane, onAppThread, onWinThread)
 }
 
 func onWinThread() {
@@ -22,15 +22,13 @@ func onAppThread() {
 	ngsamples.HandleCamCtlKeys()
 }
 
-func LoadSampleScene_01_EmptyPlane() {
+func setupSampleScene_01_EmptyPlane() {
 	var (
 		err       error
 		scene     *ng.Scene
 		meshFloor *ng.Mesh
 		bufRest   *ng.MeshBuffer
 	)
-
-	ng.Loop.OnAppThread, ng.Loop.OnWinThread = onAppThread, onWinThread
 
 	//	textures / materials
 	ngsamples.AddTextureMaterials(map[string]string{

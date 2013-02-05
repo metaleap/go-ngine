@@ -5,10 +5,14 @@ import (
 	unum "github.com/metaleap/go-util/num"
 )
 
+//	A fake "2D GUI" concoction. There will be much better ngine-provided support for stuff like this.
+//	Has two textured quads, a cat and a dog one, shows them both animated and overlapping
+//	inside a red 64x64 px square in the bottom left canvas corner.
 type Gui2D struct {
 	Cat, Dog *ng.Node
 }
 
+//	Adds a "2D camera" to the main render canvas, and sets up Cat and Dog.
 func (me *Gui2D) Setup() (err error) {
 	var (
 		meshBuf  *ng.MeshBuffer
@@ -17,7 +21,6 @@ func (me *Gui2D) Setup() (err error) {
 	scene := AddScene("gui2d", false)
 	cam := ng.Core.Rendering.Canvases[0].AddNewCamera2D(true)
 	cam.Rendering.States.ClearColor.Set(0.75, 0.25, 0.1, 1)
-	cam.Rendering.States.FaceCulling = false
 	cam.Rendering.Viewport.SetAbs(8, 8, 64, 64) //SetRel(0.02, 0.04, 0.125, 0.222)
 	cam.SetScene("gui2d")
 

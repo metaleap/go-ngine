@@ -13,7 +13,7 @@ var (
 
 func main() {
 	ngsamples.MaxKeyHint = 3
-	ngsamples.SamplesMainFunc(LoadSampleScene_00_TriQuad)
+	ngsamples.SamplesMainFunc(setupSampleScene_00_TriQuad, onAppThread, onWinThread)
 }
 
 func onWinThread() {
@@ -31,16 +31,13 @@ func onAppThread() {
 	}
 }
 
-func LoadSampleScene_00_TriQuad() {
+func setupSampleScene_00_TriQuad() {
 	var (
 		err               error
 		scene             *ng.Scene
 		meshTri, meshQuad *ng.Mesh
 		meshBuf           *ng.MeshBuffer
 	)
-
-	ng.Loop.OnAppThread, ng.Loop.OnWinThread = onAppThread, onWinThread
-	ngsamples.Cam.Rendering.States.FaceCulling = false
 
 	//	textures / materials
 	ngsamples.AddTextureMaterials(map[string]string{
