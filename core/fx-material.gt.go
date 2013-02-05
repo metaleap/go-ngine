@@ -2,8 +2,8 @@ package core
 
 //	A material binds effects (FxEffect in Core.Libs.Effects) to geometry (Model or Node).
 type FxMaterial struct {
-	//	This effect is used by default for all faces that do not fall
-	//	under any of the associations in the FaceEffects field.
+	//	This effect is used by default for all faces that do not
+	//	match any of the selectors in the FaceEffects field.
 	DefaultEffectID string
 
 	//	Associates certain individual faces or tags of faces

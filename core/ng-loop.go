@@ -85,6 +85,11 @@ func (me *EngineLoop) Loop() {
 
 			//	STEP 1. Send rendering commands (batched together in the previous prep thread) to the GPU / GL pipeline
 			Stats.FrameRenderCpu.begin()
+			//	Check for resize before render
+			if (UserIO.lastWinResize > 0) && ((me.TickNow - UserIO.lastWinResize) > UserIO.WinResizeMinDelay) {
+				UserIO.lastWinResize = 0
+				Core.onResizeWindow(Core.Options.winWidth, Core.Options.winHeight)
+			}
 			Core.onRender()
 			Stats.FrameRenderCpu.end()
 
@@ -121,12 +126,6 @@ func (me *EngineLoop) Loop() {
 				me.loopOnWinThread()
 			}
 			Stats.FrameRenderBoth.combine()
-
-			//	This is best handled right here in between the most-recent swap and before the next frame rendering.
-			if (UserIO.lastWinResize > 0) && ((me.TickNow - UserIO.lastWinResize) > UserIO.WinResizeMinDelay) {
-				UserIO.lastWinResize = 0
-				Core.onResizeWindow(Core.Options.winWidth, Core.Options.winHeight)
-			}
 		}
 		me.IsLooping = false
 		Diag.LogMisc("Exited loop.")

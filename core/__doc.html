@@ -931,7 +931,7 @@ A camera embodies the eye point of the viewer looking at the visual scene.
 
 			
 				
-				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=2494:2527#L78">ApplyMatrices</a></h3>
+				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=2495:2528#L78">ApplyMatrices</a></h3>
 				<pre>func (me *Camera) ApplyMatrices()</pre>
 				<p>
 Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.
@@ -941,21 +941,21 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 				
 			
 				
-				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=2914:2946#L95">Scene</a></h3>
+				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=2915:2947#L95">Scene</a></h3>
 				<pre>func (me *Camera) Scene() *Scene</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=3184:3221#L110">SetScene</a></h3>
+				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=3185:3222#L110">SetScene</a></h3>
 				<pre>func (me *Camera) SetScene(id string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.go?s=3262:3305#L114">SetTechnique</a></h3>
+				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.go?s=3263:3306#L114">SetTechnique</a></h3>
 				<pre>func (me *Camera) SetTechnique(name string)</pre>
 				
 				
@@ -964,7 +964,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 		
 			
 			
-			<h2 id="CameraViewport">type <a href="/target/camera.go?s=3687:3940#L132">CameraViewport</a></h2>
+			<h2 id="CameraViewport">type <a href="/target/camera.go?s=3688:3941#L132">CameraViewport</a></h2>
 			<pre>type CameraViewport struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -983,7 +983,7 @@ Encapsulates a device-relative or absolute camera view-port.
 
 			
 				
-				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=4066:4123#L147">SetAbs</a></h3>
+				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=4067:4124#L147">SetAbs</a></h3>
 				<pre>func (me *CameraViewport) SetAbs(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -993,7 +993,7 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=4374:4435#L154">SetRel</a></h3>
+				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=4375:4436#L154">SetRel</a></h3>
 				<pre>func (me *CameraViewport) SetRel(x, y, width, height float64)</pre>
 				<p>
 Sets the device-relative viewport origin and dimensions, with the value 1.0
@@ -1006,7 +1006,7 @@ representing the maximum extent of the viewport on that respective axis.
 		
 			
 			
-			<h2 id="Cameras">type <a href="/target/camera.go?s=3428:3450#L120">Cameras</a></h2>
+			<h2 id="Cameras">type <a href="/target/camera.go?s=3429:3451#L120">Cameras</a></h2>
 			<pre>type Cameras []*Camera</pre>
 			
 
@@ -1020,7 +1020,7 @@ representing the maximum extent of the viewport on that respective axis.
 
 			
 				
-				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=3452:3493#L122">Remove</a></h3>
+				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=3453:3494#L122">Remove</a></h3>
 				<pre>func (me *Cameras) Remove(camera *Camera)</pre>
 				
 				
@@ -1454,7 +1454,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 		
 			
 			
-			<h2 id="EngineLoop">type <a href="/target/ng-loop.go?s=408:2294#L8">EngineLoop</a></h2>
+			<h2 id="EngineLoop">type <a href="/target/ng-loop.go?s=408:2112#L8">EngineLoop</a></h2>
 			<pre>type EngineLoop struct {
     <span class="comment">//	Set to true by Loop.Loop(). Set to false to stop looping.</span>
     IsLooping bool
@@ -1488,12 +1488,10 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
     <span class="comment">//	Caution: unlike OnWinThread(), this callback runs in parallel with your OnAppThread() callback.</span>
     OnSec func()
 
-    <span class="comment">//	If false (default), Loop() allows the app and prep threads to continue running while waiting</span>
+    <span class="comment">//	If true (default), Loop() waits for the app and prep threads to finish &amp; sync before</span>
+    <span class="comment">//	first calling OnWinThread() and finally waiting for GPU vsync/buffer-swap.</span>
+    <span class="comment">//	If false, Loop() allows the app and prep threads to continue running while waiting</span>
     <span class="comment">//	for GPU vsync/buffer-swap; then OnWinThread() is called when all of those 3 waits are over.</span>
-    <span class="comment">//	If true, Loop() waits for the app and prep threads to finish before first calling OnWinThread()</span>
-    <span class="comment">//	and finally waiting for GPU vsync/buffer-swap.</span>
-    <span class="comment">//	Defaults to false. Setting this to true may prove slightly beneficial if your OnAppThread()</span>
-    <span class="comment">//	isn&#39;t doing &#34;a lot&#34; of work vs. your render thread (it&#39;s all relative and app-specific).</span>
     SwapLast bool
 }</pre>
 			<p>
@@ -1518,7 +1516,7 @@ Manages your main-thread&#39;s &#34;game loop&#34;.
 
 			
 				
-				<h3 id="EngineLoop.Loop">func (*EngineLoop) <a href="/target/ng-loop.go?s=2589:2617#L57">Loop</a></h3>
+				<h3 id="EngineLoop.Loop">func (*EngineLoop) <a href="/target/ng-loop.go?s=2775:2803#L63">Loop</a></h3>
 				<pre>func (me *EngineLoop) Loop()</pre>
 				<p>
 Initiates a rendering loop. This method returns only when the loop is stopped for whatever reason.
@@ -1531,7 +1529,7 @@ Initiates a rendering loop. This method returns only when the loop is stopped fo
 				
 			
 				
-				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=5888:5916#L171">Stop</a></h3>
+				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=5813:5841#L172">Stop</a></h3>
 				<pre>func (me *EngineLoop) Stop()</pre>
 				<p>
 Stops the currently running Loop.Loop().
@@ -1541,7 +1539,7 @@ Stops the currently running Loop.Loop().
 				
 			
 				
-				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=6025:6060#L176">Time</a></h3>
+				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=5950:5985#L177">Time</a></h3>
 				<pre>func (_ *EngineLoop) Time() float64</pre>
 				<p>
 Returns the number of seconds expired ever since Loop.Loop() was last called.
@@ -2067,10 +2065,10 @@ Initializes and returns a new FxImage2D with default parameters.
 		
 			
 			
-			<h2 id="FxMaterial">type <a href="/target/fx-material.gt.go?s=103:538#L1">FxMaterial</a></h2>
+			<h2 id="FxMaterial">type <a href="/target/fx-material.gt.go?s=103:530#L1">FxMaterial</a></h2>
 			<pre>type FxMaterial struct {
-    <span class="comment">//	This effect is used by default for all faces that do not fall</span>
-    <span class="comment">//	under any of the associations in the FaceEffects field.</span>
+    <span class="comment">//	This effect is used by default for all faces that do not</span>
+    <span class="comment">//	match any of the selectors in the FaceEffects field.</span>
     DefaultEffectID string
 
     <span class="comment">//	Associates certain individual faces or tags of faces</span>
@@ -2096,7 +2094,7 @@ A material binds effects (FxEffect in Core.Libs.Effects) to geometry (Model or N
 
 			
 				
-				<h3 id="NewFxMaterial">func <a href="/target/fx-material.gt.go?s=805:842#L21">NewFxMaterial</a></h3>
+				<h3 id="NewFxMaterial">func <a href="/target/fx-material.gt.go?s=797:834#L21">NewFxMaterial</a></h3>
 				<pre>func NewFxMaterial() (me *FxMaterial)</pre>
 				<p>
 Initializes and returns a new FxMaterial with default parameters.
@@ -2183,7 +2181,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibFxMaterials">type <a href="/target/fx-material.gt.go?s=964:1006#L28">LibFxMaterials</a></h2>
+			<h2 id="LibFxMaterials">type <a href="/target/fx-material.gt.go?s=956:998#L28">LibFxMaterials</a></h2>
 			<pre>type LibFxMaterials map[string]*FxMaterial</pre>
 			<p>
 A hash-table of FxMaterials associated by IDs. Only for use in Core.Libs.
@@ -2200,7 +2198,7 @@ A hash-table of FxMaterials associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxMaterials.AddNew">func (LibFxMaterials) <a href="/target/fx-material.gt.go?s=1134:1194#L32">AddNew</a></h3>
+				<h3 id="LibFxMaterials.AddNew">func (LibFxMaterials) <a href="/target/fx-material.gt.go?s=1126:1186#L32">AddNew</a></h3>
 				<pre>func (me LibFxMaterials) AddNew(id string) (obj *FxMaterial)</pre>
 				<p>
 Creates and initializes a new FxMaterial with default parameters,
@@ -2211,7 +2209,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibFxMaterials.Remove">func (LibFxMaterials) <a href="/target/fx-material.gt.go?s=1401:1443#L49">Remove</a></h3>
+				<h3 id="LibFxMaterials.Remove">func (LibFxMaterials) <a href="/target/fx-material.gt.go?s=1393:1435#L49">Remove</a></h3>
 				<pre>func (me LibFxMaterials) Remove(id string)</pre>
 				
 				
