@@ -132,8 +132,10 @@ func SamplesMainFunc(assetLoader func()) {
 	width, height, fullscreen := 1280, 720, false
 	// width, height, fullscreen := 1920, 1080, true
 	opt := ng.NewEngineOptions(AssetRootDirPath(), width, height, 0, fullscreen)
+
+	// while the default for this (force core on Macs only) is optimal for "production" apps,
+	// for the sample apps we force core profile to ensure all go:ngine GL code is fully core-profile compatible:
 	opt.Initialization.GlCoreContext = true
-	// opt.Rendering.PostFx.TextureRect = true
 
 	if err := ng.Init(opt, fmt.Sprintf("Loading sample app... (%v CPU cores)", runtime.GOMAXPROCS(0))); err != nil {
 		fmt.Printf("ABORT:\n%v\n", err)
@@ -145,12 +147,14 @@ func SamplesMainFunc(assetLoader func()) {
 		CamCtl = &Cam.Controller
 		assetLoader()
 		ng.Core.SyncUpdates()
-		// ng.Loop.SwapLast = true // because our OnAppThread() isn't doing any heavy stuff
+		// ng.Loop.SwapLast = false // toggle sometimes to test the difference, typically there is none...
 		ng.Loop.Loop()
 		PrintPostLoopSummary()
 	}
 }
 
+//	Toggles "retro mode" for the sample app.
+//	If retro is on, the resolution of the main canvas is 1/4th of the window resolution.
 func ToggleRetro() {
 	if retro = !retro; retro {
 		ng.Core.Rendering.Canvases.Main().SetSize(true, 0.25, 0.25)

@@ -44,19 +44,19 @@ type EngineLoop struct {
 	OnWinThread func()
 
 	//	While Loop.Loop() is running, this callback is invoked (on the main windowing thread)
-	//	at least and at most once per second.
-	//	Caution: unlike OnWinThread(), this callback most likely runs in parallel with your OnAppThread() callback.
+	//	at least and at most once per second, a useful entry point for non-real-time periodically recurring code.
+	//	Caution: unlike OnWinThread(), this callback runs in parallel with your OnAppThread() callback.
 	OnSec func()
 
-	//	If true, Loop() waits for the app and prep threads to finish before swapping buffers.
-	//	If false, Loop() allows the app and prep threads to continue running while swapping buffers.
-	//	Defaults to false. Setting this to true may prove beneficial if your OnAppThread() callback
-	//	isn't doing any computationally intensive work.
+	//	If true (default), Loop() waits for the app and prep threads to finish & sync before
+	//	first calling OnWinThread() and finally waiting for GPU vsync/buffer-swap.
+	//	If false, Loop() allows the app and prep threads to continue running while waiting
+	//	for GPU vsync/buffer-swap; then OnWinThread() is called when all of those 3 waits are over.
 	SwapLast bool
 }
 
 func (me *EngineLoop) init() {
-	me.OnSec, me.OnAppThread, me.OnWinThread = func() {}, func() {}, func() {}
+	me.SwapLast, me.OnSec, me.OnAppThread, me.OnWinThread = true, func() {}, func() {}, func() {}
 }
 
 //	Initiates a rendering loop. This method returns only when the loop is stopped for whatever reason.
@@ -108,9 +108,9 @@ func (me *EngineLoop) Loop() {
 			}
 
 			//	STEP 3, 4 & 5:
-			//	Swap buffers -- also waits for GPU to finish commands sent in Step 1, and for V-sync (if set).
-			//	Call OnWinThread() -- for main-thread user code without affecting the OnAppThread thread
-			//	Wait for threads -- waits until both app and prep threads are done and copies stage states around.
+			//	Wait for threads -- waits until both app and prep threads are done and copies stage states around
+			//	Call OnWinThread() -- for main-thread user code (mostly input) without affecting OnAppThread
+			//	Swap buffers -- wait for GPU to (a) finish processing commands sent in Step 1, (b) swap buffers and (c) for V-sync (if any)
 			if me.SwapLast {
 				me.loopWaitForThreads()
 				me.loopOnWinThread()
@@ -163,12 +163,15 @@ func (me *EngineLoop) loopThreadPrep() {
 
 func (me *EngineLoop) loopWaitForThreads() {
 	Stats.FrameThreadSync.begin()
+
 	thrPrep.Lock()
 	Core.copyPrepToRend()
 	thrPrep.Unlock()
+
 	thrApp.Lock()
 	Core.copyAppToPrep()
 	thrApp.Unlock()
+
 	Stats.FrameThreadSync.end()
 }
 

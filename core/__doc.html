@@ -1454,7 +1454,7 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
 		
 			
 			
-			<h2 id="EngineLoop">type <a href="/target/ng-loop.go?s=416:2100#L9">EngineLoop</a></h2>
+			<h2 id="EngineLoop">type <a href="/target/ng-loop.go?s=408:2294#L8">EngineLoop</a></h2>
 			<pre>type EngineLoop struct {
     <span class="comment">//	Set to true by Loop.Loop(). Set to false to stop looping.</span>
     IsLooping bool
@@ -1484,16 +1484,17 @@ The heart and brain of go:ngine --- a container for all runtime resources and re
     OnWinThread func()
 
     <span class="comment">//	While Loop.Loop() is running, this callback is invoked (on the main windowing thread)</span>
-    <span class="comment">//	at least and at most once per second.</span>
-    <span class="comment">//	Caution: unlike OnWinThread(), this callback most likely runs in parallel with your OnAppThread() callback.</span>
+    <span class="comment">//	at least and at most once per second, a useful entry point for non-real-time periodically recurring code.</span>
+    <span class="comment">//	Caution: unlike OnWinThread(), this callback runs in parallel with your OnAppThread() callback.</span>
     OnSec func()
 
-    <span class="comment">//	If true, Loop() waits for the app and prep threads to finish before swapping buffers.</span>
-    <span class="comment">//	If false, Loop() allows the app and prep threads to continue running while swapping buffers.</span>
-    <span class="comment">//	Defaults to false. Setting this to true may prove beneficial if your OnAppThread() callback</span>
-    <span class="comment">//	isn&#39;t doing any computationally intensive work.</span>
+    <span class="comment">//	If false (default), Loop() allows the app and prep threads to continue running while waiting</span>
+    <span class="comment">//	for GPU vsync/buffer-swap; then OnWinThread() is called when all of those 3 waits are over.</span>
+    <span class="comment">//	If true, Loop() waits for the app and prep threads to finish before first calling OnWinThread()</span>
+    <span class="comment">//	and finally waiting for GPU vsync/buffer-swap.</span>
+    <span class="comment">//	Defaults to false. Setting this to true may prove slightly beneficial if your OnAppThread()</span>
+    <span class="comment">//	isn&#39;t doing &#34;a lot&#34; of work vs. your render thread (it&#39;s all relative and app-specific).</span>
     SwapLast bool
-    <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
 Consider EngineLoop a &#34;Singleton&#34; type, only valid use is the core.Loop global variable.
@@ -1517,7 +1518,7 @@ Manages your main-thread&#39;s &#34;game loop&#34;.
 
 			
 				
-				<h3 id="EngineLoop.Loop">func (*EngineLoop) <a href="/target/ng-loop.go?s=2395:2423#L60">Loop</a></h3>
+				<h3 id="EngineLoop.Loop">func (*EngineLoop) <a href="/target/ng-loop.go?s=2589:2617#L57">Loop</a></h3>
 				<pre>func (me *EngineLoop) Loop()</pre>
 				<p>
 Initiates a rendering loop. This method returns only when the loop is stopped for whatever reason.
@@ -1530,7 +1531,7 @@ Initiates a rendering loop. This method returns only when the loop is stopped fo
 				
 			
 				
-				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=5718:5746#L169">Stop</a></h3>
+				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=5888:5916#L171">Stop</a></h3>
 				<pre>func (me *EngineLoop) Stop()</pre>
 				<p>
 Stops the currently running Loop.Loop().
@@ -1540,7 +1541,7 @@ Stops the currently running Loop.Loop().
 				
 			
 				
-				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=5855:5890#L174">Time</a></h3>
+				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=6025:6060#L176">Time</a></h3>
 				<pre>func (_ *EngineLoop) Time() float64</pre>
 				<p>
 Returns the number of seconds expired ever since Loop.Loop() was last called.
