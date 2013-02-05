@@ -1,12 +1,15 @@
 package core
 
 import (
+	"sync"
+
 	ugl "github.com/go3d/go-opengl/util"
 	unum "github.com/metaleap/go-util/num"
 )
 
 var (
 	thrApp struct {
+		sync.Mutex
 		ctlTmps struct {
 			tmpCopy           Controller
 			matTrans, matLook unum.Mat4
@@ -18,6 +21,7 @@ var (
 		}
 	}
 	thrPrep struct {
+		sync.Mutex
 		curCam   *Camera
 		curCanv  *RenderCanvas
 		curScene *Scene
