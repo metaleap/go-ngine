@@ -145,5 +145,5 @@ func (me *NodeTransform) SetScaleXYZ(x, y, z float64) {
 
 //	Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
 func (me *NodeTransform) StepDelta(deltaPerSecond float64) float64 {
-	return Loop.TickDelta * deltaPerSecond
+	return Loop.Tick.Delta * deltaPerSecond
 }

@@ -1,31 +1,22 @@
 package core
 
 import (
-	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
 )
 
-var (
-	techs map[string]renderTechnique
-)
-
-type renderTechnique interface {
+type RenderTechnique interface {
+	dispose()
 	initMeshBuffer(*MeshBuffer) []*ugl.VertexAttribPointer
-	name() string
 	onRenderNode()
-}
-
-type techniqueCtor func(string) renderTechnique
-
-func initTechniques() {
-	techs = map[string]renderTechnique{}
-	for techName, techMaker := range map[string]techniqueCtor{"rt_quad": newRenderTechniqueQuad, "rt_unlit": newRenderTechniqueUnlit} {
-		techs[techName] = techMaker(techName)
-	}
+	program() *ugl.Program
+	render()
 }
 
 type renderTechniqueBase struct {
 	prog *ugl.Program
+}
+
+func (me *renderTechniqueBase) dispose() {
 }
 
 func (me *renderTechniqueBase) initMeshBuffer(MeshBuffer *MeshBuffer) (atts []*ugl.VertexAttribPointer) {
@@ -35,55 +26,27 @@ func (me *renderTechniqueBase) initMeshBuffer(MeshBuffer *MeshBuffer) (atts []*u
 func (me *renderTechniqueBase) onRenderNode() {
 }
 
-func (me *renderTechniqueBase) name() string {
-	return me.prog.Name
+func (me *renderTechniqueBase) program() *ugl.Program {
+	return me.prog
 }
 
 func (me *renderTechniqueBase) setProg(name string, unifs []string, attrs []string) {
 	prog := glc.progMan.Programs[name]
-	if len(unifs) > 0 {
+	if len(unifs) > 0 && len(prog.UnifLocs) == 0 {
 		prog.SetUnifLocations(unifs...)
 	}
-	if len(attrs) > 0 {
+	if len(attrs) > 0 && len(prog.AttrLocs) == 0 {
 		prog.SetAttrLocations(attrs...)
 	}
 	me.prog = prog
 }
 
-type renderTechniqueQuad struct {
-	renderTechniqueBase
-}
+//	Used only in Core.Rendering.Techniques.
+type RenderTechniques map[string]RenderTechnique
 
-func newRenderTechniqueQuad(progName string) renderTechnique {
-	me := &renderTechniqueQuad{}
-	me.renderTechniqueBase.setProg(progName, []string{"uTexRendering"}, nil)
-	return me
-}
-
-type renderTechniqueUnlit struct {
-	renderTechniqueBase
-}
-
-func newRenderTechniqueUnlit(progName string) renderTechnique {
-	me := &renderTechniqueUnlit{}
-	me.renderTechniqueBase.setProg(progName, []string{"uMatModelProj", "uDiffuse"}, []string{"aPos", "aTexCoords"})
-	return me
-}
-
-func (me *renderTechniqueUnlit) initMeshBuffer(meshBuffer *MeshBuffer) (atts []*ugl.VertexAttribPointer) {
-	atts = append(atts,
-		ugl.NewVertexAttribPointer("aPos", me.prog.AttrLocs["aPos"], 3, 8*4, gl.Ptr(nil)),
-		ugl.NewVertexAttribPointer("aTexCoords", me.prog.AttrLocs["aTexCoords"], 2, 8*4, gl.Util.PtrOffset(nil, 3*4)),
-	)
-	return
-}
-
-func (me *renderTechniqueUnlit) onRenderNode() {
-	if thrRend.tmpMat = thrRend.curNode.EffectiveMaterial(); thrRend.tmpMat != thrRend.curMat {
-		if thrRend.curMat = thrRend.tmpMat; thrRend.curMat != nil {
-			thrRend.tmpEffect = Core.Libs.Effects[thrRend.curMat.DefaultEffectID]
-			Core.Libs.Images.I2D[thrRend.tmpEffect.Diffuse.Texture.Image2ID].glTex.Bind()
-			gl.Uniform1i(thrRend.curProg.UnifLocs["uDiffuse"], 0)
-		}
+func (_ RenderTechniques) dispose() {
+	for _, o := range Core.Rendering.Techniques {
+		o.dispose()
 	}
+	Core.Rendering.Techniques = RenderTechniques{}
 }

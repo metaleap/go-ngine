@@ -70,7 +70,7 @@ func (me *Node) initProjMat(cam *Camera) {
 
 func (me *Node) initProjMats() {
 	me.thrPrep.matProjs, me.thrRend.matProjs = nodeCamProjMats{}, nodeCamProjGlMats{}
-	Core.Rendering.Canvases.Walk(func(cam *Camera) {
+	Core.Rendering.Canvases.Walk(nil, func(cam *Camera) {
 		me.initProjMat(cam)
 	})
 }

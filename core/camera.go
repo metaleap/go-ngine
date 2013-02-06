@@ -37,6 +37,8 @@ type Camera struct {
 		Viewport CameraViewport
 
 		States ugl.RenderStatesBag
+
+		Technique RenderTechnique
 	}
 
 	scene *Scene
@@ -48,24 +50,29 @@ type Camera struct {
 		matCamProj, matProj unum.Mat4
 	}
 	thrRend struct {
-		states    ugl.RenderStatesBag
-		technique renderTechnique
+		states ugl.RenderStatesBag
 	}
 }
 
 func newCamera2D(canv *RenderCanvas, depth bool) (me *Camera) {
 	me = &Camera{}
-	me.init(canv, false, depth, Core.Options.Rendering.DefaultTechnique2D)
+	me.init(canv, false, depth, Core.Rendering.Techniques[Core.Options.Rendering.DefaultTechnique2D])
 	return
 }
 
 func newCamera3D(canv *RenderCanvas) (me *Camera) {
 	me = &Camera{}
-	me.init(canv, true, true, Core.Options.Rendering.DefaultTechnique3D)
+	me.init(canv, true, true, Core.Rendering.Techniques[Core.Options.Rendering.DefaultTechnique3D])
 	return
 }
 
-func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool, techniqueName string) {
+func newCameraQuad(canv *RenderCanvas) (me *Camera) {
+	me = &Camera{}
+	me.init(canv, false, false, Core.Rendering.Techniques[Core.Options.Rendering.DefaultTechniqueQuad])
+	return
+}
+
+func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool, technique RenderTechnique) {
 	me.Enabled = true
 	rend := &me.Rendering
 	rend.Viewport.canvas = canv
@@ -81,7 +88,7 @@ func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool, techniqueNa
 	me.Controller.init()
 	rend.Viewport.init()
 	me.ApplyMatrices()
-	me.SetTechnique(techniqueName)
+	me.Rendering.Technique = technique
 }
 
 //	Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.
@@ -119,12 +126,6 @@ func (me *Camera) setScene(scene *Scene) {
 
 func (me *Camera) SetScene(id string) {
 	me.setScene(Core.Libs.Scenes[id])
-}
-
-func (me *Camera) SetTechnique(name string) {
-	if (me.thrRend.technique == nil) || (me.thrRend.technique.name() != name) {
-		me.thrRend.technique = techs[name]
-	}
 }
 
 type Cameras []*Camera

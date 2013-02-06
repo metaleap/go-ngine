@@ -168,13 +168,13 @@ func (me *Controller) rotV(deg float64) {
 //	Returns the current distance that a single MoveXyz() call (per loop iteration) would move.
 //	(Loop.TickDelta * me.Params.MoveSpeed * me.Params.MoveSpeedupFactor)
 func (me *Controller) StepSizeMove() float64 {
-	return Loop.TickDelta * me.Params.MoveSpeed * me.Params.MoveSpeedupFactor
+	return Loop.Tick.Delta * me.Params.MoveSpeed * me.Params.MoveSpeedupFactor
 }
 
 //	Returns the current degrees that a single TurnXyz() call (per loop iteration) would turn.
 //	(Loop.TickDelta * me.Params.TurnSpeed * me.Params.TurnSpeedupFactor)
 func (me *Controller) StepSizeTurn() float64 {
-	return Loop.TickDelta * me.Params.TurnSpeed * me.Params.TurnSpeedupFactor
+	return Loop.Tick.Delta * me.Params.TurnSpeed * me.Params.TurnSpeedupFactor
 }
 
 //	Recomputes Dir with regards to UpAxis and Pos to effect a "turn downward" by me.StepSizeTurn() degrees.

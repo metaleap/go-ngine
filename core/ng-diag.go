@@ -11,14 +11,19 @@ type EngineDiagLogCategory int
 
 const (
 	DiagLogCatMisc    EngineDiagLogCategory = 1
-	DiagLogMeshes     EngineDiagLogCategory = 2
+	DiagLogCatMeshes  EngineDiagLogCategory = 2
 	DiagLogCatShaders EngineDiagLogCategory = 4
-	DiagLogCatAll     EngineDiagLogCategory = DiagLogMeshes | DiagLogCatMisc | DiagLogCatShaders
+	DiagLogCatAll     EngineDiagLogCategory = DiagLogCatMeshes | DiagLogCatMisc | DiagLogCatShaders
 )
 
 var (
 	Diag = EngineDiag{
-		LogCategories:       DiagLogCatAll,
+		LogCategories: DiagLogCatAll,
+		LogCategoryNames: map[EngineDiagLogCategory]string{
+			DiagLogCatMisc:    "[MISC.]\t\t",
+			DiagLogCatShaders: "[SHADERS]\t",
+			DiagLogCatMeshes:  "[MESHES]\t",
+		},
 		LogErrorsDuringLoop: true,
 	}
 )
@@ -27,12 +32,13 @@ var (
 //	It is only aware of that instance and does not support any other EngineDiag instances.
 type EngineDiag struct {
 	LogCategories       EngineDiagLogCategory
+	LogCategoryNames    map[EngineDiagLogCategory]string
 	LogErrorsDuringLoop bool
 }
 
 func (_ *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{}) {
 	if (Diag.LogCategories & cat) == cat {
-		log.Printf(fmt, fmtArgs...)
+		log.Printf(Diag.LogCategoryNames[cat]+fmt, fmtArgs...)
 	}
 }
 
@@ -45,7 +51,7 @@ func (_ *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{}) {
 }
 
 func (_ *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{}) {
-	Diag.Log(DiagLogMeshes, fmt, fmtArgs...)
+	Diag.Log(DiagLogCatMeshes, fmt, fmtArgs...)
 }
 
 func (_ *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{}) {

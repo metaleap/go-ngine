@@ -1,7 +1,7 @@
 package main
 
 import (
-	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
+	apputil "github.com/go3d/go-ngine/_examples/shared-utils"
 	ng "github.com/go3d/go-ngine/core"
 )
 
@@ -10,19 +10,19 @@ var (
 )
 
 func main() {
-	ngsamples.SamplesMainFunc(setupSampleScene_01_EmptyPlane, onAppThread, onWinThread)
+	apputil.Main(setupExample_01_EmptyPlane, onAppThread, onWinThread)
 }
 
 func onWinThread() {
-	ngsamples.CheckCamCtlKeys()
-	ngsamples.CheckAndHandleToggleKeys()
+	apputil.CheckCamCtlKeys()
+	apputil.CheckAndHandleToggleKeys()
 }
 
 func onAppThread() {
-	ngsamples.HandleCamCtlKeys()
+	apputil.HandleCamCtlKeys()
 }
 
-func setupSampleScene_01_EmptyPlane() {
+func setupExample_01_EmptyPlane() {
 	var (
 		err       error
 		scene     *ng.Scene
@@ -31,7 +31,7 @@ func setupSampleScene_01_EmptyPlane() {
 	)
 
 	//	textures / materials
-	ngsamples.AddTextureMaterials(map[string]string{
+	apputil.AddTextureMaterials(map[string]string{
 		"cobbles": "tex/cobbles.png",
 	})
 
@@ -46,13 +46,14 @@ func setupSampleScene_01_EmptyPlane() {
 	bufRest.Add(meshFloor) // bufRest.Add(meshCube);
 
 	//	scene
-	scene = ngsamples.AddScene("", true)
+	scene = apputil.AddScene("", true)
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	floor.SetMatID("mat_cobbles")
 	floor.Transform.SetPosXYZ(0.1, 0, -8)
 	floor.Transform.SetScaleN(100)
 
-	ngsamples.CamCtl.BeginUpdate()
-	ngsamples.CamCtl.Pos.Y = 1.6
-	ngsamples.CamCtl.EndUpdate()
+	camCtl := &apputil.SceneCam.Controller
+	camCtl.BeginUpdate()
+	camCtl.Pos.Y = 1.6
+	camCtl.EndUpdate()
 }

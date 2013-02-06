@@ -80,14 +80,14 @@ func (_ *EngineUserIO) init(winTitle string, forceContextVersion float64) (err e
 
 //	just a GLFW event callback without creating a closure
 func glfwOnWindowClose() int {
-	Loop.IsLooping = false
+	Loop.Looping = false
 	return 1
 }
 
 //	just a GLFW event callback without creating a closure
 func glfwOnWindowResize(width, height int) {
 	Core.Options.winWidth, Core.Options.winHeight = width, height
-	UserIO.lastWinResize = Loop.TickNow
+	UserIO.lastWinResize = Loop.Tick.Now
 }
 
 //	Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
@@ -135,8 +135,8 @@ func (_ *EngineUserIO) KeysPressedAny3(k1, k2, k3 int) bool {
 
 //	Returns true if the specified key has been "toggled", ie. its pressed-state changed within the last me.KeyToggleMinDelay seconds.
 func (_ *EngineUserIO) KeyToggled(key int) bool {
-	if UserIO.togglePress = UserIO.KeyPressed(key); UserIO.togglePress && ((Loop.TickNow - UserIO.lastToggles[key]) > UserIO.KeyToggleMinDelay) {
-		UserIO.lastToggles[key] = Loop.TickNow
+	if UserIO.togglePress = UserIO.KeyPressed(key); UserIO.togglePress && ((Loop.Tick.Now - UserIO.lastToggles[key]) > UserIO.KeyToggleMinDelay) {
+		UserIO.lastToggles[key] = Loop.Tick.Now
 		return true
 	}
 	return false

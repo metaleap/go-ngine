@@ -8,12 +8,14 @@ void Grayscale() {
 	oColor.rgb = vec3((oColor.r * 0.3) + (oColor.g * 0.59) + (oColor.b * 0.11));
 }
 
-void main() {
+void TestEffect() {
+	oColor.r = 1;
+}
 
-oColor = texture(uTexRendering, vTexCoords).rgb;
+void main() {
+	oColor = texture(uTexRendering, vTexCoords).rgb;
 
 #ifdef FX_Grayscale
 	Grayscale();
 #endif
-
 }

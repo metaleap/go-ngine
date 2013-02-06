@@ -5,22 +5,25 @@ import (
 )
 
 func (me *EngineCore) onRender() {
-	me.Rendering.Samplers.FullFilteringRepeat.Bind(0)
-	for _, thrRend.curCanv = range me.Rendering.Canvases {
-		if thrRend.curCanv.renderThisFrame() {
+	for thrRend.curCanvIndex = len(Core.Rendering.Canvases) - 1; thrRend.curCanvIndex >= 0; thrRend.curCanvIndex-- {
+		if thrRend.curCanv = Core.Rendering.Canvases[thrRend.curCanvIndex]; thrRend.curCanv.renderThisFrame() {
 			thrRend.curCanv.render()
 		}
 	}
-	me.Rendering.Samplers.NoFilteringClamp.Bind(0)
-	me.Rendering.PostFx.render()
 }
 
 func (me *RenderCanvas) render() {
+	if !me.isFinal {
+		me.frameBuf.Bind()
+	}
 	me.frameBuf.Bind()
 	for _, thrRend.curCam = range me.Cameras {
 		thrRend.curCam.render()
 	}
-	me.frameBuf.Unbind()
+	if !me.isFinal {
+		me.frameBuf.Unbind()
+		me.frameBuf.BindTexture(0)
+	}
 }
 
 func (me *Camera) render() {
@@ -29,18 +32,32 @@ func (me *Camera) render() {
 		if me.Rendering.Viewport.shouldScissor {
 			Core.Rendering.states.ForceEnableScissorTest()
 		}
-		Core.useTechnique(me.thrRend.technique)
+		Core.useTechnique(me.Rendering.Technique)
 		if me.Rendering.Viewport.shouldScissor {
 			gl.Scissor(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
 		}
 		gl.Viewport(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
 		gl.Clear(me.thrRend.states.Other.ClearBits)
-		if thrRend.curScene = me.scene; thrRend.curScene != nil {
-			thrRend.curScene.RootNode.render()
-		}
+		thrRend.curScene = me.scene
+		me.Rendering.Technique.render()
 		if me.Rendering.Viewport.shouldScissor {
 			Core.Rendering.states.ForceDisableScissorTest()
 		}
+	}
+}
+func (me *RenderTechniqueQuad) render() {
+	thrRend.curMat, thrRend.curMatId = nil, ""
+	Core.Rendering.Samplers.NoFilteringClamp.Bind(0)
+	me.glVao.Bind()
+	gl.Uniform1i(me.prog.UnifLocs["uTexRendering"], 0)
+	gl.DrawArrays(gl.TRIANGLES, 0, 3)
+	me.glVao.Unbind()
+}
+
+func (me *RenderTechniqueUnlit) render() {
+	Core.Rendering.Samplers.FullFilteringRepeat.Bind(0)
+	if thrRend.curScene != nil {
+		thrRend.curScene.RootNode.render()
 	}
 }
 
@@ -67,20 +84,4 @@ func (me *Mesh) render() {
 	}
 	gl.DrawElementsBaseVertex(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(me.meshBufOffsetIndices)), gl.Int(me.meshBufOffsetBaseIndex))
 	// gl.DrawElements(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Pointer(nil))
-}
-
-func (me *PostFx) render() {
-	thrRend.curProg, thrRend.curMat, thrRend.curTechnique, thrRend.curMatId = nil, nil, nil, ""
-	Core.Rendering.states.DisableDepthTest()
-	Core.Rendering.states.DisableFaceCulling()
-	Core.Rendering.Samplers.NoFilteringClamp.Bind(0)
-	gl.BindFramebuffer(gl.FRAMEBUFFER, 0)
-	gl.Viewport(0, 0, me.glWidth, me.glHeight)
-	gl.Clear(gl.COLOR_BUFFER_BIT)
-	me.glVao.Bind()
-	me.prog.Use()
-	mainCanvas.frameBuf.BindTexture(0)
-	gl.Uniform1i(me.prog.UnifLocs["uTexRendering"], 0)
-	gl.DrawArrays(gl.TRIANGLES, 0, 3)
-	me.glVao.Unbind()
 }

@@ -28,18 +28,19 @@ var (
 		curNode  *Node
 	}
 	thrRend struct {
-		asyncResources   map[asyncResource]bool
-		curCanv          *RenderCanvas
-		curCam           *Camera
-		curMatId         string
-		curMat           *FxMaterial
-		curMeshBuf       *MeshBuffer
-		curNode          *Node
-		curProg, tmpProg *ugl.Program
-		curScene         *Scene
-		curTechnique     renderTechnique
-		tmpEffect        *FxEffect
-		tmpMat           *FxMaterial
+		asyncResources map[asyncResource]bool
+		curCanvIndex   int
+		curCanv        *RenderCanvas
+		curCam         *Camera
+		curMatId       string
+		curMat         *FxMaterial
+		curMeshBuf     *MeshBuffer
+		curNode        *Node
+		curProg        *ugl.Program
+		curScene       *Scene
+		curTechnique   RenderTechnique
+		tmpEffect      *FxEffect
+		tmpMat         *FxMaterial
 	}
 )
 

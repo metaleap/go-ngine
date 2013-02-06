@@ -83,9 +83,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					
 					<dd>&nbsp; &nbsp; <a href="#Camera.SetScene">func (me *Camera) SetScene(id string)</a></dd>
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#Camera.SetTechnique">func (me *Camera) SetTechnique(name string)</a></dd>
-				
 			
 				
 				<dd><a href="#CameraViewport">type CameraViewport</a></dd>
@@ -663,23 +660,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#PostFx">type PostFx</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#PostFx.ApplyEffects">func (me *PostFx) ApplyEffects() (err error)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#PostFx.DisableEffect">func (me *PostFx) DisableEffect(name string)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#PostFx.EnableEffect">func (me *PostFx) EnableEffect(name string) (effect *PostFxEffect)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#PostFx.ToggleEffect">func (me *PostFx) ToggleEffect(name string) (enabled bool)</a></dd>
-				
-			
-				
 				<dd><a href="#PostFxEffect">type PostFxEffect</a></dd>
 				
 				
@@ -695,16 +675,13 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.AddNewCamera3D">func (me *RenderCanvas) AddNewCamera3D() (cam *Camera)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.AddNewCameraQuad">func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.CurrentAbsoluteSize">func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.Main">func (me *RenderCanvas) Main() bool</a></dd>
-				
-					
 					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.Remove">func (me *RenderCanvas) Remove()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.SetMain">func (me *RenderCanvas) SetMain()</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.SetSize">func (me *RenderCanvas) SetSize(relative bool, width, height float64)</a></dd>
@@ -715,13 +692,45 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RenderCanvases.AddNew">func (me *RenderCanvases) AddNew(isMain bool, relative bool, width, height float64) (rc *RenderCanvas)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#RenderCanvases.AddNew">func (me *RenderCanvases) AddNew(relative bool, width, height float64) (rc *RenderCanvas)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RenderCanvases.Main">func (me RenderCanvases) Main() (main *RenderCanvas)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#RenderCanvases.Final">func (me RenderCanvases) Final() *RenderCanvas</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RenderCanvases.Walk">func (me RenderCanvases) Walk(onCam func(*Camera))</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#RenderCanvases.Walk">func (me RenderCanvases) Walk(onCanv func(*RenderCanvas), onCam func(*Camera))</a></dd>
+				
+			
+				
+				<dd><a href="#RenderTechnique">type RenderTechnique</a></dd>
+				
+				
+			
+				
+				<dd><a href="#RenderTechniqueQuad">type RenderTechniqueQuad</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RenderTechniqueQuad.ApplyEffects">func (me *RenderTechniqueQuad) ApplyEffects() (err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RenderTechniqueQuad.DisableEffect">func (me *RenderTechniqueQuad) DisableEffect(name string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RenderTechniqueQuad.EnableEffect">func (me *RenderTechniqueQuad) EnableEffect(name string) (effect *PostFxEffect)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RenderTechniqueQuad.ToggleEffect">func (me *RenderTechniqueQuad) ToggleEffect(name string) (enabled bool)</a></dd>
+				
+			
+				
+				<dd><a href="#RenderTechniqueUnlit">type RenderTechniqueUnlit</a></dd>
+				
+				
+			
+				
+				<dd><a href="#RenderTechniques">type RenderTechniques</a></dd>
+				
 				
 			
 				
@@ -803,13 +812,15 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/nodes.go">nodes.go</a>
 			
-				<a href="/target/postfx.go">postfx.go</a>
-			
 				<a href="/target/render-batch.go">render-batch.go</a>
 			
 				<a href="/target/render-canvas.go">render-canvas.go</a>
 			
 				<a href="/target/render-prep.go">render-prep.go</a>
+			
+				<a href="/target/render-technique-quad.go">render-technique-quad.go</a>
+			
+				<a href="/target/render-technique-unlit.go">render-technique-unlit.go</a>
 			
 				<a href="/target/render-technique.go">render-technique.go</a>
 			
@@ -851,7 +862,12 @@ recent driver for {GPU}.
 			
 				<pre>var (
     Diag = EngineDiag{
-        LogCategories:       DiagLogCatAll,
+        LogCategories: DiagLogCatAll,
+        LogCategoryNames: map[EngineDiagLogCategory]string{
+            DiagLogCatMisc:    &#34;[MISC.]\t\t&#34;,
+            DiagLogCatShaders: &#34;[SHADERS]\t&#34;,
+            DiagLogCatMeshes:  &#34;[MESHES]\t&#34;,
+        },
         LogErrorsDuringLoop: true,
     }
 )</pre>
@@ -882,7 +898,7 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.go?s=219:1343#L1">Camera</a></h2>
+			<h2 id="Camera">type <a href="/target/camera.go?s=219:1341#L1">Camera</a></h2>
 			<pre>type Camera struct {
     <span class="comment">//	Optical and imager properties for this camera.</span>
     Perspective struct {
@@ -913,6 +929,8 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
         Viewport CameraViewport
 
         States ugl.RenderStatesBag
+
+        Technique RenderTechnique
     }
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -931,7 +949,7 @@ A camera embodies the eye point of the viewer looking at the visual scene.
 
 			
 				
-				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=2495:2528#L78">ApplyMatrices</a></h3>
+				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=2738:2771#L85">ApplyMatrices</a></h3>
 				<pre>func (me *Camera) ApplyMatrices()</pre>
 				<p>
 Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.
@@ -941,22 +959,15 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 				
 			
 				
-				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=2915:2947#L95">Scene</a></h3>
+				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=3158:3190#L102">Scene</a></h3>
 				<pre>func (me *Camera) Scene() *Scene</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=3185:3222#L110">SetScene</a></h3>
+				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=3428:3465#L117">SetScene</a></h3>
 				<pre>func (me *Camera) SetScene(id string)</pre>
-				
-				
-				
-			
-				
-				<h3 id="Camera.SetTechnique">func (*Camera) <a href="/target/camera.go?s=3263:3306#L114">SetTechnique</a></h3>
-				<pre>func (me *Camera) SetTechnique(name string)</pre>
 				
 				
 				
@@ -964,7 +975,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 		
 			
 			
-			<h2 id="CameraViewport">type <a href="/target/camera.go?s=3688:3948#L132">CameraViewport</a></h2>
+			<h2 id="CameraViewport">type <a href="/target/camera.go?s=3765:4025#L133">CameraViewport</a></h2>
 			<pre>type CameraViewport struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -983,7 +994,7 @@ Encapsulates a device-relative or absolute camera view-port.
 
 			
 				
-				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=4074:4131#L147">SetAbs</a></h3>
+				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=4151:4208#L148">SetAbs</a></h3>
 				<pre>func (me *CameraViewport) SetAbs(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -993,7 +1004,7 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=4383:4444#L154">SetRel</a></h3>
+				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=4460:4521#L155">SetRel</a></h3>
 				<pre>func (me *CameraViewport) SetRel(x, y, width, height float64)</pre>
 				<p>
 Sets the device-relative viewport origin and dimensions, with the value 1.0
@@ -1006,7 +1017,7 @@ representing the maximum extent of the viewport on that respective axis.
 		
 			
 			
-			<h2 id="Cameras">type <a href="/target/camera.go?s=3429:3451#L120">Cameras</a></h2>
+			<h2 id="Cameras">type <a href="/target/camera.go?s=3506:3528#L121">Cameras</a></h2>
 			<pre>type Cameras []*Camera</pre>
 			
 
@@ -1020,7 +1031,7 @@ representing the maximum extent of the viewport on that respective axis.
 
 			
 				
-				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=3453:3494#L122">Remove</a></h3>
+				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=3530:3571#L123">Remove</a></h3>
 				<pre>func (me *Cameras) Remove(camera *Camera)</pre>
 				
 				
@@ -1179,7 +1190,7 @@ Returns the current distance that a single MoveXyz() call (per loop iteration) w
 				
 			
 				
-				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=5671:5715#L166">StepSizeTurn</a></h3>
+				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=5672:5716#L166">StepSizeTurn</a></h3>
 				<pre>func (me *Controller) StepSizeTurn() float64</pre>
 				<p>
 Returns the current degrees that a single TurnXyz() call (per loop iteration) would turn.
@@ -1190,7 +1201,7 @@ Returns the current degrees that a single TurnXyz() call (per loop iteration) wo
 				
 			
 				
-				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=5903:5935#L171">TurnDown</a></h3>
+				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=5905:5937#L171">TurnDown</a></h3>
 				<pre>func (me *Controller) TurnDown()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34; by me.StepSizeTurn() degrees.
@@ -1200,7 +1211,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34
 				
 			
 				
-				<h3 id="Controller.TurnDownBy">func (*Controller) <a href="/target/controller.go?s=6078:6123#L176">TurnDownBy</a></h3>
+				<h3 id="Controller.TurnDownBy">func (*Controller) <a href="/target/controller.go?s=6080:6125#L176">TurnDownBy</a></h3>
 				<pre>func (me *Controller) TurnDownBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34; by the specified degrees.
@@ -1210,7 +1221,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34
 				
 			
 				
-				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=6296:6328#L183">TurnLeft</a></h3>
+				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=6298:6330#L183">TurnLeft</a></h3>
 				<pre>func (me *Controller) TurnLeft()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#34; by me.StepSizeTurn() degrees.
@@ -1220,7 +1231,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#3
 				
 			
 				
-				<h3 id="Controller.TurnLeftBy">func (*Controller) <a href="/target/controller.go?s=6472:6517#L188">TurnLeftBy</a></h3>
+				<h3 id="Controller.TurnLeftBy">func (*Controller) <a href="/target/controller.go?s=6474:6519#L188">TurnLeftBy</a></h3>
 				<pre>func (me *Controller) TurnLeftBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#34; by the specified degrees.
@@ -1230,7 +1241,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#3
 				
 			
 				
-				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=6646:6679#L193">TurnRight</a></h3>
+				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=6648:6681#L193">TurnRight</a></h3>
 				<pre>func (me *Controller) TurnRight()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#34; by me.StepSizeTurn() degrees.
@@ -1240,7 +1251,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#
 				
 			
 				
-				<h3 id="Controller.TurnRightBy">func (*Controller) <a href="/target/controller.go?s=6825:6871#L198">TurnRightBy</a></h3>
+				<h3 id="Controller.TurnRightBy">func (*Controller) <a href="/target/controller.go?s=6827:6873#L198">TurnRightBy</a></h3>
 				<pre>func (me *Controller) TurnRightBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#34; by the specified degrees.
@@ -1250,7 +1261,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#
 				
 			
 				
-				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=6997:7027#L203">TurnUp</a></h3>
+				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=6999:7029#L203">TurnUp</a></h3>
 				<pre>func (me *Controller) TurnUp()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; by me.StepSizeTurn() degrees.
@@ -1260,7 +1271,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 				
 			
 				
-				<h3 id="Controller.TurnUpBy">func (*Controller) <a href="/target/controller.go?s=7166:7209#L208">TurnUpBy</a></h3>
+				<h3 id="Controller.TurnUpBy">func (*Controller) <a href="/target/controller.go?s=7168:7211#L208">TurnUpBy</a></h3>
 				<pre>func (me *Controller) TurnUpBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; by the specified degress.
@@ -1272,7 +1283,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="ControllerParams">type <a href="/target/controller.go?s=7271:7905#L214">ControllerParams</a></h2>
+			<h2 id="ControllerParams">type <a href="/target/controller.go?s=7273:7907#L214">ControllerParams</a></h2>
 			<pre>type ControllerParams struct {
     <span class="comment">//	Speed of &#34;moving&#34; in the MoveXyz() methods, in units per second.</span>
     <span class="comment">//	Defaults to 2.</span>
@@ -1304,7 +1315,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 
 			
 				
-				<h3 id="NewControllerParams">func <a href="/target/controller.go?s=7907:7956#L236">NewControllerParams</a></h3>
+				<h3 id="NewControllerParams">func <a href="/target/controller.go?s=7909:7958#L236">NewControllerParams</a></h3>
 				<pre>func NewControllerParams() (me *ControllerParams)</pre>
 				
 				
@@ -1314,7 +1325,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=423:879#L5">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=423:895#L5">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Options     EngineOptions
@@ -1329,11 +1340,12 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
     }
     Rendering struct {
         Canvases RenderCanvases
-        PostFx   PostFx
         Samplers struct {
             NoFilteringClamp    ugl.Sampler
             FullFilteringRepeat ugl.Sampler
         }
+
+        Techniques RenderTechniques
         <span class="comment">// contains filtered or unexported fields</span>
     }
     <span class="comment">// contains filtered or unexported fields</span>
@@ -1360,7 +1372,7 @@ It is only aware of that instance and does not support any other EngineCore inst
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=2728:2762#L93">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=2864:2898#L96">SyncUpdates</a></h3>
 				<pre>func (_ *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -1369,9 +1381,10 @@ It is only aware of that instance and does not support any other EngineCore inst
 		
 			
 			
-			<h2 id="EngineDiag">type <a href="/target/ng-diag.go?s=665:760#L18">EngineDiag</a></h2>
+			<h2 id="EngineDiag">type <a href="/target/ng-diag.go?s=831:980#L23">EngineDiag</a></h2>
 			<pre>type EngineDiag struct {
     LogCategories       EngineDiagLogCategory
+    LogCategoryNames    map[EngineDiagLogCategory]string
     LogErrorsDuringLoop bool
 }</pre>
 			<p>
@@ -1390,42 +1403,42 @@ It is only aware of that instance and does not support any other EngineDiag inst
 
 			
 				
-				<h3 id="EngineDiag.Log">func (*EngineDiag) <a href="/target/ng-diag.go?s=762:849#L23">Log</a></h3>
+				<h3 id="EngineDiag.Log">func (*EngineDiag) <a href="/target/ng-diag.go?s=982:1069#L29">Log</a></h3>
 				<pre>func (_ *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=928:966#L29">LogErr</a></h3>
+				<h3 id="EngineDiag.LogErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=1175:1213#L35">LogErr</a></h3>
 				<pre>func (_ *EngineDiag) LogErr(err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogIfGlErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=991:1058#L33">LogIfGlErr</a></h3>
+				<h3 id="EngineDiag.LogIfGlErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=1238:1305#L39">LogIfGlErr</a></h3>
 				<pre>func (_ *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogMeshes">func (*EngineDiag) <a href="/target/ng-diag.go?s=1099:1165#L37">LogMeshes</a></h3>
+				<h3 id="EngineDiag.LogMeshes">func (*EngineDiag) <a href="/target/ng-diag.go?s=1346:1412#L43">LogMeshes</a></h3>
 				<pre>func (_ *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogMisc">func (*EngineDiag) <a href="/target/ng-diag.go?s=1213:1277#L41">LogMisc</a></h3>
+				<h3 id="EngineDiag.LogMisc">func (*EngineDiag) <a href="/target/ng-diag.go?s=1463:1527#L47">LogMisc</a></h3>
 				<pre>func (_ *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogShaders">func (*EngineDiag) <a href="/target/ng-diag.go?s=1326:1393#L45">LogShaders</a></h3>
+				<h3 id="EngineDiag.LogShaders">func (*EngineDiag) <a href="/target/ng-diag.go?s=1576:1643#L51">LogShaders</a></h3>
 				<pre>func (_ *EngineDiag) LogShaders(fmt string, fmtArgs ...interface{})</pre>
 				
 				
@@ -1441,9 +1454,9 @@ It is only aware of that instance and does not support any other EngineDiag inst
 			
 				<pre>const (
     DiagLogCatMisc    EngineDiagLogCategory = 1
-    DiagLogMeshes     EngineDiagLogCategory = 2
+    DiagLogCatMeshes  EngineDiagLogCategory = 2
     DiagLogCatShaders EngineDiagLogCategory = 4
-    DiagLogCatAll     EngineDiagLogCategory = DiagLogMeshes | DiagLogCatMisc | DiagLogCatShaders
+    DiagLogCatAll     EngineDiagLogCategory = DiagLogCatMeshes | DiagLogCatMisc | DiagLogCatShaders
 )</pre>
 				
 			
@@ -1458,39 +1471,43 @@ It is only aware of that instance and does not support any other EngineDiag inst
 		
 			
 			
-			<h2 id="EngineLoop">type <a href="/target/ng-loop.go?s=452:2155#L7">EngineLoop</a></h2>
+			<h2 id="EngineLoop">type <a href="/target/ng-loop.go?s=453:2239#L7">EngineLoop</a></h2>
 			<pre>type EngineLoop struct {
-    <span class="comment">//	Set to true by Loop.Loop(). Set to false to stop looping.</span>
-    IsLooping bool
+    <span class="comment">//	Set to true by Loop.Loop(). Set to false or call Loop.Stop() to stop looping.</span>
+    Looping bool
 
-    <span class="comment">//	The tick-time when the Loop.OnSec() callback was last invoked.</span>
-    SecTickLast int
+    On struct {
+        <span class="comment">//	While Loop.Loop() is running, this callback is invoked (in its own &#34;app thread&#34;)</span>
+        <span class="comment">//	every loop iteration (ie. once per frame).</span>
+        <span class="comment">//	This callback may run in parallel with On.EverySec(), but never with On.WinThread().</span>
+        AppThread func()
 
-    <span class="comment">//	While Loop.Loop() is running, is set to the current &#34;tick-time&#34;:</span>
-    <span class="comment">//	the time in seconds expired ever since Loop.Loop() was last called.</span>
-    TickNow float64
+        <span class="comment">//	While Loop.Loop() is running, this callback is invoked (on the main windowing thread)</span>
+        <span class="comment">//	every loop iteration (ie. once per frame).</span>
+        <span class="comment">//	This callback is guaranteed to never run in parallel with</span>
+        <span class="comment">//	(and always after) the On.AppThread() and On.EverySec() callbacks.</span>
+        WinThread func()
 
-    <span class="comment">//	While Loop.Loop() is running, is set to the previous tick-time.</span>
-    TickLast float64
+        <span class="comment">//	While Loop.Loop() is running, this callback is invoked (on the main windowing thread)</span>
+        <span class="comment">//	at least and at most once per second, a useful entry point for non-real-time periodically recurring code.</span>
+        <span class="comment">//	Caution: unlike On.WinThread(), this callback runs in parallel with your On.AppThread() callback.</span>
+        EverySec func()
+    }
 
-    <span class="comment">//	The delta between TickLast and TickNow.</span>
-    TickDelta float64
+    Tick struct {
+        <span class="comment">//	The tick-time when the Loop.On.EverySec() callback was last invoked.</span>
+        PrevSec int
 
-    <span class="comment">//	While Loop.Loop() is running, this callback is invoked (in its own &#34;app thread&#34;)</span>
-    <span class="comment">//	every loop iteration (ie. once per frame).</span>
-    <span class="comment">//	This callback may run in parallel with OnSec(), but never with OnWinThread().</span>
-    OnAppThread func()
+        <span class="comment">//	While Loop.Loop() is running, is set to the current &#34;tick-time&#34;:</span>
+        <span class="comment">//	the time in seconds expired ever since Loop.Loop() was last called.</span>
+        Now float64
 
-    <span class="comment">//	While Loop.Loop() is running, this callback is invoked (on the main windowing thread)</span>
-    <span class="comment">//	every loop iteration (ie. once per frame).</span>
-    <span class="comment">//	This callback is guaranteed to never run in parallel with</span>
-    <span class="comment">//	(and always after) the OnAppThread() and OnSec() callbacks.</span>
-    OnWinThread func()
+        <span class="comment">//	While Loop.Loop() is running, is set to the previous tick-time.</span>
+        Prev float64
 
-    <span class="comment">//	While Loop.Loop() is running, this callback is invoked (on the main windowing thread)</span>
-    <span class="comment">//	at least and at most once per second, a useful entry point for non-real-time periodically recurring code.</span>
-    <span class="comment">//	Caution: unlike OnWinThread(), this callback runs in parallel with your OnAppThread() callback.</span>
-    OnSec func()
+        <span class="comment">//	The delta between Tick.Prev and Tick.Now.</span>
+        Delta float64
+    }
 }</pre>
 			<p>
 EngineLoop is a singleton type, only used for the core.Loop package-global exported variable.
@@ -1502,7 +1519,7 @@ It is only aware of that instance and does not support any other EngineLoop inst
 
 			
 				<pre>var (
-    <span class="comment">//	Manages your main-thread&#39;s &#34;game loop&#34;. You&#39;ll need to call it&#39;s Loop() method once after go:ngine initialization (see samples).</span>
+    <span class="comment">//	Manages your main-thread&#39;s render loop. You&#39;ll need to call it&#39;s Loop() method once after go:ngine initialization (see examples).</span>
     Loop EngineLoop
 )</pre>
 				
@@ -1514,7 +1531,7 @@ It is only aware of that instance and does not support any other EngineLoop inst
 
 			
 				
-				<h3 id="EngineLoop.Loop">func (*EngineLoop) <a href="/target/ng-loop.go?s=2455:2482#L54">Loop</a></h3>
+				<h3 id="EngineLoop.Loop">func (*EngineLoop) <a href="/target/ng-loop.go?s=2547:2574#L58">Loop</a></h3>
 				<pre>func (_ *EngineLoop) Loop()</pre>
 				<p>
 Initiates a rendering loop. This method returns only when the loop is stopped for whatever reason.
@@ -1527,7 +1544,7 @@ Initiates a rendering loop. This method returns only when the loop is stopped fo
 				
 			
 				
-				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=6073:6100#L178">Stop</a></h3>
+				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=6846:6873#L201">Stop</a></h3>
 				<pre>func (_ *EngineLoop) Stop()</pre>
 				<p>
 Stops the currently running Loop.Loop().
@@ -1537,7 +1554,7 @@ Stops the currently running Loop.Loop().
 				
 			
 				
-				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=6211:6246#L183">Time</a></h3>
+				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=6982:7017#L206">Time</a></h3>
 				<pre>func (_ *EngineLoop) Time() float64</pre>
 				<p>
 Returns the number of seconds expired ever since Loop.Loop() was last called.
@@ -1549,7 +1566,7 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=931:2130#L21">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=931:2884#L21">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     <span class="comment">//	The base directory path for asset file paths.</span>
     AssetRootDirPath string
@@ -1571,6 +1588,23 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
         }
     }
 
+    Loop struct {
+        <span class="comment">//	By default, the app and prep &#34;threads&#34; being invoked every frame</span>
+        <span class="comment">//	during Loop() are just normal go-routines that may or may not</span>
+        <span class="comment">//	correspond to real separate OS thread contexts.</span>
+        ForceThreads struct {
+            <span class="comment">//	If true, each On.AppThread() go-routine invokation locks its own exclusive thread context.</span>
+            App bool
+
+            <span class="comment">//	If true, each prep-stage go-routine invokation locks its own exclusive thread context.</span>
+            Prep bool
+        }
+
+        <span class="comment">//	By default, during Loop() GC is invoked at least and at most once per second.</span>
+        <span class="comment">//	If GcEveryFrame is true, it will be invoked every frame.</span>
+        GcEveryFrame bool
+    }
+
     Misc struct {
         DefaultControllerParams *ControllerParams
     }
@@ -1578,13 +1612,17 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
     Rendering struct {
         DefaultClearColor ugl.GlVec4
 
-        <span class="comment">//	Name for the default render technique of a Camera2D,</span>
-        <span class="comment">//	defaults to the currently only implementation &#34;rt_unlit&#34;.</span>
+        <span class="comment">//	Default render technique for a Camera created via RenderCanvas.AddNewCamera2D().</span>
+        <span class="comment">//	Defaults to &#34;rt_unlit&#34;.</span>
         DefaultTechnique2D string
 
-        <span class="comment">//	Name for the default render technique of a Camera3D,</span>
-        <span class="comment">//	defaults to the currently only implementation &#34;rt_unlit&#34;.</span>
+        <span class="comment">//	Default render technique for a Camera created via RenderCanvas.AddNewCamera3D().</span>
+        <span class="comment">//	Defaults to &#34;rt_unlit&#34;.</span>
         DefaultTechnique3D string
+
+        <span class="comment">//	Default render technique for a Camera created via RenderCanvas.AddNewCameraQuad().</span>
+        <span class="comment">//	Defaults to &#34;rt_quad&#34;.</span>
+        DefaultTechniqueQuad string
 
         PostFx struct {
             TextureRect bool
@@ -1608,7 +1646,7 @@ received from NewEngineOptions() is no longer used. Slightly confusing, but ther
 
 			
 				
-				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=2205:2333#L67">NewEngineOptions</a></h3>
+				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=2959:3087#L88">NewEngineOptions</a></h3>
 				<pre>func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions)</pre>
 				<p>
 Allocates, initializes and returns a new core.EngineOptions instance.
@@ -1715,7 +1753,7 @@ Returns the average number of frames-per-second since Loop.Loop() was last calle
 				
 			
 				
-				<h3 id="EngineStats.TotalFrames">func (*EngineStats) <a href="/target/ng-stats.go?s=3939:3982#L78">TotalFrames</a></h3>
+				<h3 id="EngineStats.TotalFrames">func (*EngineStats) <a href="/target/ng-stats.go?s=3947:3990#L78">TotalFrames</a></h3>
 				<pre>func (_ *EngineStats) TotalFrames() float64</pre>
 				
 				
@@ -1757,7 +1795,7 @@ Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window m
 
 			
 				
-				<h3 id="EngineUserIO.IifKeyF">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3141:3213#L84">IifKeyF</a></h3>
+				<h3 id="EngineUserIO.IifKeyF">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3140:3212#L84">IifKeyF</a></h3>
 				<pre>func (_ *EngineUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64</pre>
 				<p>
 Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
@@ -1767,7 +1805,7 @@ Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyPressed">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3332:3379#L92">KeyPressed</a></h3>
+				<h3 id="EngineUserIO.KeyPressed">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3331:3378#L92">KeyPressed</a></h3>
 				<pre>func (_ *EngineUserIO) KeyPressed(key int) bool</pre>
 				<p>
 Returns true if the specified key is pressed.
@@ -1777,7 +1815,7 @@ Returns true if the specified key is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyPressedWhich">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3470:3525#L97">KeyPressedWhich</a></h3>
+				<h3 id="EngineUserIO.KeyPressedWhich">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3469:3524#L97">KeyPressedWhich</a></h3>
 				<pre>func (_ *EngineUserIO) KeyPressedWhich(keys ...int) int</pre>
 				<p>
 Returns the first in keys that is pressed.
@@ -1787,7 +1825,7 @@ Returns the first in keys that is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyToggled">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4543:4590#L127">KeyToggled</a></h3>
+				<h3 id="EngineUserIO.KeyToggled">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4542:4589#L127">KeyToggled</a></h3>
 				<pre>func (_ *EngineUserIO) KeyToggled(key int) bool</pre>
 				<p>
 Returns true if the specified key has been &#34;toggled&#34;, ie. its pressed-state changed within the last me.KeyToggleMinDelay seconds.
@@ -1797,7 +1835,7 @@ Returns true if the specified key has been &#34;toggled&#34;, ie. its pressed-st
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAll2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3707:3762#L107">KeysPressedAll2</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAll2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3706:3761#L107">KeysPressedAll2</a></h3>
 				<pre>func (_ *EngineUserIO) KeysPressedAll2(k1, k2 int) bool</pre>
 				<p>
 Returns true if both specified keys are pressed.
@@ -1807,7 +1845,7 @@ Returns true if both specified keys are pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAll3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3880:3939#L112">KeysPressedAll3</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAll3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3879:3938#L112">KeysPressedAll3</a></h3>
 				<pre>func (_ *EngineUserIO) KeysPressedAll3(k1, k2, k3 int) bool</pre>
 				<p>
 Returns true if all three specified keys are pressed.
@@ -1817,7 +1855,7 @@ Returns true if all three specified keys are pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAny2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4086:4141#L117">KeysPressedAny2</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAny2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4085:4140#L117">KeysPressedAny2</a></h3>
 				<pre>func (_ *EngineUserIO) KeysPressedAny2(k1, k2 int) bool</pre>
 				<p>
 Returns true if any of the two specified keys is pressed.
@@ -1827,7 +1865,7 @@ Returns true if any of the two specified keys is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAny3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4265:4324#L122">KeysPressedAny3</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAny3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4264:4323#L122">KeysPressedAny3</a></h3>
 				<pre>func (_ *EngineUserIO) KeysPressedAny3(k1, k2, k3 int) bool</pre>
 				<p>
 Returns true if any of the three specified keys is pressed.
@@ -1837,7 +1875,7 @@ Returns true if any of the three specified keys is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.SetWinTitle">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4849:4900#L136">SetWinTitle</a></h3>
+				<h3 id="EngineUserIO.SetWinTitle">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4850:4901#L136">SetWinTitle</a></h3>
 				<pre>func (_ *EngineUserIO) SetWinTitle(newTitle string)</pre>
 				<p>
 Sets the window title to newTitle.
@@ -1847,7 +1885,7 @@ Sets the window title to newTitle.
 				
 			
 				
-				<h3 id="EngineUserIO.WinHeight">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4984:5022#L141">WinHeight</a></h3>
+				<h3 id="EngineUserIO.WinHeight">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4985:5023#L141">WinHeight</a></h3>
 				<pre>func (_ *EngineUserIO) WinHeight() int</pre>
 				<p>
 Returns the height of the window in pixels.
@@ -1857,7 +1895,7 @@ Returns the height of the window in pixels.
 				
 			
 				
-				<h3 id="EngineUserIO.WinWidth">func (*EngineUserIO) <a href="/target/ng-userio.go?s=5105:5142#L146">WinWidth</a></h3>
+				<h3 id="EngineUserIO.WinWidth">func (*EngineUserIO) <a href="/target/ng-userio.go?s=5106:5143#L146">WinWidth</a></h3>
 				<pre>func (_ *EngineUserIO) WinWidth() int</pre>
 				<p>
 Returns the width of the window in pixels.
@@ -2264,7 +2302,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibScenes">type <a href="/target/scene.gt.go?s=676:708#L27">LibScenes</a></h2>
+			<h2 id="LibScenes">type <a href="/target/scene.gt.go?s=681:713#L27">LibScenes</a></h2>
 			<pre>type LibScenes map[string]*Scene</pre>
 			<p>
 A hash-table of Scenes associated by IDs. Only for use in Core.Libs.
@@ -2281,7 +2319,7 @@ A hash-table of Scenes associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibScenes.AddNew">func (LibScenes) <a href="/target/scene.gt.go?s=831:881#L31">AddNew</a></h3>
+				<h3 id="LibScenes.AddNew">func (LibScenes) <a href="/target/scene.gt.go?s=836:886#L31">AddNew</a></h3>
 				<pre>func (me LibScenes) AddNew(id string) (obj *Scene)</pre>
 				<p>
 Creates and initializes a new Scene with default parameters,
@@ -2292,14 +2330,14 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibScenes.Remove">func (LibScenes) <a href="/target/scene.gt.go?s=1068:1105#L48">Remove</a></h3>
+				<h3 id="LibScenes.Remove">func (LibScenes) <a href="/target/scene.gt.go?s=1073:1110#L48">Remove</a></h3>
 				<pre>func (me LibScenes) Remove(id string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="LibScenes.Walk">func (LibScenes) <a href="/target/scene.gt.go?s=329:373#L11">Walk</a></h3>
+				<h3 id="LibScenes.Walk">func (LibScenes) <a href="/target/scene.gt.go?s=334:378#L11">Walk</a></h3>
 				<pre>func (me LibScenes) Walk(onNode func(*Node))</pre>
 				
 				
@@ -2378,7 +2416,7 @@ Initializes and returns a new Mesh with default parameters.
 		
 			
 			
-			<h2 id="MeshBuffer">type <a href="/target/mesh-buffer.go?s=1726:2135#L61">MeshBuffer</a></h2>
+			<h2 id="MeshBuffer">type <a href="/target/mesh-buffer.go?s=1726:2144#L61">MeshBuffer</a></h2>
 			<pre>type MeshBuffer struct {
     MemSizeIndices, MemSizeVertices int32
     Params                          *meshBufferParams
@@ -2396,14 +2434,14 @@ Initializes and returns a new Mesh with default parameters.
 
 			
 				
-				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=3393:3442#L107">Add</a></h3>
+				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=3408:3457#L107">Add</a></h3>
 				<pre>func (me *MeshBuffer) Add(mesh *Mesh) (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=4190:4230#L137">Remove</a></h3>
+				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=4207:4247#L137">Remove</a></h3>
 				<pre>func (me *MeshBuffer) Remove(mesh *Mesh)</pre>
 				
 				
@@ -2874,49 +2912,49 @@ Declares a point of interest in a Scene.
 				
 			
 				
-				<h3 id="Node.MatID">func (*Node) <a href="/target/node.go?s=1871:1901#L68">MatID</a></h3>
+				<h3 id="Node.MatID">func (*Node) <a href="/target/node.go?s=1876:1906#L68">MatID</a></h3>
 				<pre>func (me *Node) MatID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MeshID">func (*Node) <a href="/target/node.go?s=1924:1955#L72">MeshID</a></h3>
+				<h3 id="Node.MeshID">func (*Node) <a href="/target/node.go?s=1929:1960#L72">MeshID</a></h3>
 				<pre>func (me *Node) MeshID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.ModelID">func (*Node) <a href="/target/node.go?s=1979:2011#L76">ModelID</a></h3>
+				<h3 id="Node.ModelID">func (*Node) <a href="/target/node.go?s=1984:2016#L76">ModelID</a></h3>
 				<pre>func (me *Node) ModelID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2036:2071#L80">Root</a></h3>
+				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2041:2076#L80">Root</a></h3>
 				<pre>func (me *Node) Root() (root *Node)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=2167:2208#L89">SetMatID</a></h3>
+				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=2172:2213#L89">SetMatID</a></h3>
 				<pre>func (me *Node) SetMatID(newMatID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=2305:2359#L95">SetMeshModelID</a></h3>
+				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=2310:2364#L95">SetMeshModelID</a></h3>
 				<pre>func (me *Node) SetMeshModelID(meshID, modelID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2663:2703#L109">Walk</a></h3>
+				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2668:2708#L109">Walk</a></h3>
 				<pre>func (me *Node) Walk(onNode func(*Node))</pre>
 				
 				
@@ -3192,80 +3230,13 @@ Removes the Node with the specified ID from me.M.
 		
 			
 			
-			<h2 id="PostFx">type <a href="/target/postfx.go?s=548:709#L11">PostFx</a></h2>
-			<pre>type PostFx struct {
-    <span class="comment">// contains filtered or unexported fields</span>
-}</pre>
-			<p>
-ONLY used for Core.Rendering.PostFx.
-Represents the final shading stage in a rendered frame and is always used, but initially all effects are disabled.
-Always takes the image produced by the Core.Rendering.Canvases.Main render canvas and blits it to the screen,
-applying the currently enabled effects, if any.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="PostFx.ApplyEffects">func (*PostFx) <a href="/target/postfx.go?s=1058:1102#L25">ApplyEffects</a></h3>
-				<pre>func (me *PostFx) ApplyEffects() (err error)</pre>
-				<p>
-Switches me to a postfx shader program that has all effects enabled as specified
-by all previous DisableEffect() / EnableEffect() / ToggleEffect() calls since the last ApplyEffects() call.
-If that shader program does not yet exist, builds it. If that fails, a non-nil err is returned.
-</p>
-
-				
-				
-			
-				
-				<h3 id="PostFx.DisableEffect">func (*PostFx) <a href="/target/postfx.go?s=1850:1894#L52">DisableEffect</a></h3>
-				<pre>func (me *PostFx) DisableEffect(name string)</pre>
-				<p>
-Deactivates the specified post-processing full-screen effect.
-After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), be sure to call ApplyEffects() once.
-</p>
-
-				
-				
-			
-				
-				<h3 id="PostFx.EnableEffect">func (*PostFx) <a href="/target/postfx.go?s=2109:2175#L58">EnableEffect</a></h3>
-				<pre>func (me *PostFx) EnableEffect(name string) (effect *PostFxEffect)</pre>
-				<p>
-Activates the specified post-processing full-screen effect.
-After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), be sure to call ApplyEffects() once.
-</p>
-
-				
-				
-			
-				
-				<h3 id="PostFx.ToggleEffect">func (*PostFx) <a href="/target/postfx.go?s=2859:2917#L81">ToggleEffect</a></h3>
-				<pre>func (me *PostFx) ToggleEffect(name string) (enabled bool)</pre>
-				<p>
-Activates or deactivates the specified post-processing full-screen effect.
-After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), be sure to call ApplyEffects() once.
-Returns whether this call has activated (true) or deactivated (false) the specified effect.
-</p>
-
-				
-				
-			
-		
-			
-			
-			<h2 id="PostFxEffect">type <a href="/target/postfx.go?s=154:224#L3">PostFxEffect</a></h2>
+			<h2 id="PostFxEffect">type <a href="/target/render-technique-quad.go?s=108:178#L1">PostFxEffect</a></h2>
 			<pre>type PostFxEffect struct {
 }</pre>
-			
+			<p>
+Temporary concoction
+</p>
+
 
 			
 
@@ -3279,7 +3250,7 @@ Returns whether this call has activated (true) or deactivated (false) the specif
 		
 			
 			
-			<h2 id="RenderCanvas">type <a href="/target/render-canvas.go?s=216:741#L5">RenderCanvas</a></h2>
+			<h2 id="RenderCanvas">type <a href="/target/render-canvas.go?s=181:706#L1">RenderCanvas</a></h2>
 			<pre>type RenderCanvas struct {
     <span class="comment">//	This should be an non-negative integer, it&#39;s a float64 just to avoid a</span>
     <span class="comment">//	type conversion. How often this RenderCanvas is included in rendering:</span>
@@ -3307,39 +3278,35 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvas.AddNewCamera2D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1369:1441#L38">AddNewCamera2D</a></h3>
+				<h3 id="RenderCanvas.AddNewCamera2D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1487:1559#L41">AddNewCamera2D</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCamera2D(allowOverlaps bool) (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.AddNewCamera3D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1531:1585#L44">AddNewCamera3D</a></h3>
+				<h3 id="RenderCanvas.AddNewCamera3D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1649:1703#L47">AddNewCamera3D</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCamera3D() (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.CurrentAbsoluteSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1239:1304#L33">CurrentAbsoluteSize</a></h3>
+				<h3 id="RenderCanvas.AddNewCameraQuad">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1778:1834#L53">AddNewCameraQuad</a></h3>
+				<pre>func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera)</pre>
+				
+				
+				
+			
+				
+				<h3 id="RenderCanvas.CurrentAbsoluteSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1357:1422#L36">CurrentAbsoluteSize</a></h3>
 				<pre>func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.Main">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1943:1978#L56">Main</a></h3>
-				<pre>func (me *RenderCanvas) Main() bool</pre>
-				<p>
-Returns whether me is the primary / &#34;main&#34; render canvas (if multiple render canvases are present).
-The &#34;main&#34; render canvas is the one whose output image is blitted to the screen / window by Core.Rendering.PostFx.
-</p>
-
-				
-				
-			
-				
-				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2514:2546#L73">Remove</a></h3>
+				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2529:2561#L80">Remove</a></h3>
 				<pre>func (me *RenderCanvas) Remove()</pre>
 				<p>
 Removes me from Core.Rendering.Canvases and deletes its associated GPU resources.
@@ -3350,18 +3317,7 @@ This renders me invalid for further use.
 				
 			
 				
-				<h3 id="RenderCanvas.SetMain">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3119:3152#L90">SetMain</a></h3>
-				<pre>func (me *RenderCanvas) SetMain()</pre>
-				<p>
-Declares me the primary / &#34;main&#34; render canvas (if multiple render canvases are present).
-The &#34;main&#34; render canvas is the one whose output image is blitted to the screen / window by Core.Rendering.PostFx.
-</p>
-
-				
-				
-			
-				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3539:3608#L101">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3164:3233#L99">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
 				<p>
 Sets the 2 dimensions of this render canvas.
@@ -3375,7 +3331,7 @@ Otherwise, width and height are absolute pixel dimensions.
 		
 			
 			
-			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3901:3936#L111">RenderCanvases</a></h2>
+			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3526:3561#L109">RenderCanvases</a></h2>
 			<pre>type RenderCanvases []*RenderCanvas</pre>
 			<p>
 Only used for Core.Rendering.Canvases.
@@ -3392,8 +3348,8 @@ Only used for Core.Rendering.Canvases.
 
 			
 				
-				<h3 id="RenderCanvases.AddNew">func (*RenderCanvases) <a href="/target/render-canvas.go?s=4164:4266#L122">AddNew</a></h3>
-				<pre>func (me *RenderCanvases) AddNew(isMain bool, relative bool, width, height float64) (rc *RenderCanvas)</pre>
+				<h3 id="RenderCanvases.AddNew">func (*RenderCanvases) <a href="/target/render-canvas.go?s=3776:3865#L120">AddNew</a></h3>
+				<pre>func (me *RenderCanvases) AddNew(relative bool, width, height float64) (rc *RenderCanvas)</pre>
 				<p>
 Adds a new RenderCanvas and returns it.
 The relative, width and height values are passed to a call to SetSize().
@@ -3403,22 +3359,137 @@ The relative, width and height values are passed to a call to SetSize().
 				
 			
 				
-				<h3 id="RenderCanvases.Main">func (RenderCanvases) <a href="/target/render-canvas.go?s=4716:4768#L136">Main</a></h3>
-				<pre>func (me RenderCanvases) Main() (main *RenderCanvas)</pre>
+				<h3 id="RenderCanvases.Final">func (RenderCanvases) <a href="/target/render-canvas.go?s=3956:4002#L126">Final</a></h3>
+				<pre>func (me RenderCanvases) Final() *RenderCanvas</pre>
+				
+				
+				
+			
+				
+				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4022:4100#L130">Walk</a></h3>
+				<pre>func (me RenderCanvases) Walk(onCanv func(*RenderCanvas), onCam func(*Camera))</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="RenderTechnique">type <a href="/target/render-technique.go?s=64:215#L1">RenderTechnique</a></h2>
+			<pre>type RenderTechnique interface {
+    <span class="comment">// contains filtered or unexported methods</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="RenderTechniqueQuad">type <a href="/target/render-technique-quad.go?s=180:295#L5">RenderTechniqueQuad</a></h2>
+			<pre>type RenderTechniqueQuad struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="RenderTechniqueQuad.ApplyEffects">func (*RenderTechniqueQuad) <a href="/target/render-technique-quad.go?s=861:918#L26">ApplyEffects</a></h3>
+				<pre>func (me *RenderTechniqueQuad) ApplyEffects() (err error)</pre>
 				<p>
-Returns whatever RenderCanvas in me is currently declared the primary / &#34;main&#34; render canvas (if multiple render canvases are present).
-The &#34;main&#34; render canvas is the one whose output image is blitted to the screen / window by Core.Rendering.PostFx.
+Switches me to a postfx shader program that has all effects enabled as specified
+by all previous DisableEffect() / EnableEffect() / ToggleEffect() calls since the last ApplyEffects() call.
+If that shader program does not yet exist, builds it. If that fails, a non-nil err is returned.
 </p>
 
 				
 				
 			
 				
-				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4863:4913#L146">Walk</a></h3>
-				<pre>func (me RenderCanvases) Walk(onCam func(*Camera))</pre>
+				<h3 id="RenderTechniqueQuad.DisableEffect">func (*RenderTechniqueQuad) <a href="/target/render-technique-quad.go?s=1774:1831#L54">DisableEffect</a></h3>
+				<pre>func (me *RenderTechniqueQuad) DisableEffect(name string)</pre>
+				<p>
+Deactivates the specified post-processing full-screen effect.
+After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), be sure to call ApplyEffects() once.
+</p>
+
 				
 				
+			
 				
+				<h3 id="RenderTechniqueQuad.EnableEffect">func (*RenderTechniqueQuad) <a href="/target/render-technique-quad.go?s=2046:2125#L60">EnableEffect</a></h3>
+				<pre>func (me *RenderTechniqueQuad) EnableEffect(name string) (effect *PostFxEffect)</pre>
+				<p>
+Activates the specified post-processing full-screen effect.
+After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), be sure to call ApplyEffects() once.
+</p>
+
+				
+				
+			
+				
+				<h3 id="RenderTechniqueQuad.ToggleEffect">func (*RenderTechniqueQuad) <a href="/target/render-technique-quad.go?s=2672:2743#L75">ToggleEffect</a></h3>
+				<pre>func (me *RenderTechniqueQuad) ToggleEffect(name string) (enabled bool)</pre>
+				<p>
+Activates or deactivates the specified post-processing full-screen effect.
+After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), be sure to call ApplyEffects() once.
+Returns whether this call has activated (true) or deactivated (false) the specified effect.
+</p>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="RenderTechniqueUnlit">type <a href="/target/render-technique-unlit.go?s=101:158#L1">RenderTechniqueUnlit</a></h2>
+			<pre>type RenderTechniqueUnlit struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="RenderTechniques">type <a href="/target/render-technique.go?s=916:964#L35">RenderTechniques</a></h2>
+			<pre>type RenderTechniques map[string]RenderTechnique</pre>
+			<p>
+Used only in Core.Rendering.Techniques.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
 			
 		
 			
@@ -3441,7 +3512,7 @@ Represents a scene graph.
 
 			
 				
-				<h3 id="NewScene">func <a href="/target/scene.gt.go?s=537:564#L20">NewScene</a></h3>
+				<h3 id="NewScene">func <a href="/target/scene.gt.go?s=542:569#L20">NewScene</a></h3>
 				<pre>func NewScene() (me *Scene)</pre>
 				<p>
 Initializes and returns a new Scene with default parameters.
@@ -3454,7 +3525,7 @@ Initializes and returns a new Scene with default parameters.
 		
 			
 			
-			<h2 id="TimingStats">type <a href="/target/ng-stats.go?s=4090:4262#L83">TimingStats</a></h2>
+			<h2 id="TimingStats">type <a href="/target/ng-stats.go?s=4098:4270#L83">TimingStats</a></h2>
 			<pre>type TimingStats struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -3473,7 +3544,7 @@ Helps track average and maximum cost for a variety of performance indicators.
 
 			
 				
-				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/ng-stats.go?s=4331:4371#L89">Average</a></h3>
+				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/ng-stats.go?s=4339:4379#L89">Average</a></h3>
 				<pre>func (me *TimingStats) Average() float64</pre>
 				<p>
 Returns the average cost tracked by this performance indicator.
@@ -3483,7 +3554,7 @@ Returns the average cost tracked by this performance indicator.
 				
 			
 				
-				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/ng-stats.go?s=5015:5051#L116">Max</a></h3>
+				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/ng-stats.go?s=5023:5059#L116">Max</a></h3>
 				<pre>func (me *TimingStats) Max() float64</pre>
 				<p>
 Returns the maximum cost tracked by this performance indicator.

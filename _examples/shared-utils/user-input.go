@@ -1,4 +1,4 @@
-package samplescenes
+package exampleutils
 
 import (
 	glfw "github.com/go-gl/glfw"
@@ -55,7 +55,7 @@ func AddKeyHint(key, hint string) {
 }
 
 //	To be called every frame (by the parent example app, ONLY in onWinThread()!) to collect key-press
-//	states for controlling (in HandleCamCtlKeys() in onAppThread()!) CamCtl to move or rotate Cam.
+//	states for controlling (in HandleCamCtlKeys() in onAppThread()!) SceneCam.Controller to move or rotate SceneCam.
 func CheckCamCtlKeys() {
 	if !Paused {
 		for _, Keys.tmp = range Keys.CheckForPressed {
@@ -72,7 +72,7 @@ func CheckAndHandleToggleKeys() {
 		ng.Loop.Stop()
 	}
 	if in.KeyToggled(glfw.KeyF2) {
-		Cam.Rendering.States.FaceCulling = !Cam.Rendering.States.FaceCulling
+		SceneCam.Rendering.States.FaceCulling = !SceneCam.Rendering.States.FaceCulling
 	}
 	if in.KeyToggled(glfw.KeyF3) {
 		PauseResume()
@@ -83,45 +83,46 @@ func CheckAndHandleToggleKeys() {
 }
 
 //	To be called every frame (by the parent example app, ONLY in onAppThread()!) to process key-press
-//	states (from the previous CheckCamCtlKeys() call) for controlling CamCtl to move or rotate Cam.
+//	states (from the previous CheckCamCtlKeys() call) for controlling SceneCam.Controller to move or rotate SceneCam.
 func HandleCamCtlKeys() {
-	if CamCtl.Params.MoveSpeedupFactor = 1; !Paused {
+	if SceneCam.Controller.Params.MoveSpeedupFactor = 1; !Paused {
+		camCtl := &SceneCam.Controller
 		if Keys.Pressed[glfw.KeyLshift] {
-			CamCtl.Params.MoveSpeedupFactor = 10
+			camCtl.Params.MoveSpeedupFactor = 10
 		} else if Keys.Pressed[glfw.KeyRshift] {
-			CamCtl.Params.MoveSpeedupFactor = 100
+			camCtl.Params.MoveSpeedupFactor = 100
 		} else if Keys.Pressed[glfw.KeyLalt] {
-			CamCtl.Params.MoveSpeedupFactor = 0.1
+			camCtl.Params.MoveSpeedupFactor = 0.1
 		}
 		if Keys.Pressed[glfw.KeyUp] {
-			CamCtl.MoveForward()
+			camCtl.MoveForward()
 		}
 		if Keys.Pressed[glfw.KeyDown] {
-			CamCtl.MoveBackward()
+			camCtl.MoveBackward()
 		}
 		if Keys.Pressed['A'] {
-			CamCtl.MoveLeft()
+			camCtl.MoveLeft()
 		}
 		if Keys.Pressed['D'] {
-			CamCtl.MoveRight()
+			camCtl.MoveRight()
 		}
 		if Keys.Pressed['W'] {
-			CamCtl.MoveUp()
+			camCtl.MoveUp()
 		}
 		if Keys.Pressed['S'] {
-			CamCtl.MoveDown()
+			camCtl.MoveDown()
 		}
 		if Keys.Pressed[glfw.KeyLeft] {
-			CamCtl.TurnLeft()
+			camCtl.TurnLeft()
 		}
 		if Keys.Pressed[glfw.KeyRight] {
-			CamCtl.TurnRight()
+			camCtl.TurnRight()
 		}
 		if Keys.Pressed[glfw.KeyPageup] || Keys.Pressed[glfw.KeyKP9] {
-			CamCtl.TurnUp()
+			camCtl.TurnUp()
 		}
 		if Keys.Pressed[glfw.KeyPagedown] || Keys.Pressed[glfw.KeyKP3] {
-			CamCtl.TurnDown()
+			camCtl.TurnDown()
 		}
 	}
 }

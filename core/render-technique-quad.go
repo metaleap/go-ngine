@@ -4,38 +4,39 @@ import (
 	"strings"
 	"time"
 
-	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
 )
 
-const postFxProgName = "postfx"
-
+//	Temporary concoction
 type PostFxEffect struct {
 	//	later configure effect params in here
 }
 
-//	ONLY used for Core.Rendering.PostFx.
-//	Represents the final shading stage in a rendered frame and is always used, but initially all effects are disabled.
-//	Always takes the image produced by the Core.Rendering.Canvases.Main render canvas and blits it to the screen,
-//	applying the currently enabled effects, if any.
-type PostFx struct {
-	effects           map[string]*PostFxEffect
-	glVao             ugl.VertexArray
-	glWidth, glHeight gl.Sizei
-	prog              *ugl.Program
+type RenderTechniqueQuad struct {
+	renderTechniqueBase
+	effects map[string]*PostFxEffect
+	glVao   ugl.VertexArray
 }
 
-func (me *PostFx) dispose() {
+func newRenderTechniqueQuad(progName string) RenderTechnique {
+	me := &RenderTechniqueQuad{effects: map[string]*PostFxEffect{}}
+	me.setProg(progName)
+	me.glVao.Create()
+	me.glVao.Setup(nil)
+	return me
+}
+
+func (me *RenderTechniqueQuad) dispose() {
 	me.glVao.Dispose()
 }
 
 //	Switches me to a postfx shader program that has all effects enabled as specified
 //	by all previous DisableEffect() / EnableEffect() / ToggleEffect() calls since the last ApplyEffects() call.
 //	If that shader program does not yet exist, builds it. If that fails, a non-nil err is returned.
-func (me *PostFx) ApplyEffects() (err error) {
+func (me *RenderTechniqueQuad) ApplyEffects() (err error) {
 	var (
 		dur   time.Duration
-		pname = postFxProgName
+		pname = Core.Options.Rendering.DefaultTechniqueQuad
 	)
 	for defName, _ := range glc.progMan.Defines {
 		if strings.HasPrefix(defName, "FX_") {
@@ -46,7 +47,7 @@ func (me *PostFx) ApplyEffects() (err error) {
 		glc.progMan.Defines["FX_"+name] = 1
 		pname += ("__" + name)
 	}
-	if glc.progMan.CloneRawSources(postFxProgName, pname) {
+	if glc.progMan.CloneRawSources(Core.Options.Rendering.DefaultTechniqueQuad, pname) {
 		if dur, err = glc.progMan.MakeProgramsFromRawSources(true, pname); err == nil {
 			Diag.LogShaders("Built new shader program '%s' in %v", pname, dur)
 		}
@@ -54,18 +55,19 @@ func (me *PostFx) ApplyEffects() (err error) {
 	if err == nil {
 		me.setProg(pname)
 	}
+	thrRend.curTechnique, thrRend.curProg = nil, nil
 	return
 }
 
 //	Deactivates the specified post-processing full-screen effect.
 //	After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), be sure to call ApplyEffects() once.
-func (me *PostFx) DisableEffect(name string) {
+func (me *RenderTechniqueQuad) DisableEffect(name string) {
 	delete(me.effects, name)
 }
 
 //	Activates the specified post-processing full-screen effect.
 //	After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), be sure to call ApplyEffects() once.
-func (me *PostFx) EnableEffect(name string) (effect *PostFxEffect) {
+func (me *RenderTechniqueQuad) EnableEffect(name string) (effect *PostFxEffect) {
 	if effect = me.effects[name]; effect == nil {
 		effect = &PostFxEffect{}
 		me.effects[name] = effect
@@ -73,22 +75,14 @@ func (me *PostFx) EnableEffect(name string) (effect *PostFxEffect) {
 	return
 }
 
-func (me *PostFx) init() {
-	me.effects = map[string]*PostFxEffect{}
-	me.glVao.Create()
-	me.setProg(postFxProgName)
-	me.glVao.Setup(nil)
-}
-
-func (me *PostFx) setProg(progName string) {
-	me.prog = glc.progMan.Programs[progName]
-	me.prog.SetUnifLocations("uTexRendering")
+func (me *RenderTechniqueQuad) setProg(progName string) {
+	me.renderTechniqueBase.setProg(progName, []string{"uTexRendering"}, nil)
 }
 
 //	Activates or deactivates the specified post-processing full-screen effect.
 //	After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), be sure to call ApplyEffects() once.
 //	Returns whether this call has activated (true) or deactivated (false) the specified effect.
-func (me *PostFx) ToggleEffect(name string) (enabled bool) {
+func (me *RenderTechniqueQuad) ToggleEffect(name string) (enabled bool) {
 	if effect := me.effects[name]; effect == nil {
 		enabled, effect = true, &PostFxEffect{}
 		me.effects[name] = effect

@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Package github.com/go3d/go-ngine/_sampleprogs/_sharedcode</title>
+		<title>Package github.com/go3d/go-ngine/_examples/shared-utils</title>
 		<meta charset="UTF-8" />
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link type="text/css" rel="stylesheet" href="http://golang.org/doc/style.css" />
@@ -10,10 +10,9 @@
 	<body>
 		<div id="page" class="wide">
 		<div class="container">
-		<h1>Package github.com/go3d/go-ngine/_sampleprogs/_sharedcode</h1>
+		<h1>Package github.com/go3d/go-ngine/_examples/shared-utils</h1>
 		<div id="nav"></div>
-		2013/02/05 16:25:17 newDirectory(/target): not a package directory
-<!--
+		<!--
 	Copyright 2009 The Go Authors. All rights reserved.
 	Use of this source code is governed by a BSD-style
 	license that can be found in the LICENSE file.
@@ -28,7 +27,7 @@
 	
 		<div id="short-nav">
 			<dl>
-			<dd><code>import "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"</code></dd>
+			<dd><code>import "github.com/go3d/go-ngine/_examples/shared-utils"</code></dd>
 			</dl>
 			<dl>
 			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
@@ -46,7 +45,7 @@
 			<div class="expanded">
 				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
 				<p>
-Some common base functionality shared by all the go:ngine example apps in _sampleprogs.
+Some common base functionality shared by all the go:ngine example apps in _examples.
 </p>
 
 			</div>
@@ -87,6 +86,9 @@ Some common base functionality shared by all the go:ngine example apps in _sampl
 				<dd><a href="#HandleCamCtlKeys">func HandleCamCtlKeys()</a></dd>
 			
 				
+				<dd><a href="#Main">func Main(setupExampleScene, onAppThread, onWinThread func())</a></dd>
+			
+				
 				<dd><a href="#OnSec">func OnSec()</a></dd>
 			
 				
@@ -94,9 +96,6 @@ Some common base functionality shared by all the go:ngine example apps in _sampl
 			
 				
 				<dd><a href="#PrintPostLoopSummary">func PrintPostLoopSummary()</a></dd>
-			
-				
-				<dd><a href="#SamplesMainFunc">func SamplesMainFunc(assetLoader, onAppThread, onWinThread func())</a></dd>
 			
 				
 				<dd><a href="#ToggleRetro">func ToggleRetro()</a></dd>
@@ -137,13 +136,17 @@ Some common base functionality shared by all the go:ngine example apps in _sampl
 			<p>
 			<span style="font-size:90%">
 			
+				<a href="/target/apputil.go">apputil.go</a>
+			
+				<a href="/target/assets.go">assets.go</a>
+			
 				<a href="/target/doc.go">doc.go</a>
 			
 				<a href="/target/gui2d.go">gui2d.go</a>
 			
-				<a href="/target/rear-mirror.go">rear-mirror.go</a>
+				<a href="/target/misc.go">misc.go</a>
 			
-				<a href="/target/samplescenes.go">samplescenes.go</a>
+				<a href="/target/rear-mirror.go">rear-mirror.go</a>
 			
 				<a href="/target/user-input.go">user-input.go</a>
 			
@@ -156,11 +159,17 @@ Some common base functionality shared by all the go:ngine example apps in _sampl
 			<h2 id="pkg-variables">Variables</h2>
 			
 				<pre>var (
-    <span class="comment">//	The primary camera</span>
-    Cam *ng.Camera
+    <span class="comment">//	The RenderCanvas the example scene is initially being rendered to. This is an off-screen &#34;render-to-texture&#34; RenderCanvas.</span>
+    SceneCanvas *ng.RenderCanvas
 
-    <span class="comment">//	Controller for the primary camera</span>
-    CamCtl *ng.Controller
+    <span class="comment">//	The primary scene-rendering camera, rendering to SceneCanvas.</span>
+    SceneCam *ng.Camera
+
+    <span class="comment">//	Unlike the off-screen (render-to-texture) SceneCanvas above, this RenderCanvas epresents the actual screen/window.</span>
+    PostFxCanvas *ng.RenderCanvas
+
+    <span class="comment">//	Takes the image rendered to SceneCanvas, may post-process it or not, and blits it to PostFxCanvas.</span>
+    PostFxCam *ng.Camera
 
     <span class="comment">//	Do not set this field directly, only use PauseResume() to toggle it and effect the associated render-state changes.</span>
     Paused bool
@@ -204,7 +213,7 @@ Some common base functionality shared by all the go:ngine example apps in _sampl
 		
 			
 			
-			<h2 id="AddColorMaterials">func <a href="/target/samplescenes.go?s=1114:1168#L32">AddColorMaterials</a></h2>
+			<h2 id="AddColorMaterials">func <a href="/target/assets.go?s=806:860#L14">AddColorMaterials</a></h2>
 			<pre>func AddColorMaterials(idsColors map[string][]float64)</pre>
 			<p>
 Sets up plain-color effects/materials with the specified IDs.
@@ -230,7 +239,7 @@ This function adds a new hint to be included in that rotation.
 		
 			
 			
-			<h2 id="AddScene">func <a href="/target/samplescenes.go?s=520:578#L18">AddScene</a></h2>
+			<h2 id="AddScene">func <a href="/target/assets.go?s=207:265#L1">AddScene</a></h2>
 			<pre>func AddScene(id string, mainCamScene bool) (me *ng.Scene)</pre>
 			<p>
 Creates a new core.Scene, adds it to the Scenes library under
@@ -241,7 +250,7 @@ the specified ID, and returns it.
 		
 			
 			
-			<h2 id="AddTextureMaterials">func <a href="/target/samplescenes.go?s=1944:1995#L47">AddTextureMaterials</a></h2>
+			<h2 id="AddTextureMaterials">func <a href="/target/assets.go?s=1636:1687#L29">AddTextureMaterials</a></h2>
 			<pre>func AddTextureMaterials(idsUrls map[string]string)</pre>
 			<p>
 Sets up textures and associated effects/materials with the specified IDs and image URLs.
@@ -258,17 +267,17 @@ adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffe
 		
 			
 			
-			<h2 id="AssetRootDirPath">func <a href="/target/samplescenes.go?s=2785:2815#L74">AssetRootDirPath</a></h2>
+			<h2 id="AssetRootDirPath">func <a href="/target/assets.go?s=2468:2498#L56">AssetRootDirPath</a></h2>
 			<pre>func AssetRootDirPath() string</pre>
 			<p>
-Returns the &#34;asset root directory&#34; path for go:ngine, in this case: $GOPATH/src/github.com/go3d/go-ngine/_sampleprogs/_sharedassets
+Returns the &#34;asset root directory&#34; path for go:ngine, in this case: $GOPATH/src/github.com/go3d/go-ngine/_examples/_assets
 </p>
 
 			
 		
 			
 			
-			<h2 id="CheckAndHandleToggleKeys">func <a href="/target/user-input.go?s=2380:2411#L59">CheckAndHandleToggleKeys</a></h2>
+			<h2 id="CheckAndHandleToggleKeys">func <a href="/target/user-input.go?s=2398:2429#L59">CheckAndHandleToggleKeys</a></h2>
 			<pre>func CheckAndHandleToggleKeys()</pre>
 			<p>
 To be called every frame (by the parent example app, ONLY in onWinThread()!) to
@@ -279,39 +288,49 @@ check AND handle key-toggle states for F2, F3 etc. function keys and Esc.
 		
 			
 			
-			<h2 id="CheckCamCtlKeys">func <a href="/target/user-input.go?s=2063:2085#L49">CheckCamCtlKeys</a></h2>
+			<h2 id="CheckCamCtlKeys">func <a href="/target/user-input.go?s=2081:2103#L49">CheckCamCtlKeys</a></h2>
 			<pre>func CheckCamCtlKeys()</pre>
 			<p>
 To be called every frame (by the parent example app, ONLY in onWinThread()!) to collect key-press
-states for controlling (in HandleCamCtlKeys() in onAppThread()!) CamCtl to move or rotate Cam.
+states for controlling (in HandleCamCtlKeys() in onAppThread()!) SceneCam.Controller to move or rotate SceneCam.
 </p>
 
 			
 		
 			
 			
-			<h2 id="HandleCamCtlKeys">func <a href="/target/user-input.go?s=2896:2919#L77">HandleCamCtlKeys</a></h2>
+			<h2 id="HandleCamCtlKeys">func <a href="/target/user-input.go?s=2942:2965#L77">HandleCamCtlKeys</a></h2>
 			<pre>func HandleCamCtlKeys()</pre>
 			<p>
 To be called every frame (by the parent example app, ONLY in onAppThread()!) to process key-press
-states (from the previous CheckCamCtlKeys() call) for controlling CamCtl to move or rotate Cam.
+states (from the previous CheckCamCtlKeys() call) for controlling SceneCam.Controller to move or rotate SceneCam.
 </p>
 
 			
 		
 			
 			
-			<h2 id="OnSec">func <a href="/target/samplescenes.go?s=3050:3062#L79">OnSec</a></h2>
+			<h2 id="Main">func <a href="/target/apputil.go?s=1321:1382#L33">Main</a></h2>
+			<pre>func Main(setupExampleScene, onAppThread, onWinThread func())</pre>
+			<p>
+Called by each example-app&#39;s func main(). Initializes go:ngine, sets SceneCam/SceneCanvas/PostFxCam/PostFxCanvas etc., calls the specified assetLoader function, then enters The Loop.
+</p>
+
+			
+		
+			
+			
+			<h2 id="OnSec">func <a href="/target/apputil.go?s=940:952#L22">OnSec</a></h2>
 			<pre>func OnSec()</pre>
 			<p>
-Called every second by go:ngine&#39;s *core* package. Refreshes the window title and doing so, every 3 seconds shows the next one entry in KeyHints.
+Refreshes the window title every second, showing the next one entry in KeyHints every 3 seconds.
 </p>
 
 			
 		
 			
 			
-			<h2 id="PauseResume">func <a href="/target/samplescenes.go?s=3387:3405#L91">PauseResume</a></h2>
+			<h2 id="PauseResume">func <a href="/target/misc.go?s=266:284#L3">PauseResume</a></h2>
 			<pre>func PauseResume()</pre>
 			<p>
 Pauses rendering or resumes from the current pause.
@@ -322,7 +341,7 @@ When paused, the frame last rendered is frozen and rendered in a gray-scale effe
 		
 			
 			
-			<h2 id="PrintPostLoopSummary">func <a href="/target/samplescenes.go?s=3777:3804#L104">PrintPostLoopSummary</a></h2>
+			<h2 id="PrintPostLoopSummary">func <a href="/target/misc.go?s=652:679#L16">PrintPostLoopSummary</a></h2>
 			<pre>func PrintPostLoopSummary()</pre>
 			<p>
 Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent example app exits.
@@ -332,20 +351,10 @@ Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent 
 		
 			
 			
-			<h2 id="SamplesMainFunc">func <a href="/target/samplescenes.go?s=4888:4954#L122">SamplesMainFunc</a></h2>
-			<pre>func SamplesMainFunc(assetLoader, onAppThread, onWinThread func())</pre>
-			<p>
-The *func main()* implementation for the parent example app. Initializes go:ngine, sets Cam and CamCtl, calls the specified assetLoader function, then enters The Loop.
-</p>
-
-			
-		
-			
-			
-			<h2 id="ToggleRetro">func <a href="/target/samplescenes.go?s=6165:6183#L152">ToggleRetro</a></h2>
+			<h2 id="ToggleRetro">func <a href="/target/misc.go?s=1725:1743#L35">ToggleRetro</a></h2>
 			<pre>func ToggleRetro()</pre>
 			<p>
-Toggles &#34;retro mode&#34; for the sample app.
+Toggles &#34;retro mode&#34; for the example app.
 If retro is on, the resolution of the main canvas is 1/4th of the window resolution.
 </p>
 
@@ -353,7 +362,7 @@ If retro is on, the resolution of the main canvas is 1/4th of the window resolut
 		
 			
 			
-			<h2 id="WindowTitle">func <a href="/target/samplescenes.go?s=6398:6423#L161">WindowTitle</a></h2>
+			<h2 id="WindowTitle">func <a href="/target/apputil.go?s=2675:2700#L67">WindowTitle</a></h2>
 			<pre>func WindowTitle() string</pre>
 			<p>
 Returns the window title to be set by OnSec().
@@ -397,13 +406,13 @@ Adds a &#34;2D camera&#34; to the main render canvas, and sets up Cat and Dog.
 		
 			
 			
-			<h2 id="RearMirror">type <a href="/target/rear-mirror.go?s=217:288#L1">RearMirror</a></h2>
+			<h2 id="RearMirror">type <a href="/target/rear-mirror.go?s=218:289#L1">RearMirror</a></h2>
 			<pre>type RearMirror struct {
     Cam        *ng.Camera
     CamRotAxis unum.Vec3
 }</pre>
 			<p>
-A rather simple &#34;rear-view mirror&#34; camera that can be added to the sample program&#39;s main render canvas.
+A rather simple &#34;rear-view mirror&#34; camera that can be added to the example-program&#39;s main render canvas.
 </p>
 
 
@@ -417,7 +426,7 @@ A rather simple &#34;rear-view mirror&#34; camera that can be added to the sampl
 
 			
 				
-				<h3 id="RearMirror.OnApp">func (*RearMirror) <a href="/target/rear-mirror.go?s=412:441#L5">OnApp</a></h3>
+				<h3 id="RearMirror.OnApp">func (*RearMirror) <a href="/target/rear-mirror.go?s=413:442#L5">OnApp</a></h3>
 				<pre>func (me *RearMirror) OnApp()</pre>
 				<p>
 Copies the main camera&#39;s current position and direction and reverses its by 180 degrees to achieve a rear-view mirror.
@@ -427,7 +436,7 @@ Copies the main camera&#39;s current position and direction and reverses its by 
 				
 			
 				
-				<h3 id="RearMirror.OnWin">func (*RearMirror) <a href="/target/rear-mirror.go?s=617:646#L13">OnWin</a></h3>
+				<h3 id="RearMirror.OnWin">func (*RearMirror) <a href="/target/rear-mirror.go?s=623:652#L13">OnWin</a></h3>
 				<pre>func (me *RearMirror) OnWin()</pre>
 				<p>
 Syncs the rear-view camera&#39;s render states with the main camera&#39;s.
@@ -437,7 +446,7 @@ Syncs the rear-view camera&#39;s render states with the main camera&#39;s.
 				
 			
 				
-				<h3 id="RearMirror.Setup">func (*RearMirror) <a href="/target/rear-mirror.go?s=836:865#L18">Setup</a></h3>
+				<h3 id="RearMirror.Setup">func (*RearMirror) <a href="/target/rear-mirror.go?s=847:876#L18">Setup</a></h3>
 				<pre>func (me *RearMirror) Setup()</pre>
 				<p>
 Adds the rear-view mirror&#39;s camera to the main render canvas, at 1/3rd of its width and 1/4th of its height.

@@ -3,7 +3,7 @@ package main
 import (
 	"math"
 
-	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
+	apputil "github.com/go3d/go-ngine/_examples/shared-utils"
 	ng "github.com/go3d/go-ngine/core"
 )
 
@@ -12,26 +12,28 @@ var (
 )
 
 func main() {
-	ngsamples.MaxKeyHint = 3
-	ngsamples.SamplesMainFunc(setupSampleScene_00_TriQuad, onAppThread, onWinThread)
+	apputil.MaxKeyHint = 3
+	apputil.Main(setupExample_00_TriQuad, onAppThread, onWinThread)
 }
 
+//	called once per frame in main thread
 func onWinThread() {
-	ngsamples.CheckAndHandleToggleKeys()
+	apputil.CheckAndHandleToggleKeys()
 }
 
+//	called once per frame in app thread
 func onAppThread() {
-	if !ngsamples.Paused {
+	if !apputil.Paused {
 		tri.Transform.Rot.Add3(-0.005, -0.005, 0)
-		tri.Transform.Pos.Set(-3.75, 1*math.Sin(ng.Loop.TickNow), 1)
+		tri.Transform.Pos.Set(-3.75, 1*math.Sin(ng.Loop.Tick.Now), 1)
 		tri.Transform.ApplyMatrices()
 		quad.Transform.Rot.Add3(0, 0.001, 0.001)
-		quad.Transform.Pos.Set(-4.125, 1*math.Cos(ng.Loop.TickNow), 0)
+		quad.Transform.Pos.Set(-4.125, 1*math.Cos(ng.Loop.Tick.Now), 0)
 		quad.Transform.ApplyMatrices()
 	}
 }
 
-func setupSampleScene_00_TriQuad() {
+func setupExample_00_TriQuad() {
 	var (
 		err               error
 		scene             *ng.Scene
@@ -40,7 +42,7 @@ func setupSampleScene_00_TriQuad() {
 	)
 
 	//	textures / materials
-	ngsamples.AddTextureMaterials(map[string]string{
+	apputil.AddTextureMaterials(map[string]string{
 		"cat": "tex/cat.png",
 		"dog": "tex/dog.png",
 	})
@@ -65,7 +67,7 @@ func setupSampleScene_00_TriQuad() {
 	}
 
 	//	scene
-	scene = ngsamples.AddScene("", true)
+	scene = apputil.AddScene("", true)
 	tri = scene.RootNode.ChildNodes.AddNew("node_tri", "mesh_tri", "")
 	quad = scene.RootNode.ChildNodes.AddNew("node_quad", "mesh_quad", "")
 	tri.SetMatID("mat_cat")

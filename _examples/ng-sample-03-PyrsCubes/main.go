@@ -5,14 +5,14 @@ import (
 	"math"
 
 	glfw "github.com/go-gl/glfw"
-	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
+	apputil "github.com/go3d/go-ngine/_examples/shared-utils"
 	ng "github.com/go3d/go-ngine/core"
 	unum "github.com/metaleap/go-util/num"
 )
 
 var (
-	gui2d      ngsamples.Gui2D
-	rearMirror ngsamples.RearMirror
+	gui2d      apputil.Gui2D
+	rearMirror apputil.RearMirror
 
 	floor, pyr, box *ng.Node
 	crates          [3]*ng.Node
@@ -22,13 +22,13 @@ var (
 )
 
 func main() {
-	ngsamples.AddKeyHint("F12", "Toggle 'Rear-View-Mirror' Camera")
-	ngsamples.SamplesMainFunc(setupSampleScene_03_PyrsCubes, onAppThread, onWinThread)
+	apputil.AddKeyHint("F12", "Toggle 'Rear-View-Mirror' Camera")
+	apputil.Main(setupExample_03_PyrsCubes, onAppThread, onWinThread)
 }
 
 func onWinThread() {
-	ngsamples.CheckCamCtlKeys()
-	ngsamples.CheckAndHandleToggleKeys()
+	apputil.CheckCamCtlKeys()
+	apputil.CheckAndHandleToggleKeys()
 	if ng.UserIO.KeyToggled(glfw.KeyF12) {
 		rearMirror.Cam.Enabled = !rearMirror.Cam.Enabled
 	}
@@ -36,10 +36,10 @@ func onWinThread() {
 }
 
 func onAppThread() {
-	if ngsamples.Paused {
+	if apputil.Paused {
 		return
 	}
-	ngsamples.HandleCamCtlKeys()
+	apputil.HandleCamCtlKeys()
 	rearMirror.OnApp()
 
 	//	animate mesh nodes
@@ -49,11 +49,11 @@ func onAppThread() {
 	gui2d.Cat.Transform.ApplyMatrices()
 
 	pyr.Transform.Rot.Add3(-0.0005, -0.0005, 0)
-	pyr.Transform.Pos.Set(-13.75, 2*math.Sin(ng.Loop.TickNow), 2)
+	pyr.Transform.Pos.Set(-13.75, 2*math.Sin(ng.Loop.Tick.Now), 2)
 	pyr.Transform.ApplyMatrices()
 
 	box.Transform.Rot.Add3(0.0004, 0, 0.0006)
-	box.Transform.Pos.Set(-8.125, 2*math.Cos(ng.Loop.TickNow), -2)
+	box.Transform.Pos.Set(-8.125, 2*math.Cos(ng.Loop.Tick.Now), -2)
 	box.Transform.ApplyMatrices()
 
 	for i = 0; i < len(crates); i++ {
@@ -63,11 +63,11 @@ func onAppThread() {
 		crates[i].Transform.ApplyMatrices()
 	}
 
-	pyramids[0].Transform.SetPosX(math.Sin(ng.Loop.TickNow) * 100)
-	pyramids[1].Transform.SetPosZ(math.Cos(ng.Loop.TickNow) * 1000)
+	pyramids[0].Transform.SetPosX(math.Sin(ng.Loop.Tick.Now) * 100)
+	pyramids[1].Transform.SetPosZ(math.Cos(ng.Loop.Tick.Now) * 1000)
 }
 
-func setupSampleScene_03_PyrsCubes() {
+func setupExample_03_PyrsCubes() {
 	var (
 		err                          error
 		scene                        *ng.Scene
@@ -79,7 +79,7 @@ func setupSampleScene_03_PyrsCubes() {
 	rearMirror.Setup()
 
 	//	textures / materials
-	ngsamples.AddTextureMaterials(map[string]string{
+	apputil.AddTextureMaterials(map[string]string{
 		"cobbles": "tex/cobbles.png",
 		"crate":   "tex/crate.jpeg",
 		"mosaic":  "tex/mosaic.jpeg",
@@ -119,7 +119,7 @@ func setupSampleScene_03_PyrsCubes() {
 	bufRest.Add(meshPyr)
 
 	//	scene
-	scene = ngsamples.AddScene("", true)
+	scene = apputil.AddScene("", true)
 	rearMirror.Cam.SetScene("")
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyramid", "")
@@ -173,7 +173,8 @@ func setupSampleScene_03_PyrsCubes() {
 	floor.Transform.SetPosXYZ(0.1, 0, -8)
 	floor.Transform.SetScaleN(10000)
 
-	ngsamples.CamCtl.BeginUpdate()
-	ngsamples.CamCtl.Pos.X, ngsamples.CamCtl.Pos.Y, ngsamples.CamCtl.Pos.Z = 35, 1.6, 24
-	ngsamples.CamCtl.EndUpdate()
+	camCtl := &apputil.SceneCam.Controller
+	camCtl.BeginUpdate()
+	camCtl.Pos.X, camCtl.Pos.Y, camCtl.Pos.Z = 35, 1.6, 24
+	camCtl.EndUpdate()
 }

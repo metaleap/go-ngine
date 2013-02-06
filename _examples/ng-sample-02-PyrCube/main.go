@@ -3,7 +3,7 @@ package main
 import (
 	"math"
 
-	ngsamples "github.com/go3d/go-ngine/_sampleprogs/_sharedcode"
+	apputil "github.com/go3d/go-ngine/_examples/shared-utils"
 	ng "github.com/go3d/go-ngine/core"
 )
 
@@ -12,30 +12,30 @@ var (
 )
 
 func main() {
-	ngsamples.SamplesMainFunc(setupSampleScene_02_PyrCube, onAppThread, onWinThread)
+	apputil.Main(setupExample_02_PyrCube, onAppThread, onWinThread)
 }
 
 func onWinThread() {
-	ngsamples.CheckCamCtlKeys()
-	ngsamples.CheckAndHandleToggleKeys()
+	apputil.CheckCamCtlKeys()
+	apputil.CheckAndHandleToggleKeys()
 }
 
 func onAppThread() {
-	if !ngsamples.Paused {
-		ngsamples.HandleCamCtlKeys()
+	if !apputil.Paused {
+		apputil.HandleCamCtlKeys()
 
 		//	animate mesh nodes
 		pyr.Transform.Rot.Add3(-0.0005, -0.0005, 0)
-		pyr.Transform.Pos.Set(-13.75, 2*math.Sin(ng.Loop.TickNow), 2)
+		pyr.Transform.Pos.Set(-13.75, 2*math.Sin(ng.Loop.Tick.Now), 2)
 		pyr.Transform.ApplyMatrices()
 
 		box.Transform.Rot.Add3(0, 0.0004, 0.0006)
-		box.Transform.Pos.Set(-8.125, 2*math.Cos(ng.Loop.TickNow), -2)
+		box.Transform.Pos.Set(-8.125, 2*math.Cos(ng.Loop.Tick.Now), -2)
 		box.Transform.ApplyMatrices()
 	}
 }
 
-func setupSampleScene_02_PyrCube() {
+func setupExample_02_PyrCube() {
 	var (
 		err                          error
 		scene                        *ng.Scene
@@ -44,7 +44,7 @@ func setupSampleScene_02_PyrCube() {
 	)
 
 	//	textures / materials
-	ngsamples.AddTextureMaterials(map[string]string{
+	apputil.AddTextureMaterials(map[string]string{
 		"cobbles": "http://dl.dropbox.com/u/136375/go-ngine/assets/tex/cobbles.png",
 		"crate":   "tex/crate.jpeg",
 		"mosaic":  "tex/mosaic.jpeg",
@@ -74,7 +74,7 @@ func setupSampleScene_02_PyrCube() {
 	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["back"] = "fx_mosaic"
 
 	//	scene
-	scene = ngsamples.AddScene("", true)
+	scene = apputil.AddScene("", true)
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyramid", "")
 	box = scene.RootNode.ChildNodes.AddNew("node_box", "mesh_cube", "")
@@ -83,7 +83,8 @@ func setupSampleScene_02_PyrCube() {
 	floor.Transform.SetPosXYZ(0.1, 0, -8)
 	floor.Transform.SetScaleN(1000)
 
-	ngsamples.CamCtl.BeginUpdate()
-	ngsamples.CamCtl.Pos.Y = 1.6
-	ngsamples.CamCtl.EndUpdate()
+	camCtl := &apputil.SceneCam.Controller
+	camCtl.BeginUpdate()
+	camCtl.Pos.Y = 1.6
+	camCtl.EndUpdate()
 }

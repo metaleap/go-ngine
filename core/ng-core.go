@@ -26,12 +26,12 @@ type EngineCore struct {
 	}
 	Rendering struct {
 		Canvases RenderCanvases
-		PostFx   PostFx
 		Samplers struct {
 			NoFilteringClamp    ugl.Sampler
 			FullFilteringRepeat ugl.Sampler
 		}
-		states ugl.RenderStates
+		states     ugl.RenderStates
+		Techniques RenderTechniques
 	}
 
 	isInit bool
@@ -43,24 +43,20 @@ func (_ *EngineCore) dispose() {
 	for _, disp := range []disposable{
 		&Core.Rendering.Canvases,
 		&Core.Libs.Images.I2D, &Core.Libs.Effects, &Core.Libs.Materials, &Core.Libs.Meshes, &Core.Libs.Scenes,
-		Core.MeshBuffers,
+		Core.MeshBuffers, &Core.Rendering.Techniques,
 	} {
 		disp.dispose()
 	}
-	Core.Rendering.PostFx.dispose()
 	Core.Rendering.Samplers.FullFilteringRepeat.Dispose()
 	Core.Rendering.Samplers.NoFilteringClamp.Dispose()
-	techs = nil
 }
 
 func (_ *EngineCore) init() {
-	initTechniques()
+	initRenderTechniques()
 	Core.initRenderingStates()
 	Core.MeshBuffers = newMeshBuffers()
 	Core.initLibs()
-	Core.Rendering.Canvases = RenderCanvases{}
-	Core.Rendering.PostFx.init()
-	Core.Rendering.Canvases.AddNew(true, true, 1, 1).AddNewCamera3D()
+	Core.Rendering.Canvases = append(RenderCanvases{}, newRenderCanvas(true, true, 1, 1))
 	Core.isInit = true
 }
 
@@ -77,10 +73,17 @@ func (_ *EngineCore) initRenderingStates() {
 	Core.Rendering.Samplers.NoFilteringClamp.Create().DisableAllFiltering(false).SetWrap(gl.CLAMP_TO_BORDER)
 }
 
+func initRenderTechniques() {
+	type techCtor func(string) RenderTechnique
+	Core.Rendering.Techniques = RenderTechniques{}
+	for name, ctor := range map[string]techCtor{"rt_quad": newRenderTechniqueQuad, "rt_unlit": newRenderTechniqueUnlit} {
+		Core.Rendering.Techniques[name] = ctor(name)
+	}
+}
+
 func (_ *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 	if Core.isInit {
 		Core.Options.winWidth, Core.Options.winHeight = viewWidth, viewHeight
-		Core.Rendering.PostFx.glWidth, Core.Rendering.PostFx.glHeight = gl.Sizei(viewWidth), gl.Sizei(viewHeight)
 		for _, canv := range Core.Rendering.Canvases {
 			canv.onResize(viewWidth, viewHeight)
 		}
@@ -127,17 +130,17 @@ func (_ *EngineCore) SyncUpdates() {
 	return
 }
 
-func (_ *EngineCore) useProgram(name string) {
-	if thrRend.tmpProg = glc.progMan.Programs[name]; thrRend.tmpProg != thrRend.curProg {
-		thrRend.curProg = thrRend.tmpProg
+func (_ *EngineCore) useProgram(prog *ugl.Program) {
+	if thrRend.curProg != prog {
+		thrRend.curProg = prog
 		thrRend.curProg.Use()
 	}
 }
 
-func (_ *EngineCore) useTechnique(technique renderTechnique) {
+func (_ *EngineCore) useTechnique(technique RenderTechnique) {
 	if technique != thrRend.curTechnique {
 		thrRend.curMeshBuf = nil
 		thrRend.curTechnique = technique
-		Core.useProgram(thrRend.curTechnique.name())
+		Core.useProgram(thrRend.curTechnique.program())
 	}
 }

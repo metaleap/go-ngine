@@ -1,4 +1,4 @@
-package samplescenes
+package exampleutils
 
 import (
 	ng "github.com/go3d/go-ngine/core"
@@ -19,7 +19,7 @@ func (me *Gui2D) Setup() (err error) {
 		quadMesh *ng.Mesh
 	)
 	scene := AddScene("gui2d", false)
-	cam := ng.Core.Rendering.Canvases[0].AddNewCamera2D(true)
+	cam := SceneCanvas.AddNewCamera2D(true)
 	cam.Rendering.States.ClearColor.Set(0.75, 0.25, 0.1, 1)
 	cam.Rendering.Viewport.SetAbs(8, 8, 64, 64) //SetRel(0.02, 0.04, 0.125, 0.222)
 	cam.SetScene("gui2d")
