@@ -1,4 +1,4 @@
-#ifdef VX_Uni_Matrix
+#if defined(VX_Uni_Matrix) && defined(VX_Att_Pos)
 void vx_Pos_Matrix (inout vec4 vPos) {
 	vPos = uni_VertexMatrix * vec4(att_Pos, 1.0);
 }
