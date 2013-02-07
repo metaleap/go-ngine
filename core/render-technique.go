@@ -32,12 +32,8 @@ func (me *renderTechniqueBase) program() *ugl.Program {
 
 func (me *renderTechniqueBase) setProg(name string, unifs []string, attrs []string) {
 	prog := glc.progMan.Programs[name]
-	if len(unifs) > 0 && len(prog.UnifLocs) == 0 {
-		prog.SetUnifLocations(unifs...)
-	}
-	if len(attrs) > 0 && len(prog.AttrLocs) == 0 {
-		prog.SetAttrLocations(attrs...)
-	}
+	prog.SetUnifLocations(unifs...)
+	prog.SetAttrLocations(attrs...)
 	me.prog = prog
 }
 

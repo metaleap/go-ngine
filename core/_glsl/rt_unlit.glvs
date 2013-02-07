@@ -9,7 +9,7 @@ out vec2 var_Tex0;
 #define VX_Att_Pos 1
 #define VX_Att_TexCoord 1
 
-#pragma incl fx-vert.glsl
+#pragma incl inc-vert.glsl
 
 void main () {
 	vx_Pos_Main(gl_Position);

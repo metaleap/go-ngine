@@ -2,7 +2,7 @@ out vec2 var_Tex0;
 
 #define VX_Quad 1
 
-#pragma incl fx-vert.glsl
+#pragma incl inc-vert.glsl
 
 void main () {
 	vx_Pos_Main(gl_Position);

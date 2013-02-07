@@ -4,8 +4,8 @@ uniform sampler2D uni_Tex0;
 
 out vec3 out_Color;
 
-#pragma incl fx-frag.glsl
+#pragma incl inc-frag.glsl
 
-void main() {
+void main () {
 	fx_Main(out_Color);
 }

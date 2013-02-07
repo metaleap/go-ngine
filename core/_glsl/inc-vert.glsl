@@ -5,7 +5,7 @@ void vx_Pos_Matrix (inout vec4 vPos) {
 #endif
 
 #ifdef VX_Att_TexCoord
-void vx_TexCoord_Attr (inout vec2 vTexCoord) {
+void vx_TexCoord_Att (inout vec2 vTexCoord) {
 	vTexCoord = att_Tex0;
 }
 #endif
@@ -36,7 +36,7 @@ void vx_Pos_Main (inout vec4 vPos) {
 
 void vx_TexCoord_Main (inout vec2 vTex) {
 #ifdef VX_Att_TexCoord
-	vx_TexCoord_Attr(vTex);
+	vx_TexCoord_Att(vTex);
 #endif
 
 #ifdef VX_Quad
