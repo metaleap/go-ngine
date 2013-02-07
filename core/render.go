@@ -49,7 +49,7 @@ func (me *RenderTechniqueQuad) render() {
 	thrRend.curMat, thrRend.curMatId = nil, ""
 	Core.Rendering.Samplers.NoFilteringClamp.Bind(0)
 	me.glVao.Bind()
-	gl.Uniform1i(me.prog.UnifLocs["uTexRendering"], 0)
+	gl.Uniform1i(me.prog.UnifLocs["uni_Tex0"], 0)
 	gl.DrawArrays(gl.TRIANGLES, 0, 3)
 	me.glVao.Unbind()
 }
@@ -65,7 +65,7 @@ func (me *Node) render() {
 	if me.Enabled {
 		if thrRend.curNode = me; me.model != nil {
 			thrRend.curTechnique.onRenderNode()
-			gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uMatModelProj"], 1, gl.FALSE, &me.thrRend.matProjs[thrRend.curCam][0])
+			gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uni_VertexMatrix"], 1, gl.FALSE, &me.thrRend.matProjs[thrRend.curCam][0])
 			me.model.render()
 		}
 		for me.thrRend.curId, me.thrRend.curSubNode = range me.ChildNodes.M {

@@ -28,9 +28,6 @@ type RenderCanvas struct {
 
 func newRenderCanvas(isFinal, relative bool, width, height float64) (me *RenderCanvas) {
 	me = &RenderCanvas{EveryNthFrame: 1, isFinal: isFinal}
-	if isFinal {
-		relative, width, height = true, 1, 1
-	}
 	me.SetSize(relative, width, height)
 	if isFinal {
 		me.frameBuf.GlTarget = gl.FRAMEBUFFER
@@ -100,7 +97,7 @@ func (me *RenderCanvas) Remove() {
 }
 
 func (me *RenderCanvas) renderThisFrame() bool {
-	return (me.EveryNthFrame == 1) || ((me.EveryNthFrame > 1) && (math.Mod(Stats.fpsAll, me.EveryNthFrame) == 0))
+	return me.EveryNthFrame == 1 || (me.EveryNthFrame > 1 && math.Mod(Stats.fpsAll, me.EveryNthFrame) == 0)
 }
 
 //	Sets the 2 dimensions of this render canvas.

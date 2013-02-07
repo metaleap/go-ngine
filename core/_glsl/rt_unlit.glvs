@@ -1,11 +1,19 @@
-in vec3 aPos;
-in vec2 aTexCoords;
+in vec3 att_Pos;
+in vec2 att_Tex0;
 
-uniform mat4 uMatModelProj;
+uniform mat4 uni_VertexMatrix;
 
-out vec2 vTexCoords;
+out vec2 var_Tex0;
+
+void vx_Pos_Matrix (inout vec4 vPos) {
+	vPos = uni_VertexMatrix * vec4(att_Pos, 1.0);
+}
+
+void vx_TexCoord_Attr (inout vec2 vTexCoord) {
+	vTexCoord = att_Tex0;
+}
 
 void main () {
-	gl_Position = uMatModelProj * vec4(aPos, 1.0);
-	vTexCoords = aTexCoords;
+	vx_Pos_Matrix(gl_Position);
+	vx_TexCoord_Attr(var_Tex0);
 }

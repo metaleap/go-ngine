@@ -1565,7 +1565,7 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=931:2884#L21">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=931:2875#L21">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     <span class="comment">//	The base directory path for asset file paths.</span>
     AssetRootDirPath string
@@ -1580,9 +1580,10 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
             <span class="comment">//	Required on Mac OS X, not recommended elsewhere.</span>
             <span class="comment">//	Defaults to true on Mac OS X, to false elsewhere.</span>
             ForwardCompat bool
+
+            BadVersionMessage string
         }
-        BadVersionMessage string
-        Window            struct {
+        Window struct {
             Rbits, Gbits, Bbits, Abits, DepthBits, StencilBits int
         }
     }
@@ -1645,7 +1646,7 @@ received from NewEngineOptions() is no longer used. Slightly confusing, but ther
 
 			
 				
-				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=2959:3087#L88">NewEngineOptions</a></h3>
+				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=2950:3078#L89">NewEngineOptions</a></h3>
 				<pre>func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions)</pre>
 				<p>
 Allocates, initializes and returns a new core.EngineOptions instance.

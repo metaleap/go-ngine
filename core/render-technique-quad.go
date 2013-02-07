@@ -76,7 +76,7 @@ func (me *RenderTechniqueQuad) EnableEffect(name string) (effect *PostFxEffect) 
 }
 
 func (me *RenderTechniqueQuad) setProg(progName string) {
-	me.renderTechniqueBase.setProg(progName, []string{"uTexRendering"}, nil)
+	me.renderTechniqueBase.setProg(progName, []string{"uni_Tex0"}, nil)
 }
 
 //	Activates or deactivates the specified post-processing full-screen effect.

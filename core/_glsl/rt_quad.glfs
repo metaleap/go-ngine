@@ -1,21 +1,33 @@
-in vec2 vTexCoords;
+in vec2 var_Tex0;
 
-uniform sampler2D uTexRendering;
+uniform sampler2D uni_Tex0;
 
-out vec3 oColor;
+out vec3 out_Color;
 
-void Grayscale() {
-	oColor.rgb = vec3((oColor.r * 0.3) + (oColor.g * 0.59) + (oColor.b * 0.11));
+#ifdef FX_Grayscale
+void fx_Grayscale (inout vec3 vCol) {
+	vCol.rgb = vec3((vCol.r * 0.3) + (vCol.g * 0.59) + (vCol.b * 0.11));
 }
+#endif
 
-void TestEffect() {
-	oColor.r = 1;
+#ifdef FX_RedTest
+void fx_RedTest (inout vec3 vCol) {
+	vCol.r = 1;
+}
+#endif
+
+void fx_Tex0 (inout vec3 vCol) {
+	vCol = texture(uni_Tex0, var_Tex0).rgb;
 }
 
 void main() {
-	oColor = texture(uTexRendering, vTexCoords).rgb;
+	fx_Tex0(out_Color);
 
 #ifdef FX_Grayscale
-	Grayscale();
+	fx_Grayscale(out_Color);
+#endif
+
+#ifdef FX_RedTest
+	fx_RedTest(out_Color);
 #endif
 }
