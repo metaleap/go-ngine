@@ -692,13 +692,13 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RenderCanvases.AddNew">func (me *RenderCanvases) AddNew(relative bool, width, height float64) (rc *RenderCanvas)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#RenderCanvases.AddNew">func (_ RenderCanvases) AddNew(relative bool, width, height float64) (rc *RenderCanvas)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RenderCanvases.Final">func (me RenderCanvases) Final() *RenderCanvas</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#RenderCanvases.Final">func (_ RenderCanvases) Final() *RenderCanvas</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RenderCanvases.Walk">func (me RenderCanvases) Walk(onCanv func(*RenderCanvas), onCam func(*Camera))</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#RenderCanvases.Walk">func (_ RenderCanvases) Walk(onCanv func(*RenderCanvas), onCam func(*Camera))</a></dd>
 				
 			
 				
@@ -868,7 +868,7 @@ recent driver for {GPU}.
             DiagLogCatShaders: &#34;[SHADERS]\t&#34;,
             DiagLogCatMeshes:  &#34;[MESHES]\t&#34;,
         },
-        LogErrorsDuringLoop: true,
+        LogGLErrorsInLoopOnSec: true,
     }
 )</pre>
 				
@@ -1325,7 +1325,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=423:895#L5">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=423:892#L5">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Options     EngineOptions
@@ -1344,7 +1344,6 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
             NoFilteringClamp    ugl.Sampler
             FullFilteringRepeat ugl.Sampler
         }
-
         Techniques RenderTechniques
         <span class="comment">// contains filtered or unexported fields</span>
     }
@@ -1372,7 +1371,7 @@ It is only aware of that instance and does not support any other EngineCore inst
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=2864:2898#L96">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=2873:2907#L100">SyncUpdates</a></h3>
 				<pre>func (_ *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -1381,11 +1380,11 @@ It is only aware of that instance and does not support any other EngineCore inst
 		
 			
 			
-			<h2 id="EngineDiag">type <a href="/target/ng-diag.go?s=831:980#L23">EngineDiag</a></h2>
+			<h2 id="EngineDiag">type <a href="/target/ng-diag.go?s=834:992#L23">EngineDiag</a></h2>
 			<pre>type EngineDiag struct {
-    LogCategories       EngineDiagLogCategory
-    LogCategoryNames    map[EngineDiagLogCategory]string
-    LogErrorsDuringLoop bool
+    LogCategories          EngineDiagLogCategory
+    LogCategoryNames       map[EngineDiagLogCategory]string
+    LogGLErrorsInLoopOnSec bool
 }</pre>
 			<p>
 EngineDiag is a singleton type, only used for the core.Diag package-global exported variable.
@@ -1403,42 +1402,42 @@ It is only aware of that instance and does not support any other EngineDiag inst
 
 			
 				
-				<h3 id="EngineDiag.Log">func (*EngineDiag) <a href="/target/ng-diag.go?s=982:1069#L29">Log</a></h3>
+				<h3 id="EngineDiag.Log">func (*EngineDiag) <a href="/target/ng-diag.go?s=994:1081#L29">Log</a></h3>
 				<pre>func (_ *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=1175:1213#L35">LogErr</a></h3>
+				<h3 id="EngineDiag.LogErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=1187:1225#L35">LogErr</a></h3>
 				<pre>func (_ *EngineDiag) LogErr(err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogIfGlErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=1238:1305#L39">LogIfGlErr</a></h3>
+				<h3 id="EngineDiag.LogIfGlErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=1250:1317#L39">LogIfGlErr</a></h3>
 				<pre>func (_ *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogMeshes">func (*EngineDiag) <a href="/target/ng-diag.go?s=1346:1412#L43">LogMeshes</a></h3>
+				<h3 id="EngineDiag.LogMeshes">func (*EngineDiag) <a href="/target/ng-diag.go?s=1358:1424#L43">LogMeshes</a></h3>
 				<pre>func (_ *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogMisc">func (*EngineDiag) <a href="/target/ng-diag.go?s=1463:1527#L47">LogMisc</a></h3>
+				<h3 id="EngineDiag.LogMisc">func (*EngineDiag) <a href="/target/ng-diag.go?s=1475:1539#L47">LogMisc</a></h3>
 				<pre>func (_ *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogShaders">func (*EngineDiag) <a href="/target/ng-diag.go?s=1576:1643#L51">LogShaders</a></h3>
+				<h3 id="EngineDiag.LogShaders">func (*EngineDiag) <a href="/target/ng-diag.go?s=1588:1655#L51">LogShaders</a></h3>
 				<pre>func (_ *EngineDiag) LogShaders(fmt string, fmtArgs ...interface{})</pre>
 				
 				
@@ -3348,8 +3347,8 @@ Only used for Core.Rendering.Canvases.
 
 			
 				
-				<h3 id="RenderCanvases.AddNew">func (*RenderCanvases) <a href="/target/render-canvas.go?s=3776:3865#L120">AddNew</a></h3>
-				<pre>func (me *RenderCanvases) AddNew(relative bool, width, height float64) (rc *RenderCanvas)</pre>
+				<h3 id="RenderCanvases.AddNew">func (RenderCanvases) <a href="/target/render-canvas.go?s=3776:3863#L120">AddNew</a></h3>
+				<pre>func (_ RenderCanvases) AddNew(relative bool, width, height float64) (rc *RenderCanvas)</pre>
 				<p>
 Adds a new RenderCanvas and returns it.
 The relative, width and height values are passed to a call to SetSize().
@@ -3359,15 +3358,15 @@ The relative, width and height values are passed to a call to SetSize().
 				
 			
 				
-				<h3 id="RenderCanvases.Final">func (RenderCanvases) <a href="/target/render-canvas.go?s=3956:4002#L126">Final</a></h3>
-				<pre>func (me RenderCanvases) Final() *RenderCanvas</pre>
+				<h3 id="RenderCanvases.Final">func (RenderCanvases) <a href="/target/render-canvas.go?s=3994:4039#L126">Final</a></h3>
+				<pre>func (_ RenderCanvases) Final() *RenderCanvas</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4022:4100#L130">Walk</a></h3>
-				<pre>func (me RenderCanvases) Walk(onCanv func(*RenderCanvas), onCam func(*Camera))</pre>
+				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4080:4157#L130">Walk</a></h3>
+				<pre>func (_ RenderCanvases) Walk(onCanv func(*RenderCanvas), onCam func(*Camera))</pre>
 				
 				
 				

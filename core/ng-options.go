@@ -42,9 +42,10 @@ type EngineOptions struct {
 			//	Required on Mac OS X, not recommended elsewhere.
 			//	Defaults to true on Mac OS X, to false elsewhere.
 			ForwardCompat bool
+
+			BadVersionMessage string
 		}
-		BadVersionMessage string
-		Window            struct {
+		Window struct {
 			Rbits, Gbits, Bbits, Abits, DepthBits, StencilBits int
 		}
 	}
@@ -99,10 +100,8 @@ func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInter
 	me = &EngineOptions{AssetRootDirPath: assetRootDirPath}
 	me.Misc.DefaultControllerParams = NewControllerParams()
 	init, isMac := &me.Initialization, runtime.GOOS == "darwin"
-	init.GlContext.CoreProfile, init.GlContext.ForwardCompat, init.BadVersionMessage = isMac, isMac, DefaultBadVersionMessage
-	init.Window.Rbits, init.Window.Gbits, init.Window.Bbits = 8, 8, 8
-	// this depth-bits should be 0 really: since there's no depth involved in the final postfx-pass -- but then Intel cards bug out badly
-	init.Window.DepthBits = 8
+	init.GlContext.CoreProfile, init.GlContext.ForwardCompat, init.GlContext.BadVersionMessage = isMac, isMac, DefaultBadVersionMessage
+	init.Window.Rbits, init.Window.Gbits, init.Window.Bbits, init.Window.DepthBits = 8, 8, 8, 8
 	rend := &me.Rendering
 	rend.DefaultClearColor = ugl.GlVec4{0, 0, 0, 1}
 	rend.DefaultTechnique2D, rend.DefaultTechnique3D, rend.DefaultTechniqueQuad = "rt_unlit", "rt_unlit", "rt_quad"

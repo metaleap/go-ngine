@@ -5,7 +5,6 @@ import (
 	"runtime"
 
 	ng "github.com/go3d/go-ngine/core"
-	ugo "github.com/metaleap/go-util"
 )
 
 //	Pauses rendering or resumes from the current pause.
@@ -18,7 +17,7 @@ func PauseResume() {
 		SceneCanvas.EveryNthFrame = 1
 	}
 	if err := tech.ApplyEffects(); err != nil {
-		ugo.LogError(err)
+		ng.Diag.LogErr(err)
 	}
 }
 

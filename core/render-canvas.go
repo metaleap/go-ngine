@@ -127,18 +127,18 @@ func (me *RenderCanvases) dispose() {
 
 //	Adds a new RenderCanvas and returns it.
 //	The relative, width and height values are passed to a call to SetSize().
-func (me *RenderCanvases) AddNew(relative bool, width, height float64) (rc *RenderCanvas) {
+func (_ RenderCanvases) AddNew(relative bool, width, height float64) (rc *RenderCanvas) {
 	rc = newRenderCanvas(false, relative, width, height)
-	*me = append(*me, rc)
+	Core.Rendering.Canvases = append(Core.Rendering.Canvases, rc)
 	return
 }
 
-func (me RenderCanvases) Final() *RenderCanvas {
-	return me[0]
+func (_ RenderCanvases) Final() *RenderCanvas {
+	return Core.Rendering.Canvases[0]
 }
 
-func (me RenderCanvases) Walk(onCanv func(*RenderCanvas), onCam func(*Camera)) {
-	for _, canv := range me {
+func (_ RenderCanvases) Walk(onCanv func(*RenderCanvas), onCam func(*Camera)) {
+	for _, canv := range Core.Rendering.Canvases {
 		if onCanv != nil {
 			onCanv(canv)
 		}

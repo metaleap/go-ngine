@@ -69,7 +69,7 @@ func glInit() (err error, badVer string) {
 }
 
 func glVersionErrorMessage(minVer, curVer string) string {
-	return ustr.Replace(Core.Options.Initialization.BadVersionMessage, map[string]string{
+	return ustr.Replace(Core.Options.Initialization.GlContext.BadVersionMessage, map[string]string{
 		"{MINVER}": minVer,
 		"{CURVER}": curVer,
 		"{OS}":     ugo.OSName(runtime.GOOS),

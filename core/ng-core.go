@@ -30,8 +30,9 @@ type EngineCore struct {
 			NoFilteringClamp    ugl.Sampler
 			FullFilteringRepeat ugl.Sampler
 		}
-		states     ugl.RenderStates
 		Techniques RenderTechniques
+
+		states ugl.RenderStates
 	}
 
 	isInit bool
@@ -76,7 +77,10 @@ func (_ *EngineCore) initRenderingStates() {
 func initRenderTechniques() {
 	type techCtor func(string) RenderTechnique
 	Core.Rendering.Techniques = RenderTechniques{}
-	for name, ctor := range map[string]techCtor{"rt_quad": newRenderTechniqueQuad, "rt_unlit": newRenderTechniqueUnlit} {
+	for name, ctor := range map[string]techCtor{
+		"rt_quad":  newRenderTechniqueQuad,
+		"rt_unlit": newRenderTechniqueUnlit,
+	} {
 		Core.Rendering.Techniques[name] = ctor(name)
 	}
 }
@@ -92,7 +96,7 @@ func (_ *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 }
 
 func (_ *EngineCore) onSec() {
-	if Diag.LogErrorsDuringLoop {
+	if Diag.LogGLErrorsInLoopOnSec {
 		ugl.LogLastError("onSec")
 	}
 	for r, d := range thrRend.asyncResources {

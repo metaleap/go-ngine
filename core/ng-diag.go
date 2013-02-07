@@ -24,16 +24,16 @@ var (
 			DiagLogCatShaders: "[SHADERS]\t",
 			DiagLogCatMeshes:  "[MESHES]\t",
 		},
-		LogErrorsDuringLoop: true,
+		LogGLErrorsInLoopOnSec: true,
 	}
 )
 
 //	EngineDiag is a singleton type, only used for the core.Diag package-global exported variable.
 //	It is only aware of that instance and does not support any other EngineDiag instances.
 type EngineDiag struct {
-	LogCategories       EngineDiagLogCategory
-	LogCategoryNames    map[EngineDiagLogCategory]string
-	LogErrorsDuringLoop bool
+	LogCategories          EngineDiagLogCategory
+	LogCategoryNames       map[EngineDiagLogCategory]string
+	LogGLErrorsInLoopOnSec bool
 }
 
 func (_ *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{}) {

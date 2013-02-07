@@ -44,9 +44,9 @@ func (me *renderTechniqueBase) setProg(name string, unifs []string, attrs []stri
 //	Used only in Core.Rendering.Techniques.
 type RenderTechniques map[string]RenderTechnique
 
-func (_ RenderTechniques) dispose() {
-	for _, o := range Core.Rendering.Techniques {
+func (me *RenderTechniques) dispose() {
+	for _, o := range *me {
 		o.dispose()
 	}
-	Core.Rendering.Techniques = RenderTechniques{}
+	*me = RenderTechniques{}
 }
