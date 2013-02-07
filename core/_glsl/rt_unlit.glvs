@@ -12,6 +12,6 @@ out vec2 var_Tex0;
 #pragma incl fx-vert.glsl
 
 void main () {
-	vx_Pos_Matrix(gl_Position);
-	vx_TexCoord_Attr(var_Tex0);
+	vx_Pos_Main(gl_Position);
+	vx_TexCoord_Main(var_Tex0);
 }

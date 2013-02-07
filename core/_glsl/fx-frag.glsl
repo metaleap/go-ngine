@@ -13,3 +13,15 @@ void fx_RedTest (inout vec3 vCol) {
 void fx_Tex0 (inout vec3 vCol) {
 	vCol = texture(uni_Tex0, var_Tex0).rgb;
 }
+
+void fx_Main (inout vec3 vCol) {
+	fx_Tex0(vCol);
+
+#ifdef FX_Grayscale
+	fx_Grayscale(vCol);
+#endif
+
+#ifdef FX_RedTest
+	fx_RedTest(vCol);
+#endif
+}

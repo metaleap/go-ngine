@@ -7,13 +7,5 @@ out vec3 out_Color;
 #pragma incl fx-frag.glsl
 
 void main() {
-	fx_Tex0(out_Color);
-
-#ifdef FX_Grayscale
-	fx_Grayscale(out_Color);
-#endif
-
-#ifdef FX_RedTest
-	fx_RedTest(out_Color);
-#endif
+	fx_Main(out_Color);
 }

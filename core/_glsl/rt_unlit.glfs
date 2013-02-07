@@ -7,5 +7,5 @@ out vec3 out_Color;
 #pragma incl fx-frag.glsl
 
 void main () {
-	fx_Tex0(out_Color);
+	fx_Main(out_Color);
 }

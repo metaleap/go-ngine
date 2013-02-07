@@ -1,8 +1,10 @@
 out vec2 var_Tex0;
 
+#define VX_Quad 1
+
 #pragma incl fx-vert.glsl
 
 void main () {
-	vx_Pos_Quad(gl_Position);
-	vx_TexCoord_Quad(var_Tex0);
+	vx_Pos_Main(gl_Position);
+	vx_TexCoord_Main(var_Tex0);
 }
