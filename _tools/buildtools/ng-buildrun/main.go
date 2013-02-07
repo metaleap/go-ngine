@@ -130,12 +130,12 @@ func includeShaders(fileName, shaderSource string, iShaders map[string]string) s
 		}
 	}
 	if len(includes) > 0 {
-		shaderSource = fmt.Sprintf("#line 1 \"%v\"\n", fileName) + strings.Join(lines[:i], "\n")
+		shaderSource = fmt.Sprintf("#line 1" /*+" \"%v\""*/ +"\n" /*, fileName*/) + strings.Join(lines[:i], "\n")
 		for _, str = range includes {
-			shaderSource += fmt.Sprintf("\n#line %v \"%v\"\n", 1, str)
+			shaderSource += fmt.Sprintf("\n#line %v" /*+" \"%v\""*/ +"\n", 1 /*, str*/)
 			shaderSource += fmt.Sprintf("%v\n", iShaders[str])
 		}
-		shaderSource += fmt.Sprintf("#line %v \"%v\"\n", i+1, fileName)
+		shaderSource += fmt.Sprintf("#line %v" /*+" \"%v\""*/ +"\n", i+1 /*fileName*/)
 		shaderSource += strings.Join(lines[i+1:], "\n")
 		return includeShaders(fileName, shaderSource, iShaders)
 	}

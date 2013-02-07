@@ -5,13 +5,10 @@ uniform mat4 uni_VertexMatrix;
 
 out vec2 var_Tex0;
 
-void vx_Pos_Matrix (inout vec4 vPos) {
-	vPos = uni_VertexMatrix * vec4(att_Pos, 1.0);
-}
+#define VX_Uni_Matrix 1
+#define VX_Att_TexCoord 1
 
-void vx_TexCoord_Attr (inout vec2 vTexCoord) {
-	vTexCoord = att_Tex0;
-}
+#pragma incl fx-vert.glsl
 
 void main () {
 	vx_Pos_Matrix(gl_Position);

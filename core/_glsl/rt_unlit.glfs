@@ -4,9 +4,7 @@ uniform sampler2D uni_Tex0;
 
 out vec3 out_Color;
 
-void fx_Tex0 (inout vec3 vCol) {
-	vCol = texture(uni_Tex0, var_Tex0).rgb;
-}
+#pragma incl fx-frag.glsl
 
 void main () {
 	fx_Tex0(out_Color);
