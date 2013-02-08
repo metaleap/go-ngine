@@ -159,7 +159,7 @@ func main() {
 		outTime, srcTime, tmpTime int64
 	)
 	force, nginePath := false, os.Args[1]
-	srcDirPath, outFilePath := filepath.Join(nginePath, "core", "_glsl"), filepath.Join(nginePath, "core", "-gen-glsl-src.go")
+	srcDirPath, outFilePath := filepath.Join(nginePath, "core", "_glsl"), filepath.Join(nginePath, "core", "-auto-generated.go")
 	if fileInfo, err := os.Stat(outFilePath); err == nil && !force {
 		outTime = fileInfo.ModTime().UnixNano()
 	}

@@ -1,6 +1,6 @@
 /*
 
-GLSL functions used for dynamic vertex shader composition.
+GLSL functions used for vertex shader permutation.
 This file is "parsed" so all functions accept one inout arg and return void.
 
 */

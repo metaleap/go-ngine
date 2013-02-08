@@ -1,6 +1,6 @@
 /*
 
-GLSL functions used for dynamic fragment shader composition.
+GLSL functions used for fragment shader permutation.
 This file is "parsed" so all functions accept one inout arg and return void.
 
 */
