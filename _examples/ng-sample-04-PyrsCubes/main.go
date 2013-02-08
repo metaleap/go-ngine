@@ -23,7 +23,7 @@ var (
 
 func main() {
 	apputil.AddKeyHint("F12", "Toggle 'Rear-View-Mirror' Camera")
-	apputil.Main(setupExample_03_PyrsCubes, onAppThread, onWinThread)
+	apputil.Main(setupExample_04_PyrsCubes, onAppThread, onWinThread)
 }
 
 func onWinThread() {
@@ -67,7 +67,7 @@ func onAppThread() {
 	pyramids[1].Transform.SetPosZ(math.Cos(ng.Loop.Tick.Now) * 1000)
 }
 
-func setupExample_03_PyrsCubes() {
+func setupExample_04_PyrsCubes() {
 	var (
 		err                          error
 		scene                        *ng.Scene

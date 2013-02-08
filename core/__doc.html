@@ -1351,7 +1351,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=423:892#L5">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=423:927#L5">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Options     EngineOptions
@@ -1359,7 +1359,8 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
         Effects   LibFxEffects
         Materials LibFxMaterials
         Images    struct {
-            I2D LibFxImage2Ds
+            SplashScreen FxImage2D
+            I2D          LibFxImage2Ds
         }
         Meshes LibMeshes
         Scenes LibScenes
@@ -1397,7 +1398,7 @@ It is only aware of that instance and does not support any other EngineCore inst
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=2873:2907#L100">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3170:3204#L110">SyncUpdates</a></h3>
 				<pre>func (_ *EngineCore) SyncUpdates()</pre>
 				
 				

@@ -3,8 +3,10 @@ package exampleutils
 import (
 	"fmt"
 	"runtime"
+	"time"
 
 	ng "github.com/go3d/go-ngine/core"
+	unum "github.com/metaleap/go-util/num"
 )
 
 var (
@@ -23,9 +25,9 @@ var (
 	//	Do not set this field directly, only use PauseResume() to toggle it and effect the associated render-state changes.
 	Paused bool
 
-	retro, refreshWinTitle bool
-	curKeyHint             = 0
-	sec                    = 0
+	retro      bool
+	curKeyHint = 0
+	sec        = 0
 )
 
 //	Refreshes the window title every second, showing the next one entry in KeyHints every 3 seconds.
@@ -64,22 +66,34 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 		ng.Loop.On.EverySec, ng.Loop.On.AppThread, ng.Loop.On.WinThread = OnSec, onAppThread, onWinThread
 
 		PostFxCanvas = ng.Core.Rendering.Canvases.Final()
-		PostFxCam = PostFxCanvas.AddNewCameraQuad()
+		PostFxCam = PostFxCanvas.Cameras[0]
 
-		SceneCanvas = ng.Core.Rendering.Canvases.AddNew(true, 1, 1)
-		SceneCam = SceneCanvas.AddNewCamera3D()
-		SceneCam.Rendering.States.ClearColor.Set(0.5, 0.6, 0.85, 1)
-
-		setupExampleScene()
-		ng.Core.SyncUpdates()
+		if setupExampleScene != nil {
+			SceneCanvas = ng.Core.Rendering.Canvases.AddNew(true, 1, 1)
+			SceneCam = SceneCanvas.AddNewCamera3D()
+			SceneCam.Rendering.States.ClearColor.Set(0.5, 0.6, 0.85, 1)
+			setupExampleScene()
+			ng.Core.SyncUpdates()
+		}
+		time.Sleep(0 * time.Second) // change to higher value to check out the splash-screen
 		ng.Loop.Loop()
 		PrintPostLoopSummary()
 	}
 }
 
+var winTitle struct {
+	cw, ch         int
+	camPos, camDir unum.Vec3
+}
+
 //	Returns the window title to be set by OnSec().
 func WindowTitle() string {
-	cw, ch := SceneCanvas.CurrentAbsoluteSize()
-	camPos, camDir := SceneCam.Controller.Pos, SceneCam.Controller.Dir()
-	return fmt.Sprintf("%v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", ng.Stats.FpsLastSec, cw, ch, KeyHints[curKeyHint], camPos.String(), camDir.String())
+	winTitle.cw, winTitle.ch = ng.UserIO.WinWidth(), ng.UserIO.WinHeight()
+	if SceneCanvas != nil {
+		winTitle.cw, winTitle.ch = SceneCanvas.CurrentAbsoluteSize()
+	}
+	if SceneCam != nil {
+		winTitle.camPos, winTitle.camDir = SceneCam.Controller.Pos, *SceneCam.Controller.Dir()
+	}
+	return fmt.Sprintf("%v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", ng.Stats.FpsLastSec, winTitle.cw, winTitle.ch, KeyHints[curKeyHint], winTitle.camPos.String(), winTitle.camDir.String())
 }

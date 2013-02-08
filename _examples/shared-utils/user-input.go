@@ -12,6 +12,7 @@ var (
 	//	OnSec() changes the window title every second to display FPS etc.
 	//	Also every 4 seconds shows the next one in a number of "key hints" defined here:
 	KeyHints = []string{
+		"[Esc]  --  Close & Exit",
 		"[F2]  --  Toggle Backface Culling",
 		"[F3]  --  Pause/Resume",
 		"[F4]  --  Retro Mode",

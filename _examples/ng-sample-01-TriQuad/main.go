@@ -13,7 +13,7 @@ var (
 
 func main() {
 	apputil.MaxKeyHint = 3
-	apputil.Main(setupExample_00_TriQuad, onAppThread, onWinThread)
+	apputil.Main(setupExample_01_TriQuad, onAppThread, onWinThread)
 }
 
 //	called once per frame in main thread
@@ -33,7 +33,7 @@ func onAppThread() {
 	}
 }
 
-func setupExample_00_TriQuad() {
+func setupExample_01_TriQuad() {
 	var (
 		err               error
 		scene             *ng.Scene

@@ -12,7 +12,7 @@ var (
 )
 
 func main() {
-	apputil.Main(setupExample_02_PyrCube, onAppThread, onWinThread)
+	apputil.Main(setupExample_03_PyrCube, onAppThread, onWinThread)
 }
 
 func onWinThread() {
@@ -35,7 +35,7 @@ func onAppThread() {
 	}
 }
 
-func setupExample_02_PyrCube() {
+func setupExample_03_PyrCube() {
 	var (
 		err                          error
 		scene                        *ng.Scene

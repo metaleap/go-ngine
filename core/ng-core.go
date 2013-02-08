@@ -1,6 +1,7 @@
 package core
 
 import (
+	glfw "github.com/go-gl/glfw"
 	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
 )
@@ -19,7 +20,8 @@ type EngineCore struct {
 		Effects   LibFxEffects
 		Materials LibFxMaterials
 		Images    struct {
-			I2D LibFxImage2Ds
+			SplashScreen FxImage2D
+			I2D          LibFxImage2Ds
 		}
 		Meshes LibMeshes
 		Scenes LibScenes
@@ -58,7 +60,18 @@ func (_ *EngineCore) init() {
 	Core.MeshBuffers = newMeshBuffers()
 	Core.initLibs()
 	Core.Rendering.Canvases = append(RenderCanvases{}, newRenderCanvas(true, true, 1, 1))
+	Core.Rendering.Canvases.Final().AddNewCameraQuad()
+	splash := &Core.Libs.Images.SplashScreen
+	splash.InitFrom.RawData = embeddedBinaries["splash.png"]
+	splash.init()
+	splash.Load()
+	splash.GpuSync()
+	splash.glTex.Bind()
+	splash.Unload()
+	embeddedBinaries = nil
 	Core.isInit = true
+	Core.onRender()
+	glfw.SwapBuffers()
 }
 
 func (_ *EngineCore) initLibs() {
