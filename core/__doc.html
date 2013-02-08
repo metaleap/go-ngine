@@ -177,6 +177,11 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
+				<dd><a href="#Effect">type Effect</a></dd>
+				
+				
+			
+				
 				<dd><a href="#EngineCore">type EngineCore</a></dd>
 				
 				
@@ -724,7 +729,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#RenderTechniqueUnlit">type RenderTechniqueUnlit</a></dd>
+				<dd><a href="#RenderTechniqueScene">type RenderTechniqueScene</a></dd>
 				
 				
 			
@@ -770,6 +775,8 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/doc.go">doc.go</a>
 			
+				<a href="/target/effect.go">effect.go</a>
+			
 				<a href="/target/fileio.go">fileio.go</a>
 			
 				<a href="/target/fx-effect.gt.go">fx-effect.gt.go</a>
@@ -781,6 +788,8 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<a href="/target/fx-material.gt.go">fx-material.gt.go</a>
 			
 				<a href="/target/gl-core.go">gl-core.go</a>
+			
+				<a href="/target/glsl-composer.go">glsl-composer.go</a>
 			
 				<a href="/target/mesh-buffer.go">mesh-buffer.go</a>
 			
@@ -820,7 +829,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/render-technique-quad.go">render-technique-quad.go</a>
 			
-				<a href="/target/render-technique-unlit.go">render-technique-unlit.go</a>
+				<a href="/target/render-technique-scene.go">render-technique-scene.go</a>
 			
 				<a href="/target/render-technique.go">render-technique.go</a>
 			
@@ -1325,6 +1334,23 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
+			<h2 id="Effect">type <a href="/target/effect.go?s=314:336#L17">Effect</a></h2>
+			<pre>type Effect struct {
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
 			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=423:892#L5">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
@@ -1565,25 +1591,42 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=931:2875#L21">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=931:3801#L21">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     <span class="comment">//	The base directory path for asset file paths.</span>
     AssetRootDirPath string
 
     Initialization struct {
         GlContext struct {
-            <span class="comment">//	Required on Mac OS X, not necessary elsewhere.</span>
-            <span class="comment">//	While potentially slightly beneficial with recent GL drivers, might also fail with somewhat outdated ones.</span>
-            <span class="comment">//	Defaults to true on Mac OS X, to false elsewhere.</span>
-            CoreProfile bool
+            CoreProfile struct {
+                <span class="comment">//	Required on Mac OS X, not necessary elsewhere.</span>
+                <span class="comment">//	While potentially slightly beneficial with recent GL drivers,</span>
+                <span class="comment">//	might also fail with a select few rather outdated ones.</span>
+                <span class="comment">//	Defaults to true on Mac OS X, to false elsewhere.</span>
+                ForceFirst bool
 
-            <span class="comment">//	Required on Mac OS X, not recommended elsewhere.</span>
-            <span class="comment">//	Defaults to true on Mac OS X, to false elsewhere.</span>
-            ForwardCompat bool
+                <span class="comment">//	While required on Mac OS X, really not recommended elsewhere</span>
+                <span class="comment">//	(at present). Defaults to true on Mac OS X, to false elsewhere.</span>
+                ForwardCompat bool
 
+                <span class="comment">//	Defaults to the newest GL version currently supported by the GL</span>
+                <span class="comment">//	binding used by go:ngine. The binding adaptively uses features</span>
+                <span class="comment">//	of GL versions newer than 3.3 only if they are available, so this</span>
+                <span class="comment">//	is a most strongly recommended default for release apps. But for</span>
+                <span class="comment">//	testing, this is useful to test performance in older GL versions.</span>
+                <span class="comment">//	Must be one of the values in glutil.KnownVersions.</span>
+                VersionHint float64
+            }
+
+            <span class="comment">//	Defaults to the DefaultBadVersionMessage constant. If using a custom</span>
+            <span class="comment">//	string, you can use the same placeholders as that one.</span>
             BadVersionMessage string
         }
         Window struct {
+            <span class="comment">//	Defaults: R=8 G=8 B=8 A=0 D=8 S=0.</span>
+            <span class="comment">//	These defaults are reasonable when using a render-to-texture off-screen</span>
+            <span class="comment">//	RenderCanvas. Otherwise, may want to bump D to at least 24 or 32.</span>
+            <span class="comment">//	D shouldn&#39;t be 0 as this causes some Intel HD drivers to bug out badly.</span>
             Rbits, Gbits, Bbits, Abits, DepthBits, StencilBits int
         }
     }
@@ -1613,11 +1656,11 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
         DefaultClearColor ugl.GlVec4
 
         <span class="comment">//	Default render technique for a Camera created via RenderCanvas.AddNewCamera2D().</span>
-        <span class="comment">//	Defaults to &#34;rt_unlit&#34;.</span>
+        <span class="comment">//	Defaults to &#34;rt_scene&#34;.</span>
         DefaultTechnique2D string
 
         <span class="comment">//	Default render technique for a Camera created via RenderCanvas.AddNewCamera3D().</span>
-        <span class="comment">//	Defaults to &#34;rt_unlit&#34;.</span>
+        <span class="comment">//	Defaults to &#34;rt_scene&#34;.</span>
         DefaultTechnique3D string
 
         <span class="comment">//	Default render technique for a Camera created via RenderCanvas.AddNewCameraQuad().</span>
@@ -1646,7 +1689,7 @@ received from NewEngineOptions() is no longer used. Slightly confusing, but ther
 
 			
 				
-				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=2950:3078#L89">NewEngineOptions</a></h3>
+				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=3876:4004#L106">NewEngineOptions</a></h3>
 				<pre>func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions)</pre>
 				<p>
 Allocates, initializes and returns a new core.EngineOptions instance.
@@ -3278,35 +3321,35 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvas.AddNewCamera2D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1487:1559#L41">AddNewCamera2D</a></h3>
+				<h3 id="RenderCanvas.AddNewCamera2D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1431:1503#L38">AddNewCamera2D</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCamera2D(allowOverlaps bool) (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.AddNewCamera3D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1649:1703#L47">AddNewCamera3D</a></h3>
+				<h3 id="RenderCanvas.AddNewCamera3D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1593:1647#L44">AddNewCamera3D</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCamera3D() (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.AddNewCameraQuad">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1778:1834#L53">AddNewCameraQuad</a></h3>
+				<h3 id="RenderCanvas.AddNewCameraQuad">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1722:1778#L50">AddNewCameraQuad</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.CurrentAbsoluteSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1357:1422#L36">CurrentAbsoluteSize</a></h3>
+				<h3 id="RenderCanvas.CurrentAbsoluteSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1301:1366#L33">CurrentAbsoluteSize</a></h3>
 				<pre>func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2529:2561#L80">Remove</a></h3>
+				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2473:2505#L77">Remove</a></h3>
 				<pre>func (me *RenderCanvas) Remove()</pre>
 				<p>
 Removes me from Core.Rendering.Canvases and deletes its associated GPU resources.
@@ -3317,7 +3360,7 @@ This renders me invalid for further use.
 				
 			
 				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3164:3233#L99">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3102:3171#L96">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
 				<p>
 Sets the 2 dimensions of this render canvas.
@@ -3331,7 +3374,7 @@ Otherwise, width and height are absolute pixel dimensions.
 		
 			
 			
-			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3526:3561#L109">RenderCanvases</a></h2>
+			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3464:3499#L106">RenderCanvases</a></h2>
 			<pre>type RenderCanvases []*RenderCanvas</pre>
 			<p>
 Only used for Core.Rendering.Canvases.
@@ -3348,7 +3391,7 @@ Only used for Core.Rendering.Canvases.
 
 			
 				
-				<h3 id="RenderCanvases.AddNew">func (RenderCanvases) <a href="/target/render-canvas.go?s=3776:3863#L120">AddNew</a></h3>
+				<h3 id="RenderCanvases.AddNew">func (RenderCanvases) <a href="/target/render-canvas.go?s=3714:3801#L117">AddNew</a></h3>
 				<pre>func (_ RenderCanvases) AddNew(relative bool, width, height float64) (rc *RenderCanvas)</pre>
 				<p>
 Adds a new RenderCanvas and returns it.
@@ -3359,14 +3402,14 @@ The relative, width and height values are passed to a call to SetSize().
 				
 			
 				
-				<h3 id="RenderCanvases.Final">func (RenderCanvases) <a href="/target/render-canvas.go?s=3994:4039#L126">Final</a></h3>
+				<h3 id="RenderCanvases.Final">func (RenderCanvases) <a href="/target/render-canvas.go?s=3932:3977#L123">Final</a></h3>
 				<pre>func (_ RenderCanvases) Final() *RenderCanvas</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4080:4157#L130">Walk</a></h3>
+				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4018:4095#L127">Walk</a></h3>
 				<pre>func (_ RenderCanvases) Walk(onCanv func(*RenderCanvas), onCam func(*Camera))</pre>
 				
 				
@@ -3443,7 +3486,7 @@ After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), 
 				
 			
 				
-				<h3 id="RenderTechniqueQuad.ToggleEffect">func (*RenderTechniqueQuad) <a href="/target/render-technique-quad.go?s=2672:2743#L75">ToggleEffect</a></h3>
+				<h3 id="RenderTechniqueQuad.ToggleEffect">func (*RenderTechniqueQuad) <a href="/target/render-technique-quad.go?s=2667:2738#L75">ToggleEffect</a></h3>
 				<pre>func (me *RenderTechniqueQuad) ToggleEffect(name string) (enabled bool)</pre>
 				<p>
 Activates or deactivates the specified post-processing full-screen effect.
@@ -3457,8 +3500,8 @@ Returns whether this call has activated (true) or deactivated (false) the specif
 		
 			
 			
-			<h2 id="RenderTechniqueUnlit">type <a href="/target/render-technique-unlit.go?s=101:158#L1">RenderTechniqueUnlit</a></h2>
-			<pre>type RenderTechniqueUnlit struct {
+			<h2 id="RenderTechniqueScene">type <a href="/target/render-technique-scene.go?s=101:158#L1">RenderTechniqueScene</a></h2>
+			<pre>type RenderTechniqueScene struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			
@@ -3475,7 +3518,7 @@ Returns whether this call has activated (true) or deactivated (false) the specif
 		
 			
 			
-			<h2 id="RenderTechniques">type <a href="/target/render-technique.go?s=916:964#L35">RenderTechniques</a></h2>
+			<h2 id="RenderTechniques">type <a href="/target/render-technique.go?s=812:860#L31">RenderTechniques</a></h2>
 			<pre>type RenderTechniques map[string]RenderTechnique</pre>
 			<p>
 Used only in Core.Rendering.Techniques.

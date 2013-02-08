@@ -79,7 +79,7 @@ func initRenderTechniques() {
 	Core.Rendering.Techniques = RenderTechniques{}
 	for name, ctor := range map[string]techCtor{
 		"rt_quad":  newRenderTechniqueQuad,
-		"rt_unlit": newRenderTechniqueUnlit,
+		"rt_scene": newRenderTechniqueScene,
 	} {
 		Core.Rendering.Techniques[name] = ctor(name)
 	}

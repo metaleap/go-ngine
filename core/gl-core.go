@@ -20,6 +20,7 @@ var (
 		lastBadVer string
 		isInit     bool
 		progMan    ugl.ProgramManager
+		shaderMan  shaderComposer
 	}
 )
 

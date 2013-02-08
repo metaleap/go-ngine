@@ -48,10 +48,14 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	// width, height, fullscreen := 1920, 1080, true
 	opt := ng.NewEngineOptions(AssetRootDirPath(), width, height, 0, fullscreen)
 
-	// While the default for this (force GL core profile on Macs only) is reasonable for "real-world" apps at present, for
-	// the example apps we force core profile to implicitly ensure all of go:ngine's GL code is fully core-profile compliant
-	opt.Initialization.GlContext.CoreProfile = true
-	opt.Loop.ForceThreads.App, opt.Loop.ForceThreads.Prep = true, true
+	//	While the default for this (force GL core profile on Macs only) is reasonable for "real-world" apps at present, for
+	//	the example apps we force core profile to implicitly ensure all of go:ngine's GL code is fully core-profile compliant
+	opt.Initialization.GlContext.CoreProfile.ForceFirst = true
+
+	//	Not using any newer-than-3.3 GL features at present...
+	opt.Initialization.GlContext.CoreProfile.VersionHint = 3.3
+
+	// opt.Loop.ForceThreads.App, opt.Loop.ForceThreads.Prep = true, true
 
 	if err := ng.Init(opt, fmt.Sprintf("Loading example app... (%v CPU cores)", runtime.GOMAXPROCS(0))); err != nil {
 		fmt.Printf("ABORT:\n%v\n", err)

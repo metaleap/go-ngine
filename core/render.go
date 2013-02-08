@@ -54,7 +54,7 @@ func (me *RenderTechniqueQuad) render() {
 	me.glVao.Unbind()
 }
 
-func (me *RenderTechniqueUnlit) render() {
+func (me *RenderTechniqueScene) render() {
 	Core.Rendering.Samplers.FullFilteringRepeat.Bind(0)
 	if thrRend.curScene != nil {
 		thrRend.curScene.RootNode.render()
