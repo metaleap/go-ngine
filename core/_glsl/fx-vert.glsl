@@ -2,7 +2,6 @@
 
 GLSL functions used for vertex shader permutation.
 This file is "parsed" so all functions accept one inout arg and return void.
-
 */
 
 void vx_Pos_Matrix (inout vec4 vPos) {

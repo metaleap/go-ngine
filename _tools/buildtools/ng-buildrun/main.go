@@ -194,6 +194,7 @@ func main() {
 	}
 
 	if force || srcTimeGlsl.UnixNano() > outFileTime.UnixNano() || srcTimeEmbeds.UnixNano() > outFileTime.UnixNano() {
+		fmt.Printf("Re-generating %s...\n", outFilePath)
 		wait.Add(1)
 		go makeShaders(srcDirPathGlsl)
 		wait.Add(1)
@@ -214,7 +215,6 @@ func makeEmbeds(srcDirPath string) {
 
 func makeShaders(srcDirPath string) {
 	defer wait.Done()
-	fmt.Println("Re-merging changed shader sources...")
 	if err, nsrc := generateShadersSource(srcDirPath, true); err != nil {
 		panic(err)
 	} else {
