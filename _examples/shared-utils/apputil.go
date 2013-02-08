@@ -10,6 +10,8 @@ import (
 )
 
 var (
+	ArtificialSplashScreenDelay = 0 * time.Second
+
 	//	The RenderCanvas the example scene is initially being rendered to. This is an off-screen "render-to-texture" RenderCanvas.
 	SceneCanvas *ng.RenderCanvas
 
@@ -75,7 +77,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 			setupExampleScene()
 			ng.Core.SyncUpdates()
 		}
-		time.Sleep(0 * time.Second) // change to higher value to check out the splash-screen
+		time.Sleep(ArtificialSplashScreenDelay) // change to higher value to check out the splash-screen
 		ng.Loop.Loop()
 		PrintPostLoopSummary()
 	}

@@ -94,11 +94,6 @@ func (_ *EngineLoop) Loop() {
 
 			//	STEP 1. Fill the GPU command queue with rendering commands (batched together by the previous prep thread)
 			Stats.FrameRenderCpu.begin()
-			//	Check for resize before render
-			if (UserIO.lastWinResize > 0) && ((Loop.Tick.Now - UserIO.lastWinResize) > UserIO.WinResizeMinDelay) {
-				UserIO.lastWinResize = 0
-				Core.onResizeWindow(Core.Options.winWidth, Core.Options.winHeight)
-			}
 			Core.onRender()
 			Stats.FrameRenderCpu.end()
 
@@ -139,9 +134,12 @@ func (_ *EngineLoop) Loop() {
 
 			//	STEP 3. Swap buffers -- this waits for the GPU/GL to finish processing its command
 			//	queue filled in Step 1, swap buffers and for V-sync (if any)
-			if Loop.Looping {
-				// window might be closed since onThreadWin()
-				Loop.onSwap()
+			Loop.onSwap()
+
+			//	Check for resize before next render
+			if (UserIO.lastWinResize > 0) && ((Loop.Tick.Now - UserIO.lastWinResize) > UserIO.WinResizeMinDelay) {
+				UserIO.lastWinResize = 0
+				Core.onResizeWindow(Core.Options.winWidth, Core.Options.winHeight)
 			}
 			Stats.FrameRenderBoth.combine()
 		}

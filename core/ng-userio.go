@@ -81,7 +81,10 @@ func (_ *EngineUserIO) init(winTitle string, forceContextVersion float64) (err e
 //	just a GLFW event callback without creating a closure
 func glfwOnWindowClose() int {
 	Loop.Looping = false
-	return 1
+	//	Return 0 to cancel the user's onWindowClose -- we close manually.
+	//	If we returned 1 to confirm the Close, the loop would continue
+	//	doing GL stuff against the destroyed window and record a GL error.
+	return 0
 }
 
 //	just a GLFW event callback without creating a closure
