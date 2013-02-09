@@ -27,7 +27,11 @@ var (
 	//	Do not set this field directly, only use PauseResume() to toggle it and effect the associated render-state changes.
 	Paused bool
 
-	retro      bool
+	retro  bool
+	numCgo struct {
+		preLoop  int64
+		postLoop int64
+	}
 	curKeyHint = 0
 	sec        = 0
 )
@@ -102,9 +106,11 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 			ng.Core.SyncUpdates()
 		}
 		time.Sleep(ArtificialSplashScreenDelay) // change to higher value to check out your splash-screen
+		numCgo.preLoop = runtime.NumCgoCall()
 
 		//	STEP 3: enter... Da Loop.
 		ng.Loop.Loop()
+		numCgo.postLoop = runtime.NumCgoCall()
 	}
 }
 

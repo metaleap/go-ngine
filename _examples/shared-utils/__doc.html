@@ -182,10 +182,9 @@ Some common base functionality shared by all the go:ngine example apps in _examp
     <span class="comment">//	OnSec() changes the window title every second to display FPS etc.</span>
     <span class="comment">//	Also every 4 seconds shows the next one in a number of &#34;key hints&#34; defined here:</span>
     KeyHints = []string{
-        &#34;[Esc]  --  Close &amp; Exit&#34;,
+        &#34;[Esc]  --  Pause/Resume&#34;,
         &#34;[F2]  --  Toggle Backface Culling&#34;,
-        &#34;[F3]  --  Pause/Resume&#34;,
-        &#34;[F4]  --  Retro Mode&#34;,
+        &#34;[F3]  --  Retro Mode&#34;,
         &#34;[W][S]  --  Camera rise / sink&#34;,
         &#34;[A][D]  --  Camera strafe left / right&#34;,
         &#34;[&lt;][&gt;]  --  Camera turn left / right&#34;,
@@ -228,7 +227,7 @@ adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffe
 		
 			
 			
-			<h2 id="AddKeyHint">func <a href="/target/user-input.go?s=1769:1802#L43">AddKeyHint</a></h2>
+			<h2 id="AddKeyHint">func <a href="/target/user-input.go?s=1741:1774#L42">AddKeyHint</a></h2>
 			<pre>func AddKeyHint(key, hint string)</pre>
 			<p>
 Key hints are shown in the window title bar, a new one every few seconds.
@@ -277,7 +276,7 @@ Returns the &#34;asset root directory&#34; path for go:ngine, in this case: $GOP
 		
 			
 			
-			<h2 id="CheckAndHandleToggleKeys">func <a href="/target/user-input.go?s=2427:2458#L60">CheckAndHandleToggleKeys</a></h2>
+			<h2 id="CheckAndHandleToggleKeys">func <a href="/target/user-input.go?s=2399:2430#L59">CheckAndHandleToggleKeys</a></h2>
 			<pre>func CheckAndHandleToggleKeys()</pre>
 			<p>
 To be called every frame (by the parent example app, ONLY in onWinThread()!) to
@@ -288,7 +287,7 @@ check AND handle key-toggle states for F2, F3 etc. function keys and Esc.
 		
 			
 			
-			<h2 id="CheckCamCtlKeys">func <a href="/target/user-input.go?s=2110:2132#L50">CheckCamCtlKeys</a></h2>
+			<h2 id="CheckCamCtlKeys">func <a href="/target/user-input.go?s=2082:2104#L49">CheckCamCtlKeys</a></h2>
 			<pre>func CheckCamCtlKeys()</pre>
 			<p>
 To be called every frame (by the parent example app, ONLY in onWinThread()!) to collect key-press
@@ -299,7 +298,7 @@ states for controlling (in HandleCamCtlKeys() in onAppThread()!) SceneCam.Contro
 		
 			
 			
-			<h2 id="HandleCamCtlKeys">func <a href="/target/user-input.go?s=2971:2994#L78">HandleCamCtlKeys</a></h2>
+			<h2 id="HandleCamCtlKeys">func <a href="/target/user-input.go?s=2910:2933#L74">HandleCamCtlKeys</a></h2>
 			<pre>func HandleCamCtlKeys()</pre>
 			<p>
 To be called every frame (by the parent example app, ONLY in onAppThread()!) to process key-press
@@ -310,7 +309,7 @@ states (from the previous CheckCamCtlKeys() call) for controlling SceneCam.Contr
 		
 			
 			
-			<h2 id="Main">func <a href="/target/apputil.go?s=1946:2007#L49">Main</a></h2>
+			<h2 id="Main">func <a href="/target/apputil.go?s=1996:2057#L53">Main</a></h2>
 			<pre>func Main(setupExampleScene, onAppThread, onWinThread func())</pre>
 			<p>
 Called by each example-app&#39;s func main(). Initializes go:ngine, sets SceneCam/SceneCanvas/PostFxCam/PostFxCanvas etc., calls the specified assetLoader function, then enters The Loop.
@@ -320,7 +319,7 @@ Called by each example-app&#39;s func main(). Initializes go:ngine, sets SceneCa
 		
 			
 			
-			<h2 id="OnSec">func <a href="/target/apputil.go?s=1558:1570#L38">OnSec</a></h2>
+			<h2 id="OnSec">func <a href="/target/apputil.go?s=1608:1620#L42">OnSec</a></h2>
 			<pre>func OnSec()</pre>
 			<p>
 Refreshes the window title every second, showing the next one entry in KeyHints every 3 seconds.
@@ -330,7 +329,7 @@ Refreshes the window title every second, showing the next one entry in KeyHints 
 		
 			
 			
-			<h2 id="PauseResume">func <a href="/target/misc.go?s=231:249#L2">PauseResume</a></h2>
+			<h2 id="PauseResume">func <a href="/target/misc.go?s=239:257#L3">PauseResume</a></h2>
 			<pre>func PauseResume()</pre>
 			<p>
 Pauses rendering or resumes from the current pause.
@@ -341,7 +340,7 @@ When paused, the frame last rendered is frozen and rendered in a gray-scale effe
 		
 			
 			
-			<h2 id="PrintPostLoopSummary">func <a href="/target/misc.go?s=619:646#L15">PrintPostLoopSummary</a></h2>
+			<h2 id="PrintPostLoopSummary">func <a href="/target/misc.go?s=689:716#L20">PrintPostLoopSummary</a></h2>
 			<pre>func PrintPostLoopSummary()</pre>
 			<p>
 Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent example app exits.
@@ -351,7 +350,7 @@ Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent 
 		
 			
 			
-			<h2 id="ToggleRetro">func <a href="/target/misc.go?s=1692:1710#L34">ToggleRetro</a></h2>
+			<h2 id="ToggleRetro">func <a href="/target/misc.go?s=2047:2065#L40">ToggleRetro</a></h2>
 			<pre>func ToggleRetro()</pre>
 			<p>
 Toggles &#34;retro mode&#34; for the example app.

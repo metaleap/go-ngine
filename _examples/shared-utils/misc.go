@@ -3,6 +3,7 @@ package exampleutils
 import (
 	"fmt"
 	"runtime"
+	"time"
 
 	ng "github.com/go3d/go-ngine/core"
 )
@@ -40,7 +41,8 @@ func PrintPostLoopSummary() {
 	printStatSummary("Frame Render (GPU)", &ng.Stats.FrameRenderGpu)
 	printStatSummary("Frame Render Both", &ng.Stats.FrameRenderBoth)
 	printStatSummary("GC (max 1x/sec)", &ng.Stats.Gc)
-	fmt.Printf("CGO calls: %v\n\n", runtime.NumCgoCall())
+	fmt.Printf("Shaders: compiled %v GLSL programs over time, which took %v in total.\n", ng.Stats.Programs.NumProgsCompiled, time.Duration(ng.Stats.Programs.TotalTimeCost))
+	fmt.Printf("CGO calls: pre-loop init %v, loop %v (avg. %v/frame)\n\n", numCgo.preLoop, numCgo.postLoop-numCgo.preLoop, runtime.NumCgoCall()/int64(ng.Stats.TotalFrames()))
 }
 
 //	Toggles "retro mode" for the example app.

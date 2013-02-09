@@ -53,6 +53,7 @@ func glInit() (err error, badVer string) {
 				Diag.LogMisc(ugl.Util.ConnInfo())
 				if dur, err = glc.progMan.MakeProgramsFromRawSources(true); err == nil {
 					Diag.LogShaders("Total shader compilation time for all %v programs: %v\n", len(glc.progMan.Programs), dur)
+					Stats.addProgCompile(len(glc.progMan.Programs), dur.Nanoseconds())
 				}
 			}
 		}

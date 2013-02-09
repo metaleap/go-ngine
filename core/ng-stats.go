@@ -74,6 +74,16 @@ type EngineStats struct {
 	enabled    bool
 	fpsCounter int
 	fpsAll     float64
+
+	Programs struct {
+		NumProgsCompiled int
+		TotalTimeCost    int64
+	}
+}
+
+func (_ *EngineStats) addProgCompile(numProgs int, duration int64) {
+	Stats.Programs.NumProgsCompiled += numProgs
+	Stats.Programs.TotalTimeCost += duration
 }
 
 //	Returns the average number of frames-per-second since Loop.Loop() was last called.
