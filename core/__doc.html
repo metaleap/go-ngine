@@ -67,7 +67,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<dd><a href="#Dispose">func Dispose()</a></dd>
 			
 				
-				<dd><a href="#Init">func Init(options *EngineOptions, initialWinTitle string) (err error)</a></dd>
+				<dd><a href="#Init">func Init(options *EngineOptions) (err error)</a></dd>
 			
 			
 				
@@ -235,7 +235,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<dd><a href="#EngineOptions">type EngineOptions</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NewEngineOptions">func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NewEngineOptions">func NewEngineOptions(assetRootDirPath string, windowOptions *WindowOptions) (me *EngineOptions)</a></dd>
 				
 				
 			
@@ -277,15 +277,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeysPressedAny3">func (_ *EngineUserIO) KeysPressedAny3(k1, k2, k3 int) bool</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.SetWinTitle">func (_ *EngineUserIO) SetWinTitle(newTitle string)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.WinHeight">func (_ *EngineUserIO) WinHeight() int</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.WinWidth">func (_ *EngineUserIO) WinWidth() int</a></dd>
 				
 			
 				
@@ -757,6 +748,32 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#TimingStats.Max">func (me *TimingStats) Max() float64</a></dd>
 				
 			
+				
+				<dd><a href="#WindowOptions">type WindowOptions</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewWindowOptions">func NewWindowOptions(title string, width, height int, fullscreen bool) (me *WindowOptions)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#WindowOptions.Height">func (_ *WindowOptions) Height() int</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#WindowOptions.SetSwapInterval">func (_ *WindowOptions) SetSwapInterval(newSwap int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#WindowOptions.SetTitle">func (_ *WindowOptions) SetTitle(newTitle string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#WindowOptions.SwapInterval">func (_ *WindowOptions) SwapInterval() int</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#WindowOptions.Title">func (_ *WindowOptions) Title() string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#WindowOptions.Width">func (_ *WindowOptions) Width() int</a></dd>
+				
+			
 			
 		</dl>
 
@@ -812,6 +829,8 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<a href="/target/ng-stats.go">ng-stats.go</a>
 			
 				<a href="/target/ng-userio.go">ng-userio.go</a>
+			
+				<a href="/target/ng-window.go">ng-window.go</a>
 			
 				<a href="/target/ng.go">ng.go</a>
 			
@@ -896,8 +915,8 @@ Call this to &#34;un-init&#34; go:ngine and to release any and all GPU or RAM re
 		
 			
 			
-			<h2 id="Init">func <a href="/target/ng.go?s=393:462#L7">Init</a></h2>
-			<pre>func Init(options *EngineOptions, initialWinTitle string) (err error)</pre>
+			<h2 id="Init">func <a href="/target/ng.go?s=393:438#L7">Init</a></h2>
+			<pre>func Init(options *EngineOptions) (err error)</pre>
 			<p>
 Initializes go:ngine; this first attempts to initialize OpenGL and then open a window to your supplied specifications with a GL 3.3-or-higher profile.
 </p>
@@ -1398,7 +1417,7 @@ It is only aware of that instance and does not support any other EngineCore inst
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3237:3271#L113">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3165:3199#L112">SyncUpdates</a></h3>
 				<pre>func (_ *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -1570,7 +1589,7 @@ Initiates a rendering loop. This method returns only when the loop is stopped fo
 				
 			
 				
-				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=6775:6802#L199">Stop</a></h3>
+				<h3 id="EngineLoop.Stop">func (*EngineLoop) <a href="/target/ng-loop.go?s=6787:6814#L199">Stop</a></h3>
 				<pre>func (_ *EngineLoop) Stop()</pre>
 				<p>
 Stops the currently running Loop.Loop().
@@ -1580,7 +1599,7 @@ Stops the currently running Loop.Loop().
 				
 			
 				
-				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=6911:6946#L204">Time</a></h3>
+				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=6923:6958#L204">Time</a></h3>
 				<pre>func (_ *EngineLoop) Time() float64</pre>
 				<p>
 Returns the number of seconds expired ever since Loop.Loop() was last called.
@@ -1592,7 +1611,7 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=931:3801#L21">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=931:3672#L21">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     <span class="comment">//	The base directory path for asset file paths.</span>
     AssetRootDirPath string
@@ -1667,12 +1686,7 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
         <span class="comment">//	Default render technique for a Camera created via RenderCanvas.AddNewCameraQuad().</span>
         <span class="comment">//	Defaults to &#34;rt_quad&#34;.</span>
         DefaultTechniqueQuad string
-
-        PostFx struct {
-            TextureRect bool
-        }
     }
-    <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
 Only valid initialization for an EngineOptions is NewEngineOptions().
@@ -1690,8 +1704,8 @@ received from NewEngineOptions() is no longer used. Slightly confusing, but ther
 
 			
 				
-				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=3876:4004#L106">NewEngineOptions</a></h3>
-				<pre>func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions)</pre>
+				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=3747:3843#L99">NewEngineOptions</a></h3>
+				<pre>func NewEngineOptions(assetRootDirPath string, windowOptions *WindowOptions) (me *EngineOptions)</pre>
 				<p>
 Allocates, initializes and returns a new core.EngineOptions instance.
 </p>
@@ -1806,15 +1820,12 @@ Returns the average number of frames-per-second since Loop.Loop() was last calle
 		
 			
 			
-			<h2 id="EngineUserIO">type <a href="/target/ng-userio.go?s=500:1049#L8">EngineUserIO</a></h2>
+			<h2 id="EngineUserIO">type <a href="/target/ng-userio.go?s=500:765#L8">EngineUserIO</a></h2>
 			<pre>type EngineUserIO struct {
     <span class="comment">//	Minimum delay for EngineUserIO.KeyToggled() method, in seconds. Defaults to 0.25.</span>
     KeyToggleMinDelay float64
 
-    <span class="comment">//	Minimum delay, in seconds, to wait after the last window-resize event received from</span>
-    <span class="comment">//	the OS before notifying the rendering runtime of the new window dimensions.</span>
-    <span class="comment">//	Defaults to 0.25.</span>
-    WinResizeMinDelay float64
+    Window WindowOptions
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
@@ -1839,7 +1850,7 @@ Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window m
 
 			
 				
-				<h3 id="EngineUserIO.IifKeyF">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3348:3420#L87">IifKeyF</a></h3>
+				<h3 id="EngineUserIO.IifKeyF">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2556:2628#L68">IifKeyF</a></h3>
 				<pre>func (_ *EngineUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64</pre>
 				<p>
 Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
@@ -1849,7 +1860,7 @@ Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyPressed">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3539:3586#L95">KeyPressed</a></h3>
+				<h3 id="EngineUserIO.KeyPressed">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2747:2794#L76">KeyPressed</a></h3>
 				<pre>func (_ *EngineUserIO) KeyPressed(key int) bool</pre>
 				<p>
 Returns true if the specified key is pressed.
@@ -1859,7 +1870,7 @@ Returns true if the specified key is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyPressedWhich">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3677:3732#L100">KeyPressedWhich</a></h3>
+				<h3 id="EngineUserIO.KeyPressedWhich">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2885:2940#L81">KeyPressedWhich</a></h3>
 				<pre>func (_ *EngineUserIO) KeyPressedWhich(keys ...int) int</pre>
 				<p>
 Returns the first in keys that is pressed.
@@ -1869,7 +1880,7 @@ Returns the first in keys that is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyToggled">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4750:4797#L130">KeyToggled</a></h3>
+				<h3 id="EngineUserIO.KeyToggled">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3958:4005#L111">KeyToggled</a></h3>
 				<pre>func (_ *EngineUserIO) KeyToggled(key int) bool</pre>
 				<p>
 Returns true if the specified key has been &#34;toggled&#34;, ie. its pressed-state changed within the last me.KeyToggleMinDelay seconds.
@@ -1879,7 +1890,7 @@ Returns true if the specified key has been &#34;toggled&#34;, ie. its pressed-st
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAll2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3914:3969#L110">KeysPressedAll2</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAll2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3122:3177#L91">KeysPressedAll2</a></h3>
 				<pre>func (_ *EngineUserIO) KeysPressedAll2(k1, k2 int) bool</pre>
 				<p>
 Returns true if both specified keys are pressed.
@@ -1889,7 +1900,7 @@ Returns true if both specified keys are pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAll3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4087:4146#L115">KeysPressedAll3</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAll3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3295:3354#L96">KeysPressedAll3</a></h3>
 				<pre>func (_ *EngineUserIO) KeysPressedAll3(k1, k2, k3 int) bool</pre>
 				<p>
 Returns true if all three specified keys are pressed.
@@ -1899,7 +1910,7 @@ Returns true if all three specified keys are pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAny2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4293:4348#L120">KeysPressedAny2</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAny2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3501:3556#L101">KeysPressedAny2</a></h3>
 				<pre>func (_ *EngineUserIO) KeysPressedAny2(k1, k2 int) bool</pre>
 				<p>
 Returns true if any of the two specified keys is pressed.
@@ -1909,40 +1920,10 @@ Returns true if any of the two specified keys is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAny3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4472:4531#L125">KeysPressedAny3</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAny3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3680:3739#L106">KeysPressedAny3</a></h3>
 				<pre>func (_ *EngineUserIO) KeysPressedAny3(k1, k2, k3 int) bool</pre>
 				<p>
 Returns true if any of the three specified keys is pressed.
-</p>
-
-				
-				
-			
-				
-				<h3 id="EngineUserIO.SetWinTitle">func (*EngineUserIO) <a href="/target/ng-userio.go?s=5058:5109#L139">SetWinTitle</a></h3>
-				<pre>func (_ *EngineUserIO) SetWinTitle(newTitle string)</pre>
-				<p>
-Sets the window title to newTitle.
-</p>
-
-				
-				
-			
-				
-				<h3 id="EngineUserIO.WinHeight">func (*EngineUserIO) <a href="/target/ng-userio.go?s=5193:5231#L144">WinHeight</a></h3>
-				<pre>func (_ *EngineUserIO) WinHeight() int</pre>
-				<p>
-Returns the height of the window in pixels.
-</p>
-
-				
-				
-			
-				
-				<h3 id="EngineUserIO.WinWidth">func (*EngineUserIO) <a href="/target/ng-userio.go?s=5314:5351#L149">WinWidth</a></h3>
-				<pre>func (_ *EngineUserIO) WinWidth() int</pre>
-				<p>
-Returns the width of the window in pixels.
 </p>
 
 				
@@ -3322,35 +3303,35 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvas.AddNewCamera2D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1431:1503#L38">AddNewCamera2D</a></h3>
+				<h3 id="RenderCanvas.AddNewCamera2D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1391:1463#L38">AddNewCamera2D</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCamera2D(allowOverlaps bool) (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.AddNewCamera3D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1593:1647#L44">AddNewCamera3D</a></h3>
+				<h3 id="RenderCanvas.AddNewCamera3D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1553:1607#L44">AddNewCamera3D</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCamera3D() (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.AddNewCameraQuad">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1722:1778#L50">AddNewCameraQuad</a></h3>
+				<h3 id="RenderCanvas.AddNewCameraQuad">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1682:1738#L50">AddNewCameraQuad</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.CurrentAbsoluteSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1301:1366#L33">CurrentAbsoluteSize</a></h3>
+				<h3 id="RenderCanvas.CurrentAbsoluteSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1261:1326#L33">CurrentAbsoluteSize</a></h3>
 				<pre>func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2473:2505#L77">Remove</a></h3>
+				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2433:2465#L77">Remove</a></h3>
 				<pre>func (me *RenderCanvas) Remove()</pre>
 				<p>
 Removes me from Core.Rendering.Canvases and deletes its associated GPU resources.
@@ -3361,7 +3342,7 @@ This renders me invalid for further use.
 				
 			
 				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3102:3171#L96">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3062:3131#L96">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
 				<p>
 Sets the 2 dimensions of this render canvas.
@@ -3375,7 +3356,7 @@ Otherwise, width and height are absolute pixel dimensions.
 		
 			
 			
-			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3464:3499#L106">RenderCanvases</a></h2>
+			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3420:3455#L106">RenderCanvases</a></h2>
 			<pre>type RenderCanvases []*RenderCanvas</pre>
 			<p>
 Only used for Core.Rendering.Canvases.
@@ -3392,7 +3373,7 @@ Only used for Core.Rendering.Canvases.
 
 			
 				
-				<h3 id="RenderCanvases.AddNew">func (RenderCanvases) <a href="/target/render-canvas.go?s=3714:3801#L117">AddNew</a></h3>
+				<h3 id="RenderCanvases.AddNew">func (RenderCanvases) <a href="/target/render-canvas.go?s=3670:3757#L117">AddNew</a></h3>
 				<pre>func (_ RenderCanvases) AddNew(relative bool, width, height float64) (rc *RenderCanvas)</pre>
 				<p>
 Adds a new RenderCanvas and returns it.
@@ -3403,14 +3384,14 @@ The relative, width and height values are passed to a call to SetSize().
 				
 			
 				
-				<h3 id="RenderCanvases.Final">func (RenderCanvases) <a href="/target/render-canvas.go?s=3932:3977#L123">Final</a></h3>
+				<h3 id="RenderCanvases.Final">func (RenderCanvases) <a href="/target/render-canvas.go?s=3888:3933#L123">Final</a></h3>
 				<pre>func (_ RenderCanvases) Final() *RenderCanvas</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4018:4095#L127">Walk</a></h3>
+				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=3974:4051#L127">Walk</a></h3>
 				<pre>func (_ RenderCanvases) Walk(onCanv func(*RenderCanvas), onCam func(*Camera))</pre>
 				
 				
@@ -3602,6 +3583,89 @@ Returns the average cost tracked by this performance indicator.
 				<pre>func (me *TimingStats) Max() float64</pre>
 				<p>
 Returns the maximum cost tracked by this performance indicator.
+</p>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="WindowOptions">type <a href="/target/ng-window.go?s=184:544#L1">WindowOptions</a></h2>
+			<pre>type WindowOptions struct {
+    <span class="comment">//	Minimum delay, in seconds, to wait after the last window-resize event received from</span>
+    <span class="comment">//	the OS before notifying the rendering runtime of the new window dimensions.</span>
+    <span class="comment">//	Defaults to 0.25.</span>
+    ResizeMinDelay float64
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+Only used for core.UserIO.Window.
+This gets initialized from your NewWindowOptions() that you pass to NewEngineOptions().
+</p>
+
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewWindowOptions">func <a href="/target/ng-window.go?s=546:637#L11">NewWindowOptions</a></h3>
+				<pre>func NewWindowOptions(title string, width, height int, fullscreen bool) (me *WindowOptions)</pre>
+				
+				
+			
+
+			
+				
+				<h3 id="WindowOptions.Height">func (*WindowOptions) <a href="/target/ng-window.go?s=818:854#L17">Height</a></h3>
+				<pre>func (_ *WindowOptions) Height() int</pre>
+				<p>
+Returns the height of the window in pixels.
+</p>
+
+				
+				
+			
+				
+				<h3 id="WindowOptions.SetSwapInterval">func (*WindowOptions) <a href="/target/ng-window.go?s=889:941#L21">SetSwapInterval</a></h3>
+				<pre>func (_ *WindowOptions) SetSwapInterval(newSwap int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="WindowOptions.SetTitle">func (*WindowOptions) <a href="/target/ng-window.go?s=1112:1161#L29">SetTitle</a></h3>
+				<pre>func (_ *WindowOptions) SetTitle(newTitle string)</pre>
+				<p>
+Sets the window title to newTitle.
+</p>
+
+				
+				
+			
+				
+				<h3 id="WindowOptions.SwapInterval">func (*WindowOptions) <a href="/target/ng-window.go?s=1285:1327#L36">SwapInterval</a></h3>
+				<pre>func (_ *WindowOptions) SwapInterval() int</pre>
+				
+				
+				
+			
+				
+				<h3 id="WindowOptions.Title">func (*WindowOptions) <a href="/target/ng-window.go?s=1360:1398#L40">Title</a></h3>
+				<pre>func (_ *WindowOptions) Title() string</pre>
+				
+				
+				
+			
+				
+				<h3 id="WindowOptions.Width">func (*WindowOptions) <a href="/target/ng-window.go?s=1478:1513#L45">Width</a></h3>
+				<pre>func (_ *WindowOptions) Width() int</pre>
+				<p>
+Returns the width of the window in pixels.
 </p>
 
 				

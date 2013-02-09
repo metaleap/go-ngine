@@ -100,9 +100,6 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 				
 				<dd><a href="#ToggleRetro">func ToggleRetro()</a></dd>
 			
-				
-				<dd><a href="#WindowTitle">func WindowTitle() string</a></dd>
-			
 			
 				
 				<dd><a href="#Gui2D">type Gui2D</a></dd>
@@ -159,6 +156,8 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 			<h2 id="pkg-variables">Variables</h2>
 			
 				<pre>var (
+    ArtificialSplashScreenDelay = 0 * time.Second
+
     <span class="comment">//	The RenderCanvas the example scene is initially being rendered to. This is an off-screen &#34;render-to-texture&#34; RenderCanvas.</span>
     SceneCanvas *ng.RenderCanvas
 
@@ -214,7 +213,7 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 		
 			
 			
-			<h2 id="AddColorMaterials">func <a href="/target/assets.go?s=1032:1086#L21">AddColorMaterials</a></h2>
+			<h2 id="AddColorMaterials">func <a href="/target/assets.go?s=806:860#L14">AddColorMaterials</a></h2>
 			<pre>func AddColorMaterials(idsColors map[string][]float64)</pre>
 			<p>
 Sets up plain-color effects/materials with the specified IDs.
@@ -251,7 +250,7 @@ the specified ID, and returns it.
 		
 			
 			
-			<h2 id="AddTextureMaterials">func <a href="/target/assets.go?s=1862:1913#L36">AddTextureMaterials</a></h2>
+			<h2 id="AddTextureMaterials">func <a href="/target/assets.go?s=1636:1687#L29">AddTextureMaterials</a></h2>
 			<pre>func AddTextureMaterials(idsUrls map[string]string)</pre>
 			<p>
 Sets up textures and associated effects/materials with the specified IDs and image URLs.
@@ -268,7 +267,7 @@ adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffe
 		
 			
 			
-			<h2 id="AssetRootDirPath">func <a href="/target/assets.go?s=2694:2724#L63">AssetRootDirPath</a></h2>
+			<h2 id="AssetRootDirPath">func <a href="/target/assets.go?s=2468:2498#L56">AssetRootDirPath</a></h2>
 			<pre>func AssetRootDirPath() string</pre>
 			<p>
 Returns the &#34;asset root directory&#34; path for go:ngine, in this case: $GOPATH/src/github.com/go3d/go-ngine/_examples/_assets
@@ -311,7 +310,7 @@ states (from the previous CheckCamCtlKeys() call) for controlling SceneCam.Contr
 		
 			
 			
-			<h2 id="Main">func <a href="/target/apputil.go?s=1333:1394#L35">Main</a></h2>
+			<h2 id="Main">func <a href="/target/apputil.go?s=1946:2007#L49">Main</a></h2>
 			<pre>func Main(setupExampleScene, onAppThread, onWinThread func())</pre>
 			<p>
 Called by each example-app&#39;s func main(). Initializes go:ngine, sets SceneCam/SceneCanvas/PostFxCam/PostFxCanvas etc., calls the specified assetLoader function, then enters The Loop.
@@ -321,7 +320,7 @@ Called by each example-app&#39;s func main(). Initializes go:ngine, sets SceneCa
 		
 			
 			
-			<h2 id="OnSec">func <a href="/target/apputil.go?s=952:964#L24">OnSec</a></h2>
+			<h2 id="OnSec">func <a href="/target/apputil.go?s=1558:1570#L38">OnSec</a></h2>
 			<pre>func OnSec()</pre>
 			<p>
 Refreshes the window title every second, showing the next one entry in KeyHints every 3 seconds.
@@ -357,16 +356,6 @@ Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent 
 			<p>
 Toggles &#34;retro mode&#34; for the example app.
 If retro is on, the resolution of the main canvas is 1/4th of the window resolution.
-</p>
-
-			
-		
-			
-			
-			<h2 id="WindowTitle">func <a href="/target/apputil.go?s=2748:2773#L75">WindowTitle</a></h2>
-			<pre>func WindowTitle() string</pre>
-			<p>
-Returns the window title to be set by OnSec().
 </p>
 
 			

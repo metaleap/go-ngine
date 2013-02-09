@@ -19,20 +19,16 @@ type EngineUserIO struct {
 	//	Minimum delay for EngineUserIO.KeyToggled() method, in seconds. Defaults to 0.25.
 	KeyToggleMinDelay float64
 
-	//	Minimum delay, in seconds, to wait after the last window-resize event received from
-	//	the OS before notifying the rendering runtime of the new window dimensions.
-	//	Defaults to 0.25.
-	WinResizeMinDelay float64
+	Window WindowOptions
 
-	isGlfwInit, isGlfwWindow, togglePress bool
-	keyWhich                              int
-	lastWinResize                         float64
-	lastToggles                           map[int]float64
+	isGlfwInit, togglePress bool
+	keyWhich                int
+	lastToggles             map[int]float64
 }
 
 func (_ *EngineUserIO) dispose() {
-	if UserIO.isGlfwWindow {
-		UserIO.isGlfwWindow = false
+	if UserIO.Window.isCreated {
+		UserIO.Window.isCreated = false
 		glfw.CloseWindow()
 	}
 	if UserIO.isGlfwInit {
@@ -41,15 +37,15 @@ func (_ *EngineUserIO) dispose() {
 	}
 }
 
-func (_ *EngineUserIO) init(winTitle string, forceContextVersion float64) (err error) {
+func (_ *EngineUserIO) init(forceContextVersion float64) (err error) {
 	opt := &Core.Options
-	UserIO.KeyToggleMinDelay, UserIO.WinResizeMinDelay, UserIO.lastToggles = 0.25, 0.25, map[int]float64{}
+	UserIO.KeyToggleMinDelay, UserIO.lastToggles = 0.25, map[int]float64{}
 	if !UserIO.isGlfwInit {
 		if err = glfw.Init(); err == nil {
 			UserIO.isGlfwInit = true
 		}
 	}
-	if UserIO.isGlfwInit && !UserIO.isGlfwWindow {
+	if UserIO.isGlfwInit && !UserIO.Window.isCreated {
 		glfw.OpenWindowHint(glfw.FsaaSamples, 0) // AA will be a pluggable post-processing shader
 		if forceContextVersion > 0 {
 			major, minor := ugl.VersionMajorMinor(forceContextVersion)
@@ -61,14 +57,14 @@ func (_ *EngineUserIO) init(winTitle string, forceContextVersion float64) (err e
 			}
 		}
 		winInit := &opt.Initialization.Window
-		if err = glfw.OpenWindow(opt.winWidth, opt.winHeight, winInit.Rbits, winInit.Gbits, winInit.Bbits, winInit.Abits, winInit.DepthBits, winInit.StencilBits, ugo.Ifi(opt.winFullScreen, glfw.Fullscreen, glfw.Windowed)); err == nil {
-			opt.winWidth, opt.winHeight = glfw.WindowSize()
-			UserIO.isGlfwWindow = true
+		if err = glfw.OpenWindow(UserIO.Window.width, UserIO.Window.height, winInit.Rbits, winInit.Gbits, winInit.Bbits, winInit.Abits, winInit.DepthBits, winInit.StencilBits, ugo.Ifi(UserIO.Window.fullscreen, glfw.Fullscreen, glfw.Windowed)); err == nil {
+			UserIO.Window.width, UserIO.Window.height = glfw.WindowSize()
+			UserIO.Window.isCreated = true
 		}
 	}
-	if UserIO.isGlfwWindow {
-		UserIO.SetWinTitle(winTitle)
-		glfw.SetSwapInterval(opt.winSwapInterval)
+	if UserIO.Window.isCreated {
+		UserIO.Window.SetTitle(UserIO.Window.title)
+		UserIO.Window.SetSwapInterval(UserIO.Window.swap)
 		glfw.SetWindowCloseCallback(glfwOnWindowClose)
 		glfw.SetWindowSizeCallback(glfwOnWindowResize)
 		// glfw.Disable(glfw.MouseCursor)
@@ -76,21 +72,6 @@ func (_ *EngineUserIO) init(winTitle string, forceContextVersion float64) (err e
 		glfw.Enable(glfw.StickyKeys)
 	}
 	return
-}
-
-//	just a GLFW event callback without creating a closure
-func glfwOnWindowClose() int {
-	Loop.Looping = false
-	//	Return 0 to cancel the user's onWindowClose -- we close manually.
-	//	If we returned 1 to confirm the Close, the loop would continue
-	//	doing GL stuff against the destroyed window and record a GL error.
-	return 0
-}
-
-//	just a GLFW event callback without creating a closure
-func glfwOnWindowResize(width, height int) {
-	Core.Options.winWidth, Core.Options.winHeight = width, height
-	UserIO.lastWinResize = Loop.Tick.Now
 }
 
 //	Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
@@ -143,19 +124,4 @@ func (_ *EngineUserIO) KeyToggled(key int) bool {
 		return true
 	}
 	return false
-}
-
-//	Sets the window title to newTitle.
-func (_ *EngineUserIO) SetWinTitle(newTitle string) {
-	glfw.SetWindowTitle(newTitle)
-}
-
-//	Returns the height of the window in pixels.
-func (_ *EngineUserIO) WinHeight() int {
-	return Core.Options.winHeight
-}
-
-//	Returns the width of the window in pixels.
-func (_ *EngineUserIO) WinWidth() int {
-	return Core.Options.winWidth
 }

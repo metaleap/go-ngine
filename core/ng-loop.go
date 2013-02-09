@@ -137,9 +137,9 @@ func (_ *EngineLoop) Loop() {
 			Loop.onSwap()
 
 			//	Check for resize before next render
-			if (UserIO.lastWinResize > 0) && ((Loop.Tick.Now - UserIO.lastWinResize) > UserIO.WinResizeMinDelay) {
-				UserIO.lastWinResize = 0
-				Core.onResizeWindow(Core.Options.winWidth, Core.Options.winHeight)
+			if (UserIO.Window.lastResize > 0) && ((Loop.Tick.Now - UserIO.Window.lastResize) > UserIO.Window.ResizeMinDelay) {
+				UserIO.Window.lastResize = 0
+				Core.onResizeWindow(UserIO.Window.width, UserIO.Window.height)
 			}
 			Stats.FrameRenderBoth.combine()
 		}

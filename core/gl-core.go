@@ -51,9 +51,6 @@ func glInit() (err error, badVer string) {
 				gl.FrontFace(gl.CCW)
 				gl.CullFace(gl.BACK)
 				Diag.LogMisc(ugl.Util.ConnInfo())
-				if Core.Options.Rendering.PostFx.TextureRect {
-					glc.progMan.Defines["PostFx_TextureRect"] = 1
-				}
 				if dur, err = glc.progMan.MakeProgramsFromRawSources(true); err == nil {
 					Diag.LogShaders("Total shader compilation time for all %v programs: %v\n", len(glc.progMan.Programs), dur)
 				}

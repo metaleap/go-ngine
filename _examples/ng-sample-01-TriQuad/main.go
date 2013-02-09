@@ -12,7 +12,7 @@ var (
 )
 
 func main() {
-	apputil.MaxKeyHint = 3
+	apputil.MaxKeyHint = 2
 	apputil.Main(setupExample_01_TriQuad, onAppThread, onWinThread)
 }
 

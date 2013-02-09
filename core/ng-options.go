@@ -102,18 +102,11 @@ type EngineOptions struct {
 		//	Default render technique for a Camera created via RenderCanvas.AddNewCameraQuad().
 		//	Defaults to "rt_quad".
 		DefaultTechniqueQuad string
-
-		PostFx struct {
-			TextureRect bool
-		}
 	}
-
-	glTextureAnisotropy, winFullScreen   bool
-	winHeight, winSwapInterval, winWidth int
 }
 
 //	Allocates, initializes and returns a new core.EngineOptions instance.
-func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInterval int, winFullScreen bool) (me *EngineOptions) {
+func NewEngineOptions(assetRootDirPath string, windowOptions *WindowOptions) (me *EngineOptions) {
 	me = &EngineOptions{AssetRootDirPath: assetRootDirPath}
 	me.Misc.DefaultControllerParams = NewControllerParams()
 	init, isMac, initGl := &me.Initialization, runtime.GOOS == "darwin", &me.Initialization.GlContext
@@ -123,6 +116,6 @@ func NewEngineOptions(assetRootDirPath string, winWidth, winHeight, winSwapInter
 	rend := &me.Rendering
 	rend.DefaultClearColor = ugl.GlVec4{0, 0, 0, 1}
 	rend.DefaultTechnique2D, rend.DefaultTechnique3D, rend.DefaultTechniqueQuad = "rt_scene", "rt_scene", "rt_quad"
-	me.winWidth, me.winHeight, me.winSwapInterval, me.winFullScreen = winWidth, winHeight, winSwapInterval, winFullScreen
+	UserIO.Window = *windowOptions
 	return
 }

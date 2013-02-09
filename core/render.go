@@ -16,10 +16,11 @@ func (me *RenderCanvas) render() {
 	if !me.isFinal {
 		me.frameBuf.Bind()
 	}
-	me.frameBuf.Bind()
+	Core.Rendering.states.SetFramebufferSrgb(me.Srgb)
 	for _, thrRend.curCam = range me.Cameras {
 		thrRend.curCam.render()
 	}
+	Core.Rendering.states.SetFramebufferSrgb(false)
 	if !me.isFinal {
 		me.frameBuf.Unbind()
 		me.frameBuf.BindTexture(0)

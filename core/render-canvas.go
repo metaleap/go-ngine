@@ -19,6 +19,8 @@ type RenderCanvas struct {
 
 	Cameras Cameras
 
+	Srgb bool
+
 	isFinal, viewSizeRelative   bool
 	absViewWidth, absViewHeight int
 	relViewWidth, relViewHeight float64
@@ -32,8 +34,8 @@ func newRenderCanvas(isFinal, relative bool, width, height float64) (me *RenderC
 	if isFinal {
 		me.frameBuf.GlTarget = gl.FRAMEBUFFER
 	} else {
-		me.frameBuf.Create(gl.Sizei(Core.Options.winWidth), gl.Sizei(Core.Options.winHeight), false)
-		me.frameBuf.AttachRendertexture(ugl.NewFramebufferRendertexture(Core.Options.Rendering.PostFx.TextureRect))
+		me.frameBuf.Create(gl.Sizei(UserIO.Window.width), gl.Sizei(UserIO.Window.height), false)
+		me.frameBuf.AttachRendertexture(ugl.NewFramebufferRendertexture(false))
 		me.frameBuf.AttachRenderbuffer(ugl.NewFramebufferRenderbuffer())
 	}
 	ugl.LogLastError("newRenderCanvas(%v x %v)", width, height)
@@ -109,7 +111,7 @@ func (me *RenderCanvas) SetSize(relative bool, width, height float64) {
 	} else {
 		me.absViewWidth, me.absViewHeight = int(width), int(height)
 	}
-	me.onResize(Core.Options.winWidth, Core.Options.winHeight)
+	me.onResize(UserIO.Window.width, UserIO.Window.height)
 }
 
 //	Only used for Core.Rendering.Canvases.

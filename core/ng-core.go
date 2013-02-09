@@ -100,7 +100,6 @@ func initRenderTechniques() {
 
 func (_ *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 	if Core.isInit {
-		Core.Options.winWidth, Core.Options.winHeight = viewWidth, viewHeight
 		for _, canv := range Core.Rendering.Canvases {
 			canv.onResize(viewWidth, viewHeight)
 		}
@@ -126,7 +125,7 @@ func (_ *EngineCore) SyncUpdates() {
 		ok  bool
 	)
 	ugl.LogLastError("EngineCore.SyncUpdates() -- pre")
-	Core.onResizeWindow(Core.Options.winWidth, Core.Options.winHeight)
+	Core.onResizeWindow(UserIO.Window.width, UserIO.Window.height)
 	ugl.LogLastError("EngineCore.SyncUpdates() -- resizewin")
 	for _, img := range Core.Libs.Images.I2D {
 		if !img.Loaded() {

@@ -12,10 +12,9 @@ var (
 	//	OnSec() changes the window title every second to display FPS etc.
 	//	Also every 4 seconds shows the next one in a number of "key hints" defined here:
 	KeyHints = []string{
-		"[Esc]  --  Close & Exit",
+		"[Esc]  --  Pause/Resume",
 		"[F2]  --  Toggle Backface Culling",
-		"[F3]  --  Pause/Resume",
-		"[F4]  --  Retro Mode",
+		"[F3]  --  Retro Mode",
 		"[W][S]  --  Camera rise / sink",
 		"[A][D]  --  Camera strafe left / right",
 		"[<][>]  --  Camera turn left / right",
@@ -70,15 +69,12 @@ func CheckCamCtlKeys() {
 func CheckAndHandleToggleKeys() {
 	in := &ng.UserIO
 	if in.KeyToggled(glfw.KeyEsc) {
-		ng.Loop.Stop()
+		PauseResume()
 	}
-	if in.KeyToggled(glfw.KeyF2) {
+	if SceneCam != nil && in.KeyToggled(glfw.KeyF2) {
 		SceneCam.Rendering.States.FaceCulling = !SceneCam.Rendering.States.FaceCulling
 	}
 	if in.KeyToggled(glfw.KeyF3) {
-		PauseResume()
-	}
-	if in.KeyToggled(glfw.KeyF4) {
 		ToggleRetro()
 	}
 }

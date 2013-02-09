@@ -12,9 +12,13 @@ import (
 func PauseResume() {
 	tech := PostFxCam.Rendering.Technique.(*ng.RenderTechniqueQuad)
 	if Paused = tech.ToggleEffect("Grayscale"); Paused {
-		SceneCanvas.EveryNthFrame = 0
+		if SceneCanvas != nil {
+			SceneCanvas.EveryNthFrame = 0
+		}
 	} else {
-		SceneCanvas.EveryNthFrame = 1
+		if SceneCanvas != nil {
+			SceneCanvas.EveryNthFrame = 1
+		}
 	}
 	if err := tech.ApplyEffects(); err != nil {
 		ng.Diag.LogErr(err)
@@ -42,9 +46,11 @@ func PrintPostLoopSummary() {
 //	Toggles "retro mode" for the example app.
 //	If retro is on, the resolution of the main canvas is 1/4th of the window resolution.
 func ToggleRetro() {
-	if retro = !retro; retro {
-		SceneCanvas.SetSize(true, 0.25, 0.25)
-	} else {
-		SceneCanvas.SetSize(true, 1, 1)
+	if SceneCanvas != nil && !Paused {
+		if retro = !retro; retro {
+			SceneCanvas.SetSize(true, 0.25, 0.25)
+		} else {
+			SceneCanvas.SetSize(true, 1, 1)
+		}
 	}
 }
