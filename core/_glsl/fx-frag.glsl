@@ -17,7 +17,7 @@ vec3 fx_Tex0 (const in vec3 vCol) {
 	return texture(uni_Tex0, var_Tex0).rgb;
 }
 
-fx_Main (inout vec3 vCol) {
+void fx_Main (inout vec3 vCol) {
 	vCol = fx_Tex0(vCol);
 	vCol = fx_Grayscale(vCol);
 	vCol = fx_RedTest(vCol);

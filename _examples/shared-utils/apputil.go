@@ -32,6 +32,11 @@ var (
 		preLoop  int64
 		postLoop int64
 	}
+	winTitle struct {
+		cw, ch         int
+		camPos, camDir unum.Vec3
+	}
+
 	curKeyHint = 0
 	sec        = 0
 )
@@ -112,9 +117,4 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 		ng.Loop.Loop()
 		numCgo.postLoop = runtime.NumCgoCall()
 	}
-}
-
-var winTitle struct {
-	cw, ch         int
-	camPos, camDir unum.Vec3
 }

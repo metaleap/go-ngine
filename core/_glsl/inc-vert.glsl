@@ -24,7 +24,7 @@ vec2 vx_TexCoord_Quad () {
 }
 #endif
 
-void vx_Pos_Main (inout vec4 vPos) {
+void vx_Main_Pos (inout vec4 vPos) {
 #if defined(VX_Uni_Matrix) && defined(VX_Att_Pos)
 	vPos = vx_Pos_Matrix();
 #endif
@@ -34,7 +34,7 @@ void vx_Pos_Main (inout vec4 vPos) {
 #endif
 }
 
-void vx_TexCoord_Main (inout vec2 vTex) {
+void vx_Main_TexCoord (inout vec2 vTex) {
 #ifdef VX_Att_TexCoord
 	vTex = vx_TexCoord_Att();
 #endif

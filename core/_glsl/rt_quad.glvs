@@ -5,6 +5,6 @@ out vec2 var_Tex0;
 #pragma incl inc-vert.glsl
 
 void main () {
-	vx_Pos_Main(gl_Position);
-	vx_TexCoord_Main(var_Tex0);
+	vx_Main_Pos(gl_Position);
+	vx_Main_TexCoord(var_Tex0);
 }

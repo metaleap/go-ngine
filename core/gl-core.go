@@ -20,7 +20,7 @@ var (
 		lastBadVer string
 		isInit     bool
 		progMan    ugl.ProgramManager
-		shaderMan  shaderComposer
+		shaderMan  uberShader
 	}
 )
 
@@ -54,6 +54,8 @@ func glInit() (err error, badVer string) {
 				if dur, err = glc.progMan.MakeProgramsFromRawSources(true); err == nil {
 					Diag.LogShaders("Total shader compilation time for all %v programs: %v\n", len(glc.progMan.Programs), dur)
 					Stats.addProgCompile(len(glc.progMan.Programs), dur.Nanoseconds())
+					glc.shaderMan.loadFromRawSources()
+					glc.shaderMan.processFuncs()
 				}
 			}
 		}

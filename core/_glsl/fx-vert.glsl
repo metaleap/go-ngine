@@ -25,12 +25,12 @@ vec2 vx_TexCoord_Quad () {
 	return vTex[gl_VertexID];
 }
 
-void vx_Pos_Main (inout vec4 vPos) {
+void vx_Main_Pos (inout vec4 vPos) {
 	vPos = vx_Pos_Matrix();
 	vPos = vx_Pos_Quad();
 }
 
-void vx_TexCoord_Main (inout vec2 vTex) {
+void vx_Main_TexCoord (inout vec2 vTex) {
 	vTex = vx_TexCoord_Att();
 	vTex = vx_TexCoord_Quad();
 }
