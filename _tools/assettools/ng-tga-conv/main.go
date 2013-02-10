@@ -19,7 +19,7 @@ var (
 	fOutDirPath = flag.String("out", "Q:\\oga\\yughues_png", "PNG out dir root path")
 )
 
-func processFile(_ *uio.DirWalker, srcFilePath string, isDir bool) (keepWalking bool) {
+func processFile(_ *uio.DirWalker, srcFilePath string, _ os.FileInfo) (keepWalking bool) {
 	if strings.HasSuffix(srcFilePath, ".tga") {
 		var (
 			outFilePath      = strings.Replace(strings.Replace(srcFilePath, *fSrcDirPath, *fOutDirPath, -1), ".tga", ".png", -1)
