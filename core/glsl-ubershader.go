@@ -7,13 +7,16 @@ import (
 )
 
 type uberShaderFunc struct {
-	isMain       bool
-	name, rawSrc string
-	dependsOn    map[string]bool
+	isMain            bool
+	name, rawSrc      string
+	dependsOn, inputs map[string]bool
 }
 
 func newUberShaderFunc(name, rawSrc string) (me *uberShaderFunc) {
-	me = &uberShaderFunc{name: name, rawSrc: rawSrc, dependsOn: map[string]bool{}, isMain: strings.Index(name, "_Main") == 2}
+	me = &uberShaderFunc{
+		name: name, rawSrc: rawSrc, isMain: strings.Index(name, "_Main") == 2,
+		dependsOn: map[string]bool{}, inputs: map[string]bool{},
+	}
 	return
 }
 
@@ -110,12 +113,18 @@ func (me *uberShader) processFuncs() {
 				}
 			}
 			//	annotate this func for any uniforms, varyings or attributes
+			for _, pref = range []string{"att_", "uni_", "var_"} {
+				for _, pref2 = range ustr.ExtractAllIdentifiers(fn.rawSrc, pref) {
+					fn.inputs[pref2] = true
+				}
+			}
 		}
 	}
-	for pref, mp = range mps {
-		println(pref + "===>")
-		for _, fn = range *mp {
-			println(fmtStr("%s deps: %#v", fn.name, fn.dependsOn))
-		}
-	}
+	// for pref, mp = range mps {
+	// 	println(pref + "===>")
+	// 	for _, fn = range *mp {
+	// 		println(fmtStr("%s deps: %#v", fn.name, fn.dependsOn))
+	// 		println(fmtStr("%s inputs: %#v", fn.name, fn.inputs))
+	// 	}
+	// }
 }
