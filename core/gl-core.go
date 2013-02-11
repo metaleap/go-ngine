@@ -60,7 +60,7 @@ func glInit() (err error, badVer string) {
 			}
 		}
 		if err == nil {
-			err = ugl.Util.Error("ng-gl-core.Init")
+			err = ugl.Util.LastError("ng-gl-core.Init")
 		}
 		if err == nil {
 			glc.isInit = true
