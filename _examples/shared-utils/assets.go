@@ -23,7 +23,7 @@ func AddScene(id string, mainCamScene bool) (me *ng.Scene) {
 //	adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffect.
 func AddColorMaterials(idsColors map[string][]float64) {
 	for id, col := range idsColors {
-		ng.Core.Libs.Effects.AddNew("fx_" + id).Diffuse = ng.NewFxColor(col...)
+		ng.Core.Libs.Effects.AddNew("fx_" + id).OldDiffuse = ng.NewFxColor(col...)
 		ng.Core.Libs.Materials.AddNew("mat_" + id).DefaultEffectID = "fx_" + id
 	}
 }
@@ -57,7 +57,7 @@ func AddTextureMaterials(idsUrls map[string]string) {
 				panic(err)
 			}
 		}
-		ng.Core.Libs.Effects.AddNew("fx_" + id).Diffuse = ng.NewFxTexture("img_"+id, nil)
+		ng.Core.Libs.Effects.AddNew("fx_" + id).OldDiffuse = ng.NewFxTexture("img_"+id, nil)
 		ng.Core.Libs.Materials.AddNew("mat_" + id).DefaultEffectID = "fx_" + id
 	}
 }

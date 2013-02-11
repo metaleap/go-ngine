@@ -27,7 +27,7 @@ func (me *RenderTechniqueScene) onRenderNode() {
 	if thrRend.tmpMat = thrRend.curNode.EffectiveMaterial(); thrRend.tmpMat != thrRend.curMat {
 		if thrRend.curMat = thrRend.tmpMat; thrRend.curMat != nil {
 			thrRend.tmpEffect = Core.Libs.Effects[thrRend.curMat.DefaultEffectID]
-			Core.Libs.Images.I2D[thrRend.tmpEffect.Diffuse.Texture.Image2ID].glTex.Bind()
+			Core.Libs.Images.I2D[thrRend.tmpEffect.OldDiffuse.Texture.Image2ID].glTex.Bind()
 			gl.Uniform1i(thrRend.curProg.UnifLocs["uni_Tex0"], 0)
 		}
 	}

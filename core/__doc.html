@@ -299,6 +299,14 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
+				<dd><a href="#FxEffectShader">type FxEffectShader</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewFxEffectShader">func NewFxEffectShader(shaderIDs ...string) (me *FxEffectShader)</a></dd>
+				
+				
+			
+				
 				<dd><a href="#FxImage2D">type FxImage2D</a></dd>
 				
 					
@@ -345,6 +353,14 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#NewFxMaterial">func NewFxMaterial() (me *FxMaterial)</a></dd>
+				
+				
+			
+				
+				<dd><a href="#FxShader">type FxShader</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewFxShader">func NewFxShader(funcName string) (me *FxShader)</a></dd>
 				
 				
 			
@@ -795,6 +811,8 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<a href="/target/effect.go">effect.go</a>
 			
 				<a href="/target/fileio.go">fileio.go</a>
+			
+				<a href="/target/fx-effect-old.go">fx-effect-old.go</a>
 			
 				<a href="/target/fx-effect.gt.go">fx-effect.gt.go</a>
 			
@@ -1370,7 +1388,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:957#L6">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:992#L6">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Options     EngineOptions
@@ -1385,8 +1403,9 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
         Scenes LibScenes
     }
     Rendering struct {
-        Canvases RenderCanvases
-        Samplers struct {
+        Canvases  RenderCanvases
+        FxShaders map[string]*FxShader
+        Samplers  struct {
             NoFilteringClamp    ugl.Sampler
             FullFilteringRepeat ugl.Sampler
         }
@@ -1417,7 +1436,7 @@ It is only aware of that instance and does not support any other EngineCore inst
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3165:3199#L112">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3334:3368#L118">SyncUpdates</a></h3>
 				<pre>func (_ *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -1937,7 +1956,7 @@ Returns true if any of the three specified keys is pressed.
 		
 			
 			
-			<h2 id="FxColorOrTexture">type <a href="/target/fx-effect.gt.go?s=206:625#L1">FxColorOrTexture</a></h2>
+			<h2 id="FxColorOrTexture">type <a href="/target/fx-effect-old.go?s=206:625#L1">FxColorOrTexture</a></h2>
 			<pre>type FxColorOrTexture struct {
     <span class="comment">//	If set, the color is sourced from this value.</span>
     Color *ugfx.Rgba64
@@ -1966,7 +1985,7 @@ either pointing to an FxImage2D or a 64-bit RGBA color.
 
 			
 				
-				<h3 id="NewFxColor">func <a href="/target/fx-effect.gt.go?s=709:764#L16">NewFxColor</a></h3>
+				<h3 id="NewFxColor">func <a href="/target/fx-effect-old.go?s=709:764#L16">NewFxColor</a></h3>
 				<pre>func NewFxColor(rgba ...float64) (me *FxColorOrTexture)</pre>
 				<p>
 Creates and returns a new FxColorOrTexture that points to the specified color.
@@ -1975,7 +1994,7 @@ Creates and returns a new FxColorOrTexture that points to the specified color.
 				
 			
 				
-				<h3 id="NewFxTexture">func <a href="/target/fx-effect.gt.go?s=1022:1101#L23">NewFxTexture</a></h3>
+				<h3 id="NewFxTexture">func <a href="/target/fx-effect-old.go?s=1022:1101#L23">NewFxTexture</a></h3>
 				<pre>func NewFxTexture(image2ID string, sampler *ugl.Sampler) (me *FxColorOrTexture)</pre>
 				<p>
 Creates and returns a new FxColorOrTexture that points to the specified texture image.
@@ -1989,10 +2008,10 @@ If sampler is nil, Core.Rendering.Samplers.FullFilteringRepeat is used for me.Te
 		
 			
 			
-			<h2 id="FxEffect">type <a href="/target/fx-effect.gt.go?s=1283:1390#L32">FxEffect</a></h2>
+			<h2 id="FxEffect">type <a href="/target/fx-effect.gt.go?s=422:508#L15">FxEffect</a></h2>
 			<pre>type FxEffect struct {
-    <span class="comment">//	The source for diffuse color information. Required.</span>
-    Diffuse *FxColorOrTexture
+    OldDiffuse   *FxColorOrTexture
+    EffectShader *FxEffectShader
 }</pre>
 			
 
@@ -2004,12 +2023,36 @@ If sampler is nil, Core.Rendering.Samplers.FullFilteringRepeat is used for me.Te
 
 			
 				
-				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=1562:1595#L46">NewFxEffect</a></h3>
+				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=680:713#L29">NewFxEffect</a></h3>
 				<pre>func NewFxEffect() (me *FxEffect)</pre>
 				<p>
 Initializes and returns a new FxEffect with default parameters.
 </p>
 
+				
+			
+
+			
+		
+			
+			
+			<h2 id="FxEffectShader">type <a href="/target/fx-effect.gt.go?s=14:82#L1">FxEffectShader</a></h2>
+			<pre>type FxEffectShader struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewFxEffectShader">func <a href="/target/fx-effect.gt.go?s=84:148#L1">NewFxEffectShader</a></h3>
+				<pre>func NewFxEffectShader(shaderIDs ...string) (me *FxEffectShader)</pre>
+				
 				
 			
 
@@ -2184,7 +2227,31 @@ Initializes and returns a new FxMaterial with default parameters.
 		
 			
 			
-			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=1713:1751#L53">LibFxEffects</a></h2>
+			<h2 id="FxShader">type <a href="/target/fx-effect.gt.go?s=273:314#L6">FxShader</a></h2>
+			<pre>type FxShader struct {
+    FuncName string
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewFxShader">func <a href="/target/fx-effect.gt.go?s=316:364#L10">NewFxShader</a></h3>
+				<pre>func NewFxShader(funcName string) (me *FxShader)</pre>
+				
+				
+			
+
+			
+		
+			
+			
+			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=831:869#L36">LibFxEffects</a></h2>
 			<pre>type LibFxEffects map[string]*FxEffect</pre>
 			<p>
 A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
@@ -2201,7 +2268,7 @@ A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=1877:1933#L57">AddNew</a></h3>
+				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=995:1051#L40">AddNew</a></h3>
 				<pre>func (me LibFxEffects) AddNew(id string) (obj *FxEffect)</pre>
 				<p>
 Creates and initializes a new FxEffect with default parameters,
@@ -2212,7 +2279,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibFxEffects.Remove">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2132:2172#L74">Remove</a></h3>
+				<h3 id="LibFxEffects.Remove">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=1250:1290#L57">Remove</a></h3>
 				<pre>func (me LibFxEffects) Remove(id string)</pre>
 				
 				

@@ -27,8 +27,9 @@ type EngineCore struct {
 		Scenes LibScenes
 	}
 	Rendering struct {
-		Canvases RenderCanvases
-		Samplers struct {
+		Canvases  RenderCanvases
+		FxShaders map[string]*FxShader
+		Samplers  struct {
 			NoFilteringClamp    ugl.Sampler
 			FullFilteringRepeat ugl.Sampler
 		}
@@ -56,11 +57,9 @@ func (_ *EngineCore) dispose() {
 
 func (_ *EngineCore) init() {
 	initRenderTechniques()
-	Core.initRenderingStates()
 	Core.MeshBuffers = newMeshBuffers()
 	Core.initLibs()
-	Core.Rendering.Canvases = append(RenderCanvases{}, newRenderCanvas(true, true, 1, 1))
-	Core.Rendering.Canvases.Final().AddNewCameraQuad()
+	Core.initRendering()
 	splash := &Core.Libs.Images.SplashScreen
 	splash.InitFrom.RawData = embeddedBinaries["splash.png"]
 	splash.init()
@@ -81,10 +80,17 @@ func (_ *EngineCore) initLibs() {
 	}
 }
 
-func (_ *EngineCore) initRenderingStates() {
-	Core.Rendering.states.ForceClearColor(Core.Options.Rendering.DefaultClearColor)
-	Core.Rendering.Samplers.FullFilteringRepeat.Create().EnableFullFiltering(true, 8).SetWrap(gl.REPEAT)
-	Core.Rendering.Samplers.NoFilteringClamp.Create().DisableAllFiltering(false).SetWrap(gl.CLAMP_TO_BORDER)
+func (_ *EngineCore) initRendering() {
+	rend := &Core.Rendering
+	rend.states.ForceClearColor(Core.Options.Rendering.DefaultClearColor)
+	rend.Samplers.FullFilteringRepeat.Create().EnableFullFiltering(true, 8).SetWrap(gl.REPEAT)
+	rend.Samplers.NoFilteringClamp.Create().DisableAllFiltering(false).SetWrap(gl.CLAMP_TO_BORDER)
+	rend.Canvases = append(RenderCanvases{}, newRenderCanvas(true, true, 1, 1))
+	rend.Canvases.Final().AddNewCameraQuad()
+	rend.FxShaders = map[string]*FxShader{}
+	for _, shaderFunc := range []string{"Tex2D", "RedTest", "Grayscale"} {
+		rend.FxShaders[shaderFunc] = NewFxShader(shaderFunc)
+	}
 }
 
 func initRenderTechniques() {

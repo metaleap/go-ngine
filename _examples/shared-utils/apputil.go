@@ -90,6 +90,8 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	realThreads := false
 	opt.Loop.ForceThreads.App, opt.Loop.ForceThreads.Prep = realThreads, realThreads
 
+	// ng.Diag.LogCategories = 0
+
 	//	STEP 1: init go:ngine
 	if err := ng.Init(opt); err != nil {
 		fmt.Printf("ABORT:\n%v\n", err)
