@@ -1,0 +1,9 @@
+Files and folders inside this _diagtmp directory are
+temporary files created by go:ngine at runtime for
+diagnostic purposes.
+
+By default go:ngine doesn't do this, but in the example apps
+we have activated this functionality.
+
+_diagtmp/{appname}/glsl: contains the (dynamically
+generated) full GLSL shader sources as sent to GL.

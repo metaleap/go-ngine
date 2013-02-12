@@ -2,6 +2,8 @@ package exampleutils
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"runtime"
 	"time"
 
@@ -97,6 +99,8 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	opt.Loop.ForceThreads.App, opt.Loop.ForceThreads.Prep = realThreads, realThreads
 
 	// ng.Diag.LogCategories = 0
+	ng.Diag.WriteTmpFilesTo.BaseDirName = filepath.Join("_diagtmp", filepath.Base(os.Args[0]))
+	// but for now, we don't need separate per-app diagtmp dirs:
 	ng.Diag.WriteTmpFilesTo.BaseDirName = "_diagtmp"
 	ng.Diag.WriteTmpFilesTo.ShaderPrograms = "glsl"
 
