@@ -1,8 +1,6 @@
 /*
-
 GLSL functions used for vertex shader permutation.
 This file is "somewhat parsed" and processed.
-
 */
 
 vec4 vx_Quad_gl_Position () {

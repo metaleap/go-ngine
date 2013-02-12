@@ -11,8 +11,8 @@ import (
 type fileIO struct {
 }
 
-func (me *fileIO) openLocalFile(absoluteOrAssetRootRelativeFilePath string) (io.ReadCloser, error) {
-	return os.Open(me.resolveLocalFilePath(absoluteOrAssetRootRelativeFilePath))
+func (me *fileIO) openLocalFile(absOrRelFilePath string) (io.ReadCloser, error) {
+	return os.Open(me.resolveLocalFilePath(absOrRelFilePath))
 }
 
 func (me *fileIO) openRemoteFile(fileUrl string) (rc io.ReadCloser, err error) {
@@ -24,9 +24,9 @@ func (me *fileIO) openRemoteFile(fileUrl string) (rc io.ReadCloser, err error) {
 	return
 }
 
-func (me *fileIO) resolveLocalFilePath(absoluteOrAssetRootRelativeFilePath string) string {
-	if strings.HasPrefix(absoluteOrAssetRootRelativeFilePath, "/") {
-		return absoluteOrAssetRootRelativeFilePath
+func (me *fileIO) resolveLocalFilePath(absOrRelFilePath string) string {
+	if strings.HasPrefix(absOrRelFilePath, "/") {
+		return absOrRelFilePath
 	}
-	return filepath.Join(Core.Options.AssetRootDirPath, absoluteOrAssetRootRelativeFilePath)
+	return filepath.Join(Core.Options.AppDir.BasePath, absOrRelFilePath)
 }

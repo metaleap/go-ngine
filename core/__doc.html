@@ -177,11 +177,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#Effect">type Effect</a></dd>
-				
-				
-			
-				
 				<dd><a href="#EngineCore">type EngineCore</a></dd>
 				
 				
@@ -235,7 +230,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<dd><a href="#EngineOptions">type EngineOptions</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NewEngineOptions">func NewEngineOptions(assetRootDirPath string, windowOptions *WindowOptions) (me *EngineOptions)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NewEngineOptions">func NewEngineOptions(appDirBasePath string, windowOptions *WindowOptions) (me *EngineOptions)</a></dd>
 				
 				
 			
@@ -299,14 +294,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#FxEffectShader">type FxEffectShader</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NewFxEffectShader">func NewFxEffectShader(shaderIDs ...string) (me *FxEffectShader)</a></dd>
-				
-				
-			
-				
 				<dd><a href="#FxImage2D">type FxImage2D</a></dd>
 				
 					
@@ -357,11 +344,19 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#FxShader">type FxShader</a></dd>
+				<dd><a href="#FxProc">type FxProc</a></dd>
+				
+				
+			
+				
+				<dd><a href="#FxRoutine">type FxRoutine</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NewFxShader">func NewFxShader(funcName string) (me *FxShader)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NewFxRoutine">func NewFxRoutine(procIDs ...string) (me *FxRoutine)</a></dd>
 				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxRoutine.Update">func (me *FxRoutine) Update()</a></dd>
 				
 			
 				
@@ -807,8 +802,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<a href="/target/controller.go">controller.go</a>
 			
 				<a href="/target/doc.go">doc.go</a>
-			
-				<a href="/target/effect.go">effect.go</a>
 			
 				<a href="/target/fileio.go">fileio.go</a>
 			
@@ -1371,24 +1364,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="Effect">type <a href="/target/effect.go?s=314:336#L17">Effect</a></h2>
-			<pre>type Effect struct {
-}</pre>
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:992#L6">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:987#L6">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Options     EngineOptions
@@ -1403,9 +1379,8 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
         Scenes LibScenes
     }
     Rendering struct {
-        Canvases  RenderCanvases
-        FxShaders map[string]*FxShader
-        Samplers  struct {
+        Canvases RenderCanvases
+        Samplers struct {
             NoFilteringClamp    ugl.Sampler
             FullFilteringRepeat ugl.Sampler
         }
@@ -1436,7 +1411,7 @@ It is only aware of that instance and does not support any other EngineCore inst
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3334:3368#L118">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3321:3355#L118">SyncUpdates</a></h3>
 				<pre>func (_ *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -1445,11 +1420,15 @@ It is only aware of that instance and does not support any other EngineCore inst
 		
 			
 			
-			<h2 id="EngineDiag">type <a href="/target/ng-diag.go?s=834:992#L23">EngineDiag</a></h2>
+			<h2 id="EngineDiag">type <a href="/target/ng-diag.go?s=834:1076#L23">EngineDiag</a></h2>
 			<pre>type EngineDiag struct {
     LogCategories          EngineDiagLogCategory
     LogCategoryNames       map[EngineDiagLogCategory]string
     LogGLErrorsInLoopOnSec bool
+    WriteTmpFilesTo        struct {
+        BaseDirName    string
+        ShaderPrograms string
+    }
 }</pre>
 			<p>
 EngineDiag is a singleton type, only used for the core.Diag package-global exported variable.
@@ -1467,42 +1446,42 @@ It is only aware of that instance and does not support any other EngineDiag inst
 
 			
 				
-				<h3 id="EngineDiag.Log">func (*EngineDiag) <a href="/target/ng-diag.go?s=994:1081#L29">Log</a></h3>
+				<h3 id="EngineDiag.Log">func (*EngineDiag) <a href="/target/ng-diag.go?s=1078:1165#L33">Log</a></h3>
 				<pre>func (_ *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=1187:1225#L35">LogErr</a></h3>
+				<h3 id="EngineDiag.LogErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=1271:1309#L39">LogErr</a></h3>
 				<pre>func (_ *EngineDiag) LogErr(err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogIfGlErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=1250:1317#L39">LogIfGlErr</a></h3>
+				<h3 id="EngineDiag.LogIfGlErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=1334:1401#L43">LogIfGlErr</a></h3>
 				<pre>func (_ *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogMeshes">func (*EngineDiag) <a href="/target/ng-diag.go?s=1358:1424#L43">LogMeshes</a></h3>
+				<h3 id="EngineDiag.LogMeshes">func (*EngineDiag) <a href="/target/ng-diag.go?s=1442:1508#L47">LogMeshes</a></h3>
 				<pre>func (_ *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogMisc">func (*EngineDiag) <a href="/target/ng-diag.go?s=1475:1539#L47">LogMisc</a></h3>
+				<h3 id="EngineDiag.LogMisc">func (*EngineDiag) <a href="/target/ng-diag.go?s=1559:1623#L51">LogMisc</a></h3>
 				<pre>func (_ *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogShaders">func (*EngineDiag) <a href="/target/ng-diag.go?s=1588:1655#L51">LogShaders</a></h3>
+				<h3 id="EngineDiag.LogShaders">func (*EngineDiag) <a href="/target/ng-diag.go?s=1672:1739#L55">LogShaders</a></h3>
 				<pre>func (_ *EngineDiag) LogShaders(fmt string, fmtArgs ...interface{})</pre>
 				
 				
@@ -1630,10 +1609,12 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=931:3672#L21">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=931:3684#L21">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
-    <span class="comment">//	The base directory path for asset file paths.</span>
-    AssetRootDirPath string
+    AppDir struct {
+        <span class="comment">//	The base directory path for app file paths.</span>
+        BasePath string
+    }
 
     Initialization struct {
         GlContext struct {
@@ -1723,8 +1704,8 @@ received from NewEngineOptions() is no longer used. Slightly confusing, but ther
 
 			
 				
-				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=3747:3843#L99">NewEngineOptions</a></h3>
-				<pre>func NewEngineOptions(assetRootDirPath string, windowOptions *WindowOptions) (me *EngineOptions)</pre>
+				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=3759:3853#L101">NewEngineOptions</a></h3>
+				<pre>func NewEngineOptions(appDirBasePath string, windowOptions *WindowOptions) (me *EngineOptions)</pre>
 				<p>
 Allocates, initializes and returns a new core.EngineOptions instance.
 </p>
@@ -2008,10 +1989,11 @@ If sampler is nil, Core.Rendering.Samplers.FullFilteringRepeat is used for me.Te
 		
 			
 			
-			<h2 id="FxEffect">type <a href="/target/fx-effect.gt.go?s=422:508#L15">FxEffect</a></h2>
+			<h2 id="FxEffect">type <a href="/target/fx-effect.gt.go?s=711:786#L35">FxEffect</a></h2>
 			<pre>type FxEffect struct {
-    OldDiffuse   *FxColorOrTexture
-    EffectShader *FxEffectShader
+    OldDiffuse *FxColorOrTexture
+
+    Routine *FxRoutine
 }</pre>
 			
 
@@ -2023,36 +2005,12 @@ If sampler is nil, Core.Rendering.Samplers.FullFilteringRepeat is used for me.Te
 
 			
 				
-				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=680:713#L29">NewFxEffect</a></h3>
+				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=958:991#L50">NewFxEffect</a></h3>
 				<pre>func NewFxEffect() (me *FxEffect)</pre>
 				<p>
 Initializes and returns a new FxEffect with default parameters.
 </p>
 
-				
-			
-
-			
-		
-			
-			
-			<h2 id="FxEffectShader">type <a href="/target/fx-effect.gt.go?s=14:82#L1">FxEffectShader</a></h2>
-			<pre>type FxEffectShader struct {
-    <span class="comment">// contains filtered or unexported fields</span>
-}</pre>
-			
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="NewFxEffectShader">func <a href="/target/fx-effect.gt.go?s=84:148#L1">NewFxEffectShader</a></h3>
-				<pre>func NewFxEffectShader(shaderIDs ...string) (me *FxEffectShader)</pre>
-				
 				
 			
 
@@ -2227,9 +2185,30 @@ Initializes and returns a new FxMaterial with default parameters.
 		
 			
 			
-			<h2 id="FxShader">type <a href="/target/fx-effect.gt.go?s=273:314#L6">FxShader</a></h2>
-			<pre>type FxShader struct {
-    FuncName string
+			<h2 id="FxProc">type <a href="/target/fx-effect.gt.go?s=147:211#L2">FxProc</a></h2>
+			<pre>type FxProc struct {
+    Enabled bool
+    ProcID  string
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="FxRoutine">type <a href="/target/fx-effect.gt.go?s=213:270#L9">FxRoutine</a></h2>
+			<pre>type FxRoutine struct {
+    Procs []*FxProc
+    <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			
 
@@ -2241,17 +2220,24 @@ Initializes and returns a new FxMaterial with default parameters.
 
 			
 				
-				<h3 id="NewFxShader">func <a href="/target/fx-effect.gt.go?s=316:364#L10">NewFxShader</a></h3>
-				<pre>func NewFxShader(funcName string) (me *FxShader)</pre>
+				<h3 id="NewFxRoutine">func <a href="/target/fx-effect.gt.go?s=272:324#L15">NewFxRoutine</a></h3>
+				<pre>func NewFxRoutine(procIDs ...string) (me *FxRoutine)</pre>
 				
 				
 			
 
 			
+				
+				<h3 id="FxRoutine.Update">func (*FxRoutine) <a href="/target/fx-effect.gt.go?s=477:506#L24">Update</a></h3>
+				<pre>func (me *FxRoutine) Update()</pre>
+				
+				
+				
+			
 		
 			
 			
-			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=831:869#L36">LibFxEffects</a></h2>
+			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=1109:1147#L57">LibFxEffects</a></h2>
 			<pre>type LibFxEffects map[string]*FxEffect</pre>
 			<p>
 A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
@@ -2268,7 +2254,7 @@ A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=995:1051#L40">AddNew</a></h3>
+				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=1273:1329#L61">AddNew</a></h3>
 				<pre>func (me LibFxEffects) AddNew(id string) (obj *FxEffect)</pre>
 				<p>
 Creates and initializes a new FxEffect with default parameters,
@@ -2279,7 +2265,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibFxEffects.Remove">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=1250:1290#L57">Remove</a></h3>
+				<h3 id="LibFxEffects.Remove">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=1528:1568#L78">Remove</a></h3>
 				<pre>func (me LibFxEffects) Remove(id string)</pre>
 				
 				
@@ -3520,7 +3506,7 @@ If that shader program does not yet exist, builds it. If that fails, a non-nil e
 				
 			
 				
-				<h3 id="RenderTechniqueQuad.DisableEffect">func (*RenderTechniqueQuad) <a href="/target/render-technique-quad.go?s=1820:1877#L55">DisableEffect</a></h3>
+				<h3 id="RenderTechniqueQuad.DisableEffect">func (*RenderTechniqueQuad) <a href="/target/render-technique-quad.go?s=1794:1851#L55">DisableEffect</a></h3>
 				<pre>func (me *RenderTechniqueQuad) DisableEffect(name string)</pre>
 				<p>
 Deactivates the specified post-processing full-screen effect.
@@ -3531,7 +3517,7 @@ After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), 
 				
 			
 				
-				<h3 id="RenderTechniqueQuad.EnableEffect">func (*RenderTechniqueQuad) <a href="/target/render-technique-quad.go?s=2092:2171#L61">EnableEffect</a></h3>
+				<h3 id="RenderTechniqueQuad.EnableEffect">func (*RenderTechniqueQuad) <a href="/target/render-technique-quad.go?s=2066:2145#L61">EnableEffect</a></h3>
 				<pre>func (me *RenderTechniqueQuad) EnableEffect(name string) (effect *PostFxEffect)</pre>
 				<p>
 Activates the specified post-processing full-screen effect.
@@ -3542,7 +3528,7 @@ After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), 
 				
 			
 				
-				<h3 id="RenderTechniqueQuad.ToggleEffect">func (*RenderTechniqueQuad) <a href="/target/render-technique-quad.go?s=2713:2784#L76">ToggleEffect</a></h3>
+				<h3 id="RenderTechniqueQuad.ToggleEffect">func (*RenderTechniqueQuad) <a href="/target/render-technique-quad.go?s=2687:2758#L76">ToggleEffect</a></h3>
 				<pre>func (me *RenderTechniqueQuad) ToggleEffect(name string) (enabled bool)</pre>
 				<p>
 Activates or deactivates the specified post-processing full-screen effect.

@@ -1,12 +1,14 @@
 package core
 
 import (
+	"path"
 	"runtime"
 	"time"
 
 	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
 	ugo "github.com/metaleap/go-util"
+	uio "github.com/metaleap/go-util/io"
 	ustr "github.com/metaleap/go-util/str"
 )
 
@@ -51,7 +53,7 @@ func glInit() (err error, badVer string) {
 				gl.FrontFace(gl.CCW)
 				gl.CullFace(gl.BACK)
 				Diag.LogMisc(ugl.Util.ConnInfo())
-				if dur, err = glc.progMan.MakeProgramsFromRawSources(true); err == nil {
+				if dur, err = glcProgsMake(true); err == nil {
 					Diag.LogShaders("Total shader compilation time for all %v programs: %v\n", len(glc.progMan.Programs), dur)
 					Stats.addProgCompile(len(glc.progMan.Programs), dur.Nanoseconds())
 					glc.shaderMan.loadFromRawSources()
@@ -64,6 +66,33 @@ func glInit() (err error, badVer string) {
 		}
 		if err == nil {
 			glc.isInit = true
+		}
+	}
+	return
+}
+
+func glcProgsMake(forceAll bool, forceSome ...string) (dur time.Duration, err error) {
+	dur, err = glc.progMan.MakeProgramsFromRawSources(forceAll, forceSome...)
+	if err == nil && len(Diag.WriteTmpFilesTo.ShaderPrograms) > 0 {
+		var src string
+		if len(forceSome) == 0 {
+			forceSome = glc.progMan.Names
+		}
+		for ext, sources := range map[string]map[string]string{
+			".glcs": glc.progMan.FinalRealSources.Compute,
+			".glfs": glc.progMan.FinalRealSources.Fragment,
+			".glgs": glc.progMan.FinalRealSources.Geometry,
+			".glhs": glc.progMan.FinalRealSources.TessCtl,
+			".glds": glc.progMan.FinalRealSources.TessEval,
+			".glvs": glc.progMan.FinalRealSources.Vertex,
+		} {
+			for _, progName := range forceSome {
+				if src = sources[progName]; len(src) > 0 {
+					if err = uio.WriteTextFile(Core.fileIO.resolveLocalFilePath(path.Join(Diag.WriteTmpFilesTo.BaseDirName, Diag.WriteTmpFilesTo.ShaderPrograms, progName+ext)), src); err != nil {
+						return
+					}
+				}
+			}
 		}
 	}
 	return

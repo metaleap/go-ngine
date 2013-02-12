@@ -6,6 +6,7 @@ import (
 	"time"
 
 	ng "github.com/go3d/go-ngine/core"
+	ugo "github.com/metaleap/go-util"
 	unum "github.com/metaleap/go-util/num"
 )
 
@@ -41,6 +42,11 @@ var (
 	sec        = 0
 )
 
+//	Returns the base path of the "app dir" for our example apps, in this case: $GOPATH/src/github.com/go3d/go-ngine/_examples/_assets
+func AppDirBasePath() string {
+	return ugo.GopathSrcGithub("go3d", "go-ngine", "_examples", "_assets")
+}
+
 //	Returns the window title to be set by OnSec().
 func appWindowTitle() string {
 	winTitle.cw, winTitle.ch = ng.UserIO.Window.Width(), ng.UserIO.Window.Height()
@@ -64,7 +70,7 @@ func OnSec() {
 	ng.UserIO.Window.SetTitle(appWindowTitle())
 }
 
-//	Called by each example-app's func main(). Initializes go:ngine, sets SceneCam/SceneCanvas/PostFxCam/PostFxCanvas etc., calls the specified assetLoader function, then enters The Loop.
+//	Called by each example-app's func main(). Initializes go:ngine, sets SceneCam/SceneCanvas/PostFxCam/PostFxCanvas etc., calls the specified setupExampleScene function, then enters The Loop.
 func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	//	go:ngine doesn't do this for you by design:
 	runtime.LockOSThread()
@@ -77,7 +83,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	// release apps shouldn't do this, but during dev/test we want to observe max fps:
 	win.SetSwapInterval(0)
 
-	opt := ng.NewEngineOptions(AssetRootDirPath(), win)
+	opt := ng.NewEngineOptions(AppDirBasePath(), win)
 
 	//	While the default for this (true on Macs only) is reasonable for release apps at present,
 	//	here we force core profile to verify all of go:ngine's GL code is fully core-profile compliant
@@ -91,6 +97,8 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	opt.Loop.ForceThreads.App, opt.Loop.ForceThreads.Prep = realThreads, realThreads
 
 	// ng.Diag.LogCategories = 0
+	ng.Diag.WriteTmpFilesTo.BaseDirName = "_diagtmp"
+	ng.Diag.WriteTmpFilesTo.ShaderPrograms = "glsl"
 
 	//	STEP 1: init go:ngine
 	if err := ng.Init(opt); err != nil {

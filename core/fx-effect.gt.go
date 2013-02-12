@@ -1,30 +1,51 @@
 package core
 
-type FxEffectShader struct {
-	shaderIDs []string
-	pname     string
-}
-
-func NewFxEffectShader(shaderIDs ...string) (me *FxEffectShader) {
-	me = &FxEffectShader{shaderIDs: shaderIDs[:]}
-	for _, shid := range shaderIDs {
-		me.pname += ("_" + shid)
-	}
-	return
-}
-
-type FxShader struct {
+type fxProc struct {
 	FuncName string
 }
 
-func NewFxShader(funcName string) (me *FxShader) {
-	me = &FxShader{FuncName: "fx_" + funcName}
+func newFxProc(name string) (me *fxProc) {
+	me = &fxProc{FuncName: "fx_" + name}
 	return
 }
 
+type FxProc struct {
+	Enabled bool
+	ProcID  string
+
+	index int
+}
+
+type FxRoutine struct {
+	Procs []*FxProc
+
+	pname string
+}
+
+func NewFxRoutine(procIDs ...string) (me *FxRoutine) {
+	me = &FxRoutine{}
+	for _, procID := range procIDs {
+		me.Procs = append(me.Procs, &FxProc{Enabled: true, ProcID: procID})
+	}
+	me.Update()
+	return
+}
+
+func (me *FxRoutine) Update() {
+	counts := map[string]int{}
+	for _, proc := range me.Procs {
+		if proc.Enabled {
+			proc.index = counts[proc.ProcID]
+			counts[proc.ProcID] = proc.index + 1
+			me.pname += ("_" + proc.ProcID)
+		}
+	}
+}
+
 type FxEffect struct {
-	OldDiffuse   *FxColorOrTexture
-	EffectShader *FxEffectShader
+	OldDiffuse *FxColorOrTexture
+
+	Routine *FxRoutine
 }
 
 func (me *FxEffect) dispose() {

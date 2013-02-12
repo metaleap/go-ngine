@@ -1,8 +1,6 @@
 /*
-
 GLSL functions used for fragment shader permutation.
 This file is "somewhat parsed" and processed.
-
 */
 
 vec3 fx_Color (const in vec3 vCol) {

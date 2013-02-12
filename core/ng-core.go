@@ -27,15 +27,15 @@ type EngineCore struct {
 		Scenes LibScenes
 	}
 	Rendering struct {
-		Canvases  RenderCanvases
-		FxShaders map[string]*FxShader
-		Samplers  struct {
+		Canvases RenderCanvases
+		Samplers struct {
 			NoFilteringClamp    ugl.Sampler
 			FullFilteringRepeat ugl.Sampler
 		}
 		Techniques RenderTechniques
 
-		states ugl.RenderStates
+		fxProcs map[string]*fxProc
+		states  ugl.RenderStates
 	}
 
 	isInit bool
@@ -87,9 +87,9 @@ func (_ *EngineCore) initRendering() {
 	rend.Samplers.NoFilteringClamp.Create().DisableAllFiltering(false).SetWrap(gl.CLAMP_TO_BORDER)
 	rend.Canvases = append(RenderCanvases{}, newRenderCanvas(true, true, 1, 1))
 	rend.Canvases.Final().AddNewCameraQuad()
-	rend.FxShaders = map[string]*FxShader{}
+	rend.fxProcs = map[string]*fxProc{}
 	for _, shaderFunc := range []string{"Tex2D", "RedTest", "Grayscale"} {
-		rend.FxShaders[shaderFunc] = NewFxShader(shaderFunc)
+		rend.fxProcs[shaderFunc] = newFxProc(shaderFunc)
 	}
 }
 

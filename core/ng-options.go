@@ -29,8 +29,10 @@ recent driver for {GPU}.
 //	All subsequent option reads and writes are exclusively from and to Core.Options, the copy you initially
 //	received from NewEngineOptions() is no longer used. Slightly confusing, but there's a reason for this design.
 type EngineOptions struct {
-	//	The base directory path for asset file paths.
-	AssetRootDirPath string
+	AppDir struct {
+		//	The base directory path for app file paths.
+		BasePath string
+	}
 
 	Initialization struct {
 		GlContext struct {
@@ -106,8 +108,9 @@ type EngineOptions struct {
 }
 
 //	Allocates, initializes and returns a new core.EngineOptions instance.
-func NewEngineOptions(assetRootDirPath string, windowOptions *WindowOptions) (me *EngineOptions) {
-	me = &EngineOptions{AssetRootDirPath: assetRootDirPath}
+func NewEngineOptions(appDirBasePath string, windowOptions *WindowOptions) (me *EngineOptions) {
+	me = &EngineOptions{}
+	me.AppDir.BasePath = appDirBasePath
 	me.Misc.DefaultControllerParams = NewControllerParams()
 	init, isMac, initGl := &me.Initialization, runtime.GOOS == "darwin", &me.Initialization.GlContext
 	initGl.CoreProfile.ForceFirst, initGl.CoreProfile.ForwardCompat, initGl.BadVersionMessage = isMac, isMac, DefaultBadVersionMessage

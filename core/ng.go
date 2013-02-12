@@ -53,8 +53,10 @@ tryInit:
 		err = fmtErr(glVersionErrorMessage(glMinVerStr, badVer))
 	}
 	if err == nil {
-		fx := NewFxEffectShader("Tex2D", "Grayscale")
+		fx := NewFxRoutine("Tex2D", "Grayscale")
 		_, err = glc.shaderMan.program("Scene", fx)
+		fx = NewFxRoutine("RedTest", "Grayscale")
+		_, err = glc.shaderMan.program("Quad", fx)
 	}
 	return
 }

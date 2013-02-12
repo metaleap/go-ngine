@@ -34,6 +34,10 @@ type EngineDiag struct {
 	LogCategories          EngineDiagLogCategory
 	LogCategoryNames       map[EngineDiagLogCategory]string
 	LogGLErrorsInLoopOnSec bool
+	WriteTmpFilesTo        struct {
+		BaseDirName    string
+		ShaderPrograms string
+	}
 }
 
 func (_ *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{}) {

@@ -48,7 +48,7 @@ func (me *RenderTechniqueQuad) ApplyEffects() (err error) {
 		pname += ("__" + name)
 	}
 	if glc.progMan.CloneRawSources(Core.Options.Rendering.DefaultTechniqueQuad, pname) {
-		if dur, err = glc.progMan.MakeProgramsFromRawSources(true, pname); err == nil {
+		if dur, err = glcProgsMake(true, pname); err == nil {
 			Diag.LogShaders("Built new shader program '%s' in %v", pname, dur)
 			Stats.addProgCompile(1, dur.Nanoseconds())
 		}

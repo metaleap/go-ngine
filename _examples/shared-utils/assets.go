@@ -2,7 +2,6 @@ package exampleutils
 
 import (
 	ng "github.com/go3d/go-ngine/core"
-	ugo "github.com/metaleap/go-util"
 )
 
 //	Creates a new core.Scene, adds it to the Scenes library under
@@ -60,9 +59,4 @@ func AddTextureMaterials(idsUrls map[string]string) {
 		ng.Core.Libs.Effects.AddNew("fx_" + id).OldDiffuse = ng.NewFxTexture("img_"+id, nil)
 		ng.Core.Libs.Materials.AddNew("mat_" + id).DefaultEffectID = "fx_" + id
 	}
-}
-
-//	Returns the "asset root directory" path for go:ngine, in this case: $GOPATH/src/github.com/go3d/go-ngine/_examples/_assets
-func AssetRootDirPath() string {
-	return ugo.GopathSrcGithub("go3d", "go-ngine", "_examples", "_assets")
 }
