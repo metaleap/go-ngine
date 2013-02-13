@@ -3,6 +3,7 @@ package core
 import (
 	"sync"
 
+	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
 	unum "github.com/metaleap/go-util/num"
 )
@@ -39,12 +40,17 @@ var (
 		curNode              *Node
 		curProg, tmpProg     *ugl.Program
 		curScene             *Scene
+		curSampler           map[gl.Uint]*ugl.Sampler
 		curTech, tmpTech     RenderTechnique
+		tmpSampler           *ugl.Sampler
+		tmpQuadTex           *ugl.Texture2D
+		tmpTexUnit           gl.Uint
 	}
 )
 
 func init() {
 	thrRend.asyncResources = map[asyncResource]bool{}
+	thrRend.curSampler = map[gl.Uint]*ugl.Sampler{}
 }
 
 func (me *EngineCore) copyAppToPrep() {

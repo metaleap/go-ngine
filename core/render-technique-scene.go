@@ -22,14 +22,3 @@ func (me *RenderTechniqueScene) initMeshBuffer(meshBuffer *MeshBuffer) (atts []*
 	)
 	return
 }
-
-func (me *RenderTechniqueScene) onRenderNode() {
-	if thrRend.tmpMat = thrRend.curNode.EffectiveMaterial(); thrRend.tmpMat != thrRend.curMat {
-		if thrRend.curMat = thrRend.tmpMat; thrRend.curMat != nil {
-			thrRend.tmpTech, thrRend.tmpEffect = me, Core.Libs.Effects[thrRend.curMat.DefaultEffectID]
-			Core.useTechFx()
-			thrRend.curEffect.use()
-			gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uni_mat4_VertexMatrix"], 1, gl.FALSE, &thrRend.curNode.thrRend.matProjs[thrRend.curCam][0])
-		}
-	}
-}

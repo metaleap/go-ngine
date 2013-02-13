@@ -6,6 +6,8 @@ import (
 
 type RenderTechniqueQuad struct {
 	Effect FxEffect
+
+	fxTex *FxOpTex2D
 	renderTechniqueBase
 	glVao ugl.VertexArray
 }
@@ -14,9 +16,8 @@ func newRenderTechniqueQuad(progName string) RenderTechnique {
 	me := &RenderTechniqueQuad{}
 	me.init("Quad")
 	me.Effect.init()
-	tex2d := me.Effect.Ops.EnableTex2D(-1)
-	tex2d.Sampler = &Core.Rendering.Fx.Samplers.NoFilteringClamp
-	tex2d.bindTex = func(_ string) {}
+	me.fxTex = me.Effect.Ops.EnableTex2D(-1)
+	me.fxTex.Sampler = &Core.Rendering.Fx.Samplers.NoFilteringClamp
 	me.Effect.UpdateRoutine()
 	me.glVao.Create()
 	me.glVao.Setup(nil)

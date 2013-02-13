@@ -59,7 +59,9 @@ func AddTextureMaterials(idsUrls map[string]string) {
 			}
 		}
 		fx := ng.Core.Libs.Effects.AddNew("fx_" + id)
-		fx.Ops.EnableTex2D(0).ImageID = "img_" + id
+		fx.Ops.EnableTex2D(0).SetImageID("img_" + id)
+		fx.Ops.EnableColored(0)
+		fx.Ops.DisableColored(0)
 		fx.UpdateRoutine()
 		ng.Core.Libs.Materials.AddNew("mat_" + id).DefaultEffectID = "fx_" + id
 	}

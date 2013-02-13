@@ -23,7 +23,7 @@ func (me *RenderCanvas) render() {
 	Core.Rendering.states.SetFramebufferSrgb(false)
 	if !me.isFinal {
 		me.frameBuf.Unbind()
-		me.frameBuf.BindTexture(0)
+		thrRend.tmpQuadTex = &me.frameBufTex.Texture2D
 	}
 }
 
@@ -52,13 +52,14 @@ func (me *RenderTechniqueQuad) render() {
 	me.glVao.Bind()
 	thrRend.tmpTech, thrRend.tmpEffect = me, &me.Effect
 	Core.useTechFx()
+	me.fxTex.glTex = thrRend.tmpQuadTex
 	me.Effect.use()
 	gl.DrawArrays(gl.TRIANGLES, 0, 3)
 	me.glVao.Unbind()
 }
 
 func (me *RenderTechniqueScene) render() {
-	thrRend.curMat, thrRend.curMatId = nil, ""
+	thrRend.curMat, thrRend.curMatId, thrRend.tmpTech = nil, "", me
 	if thrRend.curScene != nil {
 		thrRend.curScene.RootNode.render()
 	}
@@ -67,7 +68,15 @@ func (me *RenderTechniqueScene) render() {
 func (me *Node) render() {
 	if me.Enabled {
 		if thrRend.curNode = me; me.model != nil {
-			thrRend.curTech.onRenderNode()
+			if thrRend.tmpMat = me.EffectiveMaterial(); thrRend.tmpMat != thrRend.curMat {
+				if thrRend.curMat = thrRend.tmpMat; thrRend.curMat != nil {
+					thrRend.tmpEffect = Core.Libs.Effects[thrRend.curMat.DefaultEffectID]
+					Core.useTechFx()
+					thrRend.curEffect.use()
+				}
+			}
+
+			gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uni_mat4_VertexMatrix"], 1, gl.FALSE, &me.thrRend.matProjs[thrRend.curCam][0])
 			me.model.render()
 		}
 		for me.thrRend.curId, me.thrRend.curSubNode = range me.ChildNodes.M {

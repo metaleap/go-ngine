@@ -127,10 +127,10 @@ type FxOpColored struct {
 type FxOpTex2D struct {
 	fxOpBase
 
-	bindTex func(string)
+	glTex *ugl.Texture2D
 
 	//	The ID (in Core.Libs.Images.I2D) of the FxImage2D to be sampled.
-	ImageID string
+	imageID string
 
 	//	The sampler to be used.
 	//	Defaults to &Core.Rendering.Fx.Samplers.FullFilteringRepeat.
@@ -140,9 +140,6 @@ type FxOpTex2D struct {
 func (me *FxOpTex2D) init(s string) {
 	me.fxOpBase.init(s)
 	me.Sampler = &Core.Rendering.Fx.Samplers.FullFilteringRepeat
-	me.bindTex = func(imgID string) {
-		Core.Libs.Images.I2D[imgID].glTex.Bind()
-	}
 }
 
 func (me *FxOpTex2D) nifyFunc() bool {
@@ -153,9 +150,14 @@ func (me *FxOpTex2D) nifyUnif(fullName, typeName string) bool {
 	return typeName == "sampler2D"
 }
 
+func (me *FxOpTex2D) SetImageID(imageID string) {
+	me.glTex = &Core.Libs.Images.I2D[imageID].glTex
+}
+
 func (me *FxOpTex2D) use() {
-	me.Sampler.Bind(0)
-	me.bindTex(me.ImageID)
+	thrRend.tmpSampler = me.Sampler
+	Core.useSampler()
+	me.glTex.Bind()
 	gl.Uniform1i(thrRend.curProg.UnifLocs["uni_sampler2D_Tex2D"], 0)
 }
 

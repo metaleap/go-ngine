@@ -3,7 +3,6 @@ package core
 type RenderTechnique interface {
 	dispose()
 	name() string
-	onRenderNode()
 	render()
 }
 
@@ -20,9 +19,6 @@ func (me *renderTechniqueBase) init(name string) {
 
 func (me *renderTechniqueBase) name() string {
 	return me.tname
-}
-
-func (me *renderTechniqueBase) onRenderNode() {
 }
 
 //	Used only in Core.Rendering.Techniques.

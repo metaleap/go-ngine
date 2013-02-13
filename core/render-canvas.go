@@ -25,7 +25,8 @@ type RenderCanvas struct {
 	absViewWidth, absViewHeight int
 	relViewWidth, relViewHeight float64
 
-	frameBuf ugl.Framebuffer
+	frameBuf    ugl.Framebuffer
+	frameBufTex *ugl.FramebufferRendertexture
 }
 
 func newRenderCanvas(isFinal, relative bool, width, height float64) (me *RenderCanvas) {
@@ -35,7 +36,8 @@ func newRenderCanvas(isFinal, relative bool, width, height float64) (me *RenderC
 		me.frameBuf.GlTarget = gl.FRAMEBUFFER
 	} else {
 		me.frameBuf.Create(gl.Sizei(UserIO.Window.width), gl.Sizei(UserIO.Window.height), false)
-		me.frameBuf.AttachRendertexture(ugl.NewFramebufferRendertexture(false))
+		me.frameBufTex = ugl.NewFramebufferRendertexture(false)
+		me.frameBuf.AttachRendertexture(me.frameBufTex)
 		me.frameBuf.AttachRenderbuffer(ugl.NewFramebufferRenderbuffer())
 	}
 	ugl.LogLastError("newRenderCanvas(%v x %v)", width, height)

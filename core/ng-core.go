@@ -69,7 +69,7 @@ func (_ *EngineCore) init() {
 	splash.init()
 	splash.Load()
 	splash.GpuSync()
-	splash.glTex.Bind()
+	thrRend.tmpQuadTex = &splash.glTex
 	splash.Unload()
 	embeddedBinaries = nil
 	Core.isInit = true
@@ -166,6 +166,13 @@ func (_ *EngineCore) useProg() {
 	if thrRend.curProg != thrRend.tmpProg {
 		thrRend.curProg = thrRend.tmpProg
 		thrRend.curProg.Use()
+	}
+}
+
+func (_ *EngineCore) useSampler() {
+	if thrRend.curSampler[thrRend.tmpTexUnit] != thrRend.tmpSampler {
+		thrRend.curSampler[thrRend.tmpTexUnit] = thrRend.tmpSampler
+		thrRend.tmpSampler.Bind(thrRend.tmpTexUnit)
 	}
 }
 
