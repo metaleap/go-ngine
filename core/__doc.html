@@ -1244,7 +1244,7 @@ MoveXyz() / TurnXyz() methods that were suspended since BeginUpdate().
 				
 			
 				
-				<h3 id="Controller.MoveBackward">func (*Controller) <a href="/target/controller.go?s=3831:3867#L111">MoveBackward</a></h3>
+				<h3 id="Controller.MoveBackward">func (*Controller) <a href="/target/controller.go?s=3840:3876#L111">MoveBackward</a></h3>
 				<pre>func (me *Controller) MoveBackward()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move backward&#34;.
@@ -1254,7 +1254,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move backward&#34
 				
 			
 				
-				<h3 id="Controller.MoveDown">func (*Controller) <a href="/target/controller.go?s=4027:4059#L117">MoveDown</a></h3>
+				<h3 id="Controller.MoveDown">func (*Controller) <a href="/target/controller.go?s=4036:4068#L117">MoveDown</a></h3>
 				<pre>func (me *Controller) MoveDown()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis to effect a &#34;move downward&#34;.
@@ -1264,7 +1264,7 @@ Recomputes Pos with regards to UpAxis to effect a &#34;move downward&#34;.
 				
 			
 				
-				<h3 id="Controller.MoveForward">func (*Controller) <a href="/target/controller.go?s=4229:4264#L123">MoveForward</a></h3>
+				<h3 id="Controller.MoveForward">func (*Controller) <a href="/target/controller.go?s=4238:4273#L123">MoveForward</a></h3>
 				<pre>func (me *Controller) MoveForward()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move forward&#34;.
@@ -1274,7 +1274,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move forward&#34;
 				
 			
 				
-				<h3 id="Controller.MoveLeft">func (*Controller) <a href="/target/controller.go?s=4433:4465#L129">MoveLeft</a></h3>
+				<h3 id="Controller.MoveLeft">func (*Controller) <a href="/target/controller.go?s=4442:4474#L129">MoveLeft</a></h3>
 				<pre>func (me *Controller) MoveLeft()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move left-ward&#34;.
@@ -1284,7 +1284,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move left-ward&#3
 				
 			
 				
-				<h3 id="Controller.MoveRight">func (*Controller) <a href="/target/controller.go?s=4662:4695#L135">MoveRight</a></h3>
+				<h3 id="Controller.MoveRight">func (*Controller) <a href="/target/controller.go?s=4671:4704#L135">MoveRight</a></h3>
 				<pre>func (me *Controller) MoveRight()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move right-ward&#34;.
@@ -1294,7 +1294,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move right-ward&#
 				
 			
 				
-				<h3 id="Controller.MoveUp">func (*Controller) <a href="/target/controller.go?s=4880:4910#L141">MoveUp</a></h3>
+				<h3 id="Controller.MoveUp">func (*Controller) <a href="/target/controller.go?s=4889:4919#L141">MoveUp</a></h3>
 				<pre>func (me *Controller) MoveUp()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis to effect a &#34;move upward&#34;.
@@ -1304,7 +1304,7 @@ Recomputes Pos with regards to UpAxis to effect a &#34;move upward&#34;.
 				
 			
 				
-				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=5381:5425#L160">StepSizeMove</a></h3>
+				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=5390:5434#L160">StepSizeMove</a></h3>
 				<pre>func (me *Controller) StepSizeMove() float64</pre>
 				<p>
 Returns the current distance that a single MoveXyz() call (per loop iteration) would move.
@@ -1315,7 +1315,7 @@ Returns the current distance that a single MoveXyz() call (per loop iteration) w
 				
 			
 				
-				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=5672:5716#L166">StepSizeTurn</a></h3>
+				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=5681:5725#L166">StepSizeTurn</a></h3>
 				<pre>func (me *Controller) StepSizeTurn() float64</pre>
 				<p>
 Returns the current degrees that a single TurnXyz() call (per loop iteration) would turn.
@@ -1326,7 +1326,7 @@ Returns the current degrees that a single TurnXyz() call (per loop iteration) wo
 				
 			
 				
-				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=5905:5937#L171">TurnDown</a></h3>
+				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=5914:5946#L171">TurnDown</a></h3>
 				<pre>func (me *Controller) TurnDown()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34; by me.StepSizeTurn() degrees.
@@ -1336,7 +1336,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34
 				
 			
 				
-				<h3 id="Controller.TurnDownBy">func (*Controller) <a href="/target/controller.go?s=6080:6125#L176">TurnDownBy</a></h3>
+				<h3 id="Controller.TurnDownBy">func (*Controller) <a href="/target/controller.go?s=6089:6134#L176">TurnDownBy</a></h3>
 				<pre>func (me *Controller) TurnDownBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34; by the specified degrees.
@@ -1346,7 +1346,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34
 				
 			
 				
-				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=6298:6330#L183">TurnLeft</a></h3>
+				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=6307:6339#L183">TurnLeft</a></h3>
 				<pre>func (me *Controller) TurnLeft()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#34; by me.StepSizeTurn() degrees.
@@ -1356,7 +1356,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#3
 				
 			
 				
-				<h3 id="Controller.TurnLeftBy">func (*Controller) <a href="/target/controller.go?s=6474:6519#L188">TurnLeftBy</a></h3>
+				<h3 id="Controller.TurnLeftBy">func (*Controller) <a href="/target/controller.go?s=6483:6528#L188">TurnLeftBy</a></h3>
 				<pre>func (me *Controller) TurnLeftBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#34; by the specified degrees.
@@ -1366,7 +1366,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#3
 				
 			
 				
-				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=6648:6681#L193">TurnRight</a></h3>
+				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=6657:6690#L193">TurnRight</a></h3>
 				<pre>func (me *Controller) TurnRight()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#34; by me.StepSizeTurn() degrees.
@@ -1376,7 +1376,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#
 				
 			
 				
-				<h3 id="Controller.TurnRightBy">func (*Controller) <a href="/target/controller.go?s=6827:6873#L198">TurnRightBy</a></h3>
+				<h3 id="Controller.TurnRightBy">func (*Controller) <a href="/target/controller.go?s=6836:6882#L198">TurnRightBy</a></h3>
 				<pre>func (me *Controller) TurnRightBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#34; by the specified degrees.
@@ -1386,7 +1386,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#
 				
 			
 				
-				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=6999:7029#L203">TurnUp</a></h3>
+				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=7008:7038#L203">TurnUp</a></h3>
 				<pre>func (me *Controller) TurnUp()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; by me.StepSizeTurn() degrees.
@@ -1396,7 +1396,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 				
 			
 				
-				<h3 id="Controller.TurnUpBy">func (*Controller) <a href="/target/controller.go?s=7168:7211#L208">TurnUpBy</a></h3>
+				<h3 id="Controller.TurnUpBy">func (*Controller) <a href="/target/controller.go?s=7177:7220#L208">TurnUpBy</a></h3>
 				<pre>func (me *Controller) TurnUpBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; by the specified degress.
@@ -1408,7 +1408,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="ControllerParams">type <a href="/target/controller.go?s=7273:7907#L214">ControllerParams</a></h2>
+			<h2 id="ControllerParams">type <a href="/target/controller.go?s=7282:7916#L214">ControllerParams</a></h2>
 			<pre>type ControllerParams struct {
     <span class="comment">//	Speed of &#34;moving&#34; in the MoveXyz() methods, in units per second.</span>
     <span class="comment">//	Defaults to 2.</span>
@@ -1440,7 +1440,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 
 			
 				
-				<h3 id="NewControllerParams">func <a href="/target/controller.go?s=7909:7958#L236">NewControllerParams</a></h3>
+				<h3 id="NewControllerParams">func <a href="/target/controller.go?s=7918:7967#L236">NewControllerParams</a></h3>
 				<pre>func NewControllerParams() (me *ControllerParams)</pre>
 				
 				
@@ -1699,7 +1699,7 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=931:3675#L21">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=968:3712#L22">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     AppDir struct {
         <span class="comment">//	The base directory path for app file paths.</span>
@@ -1794,7 +1794,7 @@ received from NewEngineOptions() is no longer used. Slightly confusing, but ther
 
 			
 				
-				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=3750:3844#L101">NewEngineOptions</a></h3>
+				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=3787:3881#L102">NewEngineOptions</a></h3>
 				<pre>func NewEngineOptions(appDirBasePath string, windowOptions *WindowOptions) (me *EngineOptions)</pre>
 				<p>
 Allocates, initializes and returns a new core.EngineOptions instance.

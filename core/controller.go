@@ -97,7 +97,7 @@ func (me *Controller) init() {
 	me.Params = Core.Options.Misc.DefaultControllerParams
 	me.autoUpdate, me.dir.Z, me.UpAxis.Y = true, 1, 1
 	unum.Mat4Identities(&me.thrPrep.mat, &me.thrApp.mat)
-	htarget := &unum.Vec3{me.dir.X, 0, me.dir.Z}
+	htarget := &unum.Vec3{X: me.dir.X, Y: 0, Z: me.dir.Z}
 	htarget.Normalize()
 	if htarget.Z >= 0 {
 		if htarget.X >= 0 {
