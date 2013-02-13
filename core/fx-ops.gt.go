@@ -4,23 +4,40 @@ import (
 	ugl "github.com/go3d/go-opengl/util"
 )
 
+//	Implemented by specialized types such as FxOpTex2D, FxOpGrayscale etc.
+//	Those are created and initializes exclusively through FxOps.Enable("{procID}") or the specialized FxOps.EnableFoo() methods.
 type FxOp interface {
 	init(string)
 
+	//	Disables this FxOp.
+	//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 	Disable()
+
+	//	Returns whether this FxOp is currently disabled.
 	Disabled() bool
+
+	//	Enables this FxOp.
+	//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 	Enable()
+
+	//	Returns whether this FxOp is currently enabled.
 	Enabled() bool
+
+	//	The procID of this FxOp. This is one of the Core.Rendering.Fx.KnownProcIDs.
+	//	For example, "Tex2D" for an FxOpTex2D, "Grayscale" for an FxOpGrayscale etc.
 	ProcID() string
+
+	//	Toggles this FxOp.
+	//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 	Toggle()
 }
 
-func NewFxOp(procID string) (me FxOp) {
+func newFxOp(procID string) (me FxOp) {
 	switch procID {
 	case "Grayscale":
 		me = &FxOpGrayscale{}
-	case "RedTest":
-		me = &FxOpRedTest{}
+	case "Orangify":
+		me = &FxOpOrangify{}
 	case "Tex2D":
 		me = &FxOpTex2D{}
 	}
@@ -39,52 +56,79 @@ func (me *fxOpBase) init(procID string) {
 	me.procID = procID
 }
 
+//	Disables this FxOp.
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 func (me *fxOpBase) Disable() {
 	me.disabled = true
 }
 
+//	Returns whether this FxOp is currently disabled.
 func (me *fxOpBase) Disabled() bool {
 	return me.disabled
 }
 
+//	Enables this FxOp.
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 func (me *fxOpBase) Enable() {
 	me.disabled = false
 }
 
+//	Returns whether this FxOp is currently enabled.
 func (me *fxOpBase) Enabled() bool {
 	return !me.disabled
 }
 
+//	The procID of this FxOp. This is one of the Core.Rendering.Fx.KnownProcIDs.
+//	For example, "Tex2D" for an FxOpTex2D, "Grayscale" for an FxOpGrayscale etc.
 func (me *fxOpBase) ProcID() string {
 	return me.procID
 }
 
+//	Toggles this FxOp.
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 func (me *fxOpBase) Toggle() {
 	me.disabled = !me.disabled
 }
 
+//	Yields the grayscale of the current pixel color.
 type FxOpGrayscale struct {
 	fxOpBase
 }
 
-type FxOpRedTest struct {
+//	A very simple color "effect". Tints the current color orange-red.
+type FxOpOrangify struct {
 	fxOpBase
 }
 
+//	Samples from a 2D texture.
 type FxOpTex2D struct {
 	fxOpBase
 
+	//	The ID (in Core.Libs.Images.I2D) of the FxImage2D to be sampled.
 	ImageID string
+
+	//	The sampler to be used.
+	//	Defaults to &Core.Rendering.Fx.Samplers.FullFilteringRepeat.
 	Sampler *ugl.Sampler
 }
 
+func (me *FxOpTex2D) init(s string) {
+	me.fxOpBase.init(s)
+	me.Sampler = &Core.Rendering.Fx.Samplers.FullFilteringRepeat
+}
+
+//	Only used for FxEffect.Ops.
 type FxOps []FxOp
 
-func (me FxOps) Disable(procID string, index int) {
-	idx, all := -1, index < 0
+//	Disables the nth (0-based) FxOp with the specified procID,
+//	or all FxOps with the specified procID if n < 0.
+//	The procID must be one of the Core.Rendering.Fx.KnownProcIDs.
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me FxOps) Disable(procID string, n int) {
+	idx, all := -1, n < 0
 	for _, op := range me {
 		if op.ProcID() == procID {
-			if idx++; all || idx == index {
+			if idx++; all || idx == n {
 				op.Disable()
 			}
 			if !all {
@@ -94,12 +138,17 @@ func (me FxOps) Disable(procID string, index int) {
 	}
 }
 
-func (me *FxOps) Enable(procID string, index int) (fxOp FxOp) {
+//	Enables the nth (0-based) FxOp with the specified procID,
+//	or all FxOps with the specified procID if n < 0.
+//	If me has no FxOp with the specified procID, appends a new one.
+//	The procID must be one of the Core.Rendering.Fx.KnownProcIDs.
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me *FxOps) Enable(procID string, n int) (fxOp FxOp) {
 	var op FxOp
-	found, all, idx := false, index < 0, -1
+	found, all, idx := false, n < 0, -1
 	for _, op = range *me {
 		if op.ProcID() == procID {
-			if idx++; all || idx == index {
+			if idx++; all || idx == n {
 				op.Enable()
 			}
 			if fxOp, found = op, true; !all {
@@ -108,17 +157,20 @@ func (me *FxOps) Enable(procID string, index int) (fxOp FxOp) {
 		}
 	}
 	if !found {
-		fxOp = NewFxOp(procID)
-		*me = append(*me, fxOp)
+		if fxOp = newFxOp(procID); fxOp != nil {
+			*me = append(*me, fxOp)
+		}
 	}
 	return
 }
 
-func (me FxOps) Get(procID string, index int) (op FxOp) {
+//	Returns the nth (0-based) FxOp with the specified procID.
+//	The procID must be one of the Core.Rendering.Fx.KnownProcIDs.
+func (me FxOps) Get(procID string, n int) (op FxOp) {
 	idx := -1
 	for _, op = range me {
 		if op.ProcID() == procID {
-			if idx++; idx == index {
+			if idx++; idx == n {
 				return
 			}
 		}
@@ -127,11 +179,17 @@ func (me FxOps) Get(procID string, index int) (op FxOp) {
 	return
 }
 
-func (me *FxOps) Toggle(procID string, index int) {
-	idx, found, all := -1, false, index < 0
-	for _, op := range *me {
+//	Toggles the nth (0-based) FxOp with the specified procID,
+//	or all FxOps with the specified procID if n < 0.
+//	If me has no FxOp with the specified procID, appends a new one.
+//	The procID must be one of the Core.Rendering.Fx.KnownProcIDs.
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me *FxOps) Toggle(procID string, n int) {
+	var op FxOp
+	idx, found, all := -1, false, n < 0
+	for _, op = range *me {
 		if op.ProcID() == procID {
-			if idx++; all || idx == index {
+			if idx++; all || idx == n {
 				op.Toggle()
 			}
 			if found = true; !all {
@@ -140,74 +198,85 @@ func (me *FxOps) Toggle(procID string, index int) {
 		}
 	}
 	if !found {
-		me.Enable(procID, index)
+		if op = newFxOp(procID); op != nil {
+			*me = append(*me, op)
+		}
 	}
 }
 
-//#begin-gt -gen-fx-ops.gt GT_MULT_SEP:, N:Tex2D,RedTest,Grayscale
+//#begin-gt -gen-fx-ops.gt GT_MULT_SEP:, N:Tex2D,Orangify,Grayscale
 
-//	Convenience short-hand for me.Disable("Tex2D", index)
-func (me FxOps) DisableTex2D(index int) {
-	me.Disable("Tex2D", index)
+//	Convenience short-hand for me.Disable("Tex2D", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me FxOps) DisableTex2D(n int) {
+	me.Disable("Tex2D", n)
 }
 
-//	Convenience short-hand for me.Enable("Tex2D", index)
-func (me *FxOps) EnableTex2D(index int) *FxOpTex2D {
-	return me.Enable("Tex2D", index).(*FxOpTex2D)
+//	Convenience short-hand for me.Enable("Tex2D", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me *FxOps) EnableTex2D(n int) *FxOpTex2D {
+	return me.Enable("Tex2D", n).(*FxOpTex2D)
 }
 
-//	Convenience short-hand for me.Get("Tex2D", index)
-func (me FxOps) GetTex2D(index int) *FxOpTex2D {
-	return me.Get("Tex2D", index).(*FxOpTex2D)
+//	Convenience short-hand for me.Get("Tex2D", n).
+func (me FxOps) GetTex2D(n int) *FxOpTex2D {
+	return me.Get("Tex2D", n).(*FxOpTex2D)
 }
 
-//	Convenience short-hand for me.Toggle("Tex2D", index)
-func (me *FxOps) ToggleTex2D(index int) {
-	me.Toggle("Tex2D", index)
-}
-
-
-
-//	Convenience short-hand for me.Disable("RedTest", index)
-func (me FxOps) DisableRedTest(index int) {
-	me.Disable("RedTest", index)
-}
-
-//	Convenience short-hand for me.Enable("RedTest", index)
-func (me *FxOps) EnableRedTest(index int) *FxOpRedTest {
-	return me.Enable("RedTest", index).(*FxOpRedTest)
-}
-
-//	Convenience short-hand for me.Get("RedTest", index)
-func (me FxOps) GetRedTest(index int) *FxOpRedTest {
-	return me.Get("RedTest", index).(*FxOpRedTest)
-}
-
-//	Convenience short-hand for me.Toggle("RedTest", index)
-func (me *FxOps) ToggleRedTest(index int) {
-	me.Toggle("RedTest", index)
+//	Convenience short-hand for me.Toggle("Tex2D", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me *FxOps) ToggleTex2D(n int) {
+	me.Toggle("Tex2D", n)
 }
 
 
 
-//	Convenience short-hand for me.Disable("Grayscale", index)
-func (me FxOps) DisableGrayscale(index int) {
-	me.Disable("Grayscale", index)
+//	Convenience short-hand for me.Disable("Orangify", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me FxOps) DisableOrangify(n int) {
+	me.Disable("Orangify", n)
 }
 
-//	Convenience short-hand for me.Enable("Grayscale", index)
-func (me *FxOps) EnableGrayscale(index int) *FxOpGrayscale {
-	return me.Enable("Grayscale", index).(*FxOpGrayscale)
+//	Convenience short-hand for me.Enable("Orangify", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me *FxOps) EnableOrangify(n int) *FxOpOrangify {
+	return me.Enable("Orangify", n).(*FxOpOrangify)
 }
 
-//	Convenience short-hand for me.Get("Grayscale", index)
-func (me FxOps) GetGrayscale(index int) *FxOpGrayscale {
-	return me.Get("Grayscale", index).(*FxOpGrayscale)
+//	Convenience short-hand for me.Get("Orangify", n).
+func (me FxOps) GetOrangify(n int) *FxOpOrangify {
+	return me.Get("Orangify", n).(*FxOpOrangify)
 }
 
-//	Convenience short-hand for me.Toggle("Grayscale", index)
-func (me *FxOps) ToggleGrayscale(index int) {
-	me.Toggle("Grayscale", index)
+//	Convenience short-hand for me.Toggle("Orangify", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me *FxOps) ToggleOrangify(n int) {
+	me.Toggle("Orangify", n)
+}
+
+
+
+//	Convenience short-hand for me.Disable("Grayscale", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me FxOps) DisableGrayscale(n int) {
+	me.Disable("Grayscale", n)
+}
+
+//	Convenience short-hand for me.Enable("Grayscale", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me *FxOps) EnableGrayscale(n int) *FxOpGrayscale {
+	return me.Enable("Grayscale", n).(*FxOpGrayscale)
+}
+
+//	Convenience short-hand for me.Get("Grayscale", n).
+func (me FxOps) GetGrayscale(n int) *FxOpGrayscale {
+	return me.Get("Grayscale", n).(*FxOpGrayscale)
+}
+
+//	Convenience short-hand for me.Toggle("Grayscale", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me *FxOps) ToggleGrayscale(n int) {
+	me.Toggle("Grayscale", n)
 }
 
 //#end-gt

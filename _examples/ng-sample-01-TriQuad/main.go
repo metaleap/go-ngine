@@ -13,7 +13,19 @@ var (
 
 func main() {
 	apputil.MaxKeyHint = 2
+	apputil.OnSec = onSec
 	apputil.Main(setupExample_01_TriQuad, onAppThread, onWinThread)
+}
+
+//	called once per second in main thread
+func onSec() {
+	var fx = ng.Core.Libs.Effects["fx_cat"]
+	fx.Ops.ToggleOrangify(0)
+	fx.UpdateRoutine()
+
+	fx = ng.Core.Libs.Effects["fx_dog"]
+	fx.Ops.ToggleOrangify(0)
+	fx.UpdateRoutine()
 }
 
 //	called once per frame in main thread
@@ -46,6 +58,9 @@ func setupExample_01_TriQuad() {
 		"cat": "tex/cat.png",
 		"dog": "tex/dog.png",
 	})
+	fx := ng.Core.Libs.Effects["fx_dog"]
+	fx.Ops.EnableOrangify(0)
+	fx.UpdateRoutine()
 
 	//	meshes / models
 

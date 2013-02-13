@@ -13,27 +13,39 @@ func newFxProc(name string) (me *fxProc) {
 	return
 }
 
+//	Declares the visual appearance of a surface.
+//	An FxEffect can be reused for multiple surfaces, it is bound to geometry via an FxMaterial.
 type FxEffect struct {
+	//	An ordered collection of all FxOps that make up this effect.
+	//	When changing the ordering or disabling, enabling or toggling individual FxOps,
+	//	you need to call the FxEffect.UpdateRoutine() method to reflect such changes.
+	//	Other dynamic, individual FxOp-specific parameter changes (colors, image bindings, weights etc.pp.)
+	//	do not require this.
 	Ops FxOps
 
 	uberProcIDs []string
 	uberName    string
+	uberPnames  map[string]string
 }
 
 func (me *FxEffect) dispose() {
 }
 
 func (me *FxEffect) init() {
+	me.uberPnames = make(map[string]string, len(Core.Rendering.Techniques))
 }
 
 func (me *FxEffect) UpdateRoutine() {
-	me.uberProcIDs = nil
+	me.uberProcIDs = make([]string, 0, len(me.Ops))
 	for _, op := range me.Ops {
 		if op.Enabled() {
 			me.uberProcIDs = append(me.uberProcIDs, op.ProcID())
 		}
 	}
 	me.uberName = strings.Join(me.uberProcIDs, "_")
+	for techName, _ := range Core.Rendering.Techniques {
+		me.uberPnames[techName] = fmtStr("uber_%s_%s", techName, me.uberName)
+	}
 	thrRend.curEffect = nil
 }
 

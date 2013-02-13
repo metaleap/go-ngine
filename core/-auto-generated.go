@@ -7,8 +7,8 @@ func init() {
 	//	GLSL shader sources from C:\gd\src\github.com\go3d\go-ngine\core\_glsl
 	glc.progMan.Reset()
 	glc.shaderMan.init()
-	glc.shaderMan.rawSources["uber-frag"] = "\n\nvoid fx_Grayscale (inout vec3 vCol) {\n\tvCol = vec3((vCol.r * 0.3) + (vCol.g * 0.59) + (vCol.b * 0.11));\n}\n\nvoid fx_RedTest (inout vec3 vCol) {\n\tvCol = vec3(0.9, 0.1, 0.1);\n}\n\nvoid fx_Tex2D (inout vec3 vCol) {\n\tvCol = texture(uni_sampler2D_Tex2D, var_vec2_Tex2D).rgb;\n}\n"
 	glc.shaderMan.rawSources["uber-vert"] = "\n\nvec4 vx_Quad_gl_Position () {\n\tconst float extent = 3;\n\tconst vec2 pos[3] = vec2[](vec2(-1, -1), vec2(extent, -1), vec2(-1, extent));\n\treturn vec4(pos[gl_VertexID], 0, 1);\n}\n\nvec2 vx_Quad_var_vec2_Tex2D () {\n\tconst float extent = 3;\n\tconst vec2 vTex[3] = vec2[](vec2(0, 0), vec2(extent - 1, 0), vec2(0, extent - 1));\n\treturn vTex[gl_VertexID];\n}\n\nvec4 vx_Scene_gl_Position () {\n\treturn uni_mat4_VertexMatrix * vec4(att_vec3_Pos, 1.0);\n}\n\nvec2 vx_Scene_var_vec2_Tex2D () {\n\treturn att_vec2_Tex2D;\n}\n"
+	glc.shaderMan.rawSources["uber-frag"] = "\n\nvoid fx_Grayscale (inout vec3 vCol) {\n\tvCol = vec3((vCol.r * 0.3) + (vCol.g * 0.59) + (vCol.b * 0.11));\n}\n\nvoid fx_Orangify (inout vec3 vCol) {\n\tvCol.r = 0.9;\n}\n\nvoid fx_Tex2D (inout vec3 vCol) {\n\tvCol = texture(uni_sampler2D_Tex2D, var_vec2_Tex2D).rgb;\n}\n"
 	glc.progMan.Names = []string(nil)
 
 	//	Embedded binaries from C:\gd\src\github.com\go3d\go-ngine\_examples\_assets\tex\embed

@@ -86,9 +86,6 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 				<dd><a href="#Main">func Main(setupExampleScene, onAppThread, onWinThread func())</a></dd>
 			
 				
-				<dd><a href="#OnSec">func OnSec()</a></dd>
-			
-				
 				<dd><a href="#PauseResume">func PauseResume()</a></dd>
 			
 				
@@ -154,6 +151,8 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 			
 				<pre>var (
     ArtificialSplashScreenDelay = 0 * time.Second
+
+    OnSec = func() {}
 
     <span class="comment">//	The RenderCanvas the example scene is initially being rendered to. This is an off-screen &#34;render-to-texture&#34; RenderCanvas.</span>
     SceneCanvas *ng.RenderCanvas
@@ -248,7 +247,7 @@ adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffe
 		
 			
 			
-			<h2 id="AppDirBasePath">func <a href="/target/apputil.go?s=1212:1240#L38">AppDirBasePath</a></h2>
+			<h2 id="AppDirBasePath">func <a href="/target/apputil.go?s=1232:1260#L40">AppDirBasePath</a></h2>
 			<pre>func AppDirBasePath() string</pre>
 			<p>
 Returns the base path of the &#34;app dir&#34; for our example apps, in this case: $GOPATH/src/github.com/go3d/go-ngine/_examples/_assets
@@ -291,20 +290,10 @@ states (from the previous CheckCamCtlKeys() call) for controlling SceneCam.Contr
 		
 			
 			
-			<h2 id="Main">func <a href="/target/apputil.go?s=2370:2431#L66">Main</a></h2>
+			<h2 id="Main">func <a href="/target/apputil.go?s=2299:2360#L68">Main</a></h2>
 			<pre>func Main(setupExampleScene, onAppThread, onWinThread func())</pre>
 			<p>
 Called by each example-app&#39;s func main(). Initializes go:ngine, sets SceneCam/SceneCanvas/PostFxCam/PostFxCanvas etc., calls the specified setupExampleScene function, then enters The Loop.
-</p>
-
-			
-		
-			
-			
-			<h2 id="OnSec">func <a href="/target/apputil.go?s=1976:1988#L55">OnSec</a></h2>
-			<pre>func OnSec()</pre>
-			<p>
-Refreshes the window title every second, showing the next one entry in KeyHints every 3 seconds.
 </p>
 
 			
@@ -322,7 +311,7 @@ When paused, the frame last rendered is frozen and rendered in a gray-scale effe
 		
 			
 			
-			<h2 id="PrintPostLoopSummary">func <a href="/target/misc.go?s=675:702#L19">PrintPostLoopSummary</a></h2>
+			<h2 id="PrintPostLoopSummary">func <a href="/target/misc.go?s=676:703#L19">PrintPostLoopSummary</a></h2>
 			<pre>func PrintPostLoopSummary()</pre>
 			<p>
 Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent example app exits.
@@ -332,7 +321,7 @@ Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent 
 		
 			
 			
-			<h2 id="ToggleRetro">func <a href="/target/misc.go?s=2160:2178#L43">ToggleRetro</a></h2>
+			<h2 id="ToggleRetro">func <a href="/target/misc.go?s=2161:2179#L43">ToggleRetro</a></h2>
 			<pre>func ToggleRetro()</pre>
 			<p>
 Toggles &#34;retro mode&#34; for the example app.

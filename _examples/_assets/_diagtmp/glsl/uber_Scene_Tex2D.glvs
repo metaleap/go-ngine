@@ -4,8 +4,8 @@
 #version 330 core
 #line 1
 out vec2 var_vec2_Tex2D;
-in vec2 att_vec2_Tex2D;
 in vec3 att_vec3_Pos;
+in vec2 att_vec2_Tex2D;
 uniform mat4 uni_mat4_VertexMatrix;
 
 vec4 vx_Scene_gl_Position () {

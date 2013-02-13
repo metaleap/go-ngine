@@ -1,12 +1,7 @@
 package core
 
-import (
-	ugl "github.com/go3d/go-opengl/util"
-)
-
 type RenderTechnique interface {
 	dispose()
-	initMeshBuffer(*MeshBuffer) []*ugl.VertexAttribPointer
 	name() string
 	onRenderNode()
 	render()
@@ -25,10 +20,6 @@ func (me *renderTechniqueBase) init(name string) {
 	me.DefaultEffect.init()
 	me.DefaultEffect.Ops.EnableTex2D(-1)
 	me.DefaultEffect.UpdateRoutine()
-}
-
-func (me *renderTechniqueBase) initMeshBuffer(MeshBuffer *MeshBuffer) (atts []*ugl.VertexAttribPointer) {
-	return
 }
 
 func (me *renderTechniqueBase) name() string {

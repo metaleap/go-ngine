@@ -15,6 +15,8 @@ import (
 var (
 	ArtificialSplashScreenDelay = 0 * time.Second
 
+	OnSec = func() {}
+
 	//	The RenderCanvas the example scene is initially being rendered to. This is an off-screen "render-to-texture" RenderCanvas.
 	SceneCanvas *ng.RenderCanvas
 
@@ -49,7 +51,7 @@ func AppDirBasePath() string {
 	return ugo.GopathSrcGithub("go3d", "go-ngine", "_examples", "_assets")
 }
 
-//	Returns the window title to be set by OnSec().
+//	Returns the window title to be set by onSec().
 func appWindowTitle() string {
 	winTitle.cw, winTitle.ch = ng.UserIO.Window.Width(), ng.UserIO.Window.Height()
 	if SceneCanvas != nil {
@@ -61,8 +63,7 @@ func appWindowTitle() string {
 	return fmt.Sprintf("%v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", ng.Stats.FpsLastSec, winTitle.cw, winTitle.ch, KeyHints[curKeyHint], winTitle.camPos.String(), winTitle.camDir.String())
 }
 
-//	Refreshes the window title every second, showing the next one entry in KeyHints every 3 seconds.
-func OnSec() {
+func onSec() {
 	if sec++; sec == 3 {
 		sec = 0
 		if curKeyHint++; (curKeyHint > MaxKeyHint) || (curKeyHint >= (len(KeyHints))) {
@@ -70,6 +71,7 @@ func OnSec() {
 		}
 	}
 	ng.UserIO.Window.SetTitle(appWindowTitle())
+	OnSec()
 }
 
 //	Called by each example-app's func main(). Initializes go:ngine, sets SceneCam/SceneCanvas/PostFxCam/PostFxCanvas etc., calls the specified setupExampleScene function, then enters The Loop.
@@ -111,7 +113,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 		defer ng.Dispose()
 
 		//	STEP 2: post-init, pre-loop setup
-		ng.Loop.On.EverySec, ng.Loop.On.AppThread, ng.Loop.On.WinThread = OnSec, onAppThread, onWinThread
+		ng.Loop.On.EverySec, ng.Loop.On.AppThread, ng.Loop.On.WinThread = onSec, onAppThread, onWinThread
 
 		PostFxCanvas = ng.Core.Rendering.Canvases.Final()
 		PostFxCam = PostFxCanvas.Cameras[0]

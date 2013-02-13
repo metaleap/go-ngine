@@ -4,7 +4,6 @@ import (
 	"strings"
 	"time"
 
-	ugl "github.com/go3d/go-opengl/util"
 	ustr "github.com/metaleap/go-util/str"
 )
 
@@ -24,6 +23,7 @@ func newUberShaderFunc(name, rawSrc string) (me *uberShaderFunc) {
 type uberShader struct {
 	rawSources       map[string]string
 	tmpAtts, tmpUnis []string
+	pname            string
 	funcs            struct {
 		// compute  map[string]*uberShaderFunc
 		// domain   map[string]*uberShaderFunc
@@ -136,19 +136,20 @@ func (me *uberShader) processFuncs() {
 	// }
 }
 
-func (me *uberShader) program(vertTech string, fragFx *FxEffect) (prog *ugl.Program) {
-	pname := "uber_" + vertTech + "_" + fragFx.uberName
-	if prog = glc.progMan.Programs[pname]; prog == nil {
+func (me *uberShader) ensureProg() {
+	me.pname = thrRend.curEffect.uberPnames[thrRend.curTech.name()]
+	if thrRend.tmpProg = glc.progMan.Programs[me.pname]; thrRend.tmpProg == nil {
 		var err error
+		vertTech, fragFx := thrRend.curTech.name(), thrRend.curEffect
 		me.tmpAtts, me.tmpUnis = nil, nil
-		if err = me.setShaderSources(pname, vertTech, fragFx); err == nil {
+		if err = me.setShaderSources(vertTech, fragFx); err == nil {
 			var dur time.Duration
-			if dur, err = glcProgsMake(true, pname); err == nil {
-				Diag.LogShaders("Built new shader program '%s' in %v", pname, dur)
+			if dur, err = glcProgsMake(true, me.pname); err == nil {
+				Diag.LogShaders("Built new shader program '%s' in %v", me.pname, dur)
 				Stats.addProgCompile(1, dur.Nanoseconds())
-				prog = glc.progMan.Programs[pname]
-				if err = prog.SetAttrLocations(me.tmpAtts...); err == nil {
-					err = prog.SetUnifLocations(me.tmpUnis...)
+				thrRend.tmpProg = glc.progMan.Programs[me.pname]
+				if err = thrRend.tmpProg.SetAttrLocations(me.tmpAtts...); err == nil {
+					err = thrRend.tmpProg.SetUnifLocations(me.tmpUnis...)
 				}
 			}
 		}
@@ -156,13 +157,12 @@ func (me *uberShader) program(vertTech string, fragFx *FxEffect) (prog *ugl.Prog
 			Diag.LogErr(err)
 		}
 	}
-	return
 }
 
-func (me *uberShader) setShaderSources(pname, vertTech string, fragFx *FxEffect) (err error) {
+func (me *uberShader) setShaderSources(vertTech string, fragFx *FxEffect) (err error) {
 	fragInputs := map[string]bool{}
-	if err = me.setShaderSourceFrag(pname, fragFx, fragInputs); err == nil {
-		err = me.setShaderSourceVert(pname, vertTech, fragInputs)
+	if err = me.setShaderSourceFrag(fragFx, fragInputs); err == nil {
+		err = me.setShaderSourceVert(vertTech, fragInputs)
 	}
 	return
 }
@@ -190,7 +190,7 @@ func (me *uberShader) setShaderSourceEnsureFunc(fn *uberShaderFunc, srcBody *ust
 	return nil
 }
 
-func (me *uberShader) setShaderSourceFrag(pname string, fx *FxEffect, inputs map[string]bool) (err error) {
+func (me *uberShader) setShaderSourceFrag(fx *FxEffect, inputs map[string]bool) (err error) {
 	var (
 		srcBody, srcHead ustr.Buffer
 		shid             string
@@ -201,11 +201,11 @@ func (me *uberShader) setShaderSourceFrag(pname string, fx *FxEffect, inputs map
 	srcHead.Writeln("out vec3 out_Color;")
 	for _, procID = range fx.uberProcIDs {
 		if shader = Core.Rendering.Fx.procs[procID]; shader == nil {
-			err = fmtErr("uberShader.setShaderSourceFrag('%s') -- unknown fxProc ID '%s'", pname, procID)
+			err = fmtErr("uberShader.setShaderSourceFrag('%s') -- unknown fxProc ID '%s'", me.pname, procID)
 			return
 		}
 		if shFunc = me.funcs.fragment[shader.FuncName]; shFunc == nil {
-			err = fmtErr("uberShader.setShaderSourceFrag('%s') -- unknown fragment func '%s'", pname, shader.FuncName)
+			err = fmtErr("uberShader.setShaderSourceFrag('%s') -- unknown fragment func '%s'", me.pname, shader.FuncName)
 			return
 		}
 		me.setShaderSourceEnsureFunc(shFunc, &srcBody, inputs)
@@ -227,11 +227,11 @@ func (me *uberShader) setShaderSourceFrag(pname string, fx *FxEffect, inputs map
 	}
 	srcBody.Writeln("\tout_Color = vCol;")
 	srcBody.Writeln("}")
-	glc.progMan.RawSources.Fragment[pname] = srcHead.String() + "\n" + srcBody.String()
+	glc.progMan.RawSources.Fragment[me.pname] = srcHead.String() + "\n" + srcBody.String()
 	return
 }
 
-func (me *uberShader) setShaderSourceVert(pname, vertTech string, varyings map[string]bool) (err error) {
+func (me *uberShader) setShaderSourceVert(vertTech string, varyings map[string]bool) (err error) {
 	var (
 		i                int
 		srcBody, srcHead ustr.Buffer
@@ -250,7 +250,7 @@ func (me *uberShader) setShaderSourceVert(pname, vertTech string, varyings map[s
 			srcHead.Writeln("out %s %s;", me.inoutTypeSpec(inout), inout)
 		}
 		if shFunc = me.funcs.vertex[fname]; shFunc == nil {
-			err = fmtErr("uberShader.setShaderSourceVert('%s') -- unknown vertex func '%s'", pname, fname)
+			err = fmtErr("uberShader.setShaderSourceVert('%s') -- unknown vertex func '%s'", me.pname, fname)
 			return
 		}
 		me.setShaderSourceEnsureFunc(shFunc, &srcBody, inputs)
@@ -270,6 +270,6 @@ func (me *uberShader) setShaderSourceVert(pname, vertTech string, varyings map[s
 		srcBody.Writeln("\t%s = vx_%s_%s();", inout, vertTech, inout)
 	}
 	srcBody.Writeln("}")
-	glc.progMan.RawSources.Vertex[pname] = srcHead.String() + "\n" + srcBody.String()
+	glc.progMan.RawSources.Vertex[me.pname] = srcHead.String() + "\n" + srcBody.String()
 	return
 }

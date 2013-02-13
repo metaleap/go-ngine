@@ -95,17 +95,21 @@ func (_ *EngineCore) initRendering() {
 
 func initRenderTechniques() {
 	type techCtor func(string) RenderTechnique
-	rend := &Core.Rendering
-	rend.Fx.KnownProcIDs = []string{"Tex2D", "RedTest", "Grayscale"}
+	rend, knownTechniques := &Core.Rendering, map[string]techCtor{
+		"Quad":  newRenderTechniqueQuad,
+		"Scene": newRenderTechniqueScene,
+	}
+	rend.Techniques = RenderTechniques{}
+	for name, _ := range knownTechniques {
+		//	the fxprocs need the names, but the techs mustn't be created yet as their ctor needs the fxprocs......
+		rend.Techniques[name] = nil
+	}
+	rend.Fx.KnownProcIDs = []string{"Tex2D", "Grayscale", "Orangify"}
 	rend.Fx.procs = map[string]*fxProc{}
 	for _, shaderFunc := range rend.Fx.KnownProcIDs {
 		rend.Fx.procs[shaderFunc] = newFxProc(shaderFunc)
 	}
-	rend.Techniques = RenderTechniques{}
-	for name, ctor := range map[string]techCtor{
-		"Quad":  newRenderTechniqueQuad,
-		"Scene": newRenderTechniqueScene,
-	} {
+	for name, ctor := range knownTechniques {
 		rend.Techniques[name] = ctor(name)
 	}
 }
@@ -158,19 +162,20 @@ func (_ *EngineCore) SyncUpdates() {
 	return
 }
 
-func (_ *EngineCore) useProg(prog *ugl.Program) {
-	if thrRend.curProg != prog {
-		thrRend.curProg = prog
+func (_ *EngineCore) useProg() {
+	if thrRend.curProg != thrRend.tmpProg {
+		thrRend.curProg = thrRend.tmpProg
 		thrRend.curProg.Use()
 	}
 }
 
-func (_ *EngineCore) useTechFx(technique RenderTechnique, fx *FxEffect) {
-	if technique != thrRend.curTechnique || fx != thrRend.curEffect {
+func (_ *EngineCore) useTechFx() {
+	if thrRend.curTech != thrRend.tmpTech || thrRend.curEffect != thrRend.tmpEffect {
 		thrRend.curMeshBuf = nil
-		thrRend.curTechnique = technique
-		thrRend.curEffect = fx
-		Core.useProg(glc.shaderMan.program(technique.name(), fx))
+		thrRend.curTech = thrRend.tmpTech
+		thrRend.curEffect = thrRend.tmpEffect
+		glc.shaderMan.ensureProg()
+		Core.useProg()
 	}
 	return
 }
