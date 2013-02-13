@@ -23,6 +23,7 @@ func newUberShaderFunc(name, rawSrc string) (me *uberShaderFunc) {
 type uberShader struct {
 	rawSources       map[string]string
 	tmpAtts, tmpUnis []string
+	opIndices        map[FxOp]int
 	pname            string
 	funcs            struct {
 		// compute  map[string]*uberShaderFunc
@@ -145,7 +146,7 @@ func (me *uberShader) ensureProg() {
 		if err = me.setShaderSources(vertTech, fragFx); err == nil {
 			var dur time.Duration
 			if dur, err = glcProgsMake(true, me.pname); err == nil {
-				Diag.LogShaders("Built new shader program '%s' in %v", me.pname, dur)
+				Diag.LogShaders("Built new GLSL shader program '%s' in %v", me.pname, dur)
 				Stats.addProgCompile(1, dur.Nanoseconds())
 				thrRend.tmpProg = glc.progMan.Programs[me.pname]
 				if err = thrRend.tmpProg.SetAttrLocations(me.tmpAtts...); err == nil {
@@ -161,13 +162,15 @@ func (me *uberShader) ensureProg() {
 
 func (me *uberShader) setShaderSources(vertTech string, fragFx *FxEffect) (err error) {
 	fragInputs := map[string]bool{}
+	me.opIndices = map[FxOp]int{}
 	if err = me.setShaderSourceFrag(fragFx, fragInputs); err == nil {
 		err = me.setShaderSourceVert(vertTech, fragInputs)
 	}
+	me.opIndices = nil
 	return
 }
 
-func (me *uberShader) setShaderSourceEnsureFunc(fn *uberShaderFunc, srcBody *ustr.Buffer, inputs map[string]bool) error {
+func (me *uberShader) setShaderSourceEnsureFunc(op FxOp, fn *uberShaderFunc, srcBody *ustr.Buffer, inputs map[string]bool) error {
 	var (
 		str string
 		df  *uberShaderFunc
@@ -184,7 +187,7 @@ func (me *uberShader) setShaderSourceEnsureFunc(fn *uberShaderFunc, srcBody *ust
 		if df == nil {
 			return fmtErr(str)
 		}
-		me.setShaderSourceEnsureFunc(df, srcBody, inputs)
+		me.setShaderSourceEnsureFunc(nil, df, srcBody, inputs)
 	}
 	srcBody.Writeln(fn.rawSrc + "\n")
 	return nil
@@ -194,22 +197,36 @@ func (me *uberShader) setShaderSourceFrag(fx *FxEffect, inputs map[string]bool) 
 	var (
 		srcBody, srcHead ustr.Buffer
 		shid             string
-		procID           string
+		op               FxOp
 		shader           *fxProc
 		shFunc           *uberShaderFunc
 	)
 	srcHead.Writeln("out vec3 out_Color;")
-	for _, procID = range fx.uberProcIDs {
-		if shader = Core.Rendering.Fx.procs[procID]; shader == nil {
-			err = fmtErr("uberShader.setShaderSourceFrag('%s') -- unknown fxProc ID '%s'", me.pname, procID)
-			return
+
+	opc, opCounts := 0, map[string]int{}
+	for _, op = range fx.Ops {
+		if op.Enabled() {
+			opc = opCounts[op.ProcID()]
+			me.opIndices[op] = opc
+			opCounts[op.ProcID()] = opc + 1
 		}
-		if shFunc = me.funcs.fragment[shader.FuncName]; shFunc == nil {
-			err = fmtErr("uberShader.setShaderSourceFrag('%s') -- unknown fragment func '%s'", me.pname, shader.FuncName)
-			return
-		}
-		me.setShaderSourceEnsureFunc(shFunc, &srcBody, inputs)
 	}
+	opCounts = nil
+
+	for _, op = range fx.Ops {
+		if op.Enabled() {
+			if shader = Core.Rendering.Fx.procs[op.ProcID()]; shader == nil {
+				err = fmtErr("uberShader.setShaderSourceFrag('%s') -- unknown fxProc ID '%s'", me.pname, op.ProcID())
+				return
+			}
+			if shFunc = me.funcs.fragment[shader.FuncName]; shFunc == nil {
+				err = fmtErr("uberShader.setShaderSourceFrag('%s') -- unknown fragment func '%s'", me.pname, shader.FuncName)
+				return
+			}
+			me.setShaderSourceEnsureFunc(op, shFunc, &srcBody, inputs)
+		}
+	}
+
 	for shid, _ = range inputs {
 		switch shid[:4] {
 		case "uni_":
@@ -221,9 +238,11 @@ func (me *uberShader) setShaderSourceFrag(fx *FxEffect, inputs map[string]bool) 
 	}
 	srcBody.Writeln("void main () {")
 	srcBody.Writeln("\tvec3 vCol = vec3(0);")
-	for _, procID = range fx.uberProcIDs {
-		shFunc = me.funcs.fragment[Core.Rendering.Fx.procs[procID].FuncName]
-		srcBody.Writeln("\t%s(vCol);", shFunc.name)
+	for _, op = range fx.Ops {
+		if op.Enabled() {
+			shFunc = me.funcs.fragment[Core.Rendering.Fx.procs[op.ProcID()].FuncName]
+			srcBody.Writeln("\t%s(vCol);", shFunc.name)
+		}
 	}
 	srcBody.Writeln("\tout_Color = vCol;")
 	srcBody.Writeln("}")
@@ -253,7 +272,7 @@ func (me *uberShader) setShaderSourceVert(vertTech string, varyings map[string]b
 			err = fmtErr("uberShader.setShaderSourceVert('%s') -- unknown vertex func '%s'", me.pname, fname)
 			return
 		}
-		me.setShaderSourceEnsureFunc(shFunc, &srcBody, inputs)
+		me.setShaderSourceEnsureFunc(nil, shFunc, &srcBody, inputs)
 	}
 	for inout, _ = range inputs {
 		switch inout[:4] {

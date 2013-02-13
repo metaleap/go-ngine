@@ -1,7 +1,7 @@
 package core
 
 import (
-	"strings"
+	ustr "github.com/metaleap/go-util/str"
 )
 
 type fxProc struct {
@@ -23,9 +23,9 @@ type FxEffect struct {
 	//	do not require this.
 	Ops FxOps
 
-	uberProcIDs []string
-	uberName    string
-	uberPnames  map[string]string
+	tmpOp      FxOp
+	uberName   string
+	uberPnames map[string]string
 }
 
 func (me *FxEffect) dispose() {
@@ -36,17 +36,25 @@ func (me *FxEffect) init() {
 }
 
 func (me *FxEffect) UpdateRoutine() {
-	me.uberProcIDs = make([]string, 0, len(me.Ops))
+	var buf ustr.Buffer
 	for _, op := range me.Ops {
 		if op.Enabled() {
-			me.uberProcIDs = append(me.uberProcIDs, op.ProcID())
+			buf.Write("_%s", op.ProcID())
 		}
 	}
-	me.uberName = strings.Join(me.uberProcIDs, "_")
+	me.uberName = buf.String()
 	for techName, _ := range Core.Rendering.Techniques {
-		me.uberPnames[techName] = fmtStr("uber_%s_%s", techName, me.uberName)
+		me.uberPnames[techName] = fmtStr("uber_%s%s", techName, me.uberName)
 	}
 	thrRend.curEffect = nil
+}
+
+func (me *FxEffect) use() {
+	for _, me.tmpOp = range me.Ops {
+		if me.tmpOp.Enabled() {
+			me.tmpOp.use()
+		}
+	}
 }
 
 //#begin-gt -gen-lib.gt T:FxEffect

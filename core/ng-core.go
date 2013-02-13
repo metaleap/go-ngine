@@ -104,7 +104,7 @@ func initRenderTechniques() {
 		//	the fxprocs need the names, but the techs mustn't be created yet as their ctor needs the fxprocs......
 		rend.Techniques[name] = nil
 	}
-	rend.Fx.KnownProcIDs = []string{"Tex2D", "Grayscale", "Orangify"}
+	rend.Fx.KnownProcIDs = []string{"Tex2D", "Grayscale", "Orangify", "Colored"}
 	rend.Fx.procs = map[string]*fxProc{}
 	for _, shaderFunc := range rend.Fx.KnownProcIDs {
 		rend.Fx.procs[shaderFunc] = newFxProc(shaderFunc)

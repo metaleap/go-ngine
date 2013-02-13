@@ -12,8 +12,8 @@ import (
 //	When paused, the frame last rendered is frozen and rendered in a gray-scale effect.
 func PauseResume() {
 	tech := PostFxCam.Rendering.Technique.(*ng.RenderTechniqueQuad)
-	tech.DefaultEffect.Ops.ToggleGrayscale(-1)
-	tech.DefaultEffect.UpdateRoutine()
+	tech.Effect.Ops.ToggleGrayscale(-1)
+	tech.Effect.UpdateRoutine()
 	if Paused = !Paused; Paused {
 		if SceneCanvas != nil {
 			SceneCanvas.EveryNthFrame = 0
@@ -40,7 +40,7 @@ func PrintPostLoopSummary() {
 	printStatSummary("Frame Render (GPU)", &ng.Stats.FrameRenderGpu)
 	printStatSummary("Frame Render Both", &ng.Stats.FrameRenderBoth)
 	printStatSummary("GC (max 1x/sec)", &ng.Stats.Gc)
-	fmt.Printf("Shaders: compiled %v GLSL programs over time, which took %v in total.\n", ng.Stats.Programs.NumProgsCompiled, time.Duration(ng.Stats.Programs.TotalTimeCost))
+	fmt.Printf("Shaders: compiled %v GLSL shader programs over time, which took %v in total.\n", ng.Stats.Programs.NumProgsCompiled, time.Duration(ng.Stats.Programs.TotalTimeCost))
 	cgoPerFrame, numTotalFrames := int64(0), ng.Stats.TotalFrames()
 	if numTotalFrames != 0 {
 		cgoPerFrame = runtime.NumCgoCall() / int64(ng.Stats.TotalFrames())
@@ -57,5 +57,12 @@ func ToggleRetro() {
 		} else {
 			SceneCanvas.SetSize(true, 1, 1)
 		}
+	}
+}
+
+func ToggleTexturing() {
+	for _, fx := range ng.Core.Libs.Effects {
+		fx.Ops.SwapAll("Tex2D", "Colored")
+		fx.UpdateRoutine()
 	}
 }

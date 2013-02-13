@@ -7,7 +7,6 @@ import (
 
 type RenderTechniqueScene struct {
 	renderTechniqueBase
-	tmpFxOpTex2D *FxOpTex2D
 }
 
 func newRenderTechniqueScene(progName string) RenderTechnique {
@@ -29,10 +28,8 @@ func (me *RenderTechniqueScene) onRenderNode() {
 		if thrRend.curMat = thrRend.tmpMat; thrRend.curMat != nil {
 			thrRend.tmpTech, thrRend.tmpEffect = me, Core.Libs.Effects[thrRend.curMat.DefaultEffectID]
 			Core.useTechFx()
-			me.tmpFxOpTex2D = thrRend.curEffect.Ops.GetTex2D(0)
-			me.tmpFxOpTex2D.Sampler.Bind(0)
-			Core.Libs.Images.I2D[me.tmpFxOpTex2D.ImageID].glTex.Bind()
-			gl.Uniform1i(thrRend.curProg.UnifLocs["uni_sampler2D_Tex2D"], 0)
+			thrRend.curEffect.use()
+			gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uni_mat4_VertexMatrix"], 1, gl.FALSE, &thrRend.curNode.thrRend.matProjs[thrRend.curCam][0])
 		}
 	}
 }

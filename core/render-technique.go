@@ -8,8 +8,7 @@ type RenderTechnique interface {
 }
 
 type renderTechniqueBase struct {
-	DefaultEffect FxEffect
-	tname         string
+	tname string
 }
 
 func (me *renderTechniqueBase) dispose() {
@@ -17,9 +16,6 @@ func (me *renderTechniqueBase) dispose() {
 
 func (me *renderTechniqueBase) init(name string) {
 	me.tname = name
-	me.DefaultEffect.init()
-	me.DefaultEffect.Ops.EnableTex2D(-1)
-	me.DefaultEffect.UpdateRoutine()
 }
 
 func (me *renderTechniqueBase) name() string {

@@ -15,6 +15,7 @@ var (
 		"[Esc]  --  Pause/Resume",
 		"[F2]  --  Toggle Backface Culling",
 		"[F3]  --  Retro Mode",
+		"[F4]  --  Toggle Texturing",
 		"[W][S]  --  Camera rise / sink",
 		"[A][D]  --  Camera strafe left / right",
 		"[<][>]  --  Camera turn left / right",
@@ -76,6 +77,9 @@ func CheckAndHandleToggleKeys() {
 	}
 	if in.KeyToggled(glfw.KeyF3) {
 		ToggleRetro()
+	}
+	if in.KeyToggled(glfw.KeyF4) {
+		ToggleTexturing()
 	}
 }
 

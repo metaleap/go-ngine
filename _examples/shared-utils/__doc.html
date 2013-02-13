@@ -94,6 +94,9 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 				
 				<dd><a href="#ToggleRetro">func ToggleRetro()</a></dd>
 			
+				
+				<dd><a href="#ToggleTexturing">func ToggleTexturing()</a></dd>
+			
 			
 				
 				<dd><a href="#Gui2D">type Gui2D</a></dd>
@@ -181,6 +184,7 @@ Some common base functionality shared by all the go:ngine example apps in _examp
         &#34;[Esc]  --  Pause/Resume&#34;,
         &#34;[F2]  --  Toggle Backface Culling&#34;,
         &#34;[F3]  --  Retro Mode&#34;,
+        &#34;[F4]  --  Toggle Texturing&#34;,
         &#34;[W][S]  --  Camera rise / sink&#34;,
         &#34;[A][D]  --  Camera strafe left / right&#34;,
         &#34;[&lt;][&gt;]  --  Camera turn left / right&#34;,
@@ -208,7 +212,7 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 		
 			
 			
-			<h2 id="AddKeyHint">func <a href="/target/user-input.go?s=1741:1774#L42">AddKeyHint</a></h2>
+			<h2 id="AddKeyHint">func <a href="/target/user-input.go?s=1773:1806#L43">AddKeyHint</a></h2>
 			<pre>func AddKeyHint(key, hint string)</pre>
 			<p>
 Key hints are shown in the window title bar, a new one every few seconds.
@@ -257,7 +261,7 @@ Returns the base path of the &#34;app dir&#34; for our example apps, in this cas
 		
 			
 			
-			<h2 id="CheckAndHandleToggleKeys">func <a href="/target/user-input.go?s=2399:2430#L59">CheckAndHandleToggleKeys</a></h2>
+			<h2 id="CheckAndHandleToggleKeys">func <a href="/target/user-input.go?s=2431:2462#L60">CheckAndHandleToggleKeys</a></h2>
 			<pre>func CheckAndHandleToggleKeys()</pre>
 			<p>
 To be called every frame (by the parent example app, ONLY in onWinThread()!) to
@@ -268,7 +272,7 @@ check AND handle key-toggle states for F2, F3 etc. function keys and Esc.
 		
 			
 			
-			<h2 id="CheckCamCtlKeys">func <a href="/target/user-input.go?s=2082:2104#L49">CheckCamCtlKeys</a></h2>
+			<h2 id="CheckCamCtlKeys">func <a href="/target/user-input.go?s=2114:2136#L50">CheckCamCtlKeys</a></h2>
 			<pre>func CheckCamCtlKeys()</pre>
 			<p>
 To be called every frame (by the parent example app, ONLY in onWinThread()!) to collect key-press
@@ -279,7 +283,7 @@ states for controlling (in HandleCamCtlKeys() in onAppThread()!) SceneCam.Contro
 		
 			
 			
-			<h2 id="HandleCamCtlKeys">func <a href="/target/user-input.go?s=2910:2933#L74">HandleCamCtlKeys</a></h2>
+			<h2 id="HandleCamCtlKeys">func <a href="/target/user-input.go?s=2997:3020#L78">HandleCamCtlKeys</a></h2>
 			<pre>func HandleCamCtlKeys()</pre>
 			<p>
 To be called every frame (by the parent example app, ONLY in onAppThread()!) to process key-press
@@ -311,7 +315,7 @@ When paused, the frame last rendered is frozen and rendered in a gray-scale effe
 		
 			
 			
-			<h2 id="PrintPostLoopSummary">func <a href="/target/misc.go?s=676:703#L19">PrintPostLoopSummary</a></h2>
+			<h2 id="PrintPostLoopSummary">func <a href="/target/misc.go?s=662:689#L19">PrintPostLoopSummary</a></h2>
 			<pre>func PrintPostLoopSummary()</pre>
 			<p>
 Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent example app exits.
@@ -321,13 +325,20 @@ Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent 
 		
 			
 			
-			<h2 id="ToggleRetro">func <a href="/target/misc.go?s=2161:2179#L43">ToggleRetro</a></h2>
+			<h2 id="ToggleRetro">func <a href="/target/misc.go?s=2154:2172#L43">ToggleRetro</a></h2>
 			<pre>func ToggleRetro()</pre>
 			<p>
 Toggles &#34;retro mode&#34; for the example app.
 If retro is on, the resolution of the main canvas is 1/4th of the window resolution.
 </p>
 
+			
+		
+			
+			
+			<h2 id="ToggleTexturing">func <a href="/target/misc.go?s=2337:2359#L53">ToggleTexturing</a></h2>
+			<pre>func ToggleTexturing()</pre>
+			
 			
 		
 		

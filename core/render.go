@@ -49,11 +49,10 @@ func (me *Camera) render() {
 
 func (me *RenderTechniqueQuad) render() {
 	thrRend.curMat, thrRend.curMatId = nil, ""
-	Core.Rendering.Fx.Samplers.NoFilteringClamp.Bind(0)
 	me.glVao.Bind()
-	thrRend.tmpTech, thrRend.tmpEffect = me, &me.DefaultEffect
+	thrRend.tmpTech, thrRend.tmpEffect = me, &me.Effect
 	Core.useTechFx()
-	gl.Uniform1i(thrRend.curProg.UnifLocs["uni_sampler2D_Tex2D"], 0)
+	me.Effect.use()
 	gl.DrawArrays(gl.TRIANGLES, 0, 3)
 	me.glVao.Unbind()
 }
@@ -69,7 +68,6 @@ func (me *Node) render() {
 	if me.Enabled {
 		if thrRend.curNode = me; me.model != nil {
 			thrRend.curTech.onRenderNode()
-			gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uni_mat4_VertexMatrix"], 1, gl.FALSE, &me.thrRend.matProjs[thrRend.curCam][0])
 			me.model.render()
 		}
 		for me.thrRend.curId, me.thrRend.curSubNode = range me.ChildNodes.M {

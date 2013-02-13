@@ -1,6 +1,7 @@
 package core
 
 import (
+	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
 )
 
@@ -8,6 +9,10 @@ import (
 //	Those are created and initializes exclusively through FxOps.Enable("{procID}") or the specialized FxOps.EnableFoo() methods.
 type FxOp interface {
 	init(string)
+
+	nifyFunc() bool
+	nifyUnif(fullName, typeName string) bool
+	use()
 
 	//	Disables this FxOp.
 	//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
@@ -40,6 +45,8 @@ func newFxOp(procID string) (me FxOp) {
 		me = &FxOpOrangify{}
 	case "Tex2D":
 		me = &FxOpTex2D{}
+	case "Colored":
+		me = &FxOpColored{}
 	}
 	if me != nil {
 		me.init(procID)
@@ -54,6 +61,17 @@ type fxOpBase struct {
 
 func (me *fxOpBase) init(procID string) {
 	me.procID = procID
+}
+
+func (me *fxOpBase) nifyFunc() bool {
+	return false
+}
+
+func (me *fxOpBase) nifyUnif(fullName, typeName string) bool {
+	return false
+}
+
+func (me *fxOpBase) use() {
 }
 
 //	Disables this FxOp.
@@ -100,9 +118,16 @@ type FxOpOrangify struct {
 	fxOpBase
 }
 
+//	Colors geometry based on texture coordinates.
+type FxOpColored struct {
+	fxOpBase
+}
+
 //	Samples from a 2D texture.
 type FxOpTex2D struct {
 	fxOpBase
+
+	bindTex func(string)
 
 	//	The ID (in Core.Libs.Images.I2D) of the FxImage2D to be sampled.
 	ImageID string
@@ -115,6 +140,23 @@ type FxOpTex2D struct {
 func (me *FxOpTex2D) init(s string) {
 	me.fxOpBase.init(s)
 	me.Sampler = &Core.Rendering.Fx.Samplers.FullFilteringRepeat
+	me.bindTex = func(imgID string) {
+		Core.Libs.Images.I2D[imgID].glTex.Bind()
+	}
+}
+
+func (me *FxOpTex2D) nifyFunc() bool {
+	return true
+}
+
+func (me *FxOpTex2D) nifyUnif(fullName, typeName string) bool {
+	return typeName == "sampler2D"
+}
+
+func (me *FxOpTex2D) use() {
+	me.Sampler.Bind(0)
+	me.bindTex(me.ImageID)
+	gl.Uniform1i(thrRend.curProg.UnifLocs["uni_sampler2D_Tex2D"], 0)
 }
 
 //	Only used for FxEffect.Ops.
@@ -179,6 +221,17 @@ func (me FxOps) Get(procID string, n int) (op FxOp) {
 	return
 }
 
+func (me *FxOps) SwapAll(procID1, procID2 string) {
+	for i, op := range *me {
+		switch op.ProcID() {
+		case procID1:
+			(*me)[i] = newFxOp(procID2)
+		case procID2:
+			(*me)[i] = newFxOp(procID1)
+		}
+	}
+}
+
 //	Toggles the nth (0-based) FxOp with the specified procID,
 //	or all FxOps with the specified procID if n < 0.
 //	If me has no FxOp with the specified procID, appends a new one.
@@ -204,7 +257,7 @@ func (me *FxOps) Toggle(procID string, n int) {
 	}
 }
 
-//#begin-gt -gen-fx-ops.gt GT_MULT_SEP:, N:Tex2D,Orangify,Grayscale
+//#begin-gt -gen-fx-ops.gt GT_MULT_SEP:, N:Tex2D,Orangify,Grayscale,Colored
 
 //	Convenience short-hand for me.Disable("Tex2D", n).
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
@@ -277,6 +330,31 @@ func (me FxOps) GetGrayscale(n int) *FxOpGrayscale {
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 func (me *FxOps) ToggleGrayscale(n int) {
 	me.Toggle("Grayscale", n)
+}
+
+
+
+//	Convenience short-hand for me.Disable("Colored", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me FxOps) DisableColored(n int) {
+	me.Disable("Colored", n)
+}
+
+//	Convenience short-hand for me.Enable("Colored", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me *FxOps) EnableColored(n int) *FxOpColored {
+	return me.Enable("Colored", n).(*FxOpColored)
+}
+
+//	Convenience short-hand for me.Get("Colored", n).
+func (me FxOps) GetColored(n int) *FxOpColored {
+	return me.Get("Colored", n).(*FxOpColored)
+}
+
+//	Convenience short-hand for me.Toggle("Colored", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me *FxOps) ToggleColored(n int) {
+	me.Toggle("Colored", n)
 }
 
 //#end-gt
