@@ -1,5 +1,9 @@
 package core
 
+import (
+	"strings"
+)
+
 type fxProc struct {
 	FuncName string
 }
@@ -9,49 +13,28 @@ func newFxProc(name string) (me *fxProc) {
 	return
 }
 
-type FxProc struct {
-	Enabled bool
-	ProcID  string
-
-	index int
-}
-
-type FxRoutine struct {
-	Procs []*FxProc
-
-	pname string
-}
-
-func NewFxRoutine(procIDs ...string) (me *FxRoutine) {
-	me = &FxRoutine{}
-	for _, procID := range procIDs {
-		me.Procs = append(me.Procs, &FxProc{Enabled: true, ProcID: procID})
-	}
-	me.Update()
-	return
-}
-
-func (me *FxRoutine) Update() {
-	counts := map[string]int{}
-	for _, proc := range me.Procs {
-		if proc.Enabled {
-			proc.index = counts[proc.ProcID]
-			counts[proc.ProcID] = proc.index + 1
-			me.pname += ("_" + proc.ProcID)
-		}
-	}
-}
-
 type FxEffect struct {
-	OldDiffuse *FxColorOrTexture
+	Ops FxOps
 
-	Routine *FxRoutine
+	uberProcIDs []string
+	uberName    string
 }
 
 func (me *FxEffect) dispose() {
 }
 
 func (me *FxEffect) init() {
+}
+
+func (me *FxEffect) UpdateRoutine() {
+	me.uberProcIDs = nil
+	for _, op := range me.Ops {
+		if op.Enabled() {
+			me.uberProcIDs = append(me.uberProcIDs, op.ProcID())
+		}
+	}
+	me.uberName = strings.Join(me.uberProcIDs, "_")
+	thrRend.curEffect = nil
 }
 
 //#begin-gt -gen-lib.gt T:FxEffect

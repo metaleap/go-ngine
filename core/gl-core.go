@@ -53,9 +53,13 @@ func glInit() (err error, badVer string) {
 				gl.FrontFace(gl.CCW)
 				gl.CullFace(gl.BACK)
 				Diag.LogMisc(ugl.Util.ConnInfo())
-				if dur, err = glcProgsMake(true); err == nil {
-					Diag.LogShaders("Total shader compilation time for all %v programs: %v\n", len(glc.progMan.Programs), dur)
-					Stats.addProgCompile(len(glc.progMan.Programs), dur.Nanoseconds())
+				if len(glc.progMan.Programs) > 0 {
+					if dur, err = glcProgsMake(true); err == nil {
+						Diag.LogShaders("Total shader compilation time for all %v auxiliary (non-ubershader) programs: %v\n", len(glc.progMan.Programs), dur)
+						Stats.addProgCompile(len(glc.progMan.Programs), dur.Nanoseconds())
+					}
+				}
+				if err == nil {
 					glc.shaderMan.loadFromRawSources()
 					glc.shaderMan.processFuncs()
 				}
@@ -88,6 +92,7 @@ func glcProgsMake(forceAll bool, forceSome ...string) (dur time.Duration, err er
 		} {
 			for _, progName := range forceSome {
 				if src = sources[progName]; len(src) > 0 {
+					src = "/*\tTemp file written at runtime for diagnostic purposes.\n\tThe following is a runtime-generated GLSL source string,\n\texactly as it was sent to the GL for compilation and linking: */\n" + src
 					if err = uio.WriteTextFile(Core.fileIO.resolveLocalFilePath(path.Join(Diag.WriteTmpFilesTo.BaseDirName, Diag.WriteTmpFilesTo.ShaderPrograms, progName+ext)), src); err != nil {
 						return
 					}

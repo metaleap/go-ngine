@@ -109,7 +109,6 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
 		defer ng.Dispose()
-		defer PrintPostLoopSummary()
 
 		//	STEP 2: post-init, pre-loop setup
 		ng.Loop.On.EverySec, ng.Loop.On.AppThread, ng.Loop.On.WinThread = OnSec, onAppThread, onWinThread
@@ -130,5 +129,6 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 		//	STEP 3: enter... Da Loop.
 		ng.Loop.Loop()
 		numCgo.postLoop = runtime.NumCgoCall()
+		PrintPostLoopSummary() // don't wanna defer this, useless when exit-on-error
 	}
 }

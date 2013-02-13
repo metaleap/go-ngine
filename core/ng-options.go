@@ -94,15 +94,15 @@ type EngineOptions struct {
 		DefaultClearColor ugl.GlVec4
 
 		//	Default render technique for a Camera created via RenderCanvas.AddNewCamera2D().
-		//	Defaults to "rt_scene".
+		//	Defaults to "Scene".
 		DefaultTechnique2D string
 
 		//	Default render technique for a Camera created via RenderCanvas.AddNewCamera3D().
-		//	Defaults to "rt_scene".
+		//	Defaults to "Scene".
 		DefaultTechnique3D string
 
 		//	Default render technique for a Camera created via RenderCanvas.AddNewCameraQuad().
-		//	Defaults to "rt_quad".
+		//	Defaults to "Quad".
 		DefaultTechniqueQuad string
 	}
 }
@@ -118,7 +118,7 @@ func NewEngineOptions(appDirBasePath string, windowOptions *WindowOptions) (me *
 	init.Window.Rbits, init.Window.Gbits, init.Window.Bbits, init.Window.DepthBits = 8, 8, 8, 8
 	rend := &me.Rendering
 	rend.DefaultClearColor = ugl.GlVec4{0, 0, 0, 1}
-	rend.DefaultTechnique2D, rend.DefaultTechnique3D, rend.DefaultTechniqueQuad = "rt_scene", "rt_scene", "rt_quad"
+	rend.DefaultTechnique2D, rend.DefaultTechnique3D, rend.DefaultTechniqueQuad = "Scene", "Scene", "Quad"
 	UserIO.Window = *windowOptions
 	return
 }

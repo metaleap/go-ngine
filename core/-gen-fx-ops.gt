@@ -1,0 +1,21 @@
+package gt
+
+//	Convenience short-hand for me.Disable("__N__", index)
+func (me FxOps) Disable__N__(index int) {
+	me.Disable("__N__", index)
+}
+
+//	Convenience short-hand for me.Enable("__N__", index)
+func (me *FxOps) Enable__N__(index int) *FxOp__N__ {
+	return me.Enable("__N__", index).(*FxOp__N__)
+}
+
+//	Convenience short-hand for me.Get("__N__", index)
+func (me FxOps) Get__N__(index int) *FxOp__N__ {
+	return me.Get("__N__", index).(*FxOp__N__)
+}
+
+//	Convenience short-hand for me.Toggle("__N__", index)
+func (me *FxOps) Toggle__N__(index int) {
+	me.Toggle("__N__", index)
+}

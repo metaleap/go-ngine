@@ -2,8 +2,10 @@ package core
 
 import (
 	"fmt"
+	"path/filepath"
 
 	ugl "github.com/go3d/go-opengl/util"
+	uio "github.com/metaleap/go-util/io"
 )
 
 //	Call this to "un-init" go:ngine and to release any and all GPU or RAM resources still allocated.
@@ -21,6 +23,14 @@ func Init(options *EngineOptions) (err error) {
 		glVer      float64
 	)
 	Core.Options = *options
+	options = nil
+	if len(Diag.WriteTmpFilesTo.BaseDirName) > 0 {
+		for _, diagTmpDirName := range []string{Diag.WriteTmpFilesTo.ShaderPrograms} {
+			if err = uio.ClearDirectory(filepath.Join(Core.Options.AppDir.BasePath, Diag.WriteTmpFilesTo.BaseDirName, diagTmpDirName)); err != nil {
+				return
+			}
+		}
+	}
 tryInit:
 	if Core.Options.Initialization.GlContext.CoreProfile.ForceFirst {
 		for i, v := range ugl.KnownVersions {
@@ -51,12 +61,6 @@ tryInit:
 	}
 	if len(badVer) > 0 {
 		err = fmtErr(glVersionErrorMessage(glMinVerStr, badVer))
-	}
-	if err == nil {
-		fx := NewFxRoutine("Tex2D", "Grayscale")
-		_, err = glc.shaderMan.program("Scene", fx)
-		fx = NewFxRoutine("RedTest", "Grayscale")
-		_, err = glc.shaderMan.program("Quad", fx)
 	}
 	return
 }

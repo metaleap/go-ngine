@@ -136,14 +136,13 @@ func (me *uberShader) processFuncs() {
 	// }
 }
 
-func (me *uberShader) program(vertexTechniqueName string, fragFx *FxRoutine) (prog *ugl.Program, err error) {
-	var (
-		dur   time.Duration
-		pname = "uber_" + vertexTechniqueName + fragFx.pname
-	)
+func (me *uberShader) program(vertTech string, fragFx *FxEffect) (prog *ugl.Program) {
+	pname := "uber_" + vertTech + "_" + fragFx.uberName
 	if prog = glc.progMan.Programs[pname]; prog == nil {
+		var err error
 		me.tmpAtts, me.tmpUnis = nil, nil
-		if err = me.setShaderSources(pname, vertexTechniqueName, fragFx); err == nil {
+		if err = me.setShaderSources(pname, vertTech, fragFx); err == nil {
+			var dur time.Duration
 			if dur, err = glcProgsMake(true, pname); err == nil {
 				Diag.LogShaders("Built new shader program '%s' in %v", pname, dur)
 				Stats.addProgCompile(1, dur.Nanoseconds())
@@ -153,14 +152,17 @@ func (me *uberShader) program(vertexTechniqueName string, fragFx *FxRoutine) (pr
 				}
 			}
 		}
+		if err != nil {
+			Diag.LogErr(err)
+		}
 	}
 	return
 }
 
-func (me *uberShader) setShaderSources(pname, vertexTechniqueName string, fragFx *FxRoutine) (err error) {
+func (me *uberShader) setShaderSources(pname, vertTech string, fragFx *FxEffect) (err error) {
 	fragInputs := map[string]bool{}
 	if err = me.setShaderSourceFrag(pname, fragFx, fragInputs); err == nil {
-		err = me.setShaderSourceVert(pname, vertexTechniqueName, fragInputs)
+		err = me.setShaderSourceVert(pname, vertTech, fragInputs)
 	}
 	return
 }
@@ -188,27 +190,25 @@ func (me *uberShader) setShaderSourceEnsureFunc(fn *uberShaderFunc, srcBody *ust
 	return nil
 }
 
-func (me *uberShader) setShaderSourceFrag(pname string, fx *FxRoutine, inputs map[string]bool) (err error) {
+func (me *uberShader) setShaderSourceFrag(pname string, fx *FxEffect, inputs map[string]bool) (err error) {
 	var (
 		srcBody, srcHead ustr.Buffer
 		shid             string
-		proc             *FxProc
+		procID           string
 		shader           *fxProc
 		shFunc           *uberShaderFunc
 	)
 	srcHead.Writeln("out vec3 out_Color;")
-	for _, proc = range fx.Procs {
-		if proc.Enabled {
-			if shader = Core.Rendering.fxProcs[proc.ProcID]; shader == nil {
-				err = fmtErr("uberShader.setShaderSourceFrag('%s') -- unknown fxProc ID '%s'", pname, proc.ProcID)
-				return
-			}
-			if shFunc = me.funcs.fragment[shader.FuncName]; shFunc == nil {
-				err = fmtErr("uberShader.setShaderSourceFrag('%s') -- unknown fragment func '%s'", pname, shader.FuncName)
-				return
-			}
-			me.setShaderSourceEnsureFunc(shFunc, &srcBody, inputs)
+	for _, procID = range fx.uberProcIDs {
+		if shader = Core.Rendering.Fx.procs[procID]; shader == nil {
+			err = fmtErr("uberShader.setShaderSourceFrag('%s') -- unknown fxProc ID '%s'", pname, procID)
+			return
 		}
+		if shFunc = me.funcs.fragment[shader.FuncName]; shFunc == nil {
+			err = fmtErr("uberShader.setShaderSourceFrag('%s') -- unknown fragment func '%s'", pname, shader.FuncName)
+			return
+		}
+		me.setShaderSourceEnsureFunc(shFunc, &srcBody, inputs)
 	}
 	for shid, _ = range inputs {
 		switch shid[:4] {
@@ -220,19 +220,18 @@ func (me *uberShader) setShaderSourceFrag(pname string, fx *FxRoutine, inputs ma
 		}
 	}
 	srcBody.Writeln("void main () {")
-	for _, proc = range fx.Procs {
-		if proc.Enabled {
-			shFunc = me.funcs.fragment[Core.Rendering.fxProcs[proc.ProcID].FuncName]
-			srcBody.Writeln("\tout_Color = %s(out_Color);", shFunc.name)
-		}
+	srcBody.Writeln("\tvec3 vCol = vec3(0);")
+	for _, procID = range fx.uberProcIDs {
+		shFunc = me.funcs.fragment[Core.Rendering.Fx.procs[procID].FuncName]
+		srcBody.Writeln("\t%s(vCol);", shFunc.name)
 	}
+	srcBody.Writeln("\tout_Color = vCol;")
 	srcBody.Writeln("}")
 	glc.progMan.RawSources.Fragment[pname] = srcHead.String() + "\n" + srcBody.String()
-	println("\n\nFRAG===>" + pname + "\n" + glc.progMan.RawSources.Fragment[pname] + "\n<=====\n\n")
 	return
 }
 
-func (me *uberShader) setShaderSourceVert(pname, vertexTechniqueName string, varyings map[string]bool) (err error) {
+func (me *uberShader) setShaderSourceVert(pname, vertTech string, varyings map[string]bool) (err error) {
 	var (
 		i                int
 		srcBody, srcHead ustr.Buffer
@@ -247,7 +246,7 @@ func (me *uberShader) setShaderSourceVert(pname, vertexTechniqueName string, var
 		}
 	}
 	for i, inout = range outputs {
-		if fname = "vx_" + vertexTechniqueName + "_" + inout; i > 0 {
+		if fname = "vx_" + vertTech + "_" + inout; i > 0 {
 			srcHead.Writeln("out %s %s;", me.inoutTypeSpec(inout), inout)
 		}
 		if shFunc = me.funcs.vertex[fname]; shFunc == nil {
@@ -268,10 +267,9 @@ func (me *uberShader) setShaderSourceVert(pname, vertexTechniqueName string, var
 	}
 	srcBody.Writeln("void main () {")
 	for _, inout = range outputs {
-		srcBody.Writeln("\t%s = vx_%s_%s();", inout, vertexTechniqueName, inout)
+		srcBody.Writeln("\t%s = vx_%s_%s();", inout, vertTech, inout)
 	}
 	srcBody.Writeln("}")
 	glc.progMan.RawSources.Vertex[pname] = srcHead.String() + "\n" + srcBody.String()
-	println("\n\nVERT===>" + pname + "\n" + glc.progMan.RawSources.Vertex[pname] + "\n<=====\n\n")
 	return
 }

@@ -1,10 +1,9 @@
-/*
-
-GLSL functions used for vertex shader permutation.
-This file is "somewhat parsed" and processed, so indentation and
-naming patterns are significant and not subject to personal taste.
-
-*/
+/*	Temp file written at runtime for diagnostic purposes.
+	The following is a runtime-generated GLSL source string,
+	exactly as it was sent to the GL for compilation and linking: */
+#version 330 core
+#line 1
+out vec2 var_vec2_Tex2D;
 
 vec4 vx_Quad_gl_Position () {
 	const float extent = 3;
@@ -18,10 +17,7 @@ vec2 vx_Quad_var_vec2_Tex2D () {
 	return vTex[gl_VertexID];
 }
 
-vec4 vx_Scene_gl_Position () {
-	return uni_mat4_VertexMatrix * vec4(att_vec3_Pos, 1.0);
-}
-
-vec2 vx_Scene_var_vec2_Tex2D () {
-	return att_vec2_Tex2D;
+void main () {
+	gl_Position = vx_Quad_gl_Position();
+	var_vec2_Tex2D = vx_Quad_var_vec2_Tex2D();
 }

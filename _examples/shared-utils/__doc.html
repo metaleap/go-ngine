@@ -62,9 +62,6 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 			
 			
 				
-				<dd><a href="#AddColorMaterials">func AddColorMaterials(idsColors map[string][]float64)</a></dd>
-			
-				
 				<dd><a href="#AddKeyHint">func AddKeyHint(key, hint string)</a></dd>
 			
 				
@@ -212,21 +209,6 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 		
 			
 			
-			<h2 id="AddColorMaterials">func <a href="/target/assets.go?s=771:825#L13">AddColorMaterials</a></h2>
-			<pre>func AddColorMaterials(idsColors map[string][]float64)</pre>
-			<p>
-Sets up plain-color effects/materials with the specified IDs.
-For each ID (such as &#34;foo&#34; and &#34;bar&#34;):
--	creates an ng.FxEffect with ID &#34;fx_{ID}&#34; (ie. &#34;fx_foo&#34; and &#34;fx_bar&#34;) and adds it
-to ng.Core.Libs.Effects; its Diffuse field pointing to the color
--	creates an ng.FxMaterial with ID &#34;mat_{ID}&#34; (ie. &#34;mat_foo&#34; and &#34;mat_bar&#34;) and
-adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffect.
-</p>
-
-			
-		
-			
-			
 			<h2 id="AddKeyHint">func <a href="/target/user-input.go?s=1741:1774#L42">AddKeyHint</a></h2>
 			<pre>func AddKeyHint(key, hint string)</pre>
 			<p>
@@ -249,7 +231,7 @@ the specified ID, and returns it.
 		
 			
 			
-			<h2 id="AddTextureMaterials">func <a href="/target/assets.go?s=1604:1655#L28">AddTextureMaterials</a></h2>
+			<h2 id="AddTextureMaterials">func <a href="/target/assets.go?s=1628:1679#L30">AddTextureMaterials</a></h2>
 			<pre>func AddTextureMaterials(idsUrls map[string]string)</pre>
 			<p>
 Sets up textures and associated effects/materials with the specified IDs and image URLs.
@@ -340,7 +322,7 @@ When paused, the frame last rendered is frozen and rendered in a gray-scale effe
 		
 			
 			
-			<h2 id="PrintPostLoopSummary">func <a href="/target/misc.go?s=689:716#L20">PrintPostLoopSummary</a></h2>
+			<h2 id="PrintPostLoopSummary">func <a href="/target/misc.go?s=675:702#L19">PrintPostLoopSummary</a></h2>
 			<pre>func PrintPostLoopSummary()</pre>
 			<p>
 Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent example app exits.
@@ -350,7 +332,7 @@ Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent 
 		
 			
 			
-			<h2 id="ToggleRetro">func <a href="/target/misc.go?s=2050:2068#L40">ToggleRetro</a></h2>
+			<h2 id="ToggleRetro">func <a href="/target/misc.go?s=2160:2178#L43">ToggleRetro</a></h2>
 			<pre>func ToggleRetro()</pre>
 			<p>
 Toggles &#34;retro mode&#34; for the example app.

@@ -28,14 +28,18 @@ type EngineCore struct {
 	}
 	Rendering struct {
 		Canvases RenderCanvases
-		Samplers struct {
-			NoFilteringClamp    ugl.Sampler
-			FullFilteringRepeat ugl.Sampler
+		Fx       struct {
+			KnownProcIDs []string
+			Samplers     struct {
+				NoFilteringClamp    ugl.Sampler
+				FullFilteringRepeat ugl.Sampler
+			}
+
+			procs map[string]*fxProc
 		}
 		Techniques RenderTechniques
 
-		fxProcs map[string]*fxProc
-		states  ugl.RenderStates
+		states ugl.RenderStates
 	}
 
 	isInit bool
@@ -51,14 +55,14 @@ func (_ *EngineCore) dispose() {
 	} {
 		disp.dispose()
 	}
-	Core.Rendering.Samplers.FullFilteringRepeat.Dispose()
-	Core.Rendering.Samplers.NoFilteringClamp.Dispose()
+	Core.Rendering.Fx.Samplers.FullFilteringRepeat.Dispose()
+	Core.Rendering.Fx.Samplers.NoFilteringClamp.Dispose()
 }
 
 func (_ *EngineCore) init() {
-	initRenderTechniques()
 	Core.MeshBuffers = newMeshBuffers()
 	Core.initLibs()
+	initRenderTechniques()
 	Core.initRendering()
 	splash := &Core.Libs.Images.SplashScreen
 	splash.InitFrom.RawData = embeddedBinaries["splash.png"]
@@ -83,24 +87,26 @@ func (_ *EngineCore) initLibs() {
 func (_ *EngineCore) initRendering() {
 	rend := &Core.Rendering
 	rend.states.ForceClearColor(Core.Options.Rendering.DefaultClearColor)
-	rend.Samplers.FullFilteringRepeat.Create().EnableFullFiltering(true, 8).SetWrap(gl.REPEAT)
-	rend.Samplers.NoFilteringClamp.Create().DisableAllFiltering(false).SetWrap(gl.CLAMP_TO_BORDER)
+	rend.Fx.Samplers.FullFilteringRepeat.Create().EnableFullFiltering(true, 8).SetWrap(gl.REPEAT)
+	rend.Fx.Samplers.NoFilteringClamp.Create().DisableAllFiltering(false).SetWrap(gl.CLAMP_TO_BORDER)
 	rend.Canvases = append(RenderCanvases{}, newRenderCanvas(true, true, 1, 1))
 	rend.Canvases.Final().AddNewCameraQuad()
-	rend.fxProcs = map[string]*fxProc{}
-	for _, shaderFunc := range []string{"Tex2D", "RedTest", "Grayscale"} {
-		rend.fxProcs[shaderFunc] = newFxProc(shaderFunc)
-	}
 }
 
 func initRenderTechniques() {
 	type techCtor func(string) RenderTechnique
-	Core.Rendering.Techniques = RenderTechniques{}
+	rend := &Core.Rendering
+	rend.Fx.KnownProcIDs = []string{"Tex2D", "RedTest", "Grayscale"}
+	rend.Fx.procs = map[string]*fxProc{}
+	for _, shaderFunc := range rend.Fx.KnownProcIDs {
+		rend.Fx.procs[shaderFunc] = newFxProc(shaderFunc)
+	}
+	rend.Techniques = RenderTechniques{}
 	for name, ctor := range map[string]techCtor{
-		"rt_quad":  newRenderTechniqueQuad,
-		"rt_scene": newRenderTechniqueScene,
+		"Quad":  newRenderTechniqueQuad,
+		"Scene": newRenderTechniqueScene,
 	} {
-		Core.Rendering.Techniques[name] = ctor(name)
+		rend.Techniques[name] = ctor(name)
 	}
 }
 
@@ -152,17 +158,19 @@ func (_ *EngineCore) SyncUpdates() {
 	return
 }
 
-func (_ *EngineCore) useProgram(prog *ugl.Program) {
+func (_ *EngineCore) useProg(prog *ugl.Program) {
 	if thrRend.curProg != prog {
 		thrRend.curProg = prog
 		thrRend.curProg.Use()
 	}
 }
 
-func (_ *EngineCore) useTechnique(technique RenderTechnique) {
-	if technique != thrRend.curTechnique {
+func (_ *EngineCore) useTechFx(technique RenderTechnique, fx *FxEffect) {
+	if technique != thrRend.curTechnique || fx != thrRend.curEffect {
 		thrRend.curMeshBuf = nil
 		thrRend.curTechnique = technique
-		Core.useProgram(thrRend.curTechnique.program())
+		thrRend.curEffect = fx
+		Core.useProg(glc.shaderMan.program(technique.name(), fx))
 	}
+	return
 }

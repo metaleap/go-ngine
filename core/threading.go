@@ -32,15 +32,14 @@ var (
 		curCanvIndex   int
 		curCanv        *RenderCanvas
 		curCam         *Camera
+		curEffect      *FxEffect
 		curMatId       string
-		curMat         *FxMaterial
+		curMat, tmpMat *FxMaterial
 		curMeshBuf     *MeshBuffer
 		curNode        *Node
 		curProg        *ugl.Program
 		curScene       *Scene
 		curTechnique   RenderTechnique
-		tmpEffect      *FxEffect
-		tmpMat         *FxMaterial
 	}
 )
 

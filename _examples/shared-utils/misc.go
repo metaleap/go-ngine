@@ -12,7 +12,9 @@ import (
 //	When paused, the frame last rendered is frozen and rendered in a gray-scale effect.
 func PauseResume() {
 	tech := PostFxCam.Rendering.Technique.(*ng.RenderTechniqueQuad)
-	if Paused = tech.ToggleEffect("Grayscale"); Paused {
+	tech.DefaultEffect.Ops.ToggleGrayscale(-1)
+	tech.DefaultEffect.UpdateRoutine()
+	if Paused = !Paused; Paused {
 		if SceneCanvas != nil {
 			SceneCanvas.EveryNthFrame = 0
 		}
@@ -20,9 +22,6 @@ func PauseResume() {
 		if SceneCanvas != nil {
 			SceneCanvas.EveryNthFrame = 1
 		}
-	}
-	if err := tech.ApplyEffects(); err != nil {
-		ng.Diag.LogErr(err)
 	}
 }
 
@@ -42,7 +41,11 @@ func PrintPostLoopSummary() {
 	printStatSummary("Frame Render Both", &ng.Stats.FrameRenderBoth)
 	printStatSummary("GC (max 1x/sec)", &ng.Stats.Gc)
 	fmt.Printf("Shaders: compiled %v GLSL programs over time, which took %v in total.\n", ng.Stats.Programs.NumProgsCompiled, time.Duration(ng.Stats.Programs.TotalTimeCost))
-	fmt.Printf("CGO calls: pre-loop init %v, loop %v (avg. %v/frame)\n\n", numCgo.preLoop, numCgo.postLoop-numCgo.preLoop, runtime.NumCgoCall()/int64(ng.Stats.TotalFrames()))
+	cgoPerFrame, numTotalFrames := int64(0), ng.Stats.TotalFrames()
+	if numTotalFrames != 0 {
+		cgoPerFrame = runtime.NumCgoCall() / int64(ng.Stats.TotalFrames())
+	}
+	fmt.Printf("CGO calls: pre-loop init %v, loop %v (avg. %v/frame)\n\n", numCgo.preLoop, numCgo.postLoop-numCgo.preLoop, cgoPerFrame)
 }
 
 //	Toggles "retro mode" for the example app.

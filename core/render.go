@@ -29,11 +29,11 @@ func (me *RenderCanvas) render() {
 
 func (me *Camera) render() {
 	if me.Enabled {
+		thrRend.curTechnique = me.Rendering.Technique
 		Core.Rendering.states.Apply(&me.thrRend.states)
 		if me.Rendering.Viewport.shouldScissor {
 			Core.Rendering.states.ForceEnableScissorTest()
 		}
-		Core.useTechnique(me.Rendering.Technique)
 		if me.Rendering.Viewport.shouldScissor {
 			gl.Scissor(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
 		}
@@ -46,17 +46,20 @@ func (me *Camera) render() {
 		}
 	}
 }
+
 func (me *RenderTechniqueQuad) render() {
 	thrRend.curMat, thrRend.curMatId = nil, ""
-	Core.Rendering.Samplers.NoFilteringClamp.Bind(0)
+	Core.Rendering.Fx.Samplers.NoFilteringClamp.Bind(0)
 	me.glVao.Bind()
-	gl.Uniform1i(me.prog.UnifLocs["uni_Tex0"], 0)
+	Core.useTechFx(me, &me.DefaultEffect)
+	gl.Uniform1i(thrRend.curProg.UnifLocs["uni_sampler2D_Tex2D"], 0)
 	gl.DrawArrays(gl.TRIANGLES, 0, 3)
 	me.glVao.Unbind()
 }
 
 func (me *RenderTechniqueScene) render() {
-	Core.Rendering.Samplers.FullFilteringRepeat.Bind(0)
+	thrRend.curMat, thrRend.curMatId = nil, ""
+	Core.Rendering.Fx.Samplers.FullFilteringRepeat.Bind(0)
 	if thrRend.curScene != nil {
 		thrRend.curScene.RootNode.render()
 	}
@@ -66,7 +69,7 @@ func (me *Node) render() {
 	if me.Enabled {
 		if thrRend.curNode = me; me.model != nil {
 			thrRend.curTechnique.onRenderNode()
-			gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uni_VertexMatrix"], 1, gl.FALSE, &me.thrRend.matProjs[thrRend.curCam][0])
+			gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uni_mat4_VertexMatrix"], 1, gl.FALSE, &me.thrRend.matProjs[thrRend.curCam][0])
 			me.model.render()
 		}
 		for me.thrRend.curId, me.thrRend.curSubNode = range me.ChildNodes.M {

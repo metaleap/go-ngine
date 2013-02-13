@@ -275,22 +275,14 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#FxColorOrTexture">type FxColorOrTexture</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NewFxColor">func NewFxColor(rgba ...float64) (me *FxColorOrTexture)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NewFxTexture">func NewFxTexture(image2ID string, sampler *ugl.Sampler) (me *FxColorOrTexture)</a></dd>
-				
-				
-			
-				
 				<dd><a href="#FxEffect">type FxEffect</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#NewFxEffect">func NewFxEffect() (me *FxEffect)</a></dd>
 				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxEffect.UpdateRoutine">func (me *FxEffect) UpdateRoutine()</a></dd>
 				
 			
 				
@@ -344,19 +336,133 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#FxProc">type FxProc</a></dd>
+				<dd><a href="#FxOp">type FxOp</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewFxOp">func NewFxOp(procID string) (me FxOp)</a></dd>
 				
 				
 			
 				
-				<dd><a href="#FxRoutine">type FxRoutine</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NewFxRoutine">func NewFxRoutine(procIDs ...string) (me *FxRoutine)</a></dd>
+				<dd><a href="#FxOpGrayscale">type FxOpGrayscale</a></dd>
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#FxRoutine.Update">func (me *FxRoutine) Update()</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#FxOpGrayscale.Disable">func (me *FxOpGrayscale) Disable()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOpGrayscale.Disabled">func (me *FxOpGrayscale) Disabled() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOpGrayscale.Enable">func (me *FxOpGrayscale) Enable()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOpGrayscale.Enabled">func (me *FxOpGrayscale) Enabled() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOpGrayscale.ProcID">func (me *FxOpGrayscale) ProcID() string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOpGrayscale.Toggle">func (me *FxOpGrayscale) Toggle()</a></dd>
+				
+			
+				
+				<dd><a href="#FxOpRedTest">type FxOpRedTest</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOpRedTest.Disable">func (me *FxOpRedTest) Disable()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOpRedTest.Disabled">func (me *FxOpRedTest) Disabled() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOpRedTest.Enable">func (me *FxOpRedTest) Enable()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOpRedTest.Enabled">func (me *FxOpRedTest) Enabled() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOpRedTest.ProcID">func (me *FxOpRedTest) ProcID() string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOpRedTest.Toggle">func (me *FxOpRedTest) Toggle()</a></dd>
+				
+			
+				
+				<dd><a href="#FxOpTex2D">type FxOpTex2D</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOpTex2D.Disable">func (me *FxOpTex2D) Disable()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOpTex2D.Disabled">func (me *FxOpTex2D) Disabled() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOpTex2D.Enable">func (me *FxOpTex2D) Enable()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOpTex2D.Enabled">func (me *FxOpTex2D) Enabled() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOpTex2D.ProcID">func (me *FxOpTex2D) ProcID() string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOpTex2D.Toggle">func (me *FxOpTex2D) Toggle()</a></dd>
+				
+			
+				
+				<dd><a href="#FxOps">type FxOps</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOps.Disable">func (me FxOps) Disable(procID string, index int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOps.DisableGrayscale">func (me FxOps) DisableGrayscale(index int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOps.DisableRedTest">func (me FxOps) DisableRedTest(index int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOps.DisableTex2D">func (me FxOps) DisableTex2D(index int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOps.Enable">func (me *FxOps) Enable(procID string, index int) (fxOp FxOp)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOps.EnableGrayscale">func (me *FxOps) EnableGrayscale(index int) *FxOpGrayscale</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOps.EnableRedTest">func (me *FxOps) EnableRedTest(index int) *FxOpRedTest</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOps.EnableTex2D">func (me *FxOps) EnableTex2D(index int) *FxOpTex2D</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOps.Get">func (me FxOps) Get(procID string, index int) (op FxOp)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOps.GetGrayscale">func (me FxOps) GetGrayscale(index int) *FxOpGrayscale</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOps.GetRedTest">func (me FxOps) GetRedTest(index int) *FxOpRedTest</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOps.GetTex2D">func (me FxOps) GetTex2D(index int) *FxOpTex2D</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOps.Toggle">func (me *FxOps) Toggle(procID string, index int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOps.ToggleGrayscale">func (me *FxOps) ToggleGrayscale(index int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOps.ToggleRedTest">func (me *FxOps) ToggleRedTest(index int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxOps.ToggleTex2D">func (me *FxOps) ToggleTex2D(index int)</a></dd>
 				
 			
 				
@@ -667,11 +773,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#PostFxEffect">type PostFxEffect</a></dd>
-				
-				
-			
-				
 				<dd><a href="#RenderCanvas">type RenderCanvas</a></dd>
 				
 				
@@ -716,18 +817,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				<dd><a href="#RenderTechniqueQuad">type RenderTechniqueQuad</a></dd>
 				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#RenderTechniqueQuad.ApplyEffects">func (me *RenderTechniqueQuad) ApplyEffects() (err error)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#RenderTechniqueQuad.DisableEffect">func (me *RenderTechniqueQuad) DisableEffect(name string)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#RenderTechniqueQuad.EnableEffect">func (me *RenderTechniqueQuad) EnableEffect(name string) (effect *PostFxEffect)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#RenderTechniqueQuad.ToggleEffect">func (me *RenderTechniqueQuad) ToggleEffect(name string) (enabled bool)</a></dd>
 				
 			
 				
@@ -805,8 +894,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/fileio.go">fileio.go</a>
 			
-				<a href="/target/fx-effect-old.go">fx-effect-old.go</a>
-			
 				<a href="/target/fx-effect.gt.go">fx-effect.gt.go</a>
 			
 				<a href="/target/fx-image-2d.gt.go">fx-image-2d.gt.go</a>
@@ -814,6 +901,8 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<a href="/target/fx-image.go">fx-image.go</a>
 			
 				<a href="/target/fx-material.gt.go">fx-material.gt.go</a>
+			
+				<a href="/target/fx-ops.gt.go">fx-ops.gt.go</a>
 			
 				<a href="/target/gl-core.go">gl-core.go</a>
 			
@@ -916,7 +1005,7 @@ recent driver for {GPU}.
 		
 			
 			
-			<h2 id="Dispose">func <a href="/target/ng.go?s=172:186#L1">Dispose</a></h2>
+			<h2 id="Dispose">func <a href="/target/ng.go?s=227:241#L2">Dispose</a></h2>
 			<pre>func Dispose()</pre>
 			<p>
 Call this to &#34;un-init&#34; go:ngine and to release any and all GPU or RAM resources still allocated.
@@ -926,7 +1015,7 @@ Call this to &#34;un-init&#34; go:ngine and to release any and all GPU or RAM re
 		
 			
 			
-			<h2 id="Init">func <a href="/target/ng.go?s=393:438#L7">Init</a></h2>
+			<h2 id="Init">func <a href="/target/ng.go?s=448:493#L9">Init</a></h2>
 			<pre>func Init(options *EngineOptions) (err error)</pre>
 			<p>
 Initializes go:ngine; this first attempts to initialize OpenGL and then open a window to your supplied specifications with a GL 3.3-or-higher profile.
@@ -1364,7 +1453,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:987#L6">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:1043#L6">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Options     EngineOptions
@@ -1380,9 +1469,13 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
     }
     Rendering struct {
         Canvases RenderCanvases
-        Samplers struct {
-            NoFilteringClamp    ugl.Sampler
-            FullFilteringRepeat ugl.Sampler
+        Fx       struct {
+            KnownProcIDs []string
+            Samplers     struct {
+                NoFilteringClamp    ugl.Sampler
+                FullFilteringRepeat ugl.Sampler
+            }
+            <span class="comment">// contains filtered or unexported fields</span>
         }
         Techniques RenderTechniques
         <span class="comment">// contains filtered or unexported fields</span>
@@ -1411,7 +1504,7 @@ It is only aware of that instance and does not support any other EngineCore inst
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3321:3355#L118">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3435:3469#L124">SyncUpdates</a></h3>
 				<pre>func (_ *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -1609,7 +1702,7 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=931:3684#L21">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=931:3675#L21">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     AppDir struct {
         <span class="comment">//	The base directory path for app file paths.</span>
@@ -1676,15 +1769,15 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
         DefaultClearColor ugl.GlVec4
 
         <span class="comment">//	Default render technique for a Camera created via RenderCanvas.AddNewCamera2D().</span>
-        <span class="comment">//	Defaults to &#34;rt_scene&#34;.</span>
+        <span class="comment">//	Defaults to &#34;Scene&#34;.</span>
         DefaultTechnique2D string
 
         <span class="comment">//	Default render technique for a Camera created via RenderCanvas.AddNewCamera3D().</span>
-        <span class="comment">//	Defaults to &#34;rt_scene&#34;.</span>
+        <span class="comment">//	Defaults to &#34;Scene&#34;.</span>
         DefaultTechnique3D string
 
         <span class="comment">//	Default render technique for a Camera created via RenderCanvas.AddNewCameraQuad().</span>
-        <span class="comment">//	Defaults to &#34;rt_quad&#34;.</span>
+        <span class="comment">//	Defaults to &#34;Quad&#34;.</span>
         DefaultTechniqueQuad string
     }
 }</pre>
@@ -1704,7 +1797,7 @@ received from NewEngineOptions() is no longer used. Slightly confusing, but ther
 
 			
 				
-				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=3759:3853#L101">NewEngineOptions</a></h3>
+				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=3750:3844#L101">NewEngineOptions</a></h3>
 				<pre>func NewEngineOptions(appDirBasePath string, windowOptions *WindowOptions) (me *EngineOptions)</pre>
 				<p>
 Allocates, initializes and returns a new core.EngineOptions instance.
@@ -1937,63 +2030,10 @@ Returns true if any of the three specified keys is pressed.
 		
 			
 			
-			<h2 id="FxColorOrTexture">type <a href="/target/fx-effect-old.go?s=206:625#L1">FxColorOrTexture</a></h2>
-			<pre>type FxColorOrTexture struct {
-    <span class="comment">//	If set, the color is sourced from this value.</span>
-    Color *ugfx.Rgba64
-
-    <span class="comment">//	If Color is nil, the color is sourced from a 2D texture image.</span>
-    Texture struct {
-        <span class="comment">//	The ID of the FxImage2D in Core.Libs.Images.I2D</span>
-        Image2ID string
-
-        <span class="comment">//	Describes filtering and wrapping when sampling the texture image.</span>
-        <span class="comment">//	Defaults to Core.Rendering.Samplers.FullFilteringRepeat.</span>
-        Sampler *ugl.Sampler
-    }
-}</pre>
-			<p>
-Declares a source of color information:
-either pointing to an FxImage2D or a 64-bit RGBA color.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="NewFxColor">func <a href="/target/fx-effect-old.go?s=709:764#L16">NewFxColor</a></h3>
-				<pre>func NewFxColor(rgba ...float64) (me *FxColorOrTexture)</pre>
-				<p>
-Creates and returns a new FxColorOrTexture that points to the specified color.
-</p>
-
-				
-			
-				
-				<h3 id="NewFxTexture">func <a href="/target/fx-effect-old.go?s=1022:1101#L23">NewFxTexture</a></h3>
-				<pre>func NewFxTexture(image2ID string, sampler *ugl.Sampler) (me *FxColorOrTexture)</pre>
-				<p>
-Creates and returns a new FxColorOrTexture that points to the specified texture image.
-If sampler is nil, Core.Rendering.Samplers.FullFilteringRepeat is used for me.Texture.Sampler.
-</p>
-
-				
-			
-
-			
-		
-			
-			
-			<h2 id="FxEffect">type <a href="/target/fx-effect.gt.go?s=711:786#L35">FxEffect</a></h2>
+			<h2 id="FxEffect">type <a href="/target/fx-effect.gt.go?s=170:248#L6">FxEffect</a></h2>
 			<pre>type FxEffect struct {
-    OldDiffuse *FxColorOrTexture
-
-    Routine *FxRoutine
+    Ops FxOps
+    <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			
 
@@ -2005,7 +2045,7 @@ If sampler is nil, Core.Rendering.Samplers.FullFilteringRepeat is used for me.Te
 
 			
 				
-				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=958:991#L50">NewFxEffect</a></h3>
+				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=669:702#L33">NewFxEffect</a></h3>
 				<pre>func NewFxEffect() (me *FxEffect)</pre>
 				<p>
 Initializes and returns a new FxEffect with default parameters.
@@ -2014,6 +2054,13 @@ Initializes and returns a new FxEffect with default parameters.
 				
 			
 
+			
+				
+				<h3 id="FxEffect.UpdateRoutine">func (*FxEffect) <a href="/target/fx-effect.gt.go?s=317:352#L19">UpdateRoutine</a></h3>
+				<pre>func (me *FxEffect) UpdateRoutine()</pre>
+				
+				
+				
 			
 		
 			
@@ -2185,10 +2232,38 @@ Initializes and returns a new FxMaterial with default parameters.
 		
 			
 			
-			<h2 id="FxProc">type <a href="/target/fx-effect.gt.go?s=147:211#L2">FxProc</a></h2>
-			<pre>type FxProc struct {
-    Enabled bool
-    ProcID  string
+			<h2 id="FxOp">type <a href="/target/fx-ops.gt.go?s=64:183#L1">FxOp</a></h2>
+			<pre>type FxOp interface {
+    Disable()
+    Disabled() bool
+    Enable()
+    Enabled() bool
+    ProcID() string
+    Toggle()
+    <span class="comment">// contains filtered or unexported methods</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewFxOp">func <a href="/target/fx-ops.gt.go?s=185:222#L8">NewFxOp</a></h3>
+				<pre>func NewFxOp(procID string) (me FxOp)</pre>
+				
+				
+			
+
+			
+		
+			
+			
+			<h2 id="FxOpGrayscale">type <a href="/target/fx-ops.gt.go?s=886:925#L56">FxOpGrayscale</a></h2>
+			<pre>type FxOpGrayscale struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			
@@ -2202,12 +2277,53 @@ Initializes and returns a new FxMaterial with default parameters.
 			
 
 			
+				
+				<h3 id="FxOpGrayscale.Disable">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=533:562#L32">Disable</a></h3>
+				<pre>func (me *FxOpGrayscale) Disable()</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOpGrayscale.Disabled">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=588:623#L36">Disabled</a></h3>
+				<pre>func (me *FxOpGrayscale) Disabled() bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOpGrayscale.Enable">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=649:677#L40">Enable</a></h3>
+				<pre>func (me *FxOpGrayscale) Enable()</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOpGrayscale.Enabled">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=704:738#L44">Enabled</a></h3>
+				<pre>func (me *FxOpGrayscale) Enabled() bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOpGrayscale.ProcID">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=765:800#L48">ProcID</a></h3>
+				<pre>func (me *FxOpGrayscale) ProcID() string</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOpGrayscale.Toggle">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=824:852#L52">Toggle</a></h3>
+				<pre>func (me *FxOpGrayscale) Toggle()</pre>
+				
+				
+				
+			
 		
 			
 			
-			<h2 id="FxRoutine">type <a href="/target/fx-effect.gt.go?s=213:270#L9">FxRoutine</a></h2>
-			<pre>type FxRoutine struct {
-    Procs []*FxProc
+			<h2 id="FxOpRedTest">type <a href="/target/fx-ops.gt.go?s=927:964#L60">FxOpRedTest</a></h2>
+			<pre>type FxOpRedTest struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			
@@ -2219,17 +2335,46 @@ Initializes and returns a new FxMaterial with default parameters.
 			
 
 			
-				
-				<h3 id="NewFxRoutine">func <a href="/target/fx-effect.gt.go?s=272:324#L15">NewFxRoutine</a></h3>
-				<pre>func NewFxRoutine(procIDs ...string) (me *FxRoutine)</pre>
-				
-				
-			
 
 			
 				
-				<h3 id="FxRoutine.Update">func (*FxRoutine) <a href="/target/fx-effect.gt.go?s=477:506#L24">Update</a></h3>
-				<pre>func (me *FxRoutine) Update()</pre>
+				<h3 id="FxOpRedTest.Disable">func (*FxOpRedTest) <a href="/target/fx-ops.gt.go?s=533:562#L32">Disable</a></h3>
+				<pre>func (me *FxOpRedTest) Disable()</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOpRedTest.Disabled">func (*FxOpRedTest) <a href="/target/fx-ops.gt.go?s=588:623#L36">Disabled</a></h3>
+				<pre>func (me *FxOpRedTest) Disabled() bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOpRedTest.Enable">func (*FxOpRedTest) <a href="/target/fx-ops.gt.go?s=649:677#L40">Enable</a></h3>
+				<pre>func (me *FxOpRedTest) Enable()</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOpRedTest.Enabled">func (*FxOpRedTest) <a href="/target/fx-ops.gt.go?s=704:738#L44">Enabled</a></h3>
+				<pre>func (me *FxOpRedTest) Enabled() bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOpRedTest.ProcID">func (*FxOpRedTest) <a href="/target/fx-ops.gt.go?s=765:800#L48">ProcID</a></h3>
+				<pre>func (me *FxOpRedTest) ProcID() string</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOpRedTest.Toggle">func (*FxOpRedTest) <a href="/target/fx-ops.gt.go?s=824:852#L52">Toggle</a></h3>
+				<pre>func (me *FxOpRedTest) Toggle()</pre>
 				
 				
 				
@@ -2237,7 +2382,233 @@ Initializes and returns a new FxMaterial with default parameters.
 		
 			
 			
-			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=1109:1147#L57">LibFxEffects</a></h2>
+			<h2 id="FxOpTex2D">type <a href="/target/fx-ops.gt.go?s=966:1040#L64">FxOpTex2D</a></h2>
+			<pre>type FxOpTex2D struct {
+    ImageID string
+    Sampler *ugl.Sampler
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="FxOpTex2D.Disable">func (*FxOpTex2D) <a href="/target/fx-ops.gt.go?s=533:562#L32">Disable</a></h3>
+				<pre>func (me *FxOpTex2D) Disable()</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOpTex2D.Disabled">func (*FxOpTex2D) <a href="/target/fx-ops.gt.go?s=588:623#L36">Disabled</a></h3>
+				<pre>func (me *FxOpTex2D) Disabled() bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOpTex2D.Enable">func (*FxOpTex2D) <a href="/target/fx-ops.gt.go?s=649:677#L40">Enable</a></h3>
+				<pre>func (me *FxOpTex2D) Enable()</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOpTex2D.Enabled">func (*FxOpTex2D) <a href="/target/fx-ops.gt.go?s=704:738#L44">Enabled</a></h3>
+				<pre>func (me *FxOpTex2D) Enabled() bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOpTex2D.ProcID">func (*FxOpTex2D) <a href="/target/fx-ops.gt.go?s=765:800#L48">ProcID</a></h3>
+				<pre>func (me *FxOpTex2D) ProcID() string</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOpTex2D.Toggle">func (*FxOpTex2D) <a href="/target/fx-ops.gt.go?s=824:852#L52">Toggle</a></h3>
+				<pre>func (me *FxOpTex2D) Toggle()</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="FxOps">type <a href="/target/fx-ops.gt.go?s=1042:1059#L71">FxOps</a></h2>
+			<pre>type FxOps []FxOp</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="FxOps.Disable">func (FxOps) <a href="/target/fx-ops.gt.go?s=1061:1110#L73">Disable</a></h3>
+				<pre>func (me FxOps) Disable(procID string, index int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOps.DisableGrayscale">func (FxOps) <a href="/target/fx-ops.gt.go?s=3444:3487#L184">DisableGrayscale</a></h3>
+				<pre>func (me FxOps) DisableGrayscale(index int)</pre>
+				<p>
+Convenience short-hand for me.Disable(&#34;Grayscale&#34;, index)
+</p>
+
+				
+				
+			
+				
+				<h3 id="FxOps.DisableRedTest">func (FxOps) <a href="/target/fx-ops.gt.go?s=2842:2883#L162">DisableRedTest</a></h3>
+				<pre>func (me FxOps) DisableRedTest(index int)</pre>
+				<p>
+Convenience short-hand for me.Disable(&#34;RedTest&#34;, index)
+</p>
+
+				
+				
+			
+				
+				<h3 id="FxOps.DisableTex2D">func (FxOps) <a href="/target/fx-ops.gt.go?s=2272:2311#L140">DisableTex2D</a></h3>
+				<pre>func (me FxOps) DisableTex2D(index int)</pre>
+				<p>
+Convenience short-hand for me.Disable(&#34;Tex2D&#34;, index)
+</p>
+
+				
+				
+			
+				
+				<h3 id="FxOps.Enable">func (*FxOps) <a href="/target/fx-ops.gt.go?s=1289:1350#L87">Enable</a></h3>
+				<pre>func (me *FxOps) Enable(procID string, index int) (fxOp FxOp)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOps.EnableGrayscale">func (*FxOps) <a href="/target/fx-ops.gt.go?s=3585:3643#L189">EnableGrayscale</a></h3>
+				<pre>func (me *FxOps) EnableGrayscale(index int) *FxOpGrayscale</pre>
+				<p>
+Convenience short-hand for me.Enable(&#34;Grayscale&#34;, index)
+</p>
+
+				
+				
+			
+				
+				<h3 id="FxOps.EnableRedTest">func (*FxOps) <a href="/target/fx-ops.gt.go?s=2977:3031#L167">EnableRedTest</a></h3>
+				<pre>func (me *FxOps) EnableRedTest(index int) *FxOpRedTest</pre>
+				<p>
+Convenience short-hand for me.Enable(&#34;RedTest&#34;, index)
+</p>
+
+				
+				
+			
+				
+				<h3 id="FxOps.EnableTex2D">func (*FxOps) <a href="/target/fx-ops.gt.go?s=2401:2451#L145">EnableTex2D</a></h3>
+				<pre>func (me *FxOps) EnableTex2D(index int) *FxOpTex2D</pre>
+				<p>
+Convenience short-hand for me.Enable(&#34;Tex2D&#34;, index)
+</p>
+
+				
+				
+			
+				
+				<h3 id="FxOps.Get">func (FxOps) <a href="/target/fx-ops.gt.go?s=1654:1709#L107">Get</a></h3>
+				<pre>func (me FxOps) Get(procID string, index int) (op FxOp)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOps.GetGrayscale">func (FxOps) <a href="/target/fx-ops.gt.go?s=3761:3815#L194">GetGrayscale</a></h3>
+				<pre>func (me FxOps) GetGrayscale(index int) *FxOpGrayscale</pre>
+				<p>
+Convenience short-hand for me.Get(&#34;Grayscale&#34;, index)
+</p>
+
+				
+				
+			
+				
+				<h3 id="FxOps.GetRedTest">func (FxOps) <a href="/target/fx-ops.gt.go?s=3143:3193#L172">GetRedTest</a></h3>
+				<pre>func (me FxOps) GetRedTest(index int) *FxOpRedTest</pre>
+				<p>
+Convenience short-hand for me.Get(&#34;RedTest&#34;, index)
+</p>
+
+				
+				
+			
+				
+				<h3 id="FxOps.GetTex2D">func (FxOps) <a href="/target/fx-ops.gt.go?s=2557:2603#L150">GetTex2D</a></h3>
+				<pre>func (me FxOps) GetTex2D(index int) *FxOpTex2D</pre>
+				<p>
+Convenience short-hand for me.Get(&#34;Tex2D&#34;, index)
+</p>
+
+				
+				
+			
+				
+				<h3 id="FxOps.Toggle">func (*FxOps) <a href="/target/fx-ops.gt.go?s=1848:1897#L120">Toggle</a></h3>
+				<pre>func (me *FxOps) Toggle(procID string, index int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxOps.ToggleGrayscale">func (*FxOps) <a href="/target/fx-ops.gt.go?s=3933:3976#L199">ToggleGrayscale</a></h3>
+				<pre>func (me *FxOps) ToggleGrayscale(index int)</pre>
+				<p>
+Convenience short-hand for me.Toggle(&#34;Grayscale&#34;, index)
+</p>
+
+				
+				
+			
+				
+				<h3 id="FxOps.ToggleRedTest">func (*FxOps) <a href="/target/fx-ops.gt.go?s=3305:3346#L177">ToggleRedTest</a></h3>
+				<pre>func (me *FxOps) ToggleRedTest(index int)</pre>
+				<p>
+Convenience short-hand for me.Toggle(&#34;RedTest&#34;, index)
+</p>
+
+				
+				
+			
+				
+				<h3 id="FxOps.ToggleTex2D">func (*FxOps) <a href="/target/fx-ops.gt.go?s=2709:2748#L155">ToggleTex2D</a></h3>
+				<pre>func (me *FxOps) ToggleTex2D(index int)</pre>
+				<p>
+Convenience short-hand for me.Toggle(&#34;Tex2D&#34;, index)
+</p>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=820:858#L40">LibFxEffects</a></h2>
 			<pre>type LibFxEffects map[string]*FxEffect</pre>
 			<p>
 A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
@@ -2254,7 +2625,7 @@ A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=1273:1329#L61">AddNew</a></h3>
+				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=984:1040#L44">AddNew</a></h3>
 				<pre>func (me LibFxEffects) AddNew(id string) (obj *FxEffect)</pre>
 				<p>
 Creates and initializes a new FxEffect with default parameters,
@@ -2265,7 +2636,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibFxEffects.Remove">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=1528:1568#L78">Remove</a></h3>
+				<h3 id="LibFxEffects.Remove">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=1239:1279#L61">Remove</a></h3>
 				<pre>func (me LibFxEffects) Remove(id string)</pre>
 				
 				
@@ -3313,26 +3684,6 @@ Removes the Node with the specified ID from me.M.
 		
 			
 			
-			<h2 id="PostFxEffect">type <a href="/target/render-technique-quad.go?s=108:178#L1">PostFxEffect</a></h2>
-			<pre>type PostFxEffect struct {
-}</pre>
-			<p>
-Temporary concoction
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
 			<h2 id="RenderCanvas">type <a href="/target/render-canvas.go?s=181:718#L1">RenderCanvas</a></h2>
 			<pre>type RenderCanvas struct {
     <span class="comment">//	This should be an non-negative integer, it&#39;s a float64 just to avoid a</span>
@@ -3460,7 +3811,7 @@ The relative, width and height values are passed to a call to SetSize().
 		
 			
 			
-			<h2 id="RenderTechnique">type <a href="/target/render-technique.go?s=64:215#L1">RenderTechnique</a></h2>
+			<h2 id="RenderTechnique">type <a href="/target/render-technique.go?s=64:206#L1">RenderTechnique</a></h2>
 			<pre>type RenderTechnique interface {
     <span class="comment">// contains filtered or unexported methods</span>
 }</pre>
@@ -3478,7 +3829,7 @@ The relative, width and height values are passed to a call to SetSize().
 		
 			
 			
-			<h2 id="RenderTechniqueQuad">type <a href="/target/render-technique-quad.go?s=180:295#L5">RenderTechniqueQuad</a></h2>
+			<h2 id="RenderTechniqueQuad">type <a href="/target/render-technique-quad.go?s=64:143#L1">RenderTechniqueQuad</a></h2>
 			<pre>type RenderTechniqueQuad struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -3492,52 +3843,6 @@ The relative, width and height values are passed to a call to SetSize().
 
 			
 
-			
-				
-				<h3 id="RenderTechniqueQuad.ApplyEffects">func (*RenderTechniqueQuad) <a href="/target/render-technique-quad.go?s=861:918#L26">ApplyEffects</a></h3>
-				<pre>func (me *RenderTechniqueQuad) ApplyEffects() (err error)</pre>
-				<p>
-Switches me to a postfx shader program that has all effects enabled as specified
-by all previous DisableEffect() / EnableEffect() / ToggleEffect() calls since the last ApplyEffects() call.
-If that shader program does not yet exist, builds it. If that fails, a non-nil err is returned.
-</p>
-
-				
-				
-			
-				
-				<h3 id="RenderTechniqueQuad.DisableEffect">func (*RenderTechniqueQuad) <a href="/target/render-technique-quad.go?s=1794:1851#L55">DisableEffect</a></h3>
-				<pre>func (me *RenderTechniqueQuad) DisableEffect(name string)</pre>
-				<p>
-Deactivates the specified post-processing full-screen effect.
-After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), be sure to call ApplyEffects() once.
-</p>
-
-				
-				
-			
-				
-				<h3 id="RenderTechniqueQuad.EnableEffect">func (*RenderTechniqueQuad) <a href="/target/render-technique-quad.go?s=2066:2145#L61">EnableEffect</a></h3>
-				<pre>func (me *RenderTechniqueQuad) EnableEffect(name string) (effect *PostFxEffect)</pre>
-				<p>
-Activates the specified post-processing full-screen effect.
-After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), be sure to call ApplyEffects() once.
-</p>
-
-				
-				
-			
-				
-				<h3 id="RenderTechniqueQuad.ToggleEffect">func (*RenderTechniqueQuad) <a href="/target/render-technique-quad.go?s=2687:2758#L76">ToggleEffect</a></h3>
-				<pre>func (me *RenderTechniqueQuad) ToggleEffect(name string) (enabled bool)</pre>
-				<p>
-Activates or deactivates the specified post-processing full-screen effect.
-After all necessary calls to DisableEffect() / EnableEffect() / ToggleEffect(), be sure to call ApplyEffects() once.
-Returns whether this call has activated (true) or deactivated (false) the specified effect.
-</p>
-
-				
-				
 			
 		
 			
@@ -3560,7 +3865,7 @@ Returns whether this call has activated (true) or deactivated (false) the specif
 		
 			
 			
-			<h2 id="RenderTechniques">type <a href="/target/render-technique.go?s=812:860#L31">RenderTechniques</a></h2>
+			<h2 id="RenderTechniques">type <a href="/target/render-technique.go?s=783:831#L32">RenderTechniques</a></h2>
 			<pre>type RenderTechniques map[string]RenderTechnique</pre>
 			<p>
 Used only in Core.Rendering.Techniques.
