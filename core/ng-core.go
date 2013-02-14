@@ -65,10 +65,10 @@ func (_ *EngineCore) init() {
 	initRenderTechniques()
 	Core.initRendering()
 	splash := &Core.Libs.Images.SplashScreen
-	splash.FlipY = false
 	splash.InitFrom.RawData = embeddedBinaries["splash.png"]
 	splash.init()
 	splash.Load()
+	splash.FlipY, splash.ConvertToLinear = false, false
 	splash.GpuSync()
 	thrRend.tmpQuadTex = &splash.glTex
 	splash.Unload()
@@ -105,7 +105,7 @@ func initRenderTechniques() {
 		//	the fxprocs need the names, but the techs mustn't be created yet as their ctor needs the fxprocs......
 		rend.Techniques[name] = nil
 	}
-	rend.Fx.KnownProcIDs = []string{"Tex2D", "Grayscale", "Orangify", "Colored"}
+	rend.Fx.KnownProcIDs = []string{"Tex2D", "Grayscale", "Orangify", "Colored", "Gamma"}
 	rend.Fx.procs = map[string]*fxProc{}
 	for _, shaderFunc := range rend.Fx.KnownProcIDs {
 		rend.Fx.procs[shaderFunc] = newFxProc(shaderFunc)

@@ -23,6 +23,8 @@ type FxEffect struct {
 	//	do not require this.
 	Ops FxOps
 
+	KeepOpsLast []string
+
 	tmpOp      FxOp
 	uberName   string
 	uberPnames map[string]string
@@ -33,20 +35,39 @@ func (me *FxEffect) dispose() {
 
 func (me *FxEffect) init() {
 	me.uberPnames = make(map[string]string, len(Core.Rendering.Techniques))
+	me.KeepOpsLast = []string{"Gamma"}
 }
 
 func (me *FxEffect) UpdateRoutine() {
-	var buf ustr.Buffer
-	for _, op := range me.Ops {
+	var (
+		buf    ustr.Buffer
+		id     string
+		i, idx int
+		op     FxOp
+	)
+
+	idx = len(me.Ops) - 1
+	for _, id = range me.KeepOpsLast {
+		for i, op = range me.Ops {
+			if op.ProcID() == id {
+				if i < idx {
+					me.Ops[i], me.Ops[idx] = me.Ops[idx], me.Ops[i]
+					idx--
+				}
+			}
+		}
+	}
+
+	for _, op = range me.Ops {
 		if op.Enabled() {
 			buf.Write("_%s", op.ProcID())
 		}
 	}
 	me.uberName = buf.String()
-	for techName, _ := range Core.Rendering.Techniques {
-		me.uberPnames[techName] = fmtStr("uber_%s%s", techName, me.uberName)
+	for id, _ = range Core.Rendering.Techniques {
+		me.uberPnames[id] = fmtStr("uber_%s%s", id, me.uberName)
 	}
-	thrRend.curEffect = nil
+	thrRend.curEffect, thrRend.tmpEffect = nil, nil
 }
 
 func (me *FxEffect) use() {

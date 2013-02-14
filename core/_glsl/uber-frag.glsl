@@ -6,6 +6,10 @@ naming patterns are significant and not subject to personal taste.
 
 */
 
+void fx_Gamma (inout vec3 vCol) {
+	vCol = pow(vCol, vec3(1 / 2.2));
+}
+
 void fx_Grayscale (inout vec3 vCol) {
 	vCol = vec3((vCol.r * 0.3) + (vCol.g * 0.59) + (vCol.b * 0.11));
 }

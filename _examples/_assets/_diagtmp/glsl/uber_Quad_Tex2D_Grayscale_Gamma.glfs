@@ -1,0 +1,28 @@
+/*	Temp file written at runtime for diagnostic purposes.
+	The following is a runtime-generated GLSL source string,
+	exactly as it was sent to the GL for compilation and linking: */
+#version 330 core
+#line 1
+out vec3 out_Color;
+uniform sampler2D uni_sampler2D_Tex2D;
+in vec2 var_vec2_Tex2D;
+
+void fx_Tex2D (inout vec3 vCol) {
+	vCol = texture(uni_sampler2D_Tex2D, var_vec2_Tex2D).rgb;
+}
+
+void fx_Grayscale (inout vec3 vCol) {
+	vCol = vec3((vCol.r * 0.3) + (vCol.g * 0.59) + (vCol.b * 0.11));
+}
+
+void fx_Gamma (inout vec3 vCol) {
+	vCol = pow(vCol, vec3(1 / 2.2));
+}
+
+void main () {
+	vec3 vCol = vec3(0);
+	fx_Tex2D(vCol);
+	fx_Grayscale(vCol);
+	fx_Gamma(vCol);
+	out_Color = vCol;
+}

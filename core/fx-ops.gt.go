@@ -47,6 +47,8 @@ func newFxOp(procID string) (me FxOp) {
 		me = &FxOpTex2D{}
 	case "Colored":
 		me = &FxOpColored{}
+	case "Gamma":
+		me = &FxOpGamma{}
 	}
 	if me != nil {
 		me.init(procID)
@@ -110,6 +112,11 @@ func (me *fxOpBase) Toggle() {
 
 //	Yields the grayscale of the current pixel color.
 type FxOpGrayscale struct {
+	fxOpBase
+}
+
+//	pow(color, 1/2.2)
+type FxOpGamma struct {
 	fxOpBase
 }
 
@@ -259,7 +266,7 @@ func (me *FxOps) Toggle(procID string, n int) {
 	}
 }
 
-//#begin-gt -gen-fx-ops.gt GT_MULT_SEP:, N:Tex2D,Orangify,Grayscale,Colored
+//#begin-gt -gen-fx-ops.gt GT_MULT_SEP:, N:Tex2D,Orangify,Grayscale,Colored,Gamma
 
 //	Convenience short-hand for me.Disable("Tex2D", n).
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
@@ -357,6 +364,31 @@ func (me FxOps) GetColored(n int) *FxOpColored {
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 func (me *FxOps) ToggleColored(n int) {
 	me.Toggle("Colored", n)
+}
+
+
+
+//	Convenience short-hand for me.Disable("Gamma", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me FxOps) DisableGamma(n int) {
+	me.Disable("Gamma", n)
+}
+
+//	Convenience short-hand for me.Enable("Gamma", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me *FxOps) EnableGamma(n int) *FxOpGamma {
+	return me.Enable("Gamma", n).(*FxOpGamma)
+}
+
+//	Convenience short-hand for me.Get("Gamma", n).
+func (me FxOps) GetGamma(n int) *FxOpGamma {
+	return me.Get("Gamma", n).(*FxOpGamma)
+}
+
+//	Convenience short-hand for me.Toggle("Gamma", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me *FxOps) ToggleGamma(n int) {
+	me.Toggle("Gamma", n)
 }
 
 //#end-gt
