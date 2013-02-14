@@ -80,6 +80,9 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 				<dd><a href="#CheckCamCtlKeys">func CheckCamCtlKeys()</a></dd>
 			
 				
+				<dd><a href="#CreateSkyNode">func CreateSkyNode(scene *ng.Scene, meshID, modelID string)</a></dd>
+			
+				
 				<dd><a href="#HandleCamCtlKeys">func HandleCamCtlKeys()</a></dd>
 			
 				
@@ -208,6 +211,11 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 )</pre>
 				
 			
+				<pre>var (
+    SkyNode *ng.Node
+)</pre>
+				
+			
 		
 		
 			
@@ -283,6 +291,13 @@ states for controlling (in HandleCamCtlKeys() in onAppThread()!) SceneCam.Contro
 		
 			
 			
+			<h2 id="CreateSkyNode">func <a href="/target/misc.go?s=124:183#L5">CreateSkyNode</a></h2>
+			<pre>func CreateSkyNode(scene *ng.Scene, meshID, modelID string)</pre>
+			
+			
+		
+			
+			
 			<h2 id="HandleCamCtlKeys">func <a href="/target/user-input.go?s=2997:3020#L78">HandleCamCtlKeys</a></h2>
 			<pre>func HandleCamCtlKeys()</pre>
 			<p>
@@ -304,7 +319,7 @@ Called by each example-app&#39;s func main(). Initializes go:ngine, sets SceneCa
 		
 			
 			
-			<h2 id="PauseResume">func <a href="/target/misc.go?s=239:257#L3">PauseResume</a></h2>
+			<h2 id="PauseResume">func <a href="/target/misc.go?s=438:456#L12">PauseResume</a></h2>
 			<pre>func PauseResume()</pre>
 			<p>
 Pauses rendering or resumes from the current pause.
@@ -315,7 +330,7 @@ When paused, the frame last rendered is frozen and rendered in a gray-scale effe
 		
 			
 			
-			<h2 id="PrintPostLoopSummary">func <a href="/target/misc.go?s=662:689#L19">PrintPostLoopSummary</a></h2>
+			<h2 id="PrintPostLoopSummary">func <a href="/target/misc.go?s=861:888#L28">PrintPostLoopSummary</a></h2>
 			<pre>func PrintPostLoopSummary()</pre>
 			<p>
 Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent example app exits.
@@ -325,7 +340,7 @@ Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent 
 		
 			
 			
-			<h2 id="ToggleRetro">func <a href="/target/misc.go?s=2154:2172#L43">ToggleRetro</a></h2>
+			<h2 id="ToggleRetro">func <a href="/target/misc.go?s=2353:2371#L52">ToggleRetro</a></h2>
 			<pre>func ToggleRetro()</pre>
 			<p>
 Toggles &#34;retro mode&#34; for the example app.
@@ -336,7 +351,7 @@ If retro is on, the resolution of the main canvas is 1/4th of the window resolut
 		
 			
 			
-			<h2 id="ToggleTexturing">func <a href="/target/misc.go?s=2337:2359#L53">ToggleTexturing</a></h2>
+			<h2 id="ToggleTexturing">func <a href="/target/misc.go?s=2536:2558#L62">ToggleTexturing</a></h2>
 			<pre>func ToggleTexturing()</pre>
 			
 			

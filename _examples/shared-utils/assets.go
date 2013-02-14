@@ -6,10 +6,15 @@ import (
 
 //	Creates a new core.Scene, adds it to the Scenes library under
 //	the specified ID, and returns it.
-func AddScene(id string, mainCamScene bool) (me *ng.Scene) {
+func AddScene(id string, mainCamScene bool, skyMeshID string) (me *ng.Scene) {
 	me = ng.NewScene()
 	if ng.Core.Libs.Scenes[id] = me; mainCamScene {
 		SceneCam.SetScene(id)
+	}
+	if len(skyMeshID) > 0 {
+		AddTextureMaterials(map[string]string{"clouds": "tex/clouds.jpeg"})
+		ng.Core.Libs.Meshes[skyMeshID].Models.Default().Clone("meshmodel_skybox").SetMatID("mat_clouds")
+		me.RootNode.SetMeshModelID(skyMeshID, "meshmodel_skybox")
 	}
 	return
 }

@@ -19,7 +19,11 @@ vec2 vx_Quad_var_vec2_Tex2D () {
 }
 
 vec4 vx_Scene_gl_Position () {
-	return uni_mat4_VertexMatrix * vec4(att_vec3_Pos, 1.0);
+	vec4 pos = uni_mat4_VertexMatrix * vec4(att_vec3_Pos, 1.0);
+	if (uni_int_Sky == 1) {
+		pos.z = pos.w;
+	}
+	return pos;
 }
 
 vec2 vx_Scene_var_vec2_Tex2D () {

@@ -11,8 +11,12 @@ type nodeCamProjGlMats map[*Camera]*ugl.GlMat4
 
 //	Declares a point of interest in a Scene.
 type Node struct {
-	//	Defaults to true. If false, this Node is ignored by the rendering runtime.
-	Enabled bool
+	Rendering struct {
+		//	Defaults to true. If false, this Node is ignored by the rendering runtime.
+		Enabled bool
+
+		skyMode bool
+	}
 
 	//	Allows the Node to recursively define hierarchy.
 	ChildNodes Nodes
@@ -47,7 +51,9 @@ type Node struct {
 }
 
 func newNode(id, meshID, modelID string, parent *Node, scene *Scene) (me *Node) {
-	me = &Node{id: id, parentNode: parent, Enabled: true, rootScene: scene}
+	me = &Node{id: id, parentNode: parent, rootScene: scene}
+	me.Rendering.Enabled = true
+	me.Rendering.skyMode = (parent == nil)
 	me.ChildNodes.init(me)
 	me.Transform.init(me)
 	me.SetMeshModelID(meshID, modelID)

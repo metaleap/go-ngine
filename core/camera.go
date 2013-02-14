@@ -47,7 +47,7 @@ type Camera struct {
 		matProj unum.Mat4
 	}
 	thrPrep struct {
-		matCamProj, matProj unum.Mat4
+		matCamProj, matProj, matCtlPos unum.Mat4
 	}
 	thrRend struct {
 		states ugl.RenderStatesBag
@@ -84,7 +84,7 @@ func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool, technique R
 		rend.States.Other.ClearBits = gl.COLOR_BUFFER_BIT
 	}
 	me.Perspective.Use, me.Perspective.FovY, me.Perspective.ZFar, me.Perspective.ZNear = persp3d, 37.8493, 30000, 0.3
-	unum.Mat4Identities(&me.thrApp.matProj, &me.thrPrep.matProj)
+	unum.Mat4Identities(&me.thrApp.matProj, &me.thrPrep.matProj, &me.thrPrep.matCtlPos)
 	me.Controller.init()
 	rend.Viewport.init()
 	me.ApplyMatrices()
@@ -98,7 +98,7 @@ func (me *Camera) ApplyMatrices() {
 
 func (me *Camera) clearNodeMats() {
 	if me.scene != nil {
-		me.scene.RootNode.Walk(func(node *Node) {
+		me.scene.Walk(func(node *Node) {
 			delete(node.thrPrep.matProjs, me)
 			delete(node.thrRend.matProjs, me)
 		})
@@ -117,7 +117,7 @@ func (me *Camera) setScene(scene *Scene) {
 	if scene != me.scene {
 		me.clearNodeMats()
 		if me.scene = scene; me.scene != nil {
-			me.scene.RootNode.Walk(func(node *Node) {
+			me.scene.Walk(func(node *Node) {
 				node.initProjMat(me)
 			})
 		}

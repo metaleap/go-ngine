@@ -8,6 +8,10 @@ import (
 	ng "github.com/go3d/go-ngine/core"
 )
 
+var (
+	SkyNode *ng.Node
+)
+
 //	Pauses rendering or resumes from the current pause.
 //	When paused, the frame last rendered is frozen and rendered in a gray-scale effect.
 func PauseResume() {

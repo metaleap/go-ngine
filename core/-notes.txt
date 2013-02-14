@@ -1,7 +1,0 @@
-revamp:
-
-- vertex material
-- visual material
-- unify postfx+frag shaders
-- render batching
-- face materials

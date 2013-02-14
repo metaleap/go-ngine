@@ -61,26 +61,37 @@ func (me *RenderTechniqueQuad) render() {
 func (me *RenderTechniqueScene) render() {
 	thrRend.curMat, thrRend.curMatId, thrRend.tmpTech = nil, "", me
 	if thrRend.curScene != nil {
-		thrRend.curScene.RootNode.render()
+		thrRend.curScene.RootNode.renderChildren()
+		thrRend.curScene.RootNode.renderSelf() // might be a skybox so "render" the root last
 	}
 }
 
-func (me *Node) render() {
-	if me.Enabled {
-		if thrRend.curNode = me; me.model != nil {
-			if thrRend.tmpMat = me.EffectiveMaterial(); thrRend.tmpMat != thrRend.curMat {
-				if thrRend.curMat = thrRend.tmpMat; thrRend.curMat != nil {
-					thrRend.tmpEffect = Core.Libs.Effects[thrRend.curMat.DefaultEffectID]
-					Core.useTechFx()
-					thrRend.curEffect.use()
-				}
-			}
+func (me *Node) renderChildren() {
+	for me.thrRend.curId, me.thrRend.curSubNode = range me.ChildNodes.M {
+		me.thrRend.curSubNode.renderSelf()
+		me.thrRend.curSubNode.renderChildren()
+	}
+}
 
-			gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uni_mat4_VertexMatrix"], 1, gl.FALSE, &me.thrRend.matProjs[thrRend.curCam][0])
-			me.model.render()
+func (me *Node) renderSelf() {
+	if thrRend.curNode = me; me.model != nil {
+		if thrRend.tmpMat = me.EffectiveMaterial(); thrRend.tmpMat != thrRend.curMat {
+			if thrRend.curMat = thrRend.tmpMat; thrRend.curMat != nil {
+				thrRend.tmpEffect = Core.Libs.Effects[thrRend.curMat.DefaultEffectID]
+				Core.useTechFx()
+				thrRend.curEffect.use()
+			}
 		}
-		for me.thrRend.curId, me.thrRend.curSubNode = range me.ChildNodes.M {
-			me.thrRend.curSubNode.render()
+		gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uni_mat4_VertexMatrix"], 1, gl.FALSE, &me.thrRend.matProjs[thrRend.curCam][0])
+		if me.Rendering.skyMode {
+			gl.Uniform1i(thrRend.curProg.UnifLocs["uni_int_Sky"], 1)
+			gl.DepthFunc(gl.LEQUAL)
+			Core.Rendering.states.DisableFaceCulling()
+		}
+		me.model.render()
+		if me.Rendering.skyMode {
+			gl.Uniform1i(thrRend.curProg.UnifLocs["uni_int_Sky"], 0)
+			gl.DepthFunc(gl.LESS)
 		}
 	}
 }

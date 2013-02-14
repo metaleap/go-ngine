@@ -119,7 +119,7 @@ func setupExample_04_PyrsCubes() {
 	bufRest.Add(meshPyr)
 
 	//	scene
-	scene = apputil.AddScene("", true)
+	scene = apputil.AddScene("", true, "mesh_cube")
 	rearMirror.Cam.SetScene("")
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyramid", "")

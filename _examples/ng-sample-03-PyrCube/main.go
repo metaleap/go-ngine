@@ -43,9 +43,12 @@ func setupExample_03_PyrCube() {
 		bufFloor, bufRest            *ng.MeshBuffer
 	)
 
+	urlPrefix := "http://dl.dropbox.com/u/136375/go-ngine/assets/"
+	urlPrefix = ""
+
 	//	textures / materials
 	apputil.AddTextureMaterials(map[string]string{
-		"cobbles": "http://dl.dropbox.com/u/136375/go-ngine/assets/tex/cobbles.png",
+		"cobbles": urlPrefix + "tex/cobbles.png",
 		"crate":   "tex/crate.jpeg",
 		"mosaic":  "tex/mosaic.jpeg",
 	})
@@ -71,10 +74,11 @@ func setupExample_03_PyrCube() {
 	bufRest.Add(meshPyr)
 	meshPyr.Models.Default().SetMatID("mat_mosaic")
 	meshCube.Models.Default().SetMatID("mat_crate")
+	meshCube.Models.Default().Clone("skybox").SetMatID("mat_clouds")
 	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["back"] = "fx_mosaic"
 
 	//	scene
-	scene = apputil.AddScene("", true)
+	scene = apputil.AddScene("", true, "mesh_cube")
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyramid", "")
 	box = scene.RootNode.ChildNodes.AddNew("node_box", "mesh_cube", "")

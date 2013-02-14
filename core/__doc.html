@@ -874,6 +874,9 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#NewScene">func NewScene() (me *Scene)</a></dd>
 				
 				
+					
+					<dd>&nbsp; &nbsp; <a href="#Scene.Walk">func (me *Scene) Walk(onNode func(*Node))</a></dd>
+				
 			
 				
 				<dd><a href="#TimingStats">type TimingStats</a></dd>
@@ -978,8 +981,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/nodes.go">nodes.go</a>
 			
-				<a href="/target/render-batch.go">render-batch.go</a>
-			
 				<a href="/target/render-canvas.go">render-canvas.go</a>
 			
 				<a href="/target/render-prep.go">render-prep.go</a>
@@ -1064,7 +1065,7 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.go?s=219:1341#L1">Camera</a></h2>
+			<h2 id="Camera">type <a href="/target/camera.go?s=219:1448#L1">Camera</a></h2>
 			<pre>type Camera struct {
     <span class="comment">//	Optical and imager properties for this camera.</span>
     Perspective struct {
@@ -1096,7 +1097,13 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 
         States ugl.RenderStatesBag
 
-        Technique RenderTechnique
+        Technique       RenderTechnique
+        TechniqueParams struct {
+            Sky struct {
+                MeshID  string
+                ImageID string
+            }
+        }
     }
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -1115,7 +1122,7 @@ A camera embodies the eye point of the viewer looking at the visual scene.
 
 			
 				
-				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=2738:2771#L85">ApplyMatrices</a></h3>
+				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=2868:2901#L91">ApplyMatrices</a></h3>
 				<pre>func (me *Camera) ApplyMatrices()</pre>
 				<p>
 Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.
@@ -1125,14 +1132,14 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 				
 			
 				
-				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=3158:3190#L102">Scene</a></h3>
+				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=3279:3311#L108">Scene</a></h3>
 				<pre>func (me *Camera) Scene() *Scene</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=3428:3465#L117">SetScene</a></h3>
+				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=3540:3577#L123">SetScene</a></h3>
 				<pre>func (me *Camera) SetScene(id string)</pre>
 				
 				
@@ -1141,7 +1148,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 		
 			
 			
-			<h2 id="CameraViewport">type <a href="/target/camera.go?s=3765:4025#L133">CameraViewport</a></h2>
+			<h2 id="CameraViewport">type <a href="/target/camera.go?s=3877:4137#L139">CameraViewport</a></h2>
 			<pre>type CameraViewport struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -1160,7 +1167,7 @@ Encapsulates a device-relative or absolute camera view-port.
 
 			
 				
-				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=4151:4208#L148">SetAbs</a></h3>
+				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=4263:4320#L154">SetAbs</a></h3>
 				<pre>func (me *CameraViewport) SetAbs(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -1170,7 +1177,7 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=4460:4521#L155">SetRel</a></h3>
+				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=4572:4633#L161">SetRel</a></h3>
 				<pre>func (me *CameraViewport) SetRel(x, y, width, height float64)</pre>
 				<p>
 Sets the device-relative viewport origin and dimensions, with the value 1.0
@@ -1183,7 +1190,7 @@ representing the maximum extent of the viewport on that respective axis.
 		
 			
 			
-			<h2 id="Cameras">type <a href="/target/camera.go?s=3506:3528#L121">Cameras</a></h2>
+			<h2 id="Cameras">type <a href="/target/camera.go?s=3618:3640#L127">Cameras</a></h2>
 			<pre>type Cameras []*Camera</pre>
 			
 
@@ -1197,7 +1204,7 @@ representing the maximum extent of the viewport on that respective axis.
 
 			
 				
-				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=3530:3571#L123">Remove</a></h3>
+				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=3642:3683#L129">Remove</a></h3>
 				<pre>func (me *Cameras) Remove(camera *Camera)</pre>
 				
 				
@@ -3072,7 +3079,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibScenes">type <a href="/target/scene.gt.go?s=681:713#L27">LibScenes</a></h2>
+			<h2 id="LibScenes">type <a href="/target/scene.gt.go?s=745:777#L31">LibScenes</a></h2>
 			<pre>type LibScenes map[string]*Scene</pre>
 			<p>
 A hash-table of Scenes associated by IDs. Only for use in Core.Libs.
@@ -3089,7 +3096,7 @@ A hash-table of Scenes associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibScenes.AddNew">func (LibScenes) <a href="/target/scene.gt.go?s=836:886#L31">AddNew</a></h3>
+				<h3 id="LibScenes.AddNew">func (LibScenes) <a href="/target/scene.gt.go?s=900:950#L35">AddNew</a></h3>
 				<pre>func (me LibScenes) AddNew(id string) (obj *Scene)</pre>
 				<p>
 Creates and initializes a new Scene with default parameters,
@@ -3100,14 +3107,14 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibScenes.Remove">func (LibScenes) <a href="/target/scene.gt.go?s=1073:1110#L48">Remove</a></h3>
+				<h3 id="LibScenes.Remove">func (LibScenes) <a href="/target/scene.gt.go?s=1137:1174#L52">Remove</a></h3>
 				<pre>func (me LibScenes) Remove(id string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="LibScenes.Walk">func (LibScenes) <a href="/target/scene.gt.go?s=334:378#L11">Walk</a></h3>
+				<h3 id="LibScenes.Walk">func (LibScenes) <a href="/target/scene.gt.go?s=407:451#L15">Walk</a></h3>
 				<pre>func (me LibScenes) Walk(onNode func(*Node))</pre>
 				
 				
@@ -3648,10 +3655,14 @@ Returns the default Model (with ID &#34;&#34;) for the parent Mesh.
 		
 			
 			
-			<h2 id="Node">type <a href="/target/node.go?s=241:1114#L3">Node</a></h2>
+			<h2 id="Node">type <a href="/target/node.go?s=241:1155#L3">Node</a></h2>
 			<pre>type Node struct {
-    <span class="comment">//	Defaults to true. If false, this Node is ignored by the rendering runtime.</span>
-    Enabled bool
+    Rendering struct {
+        <span class="comment">//	Defaults to true. If false, this Node is ignored by the rendering runtime.</span>
+        Enabled bool
+
+        SkyMode bool
+    }
 
     <span class="comment">//	Allows the Node to recursively define hierarchy.</span>
     ChildNodes Nodes
@@ -3675,56 +3686,56 @@ Declares a point of interest in a Scene.
 
 			
 				
-				<h3 id="Node.EffectiveMaterial">func (*Node) <a href="/target/node.go?s=1384:1431#L48">EffectiveMaterial</a></h3>
+				<h3 id="Node.EffectiveMaterial">func (*Node) <a href="/target/node.go?s=1439:1486#L53">EffectiveMaterial</a></h3>
 				<pre>func (me *Node) EffectiveMaterial() *FxMaterial</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MatID">func (*Node) <a href="/target/node.go?s=1876:1906#L68">MatID</a></h3>
+				<h3 id="Node.MatID">func (*Node) <a href="/target/node.go?s=1931:1961#L73">MatID</a></h3>
 				<pre>func (me *Node) MatID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MeshID">func (*Node) <a href="/target/node.go?s=1929:1960#L72">MeshID</a></h3>
+				<h3 id="Node.MeshID">func (*Node) <a href="/target/node.go?s=1984:2015#L77">MeshID</a></h3>
 				<pre>func (me *Node) MeshID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.ModelID">func (*Node) <a href="/target/node.go?s=1984:2016#L76">ModelID</a></h3>
+				<h3 id="Node.ModelID">func (*Node) <a href="/target/node.go?s=2039:2071#L81">ModelID</a></h3>
 				<pre>func (me *Node) ModelID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2041:2076#L80">Root</a></h3>
+				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2096:2131#L85">Root</a></h3>
 				<pre>func (me *Node) Root() (root *Node)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=2172:2213#L89">SetMatID</a></h3>
+				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=2227:2268#L94">SetMatID</a></h3>
 				<pre>func (me *Node) SetMatID(newMatID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=2310:2364#L95">SetMeshModelID</a></h3>
+				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=2365:2419#L100">SetMeshModelID</a></h3>
 				<pre>func (me *Node) SetMeshModelID(meshID, modelID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2668:2708#L109">Walk</a></h3>
+				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2723:2763#L114">Walk</a></h3>
 				<pre>func (me *Node) Walk(onNode func(*Node))</pre>
 				
 				
@@ -4219,7 +4230,7 @@ Represents a scene graph.
 
 			
 				
-				<h3 id="NewScene">func <a href="/target/scene.gt.go?s=542:569#L20">NewScene</a></h3>
+				<h3 id="NewScene">func <a href="/target/scene.gt.go?s=606:633#L24">NewScene</a></h3>
 				<pre>func NewScene() (me *Scene)</pre>
 				<p>
 Initializes and returns a new Scene with default parameters.
@@ -4228,6 +4239,13 @@ Initializes and returns a new Scene with default parameters.
 				
 			
 
+			
+				
+				<h3 id="Scene.Walk">func (*Scene) <a href="/target/scene.gt.go?s=334:375#L11">Walk</a></h3>
+				<pre>func (me *Scene) Walk(onNode func(*Node))</pre>
+				
+				
+				
 			
 		
 			
