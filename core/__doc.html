@@ -874,9 +874,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#NewScene">func NewScene() (me *Scene)</a></dd>
 				
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#Scene.Walk">func (me *Scene) Walk(onNode func(*Node))</a></dd>
-				
 			
 				
 				<dd><a href="#TimingStats">type TimingStats</a></dd>
@@ -1065,7 +1062,7 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.go?s=219:1407#L1">Camera</a></h2>
+			<h2 id="Camera">type <a href="/target/camera.go?s=219:1391#L1">Camera</a></h2>
 			<pre>type Camera struct {
     <span class="comment">//	Optical and imager properties for this camera.</span>
     Perspective struct {
@@ -1116,7 +1113,7 @@ A camera embodies the eye point of the viewer looking at the visual scene.
 
 			
 				
-				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=2864:2897#L88">ApplyMatrices</a></h3>
+				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=2848:2881#L87">ApplyMatrices</a></h3>
 				<pre>func (me *Camera) ApplyMatrices()</pre>
 				<p>
 Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.
@@ -1126,14 +1123,14 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 				
 			
 				
-				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=3275:3307#L105">Scene</a></h3>
+				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=3268:3300#L104">Scene</a></h3>
 				<pre>func (me *Camera) Scene() *Scene</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=3536:3573#L120">SetScene</a></h3>
+				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=3538:3575#L119">SetScene</a></h3>
 				<pre>func (me *Camera) SetScene(id string)</pre>
 				
 				
@@ -1142,7 +1139,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 		
 			
 			
-			<h2 id="CameraViewport">type <a href="/target/camera.go?s=3873:4133#L136">CameraViewport</a></h2>
+			<h2 id="CameraViewport">type <a href="/target/camera.go?s=3875:4135#L135">CameraViewport</a></h2>
 			<pre>type CameraViewport struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -1161,7 +1158,7 @@ Encapsulates a device-relative or absolute camera view-port.
 
 			
 				
-				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=4259:4316#L151">SetAbs</a></h3>
+				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=4261:4318#L150">SetAbs</a></h3>
 				<pre>func (me *CameraViewport) SetAbs(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -1171,7 +1168,7 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=4568:4629#L158">SetRel</a></h3>
+				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=4570:4631#L157">SetRel</a></h3>
 				<pre>func (me *CameraViewport) SetRel(x, y, width, height float64)</pre>
 				<p>
 Sets the device-relative viewport origin and dimensions, with the value 1.0
@@ -1184,7 +1181,7 @@ representing the maximum extent of the viewport on that respective axis.
 		
 			
 			
-			<h2 id="Cameras">type <a href="/target/camera.go?s=3614:3636#L124">Cameras</a></h2>
+			<h2 id="Cameras">type <a href="/target/camera.go?s=3616:3638#L123">Cameras</a></h2>
 			<pre>type Cameras []*Camera</pre>
 			
 
@@ -1198,7 +1195,7 @@ representing the maximum extent of the viewport on that respective axis.
 
 			
 				
-				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=3638:3679#L126">Remove</a></h3>
+				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=3640:3681#L125">Remove</a></h3>
 				<pre>func (me *Cameras) Remove(camera *Camera)</pre>
 				
 				
@@ -2128,7 +2125,7 @@ Initializes and returns a new FxEffect with default parameters.
 
 			
 				
-				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=3244:3279#L140">NewFxImage2D</a></h3>
+				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=3256:3291#L140">NewFxImage2D</a></h3>
 				<pre>func NewFxImage2D() (me *FxImage2D)</pre>
 				<p>
 Initializes and returns a new FxImage2D with default parameters.
@@ -2146,28 +2143,28 @@ Initializes and returns a new FxImage2D with default parameters.
 				
 			
 				
-				<h3 id="FxImage2D.IsRemote">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2165:2210#L94">IsRemote</a></h3>
+				<h3 id="FxImage2D.IsRemote">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2177:2222#L94">IsRemote</a></h3>
 				<pre>func (me *FxImage2D) IsRemote() (remote bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Load">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=524:551#L28">Load</a></h3>
+				<h3 id="FxImage2D.Load">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=536:563#L28">Load</a></h3>
 				<pre>func (me *FxImage2D) Load()</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Loaded">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1636:1670#L77">Loaded</a></h3>
+				<h3 id="FxImage2D.Loaded">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1648:1682#L77">Loaded</a></h3>
 				<pre>func (me *FxImage2D) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Unload">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2254:2283#L99">Unload</a></h3>
+				<h3 id="FxImage2D.Unload">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2266:2295#L99">Unload</a></h3>
 				<pre>func (me *FxImage2D) Unload()</pre>
 				
 				
@@ -2962,7 +2959,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=3399:3439#L147">LibFxImage2Ds</a></h2>
+			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=3411:3451#L147">LibFxImage2Ds</a></h2>
 			<pre>type LibFxImage2Ds map[string]*FxImage2D</pre>
 			<p>
 A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
@@ -2979,7 +2976,7 @@ A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3566:3624#L151">AddNew</a></h3>
+				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3578:3636#L151">AddNew</a></h3>
 				<pre>func (me LibFxImage2Ds) AddNew(id string) (obj *FxImage2D)</pre>
 				<p>
 Creates and initializes a new FxImage2D with default parameters,
@@ -2990,7 +2987,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibFxImage2Ds.Remove">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3827:3868#L168">Remove</a></h3>
+				<h3 id="LibFxImage2Ds.Remove">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3839:3880#L168">Remove</a></h3>
 				<pre>func (me LibFxImage2Ds) Remove(id string)</pre>
 				
 				
@@ -3073,7 +3070,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibScenes">type <a href="/target/scene.gt.go?s=745:777#L31">LibScenes</a></h2>
+			<h2 id="LibScenes">type <a href="/target/scene.gt.go?s=681:713#L27">LibScenes</a></h2>
 			<pre>type LibScenes map[string]*Scene</pre>
 			<p>
 A hash-table of Scenes associated by IDs. Only for use in Core.Libs.
@@ -3090,7 +3087,7 @@ A hash-table of Scenes associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibScenes.AddNew">func (LibScenes) <a href="/target/scene.gt.go?s=900:950#L35">AddNew</a></h3>
+				<h3 id="LibScenes.AddNew">func (LibScenes) <a href="/target/scene.gt.go?s=836:886#L31">AddNew</a></h3>
 				<pre>func (me LibScenes) AddNew(id string) (obj *Scene)</pre>
 				<p>
 Creates and initializes a new Scene with default parameters,
@@ -3101,14 +3098,14 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibScenes.Remove">func (LibScenes) <a href="/target/scene.gt.go?s=1137:1174#L52">Remove</a></h3>
+				<h3 id="LibScenes.Remove">func (LibScenes) <a href="/target/scene.gt.go?s=1073:1110#L48">Remove</a></h3>
 				<pre>func (me LibScenes) Remove(id string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="LibScenes.Walk">func (LibScenes) <a href="/target/scene.gt.go?s=407:451#L15">Walk</a></h3>
+				<h3 id="LibScenes.Walk">func (LibScenes) <a href="/target/scene.gt.go?s=334:378#L11">Walk</a></h3>
 				<pre>func (me LibScenes) Walk(onNode func(*Node))</pre>
 				
 				
@@ -4048,7 +4045,7 @@ Represents a surface (texture framebuffer) that can be rendered to.
 				
 			
 				
-				<h3 id="RenderCanvas.AddNewCameraQuad">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1788:1844#L54">AddNewCameraQuad</a></h3>
+				<h3 id="RenderCanvas.AddNewCameraQuad">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1774:1830#L54">AddNewCameraQuad</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera)</pre>
 				
 				
@@ -4062,7 +4059,7 @@ Represents a surface (texture framebuffer) that can be rendered to.
 				
 			
 				
-				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2539:2571#L81">Remove</a></h3>
+				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2525:2557#L81">Remove</a></h3>
 				<pre>func (me *RenderCanvas) Remove()</pre>
 				<p>
 Removes me from Core.Rendering.Canvases and deletes its associated GPU resources.
@@ -4073,7 +4070,7 @@ This renders me invalid for further use.
 				
 			
 				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3168:3237#L100">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3154:3223#L100">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
 				<p>
 Sets the 2 dimensions of this render canvas.
@@ -4087,7 +4084,7 @@ Otherwise, width and height are absolute pixel dimensions.
 		
 			
 			
-			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3526:3561#L110">RenderCanvases</a></h2>
+			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3512:3547#L110">RenderCanvases</a></h2>
 			<pre>type RenderCanvases []*RenderCanvas</pre>
 			<p>
 Only used for Core.Rendering.Canvases.
@@ -4104,7 +4101,7 @@ Only used for Core.Rendering.Canvases.
 
 			
 				
-				<h3 id="RenderCanvases.AddNew">func (RenderCanvases) <a href="/target/render-canvas.go?s=3776:3863#L121">AddNew</a></h3>
+				<h3 id="RenderCanvases.AddNew">func (RenderCanvases) <a href="/target/render-canvas.go?s=3762:3849#L121">AddNew</a></h3>
 				<pre>func (_ RenderCanvases) AddNew(relative bool, width, height float64) (rc *RenderCanvas)</pre>
 				<p>
 Adds a new RenderCanvas and returns it.
@@ -4115,14 +4112,14 @@ The relative, width and height values are passed to a call to SetSize().
 				
 			
 				
-				<h3 id="RenderCanvases.Final">func (RenderCanvases) <a href="/target/render-canvas.go?s=3994:4039#L127">Final</a></h3>
+				<h3 id="RenderCanvases.Final">func (RenderCanvases) <a href="/target/render-canvas.go?s=3980:4025#L127">Final</a></h3>
 				<pre>func (_ RenderCanvases) Final() *RenderCanvas</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4080:4157#L131">Walk</a></h3>
+				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4066:4143#L131">Walk</a></h3>
 				<pre>func (_ RenderCanvases) Walk(onCanv func(*RenderCanvas), onCam func(*Camera))</pre>
 				
 				
@@ -4223,7 +4220,7 @@ Represents a scene graph.
 
 			
 				
-				<h3 id="NewScene">func <a href="/target/scene.gt.go?s=606:633#L24">NewScene</a></h3>
+				<h3 id="NewScene">func <a href="/target/scene.gt.go?s=542:569#L20">NewScene</a></h3>
 				<pre>func NewScene() (me *Scene)</pre>
 				<p>
 Initializes and returns a new Scene with default parameters.
@@ -4232,13 +4229,6 @@ Initializes and returns a new Scene with default parameters.
 				
 			
 
-			
-				
-				<h3 id="Scene.Walk">func (*Scene) <a href="/target/scene.gt.go?s=334:375#L11">Walk</a></h3>
-				<pre>func (me *Scene) Walk(onNode func(*Node))</pre>
-				
-				
-				
 			
 		
 			

@@ -65,6 +65,7 @@ func (_ *EngineCore) init() {
 	initRenderTechniques()
 	Core.initRendering()
 	splash := &Core.Libs.Images.SplashScreen
+	splash.FlipY = false
 	splash.InitFrom.RawData = embeddedBinaries["splash.png"]
 	splash.init()
 	splash.Load()

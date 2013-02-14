@@ -13,12 +13,15 @@ import (
 
 type FxImage2D struct {
 	FxImageBase
+	FlipY           bool
+	ConvertToLinear bool
 
 	glTex ugl.Texture2D
 	img   image.Image
 }
 
 func (me *FxImage2D) init() {
+	me.FlipY, me.ConvertToLinear = true, true
 	me.glTex.Init()
 	me.FxImageBase.init(&me.glTex.TextureBase)
 }
@@ -29,7 +32,7 @@ func (me *FxImage2D) dispose() {
 }
 
 func (me *FxImage2D) GpuSync() (err error) {
-	if err = me.glTex.SetFromImage(me.img); err == nil {
+	if err = me.glTex.SetFromImage(me.img, me.FlipY, me.ConvertToLinear); err == nil {
 		err = me.gpuSync(&me.glTex)
 	}
 	return
