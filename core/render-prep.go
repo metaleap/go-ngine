@@ -1,9 +1,5 @@
 package core
 
-import (
-	unum "github.com/metaleap/go-util/num"
-)
-
 func (me *EngineCore) onPrep() {
 	for _, thrPrep.curCanv = range me.Rendering.Canvases {
 		if thrPrep.curCanv.renderThisFrame() {
@@ -33,7 +29,7 @@ func (me *Node) onPrep() {
 		for me.thrPrep.tmpCam, me.thrPrep.tmpMat = range me.thrPrep.matProjs {
 			if me.thrPrep.tmpCam.Perspective.Use {
 				if me.Rendering.skyMode {
-					me.thrPrep.tmpMat.SetFromMultN(&thrPrep.numBag, &me.thrPrep.tmpCam.thrPrep.matCamProj, &me.thrPrep.tmpCam.thrPrep.matCtlPos, &unum.Mat4Identity)
+					me.thrPrep.tmpMat.SetFromMult4(&me.thrPrep.tmpCam.thrPrep.matCamProj, &me.thrPrep.tmpCam.thrPrep.matCtlPos)
 				} else {
 					me.thrPrep.tmpMat.SetFromMult4(&me.thrPrep.tmpCam.thrPrep.matCamProj, &me.thrPrep.matModelView)
 				}

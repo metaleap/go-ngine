@@ -82,12 +82,12 @@ func (me *Node) renderSelf() {
 				thrRend.curEffect.use()
 			}
 		}
-		gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uni_mat4_VertexMatrix"], 1, gl.FALSE, &me.thrRend.matProjs[thrRend.curCam][0])
 		if me.Rendering.skyMode {
-			gl.Uniform1i(thrRend.curProg.UnifLocs["uni_int_Sky"], 1)
-			gl.DepthFunc(gl.LEQUAL)
 			Core.Rendering.states.DisableFaceCulling()
+			gl.DepthFunc(gl.LEQUAL)
+			gl.Uniform1i(thrRend.curProg.UnifLocs["uni_int_Sky"], 1)
 		}
+		gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uni_mat4_VertexMatrix"], 1, gl.FALSE, &me.thrRend.matProjs[thrRend.curCam][0])
 		me.model.render()
 		if me.Rendering.skyMode {
 			gl.Uniform1i(thrRend.curProg.UnifLocs["uni_int_Sky"], 0)
