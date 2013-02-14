@@ -39,6 +39,7 @@ func onAppThread() {
 	if apputil.Paused {
 		return
 	}
+
 	apputil.HandleCamCtlKeys()
 	rearMirror.OnApp()
 

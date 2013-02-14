@@ -18,13 +18,9 @@ func (me *Scene) init() {
 	me.RootNode = *newNode("", "", "", nil, me)
 }
 
-func (me *Scene) Walk(onNode func(*Node)) {
-	me.RootNode.Walk(onNode)
-}
-
 func (me LibScenes) Walk(onNode func(*Node)) {
 	for _, scene := range me {
-		scene.Walk(onNode)
+		scene.RootNode.Walk(onNode)
 	}
 }
 

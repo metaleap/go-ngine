@@ -97,7 +97,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	opt.Initialization.GlContext.CoreProfile.VersionHint = 3.3
 
 	//	Worth toggling this every once in a while just to see whether it makes a perf diff at all...
-	realThreads := false
+	realThreads := true
 	opt.Loop.ForceThreads.App, opt.Loop.ForceThreads.Prep = realThreads, realThreads
 
 	// ng.Diag.LogCategories = 0

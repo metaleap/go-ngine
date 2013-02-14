@@ -90,7 +90,7 @@ func (me *RenderCanvas) copyPrepToRend() {
 func (me *Camera) copyAppToPrep() {
 	me.thrPrep.matProj = me.thrApp.matProj
 	me.Controller.thrPrep.mat = me.Controller.thrApp.mat
-	me.thrPrep.matCtlPos.Translation(&me.Controller.Pos)
+	me.thrPrep.matPos.Translation(&me.Controller.Pos)
 	if thrPrep.curScene = me.scene; thrPrep.curScene != nil {
 		thrPrep.curScene.RootNode.copyAppToPrep()
 	}
