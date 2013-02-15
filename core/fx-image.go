@@ -4,11 +4,16 @@ import (
 	ugl "github.com/go3d/go-opengl/util"
 )
 
+type FxImage interface {
+	Load() error
+	Loaded() bool
+	GpuSync() error
+}
+
 type FxImageBase struct {
-	OnLoad   FxImageOnLoad
-	InitFrom struct {
-		RawData []byte
-		RefUrl  string
+	PreProcess struct {
+		FlipY        bool
+		SrgbToLinear bool
 	}
 
 	glTex    *ugl.TextureBase
@@ -21,6 +26,7 @@ func (me *FxImageBase) dispose() {
 
 func (me *FxImageBase) init(glTex *ugl.TextureBase) {
 	me.glTex = glTex
+	me.PreProcess.SrgbToLinear, me.PreProcess.FlipY = true, true
 }
 
 func (me *FxImageBase) gpuSync(tex ugl.Texture) (err error) {
@@ -42,5 +48,3 @@ func (me *FxImageBase) GpuSynced() bool {
 func (me *FxImageBase) NoAutoMips() {
 	me.glTex.MipMap.AutoGen = false
 }
-
-type FxImageOnLoad func(img interface{}, err error)

@@ -20,13 +20,17 @@ var (
 	Diag = EngineDiag{
 		LogCategories: DiagLogCatAll,
 		LogCategoryNames: map[EngineDiagLogCategory]string{
-			DiagLogCatMisc:    "[MISC.]\t\t",
-			DiagLogCatShaders: "[SHADERS]\t",
+			DiagLogCatMisc:    "[INFO]\t\t",
+			DiagLogCatShaders: "[SHADER]\t",
 			DiagLogCatMeshes:  "[MESHES]\t",
 		},
 		LogGLErrorsInLoopOnSec: true,
 	}
 )
+
+func init() {
+	ugo.LogErrorFormat = "[ERROR!]\t%v"
+}
 
 //	EngineDiag is a singleton type, only used for the core.Diag package-global exported variable.
 //	It is only aware of that instance and does not support any other EngineDiag instances.

@@ -23,7 +23,7 @@ var (
 	//	In the example apps, PostFxCanvas always renders gamma-correct output.
 	//	If GammaShader is true, this is done in its final fragment shader.
 	//	Otherwise, this is done directly by OpenGL via the SRGB-framebuffer flag.
-	GammaShader = true
+	GammaShader = false
 
 	//	The RenderCanvas the example scene is initially being rendered to. This is an off-screen "render-to-texture" RenderCanvas.
 	SceneCanvas *ng.RenderCanvas
@@ -46,6 +46,7 @@ var (
 		postLoop int64
 	}
 	winTitle struct {
+		appName        string
 		cw, ch         int
 		camPos, camDir unum.Vec3
 	}
@@ -68,7 +69,7 @@ func appWindowTitle() string {
 	if SceneCam != nil {
 		winTitle.camPos, winTitle.camDir = SceneCam.Controller.Pos, *SceneCam.Controller.Dir()
 	}
-	return fmt.Sprintf("%v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", ng.Stats.FpsLastSec, winTitle.cw, winTitle.ch, KeyHints[curKeyHint], winTitle.camPos.String(), winTitle.camDir.String())
+	return fmt.Sprintf("%s   |   %v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", winTitle.appName, ng.Stats.FpsLastSec, winTitle.cw, winTitle.ch, KeyHints[curKeyHint], winTitle.camPos.String(), winTitle.camDir.String())
 }
 
 func onSec() {
@@ -87,10 +88,11 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	//	by design, go:ngine doesn't do this for you automagically:
 	runtime.LockOSThread()
 	runtime.GOMAXPROCS(runtime.NumCPU())
+	winTitle.appName = filepath.Base(os.Args[0])
 
 	width, height, fullscreen := 1280, 720, false
 	// width, height, fullscreen := 1920, 1080, true
-	win := ng.NewWindowOptions(fmt.Sprintf("Loading example app... (%v CPU cores)", runtime.GOMAXPROCS(0)), width, height, fullscreen)
+	win := ng.NewWindowOptions(fmt.Sprintf("Loading \"%s\" example app... (%v CPU cores)", winTitle.appName, runtime.GOMAXPROCS(0)), width, height, fullscreen)
 
 	// release apps shouldn't do this, but during dev/test we want to observe max fps:
 	win.SetSwapInterval(0)

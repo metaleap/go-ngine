@@ -13,6 +13,21 @@ func AddScene(id string, mainCamScene bool, skyMeshID string) (me *ng.Scene) {
 	}
 	if len(skyMeshID) > 0 {
 		AddTextureMaterials(map[string]string{"clouds": "tex/clouds.jpeg"})
+
+		cubeMap := ng.Core.Libs.Images.TexCubes.AddNew("img_sky")
+		cubeMap.InitFrom[0].RefUrl = "tex/dog.png" // "tex/sky/west.png"  // positive X
+		cubeMap.InitFrom[1].RefUrl = "tex/dog.png" // "tex/sky/east.png"  // negative X
+		cubeMap.InitFrom[2].RefUrl = "tex/dog.png" // "tex/sky/up.png"    // positive Y
+		cubeMap.InitFrom[3].RefUrl = "tex/dog.png" // "tex/sky/down.png"  // negative Y
+		cubeMap.InitFrom[4].RefUrl = "tex/dog.png" // "tex/sky/north.png" // positive Z
+		cubeMap.InitFrom[5].RefUrl = "tex/dog.png" // "tex/sky/south.png" // negative Z
+		fx := ng.Core.Libs.Effects.AddNew("fx_sky")
+		fx.Ops.EnableTexCube(0).SetImageID("img_sky")
+		fx.Ops.EnableColored(0)
+		fx.Ops.DisableColored(0)
+		fx.UpdateRoutine()
+		ng.Core.Libs.Materials.AddNew("mat_sky").DefaultEffectID = "fx_sky"
+
 		ng.Core.Libs.Meshes[skyMeshID].Models.Default().Clone("meshmodel_skybox").SetMatID("mat_clouds")
 		me.RootNode.SetMeshModelID(skyMeshID, "meshmodel_skybox")
 	}
@@ -44,7 +59,7 @@ func AddScene(id string, mainCamScene bool, skyMeshID string) (me *ng.Scene) {
 //	adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffect.
 func AddTextureMaterials(idsUrls map[string]string) {
 	for id, refUrl := range idsUrls {
-		img := ng.Core.Libs.Images.I2D.AddNew("img_" + id)
+		img := ng.Core.Libs.Images.Tex2D.AddNew("img_" + id)
 		img.InitFrom.RefUrl = refUrl
 		fx := ng.Core.Libs.Effects.AddNew("fx_" + id)
 		fx.Ops.EnableTex2D(0).SetImageID("img_" + id)

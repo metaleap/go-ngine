@@ -40,7 +40,7 @@ func newRenderCanvas(isFinal, relative bool, width, height float64) (me *RenderC
 		me.frameBuf.AttachRendertexture(me.frameBufTex)
 		me.frameBuf.AttachRenderbuffer(ugl.NewFramebufferRenderbuffer())
 	}
-	ugl.LogLastError("newRenderCanvas(%v x %v)", width, height)
+	Diag.LogIfGlErr("newRenderCanvas(%v x %v)", width, height)
 	return
 }
 

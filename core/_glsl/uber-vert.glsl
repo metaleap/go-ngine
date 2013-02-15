@@ -29,3 +29,7 @@ vec4 vx_Scene_gl_Position () {
 vec2 vx_Scene_var_vec2_Tex2D () {
 	return att_vec2_Tex2D;
 }
+
+vec3 vx_Scene_var_vec3_TexCube () {
+	return att_vec3_Pos;
+}

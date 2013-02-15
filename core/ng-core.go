@@ -23,7 +23,8 @@ type EngineCore struct {
 		Materials LibFxMaterials
 		Images    struct {
 			SplashScreen FxImage2D
-			I2D          LibFxImage2Ds
+			TexCubes     LibFxImageCubes
+			Tex2D        LibFxImage2Ds
 		}
 		Meshes LibMeshes
 		Scenes LibScenes
@@ -35,6 +36,7 @@ type EngineCore struct {
 			Samplers     struct {
 				NoFilteringClamp    ugl.Sampler
 				FullFilteringRepeat ugl.Sampler
+				FullFilteringClamp  ugl.Sampler
 			}
 
 			procs map[string]*fxProc
@@ -52,12 +54,13 @@ func (_ *EngineCore) dispose() {
 	Core.isInit = false
 	for _, disp := range []disposable{
 		&Core.Rendering.Canvases,
-		&Core.Libs.Images.I2D, &Core.Libs.Effects, &Core.Libs.Materials, &Core.Libs.Meshes, &Core.Libs.Scenes,
+		&Core.Libs.Images.Tex2D, &Core.Libs.Images.TexCubes, &Core.Libs.Effects, &Core.Libs.Materials, &Core.Libs.Meshes, &Core.Libs.Scenes,
 		Core.MeshBuffers, &Core.Rendering.Techniques,
 	} {
 		disp.dispose()
 	}
 	Core.Rendering.Fx.Samplers.FullFilteringRepeat.Dispose()
+	Core.Rendering.Fx.Samplers.FullFilteringClamp.Dispose()
 	Core.Rendering.Fx.Samplers.NoFilteringClamp.Dispose()
 }
 
@@ -69,7 +72,7 @@ func (_ *EngineCore) init() {
 	splash := &Core.Libs.Images.SplashScreen
 	splash.InitFrom.RawData = embeddedBinaries["splash.png"]
 	splash.init()
-	splash.FlipY, splash.ConvertToLinear = false, false
+	splash.PreProcess.FlipY, splash.PreProcess.SrgbToLinear = false, false
 	splash.Load()
 	splash.GpuSync()
 	thrRend.tmpQuadTex = &splash.glTex
@@ -82,7 +85,7 @@ func (_ *EngineCore) init() {
 
 func (_ *EngineCore) initLibs() {
 	libs := &Core.Libs
-	for _, c := range []ctorable{&libs.Images.I2D, &libs.Effects, &libs.Materials, &libs.Meshes, &libs.Scenes} {
+	for _, c := range []ctorable{&libs.Images.Tex2D, &libs.Images.TexCubes, &libs.Effects, &libs.Materials, &libs.Meshes, &libs.Scenes} {
 		c.ctor()
 	}
 }
@@ -91,6 +94,7 @@ func (_ *EngineCore) initRendering() {
 	rend := &Core.Rendering
 	rend.states.ForceClearColor(Core.Options.Rendering.DefaultClearColor)
 	rend.Fx.Samplers.FullFilteringRepeat.Create().EnableFullFiltering(true, 8).SetWrap(gl.REPEAT)
+	rend.Fx.Samplers.FullFilteringClamp.Create().EnableFullFiltering(true, 8).SetWrap(gl.CLAMP_TO_EDGE)
 	rend.Fx.Samplers.NoFilteringClamp.Create().DisableAllFiltering(false).SetWrap(gl.CLAMP_TO_BORDER)
 	rend.Canvases = append(RenderCanvases{}, newRenderCanvas(true, true, 1, 1))
 	rend.Canvases.Final().AddNewCameraQuad()
@@ -107,7 +111,7 @@ func initRenderTechniques() {
 		//	the fxprocs need the names, but the techs mustn't be created yet as their ctor needs the fxprocs......
 		rend.Techniques[name] = nil
 	}
-	rend.Fx.KnownProcIDs = []string{"Tex2D", "Grayscale", "Orangify", "Colored", "Gamma"}
+	rend.Fx.KnownProcIDs = []string{"Tex2D", "TexCube", "Grayscale", "Orangify", "Colored", "Gamma"}
 	rend.Fx.procs = map[string]*fxProc{}
 	for _, shaderFunc := range rend.Fx.KnownProcIDs {
 		rend.Fx.procs[shaderFunc] = newFxProc(shaderFunc)
@@ -122,43 +126,58 @@ func (_ *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 		for _, canv := range Core.Rendering.Canvases {
 			canv.onResize(viewWidth, viewHeight)
 		}
-		ugl.LogLastError("onResizeWindow")
+		Diag.LogIfGlErr("onResizeWindow")
 	}
 }
 
 func (_ *EngineCore) onSec() {
 	if Diag.LogGLErrorsInLoopOnSec {
-		ugl.LogLastError("onSec")
+		Diag.LogIfGlErr("onSec")
 	}
 }
 
-func (_ *EngineCore) SyncUpdates() {
+func (_ *EngineCore) SyncUpdates() (err error) {
 	var (
-		err  error
 		wait sync.WaitGroup
 	)
-	ugl.LogLastError("EngineCore.SyncUpdates() -- pre")
-	Core.onResizeWindow(UserIO.Window.width, UserIO.Window.height)
-	ugl.LogLastError("EngineCore.SyncUpdates() -- resizewin")
-
-	loadImg2D := func(img *FxImage2D) {
-		img.Load()
-		wait.Done()
-	}
-
-	for _, img := range Core.Libs.Images.I2D {
+	imgLoad := func(img FxImage) {
 		if !img.Loaded() {
 			wait.Add(1)
-			go loadImg2D(img)
+			go func() {
+				if err = img.Load(); err != nil {
+					Diag.LogErr(err)
+				}
+				wait.Done()
+			}()
 		}
+	}
+	imgPush := func(img FxImage) {
+		if img.Loaded() {
+			if err = img.GpuSync(); err != nil {
+				Diag.LogErr(err)
+			}
+		}
+	}
+
+	Diag.LogIfGlErr("EngineCore.SyncUpdates() -- pre")
+	Core.onResizeWindow(UserIO.Window.width, UserIO.Window.height)
+	Diag.LogIfGlErr("EngineCore.SyncUpdates() -- resizewin")
+
+	for _, t2d := range Core.Libs.Images.Tex2D {
+		imgLoad(t2d)
+	}
+	for _, tcm := range Core.Libs.Images.TexCubes {
+		imgLoad(tcm)
 	}
 	wait.Wait()
-	for _, img := range Core.Libs.Images.I2D {
-		if img.Loaded() {
-			img.GpuSync()
-		}
+	for _, t2d := range Core.Libs.Images.Tex2D {
+		imgPush(t2d)
 	}
-	ugl.LogLastError("EngineCore.SyncUpdates() -- imgupload")
+	for _, tcm := range Core.Libs.Images.TexCubes {
+		imgPush(tcm)
+	}
+	Diag.LogIfGlErr("EngineCore.SyncUpdates() -- imgupload")
+
 	for _, mesh := range Core.Libs.Meshes {
 		if !mesh.gpuSynced {
 			if err = mesh.GpuUpload(); err != nil {
@@ -166,7 +185,7 @@ func (_ *EngineCore) SyncUpdates() {
 			}
 		}
 	}
-	ugl.LogLastError("EngineCore.SyncUpdates() -- meshupload")
+	Diag.LogIfGlErr("EngineCore.SyncUpdates() -- meshupload")
 	return
 }
 

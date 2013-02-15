@@ -52,7 +52,7 @@ func glInit() (err error, badVer string) {
 				var dur time.Duration
 				gl.FrontFace(gl.CCW)
 				gl.CullFace(gl.BACK)
-				gl.Enable(gl.TEXTURE_CUBE_MAP_SEAMLESS)
+				// gl.Enable(gl.TEXTURE_CUBE_MAP_SEAMLESS)
 				Diag.LogMisc(ugl.Util.ConnInfo())
 				if len(glc.progMan.Programs) > 0 {
 					if dur, err = glcProgsMake(true); err == nil {

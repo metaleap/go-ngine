@@ -46,7 +46,7 @@ tryInit:
 			Stats.reset()
 			Loop.init()
 			Core.init()
-			ugl.LogLastError("INIT")
+			Diag.LogIfGlErr("INIT")
 		} else if len(badVer) > 0 && !Core.Options.Initialization.GlContext.CoreProfile.ForceFirst {
 			Core.Options.Initialization.GlContext.CoreProfile.ForceFirst = true
 			UserIO.isGlfwInit, UserIO.Window.isCreated = false, false

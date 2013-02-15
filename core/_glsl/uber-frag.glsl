@@ -26,3 +26,7 @@ void fx_Colored (inout vec3 vCol) {
 void fx_Tex2D (inout vec3 vCol) {
 	vCol = texture(uni_sampler2D_Tex2D, var_vec2_Tex2D).rgb;
 }
+
+void fx_TexCube (inout vec3 vCol) {
+	vCol = texture(uni_samplerCube_TexCube, var_vec3_TexCube).rgb;
+}

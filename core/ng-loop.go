@@ -4,7 +4,6 @@ import (
 	"runtime"
 
 	glfw "github.com/go-gl/glfw"
-	ugl "github.com/go3d/go-opengl/util"
 )
 
 var (
@@ -80,7 +79,7 @@ func (_ *EngineLoop) Loop() {
 		Loop.Tick.PrevSec, Loop.Tick.Delta = int(Loop.Tick.Now), Loop.Tick.Now-Loop.Tick.Prev
 		Stats.reset()
 		Stats.FrameRenderBoth.comb1, Stats.FrameRenderBoth.comb2 = &Stats.FrameRenderCpu, &Stats.FrameRenderGpu
-		ugl.LogLastError("ngine.PreLoop")
+		Diag.LogIfGlErr("ngine.PreLoop")
 		Diag.LogMisc("Enter loop...")
 		Core.copyAppToPrep()
 		Core.copyPrepToRend()
@@ -145,7 +144,7 @@ func (_ *EngineLoop) Loop() {
 		}
 		Loop.Looping = false
 		Diag.LogMisc("Exited loop.")
-		ugl.LogLastError("ngine.PostLoop")
+		Diag.LogIfGlErr("ngine.PostLoop")
 	}
 }
 
