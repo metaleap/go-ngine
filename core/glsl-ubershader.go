@@ -185,7 +185,7 @@ func (me *uberShader) setShaderSourceEnsureFunc(op FxOp, fn *uberShaderFunc, src
 			}
 		}
 		if df == nil {
-			return fmtErr(str)
+			return errf(str)
 		}
 		me.setShaderSourceEnsureFunc(nil, df, srcBody, inputs)
 	}
@@ -215,11 +215,11 @@ func (me *uberShader) setShaderSourceFrag(fx *FxEffect, inputs map[string]bool) 
 	for _, op = range fx.Ops {
 		if op.Enabled() {
 			if shader = Core.Rendering.Fx.procs[op.ProcID()]; shader == nil {
-				err = fmtErr("uberShader.setShaderSourceFrag('%s') -- unknown fxProc ID '%s'", me.pname, op.ProcID())
+				err = errf("uberShader.setShaderSourceFrag('%s') -- unknown fxProc ID '%s'", me.pname, op.ProcID())
 				return
 			}
 			if shFunc = me.funcs.fragment[shader.FuncName]; shFunc == nil {
-				err = fmtErr("uberShader.setShaderSourceFrag('%s') -- unknown fragment func '%s'", me.pname, shader.FuncName)
+				err = errf("uberShader.setShaderSourceFrag('%s') -- unknown fragment func '%s'", me.pname, shader.FuncName)
 				return
 			}
 			me.setShaderSourceEnsureFunc(op, shFunc, &srcBody, inputs)
@@ -268,7 +268,7 @@ func (me *uberShader) setShaderSourceVert(vertTech string, varyings map[string]b
 			srcHead.Writeln("out %s %s;", me.inoutTypeSpec(inout), inout)
 		}
 		if shFunc = me.funcs.vertex[fname]; shFunc == nil {
-			err = fmtErr("uberShader.setShaderSourceVert('%s') -- unknown vertex func '%s'", me.pname, fname)
+			err = errf("uberShader.setShaderSourceVert('%s') -- unknown vertex func '%s'", me.pname, fname)
 			return
 		}
 		me.setShaderSourceEnsureFunc(nil, shFunc, &srcBody, inputs)

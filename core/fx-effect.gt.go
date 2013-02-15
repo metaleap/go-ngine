@@ -65,7 +65,7 @@ func (me *FxEffect) UpdateRoutine() {
 	}
 	me.uberName = buf.String()
 	for id, _ = range Core.Rendering.Techniques {
-		me.uberPnames[id] = fmtStr("uber_%s%s", id, me.uberName)
+		me.uberPnames[id] = strf("uber_%s%s", id, me.uberName)
 	}
 	thrRend.curEffect, thrRend.tmpEffect = nil, nil
 }

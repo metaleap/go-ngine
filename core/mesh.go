@@ -34,9 +34,9 @@ func (me *Mesh) GpuUpload() (err error) {
 	me.GpuDelete()
 
 	if sizeVerts > gl.Sizeiptr(me.meshBuffer.MemSizeVertices) {
-		err = fmtErr("Cannot upload mesh '%v': vertex size (%vB) exceeds mesh buffer's available vertex memory (%vB)", me.id, sizeVerts, me.meshBuffer.MemSizeVertices)
+		err = errf("Cannot upload mesh '%v': vertex size (%vB) exceeds mesh buffer's available vertex memory (%vB)", me.id, sizeVerts, me.meshBuffer.MemSizeVertices)
 	} else if sizeIndices > gl.Sizeiptr(me.meshBuffer.MemSizeIndices) {
-		err = fmtErr("Cannot upload mesh '%v': index size (%vB) exceeds mesh buffer's available index memory (%vB)", me.id, sizeIndices, me.meshBuffer.MemSizeIndices)
+		err = errf("Cannot upload mesh '%v': index size (%vB) exceeds mesh buffer's available index memory (%vB)", me.id, sizeIndices, me.meshBuffer.MemSizeIndices)
 	} else {
 		me.meshBufOffsetBaseIndex, me.meshBufOffsetIndices, me.meshBufOffsetVerts = me.meshBuffer.offsetBaseIndex, me.meshBuffer.offsetIndices, me.meshBuffer.offsetVerts
 		Diag.LogMeshes("Upload %v at voff=%v ioff=%v boff=%v", me.id, me.meshBufOffsetVerts, me.meshBufOffsetIndices, me.meshBufOffsetBaseIndex)

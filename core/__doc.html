@@ -1524,7 +1524,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:1043#L6">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=462:1052#L8">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Options     EngineOptions
@@ -1575,7 +1575,7 @@ It is only aware of that instance and does not support any other EngineCore inst
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3623:3657#L123">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3632:3666#L125">SyncUpdates</a></h3>
 				<pre>func (_ *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -2127,7 +2127,7 @@ An FxEffect can be reused for multiple surfaces, it is bound to geometry via an 
 
 			
 				
-				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=1828:1861#L74">NewFxEffect</a></h3>
+				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=1826:1859#L74">NewFxEffect</a></h3>
 				<pre>func NewFxEffect() (me *FxEffect)</pre>
 				<p>
 Initializes and returns a new FxEffect with default parameters.
@@ -2164,7 +2164,7 @@ Initializes and returns a new FxEffect with default parameters.
 
 			
 				
-				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=2998:3033#L131">NewFxImage2D</a></h3>
+				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=2999:3034#L131">NewFxImage2D</a></h3>
 				<pre>func NewFxImage2D() (me *FxImage2D)</pre>
 				<p>
 Initializes and returns a new FxImage2D with default parameters.
@@ -2182,28 +2182,28 @@ Initializes and returns a new FxImage2D with default parameters.
 				
 			
 				
-				<h3 id="FxImage2D.IsRemote">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1919:1964#L85">IsRemote</a></h3>
+				<h3 id="FxImage2D.IsRemote">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1920:1965#L85">IsRemote</a></h3>
 				<pre>func (me *FxImage2D) IsRemote() (remote bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Load">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=665:704#L33">Load</a></h3>
+				<h3 id="FxImage2D.Load">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=666:705#L33">Load</a></h3>
 				<pre>func (me *FxImage2D) Load() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Loaded">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1390:1424#L68">Loaded</a></h3>
+				<h3 id="FxImage2D.Loaded">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1391:1425#L68">Loaded</a></h3>
 				<pre>func (me *FxImage2D) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Unload">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2008:2037#L90">Unload</a></h3>
+				<h3 id="FxImage2D.Unload">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2009:2038#L90">Unload</a></h3>
 				<pre>func (me *FxImage2D) Unload()</pre>
 				
 				
@@ -3087,7 +3087,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 		
 			
 			
-			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=1979:2017#L81">LibFxEffects</a></h2>
+			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=1977:2015#L81">LibFxEffects</a></h2>
 			<pre>type LibFxEffects map[string]*FxEffect</pre>
 			<p>
 A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
@@ -3104,7 +3104,7 @@ A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2143:2199#L85">AddNew</a></h3>
+				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2141:2197#L85">AddNew</a></h3>
 				<pre>func (me LibFxEffects) AddNew(id string) (obj *FxEffect)</pre>
 				<p>
 Creates and initializes a new FxEffect with default parameters,
@@ -3115,7 +3115,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibFxEffects.Remove">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2398:2438#L102">Remove</a></h3>
+				<h3 id="LibFxEffects.Remove">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2396:2436#L102">Remove</a></h3>
 				<pre>func (me LibFxEffects) Remove(id string)</pre>
 				
 				
@@ -3124,7 +3124,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=3153:3193#L138">LibFxImage2Ds</a></h2>
+			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=3154:3194#L138">LibFxImage2Ds</a></h2>
 			<pre>type LibFxImage2Ds map[string]*FxImage2D</pre>
 			<p>
 A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
@@ -3141,7 +3141,7 @@ A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3320:3378#L142">AddNew</a></h3>
+				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3321:3379#L142">AddNew</a></h3>
 				<pre>func (me LibFxImage2Ds) AddNew(id string) (obj *FxImage2D)</pre>
 				<p>
 Creates and initializes a new FxImage2D with default parameters,
@@ -3152,7 +3152,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibFxImage2Ds.Remove">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3581:3622#L159">Remove</a></h3>
+				<h3 id="LibFxImage2Ds.Remove">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3582:3623#L159">Remove</a></h3>
 				<pre>func (me LibFxImage2Ds) Remove(id string)</pre>
 				
 				
@@ -3198,7 +3198,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibMeshes">type <a href="/target/mesh.go?s=4639:4670#L121">LibMeshes</a></h2>
+			<h2 id="LibMeshes">type <a href="/target/mesh.go?s=4635:4666#L121">LibMeshes</a></h2>
 			<pre>type LibMeshes map[string]*Mesh</pre>
 			<p>
 A hash-table of Meshs associated by IDs. Only for use in Core.Libs.
@@ -3215,14 +3215,14 @@ A hash-table of Meshs associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibMeshes.AddLoad">func (LibMeshes) <a href="/target/mesh.go?s=4888:4998#L131">AddLoad</a></h3>
+				<h3 id="LibMeshes.AddLoad">func (LibMeshes) <a href="/target/mesh.go?s=4884:4994#L131">AddLoad</a></h3>
 				<pre>func (me LibMeshes) AddLoad(id string, meshProvider MeshProvider, args ...interface{}) (mesh *Mesh, err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="LibMeshes.AddNew">func (LibMeshes) <a href="/target/mesh.go?s=4792:4841#L125">AddNew</a></h3>
+				<h3 id="LibMeshes.AddNew">func (LibMeshes) <a href="/target/mesh.go?s=4788:4837#L125">AddNew</a></h3>
 				<pre>func (me LibMeshes) AddNew(id string) (obj *Mesh)</pre>
 				<p>
 Creates and initializes a new Mesh with default parameters,
@@ -3294,7 +3294,7 @@ adds it to me under the specified ID, and returns it.
 
 			
 				
-				<h3 id="NewMesh">func <a href="/target/mesh.go?s=4489:4523#L114">NewMesh</a></h3>
+				<h3 id="NewMesh">func <a href="/target/mesh.go?s=4485:4519#L114">NewMesh</a></h3>
 				<pre>func NewMesh(id string) (me *Mesh)</pre>
 				<p>
 Initializes and returns a new Mesh with default parameters.
@@ -3319,28 +3319,28 @@ Initializes and returns a new Mesh with default parameters.
 				
 			
 				
-				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.go?s=2235:2269#L51">GpuUploaded</a></h3>
+				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.go?s=2231:2265#L51">GpuUploaded</a></h3>
 				<pre>func (me *Mesh) GpuUploaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Load">func (*Mesh) <a href="/target/mesh.go?s=2296:2372#L55">Load</a></h3>
+				<h3 id="Mesh.Load">func (*Mesh) <a href="/target/mesh.go?s=2292:2368#L55">Load</a></h3>
 				<pre>func (me *Mesh) Load(provider MeshProvider, args ...interface{}) (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.go?s=4325:4354#L105">Loaded</a></h3>
+				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.go?s=4321:4350#L105">Loaded</a></h3>
 				<pre>func (me *Mesh) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.go?s=4382:4406#L109">Unload</a></h3>
+				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.go?s=4378:4402#L109">Unload</a></h3>
 				<pre>func (me *Mesh) Unload()</pre>
 				
 				
@@ -3349,7 +3349,7 @@ Initializes and returns a new Mesh with default parameters.
 		
 			
 			
-			<h2 id="MeshBuffer">type <a href="/target/mesh-buffer.go?s=1726:2203#L61">MeshBuffer</a></h2>
+			<h2 id="MeshBuffer">type <a href="/target/mesh-buffer.go?s=1724:2201#L61">MeshBuffer</a></h2>
 			<pre>type MeshBuffer struct {
     MemSizeIndices, MemSizeVertices int32
     Params                          *meshBufferParams
@@ -3367,14 +3367,14 @@ Initializes and returns a new Mesh with default parameters.
 
 			
 				
-				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=2973:3022#L91">Add</a></h3>
+				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=2971:3020#L91">Add</a></h3>
 				<pre>func (me *MeshBuffer) Add(mesh *Mesh) (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=4214:4254#L136">Remove</a></h3>
+				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=4208:4248#L136">Remove</a></h3>
 				<pre>func (me *MeshBuffer) Remove(mesh *Mesh)</pre>
 				
 				
@@ -3406,35 +3406,35 @@ Initializes and returns a new Mesh with default parameters.
 				
 			
 				
-				<h3 id="MeshBuffers.FloatsPerVertex">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1013:1059#L35">FloatsPerVertex</a></h3>
+				<h3 id="MeshBuffers.FloatsPerVertex">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1011:1057#L35">FloatsPerVertex</a></h3>
 				<pre>func (me *MeshBuffers) FloatsPerVertex() int32</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffers.MemSizePerIndex">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1220:1266#L40">MemSizePerIndex</a></h3>
+				<h3 id="MeshBuffers.MemSizePerIndex">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1218:1264#L40">MemSizePerIndex</a></h3>
 				<pre>func (me *MeshBuffers) MemSizePerIndex() int32</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffers.MemSizePerVertex">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1282:1329#L44">MemSizePerVertex</a></h3>
+				<h3 id="MeshBuffers.MemSizePerVertex">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1280:1327#L44">MemSizePerVertex</a></h3>
 				<pre>func (me *MeshBuffers) MemSizePerVertex() int32</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffers.NewParams">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1409:1496#L49">NewParams</a></h3>
+				<h3 id="MeshBuffers.NewParams">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1407:1494#L49">NewParams</a></h3>
 				<pre>func (me *MeshBuffers) NewParams(numVerts, numIndices int32) (params *meshBufferParams)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffers.Remove">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1602:1642#L54">Remove</a></h3>
+				<h3 id="MeshBuffers.Remove">func (*MeshBuffers) <a href="/target/mesh-buffer.go?s=1600:1640#L54">Remove</a></h3>
 				<pre>func (me *MeshBuffers) Remove(id string)</pre>
 				
 				
@@ -4196,35 +4196,35 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvas.AddNewCamera2D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1483:1555#L42">AddNewCamera2D</a></h3>
+				<h3 id="RenderCanvas.AddNewCamera2D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1478:1550#L42">AddNewCamera2D</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCamera2D(allowOverlaps bool) (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.AddNewCamera3D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1645:1699#L48">AddNewCamera3D</a></h3>
+				<h3 id="RenderCanvas.AddNewCamera3D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1640:1694#L48">AddNewCamera3D</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCamera3D() (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.AddNewCameraQuad">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1774:1830#L54">AddNewCameraQuad</a></h3>
+				<h3 id="RenderCanvas.AddNewCameraQuad">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1769:1825#L54">AddNewCameraQuad</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.CurrentAbsoluteSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1353:1418#L37">CurrentAbsoluteSize</a></h3>
+				<h3 id="RenderCanvas.CurrentAbsoluteSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1348:1413#L37">CurrentAbsoluteSize</a></h3>
 				<pre>func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2525:2557#L81">Remove</a></h3>
+				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2520:2552#L81">Remove</a></h3>
 				<pre>func (me *RenderCanvas) Remove()</pre>
 				<p>
 Removes me from Core.Rendering.Canvases and deletes its associated GPU resources.
@@ -4235,7 +4235,7 @@ This renders me invalid for further use.
 				
 			
 				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3154:3223#L100">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3149:3218#L100">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
 				<p>
 Sets the 2 dimensions of this render canvas.
@@ -4249,7 +4249,7 @@ Otherwise, width and height are absolute pixel dimensions.
 		
 			
 			
-			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3512:3547#L110">RenderCanvases</a></h2>
+			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3507:3542#L110">RenderCanvases</a></h2>
 			<pre>type RenderCanvases []*RenderCanvas</pre>
 			<p>
 Only used for Core.Rendering.Canvases.
@@ -4266,7 +4266,7 @@ Only used for Core.Rendering.Canvases.
 
 			
 				
-				<h3 id="RenderCanvases.AddNew">func (RenderCanvases) <a href="/target/render-canvas.go?s=3762:3849#L121">AddNew</a></h3>
+				<h3 id="RenderCanvases.AddNew">func (RenderCanvases) <a href="/target/render-canvas.go?s=3757:3844#L121">AddNew</a></h3>
 				<pre>func (_ RenderCanvases) AddNew(relative bool, width, height float64) (rc *RenderCanvas)</pre>
 				<p>
 Adds a new RenderCanvas and returns it.
@@ -4277,14 +4277,14 @@ The relative, width and height values are passed to a call to SetSize().
 				
 			
 				
-				<h3 id="RenderCanvases.Final">func (RenderCanvases) <a href="/target/render-canvas.go?s=3980:4025#L127">Final</a></h3>
+				<h3 id="RenderCanvases.Final">func (RenderCanvases) <a href="/target/render-canvas.go?s=3975:4020#L127">Final</a></h3>
 				<pre>func (_ RenderCanvases) Final() *RenderCanvas</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4066:4143#L131">Walk</a></h3>
+				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4061:4138#L131">Walk</a></h3>
 				<pre>func (_ RenderCanvases) Walk(onCanv func(*RenderCanvas), onCam func(*Camera))</pre>
 				
 				

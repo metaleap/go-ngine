@@ -60,15 +60,15 @@ tryInit:
 		badVer = glc.lastBadVer
 	}
 	if len(badVer) > 0 {
-		err = fmtErr(glVersionErrorMessage(glMinVerStr, badVer))
+		err = errf(glVersionErrorMessage(glMinVerStr, badVer))
 	}
 	return
 }
 
-func fmtErr(format string, fmtArgs ...interface{}) error {
+func errf(format string, fmtArgs ...interface{}) error {
 	return fmt.Errorf(format, fmtArgs...)
 }
 
-func fmtStr(format string, fmtArgs ...interface{}) string {
+func strf(format string, fmtArgs ...interface{}) string {
 	return fmt.Sprintf(format, fmtArgs...)
 }

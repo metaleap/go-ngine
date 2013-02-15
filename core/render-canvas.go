@@ -36,7 +36,7 @@ func newRenderCanvas(isFinal, relative bool, width, height float64) (me *RenderC
 		me.frameBuf.GlTarget = gl.FRAMEBUFFER
 	} else {
 		me.frameBuf.Create(gl.Sizei(UserIO.Window.width), gl.Sizei(UserIO.Window.height), false)
-		me.frameBufTex = ugl.NewFramebufferRendertexture(false)
+		me.frameBufTex = ugl.NewFramebufferRendertexture()
 		me.frameBuf.AttachRendertexture(me.frameBufTex)
 		me.frameBuf.AttachRenderbuffer(ugl.NewFramebufferRenderbuffer())
 	}

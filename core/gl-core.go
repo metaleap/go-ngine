@@ -45,13 +45,14 @@ func glInit() (err error, badVer string) {
 		} else {
 			ugl.Init()
 			if !ugl.VersionMatch(glMinVer) {
-				badVer = fmtStr("%v.%v", ugl.Support.GlVersion.MajorMinor[0], ugl.Support.GlVersion.MajorMinor[1])
+				badVer = strf("%v.%v", ugl.Support.GlVersion.MajorMinor[0], ugl.Support.GlVersion.MajorMinor[1])
 				glc.lastBadVer = badVer
 				return
 			} else {
 				var dur time.Duration
 				gl.FrontFace(gl.CCW)
 				gl.CullFace(gl.BACK)
+				gl.Enable(gl.TEXTURE_CUBE_MAP_SEAMLESS)
 				Diag.LogMisc(ugl.Util.ConnInfo())
 				if len(glc.progMan.Programs) > 0 {
 					if dur, err = glcProgsMake(true); err == nil {
