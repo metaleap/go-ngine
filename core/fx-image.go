@@ -5,10 +5,8 @@ import (
 )
 
 type FxImageBase struct {
-	OnAsyncDone      func()
-	OnLoad           FxImageOnLoad
-	AsyncNumAttempts int
-	InitFrom         struct {
+	OnLoad   FxImageOnLoad
+	InitFrom struct {
 		RawData []byte
 		RefUrl  string
 	}
@@ -45,10 +43,4 @@ func (me *FxImageBase) NoAutoMips() {
 	me.glTex.MipMap.AutoGen = false
 }
 
-func (me *FxImageBase) onAsyncDone() {
-	if me.OnAsyncDone != nil {
-		me.OnAsyncDone()
-	}
-}
-
-type FxImageOnLoad func(img interface{}, err error, async bool)
+type FxImageOnLoad func(img interface{}, err error)

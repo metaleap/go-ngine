@@ -1,6 +1,8 @@
 package core
 
 import (
+	"sync"
+
 	glfw "github.com/go-gl/glfw"
 	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
@@ -67,8 +69,8 @@ func (_ *EngineCore) init() {
 	splash := &Core.Libs.Images.SplashScreen
 	splash.InitFrom.RawData = embeddedBinaries["splash.png"]
 	splash.init()
-	splash.Load()
 	splash.FlipY, splash.ConvertToLinear = false, false
+	splash.Load()
 	splash.GpuSync()
 	thrRend.tmpQuadTex = &splash.glTex
 	splash.Unload()
@@ -128,27 +130,32 @@ func (_ *EngineCore) onSec() {
 	if Diag.LogGLErrorsInLoopOnSec {
 		ugl.LogLastError("onSec")
 	}
-	for r, d := range thrRend.asyncResources {
-		if d {
-			delete(thrRend.asyncResources, r)
-			r.onAsyncDone()
-		}
-	}
 }
 
 func (_ *EngineCore) SyncUpdates() {
 	var (
-		err error
-		ok  bool
+		err  error
+		wait sync.WaitGroup
 	)
 	ugl.LogLastError("EngineCore.SyncUpdates() -- pre")
 	Core.onResizeWindow(UserIO.Window.width, UserIO.Window.height)
 	ugl.LogLastError("EngineCore.SyncUpdates() -- resizewin")
+
+	loadImg2D := func(img *FxImage2D) {
+		img.Load()
+		wait.Done()
+	}
+
 	for _, img := range Core.Libs.Images.I2D {
 		if !img.Loaded() {
-			if _, ok = thrRend.asyncResources[img]; !ok {
-				img.Load()
-			}
+			wait.Add(1)
+			go loadImg2D(img)
+		}
+	}
+	wait.Wait()
+	for _, img := range Core.Libs.Images.I2D {
+		if img.Loaded() {
+			img.GpuSync()
 		}
 	}
 	ugl.LogLastError("EngineCore.SyncUpdates() -- imgupload")

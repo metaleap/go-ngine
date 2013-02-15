@@ -45,24 +45,7 @@ func AddScene(id string, mainCamScene bool, skyMeshID string) (me *ng.Scene) {
 func AddTextureMaterials(idsUrls map[string]string) {
 	for id, refUrl := range idsUrls {
 		img := ng.Core.Libs.Images.I2D.AddNew("img_" + id)
-		if img.InitFrom.RefUrl = refUrl; img.IsRemote() {
-			img.AsyncNumAttempts = -1
-			img.OnAsyncDone = func() {
-				if img.Loaded() {
-					if err := img.GpuSync(); err != nil {
-						panic(err)
-					}
-				}
-			}
-		}
-		img.OnLoad = func(image interface{}, err error, async bool) {
-			if (err == nil) && (image != nil) && !async {
-				err = img.GpuSync()
-			}
-			if err != nil {
-				panic(err)
-			}
-		}
+		img.InitFrom.RefUrl = refUrl
 		fx := ng.Core.Libs.Effects.AddNew("fx_" + id)
 		fx.Ops.EnableTex2D(0).SetImageID("img_" + id)
 		fx.Ops.EnableColored(0)

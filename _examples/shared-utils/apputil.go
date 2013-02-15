@@ -13,8 +13,11 @@ import (
 )
 
 var (
+	//	Change to higher value to check out your splash-screen
 	ArtificialSplashScreenDelay = 0 * time.Second
 
+	//	Optionally set this to a callback function to be
+	//	invoked every second on the windowing main thread.
 	OnSec = func() {}
 
 	//	In the example apps, PostFxCanvas always renders gamma-correct output.
@@ -81,7 +84,7 @@ func onSec() {
 
 //	Called by each example-app's func main(). Initializes go:ngine, sets SceneCam/SceneCanvas/PostFxCam/PostFxCanvas etc., calls the specified setupExampleScene function, then enters The Loop.
 func Main(setupExampleScene, onAppThread, onWinThread func()) {
-	//	go:ngine doesn't do this for you by design:
+	//	by design, go:ngine doesn't do this for you automagically:
 	runtime.LockOSThread()
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
@@ -107,9 +110,9 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 
 	// ng.Diag.LogCategories = 0
 	ng.Diag.WriteTmpFilesTo.BaseDirName = filepath.Join("_diagtmp", filepath.Base(os.Args[0]))
+	ng.Diag.WriteTmpFilesTo.ShaderPrograms = "glsl"
 	// but for now, we don't need separate per-app diagtmp dirs:
 	ng.Diag.WriteTmpFilesTo.BaseDirName = "_diagtmp"
-	ng.Diag.WriteTmpFilesTo.ShaderPrograms = "glsl"
 
 	//	STEP 1: init go:ngine
 	if err := ng.Init(opt); err != nil {
@@ -130,19 +133,21 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 			setupExampleScene()
 			ng.Core.SyncUpdates()
 		}
-		time.Sleep(ArtificialSplashScreenDelay) // change to higher value to check out your splash-screen
+		time.Sleep(ArtificialSplashScreenDelay)
 		numCgo.preLoop = runtime.NumCgoCall()
 
 		//	STEP 3: enter... Da Loop.
-		if GammaShader {
-			fx := &PostFxCam.Rendering.Technique.(*ng.RenderTechniqueQuad).Effect
-			fx.Ops.EnableGamma(-1)
-			fx.UpdateRoutine()
-		} else {
-			PostFxCanvas.Srgb = true
+		if setupExampleScene != nil {
+			if GammaShader {
+				fx := &PostFxCam.Rendering.Technique.(*ng.RenderTechniqueQuad).Effect
+				fx.Ops.EnableGamma(-1)
+				fx.UpdateRoutine()
+			} else {
+				PostFxCanvas.Srgb = true
+			}
 		}
 		ng.Loop.Loop()
 		numCgo.postLoop = runtime.NumCgoCall()
-		PrintPostLoopSummary() // don't wanna defer this, useless when exit-on-error
+		PrintPostLoopSummary() // don't wanna defer this: useless when exit-on-error
 	}
 }

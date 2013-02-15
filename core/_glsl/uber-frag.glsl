@@ -20,7 +20,7 @@ void fx_Orangify (inout vec3 vCol) {
 
 void fx_Colored (inout vec3 vCol) {
 	vec2 tc = clamp(var_vec2_Tex2D, 0, 1);
-	vCol = vec3(tc.s - tc.t, tc) * 0.33;
+	vCol = vec3(0, tc) * 0.33;
 }
 
 void fx_Tex2D (inout vec3 vCol) {

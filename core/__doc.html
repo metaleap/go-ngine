@@ -299,7 +299,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#FxImage2D.IsRemote">func (me *FxImage2D) IsRemote() (remote bool)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#FxImage2D.Load">func (me *FxImage2D) Load()</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#FxImage2D.Load">func (me *FxImage2D) Load() (err error)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#FxImage2D.Loaded">func (me *FxImage2D) Loaded() bool</a></dd>
@@ -1575,7 +1575,7 @@ It is only aware of that instance and does not support any other EngineCore inst
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3739:3773#L129">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3623:3657#L123">SyncUpdates</a></h3>
 				<pre>func (_ *EngineCore) SyncUpdates()</pre>
 				
 				
@@ -2127,7 +2127,7 @@ An FxEffect can be reused for multiple surfaces, it is bound to geometry via an 
 
 			
 				
-				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=1792:1825#L73">NewFxEffect</a></h3>
+				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=1828:1861#L74">NewFxEffect</a></h3>
 				<pre>func NewFxEffect() (me *FxEffect)</pre>
 				<p>
 Initializes and returns a new FxEffect with default parameters.
@@ -2138,7 +2138,7 @@ Initializes and returns a new FxEffect with default parameters.
 
 			
 				
-				<h3 id="FxEffect.UpdateRoutine">func (*FxEffect) <a href="/target/fx-effect.gt.go?s=969:1004#L30">UpdateRoutine</a></h3>
+				<h3 id="FxEffect.UpdateRoutine">func (*FxEffect) <a href="/target/fx-effect.gt.go?s=1005:1040#L31">UpdateRoutine</a></h3>
 				<pre>func (me *FxEffect) UpdateRoutine()</pre>
 				
 				
@@ -2147,7 +2147,7 @@ Initializes and returns a new FxEffect with default parameters.
 		
 			
 			
-			<h2 id="FxImage2D">type <a href="/target/fx-image-2d.gt.go?s=131:254#L4">FxImage2D</a></h2>
+			<h2 id="FxImage2D">type <a href="/target/fx-image-2d.gt.go?s=185:308#L6">FxImage2D</a></h2>
 			<pre>type FxImage2D struct {
     FxImageBase
     FlipY           bool
@@ -2164,7 +2164,7 @@ Initializes and returns a new FxEffect with default parameters.
 
 			
 				
-				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=3361:3396#L143">NewFxImage2D</a></h3>
+				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=2998:3033#L131">NewFxImage2D</a></h3>
 				<pre>func NewFxImage2D() (me *FxImage2D)</pre>
 				<p>
 Initializes and returns a new FxImage2D with default parameters.
@@ -2175,35 +2175,35 @@ Initializes and returns a new FxImage2D with default parameters.
 
 			
 				
-				<h3 id="FxImage2D.GpuSync">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=468:510#L24">GpuSync</a></h3>
+				<h3 id="FxImage2D.GpuSync">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=522:564#L26">GpuSync</a></h3>
 				<pre>func (me *FxImage2D) GpuSync() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.IsRemote">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2282:2327#L97">IsRemote</a></h3>
+				<h3 id="FxImage2D.IsRemote">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1919:1964#L85">IsRemote</a></h3>
 				<pre>func (me *FxImage2D) IsRemote() (remote bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Load">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=641:668#L31">Load</a></h3>
-				<pre>func (me *FxImage2D) Load()</pre>
+				<h3 id="FxImage2D.Load">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=665:704#L33">Load</a></h3>
+				<pre>func (me *FxImage2D) Load() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Loaded">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1753:1787#L80">Loaded</a></h3>
+				<h3 id="FxImage2D.Loaded">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=1390:1424#L68">Loaded</a></h3>
 				<pre>func (me *FxImage2D) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Unload">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2371:2400#L102">Unload</a></h3>
+				<h3 id="FxImage2D.Unload">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=2008:2037#L90">Unload</a></h3>
 				<pre>func (me *FxImage2D) Unload()</pre>
 				
 				
@@ -2212,12 +2212,10 @@ Initializes and returns a new FxImage2D with default parameters.
 		
 			
 			
-			<h2 id="FxImageBase">type <a href="/target/fx-image.go?s=64:277#L1">FxImageBase</a></h2>
+			<h2 id="FxImageBase">type <a href="/target/fx-image.go?s=64:214#L1">FxImageBase</a></h2>
 			<pre>type FxImageBase struct {
-    OnAsyncDone      func()
-    OnLoad           FxImageOnLoad
-    AsyncNumAttempts int
-    InitFrom         struct {
+    OnLoad   FxImageOnLoad
+    InitFrom struct {
         RawData []byte
         RefUrl  string
     }
@@ -2235,21 +2233,21 @@ Initializes and returns a new FxImage2D with default parameters.
 
 			
 				
-				<h3 id="FxImageBase.GpuDelete">func (*FxImageBase) <a href="/target/fx-image.go?s=544:578#L25">GpuDelete</a></h3>
+				<h3 id="FxImageBase.GpuDelete">func (*FxImageBase) <a href="/target/fx-image.go?s=481:515#L23">GpuDelete</a></h3>
 				<pre>func (me *FxImageBase) GpuDelete()</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageBase.GpuSynced">func (*FxImageBase) <a href="/target/fx-image.go?s=625:664#L30">GpuSynced</a></h3>
+				<h3 id="FxImageBase.GpuSynced">func (*FxImageBase) <a href="/target/fx-image.go?s=562:601#L28">GpuSynced</a></h3>
 				<pre>func (me *FxImageBase) GpuSynced() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageBase.NoAutoMips">func (*FxImageBase) <a href="/target/fx-image.go?s=690:725#L34">NoAutoMips</a></h3>
+				<h3 id="FxImageBase.NoAutoMips">func (*FxImageBase) <a href="/target/fx-image.go?s=627:662#L32">NoAutoMips</a></h3>
 				<pre>func (me *FxImageBase) NoAutoMips()</pre>
 				
 				
@@ -2258,8 +2256,8 @@ Initializes and returns a new FxImage2D with default parameters.
 		
 			
 			
-			<h2 id="FxImageOnLoad">type <a href="/target/fx-image.go?s=856:919#L44">FxImageOnLoad</a></h2>
-			<pre>type FxImageOnLoad func(img interface{}, err error, async bool)</pre>
+			<h2 id="FxImageOnLoad">type <a href="/target/fx-image.go?s=701:752#L36">FxImageOnLoad</a></h2>
+			<pre>type FxImageOnLoad func(img interface{}, err error)</pre>
 			
 
 			
@@ -3089,7 +3087,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 		
 			
 			
-			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=1943:1981#L80">LibFxEffects</a></h2>
+			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=1979:2017#L81">LibFxEffects</a></h2>
 			<pre>type LibFxEffects map[string]*FxEffect</pre>
 			<p>
 A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
@@ -3106,7 +3104,7 @@ A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2107:2163#L84">AddNew</a></h3>
+				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2143:2199#L85">AddNew</a></h3>
 				<pre>func (me LibFxEffects) AddNew(id string) (obj *FxEffect)</pre>
 				<p>
 Creates and initializes a new FxEffect with default parameters,
@@ -3117,7 +3115,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibFxEffects.Remove">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2362:2402#L101">Remove</a></h3>
+				<h3 id="LibFxEffects.Remove">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2398:2438#L102">Remove</a></h3>
 				<pre>func (me LibFxEffects) Remove(id string)</pre>
 				
 				
@@ -3126,7 +3124,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=3516:3556#L150">LibFxImage2Ds</a></h2>
+			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=3153:3193#L138">LibFxImage2Ds</a></h2>
 			<pre>type LibFxImage2Ds map[string]*FxImage2D</pre>
 			<p>
 A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
@@ -3143,7 +3141,7 @@ A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3683:3741#L154">AddNew</a></h3>
+				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3320:3378#L142">AddNew</a></h3>
 				<pre>func (me LibFxImage2Ds) AddNew(id string) (obj *FxImage2D)</pre>
 				<p>
 Creates and initializes a new FxImage2D with default parameters,
@@ -3154,7 +3152,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibFxImage2Ds.Remove">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3944:3985#L171">Remove</a></h3>
+				<h3 id="LibFxImage2Ds.Remove">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=3581:3622#L159">Remove</a></h3>
 				<pre>func (me LibFxImage2Ds) Remove(id string)</pre>
 				
 				

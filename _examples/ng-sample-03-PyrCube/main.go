@@ -44,6 +44,7 @@ func setupExample_03_PyrCube() {
 	)
 
 	urlPrefix := "http://dl.dropbox.com/u/136375/go-ngine/assets/"
+	urlPrefix = ""
 
 	//	textures / materials
 	apputil.AddTextureMaterials(map[string]string{

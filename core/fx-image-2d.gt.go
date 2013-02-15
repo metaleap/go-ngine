@@ -3,12 +3,14 @@ package core
 import (
 	"bytes"
 	"image"
+	"image/draw"
 	_ "image/jpeg"
 	_ "image/png"
 	"io"
 	"strings"
 
 	ugl "github.com/go3d/go-opengl/util"
+	ugfx "github.com/metaleap/go-util/gfx"
 )
 
 type FxImage2D struct {
@@ -32,59 +34,45 @@ func (me *FxImage2D) dispose() {
 }
 
 func (me *FxImage2D) GpuSync() (err error) {
-	if err = me.glTex.SetFromImage(me.img, me.FlipY, me.ConvertToLinear); err == nil {
+	if err = me.glTex.SetFromImage(me.img); err == nil {
 		err = me.gpuSync(&me.glTex)
 	}
 	return
 }
 
-func (me *FxImage2D) Load() {
-	var (
-		loadAsync func()
-		err       error
-		img       image.Image
-	)
+func (me *FxImage2D) Load() (err error) {
+	var img image.Image
 	prov, arg, _ := me.provider()
-	if me.AsyncNumAttempts != 0 {
-		thrRend.asyncResources[me] = false
-		loadAsync = func() {
-			for i := 0; (i < me.AsyncNumAttempts) || (me.AsyncNumAttempts < 0); i++ {
-				if img, err = prov(arg); err == nil {
-					break
-				}
-			}
-			thrRend.asyncResources[me] = true
-			me.load_OnImg(img, err, true)
-		}
-		go loadAsync()
-	} else {
-		img, err = prov(arg)
-		me.load_OnImg(img, err, false)
-	}
-}
-
-func (me *FxImage2D) load_OnImg(img image.Image, err error, async bool) {
+	img, err = prov(arg)
 	me.Unload()
-	if me.img = img; me.img != nil {
+	if img != nil && err == nil {
 		//	If img is YCbCr or Paletted, convert to RGBA:
-		switch me.img.(type) {
+		switch img.(type) {
 		case *image.YCbCr, *image.Paletted:
-			nuW, nuH := me.img.Bounds().Dx(), me.img.Bounds().Dy()
-			nuImage := image.NewRGBA(image.Rect(0, 0, nuW, nuH))
-			for x := 0; x < nuW; x++ {
-				for y := 0; y < nuH; y++ {
-					nuImage.Set(x, y, me.img.At(x, y))
-				}
-			}
-			me.img = nuImage
+			b := img.Bounds()
+			nuImage := image.NewRGBA(b)
+			draw.Draw(nuImage, b, img, b.Min, draw.Src)
+			img = nuImage
 		}
-	}
-	if me.OnLoad != nil {
-		me.OnLoad(img, err, async)
+		if me.FlipY || me.ConvertToLinear {
+			pic := ugfx.CloneImage(img, !me.FlipY)
+			if me.FlipY {
+				ugfx.FlipVertical(img, pic)
+			}
+			if me.ConvertToLinear {
+				ugfx.SrgbToLinear(pic, pic)
+			}
+			img = pic
+		}
+		me.img = img
+		if me.OnLoad != nil {
+			me.OnLoad(img, err)
+		}
 	}
 	if err != nil {
 		Diag.LogErr(err)
 	}
+	return
 }
 
 func (me *FxImage2D) Loaded() bool {
