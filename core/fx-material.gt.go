@@ -20,9 +20,29 @@ type FxMaterial struct {
 func (me *FxMaterial) dispose() {
 }
 
+func (me *FxMaterial) faceEffect(face *meshRawFace) *FxEffect {
+	return Core.Libs.Effects[me.faceEffectID(face)]
+}
+
+func (me *FxMaterial) faceEffectID(face *meshRawFace) (fxID string) {
+	if fxID = me.FaceEffects.ByID[face.base.ID]; len(fxID) == 0 {
+		for _, thrRend.tmpFaceTag = range face.base.Tags {
+			if fxID = me.FaceEffects.ByTag[thrRend.tmpFaceTag]; len(fxID) > 0 {
+				return
+			}
+		}
+		fxID = me.DefaultEffectID
+	}
+	return
+}
+
 func (me *FxMaterial) init() {
 	me.FaceEffects.ByID = map[string]string{}
 	me.FaceEffects.ByTag = map[string]string{}
+}
+
+func (me *FxMaterial) HasFaceEffects() bool {
+	return len(me.FaceEffects.ByID) > 0 || len(me.FaceEffects.ByTag) > 0
 }
 
 //#begin-gt -gen-lib.gt T:FxMaterial

@@ -15,7 +15,8 @@ void fx_Grayscale (inout vec3 vCol) {
 }
 
 void fx_Orangify (inout vec3 vCol) {
-	vCol.r += 0.75;
+	vCol.r += 0.65;
+	vCol.g += 0.25;
 }
 
 void fx_Colored (inout vec3 vCol) {

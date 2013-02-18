@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	floor, cube, dog *ng.Node
+	floor, pyr *ng.Node
 )
 
 func main() {
@@ -24,17 +24,21 @@ func onWinThread() {
 
 func setupScene() {
 	var (
-		err                 error
-		scene               *ng.Scene
-		meshFloor, meshCube *ng.Mesh
-		bufRest             *ng.MeshBuffer
+		err                error
+		scene              *ng.Scene
+		meshFloor, meshPyr *ng.Mesh
+		bufRest            *ng.MeshBuffer
 	)
 
 	//	textures / materials
 	apputil.AddTextureMaterials(map[string]string{
 		"cobbles": "tex/cobbles.png",
 		"dog":     "tex/dog.png",
+		"cat":     "tex/cat.png",
 	})
+
+	ng.Core.Libs.Materials["mat_dog"].FaceEffects.ByID["t1"] = "fx_cat"
+	ng.Core.Libs.Materials["mat_dog"].FaceEffects.ByID["t3"] = "fx_cat"
 
 	//	meshes / models
 	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(200, 200)); err != nil {
@@ -46,27 +50,23 @@ func setupScene() {
 	}
 	bufRest.Add(meshFloor)
 
-	if meshCube, err = ng.Core.Libs.Meshes.AddLoad("mesh_cube", ng.MeshProviderPrefabCube); err != nil {
+	if meshPyr, err = ng.Core.Libs.Meshes.AddLoad("mesh_pyr", ng.MeshProviderPrefabPyramid); err != nil {
 		panic(err)
 	}
-	bufRest.Add(meshCube)
+	bufRest.Add(meshPyr)
 
-	//	scene
-	scene = apputil.AddScene("", true, "mesh_cube")
+	scene = apputil.AddScene("", true, "")
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	floor.SetMatID("mat_cobbles")
 	floor.Transform.SetScaleN(100)
 
-	cube = scene.RootNode.ChildNodes.AddNew("node_cube", "mesh_cube", "")
-	cube.SetMatID("mat_sky")
-
-	dog = scene.RootNode.ChildNodes.AddNew("node_dog", "mesh_cube", "")
-	dog.SetMatID("mat_dog")
-	dog.Transform.SetPosX(-2)
-	dog.Transform.SetPosZ(2)
+	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyr", "")
+	pyr.SetMatID("mat_dog")
+	pyr.Transform.Pos.Y = 2
+	pyr.Transform.ApplyMatrices()
 
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()
-	camCtl.Pos.Set(-1, 2, -5)
+	camCtl.Pos.Set(-2.5, 2, -7)
 	camCtl.EndUpdate()
 }

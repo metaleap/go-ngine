@@ -88,6 +88,10 @@ func setupExample_04_PyrsCubes() {
 		"dog":     "tex/dog.png",
 	})
 
+	fx := ng.Core.Libs.Effects["fx_mosaic"]
+	fx.Ops.EnableOrangify(-1)
+	fx.UpdateRoutine()
+
 	if err = gui2d.Setup(); err != nil {
 		panic(err)
 	}
@@ -114,6 +118,8 @@ func setupExample_04_PyrsCubes() {
 	}
 	meshCube.Models.Default().SetMatID("mat_crate")
 	meshCube.Models.Default().Clone("model_cube_cat").SetMatID("mat_cat")
+	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["front"] = "fx_cat"
+	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["back"] = "fx_dog"
 
 	bufFloor.Add(meshFloor)
 	bufRest.Add(meshCube)

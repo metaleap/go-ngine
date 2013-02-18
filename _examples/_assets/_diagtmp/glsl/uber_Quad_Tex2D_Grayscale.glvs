@@ -1,0 +1,23 @@
+/*	Temp file written at runtime for diagnostic purposes.
+	The following is a runtime-generated GLSL source string,
+	exactly as it was sent to the GL for compilation and linking: */
+#version 330 core
+#line 1
+out vec2 var_vec2_Tex2D;
+
+vec4 vx_Quad_gl_Position () {
+	const float extent = 3;
+	const vec2 pos[3] = vec2[](vec2(-1, -1), vec2(extent, -1), vec2(-1, extent));
+	return vec4(pos[gl_VertexID], 0, 1);
+}
+
+vec2 vx_Quad_var_vec2_Tex2D () {
+	const float extent = 3;
+	const vec2 vTex[3] = vec2[](vec2(0, 0), vec2(extent - 1, 0), vec2(0, extent - 1));
+	return vTex[gl_VertexID];
+}
+
+void main () {
+	gl_Position = vx_Quad_gl_Position();
+	var_vec2_Tex2D = vx_Quad_var_vec2_Tex2D();
+}

@@ -58,9 +58,9 @@ type meshRawFace struct {
 }
 
 //	Initializes and returns a new *meshRawFace* instance.
-func newMeshRawFace(base *MeshFaceBase) (me *meshRawFace) {
+func newMeshRawFace(base MeshFaceBase) (me *meshRawFace) {
 	me = &meshRawFace{}
-	me.base = *base
+	me.base = base
 	return
 }
 

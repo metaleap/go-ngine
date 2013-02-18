@@ -104,6 +104,14 @@ func (me *Mesh) render() {
 	if thrRend.curMeshBuf != me.meshBuffer {
 		me.meshBuffer.use()
 	}
-	gl.DrawElementsBaseVertex(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(me.meshBufOffsetIndices)), gl.Int(me.meshBufOffsetBaseIndex))
-	// gl.DrawElements(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Pointer(nil))
+	if thrRend.curMat.HasFaceEffects() {
+		for thrRend.tmpFidx, thrRend.tmpFace = range me.raw.faces {
+			thrRend.tmpEffect = thrRend.curMat.faceEffect(thrRend.tmpFace)
+			Core.useTechFx()
+			thrRend.curEffect.use()
+			gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(me.meshBufOffsetIndices+(int32(thrRend.tmpFidx)*3*4))), gl.Int(me.meshBufOffsetBaseIndex))
+		}
+	} else {
+		gl.DrawElementsBaseVertex(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(me.meshBufOffsetIndices)), gl.Int(me.meshBufOffsetBaseIndex))
+	}
 }

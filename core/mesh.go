@@ -16,7 +16,6 @@ type Mesh struct {
 
 func (me *Mesh) dispose() {
 	me.GpuDelete()
-	me.Unload()
 }
 
 func (me *Mesh) init() {
@@ -72,22 +71,19 @@ func (me *Mesh) Load(provider MeshProvider, args ...interface{}) (err error) {
 
 func (me *Mesh) load(meshData *MeshData) (err error) {
 	var (
-		numVerts                                       = 3 * int32(len(meshData.Faces))
-		numFinalVerts                                  = 0
-		offsetFace, ei                                 = 0, 0
-		vertsMap                                       = map[MeshV]uint32{}
 		offsetFloat, offsetIndex, offsetVertex, vindex uint32
+		vreuse, offsetFace, ei, numFinalVerts          int
 		vexists                                        bool
-		vreuse                                         int
 		ventry                                         MeshV
 	)
+	vertsMap, numVerts := map[MeshV]uint32{}, 3*int32(len(meshData.Faces))
 	me.gpuSynced = false
 	me.raw = &meshRaw{}
 	me.raw.meshVs = make([]float32, Core.MeshBuffers.FloatsPerVertex()*numVerts)
 	me.raw.indices = make([]uint32, numVerts)
 	me.raw.faces = make([]*meshRawFace, len(meshData.Faces))
 	for _, face := range meshData.Faces {
-		me.raw.faces[offsetFace] = newMeshRawFace(&face.MeshFaceBase)
+		me.raw.faces[offsetFace] = newMeshRawFace(face.MeshFaceBase)
 		for ei, ventry = range face.V {
 			if vindex, vexists = vertsMap[ventry]; !vexists {
 				vindex, vertsMap[ventry] = offsetVertex, offsetVertex
@@ -114,10 +110,6 @@ func (me *Mesh) load(meshData *MeshData) (err error) {
 
 func (me *Mesh) Loaded() bool {
 	return me.raw != nil
-}
-
-func (me *Mesh) Unload() {
-	me.raw = nil
 }
 
 //	Initializes and returns a new Mesh with default parameters.

@@ -19,6 +19,6 @@ Coming up soon:
 - batched rendering
 - geometry culling
 - lighting models
-- HDR (16-bit) pipeline, tone-mapping
+- HDR (16-bit) pipeline, tone-mapping... but gonna need decent lighting (and shadows) first, obviously!
 
 ... you name it.

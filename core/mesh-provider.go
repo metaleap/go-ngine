@@ -71,12 +71,12 @@ func MeshProviderPrefabPlane(args ...interface{}) (meshData *MeshData, err error
 func MeshProviderPrefabPyramid(args ...interface{}) (meshData *MeshData, err error) {
 	meshData = NewMeshData()
 	meshData.AddPositions(MeshVA3{0, 1, 0}, MeshVA3{-1, -1, 1}, MeshVA3{1, -1, 1}, MeshVA3{1, -1, -1}, MeshVA3{-1, -1, -1})
-	meshData.AddTexCoords(MeshVA2{0, 0}, MeshVA2{1, 0}, MeshVA2{1, 1}, MeshVA2{0, 1})
+	meshData.AddTexCoords(MeshVA2{0.5, 1}, MeshVA2{0, 0}, MeshVA2{1, 0})
 	meshData.AddNormals(MeshVA3{0, 0, 1}, MeshVA3{1, 0, 0}, MeshVA3{0, 0, -1}, MeshVA3{-1, 0, 0})
 	meshData.AddFaces(
 		NewMeshF3("pyr", "t0", MeshV{0, 0, 0}, MeshV{1, 1, 0}, MeshV{2, 2, 0}),
-		NewMeshF3("pyr", "t1", MeshV{0, 1, 1}, MeshV{2, 2, 1}, MeshV{3, 3, 1}),
-		NewMeshF3("pyr", "t2", MeshV{0, 1, 2}, MeshV{3, 2, 2}, MeshV{4, 3, 2}),
+		NewMeshF3("pyr", "t1", MeshV{0, 0, 1}, MeshV{2, 1, 1}, MeshV{3, 2, 1}),
+		NewMeshF3("pyr", "t2", MeshV{0, 0, 2}, MeshV{3, 1, 2}, MeshV{4, 2, 2}),
 		NewMeshF3("pyr", "t3", MeshV{0, 0, 3}, MeshV{4, 1, 3}, MeshV{1, 2, 3}))
 	return
 }

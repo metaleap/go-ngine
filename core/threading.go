@@ -47,6 +47,9 @@ var (
 		tmpSampler           *ugl.Sampler
 		tmpQuadTex           *ugl.Texture2D
 		tmpTexUnit           gl.Uint
+		tmpFaceTag           string
+		tmpFace              *meshRawFace
+		tmpFidx              int
 	}
 )
 
