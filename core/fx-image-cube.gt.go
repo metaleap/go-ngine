@@ -18,6 +18,7 @@ func (me *FxImageCube) init() {
 	me.images = make([]image.Image, 6)
 	me.glTex.Init()
 	me.FxImageBase.init(&me.glTex.TextureBase)
+	me.PreProcess.FlipY = false
 }
 
 func (me *FxImageCube) dispose() {

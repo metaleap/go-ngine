@@ -101,7 +101,7 @@ func (_ *EngineCore) initRendering() {
 }
 
 func initRenderTechniques() {
-	type techCtor func(string) RenderTechnique
+	type techCtor func() RenderTechnique
 	rend, knownTechniques := &Core.Rendering, map[string]techCtor{
 		"Quad":  newRenderTechniqueQuad,
 		"Scene": newRenderTechniqueScene,
@@ -117,7 +117,7 @@ func initRenderTechniques() {
 		rend.Fx.procs[shaderFunc] = newFxProc(shaderFunc)
 	}
 	for name, ctor := range knownTechniques {
-		rend.Techniques[name] = ctor(name)
+		rend.Techniques[name] = ctor()
 	}
 }
 

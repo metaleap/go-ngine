@@ -37,10 +37,10 @@ func onWinThread() {
 func onAppThread() {
 	if !apputil.Paused {
 		tri.Transform.Rot.Add3(-0.005, -0.005, 0)
-		tri.Transform.Pos.Set(-3.75, 1*math.Sin(ng.Loop.Tick.Now), 1)
+		tri.Transform.Pos.Set(1, 1*math.Sin(ng.Loop.Tick.Now), 3)
 		tri.Transform.ApplyMatrices()
-		quad.Transform.Rot.Add3(0, 0.001, 0.001)
-		quad.Transform.Pos.Set(-4.125, 1*math.Cos(ng.Loop.Tick.Now), 0)
+		quad.Transform.Rot.Add3(0, 0.005, 0.001)
+		quad.Transform.Pos.Set(-1, 1*math.Cos(ng.Loop.Tick.Now), 4)
 		quad.Transform.ApplyMatrices()
 	}
 }

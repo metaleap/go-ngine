@@ -74,7 +74,6 @@ func setupExample_03_PyrCube() {
 	bufRest.Add(meshPyr)
 	meshPyr.Models.Default().SetMatID("mat_mosaic")
 	meshCube.Models.Default().SetMatID("mat_crate")
-	meshCube.Models.Default().Clone("skybox").SetMatID("mat_clouds")
 	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["back"] = "fx_mosaic"
 
 	//	scene

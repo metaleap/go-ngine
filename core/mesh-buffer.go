@@ -122,7 +122,7 @@ func (me *MeshBuffer) use() {
 		if err = me.glTmpVao.Create(); err != nil {
 			Diag.LogErr(err)
 		} else if sceneTech, ok = thrRend.curTech.(*RenderTechniqueScene); ok {
-			if err = me.glTmpVao.Setup(sceneTech.initMeshBuffer(me), &me.glVbo, &me.glIbo); err != nil {
+			if err = me.glTmpVao.Setup(thrRend.curProg, sceneTech.initMeshBuffer(me), &me.glVbo, &me.glIbo); err != nil {
 				Diag.LogErr(err)
 			}
 		}

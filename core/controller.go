@@ -47,7 +47,7 @@ func (me *Controller) applyTranslation() {
 func (me *Controller) applyRotation() {
 	if me.autoUpdate {
 		thrApp.ctlTmps.axis.Set(0, 1, 0)
-		me.dir.Set(1, 0, 0)
+		me.dir.Set(0, 0, -1)
 		me.dir.RotateDeg(&thrApp.numBag, me.hAngle, &thrApp.ctlTmps.axis)
 		me.dir.Normalize()
 

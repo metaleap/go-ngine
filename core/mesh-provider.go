@@ -6,19 +6,46 @@ package core
 //	These faces are classified in 6 distinct tags: "front","back","top","bottom","right","left".
 func MeshProviderPrefabCube(args ...interface{}) (meshData *MeshData, err error) {
 	meshData = NewMeshData()
+	var u, d, l, r, f, b float32
+	meshData.AddNormals(
+		//	top
+		MeshVA3{0, 1, 0},
+		//	right
+		MeshVA3{1, 0, 0},
+		//	back
+		MeshVA3{0, 0, 1},
+		//	left
+		MeshVA3{-1, 0, 0},
+		//	front
+		MeshVA3{0, 0, -1},
+		//	bottom
+		MeshVA3{0, -1, 0},
+	)
+	meshData.AddTexCoords(
+		MeshVA2{1, 0},
+		MeshVA2{1, 1},
+		MeshVA2{0, 0},
+		MeshVA2{0, 1},
+	)
+	u, d, l, r, f, b = 1, -1, -1, 1, -1, 1
 	meshData.AddPositions(
-		MeshVertAtt3{-1, -1, 1}, MeshVertAtt3{1, -1, 1}, MeshVertAtt3{1, 1, 1},
-		MeshVertAtt3{-1, 1, 1}, MeshVertAtt3{-1, -1, -1}, MeshVertAtt3{-1, 1, -1},
-		MeshVertAtt3{1, 1, -1}, MeshVertAtt3{1, -1, -1})
-	meshData.AddTexCoords(MeshVertAtt2{0, 0}, MeshVertAtt2{1, 0}, MeshVertAtt2{1, 1}, MeshVertAtt2{0, 1})
-	meshData.AddNormals(MeshVertAtt3{0, 0, 1}, MeshVertAtt3{0, 0, -1}, MeshVertAtt3{0, 1, 0}, MeshVertAtt3{0, -1, 0}, MeshVertAtt3{1, 0, 0}, MeshVertAtt3{-1, 0, 0})
+		MeshVA3{l, u, f},
+		MeshVA3{l, u, b},
+		MeshVA3{r, u, f},
+		MeshVA3{r, u, b},
+		MeshVA3{r, d, f},
+		MeshVA3{r, d, b},
+		MeshVA3{l, d, b},
+		MeshVA3{l, d, f},
+	)
 	meshData.AddFaces(
-		NewMeshFace3("front", "t0", MeshVert{0, 0, 0}, MeshVert{1, 1, 0}, MeshVert{2, 2, 0}), NewMeshFace3("front", "t1", MeshVert{0, 0, 0}, MeshVert{2, 2, 0}, MeshVert{3, 3, 0}),
-		NewMeshFace3("back", "t2", MeshVert{4, 0, 1}, MeshVert{5, 1, 1}, MeshVert{6, 2, 1}), NewMeshFace3("back", "t3", MeshVert{4, 0, 1}, MeshVert{6, 2, 1}, MeshVert{7, 3, 1}),
-		NewMeshFace3("top", "t4", MeshVert{5, 0, 2}, MeshVert{3, 1, 2}, MeshVert{2, 2, 2}), NewMeshFace3("top", "t5", MeshVert{5, 0, 2}, MeshVert{2, 2, 2}, MeshVert{6, 3, 2}),
-		NewMeshFace3("bottom", "t6", MeshVert{4, 0, 3}, MeshVert{7, 1, 3}, MeshVert{1, 2, 3}), NewMeshFace3("bottom", "t7", MeshVert{4, 0, 3}, MeshVert{1, 2, 3}, MeshVert{0, 3, 3}),
-		NewMeshFace3("right", "t8", MeshVert{7, 0, 4}, MeshVert{6, 1, 4}, MeshVert{2, 2, 4}), NewMeshFace3("right", "t9", MeshVert{7, 0, 4}, MeshVert{2, 2, 4}, MeshVert{1, 3, 4}),
-		NewMeshFace3("left", "t10", MeshVert{4, 0, 5}, MeshVert{0, 1, 5}, MeshVert{3, 2, 5}), NewMeshFace3("left", "t11", MeshVert{4, 0, 5}, MeshVert{3, 2, 5}, MeshVert{5, 3, 5}))
+		NewMeshF3("top", "t0", MeshV{0, 0, 0}, MeshV{1, 1, 0}, MeshV{2, 2, 0}), NewMeshF3("top", "t1", MeshV{1, 1, 0}, MeshV{3, 3, 0}, MeshV{2, 2, 0}),
+		NewMeshF3("right", "t2", MeshV{2, 1, 1}, MeshV{3, 3, 1}, MeshV{4, 0, 1}), NewMeshF3("right", "t3", MeshV{4, 0, 1}, MeshV{3, 3, 1}, MeshV{5, 2, 1}),
+		NewMeshF3("back", "t4", MeshV{5, 0, 2}, MeshV{3, 1, 2}, MeshV{1, 3, 2}), NewMeshF3("back", "t5", MeshV{5, 0, 2}, MeshV{1, 3, 2}, MeshV{6, 2, 2}),
+		NewMeshF3("left", "t6", MeshV{6, 0, 3}, MeshV{1, 1, 3}, MeshV{0, 3, 3}), NewMeshF3("left", "t7", MeshV{6, 0, 3}, MeshV{0, 3, 3}, MeshV{7, 2, 3}),
+		NewMeshF3("front", "t8", MeshV{0, 1, 4}, MeshV{2, 3, 4}, MeshV{7, 0, 4}), NewMeshF3("front", "t9", MeshV{2, 3, 4}, MeshV{4, 2, 4}, MeshV{7, 0, 4}),
+		NewMeshF3("bottom", "t10", MeshV{7, 2, 5}, MeshV{4, 0, 5}, MeshV{6, 3, 5}), NewMeshF3("bottom", "t11", MeshV{6, 3, 5}, MeshV{4, 0, 5}, MeshV{5, 1, 5}),
+	)
 	return
 }
 
@@ -28,12 +55,12 @@ func MeshProviderPrefabCube(args ...interface{}) (meshData *MeshData, err error)
 //	These faces are all classified with tag: "plane".
 func MeshProviderPrefabPlane(args ...interface{}) (meshData *MeshData, err error) {
 	meshData = NewMeshData()
-	meshData.AddPositions(MeshVertAtt3{-1, 0, 1}, MeshVertAtt3{1, 0, 1}, MeshVertAtt3{-1, 0, -1}, MeshVertAtt3{1, 0, -1})
-	meshData.AddTexCoords(MeshVertAtt2{0, 0}, MeshVertAtt2{1000, 0}, MeshVertAtt2{0, 1000}, MeshVertAtt2{1000, 1000})
-	meshData.AddNormals(MeshVertAtt3{0, 1, 0})
+	meshData.AddPositions(MeshVA3{-1, 0, 1}, MeshVA3{1, 0, 1}, MeshVA3{-1, 0, -1}, MeshVA3{1, 0, -1})
+	meshData.AddTexCoords(MeshVA2{1000, 1000}, MeshVA2{0, 1000}, MeshVA2{1000, 0}, MeshVA2{0, 0})
+	meshData.AddNormals(MeshVA3{0, 1, 0})
 	meshData.AddFaces(
-		NewMeshFace3("plane", "t0", MeshVert{0, 0, 0}, MeshVert{1, 1, 0}, MeshVert{2, 2, 0}),
-		NewMeshFace3("plane", "t1", MeshVert{3, 3, 0}, MeshVert{2, 2, 0}, MeshVert{1, 1, 0}))
+		NewMeshF3("plane", "t0", MeshV{0, 0, 0}, MeshV{1, 1, 0}, MeshV{2, 2, 0}),
+		NewMeshF3("plane", "t1", MeshV{3, 3, 0}, MeshV{2, 2, 0}, MeshV{1, 1, 0}))
 	return
 }
 
@@ -43,14 +70,14 @@ func MeshProviderPrefabPlane(args ...interface{}) (meshData *MeshData, err error
 //	These faces are all classified with tag: "pyr".
 func MeshProviderPrefabPyramid(args ...interface{}) (meshData *MeshData, err error) {
 	meshData = NewMeshData()
-	meshData.AddPositions(MeshVertAtt3{0, 1, 0}, MeshVertAtt3{-1, -1, 1}, MeshVertAtt3{1, -1, 1}, MeshVertAtt3{1, -1, -1}, MeshVertAtt3{-1, -1, -1})
-	meshData.AddTexCoords(MeshVertAtt2{0, 0}, MeshVertAtt2{1, 0}, MeshVertAtt2{1, 1}, MeshVertAtt2{0, 1})
-	meshData.AddNormals(MeshVertAtt3{0, 0, 1}, MeshVertAtt3{1, 0, 0}, MeshVertAtt3{0, 0, -1}, MeshVertAtt3{-1, 0, 0})
+	meshData.AddPositions(MeshVA3{0, 1, 0}, MeshVA3{-1, -1, 1}, MeshVA3{1, -1, 1}, MeshVA3{1, -1, -1}, MeshVA3{-1, -1, -1})
+	meshData.AddTexCoords(MeshVA2{0, 0}, MeshVA2{1, 0}, MeshVA2{1, 1}, MeshVA2{0, 1})
+	meshData.AddNormals(MeshVA3{0, 0, 1}, MeshVA3{1, 0, 0}, MeshVA3{0, 0, -1}, MeshVA3{-1, 0, 0})
 	meshData.AddFaces(
-		NewMeshFace3("pyr", "t0", MeshVert{0, 0, 0}, MeshVert{1, 1, 0}, MeshVert{2, 2, 0}),
-		NewMeshFace3("pyr", "t1", MeshVert{0, 1, 1}, MeshVert{2, 2, 1}, MeshVert{3, 3, 1}),
-		NewMeshFace3("pyr", "t2", MeshVert{0, 1, 2}, MeshVert{3, 2, 2}, MeshVert{4, 3, 2}),
-		NewMeshFace3("pyr", "t3", MeshVert{0, 0, 3}, MeshVert{4, 1, 3}, MeshVert{1, 2, 3}))
+		NewMeshF3("pyr", "t0", MeshV{0, 0, 0}, MeshV{1, 1, 0}, MeshV{2, 2, 0}),
+		NewMeshF3("pyr", "t1", MeshV{0, 1, 1}, MeshV{2, 2, 1}, MeshV{3, 3, 1}),
+		NewMeshF3("pyr", "t2", MeshV{0, 1, 2}, MeshV{3, 2, 2}, MeshV{4, 3, 2}),
+		NewMeshF3("pyr", "t3", MeshV{0, 0, 3}, MeshV{4, 1, 3}, MeshV{1, 2, 3}))
 	return
 }
 
@@ -60,12 +87,12 @@ func MeshProviderPrefabPyramid(args ...interface{}) (meshData *MeshData, err err
 //	These faces are all classified with tag: "quad".
 func MeshProviderPrefabQuad(args ...interface{}) (meshData *MeshData, err error) {
 	meshData = NewMeshData()
-	meshData.AddPositions(MeshVertAtt3{1, 1, 0}, MeshVertAtt3{-1, 1, 0}, MeshVertAtt3{-1, -1, 0}, MeshVertAtt3{1, -1, 0})
-	meshData.AddTexCoords(MeshVertAtt2{0, 0}, MeshVertAtt2{0, 1}, MeshVertAtt2{1, 1}, MeshVertAtt2{1, 0})
-	meshData.AddNormals(MeshVertAtt3{0, 0, 1})
+	meshData.AddPositions(MeshVA3{-1, -1, 0}, MeshVA3{-1, 1, 0}, MeshVA3{1, -1, 0}, MeshVA3{1, 1, 0})
+	meshData.AddTexCoords(MeshVA2{1, 0}, MeshVA2{1, 1}, MeshVA2{0, 0}, MeshVA2{0, 1})
+	meshData.AddNormals(MeshVA3{0, 0, 1})
 	meshData.AddFaces(
-		NewMeshFace3("quad", "t0", MeshVert{0, 0, 0}, MeshVert{1, 1, 0}, MeshVert{2, 2, 0}),
-		NewMeshFace3("quad", "t1", MeshVert{0, 0, 0}, MeshVert{2, 2, 0}, MeshVert{3, 3, 0}))
+		NewMeshF3("quad", "t0", MeshV{0, 0, 0}, MeshV{1, 1, 0}, MeshV{2, 2, 0}),
+		NewMeshF3("quad", "t1", MeshV{1, 1, 0}, MeshV{3, 3, 0}, MeshV{2, 2, 0}))
 	return
 }
 
@@ -74,9 +101,9 @@ func MeshProviderPrefabQuad(args ...interface{}) (meshData *MeshData, err error)
 //	The returned MeshData contains 1 triangle face with ID "t0" and tag "tri".
 func MeshProviderPrefabTri(args ...interface{}) (meshData *MeshData, err error) {
 	meshData = NewMeshData()
-	meshData.AddPositions(MeshVertAtt3{0, 1, 0}, MeshVertAtt3{-1, -1, 0}, MeshVertAtt3{1, -1, 0})
-	meshData.AddTexCoords(MeshVertAtt2{0, 0}, MeshVertAtt2{3, 0}, MeshVertAtt2{3, 2})
-	meshData.AddNormals(MeshVertAtt3{0, 0, 1})
-	meshData.AddFaces(NewMeshFace3("tri", "t0", MeshVert{0, 0, 0}, MeshVert{1, 1, 0}, MeshVert{2, 2, 0}))
+	meshData.AddPositions(MeshVA3{-1, -1, 0}, MeshVA3{0, 1, 0}, MeshVA3{1, -1, 0})
+	meshData.AddTexCoords(MeshVA2{0, 0}, MeshVA2{0.5, 1}, MeshVA2{1, 0})
+	meshData.AddNormals(MeshVA3{0, 0, 1})
+	meshData.AddFaces(NewMeshF3("tri", "t0", MeshV{0, 0, 0}, MeshV{1, 1, 0}, MeshV{2, 2, 0}))
 	return
 }

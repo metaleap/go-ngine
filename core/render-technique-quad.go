@@ -12,7 +12,7 @@ type RenderTechniqueQuad struct {
 	glVao ugl.VertexArray
 }
 
-func newRenderTechniqueQuad(progName string) RenderTechnique {
+func newRenderTechniqueQuad() RenderTechnique {
 	me := &RenderTechniqueQuad{}
 	me.init("Quad")
 	me.Effect.init()
@@ -20,7 +20,7 @@ func newRenderTechniqueQuad(progName string) RenderTechnique {
 	me.fxTex.Sampler = &Core.Rendering.Fx.Samplers.NoFilteringClamp
 	me.Effect.UpdateRoutine()
 	me.glVao.Create()
-	me.glVao.Setup(nil)
+	me.glVao.Setup(nil, nil)
 	return me
 }
 

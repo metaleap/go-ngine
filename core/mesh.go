@@ -30,7 +30,7 @@ func (me *Mesh) GpuDelete() {
 }
 
 func (me *Mesh) GpuUpload() (err error) {
-	sizeVerts, sizeIndices := gl.Sizeiptr(4*len(me.raw.meshVerts)), gl.Sizeiptr(4*len(me.raw.indices))
+	sizeVerts, sizeIndices := gl.Sizeiptr(4*len(me.raw.meshVs)), gl.Sizeiptr(4*len(me.raw.indices))
 	me.GpuDelete()
 
 	if sizeVerts > gl.Sizeiptr(me.meshBuffer.MemSizeVertices) {
@@ -44,7 +44,7 @@ func (me *Mesh) GpuUpload() (err error) {
 		defer me.meshBuffer.glIbo.Unbind()
 		me.meshBuffer.glVbo.Bind()
 		defer me.meshBuffer.glVbo.Unbind()
-		if err = me.meshBuffer.glVbo.SubData(gl.Intptr(me.meshBufOffsetVerts), sizeVerts, gl.Ptr(&me.raw.meshVerts[0])); err == nil {
+		if err = me.meshBuffer.glVbo.SubData(gl.Intptr(me.meshBufOffsetVerts), sizeVerts, gl.Ptr(&me.raw.meshVs[0])); err == nil {
 			me.meshBuffer.offsetVerts += int32(sizeVerts)
 			if err = me.meshBuffer.glIbo.SubData(gl.Intptr(me.meshBufOffsetIndices), sizeIndices, gl.Ptr(&me.raw.indices[0])); err == nil {
 				me.meshBuffer.offsetIndices += int32(sizeIndices)
@@ -75,15 +75,15 @@ func (me *Mesh) load(meshData *MeshData) (err error) {
 		numVerts                                       = 3 * int32(len(meshData.Faces))
 		numFinalVerts                                  = 0
 		offsetFace, ei                                 = 0, 0
-		vertsMap                                       = map[MeshVert]uint32{}
+		vertsMap                                       = map[MeshV]uint32{}
 		offsetFloat, offsetIndex, offsetVertex, vindex uint32
 		vexists                                        bool
 		vreuse                                         int
-		ventry                                         MeshVert
+		ventry                                         MeshV
 	)
 	me.gpuSynced = false
 	me.raw = &meshRaw{}
-	me.raw.meshVerts = make([]float32, Core.MeshBuffers.FloatsPerVertex()*numVerts)
+	me.raw.meshVs = make([]float32, Core.MeshBuffers.FloatsPerVertex()*numVerts)
 	me.raw.indices = make([]uint32, numVerts)
 	me.raw.faces = make([]*meshRawFace, len(meshData.Faces))
 	for _, face := range meshData.Faces {
@@ -91,11 +91,11 @@ func (me *Mesh) load(meshData *MeshData) (err error) {
 		for ei, ventry = range face.V {
 			if vindex, vexists = vertsMap[ventry]; !vexists {
 				vindex, vertsMap[ventry] = offsetVertex, offsetVertex
-				copy(me.raw.meshVerts[offsetFloat:(offsetFloat+3)], meshData.Positions[ventry.PosIndex][0:3])
+				copy(me.raw.meshVs[offsetFloat:(offsetFloat+3)], meshData.Positions[ventry.PosIndex][0:3])
 				offsetFloat += 3
-				copy(me.raw.meshVerts[offsetFloat:(offsetFloat+2)], meshData.TexCoords[ventry.TexCoordIndex][0:2])
+				copy(me.raw.meshVs[offsetFloat:(offsetFloat+2)], meshData.TexCoords[ventry.TexCoordIndex][0:2])
 				offsetFloat += 2
-				copy(me.raw.meshVerts[offsetFloat:(offsetFloat+3)], meshData.Normals[ventry.NormalIndex][0:3])
+				copy(me.raw.meshVs[offsetFloat:(offsetFloat+3)], meshData.Normals[ventry.NormalIndex][0:3])
 				offsetFloat += 3
 				offsetVertex++
 				numFinalVerts++
@@ -108,7 +108,7 @@ func (me *Mesh) load(meshData *MeshData) (err error) {
 		}
 		offsetFace++
 	}
-	Diag.LogMeshes("mesh{%v}.Load() gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)", me.id, len(me.raw.faces), len(me.raw.meshVerts), numFinalVerts, numVerts, len(me.raw.indices), vreuse)
+	Diag.LogMeshes("mesh{%v}.Load() gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)", me.id, len(me.raw.faces), len(me.raw.meshVs), numFinalVerts, numVerts, len(me.raw.indices), vreuse)
 	return
 }
 

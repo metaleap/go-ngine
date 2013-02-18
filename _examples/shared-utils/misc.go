@@ -66,8 +66,8 @@ func ToggleRetro() {
 
 func ToggleTexturing() {
 	for _, fx := range ng.Core.Libs.Effects {
-		fx.Ops.ToggleColored(0)
-		fx.Ops.ToggleTex2D(0)
+		fx.Ops.ToggleColored(-1)
+		fx.Ops.Toggle("Tex*", -1)
 		fx.UpdateRoutine()
 	}
 }
