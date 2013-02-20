@@ -11,8 +11,7 @@ import (
 )
 
 var (
-	gui2d      apputil.Gui2D
-	rearMirror apputil.RearMirror
+	gui2d apputil.Gui2D
 
 	floor, pyr, box *ng.Node
 	crates          [3]*ng.Node
@@ -30,9 +29,9 @@ func onWinThread() {
 	apputil.CheckCamCtlKeys()
 	apputil.CheckAndHandleToggleKeys()
 	if ng.UserIO.KeyToggled(glfw.KeyF12) {
-		rearMirror.Cam.Enabled = !rearMirror.Cam.Enabled
+		apputil.RearView.Toggle()
 	}
-	rearMirror.OnWin()
+	apputil.RearView.OnWin()
 }
 
 func onAppThread() {
@@ -41,7 +40,7 @@ func onAppThread() {
 	}
 
 	apputil.HandleCamCtlKeys()
-	rearMirror.OnApp()
+	apputil.RearView.OnApp()
 
 	//	animate mesh nodes
 	gui2d.Dog.Transform.Rot.Add3(0, -0.005, 0.001)
@@ -77,7 +76,7 @@ func setupExample_04_PyrsCubes() {
 		str                          string
 	)
 
-	rearMirror.Setup()
+	apputil.RearView.Setup()
 
 	//	textures / materials
 	apputil.AddTextureMaterials(map[string]string{
@@ -126,8 +125,8 @@ func setupExample_04_PyrsCubes() {
 	bufRest.Add(meshPyr)
 
 	//	scene
-	scene = apputil.AddScene("", true, "mesh_cube")
-	rearMirror.Cam.SetScene("")
+	scene = apputil.AddScene("", true, "mesh_pyramid")
+	apputil.RearView.Cam.SetScene("")
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyramid", "")
 	box = scene.RootNode.ChildNodes.AddNew("node_box", "mesh_cube", "")

@@ -26,11 +26,11 @@ func onAppThread() {
 
 		//	animate mesh nodes
 		pyr.Transform.Rot.Add3(-0.0005, -0.0005, 0)
-		pyr.Transform.Pos.Set(-13.75, 2*math.Sin(ng.Loop.Tick.Now), 2)
+		pyr.Transform.Pos.Set(-1.5, 1.5+(2*math.Sin(ng.Loop.Tick.Now*3)), 7)
 		pyr.Transform.ApplyMatrices()
 
 		box.Transform.Rot.Add3(0, 0.0004, 0.0006)
-		box.Transform.Pos.Set(-8.125, 2*math.Cos(ng.Loop.Tick.Now), -2)
+		box.Transform.Pos.Set(1.5, 1.5+(2*math.Cos(ng.Loop.Tick.Now*0.3333)), 7)
 		box.Transform.ApplyMatrices()
 	}
 }
@@ -74,7 +74,8 @@ func setupExample_03_PyrCube() {
 	bufRest.Add(meshPyr)
 	meshPyr.Models.Default().SetMatID("mat_mosaic")
 	meshCube.Models.Default().SetMatID("mat_crate")
-	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["back"] = "fx_mosaic"
+	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["front"] = "fx_mosaic"
+	ng.Core.Libs.Materials["mat_mosaic"].FaceEffects.ByID["t3"] = "fx_crate"
 
 	//	scene
 	scene = apputil.AddScene("", true, "mesh_cube")

@@ -15,7 +15,7 @@ var (
 //	Pauses rendering or resumes from the current pause.
 //	When paused, the frame last rendered is frozen and rendered in a gray-scale effect.
 func PauseResume() {
-	tech := PostFxCam.Rendering.Technique.(*ng.RenderTechniqueQuad)
+	tech := PostFxCam.RenderTechniqueQuad()
 	tech.Effect.Ops.ToggleGrayscale(-1)
 	tech.Effect.UpdateRoutine()
 	if Paused = !Paused; Paused {
@@ -50,6 +50,15 @@ func PrintPostLoopSummary() {
 		cgoPerFrame = runtime.NumCgoCall() / int64(ng.Stats.TotalFrames())
 	}
 	fmt.Printf("CGO calls: pre-loop init %v, loop %v (avg. %v/frame)\n\n", numCgo.preLoop, numCgo.postLoop-numCgo.preLoop, cgoPerFrame)
+}
+
+func ToggleBatching() {
+	if SceneCam != nil {
+		SceneCam.RenderTechniqueScene().ToggleBatching()
+	}
+	if RearView.Cam != nil {
+		RearView.Cam.RenderTechniqueScene().ToggleBatching()
+	}
 }
 
 //	Toggles "retro mode" for the example app.

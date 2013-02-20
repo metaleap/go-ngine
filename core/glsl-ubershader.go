@@ -21,7 +21,7 @@ func newUberShaderFunc(name, rawSrc string) (me *uberShaderFunc) {
 }
 
 type uberShader struct {
-	rawSources       map[string]string
+	rawSources, tmpq map[string]string
 	tmpAtts, tmpUnis []string
 	opIndices        map[FxOp]int
 	pname            string
@@ -162,7 +162,7 @@ func (me *uberShader) ensureProg() {
 
 func (me *uberShader) setShaderSources(vertTech string, fragFx *FxEffect) (err error) {
 	fragInputs := map[string]bool{}
-	me.opIndices = map[FxOp]int{}
+	me.opIndices, me.tmpq = map[FxOp]int{}, map[string]string{}
 	if err = me.setShaderSourceFrag(fragFx, fragInputs); err == nil {
 		err = me.setShaderSourceVert(vertTech, fragInputs)
 	}
@@ -223,6 +223,11 @@ func (me *uberShader) setShaderSourceFrag(fx *FxEffect, inputs map[string]bool) 
 				return
 			}
 			me.setShaderSourceEnsureFunc(op, shFunc, &srcBody, inputs)
+			for shid, _ = range inputs {
+				if me.tmpq[shid] = op.qualifiers(shid); len(me.tmpq[shid]) > 0 {
+					me.tmpq[shid] = me.tmpq[shid] + " "
+				}
+			}
 		}
 	}
 
@@ -232,7 +237,7 @@ func (me *uberShader) setShaderSourceFrag(fx *FxEffect, inputs map[string]bool) 
 			ustr.AppendUnique(&me.tmpUnis, shid)
 			srcHead.Writeln("uniform %s %s;", me.inoutTypeSpec(shid), shid)
 		case "var_":
-			srcHead.Writeln("in %s %s;", me.inoutTypeSpec(shid), shid)
+			srcHead.Writeln("%sin %s %s;", me.tmpq[shid], me.inoutTypeSpec(shid), shid)
 		}
 	}
 	srcBody.Writeln("void main () {")
@@ -265,7 +270,7 @@ func (me *uberShader) setShaderSourceVert(vertTech string, varyings map[string]b
 	}
 	for i, inout = range outputs {
 		if fname = "vx_" + vertTech + "_" + inout; i > 0 {
-			srcHead.Writeln("out %s %s;", me.inoutTypeSpec(inout), inout)
+			srcHead.Writeln("%sout %s %s;", me.tmpq[inout], me.inoutTypeSpec(inout), inout)
 		}
 		if shFunc = me.funcs.vertex[fname]; shFunc == nil {
 			err = errf("uberShader.setShaderSourceVert('%s') -- unknown vertex func '%s'", me.pname, fname)

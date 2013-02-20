@@ -34,7 +34,7 @@ func (me *FxEffect) dispose() {
 }
 
 func (me *FxEffect) init() {
-	me.uberPnames = make(map[string]string, len(Core.Rendering.Techniques))
+	me.uberPnames = make(map[string]string, len(Core.Rendering.KnownTechniques))
 	me.KeepOpsLast = []string{"Gamma"}
 }
 
@@ -64,7 +64,7 @@ func (me *FxEffect) UpdateRoutine() {
 		}
 	}
 	me.uberName = buf.String()
-	for id, _ = range Core.Rendering.Techniques {
+	for id, _ = range Core.Rendering.KnownTechniques {
 		me.uberPnames[id] = strf("uber_%s%s", id, me.uberName)
 	}
 	thrRend.curEffect, thrRend.tmpEffect = nil, nil

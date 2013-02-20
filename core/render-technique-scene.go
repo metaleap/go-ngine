@@ -7,11 +7,14 @@ import (
 
 type RenderTechniqueScene struct {
 	renderTechniqueBase
+	Batch RenderBatch
 }
 
-func newRenderTechniqueScene() RenderTechnique {
+func newRenderTechniqueScene(cam *Camera) RenderTechnique {
 	me := &RenderTechniqueScene{}
-	me.init("Scene")
+	me.init("Scene", cam)
+	me.Batch.init(me)
+	me.Batch.Enabled = true
 	return me
 }
 
@@ -21,4 +24,8 @@ func (me *RenderTechniqueScene) initMeshBuffer(meshBuffer *MeshBuffer) (atts []*
 		ugl.NewVertexAttribPointer("att_vec2_Tex2D", 2, 8*4, gl.Util.PtrOffset(nil, 3*4)),
 	)
 	return
+}
+
+func (me *RenderTechniqueScene) ToggleBatching() {
+	me.Batch.Enabled = !me.Batch.Enabled
 }

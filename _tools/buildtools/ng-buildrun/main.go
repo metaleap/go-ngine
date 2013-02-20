@@ -186,7 +186,7 @@ func main() {
 		}
 	}
 
-	srcDirPathEmbeds := filepath.Join(nginePath, "_examples", "_assets", "tex", "embed")
+	srcDirPathEmbeds := filepath.Join(nginePath, "_examples", "-app-data", "tex", "embed")
 	if !force {
 		if errs := uio.NewDirWalker(nil, uio.NewWalkerVisitor_IsNewerThan(outFileTime, &srcTimeEmbeds)).Walk(srcDirPathEmbeds); len(errs) > 0 {
 			panic(errs[0])

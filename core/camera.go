@@ -47,6 +47,7 @@ type Camera struct {
 		matProj unum.Mat4
 	}
 	thrPrep struct {
+		tmpCamRender                bool
 		onPrepNode                  func(*Node)
 		matCamProj, matProj, matPos unum.Mat4
 	}
@@ -57,23 +58,23 @@ type Camera struct {
 
 func newCamera2D(canv *RenderCanvas, depth bool) (me *Camera) {
 	me = &Camera{}
-	me.init(canv, false, depth, Core.Rendering.Techniques[Core.Options.Rendering.DefaultTechnique2D])
+	me.init(canv, false, depth, Core.Options.Rendering.DefaultTechnique2D)
 	return
 }
 
 func newCamera3D(canv *RenderCanvas) (me *Camera) {
 	me = &Camera{}
-	me.init(canv, true, true, Core.Rendering.Techniques[Core.Options.Rendering.DefaultTechnique3D])
+	me.init(canv, true, true, Core.Options.Rendering.DefaultTechnique3D)
 	return
 }
 
 func newCameraQuad(canv *RenderCanvas) (me *Camera) {
 	me = &Camera{}
-	me.init(canv, false, false, Core.Rendering.Techniques[Core.Options.Rendering.DefaultTechniqueQuad])
+	me.init(canv, false, false, Core.Options.Rendering.DefaultTechniqueQuad)
 	return
 }
 
-func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool, technique RenderTechnique) {
+func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool, technique string) {
 	me.Enabled = true
 	me.thrPrep.onPrepNode = func(n *Node) { me.onPrepNode(n) }
 	rend := &me.Rendering
@@ -90,7 +91,7 @@ func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool, technique R
 	me.Controller.init()
 	rend.Viewport.init()
 	me.ApplyMatrices()
-	me.Rendering.Technique = technique
+	me.Rendering.Technique = Core.Rendering.KnownTechniques[technique](me)
 }
 
 //	Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.
@@ -101,14 +102,17 @@ func (me *Camera) ApplyMatrices() {
 func (me *Camera) clearNodeMats() {
 	if me.scene != nil {
 		me.scene.RootNode.Walk(func(node *Node) {
-			delete(node.thrPrep.matProjs, me)
-			delete(node.thrRend.matProjs, me)
+			delete(node.thrPrep.camProjMats, me)
+			delete(node.thrRend.camProjMats, me)
+			delete(node.thrPrep.camRender, me)
 		})
 	}
 }
 
 func (me *Camera) dispose() {
 	me.clearNodeMats()
+	me.Rendering.Technique.dispose()
+	me.Rendering.Technique = nil
 }
 
 func (me *Camera) Scene() *Scene {
@@ -120,7 +124,7 @@ func (me *Camera) setScene(scene *Scene) {
 		me.clearNodeMats()
 		if me.scene = scene; me.scene != nil {
 			me.scene.RootNode.Walk(func(node *Node) {
-				node.initProjMat(me)
+				node.initCamData(me)
 			})
 		}
 	}
@@ -130,7 +134,24 @@ func (me *Camera) SetScene(id string) {
 	me.setScene(Core.Libs.Scenes[id])
 }
 
+func (me *Camera) RenderTechniqueQuad() (tech *RenderTechniqueQuad) {
+	tech, _ = me.Rendering.Technique.(*RenderTechniqueQuad)
+	return
+}
+
+func (me *Camera) RenderTechniqueScene() (tech *RenderTechniqueScene) {
+	tech, _ = me.Rendering.Technique.(*RenderTechniqueScene)
+	return
+}
+
 type Cameras []*Camera
+
+func (me *Cameras) dispose() {
+	for _, cam := range *me {
+		cam.dispose()
+	}
+	*me = nil
+}
 
 func (me *Cameras) Remove(camera *Camera) {
 	for i, cam := range *me {

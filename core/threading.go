@@ -23,11 +23,13 @@ var (
 	}
 	thrPrep struct {
 		sync.Mutex
-		numBag   unum.Bag
-		curCam   *Camera
-		curCanv  *RenderCanvas
-		curScene *Scene
-		curNode  *Node
+		numBag       unum.Bag
+		curCam       *Camera
+		curCanv      *RenderCanvas
+		curScene     *Scene
+		curNode      *Node
+		curTechScene *RenderTechniqueScene
+		nodePreBatch nodeBatchPreps
 	}
 	thrRend struct {
 		asyncResources       map[asyncResource]bool
@@ -120,8 +122,8 @@ func (me *Node) copyAppToPrep() {
 func (me *Node) copyPrepToRend() {
 	if !me.thrRend.copyDone {
 		me.thrRend.copyDone = true
-		for me.thrPrep.tmpCam, me.thrPrep.tmpMat = range me.thrPrep.matProjs {
-			me.thrRend.matProjs[me.thrPrep.tmpCam].Load(me.thrPrep.tmpMat)
+		for me.thrPrep.tmpCam, me.thrPrep.tmpMat = range me.thrPrep.camProjMats {
+			me.thrRend.camProjMats[me.thrPrep.tmpCam].Load(me.thrPrep.tmpMat)
 		}
 		for _, me.thrPrep.curSubNode = range me.ChildNodes.M {
 			me.thrPrep.curSubNode.copyPrepToRend()

@@ -12,9 +12,9 @@ type RenderTechniqueQuad struct {
 	glVao ugl.VertexArray
 }
 
-func newRenderTechniqueQuad() RenderTechnique {
+func newRenderTechniqueQuad(cam *Camera) RenderTechnique {
 	me := &RenderTechniqueQuad{}
-	me.init("Quad")
+	me.init("Quad", cam)
 	me.Effect.init()
 	me.fxTex = me.Effect.Ops.EnableTex2D(-1)
 	me.fxTex.Sampler = &Core.Rendering.Fx.Samplers.NoFilteringClamp

@@ -55,9 +55,9 @@ var (
 	sec        = 0
 )
 
-//	Returns the base path of the "app dir" for our example apps, in this case: $GOPATH/src/github.com/go3d/go-ngine/_examples/_assets
+//	Returns the base path of the "app dir" for our example apps, in this case: $GOPATH/src/github.com/go3d/go-ngine/_examples/-app-data
 func AppDirBasePath() string {
-	return ugo.GopathSrcGithub("go3d", "go-ngine", "_examples", "_assets")
+	return ugo.GopathSrcGithub("go3d", "go-ngine", "_examples", "-app-data")
 }
 
 //	Returns the window title to be set by onSec().
@@ -141,7 +141,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 		//	STEP 3: enter... Da Loop.
 		if setupExampleScene != nil {
 			if GammaShader {
-				fx := &PostFxCam.Rendering.Technique.(*ng.RenderTechniqueQuad).Effect
+				fx := &PostFxCam.RenderTechniqueQuad().Effect
 				fx.Ops.EnableGamma(-1)
 				fx.UpdateRoutine()
 			} else {

@@ -55,7 +55,7 @@ func setupScene() {
 	}
 	bufRest.Add(meshPyr)
 
-	scene = apputil.AddScene("", true, "")
+	scene = apputil.AddScene("", true, "mesh_pyr")
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	floor.SetMatID("mat_cobbles")
 	floor.Transform.SetScaleN(100)

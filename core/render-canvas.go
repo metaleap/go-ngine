@@ -68,6 +68,7 @@ func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera) {
 }
 
 func (me *RenderCanvas) dispose() {
+	me.Cameras.dispose()
 	if !me.isFinal {
 		me.frameBuf.Dispose()
 	}

@@ -11,6 +11,10 @@ import (
 type FxOp interface {
 	init(string)
 
+	fxImageIDs() []string
+
+	qualifiers(inout string) string
+
 	use()
 
 	//	Disables this FxOp.
@@ -64,6 +68,14 @@ type fxOpBase struct {
 
 func (me *fxOpBase) init(procID string) {
 	me.procID = procID
+}
+
+func (me *fxOpBase) fxImageIDs() (ids []string) {
+	return
+}
+
+func (me *fxOpBase) qualifiers(inout string) string {
+	return ""
 }
 
 func (me *fxOpBase) use() {

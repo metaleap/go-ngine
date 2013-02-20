@@ -10,7 +10,7 @@ var (
 )
 
 func main() {
-	apputil.Main(setupExample_02_EmptyPlane, onAppThread, onWinThread)
+	apputil.Main(setupExample_02_EmptyGround, onAppThread, onWinThread)
 }
 
 func onWinThread() {
@@ -22,7 +22,7 @@ func onAppThread() {
 	apputil.HandleCamCtlKeys()
 }
 
-func setupExample_02_EmptyPlane() {
+func setupExample_02_EmptyGround() {
 	var (
 		err       error
 		scene     *ng.Scene

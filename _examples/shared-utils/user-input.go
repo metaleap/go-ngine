@@ -81,6 +81,9 @@ func CheckAndHandleToggleKeys() {
 	if in.KeyToggled(glfw.KeyF4) {
 		ToggleTexturing()
 	}
+	if in.KeyToggled(glfw.KeyF5) {
+		ToggleBatching()
+	}
 }
 
 //	To be called every frame (by the parent example app, ONLY in onAppThread()!) to process key-press

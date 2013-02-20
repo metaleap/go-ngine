@@ -9,6 +9,8 @@ type nodeCamProjMats map[*Camera]*unum.Mat4
 
 type nodeCamProjGlMats map[*Camera]*ugl.GlMat4
 
+type NodeVisitor func(*Node)
+
 //	Declares a point of interest in a Scene.
 type Node struct {
 	Rendering struct {
@@ -32,14 +34,15 @@ type Node struct {
 		curId          string
 		curSubNode     *Node
 		tmpCam         *Camera
-		matProjs       nodeCamProjMats
+		camProjMats    nodeCamProjMats
+		camRender      map[*Camera]bool
 	}
 
 	thrRend struct {
-		copyDone   bool
-		matProjs   nodeCamProjGlMats
-		curId      string
-		curSubNode *Node
+		copyDone    bool
+		camProjMats nodeCamProjGlMats
+		curId       string
+		curSubNode  *Node
 	}
 
 	mat                               *FxMaterial
@@ -57,7 +60,7 @@ func newNode(id, meshID, modelID string, parent *Node, scene *Scene) (me *Node) 
 	me.ChildNodes.init(me)
 	me.Transform.init(me)
 	me.SetMeshModelID(meshID, modelID)
-	me.initProjMats()
+	me.initCamDatas()
 	return
 }
 
@@ -68,16 +71,18 @@ func (me *Node) EffectiveMaterial() *FxMaterial {
 	return me.model.mat
 }
 
-func (me *Node) initProjMat(cam *Camera) {
+func (me *Node) initCamData(cam *Camera) {
 	if cam.scene == me.rootScene {
-		me.thrPrep.matProjs[cam], me.thrRend.matProjs[cam] = unum.NewMat4Identity(), ugl.NewGlMat4(nil)
+		me.thrPrep.camProjMats[cam], me.thrRend.camProjMats[cam] = unum.NewMat4Identity(), ugl.NewGlMat4(nil)
+		me.thrPrep.camRender[cam] = me.Rendering.Enabled
 	}
 }
 
-func (me *Node) initProjMats() {
-	me.thrPrep.matProjs, me.thrRend.matProjs = nodeCamProjMats{}, nodeCamProjGlMats{}
+func (me *Node) initCamDatas() {
+	me.thrPrep.camRender = map[*Camera]bool{}
+	me.thrPrep.camProjMats, me.thrRend.camProjMats = nodeCamProjMats{}, nodeCamProjGlMats{}
 	Core.Rendering.Canvases.Walk(nil, func(cam *Camera) {
-		me.initProjMat(cam)
+		me.initCamData(cam)
 	})
 }
 
@@ -122,7 +127,7 @@ func (me *Node) SetMeshModelID(meshID, modelID string) {
 	}
 }
 
-func (me *Node) Walk(onNode func(*Node)) {
+func (me *Node) Walk(onNode NodeVisitor) {
 	onNode(me)
 	for me.curID, me.curSubNode = range me.ChildNodes.M {
 		me.curSubNode.Walk(onNode)

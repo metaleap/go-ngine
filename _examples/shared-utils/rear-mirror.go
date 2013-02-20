@@ -4,6 +4,8 @@ import (
 	ng "github.com/go3d/go-ngine/core"
 )
 
+var RearView RearMirror
+
 //	A rather simple "rear-view mirror" camera that can be added to the example-program's main render canvas.
 type RearMirror struct {
 	Cam *ng.Camera
@@ -28,4 +30,8 @@ func (me *RearMirror) Setup() {
 	me.Cam.Rendering.States.ClearColor.Set(0.125, 0.25, 0.45, 1)
 	me.Cam.Rendering.Viewport.SetRel(0.66, 0.73, 0.33, 0.25)
 	me.Cam.Perspective.FovY *= 2
+}
+
+func (me *RearMirror) Toggle() {
+	me.Cam.Enabled = !me.Cam.Enabled
 }
