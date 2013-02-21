@@ -105,11 +105,10 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	realThreads := true
 	opt.Loop.ForceThreads.App, opt.Loop.ForceThreads.Prep = realThreads, realThreads
 
-	// ng.Diag.LogCategories = 0
-	ng.Diag.WriteTmpFilesTo.BaseDirName = filepath.Join("_diagtmp", filepath.Base(os.Args[0]))
+	ng.Diag.WriteTmpFilesTo.BaseDirName = filepath.Join("_tmp", filepath.Base(os.Args[0]))
 	ng.Diag.WriteTmpFilesTo.ShaderPrograms = "glsl"
-	// but for now, we don't need separate per-app diagtmp dirs:
-	ng.Diag.WriteTmpFilesTo.BaseDirName = "_diagtmp"
+	// but for now, we don't need separate per-app tmp dirs:
+	ng.Diag.WriteTmpFilesTo.BaseDirName = "_tmp"
 
 	//	STEP 1: init go:ngine
 	err := ng.Init(opt)

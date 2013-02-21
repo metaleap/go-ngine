@@ -10,13 +10,19 @@ import (
 	ugfx "github.com/metaleap/go-util/gfx"
 )
 
+type fxImageRaw struct {
+	data []byte
+}
+
 type FxImageInitFrom struct {
 	RawData []byte
 	RefUrl  string
 }
 
 func (me *FxImageInitFrom) loadImage(fxImg *FxImageBase) (img image.Image, err error) {
+	// var rawImg *fxImageRaw
 	prov, arg, _ := me.provider()
+
 	img, err = prov(arg)
 	if img != nil && err == nil {
 		switch img.(type) {

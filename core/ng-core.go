@@ -148,6 +148,7 @@ func (_ *EngineCore) GpuSyncImageLibs() (err error) {
 	}
 
 	for img := range ch {
+		//	As soon as the first image is processed/loaded, it can be uploaded while others are still busy
 		if done++; done >= num {
 			close(ch)
 		}
