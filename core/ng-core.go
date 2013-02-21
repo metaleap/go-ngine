@@ -1,8 +1,6 @@
 package core
 
 import (
-	"sync"
-
 	glfw "github.com/go-gl/glfw"
 	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
@@ -129,55 +127,41 @@ func (_ *EngineCore) onSec() {
 	}
 }
 
-func (_ *EngineCore) SyncUpdates() (err error) {
-	var wait sync.WaitGroup
-	imgLoad := func(img FxImage) {
+func (_ *EngineCore) GpuSyncImageLibs() (err error) {
+	type imgChan chan FxImage
+	imgLoad := func(ch imgChan, img FxImage) {
 		if !img.Loaded() {
-			wait.Add(1)
-			go func() {
-				defer wait.Done()
-				if err = img.Load(); err != nil {
-					Diag.LogErr(err)
-				}
-			}()
+			if err := img.Load(); err != nil {
+				Diag.LogErr(err)
+			}
 		}
+		ch <- img
 	}
-	imgPush := func(img FxImage) {
+
+	num := len(Core.Libs.Images.Tex2D) + len(Core.Libs.Images.TexCubes)
+	ch, done := make(imgChan, num), 0
+	for _, t2d := range Core.Libs.Images.Tex2D {
+		go imgLoad(ch, t2d)
+	}
+	for _, tcm := range Core.Libs.Images.TexCubes {
+		go imgLoad(ch, tcm)
+	}
+
+	for img := range ch {
+		if done++; done >= num {
+			close(ch)
+		}
 		if img.Loaded() {
 			if err = img.GpuSync(); err != nil {
 				Diag.LogErr(err)
 			}
 		}
 	}
-
-	Diag.LogIfGlErr("EngineCore.SyncUpdates() -- pre")
-	Core.onResizeWindow(UserIO.Window.width, UserIO.Window.height)
-	Diag.LogIfGlErr("EngineCore.SyncUpdates() -- resizewin")
-
-	for _, t2d := range Core.Libs.Images.Tex2D {
-		imgLoad(t2d)
-	}
-	for _, tcm := range Core.Libs.Images.TexCubes {
-		imgLoad(tcm)
-	}
-	wait.Wait()
-	for _, t2d := range Core.Libs.Images.Tex2D {
-		imgPush(t2d)
-	}
-	for _, tcm := range Core.Libs.Images.TexCubes {
-		imgPush(tcm)
-	}
-	Diag.LogIfGlErr("EngineCore.SyncUpdates() -- imgupload")
-
-	for _, mesh := range Core.Libs.Meshes {
-		if !mesh.gpuSynced {
-			if err = mesh.GpuUpload(); err != nil {
-				Diag.LogErr(err)
-			}
-		}
-	}
-	Diag.LogIfGlErr("EngineCore.SyncUpdates() -- meshupload")
 	return
+}
+
+func (_ *EngineCore) refreshWinSizeRels() {
+	Core.onResizeWindow(UserIO.Window.width, UserIO.Window.height)
 }
 
 func (_ *EngineCore) useProg() {

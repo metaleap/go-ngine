@@ -112,7 +112,8 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	ng.Diag.WriteTmpFilesTo.BaseDirName = "_diagtmp"
 
 	//	STEP 1: init go:ngine
-	if err := ng.Init(opt); err != nil {
+	err := ng.Init(opt)
+	if err != nil {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
 		defer ng.Dispose()
@@ -128,7 +129,10 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 			SceneCam = SceneCanvas.AddNewCamera3D()
 			SceneCam.Rendering.States.ClearColor.Set(0.5, 0.6, 0.85, 1)
 			setupExampleScene()
-			ng.Core.SyncUpdates()
+			if err = ng.Core.Libs.Meshes.GpuSync(); err != nil {
+				panic(err)
+			}
+			ng.Core.GpuSyncImageLibs()
 		}
 		time.Sleep(ArtificialSplashScreenDelay)
 		numCgo.preLoop = runtime.NumCgoCall()

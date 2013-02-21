@@ -31,7 +31,6 @@ func Init(options *EngineOptions) (err error) {
 			}
 		}
 	}
-tryInit:
 	if Core.Options.Initialization.GlContext.CoreProfile.ForceFirst {
 		for i, v := range ugl.KnownVersions {
 			if v == Core.Options.Initialization.GlContext.CoreProfile.VersionHint {
@@ -39,8 +38,9 @@ tryInit:
 				break
 			}
 		}
-		glVer = ugl.KnownVersions[glVerIndex]
 	}
+tryInit:
+	glVer = ugl.KnownVersions[glVerIndex]
 	if err = UserIO.init(glVer); err == nil {
 		if err, badVer = glInit(); err == nil && len(badVer) == 0 {
 			Stats.reset()

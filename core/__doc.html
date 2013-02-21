@@ -192,7 +192,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EngineCore.SyncUpdates">func (_ *EngineCore) SyncUpdates() (err error)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EngineCore.GpuSyncImageLibs">func (_ *EngineCore) GpuSyncImageLibs() (err error)</a></dd>
 				
 			
 				
@@ -207,6 +207,9 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogIfGlErr">func (_ *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{})</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogImages">func (_ *EngineDiag) LogImages(fmt string, fmtArgs ...interface{})</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogMeshes">func (_ *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{})</a></dd>
@@ -637,6 +640,9 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#LibMeshes.AddNew">func (me LibMeshes) AddNew(id string) (obj *Mesh)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#LibMeshes.GpuSync">func (me LibMeshes) GpuSync() (err error)</a></dd>
 				
 			
 				
@@ -1157,6 +1163,7 @@ recent driver for {GPU}.
         LogCategoryNames: map[EngineDiagLogCategory]string{
             DiagLogCatMisc:    &#34;[INFO]\t\t&#34;,
             DiagLogCatShaders: &#34;[SHADER]\t&#34;,
+            DiagLogCatImages:  &#34;[IMAGES]\t&#34;,
             DiagLogCatMeshes:  &#34;[MESHES]\t&#34;,
         },
         LogGLErrorsInLoopOnSec: true,
@@ -1649,7 +1656,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=462:1143#L8">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:1134#L6">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Options     EngineOptions
@@ -1702,8 +1709,8 @@ It is only aware of that instance and does not support any other EngineCore inst
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3844:3890#L122">SyncUpdates</a></h3>
-				<pre>func (_ *EngineCore) SyncUpdates() (err error)</pre>
+				<h3 id="EngineCore.GpuSyncImageLibs">func (*EngineCore) <a href="/target/ng-core.go?s=3835:3886#L120">GpuSyncImageLibs</a></h3>
+				<pre>func (_ *EngineCore) GpuSyncImageLibs() (err error)</pre>
 				
 				
 				
@@ -1711,7 +1718,7 @@ It is only aware of that instance and does not support any other EngineCore inst
 		
 			
 			
-			<h2 id="EngineDiag">type <a href="/target/ng-diag.go?s=886:1128#L27">EngineDiag</a></h2>
+			<h2 id="EngineDiag">type <a href="/target/ng-diag.go?s=986:1228#L29">EngineDiag</a></h2>
 			<pre>type EngineDiag struct {
     LogCategories          EngineDiagLogCategory
     LogCategoryNames       map[EngineDiagLogCategory]string
@@ -1737,42 +1744,49 @@ It is only aware of that instance and does not support any other EngineDiag inst
 
 			
 				
-				<h3 id="EngineDiag.Log">func (*EngineDiag) <a href="/target/ng-diag.go?s=1130:1217#L37">Log</a></h3>
+				<h3 id="EngineDiag.Log">func (*EngineDiag) <a href="/target/ng-diag.go?s=1230:1317#L39">Log</a></h3>
 				<pre>func (_ *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=1323:1361#L43">LogErr</a></h3>
+				<h3 id="EngineDiag.LogErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=1423:1461#L45">LogErr</a></h3>
 				<pre>func (_ *EngineDiag) LogErr(err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogIfGlErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=1386:1453#L47">LogIfGlErr</a></h3>
+				<h3 id="EngineDiag.LogIfGlErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=1486:1553#L49">LogIfGlErr</a></h3>
 				<pre>func (_ *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogMeshes">func (*EngineDiag) <a href="/target/ng-diag.go?s=1494:1560#L51">LogMeshes</a></h3>
+				<h3 id="EngineDiag.LogImages">func (*EngineDiag) <a href="/target/ng-diag.go?s=1594:1660#L53">LogImages</a></h3>
+				<pre>func (_ *EngineDiag) LogImages(fmt string, fmtArgs ...interface{})</pre>
+				
+				
+				
+			
+				
+				<h3 id="EngineDiag.LogMeshes">func (*EngineDiag) <a href="/target/ng-diag.go?s=1711:1777#L57">LogMeshes</a></h3>
 				<pre>func (_ *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogMisc">func (*EngineDiag) <a href="/target/ng-diag.go?s=1611:1675#L55">LogMisc</a></h3>
+				<h3 id="EngineDiag.LogMisc">func (*EngineDiag) <a href="/target/ng-diag.go?s=1828:1892#L61">LogMisc</a></h3>
 				<pre>func (_ *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineDiag.LogShaders">func (*EngineDiag) <a href="/target/ng-diag.go?s=1724:1791#L59">LogShaders</a></h3>
+				<h3 id="EngineDiag.LogShaders">func (*EngineDiag) <a href="/target/ng-diag.go?s=1941:2008#L65">LogShaders</a></h3>
 				<pre>func (_ *EngineDiag) LogShaders(fmt string, fmtArgs ...interface{})</pre>
 				
 				
@@ -1790,7 +1804,8 @@ It is only aware of that instance and does not support any other EngineDiag inst
     DiagLogCatMisc    EngineDiagLogCategory = 1
     DiagLogCatMeshes  EngineDiagLogCategory = 2
     DiagLogCatShaders EngineDiagLogCategory = 4
-    DiagLogCatAll     EngineDiagLogCategory = DiagLogCatMeshes | DiagLogCatMisc | DiagLogCatShaders
+    DiagLogCatImages  EngineDiagLogCategory = 8
+    DiagLogCatAll     EngineDiagLogCategory = DiagLogCatMeshes | DiagLogCatMisc | DiagLogCatShaders | DiagLogCatImages
 )</pre>
 				
 			
@@ -3495,20 +3510,27 @@ A hash-table of Meshs associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibMeshes.AddLoad">func (LibMeshes) <a href="/target/mesh.go?s=4610:4720#L123">AddLoad</a></h3>
+				<h3 id="LibMeshes.AddLoad">func (LibMeshes) <a href="/target/mesh.go?s=4781:4891#L134">AddLoad</a></h3>
 				<pre>func (me LibMeshes) AddLoad(id string, meshProvider MeshProvider, args ...interface{}) (mesh *Mesh, err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="LibMeshes.AddNew">func (LibMeshes) <a href="/target/mesh.go?s=4514:4563#L117">AddNew</a></h3>
+				<h3 id="LibMeshes.AddNew">func (LibMeshes) <a href="/target/mesh.go?s=4685:4734#L128">AddNew</a></h3>
 				<pre>func (me LibMeshes) AddNew(id string) (obj *Mesh)</pre>
 				<p>
 Creates and initializes a new Mesh with default parameters,
 adds it to me under the specified ID, and returns it.
 </p>
 
+				
+				
+			
+				
+				<h3 id="LibMeshes.GpuSync">func (LibMeshes) <a href="/target/mesh.go?s=4394:4435#L115">GpuSync</a></h3>
+				<pre>func (me LibMeshes) GpuSync() (err error)</pre>
+				
 				
 				
 			
@@ -3640,14 +3662,14 @@ Initializes and returns a new Mesh with default parameters.
 
 			
 				
-				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=2971:3020#L91">Add</a></h3>
+				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=2969:3018#L91">Add</a></h3>
 				<pre>func (me *MeshBuffer) Add(mesh *Mesh) (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=4225:4265#L136">Remove</a></h3>
+				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=4223:4263#L136">Remove</a></h3>
 				<pre>func (me *MeshBuffer) Remove(mesh *Mesh)</pre>
 				
 				
@@ -4528,14 +4550,14 @@ Represents a surface (texture framebuffer) that can be rendered to.
 				
 			
 				
-				<h3 id="RenderCanvas.AddNewCamera3D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1707:1761#L48">AddNewCamera3D</a></h3>
+				<h3 id="RenderCanvas.AddNewCamera3D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1734:1788#L49">AddNewCamera3D</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCamera3D() (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.AddNewCameraQuad">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1836:1892#L54">AddNewCameraQuad</a></h3>
+				<h3 id="RenderCanvas.AddNewCameraQuad">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1890:1946#L56">AddNewCameraQuad</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera)</pre>
 				
 				
@@ -4549,7 +4571,7 @@ Represents a surface (texture framebuffer) that can be rendered to.
 				
 			
 				
-				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2609:2641#L82">Remove</a></h3>
+				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2690:2722#L85">Remove</a></h3>
 				<pre>func (me *RenderCanvas) Remove()</pre>
 				<p>
 Removes me from Core.Rendering.Canvases and deletes its associated GPU resources.
@@ -4560,7 +4582,7 @@ This renders me invalid for further use.
 				
 			
 				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3238:3307#L101">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3319:3388#L104">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
 				<p>
 Sets the 2 dimensions of this render canvas.
@@ -4574,7 +4596,7 @@ Otherwise, width and height are absolute pixel dimensions.
 		
 			
 			
-			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3596:3631#L111">RenderCanvases</a></h2>
+			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3677:3712#L114">RenderCanvases</a></h2>
 			<pre>type RenderCanvases []*RenderCanvas</pre>
 			<p>
 Only used for Core.Rendering.Canvases.
@@ -4591,7 +4613,7 @@ Only used for Core.Rendering.Canvases.
 
 			
 				
-				<h3 id="RenderCanvases.AddNew">func (RenderCanvases) <a href="/target/render-canvas.go?s=3846:3933#L122">AddNew</a></h3>
+				<h3 id="RenderCanvases.AddNew">func (RenderCanvases) <a href="/target/render-canvas.go?s=3927:4014#L125">AddNew</a></h3>
 				<pre>func (_ RenderCanvases) AddNew(relative bool, width, height float64) (rc *RenderCanvas)</pre>
 				<p>
 Adds a new RenderCanvas and returns it.
@@ -4602,14 +4624,14 @@ The relative, width and height values are passed to a call to SetSize().
 				
 			
 				
-				<h3 id="RenderCanvases.Final">func (RenderCanvases) <a href="/target/render-canvas.go?s=4064:4109#L128">Final</a></h3>
+				<h3 id="RenderCanvases.Final">func (RenderCanvases) <a href="/target/render-canvas.go?s=4172:4217#L132">Final</a></h3>
 				<pre>func (_ RenderCanvases) Final() *RenderCanvas</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4150:4227#L132">Walk</a></h3>
+				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4258:4335#L136">Walk</a></h3>
 				<pre>func (_ RenderCanvases) Walk(onCanv func(*RenderCanvas), onCam func(*Camera))</pre>
 				
 				
@@ -4688,7 +4710,7 @@ The relative, width and height values are passed to a call to SetSize().
 
 			
 				
-				<h3 id="RenderTechniqueScene.ToggleBatching">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=645:693#L19">ToggleBatching</a></h3>
+				<h3 id="RenderTechniqueScene.ToggleBatching">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=644:692#L19">ToggleBatching</a></h3>
 				<pre>func (me *RenderTechniqueScene) ToggleBatching()</pre>
 				
 				

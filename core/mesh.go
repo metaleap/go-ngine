@@ -122,6 +122,17 @@ func NewMesh(id string) (me *Mesh) {
 //	A hash-table of Meshs associated by IDs. Only for use in Core.Libs.
 type LibMeshes map[string]*Mesh
 
+func (me LibMeshes) GpuSync() (err error) {
+	for _, mesh := range me {
+		if !mesh.gpuSynced {
+			if err = mesh.GpuUpload(); err != nil {
+				return
+			}
+		}
+	}
+	return
+}
+
 //	Creates and initializes a new Mesh with default parameters,
 //	adds it to me under the specified ID, and returns it.
 func (me LibMeshes) AddNew(id string) (obj *Mesh) {

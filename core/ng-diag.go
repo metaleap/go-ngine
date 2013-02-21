@@ -13,7 +13,8 @@ const (
 	DiagLogCatMisc    EngineDiagLogCategory = 1
 	DiagLogCatMeshes  EngineDiagLogCategory = 2
 	DiagLogCatShaders EngineDiagLogCategory = 4
-	DiagLogCatAll     EngineDiagLogCategory = DiagLogCatMeshes | DiagLogCatMisc | DiagLogCatShaders
+	DiagLogCatImages  EngineDiagLogCategory = 8
+	DiagLogCatAll     EngineDiagLogCategory = DiagLogCatMeshes | DiagLogCatMisc | DiagLogCatShaders | DiagLogCatImages
 )
 
 var (
@@ -22,6 +23,7 @@ var (
 		LogCategoryNames: map[EngineDiagLogCategory]string{
 			DiagLogCatMisc:    "[INFO]\t\t",
 			DiagLogCatShaders: "[SHADER]\t",
+			DiagLogCatImages:  "[IMAGES]\t",
 			DiagLogCatMeshes:  "[MESHES]\t",
 		},
 		LogGLErrorsInLoopOnSec: true,
@@ -56,6 +58,10 @@ func (_ *EngineDiag) LogErr(err error) {
 
 func (_ *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{}) {
 	ugl.LogLastError(fmt, fmtArgs...)
+}
+
+func (_ *EngineDiag) LogImages(fmt string, fmtArgs ...interface{}) {
+	Diag.Log(DiagLogCatImages, fmt, fmtArgs...)
 }
 
 func (_ *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{}) {

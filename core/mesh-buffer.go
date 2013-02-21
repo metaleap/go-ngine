@@ -88,8 +88,8 @@ func newMeshBuffer(id string, params *meshBufferParams) (me *MeshBuffer, err err
 	me.glVaos = map[*ugl.Program]*ugl.VertexArray{}
 	me.MemSizeIndices = Core.MeshBuffers.MemSizePerIndex() * params.NumIndices
 	me.MemSizeVertices = Core.MeshBuffers.MemSizePerVertex() * params.NumVerts
-	if err = me.glVbo.Recreate(gl.ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeVertices), gl.Ptr(nil), ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW)); err == nil {
-		err = me.glIbo.Recreate(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeIndices), gl.Ptr(nil), ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
+	if err = me.glVbo.Recreate(gl.ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeVertices), ugl.PtrNil, ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW)); err == nil {
+		err = me.glIbo.Recreate(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeIndices), ugl.PtrNil, ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
 	}
 	if err != nil {
 		me.dispose()

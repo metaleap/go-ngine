@@ -122,6 +122,9 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 					
 					<dd>&nbsp; &nbsp; <a href="#RearMirror.Setup">func (me *RearMirror) Setup()</a></dd>
 				
+					
+					<dd>&nbsp; &nbsp; <a href="#RearMirror.Toggle">func (me *RearMirror) Toggle()</a></dd>
+				
 			
 			
 		</dl>
@@ -162,11 +165,6 @@ Some common base functionality shared by all the go:ngine example apps in _examp
     <span class="comment">//	Optionally set this to a callback function to be</span>
     <span class="comment">//	invoked every second on the windowing main thread.</span>
     OnSec = func() {}
-
-    <span class="comment">//	In the example apps, PostFxCanvas always renders gamma-correct output.</span>
-    <span class="comment">//	If GammaShader is true, this is done in its final fragment shader.</span>
-    <span class="comment">//	Otherwise, this is done directly by OpenGL via the SRGB-framebuffer flag.</span>
-    GammaShader = false
 
     <span class="comment">//	The RenderCanvas the example scene is initially being rendered to. This is an off-screen &#34;render-to-texture&#34; RenderCanvas.</span>
     SceneCanvas *ng.RenderCanvas
@@ -267,7 +265,7 @@ adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffe
 		
 			
 			
-			<h2 id="AppDirBasePath">func <a href="/target/apputil.go?s=1671:1699#L49">AppDirBasePath</a></h2>
+			<h2 id="AppDirBasePath">func <a href="/target/apputil.go?s=1425:1453#L44">AppDirBasePath</a></h2>
 			<pre>func AppDirBasePath() string</pre>
 			<p>
 Returns the base path of the &#34;app dir&#34; for our example apps, in this case: $GOPATH/src/github.com/go3d/go-ngine/_examples/-app-data
@@ -310,7 +308,7 @@ states (from the previous CheckCamCtlKeys() call) for controlling SceneCam.Contr
 		
 			
 			
-			<h2 id="Main">func <a href="/target/apputil.go?s=2767:2828#L77">Main</a></h2>
+			<h2 id="Main">func <a href="/target/apputil.go?s=2521:2582#L72">Main</a></h2>
 			<pre>func Main(setupExampleScene, onAppThread, onWinThread func())</pre>
 			<p>
 Called by each example-app&#39;s func main(). Initializes go:ngine, sets SceneCam/SceneCanvas/PostFxCam/PostFxCanvas etc., calls the specified setupExampleScene function, then enters The Loop.
@@ -348,7 +346,7 @@ Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent 
 		
 			
 			
-			<h2 id="ToggleRetro">func <a href="/target/misc.go?s=2306:2324#L53">ToggleRetro</a></h2>
+			<h2 id="ToggleRetro">func <a href="/target/misc.go?s=2344:2362#L56">ToggleRetro</a></h2>
 			<pre>func ToggleRetro()</pre>
 			<p>
 Toggles &#34;retro mode&#34; for the example app.
@@ -359,7 +357,7 @@ If retro is on, the resolution of the main canvas is 1/4th of the window resolut
 		
 			
 			
-			<h2 id="ToggleTexturing">func <a href="/target/misc.go?s=2489:2511#L63">ToggleTexturing</a></h2>
+			<h2 id="ToggleTexturing">func <a href="/target/misc.go?s=2527:2549#L66">ToggleTexturing</a></h2>
 			<pre>func ToggleTexturing()</pre>
 			
 			
@@ -448,6 +446,13 @@ Syncs the rear-view camera&#39;s render states with the main camera&#39;s.
 Adds the rear-view mirror&#39;s camera to the main render canvas, at 1/3rd of its width and 1/4th of its height.
 </p>
 
+				
+				
+			
+				
+				<h3 id="RearMirror.Toggle">func (*RearMirror) <a href="/target/rear-mirror.go?s=1045:1075#L25">Toggle</a></h3>
+				<pre>func (me *RearMirror) Toggle()</pre>
+				
 				
 				
 			

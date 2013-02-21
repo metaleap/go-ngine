@@ -52,18 +52,21 @@ func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int) {
 func (me *RenderCanvas) AddNewCamera2D(allowOverlaps bool) (cam *Camera) {
 	cam = newCamera2D(me, allowOverlaps)
 	me.Cameras = append(me.Cameras, cam)
+	Core.refreshWinSizeRels()
 	return
 }
 
 func (me *RenderCanvas) AddNewCamera3D() (cam *Camera) {
 	cam = newCamera3D(me)
 	me.Cameras = append(me.Cameras, cam)
+	Core.refreshWinSizeRels()
 	return
 }
 
 func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera) {
 	cam = newCameraQuad(me)
 	me.Cameras = append(me.Cameras, cam)
+	Core.refreshWinSizeRels()
 	return
 }
 
@@ -132,6 +135,7 @@ func (me *RenderCanvases) dispose() {
 func (_ RenderCanvases) AddNew(relative bool, width, height float64) (rc *RenderCanvas) {
 	rc = newRenderCanvas(false, relative, width, height)
 	Core.Rendering.Canvases = append(Core.Rendering.Canvases, rc)
+	Core.refreshWinSizeRels()
 	return
 }
 
