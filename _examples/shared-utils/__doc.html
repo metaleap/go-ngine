@@ -190,9 +190,10 @@ Some common base functionality shared by all the go:ngine example apps in _examp
     <span class="comment">//	OnSec() changes the window title every second to display FPS etc.</span>
     <span class="comment">//	Also every 4 seconds shows the next one in a number of &#34;key hints&#34; defined here:</span>
     KeyHints = []string{
+        &#34;[Ctrl+Q]  --  Quit&#34;,
         &#34;[Esc]  --  Pause/Resume&#34;,
         &#34;[F2]  --  Toggle Backface Culling&#34;,
-        &#34;[F3]  --  Retro Mode&#34;,
+        &#34;[F3]  --  Toggle Retro Mode&#34;,
         &#34;[F4]  --  Toggle Texturing&#34;,
         &#34;[W][S]  --  Camera rise / sink&#34;,
         &#34;[A][D]  --  Camera strafe left / right&#34;,
@@ -226,7 +227,7 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 		
 			
 			
-			<h2 id="AddKeyHint">func <a href="/target/user-input.go?s=1773:1806#L43">AddKeyHint</a></h2>
+			<h2 id="AddKeyHint">func <a href="/target/user-input.go?s=1804:1837#L44">AddKeyHint</a></h2>
 			<pre>func AddKeyHint(key, hint string)</pre>
 			<p>
 Key hints are shown in the window title bar, a new one every few seconds.
@@ -275,7 +276,7 @@ Returns the base path of the &#34;app dir&#34; for our example apps, in this cas
 		
 			
 			
-			<h2 id="CheckAndHandleToggleKeys">func <a href="/target/user-input.go?s=2431:2462#L60">CheckAndHandleToggleKeys</a></h2>
+			<h2 id="CheckAndHandleToggleKeys">func <a href="/target/user-input.go?s=2462:2493#L61">CheckAndHandleToggleKeys</a></h2>
 			<pre>func CheckAndHandleToggleKeys()</pre>
 			<p>
 To be called every frame (by the parent example app, ONLY in onWinThread()!) to
@@ -286,7 +287,7 @@ check AND handle key-toggle states for F2, F3 etc. function keys and Esc.
 		
 			
 			
-			<h2 id="CheckCamCtlKeys">func <a href="/target/user-input.go?s=2114:2136#L50">CheckCamCtlKeys</a></h2>
+			<h2 id="CheckCamCtlKeys">func <a href="/target/user-input.go?s=2145:2167#L51">CheckCamCtlKeys</a></h2>
 			<pre>func CheckCamCtlKeys()</pre>
 			<p>
 To be called every frame (by the parent example app, ONLY in onWinThread()!) to collect key-press
@@ -297,7 +298,7 @@ states for controlling (in HandleCamCtlKeys() in onAppThread()!) SceneCam.Contro
 		
 			
 			
-			<h2 id="HandleCamCtlKeys">func <a href="/target/user-input.go?s=3051:3074#L81">HandleCamCtlKeys</a></h2>
+			<h2 id="HandleCamCtlKeys">func <a href="/target/user-input.go?s=3156:3179#L85">HandleCamCtlKeys</a></h2>
 			<pre>func HandleCamCtlKeys()</pre>
 			<p>
 To be called every frame (by the parent example app, ONLY in onAppThread()!) to process key-press
@@ -339,14 +340,14 @@ Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent 
 		
 			
 			
-			<h2 id="ToggleBatching">func <a href="/target/misc.go?s=2314:2335#L53">ToggleBatching</a></h2>
+			<h2 id="ToggleBatching">func <a href="/target/misc.go?s=2355:2376#L53">ToggleBatching</a></h2>
 			<pre>func ToggleBatching()</pre>
 			
 			
 		
 			
 			
-			<h2 id="ToggleRetro">func <a href="/target/misc.go?s=2634:2652#L64">ToggleRetro</a></h2>
+			<h2 id="ToggleRetro">func <a href="/target/misc.go?s=2675:2693#L64">ToggleRetro</a></h2>
 			<pre>func ToggleRetro()</pre>
 			<p>
 Toggles &#34;retro mode&#34; for the example app.
@@ -357,7 +358,7 @@ If retro is on, the resolution of the main canvas is 1/4th of the window resolut
 		
 			
 			
-			<h2 id="ToggleTexturing">func <a href="/target/misc.go?s=2817:2839#L74">ToggleTexturing</a></h2>
+			<h2 id="ToggleTexturing">func <a href="/target/misc.go?s=2858:2880#L74">ToggleTexturing</a></h2>
 			<pre>func ToggleTexturing()</pre>
 			
 			

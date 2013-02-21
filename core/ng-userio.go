@@ -55,13 +55,19 @@ func (_ *EngineUserIO) init(forceContextVersion float64) (err error) {
 				glfw.OpenWindowHint(glfw.OpenGLForwardCompat, 1)
 			}
 		}
-		winInit := &Options.Initialization.Window
-		if err = glfw.OpenWindow(UserIO.Window.width, UserIO.Window.height, winInit.Rbits, winInit.Gbits, winInit.Bbits, winInit.Abits, winInit.DepthBits, winInit.StencilBits, ugo.Ifi(UserIO.Window.fullscreen, glfw.Fullscreen, glfw.Windowed)); err == nil {
-			UserIO.Window.width, UserIO.Window.height = glfw.WindowSize()
-			UserIO.Window.isCreated = true
-		}
+		err = UserIO.recreateWin()
 	}
+	return
+}
+
+func (_ *EngineUserIO) recreateWin() (err error) {
+	winInit := &Options.Initialization.Window
 	if UserIO.Window.isCreated {
+		glfw.CloseWindow()
+	}
+	if UserIO.Window.isCreated, err = false, glfw.OpenWindow(UserIO.Window.width, UserIO.Window.height, winInit.Rbits, winInit.Gbits, winInit.Bbits, winInit.Abits, winInit.DepthBits, winInit.StencilBits, ugo.Ifi(UserIO.Window.fullscreen, glfw.Fullscreen, glfw.Windowed)); err == nil {
+		UserIO.Window.width, UserIO.Window.height = glfw.WindowSize()
+		UserIO.Window.isCreated = true
 		UserIO.Window.SetTitle(UserIO.Window.title)
 		UserIO.Window.SetSwapInterval(UserIO.Window.swap)
 		glfw.SetWindowCloseCallback(glfwOnWindowClose)

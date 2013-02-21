@@ -71,6 +71,7 @@ type EngineStats struct {
 	//	1x-per-second-during-Loop GC invokation (but does not track any other GC invokations).
 	Gc TimingStats
 
+	enabled    bool
 	fpsCounter int
 	fpsAll     float64
 
@@ -90,8 +91,14 @@ func (_ *EngineStats) AverageFps() float64 {
 	return Stats.fpsAll / glfw.Time()
 }
 
+func (_ *EngineStats) enable() {
+	if !Stats.enabled {
+		Stats.enabled, Stats.fpsAll = true, 0
+	}
+}
+
 func (_ *EngineStats) reset() {
-	Stats.FpsLastSec, Stats.fpsCounter, Stats.fpsAll = 0, 0, 0
+	Stats.FpsLastSec, Stats.fpsCounter, Stats.fpsAll, Stats.enabled = 0, 0, 0, false
 }
 
 func (_ *EngineStats) TotalFrames() float64 {
@@ -110,21 +117,27 @@ func (me *TimingStats) Average() float64 {
 }
 
 func (me *TimingStats) combine() {
-	me.max = me.comb1.max + me.comb2.max
-	me.measuredCounter = (me.comb1.measuredCounter + me.comb2.measuredCounter) * 0.5
-	me.totalAccum = me.comb1.totalAccum + me.comb2.totalAccum
+	if Stats.enabled {
+		me.max = me.comb1.max + me.comb2.max
+		me.measuredCounter = (me.comb1.measuredCounter + me.comb2.measuredCounter) * 0.5
+		me.totalAccum = me.comb1.totalAccum + me.comb2.totalAccum
+	}
 }
 
 func (me *TimingStats) begin() {
-	me.measureStartTime = glfw.Time()
+	if Stats.enabled {
+		me.measureStartTime = glfw.Time()
+	}
 }
 
 func (me *TimingStats) end() {
-	if me.thisTime = glfw.Time() - me.measureStartTime; me.thisTime > me.max {
-		me.max = me.thisTime
+	if Stats.enabled {
+		if me.thisTime = glfw.Time() - me.measureStartTime; me.thisTime > me.max {
+			me.max = me.thisTime
+		}
+		me.measuredCounter++
+		me.totalAccum += me.thisTime
 	}
-	me.measuredCounter++
-	me.totalAccum += me.thisTime
 }
 
 //	Returns the maximum cost tracked by this performance indicator.

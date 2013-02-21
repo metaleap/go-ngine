@@ -18,14 +18,28 @@ type WindowOptions struct {
 	lastResize            float64
 }
 
+func (me *WindowOptions) Created() bool {
+	return UserIO.isGlfwInit && me.isCreated
+}
+
+func (me *WindowOptions) Fullscreen() bool {
+	return me.fullscreen
+}
+
 //	Returns the height of the window in pixels.
 func (me *WindowOptions) Height() int {
 	return me.height
 }
 
+func (me *WindowOptions) SetSize(width, height int) {
+	if me.width, me.height = width, height; me.Created() {
+		glfw.SetWindowSize(width, height)
+	}
+}
+
 func (me *WindowOptions) SetSwapInterval(newSwap int) {
 	me.swap = newSwap
-	if UserIO.isGlfwInit && me.isCreated {
+	if me.Created() {
 		glfw.SetSwapInterval(me.swap)
 	}
 }
@@ -33,7 +47,7 @@ func (me *WindowOptions) SetSwapInterval(newSwap int) {
 //	Sets the window title to newTitle.
 func (me *WindowOptions) SetTitle(newTitle string) {
 	me.title = newTitle
-	if UserIO.isGlfwInit && me.isCreated {
+	if me.Created() {
 		glfw.SetWindowTitle(newTitle)
 	}
 }

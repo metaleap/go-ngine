@@ -148,5 +148,5 @@ func init() {
 	rend.DefaultTechnique2D, rend.DefaultTechnique3D, rend.DefaultTechniqueQuad = "Scene", "Scene", "Quad"
 
 	win := &UserIO.Window
-	win.title, win.width, win.height, win.swap, win.ResizeMinDelay = "go:ngine", 1280, 720, 1, 0.15
+	win.title, win.width, win.height, win.swap, win.ResizeMinDelay = "go:ngine", 1024, 576, 1, 0.15
 }

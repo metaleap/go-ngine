@@ -168,6 +168,7 @@ func (_ *EngineLoop) Run() {
 				Core.onSec()
 				Loop.On.EverySec()
 				runGc = Options.Loop.GcEvery.Sec
+				Stats.enable() // the first few frames were warm-ups that don't count towards the stats
 			}
 
 			//	Wait for threads -- waits until both app and prep threads are done and copies stage states around
@@ -178,10 +179,8 @@ func (_ *EngineLoop) Run() {
 
 			//	Must do this here so that current-tick won't change half-way through OnAppTread(),
 			//	and then we'd also like this frame's On.WinThread() to have the same current-tick.
-			Loop.Tick.Prev = Loop.Tick.Now
-			Loop.Tick.Now = glfw.Time()
-			Loop.Tick.Delta = Loop.Tick.Now - Loop.Tick.Prev
-			Stats.Frame.measureStartTime = Loop.Tick.Prev
+			Loop.Tick.Prev, Loop.Tick.Now = Loop.Tick.Now, glfw.Time()
+			Stats.Frame.measureStartTime, Loop.Tick.Delta = Loop.Tick.Prev, Loop.Tick.Now-Loop.Tick.Prev
 			Stats.Frame.end()
 
 			//	GC stops-the-world so do it after go-routines have finished. Now is a good time, as the GPU

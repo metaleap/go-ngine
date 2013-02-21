@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	apputil.MaxKeyHint = 0
+	apputil.MaxKeyHint = 1
 	//	You better check out this function, it's part of the "minimal go:ngine setup":
 	apputil.Main(nil, func() {}, onWinThread)
 }

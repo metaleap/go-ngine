@@ -12,9 +12,10 @@ var (
 	//	OnSec() changes the window title every second to display FPS etc.
 	//	Also every 4 seconds shows the next one in a number of "key hints" defined here:
 	KeyHints = []string{
+		"[Ctrl+Q]  --  Quit",
 		"[Esc]  --  Pause/Resume",
 		"[F2]  --  Toggle Backface Culling",
-		"[F3]  --  Retro Mode",
+		"[F3]  --  Toggle Retro Mode",
 		"[F4]  --  Toggle Texturing",
 		"[W][S]  --  Camera rise / sink",
 		"[A][D]  --  Camera strafe left / right",
@@ -83,6 +84,9 @@ func CheckAndHandleToggleKeys() {
 	}
 	if in.KeyToggled(glfw.KeyF5) {
 		ToggleBatching()
+	}
+	if in.KeysPressedAll2(glfw.KeyLctrl, 'Q') {
+		ng.Loop.Running = false
 	}
 }
 
