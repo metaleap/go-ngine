@@ -4,8 +4,8 @@
 #version 330 core
 #line 1
 out vec3 out_Color;
-uniform samplerCube uni_samplerCube_TexCube;
 in vec3 var_vec3_TexCube;
+uniform samplerCube uni_samplerCube_TexCube;
 
 void fx_TexCube (inout vec3 vCol) {
 	vCol = texture(uni_samplerCube_TexCube, var_vec3_TexCube).rgb;

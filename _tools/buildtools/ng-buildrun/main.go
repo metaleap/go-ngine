@@ -214,12 +214,14 @@ func makeEmbeds(srcDirPath string) {
 	uio.NewDirWalker(nil, func(_ *uio.DirWalker, filePath string, info os.FileInfo) bool {
 		if raw := uio.ReadBinaryFile(filePath, true); len(raw) > 0 {
 			if strings.HasSuffix(filePath, ".png") {
-				if src, _, _ := image.Decode(bytes.NewReader(raw)); src != nil {
+				if src, _, err := image.Decode(bytes.NewReader(raw)); err == nil {
 					dst := ugfx.CloneImage(src, false)
-					ugfx.Process(src, dst, true, true, true)
+					ugfx.PreprocessImage(src, dst, true, true, true)
 					w := new(bytes.Buffer)
 					png.Encode(w, dst)
 					raw = w.Bytes()
+				} else {
+					panic(err)
 				}
 			}
 			newSrc.embeds += fmt.Sprintf("\tembeddedBinaries[%#v] = %#v", info.Name(), raw)

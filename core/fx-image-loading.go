@@ -28,7 +28,7 @@ func (me *FxImageInitFrom) loadImage(fxImg *FxImageBase) (img image.Image, err e
 		}
 		if fxImg.PreProcess.FlipY || fxImg.PreProcess.ToLinear || fxImg.PreProcess.ToBgra {
 			pic := ugfx.CloneImage(img, false)
-			ugfx.Process(img, pic, fxImg.PreProcess.FlipY, fxImg.PreProcess.ToBgra, fxImg.PreProcess.ToLinear)
+			ugfx.PreprocessImage(img, pic, fxImg.PreProcess.FlipY, fxImg.PreProcess.ToBgra, fxImg.PreProcess.ToLinear)
 			img = pic
 		}
 	}
