@@ -24,16 +24,21 @@ their "driver downloads" pages to obtain the most
 recent driver for {GPU}.
 `
 
-//	Only valid initialization for an EngineOptions is NewEngineOptions().
-//	This object is passed to the core.Init() function which immediately copies it to Core.Options.
-//	All subsequent option reads and writes are exclusively from and to Core.Options, the copy you initially
-//	received from NewEngineOptions() is no longer used. Slightly confusing, but there's a reason for this design.
+var (
+	Options EngineOptions
+)
+
+//	Only used for the Options variable.
 type EngineOptions struct {
 	AppDir struct {
 		//	The base directory path for app file paths.
 		BasePath string
 
-		TextureImageCache string
+		Temp struct {
+			BaseName      string
+			ShaderSources string
+			Textures      string
+		}
 	}
 
 	Cameras struct {
@@ -92,9 +97,17 @@ type EngineOptions struct {
 			Prep bool
 		}
 
-		//	By default, during Loop() GC is invoked at least and at most once per second.
-		//	If GcEveryFrame is true, it will be invoked every frame.
-		GcEveryFrame bool
+		//	Controls whether and how often the Garbage Collector
+		//	is invoked during the Loop.
+		GcEvery struct {
+			//	Defaults to false. If true, GC will
+			//	be invoked every frame during the Loop.
+			Frame bool
+
+			//	Defaults to true. If true, GC will be invoked at
+			//	least and at most once per second during the Loop.
+			Sec bool
+		}
 	}
 
 	Rendering struct {
@@ -118,24 +131,22 @@ type EngineOptions struct {
 	}
 }
 
-//	Allocates, initializes and returns a new core.EngineOptions instance.
-func NewEngineOptions(appDirBasePath string, windowOptions *WindowOptions) (me *EngineOptions) {
-	me, UserIO.Window = &EngineOptions{}, *windowOptions
-	me.AppDir.BasePath = appDirBasePath
-	me.Textures.UintRev = true
+func init() {
+	o := &Options
+	o.Textures.UintRev, o.Textures.Bgra, o.Textures.Cached = true, true, true
+	o.Cameras.DefaultControllerParams = NewControllerParams()
+	o.Cameras.PerspectiveDefaults.FovY, o.Cameras.PerspectiveDefaults.ZFar, o.Cameras.PerspectiveDefaults.ZNear = 37.8493, 30000, 0.3
+	o.Loop.GcEvery.Sec = true
 
-	me.Cameras.DefaultControllerParams = NewControllerParams()
-	persp := &me.Cameras.PerspectiveDefaults
-	persp.FovY, persp.ZFar, persp.ZNear = 37.8493, 30000, 0.3
-
-	init, isMac, initGl := &me.Initialization, runtime.GOOS == "darwin", &me.Initialization.GlContext
+	init, isMac, initGl := &o.Initialization, runtime.GOOS == "darwin", &o.Initialization.GlContext
 	initGl.CoreProfile.ForceFirst, initGl.CoreProfile.ForwardCompat, initGl.BadVersionMessage = isMac, isMac, DefaultBadVersionMessage
 	initGl.CoreProfile.VersionHint = ugl.KnownVersions[len(ugl.KnownVersions)-1]
 	init.Window.Rbits, init.Window.Gbits, init.Window.Bbits, init.Window.DepthBits = 8, 8, 8, 8
 
-	rend := &me.Rendering
+	rend := &o.Rendering
 	rend.DefaultClearColor = ugl.GlVec4{0, 0, 0, 1}
 	rend.DefaultTechnique2D, rend.DefaultTechnique3D, rend.DefaultTechniqueQuad = "Scene", "Scene", "Quad"
 
-	return
+	win := &UserIO.Window
+	win.title, win.width, win.height, win.swap, win.ResizeMinDelay = "go:ngine", 1280, 720, 1, 0.15
 }

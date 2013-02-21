@@ -16,24 +16,22 @@ func Dispose() {
 }
 
 //	Initializes go:ngine; this first attempts to initialize OpenGL and then open a window to your supplied specifications with a GL 3.3-or-higher profile.
-func Init(options *EngineOptions) (err error) {
+func Init() (err error) {
 	var (
 		glVerIndex = len(ugl.KnownVersions) - 1
 		badVer     string
 		glVer      float64
 	)
-	Core.Options = *options
-	options = nil
-	if len(Diag.WriteTmpFilesTo.BaseDirName) > 0 {
-		for _, diagTmpDirName := range []string{Diag.WriteTmpFilesTo.ShaderPrograms} {
-			if err = uio.ClearDirectory(filepath.Join(Core.Options.AppDir.BasePath, Diag.WriteTmpFilesTo.BaseDirName, diagTmpDirName)); err != nil {
+	if len(Options.AppDir.Temp.BaseName) > 0 {
+		for _, diagTmpDirName := range []string{Options.AppDir.Temp.ShaderSources} {
+			if err = uio.ClearDirectory(Core.fileIO.resolveLocalFilePath(filepath.Join(Options.AppDir.Temp.BaseName, diagTmpDirName))); err != nil {
 				return
 			}
 		}
 	}
-	if Core.Options.Initialization.GlContext.CoreProfile.ForceFirst {
+	if Options.Initialization.GlContext.CoreProfile.ForceFirst {
 		for i, v := range ugl.KnownVersions {
-			if v == Core.Options.Initialization.GlContext.CoreProfile.VersionHint {
+			if v == Options.Initialization.GlContext.CoreProfile.VersionHint {
 				glVerIndex = i
 				break
 			}
@@ -47,12 +45,12 @@ tryInit:
 			Loop.init()
 			Core.init()
 			Diag.LogIfGlErr("INIT")
-		} else if len(badVer) > 0 && !Core.Options.Initialization.GlContext.CoreProfile.ForceFirst {
-			Core.Options.Initialization.GlContext.CoreProfile.ForceFirst = true
+		} else if len(badVer) > 0 && !Options.Initialization.GlContext.CoreProfile.ForceFirst {
+			Options.Initialization.GlContext.CoreProfile.ForceFirst = true
 			UserIO.isGlfwInit, UserIO.Window.isCreated = false, false
 			goto tryInit
 		}
-	} else if Core.Options.Initialization.GlContext.CoreProfile.ForceFirst && (glVerIndex > 0) {
+	} else if Options.Initialization.GlContext.CoreProfile.ForceFirst && (glVerIndex > 0) {
 		glVerIndex--
 		UserIO.isGlfwInit, UserIO.Window.isCreated = false, false
 		goto tryInit

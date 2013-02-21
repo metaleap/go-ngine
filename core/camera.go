@@ -63,19 +63,19 @@ type Camera struct {
 
 func newCamera2D(canv *RenderCanvas, depth bool) (me *Camera) {
 	me = &Camera{}
-	me.init(canv, false, depth, Core.Options.Rendering.DefaultTechnique2D)
+	me.init(canv, false, depth, Options.Rendering.DefaultTechnique2D)
 	return
 }
 
 func newCamera3D(canv *RenderCanvas) (me *Camera) {
 	me = &Camera{}
-	me.init(canv, true, true, Core.Options.Rendering.DefaultTechnique3D)
+	me.init(canv, true, true, Options.Rendering.DefaultTechnique3D)
 	return
 }
 
 func newCameraQuad(canv *RenderCanvas) (me *Camera) {
 	me = &Camera{}
-	me.init(canv, false, false, Core.Options.Rendering.DefaultTechniqueQuad)
+	me.init(canv, false, false, Options.Rendering.DefaultTechniqueQuad)
 	return
 }
 
@@ -85,13 +85,13 @@ func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool, technique s
 	rend := &me.Rendering
 	rend.Viewport.canvas = canv
 	rend.States.DepthTest, rend.States.FaceCulling, rend.States.StencilTest = depth, false, false
-	rend.States.ClearColor = Core.Options.Rendering.DefaultClearColor
+	rend.States.ClearColor = Options.Rendering.DefaultClearColor
 	if depth {
 		rend.States.Other.ClearBits = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT
 	} else {
 		rend.States.Other.ClearBits = gl.COLOR_BUFFER_BIT
 	}
-	me.Perspective.Use, me.Perspective.CameraPerspective = persp3d, Core.Options.Cameras.PerspectiveDefaults
+	me.Perspective.Use, me.Perspective.CameraPerspective = persp3d, Options.Cameras.PerspectiveDefaults
 	unum.Mat4Identities(&me.thrApp.matProj, &me.thrPrep.matProj)
 	me.Controller.init()
 	rend.Viewport.init()

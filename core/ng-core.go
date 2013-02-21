@@ -15,7 +15,6 @@ var (
 //	It is only aware of that instance and does not support any other EngineCore instances.
 type EngineCore struct {
 	MeshBuffers *MeshBuffers
-	Options     EngineOptions
 	Libs        struct {
 		Effects   LibFxEffects
 		Materials LibFxMaterials
@@ -67,7 +66,7 @@ func (_ *EngineCore) init() {
 	Core.initLibs()
 	Core.initRendering()
 	splash := &Core.Libs.Images.SplashScreen
-	if splash.InitFrom.RawData = Core.Options.Initialization.DefaultCanvas.SplashImage; len(splash.InitFrom.RawData) == 0 {
+	if splash.InitFrom.RawData = Options.Initialization.DefaultCanvas.SplashImage; len(splash.InitFrom.RawData) == 0 {
 		splash.InitFrom.RawData = embeddedBinaries["splash.png"]
 	}
 	splash.init()
@@ -77,6 +76,7 @@ func (_ *EngineCore) init() {
 	thrRend.tmpQuadTex = &splash.glTex
 	splash.Unload()
 	embeddedBinaries = nil
+
 	Core.isInit = true
 	Core.onRender()
 	glfw.SwapBuffers()
@@ -101,12 +101,12 @@ func (_ *EngineCore) initRendering() {
 		rend.Fx.procs[shaderFunc] = newFxProc(shaderFunc)
 	}
 
-	rend.states.ForceClearColor(Core.Options.Rendering.DefaultClearColor)
+	rend.states.ForceClearColor(Options.Rendering.DefaultClearColor)
 	rend.Fx.Samplers.FullFilteringRepeat.Create().EnableFullFiltering(true, 8).SetWrap(gl.REPEAT)
 	rend.Fx.Samplers.FullFilteringClamp.Create().EnableFullFiltering(true, 8).SetWrap(gl.CLAMP_TO_EDGE)
 	rend.Fx.Samplers.NoFilteringClamp.Create().DisableAllFiltering(false).SetWrap(gl.CLAMP_TO_BORDER)
 	rend.Canvases = append(RenderCanvases{}, newRenderCanvas(true, true, 1, 1))
-	if quadFx := &rend.Canvases.Final().AddNewCameraQuad().RenderTechniqueQuad().Effect; Core.Options.Initialization.DefaultCanvas.GammaViaShader {
+	if quadFx := &rend.Canvases.Final().AddNewCameraQuad().RenderTechniqueQuad().Effect; Options.Initialization.DefaultCanvas.GammaViaShader {
 		quadFx.Ops.EnableGamma(-1)
 		quadFx.UpdateRoutine()
 	}

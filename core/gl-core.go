@@ -78,7 +78,7 @@ func glInit() (err error, badVer string) {
 
 func glcProgsMake(forceAll bool, forceSome ...string) (dur time.Duration, err error) {
 	dur, err = glc.progMan.MakeProgramsFromRawSources(forceAll, forceSome...)
-	if err == nil && len(Diag.WriteTmpFilesTo.ShaderPrograms) > 0 {
+	if err == nil && len(Options.AppDir.Temp.ShaderSources) > 0 {
 		var src string
 		if len(forceSome) == 0 {
 			forceSome = glc.progMan.Names
@@ -94,7 +94,7 @@ func glcProgsMake(forceAll bool, forceSome ...string) (dur time.Duration, err er
 			for _, progName := range forceSome {
 				if src = sources[progName]; len(src) > 0 {
 					src = "/*\tTemp file written at runtime for diagnostic purposes.\n\tThe following is a runtime-generated GLSL source string,\n\texactly as it was sent to the GL for compilation and linking: */\n" + src
-					if err = uio.WriteTextFile(Core.fileIO.resolveLocalFilePath(path.Join(Diag.WriteTmpFilesTo.BaseDirName, Diag.WriteTmpFilesTo.ShaderPrograms, progName+ext)), src); err != nil {
+					if err = uio.WriteTextFile(Core.fileIO.resolveLocalFilePath(path.Join(Options.AppDir.Temp.BaseName, Options.AppDir.Temp.ShaderSources, progName+ext)), src); err != nil {
 						return
 					}
 				}
@@ -105,7 +105,7 @@ func glcProgsMake(forceAll bool, forceSome ...string) (dur time.Duration, err er
 }
 
 func glVersionErrorMessage(minVer, curVer string) string {
-	return ustr.Replace(Core.Options.Initialization.GlContext.BadVersionMessage, map[string]string{
+	return ustr.Replace(Options.Initialization.GlContext.BadVersionMessage, map[string]string{
 		"{MINVER}": minVer,
 		"{CURVER}": curVer,
 		"{OS}":     ugo.OSName(runtime.GOOS),

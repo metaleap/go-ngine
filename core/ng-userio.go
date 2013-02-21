@@ -38,7 +38,6 @@ func (_ *EngineUserIO) dispose() {
 }
 
 func (_ *EngineUserIO) init(forceContextVersion float64) (err error) {
-	opt := &Core.Options
 	UserIO.KeyToggleMinDelay, UserIO.lastToggles = 0.25, map[int]float64{}
 	if !UserIO.isGlfwInit {
 		if err = glfw.Init(); err == nil {
@@ -56,7 +55,7 @@ func (_ *EngineUserIO) init(forceContextVersion float64) (err error) {
 				glfw.OpenWindowHint(glfw.OpenGLForwardCompat, 1)
 			}
 		}
-		winInit := &opt.Initialization.Window
+		winInit := &Options.Initialization.Window
 		if err = glfw.OpenWindow(UserIO.Window.width, UserIO.Window.height, winInit.Rbits, winInit.Gbits, winInit.Bbits, winInit.Abits, winInit.DepthBits, winInit.StencilBits, ugo.Ifi(UserIO.Window.fullscreen, glfw.Fullscreen, glfw.Windowed)); err == nil {
 			UserIO.Window.width, UserIO.Window.height = glfw.WindowSize()
 			UserIO.Window.isCreated = true

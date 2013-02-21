@@ -94,7 +94,7 @@ func (me *Controller) EndUpdate() {
 }
 
 func (me *Controller) init() {
-	me.Params = Core.Options.Cameras.DefaultControllerParams
+	me.Params = Options.Cameras.DefaultControllerParams
 	me.autoUpdate, me.dir.Z, me.UpAxis.Y = true, 1, 1
 	unum.Mat4Identities(&me.thrPrep.mat, &me.thrApp.mat)
 	htarget := &unum.Vec3{X: me.dir.X, Y: 0, Z: me.dir.Z}

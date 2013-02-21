@@ -15,7 +15,7 @@ type FxImageCube struct {
 }
 
 func (me *FxImageCube) init() {
-	me.images = make([]image.Image, 6)
+	me.Unload()
 	me.glTex.Init()
 	me.FxImageBase.init(&me.glTex.TextureBase)
 	me.PreProcess.FlipY = false
@@ -27,22 +27,16 @@ func (me *FxImageCube) dispose() {
 }
 
 func (me *FxImageCube) GpuSync() (err error) {
-	if err = me.glTex.PrepFromImages(true, me.Storage.UintRev, me.images...); err == nil {
+	if err = me.glTex.PrepFromImages(me.Storage.Bgra, me.Storage.UintRev, me.images...); err == nil {
 		err = me.gpuSync(&me.glTex)
 	}
 	return
 }
 
 func (me *FxImageCube) Load() (err error) {
-	var (
-		img image.Image
-	)
 	me.Unload()
 	for i := 0; i < 6; i++ {
-		img, err = me.InitFrom[i].loadImage(&me.FxImageBase)
-		if err == nil {
-			me.images[i] = img
-		} else {
+		if me.images[i], err = me.InitFrom[i].loadImage(&me.FxImageBase); err != nil {
 			break
 		}
 	}
@@ -50,7 +44,7 @@ func (me *FxImageCube) Load() (err error) {
 }
 
 func (me *FxImageCube) Loaded() bool {
-	for i := 0; i < len(me.images); i++ {
+	for i := 0; i < 6; i++ {
 		if me.images[i] == nil {
 			return false
 		}
@@ -59,10 +53,7 @@ func (me *FxImageCube) Loaded() bool {
 }
 
 func (me *FxImageCube) Unload() {
-	me.glSynced = false
-	for i := 0; i < len(me.images); i++ {
-		me.images[i] = nil
-	}
+	me.glSynced, me.images = false, make([]image.Image, 6)
 }
 
 //#begin-gt -gen-lib.gt T:FxImageCube

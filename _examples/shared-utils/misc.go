@@ -32,10 +32,10 @@ func PauseResume() {
 //	Prints a summary of go:ngine's *Stats* performance counters when the parent example app exits.
 func PrintPostLoopSummary() {
 	printStatSummary := func(name string, timing *ng.TimingStats) {
-		fmt.Printf("%v:\t\tAvg=%3.5f secs\tMax=%3.5f secs\n", name, timing.Average(), timing.Max())
+		fmt.Printf("%v\t\tAvg=%8.3fms\tMax=%8.3fms\n", name, timing.Average()*1000, timing.Max()*1000)
 	}
-	fmt.Printf("Average FPS:\t\t%v (total %v over %6.2fsec.)\n", ng.Stats.AverageFps(), ng.Stats.TotalFrames(), ng.Loop.Time())
-	printStatSummary("Frame Full Loop", &ng.Stats.Frame)
+	fmt.Printf("Average FPS:\t\t%v (total %v over %v)\n", ng.Stats.AverageFps(), ng.Stats.TotalFrames(), time.Duration(int64(ng.Loop.Time()*1000*1000*1000)))
+	printStatSummary("Full Loop Iteration", &ng.Stats.Frame)
 	printStatSummary("Frame OnAppThread", &ng.Stats.FrameAppThread)
 	printStatSummary("Frame OnWinThread", &ng.Stats.FrameWinThread)
 	printStatSummary("Frame Prep Thread", &ng.Stats.FramePrepThread)
@@ -43,7 +43,15 @@ func PrintPostLoopSummary() {
 	printStatSummary("Frame Render (CPU)", &ng.Stats.FrameRenderCpu)
 	printStatSummary("Frame Render (GPU)", &ng.Stats.FrameRenderGpu)
 	printStatSummary("Frame Render Both", &ng.Stats.FrameRenderBoth)
-	printStatSummary("GC (max 1x/sec)", &ng.Stats.Gc)
+	if s := "GC (max. 1x/sec)"; ng.Options.Loop.GcEvery.Frame || ng.Options.Loop.GcEvery.Sec {
+		if ng.Options.Loop.GcEvery.Frame {
+			s = "GC (max 1x/frame)"
+		}
+		printStatSummary(s, &ng.Stats.Gc)
+		if !ng.Options.Loop.GcEvery.Frame {
+			fmt.Printf("Averaged GC/frame cost:\t%1.3fms\n", (ng.Stats.Gc.Average()/ng.Stats.AverageFps())*1000)
+		}
+	}
 	fmt.Printf("Shaders: compiled %v GLSL shader programs over time, which took %v in total.\n", ng.Stats.Programs.NumProgsCompiled, time.Duration(ng.Stats.Programs.TotalTimeCost))
 	cgoPerFrame, numTotalFrames := int64(0), ng.Stats.TotalFrames()
 	if numTotalFrames != 0 {

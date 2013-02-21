@@ -18,11 +18,6 @@ type WindowOptions struct {
 	lastResize            float64
 }
 
-func NewWindowOptions(title string, width, height int, fullscreen bool) (me *WindowOptions) {
-	me = &WindowOptions{fullscreen: fullscreen, title: title, width: width, height: height, swap: 1, ResizeMinDelay: 0.15}
-	return
-}
-
 //	Returns the height of the window in pixels.
 func (me *WindowOptions) Height() int {
 	return me.height
@@ -57,12 +52,15 @@ func (me *WindowOptions) Width() int {
 }
 
 //	just a GLFW event callback without creating a closure
-func glfwOnWindowClose() int {
-	Loop.Looping = false
-	//	Return 0 to cancel the user's onWindowClose -- we close manually.
+func glfwOnWindowClose() (doit int) {
+	if !Loop.Running {
+		doit = 1
+	}
+	//	If looping, return 0 to cancel the user's onWindowClose -- we close manually.
 	//	If we returned 1 to confirm the Close, the loop would continue
 	//	doing GL stuff against the destroyed window and record a GL error.
-	return 0
+	Loop.Running = false
+	return
 }
 
 //	just a GLFW event callback without creating a closure

@@ -33,7 +33,7 @@ func newRenderCanvas(isFinal, relative bool, width, height float64) (me *RenderC
 	me = &RenderCanvas{EveryNthFrame: 1, isFinal: isFinal}
 	me.SetSize(relative, width, height)
 	if isFinal {
-		me.frameBuf.GlTarget, me.Srgb = gl.FRAMEBUFFER, !Core.Options.Initialization.DefaultCanvas.GammaViaShader
+		me.frameBuf.GlTarget, me.Srgb = gl.FRAMEBUFFER, !Options.Initialization.DefaultCanvas.GammaViaShader
 	} else {
 		me.frameBuf.Create(gl.Sizei(UserIO.Window.width), gl.Sizei(UserIO.Window.height), false)
 		me.frameBufTex = ugl.NewFramebufferRendertexture()

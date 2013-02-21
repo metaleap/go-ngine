@@ -10,21 +10,21 @@ import (
 	ugfx "github.com/metaleap/go-util/gfx"
 )
 
-type fxImageRaw struct {
-	data []byte
-}
-
 type FxImageInitFrom struct {
 	RawData []byte
 	RefUrl  string
 }
 
 func (me *FxImageInitFrom) loadImage(fxImg *FxImageBase) (img image.Image, err error) {
-	// var rawImg *fxImageRaw
-	prov, arg, _ := me.provider()
-
-	img, err = prov(arg)
-	if img != nil && err == nil {
+	var rawImg *fxImageRaw
+	prov, arg, remote := me.provider()
+	if fxImg.needPreproc() && fxImg.Storage.Cached && (!remote) && len(me.RefUrl) > 0 && len(Options.AppDir.Temp.Textures) > 0 {
+		rawImg, err = newFxImageRaw(me, fxImg)
+	}
+	if err == nil && (rawImg == nil || rawImg.needImg) {
+		img, err = prov(arg)
+	}
+	if err == nil && img != nil {
 		switch img.(type) {
 		case *image.YCbCr, *image.Paletted:
 			rect := img.Bounds()
@@ -32,11 +32,17 @@ func (me *FxImageInitFrom) loadImage(fxImg *FxImageBase) (img image.Image, err e
 			draw.Draw(tmpImg, rect, img, rect.Min, draw.Src)
 			img = tmpImg
 		}
-		if fxImg.PreProcess.FlipY || fxImg.PreProcess.ToLinear || fxImg.PreProcess.ToBgra {
-			pic := ugfx.CloneImage(img, false)
+		if fxImg.needPreproc() {
+			pic, _ := ugfx.CloneImage(img, false)
 			ugfx.PreprocessImage(img, pic, fxImg.PreProcess.FlipY, fxImg.PreProcess.ToBgra, fxImg.PreProcess.ToLinear)
 			img = pic
 		}
+	}
+	if err == nil && rawImg != nil {
+		if rawImg.needImg && img != nil {
+			err = rawImg.setImg(img)
+		}
+		img = rawImg
 	}
 	return
 }

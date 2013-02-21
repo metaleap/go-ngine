@@ -28,5 +28,5 @@ func (me *fileIO) resolveLocalFilePath(absOrRelFilePath string) string {
 	if strings.HasPrefix(absOrRelFilePath, "/") {
 		return absOrRelFilePath
 	}
-	return filepath.Join(Core.Options.AppDir.BasePath, absOrRelFilePath)
+	return filepath.Join(Options.AppDir.BasePath, absOrRelFilePath)
 }

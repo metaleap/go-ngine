@@ -83,16 +83,15 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	//	by design, go:ngine doesn't do this for you automagically:
 	runtime.LockOSThread()
 	runtime.GOMAXPROCS(runtime.NumCPU())
-	winTitle.appName = filepath.Base(os.Args[0])
 
-	width, height, fullscreen := 1280, 720, false
-	// width, height, fullscreen := 1920, 1080, true
-	win := ng.NewWindowOptions(fmt.Sprintf("Loading \"%s\" example app... (%v CPU cores)", winTitle.appName, runtime.GOMAXPROCS(0)), width, height, fullscreen)
-
-	// release apps shouldn't do this, but during dev/test we want to observe max fps:
+	//	can set window options before it is created
+	win := &ng.UserIO.Window
+	//	release apps shouldn't do this, but during dev/test we want to observe max fps:
 	win.SetSwapInterval(0)
+	winTitle.appName = filepath.Base(os.Args[0])
+	win.SetTitle(fmt.Sprintf("Loading \"%s\" example app... (%v CPU cores)", winTitle.appName, runtime.GOMAXPROCS(0)))
 
-	opt := ng.NewEngineOptions(AppDirBasePath(), win)
+	opt := &ng.Options
 
 	//	While the default for this (true on Macs only) is reasonable for release apps at present,
 	//	here we force core profile to verify all of go:ngine's GL code is fully core-profile compliant
@@ -104,14 +103,16 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	//	Worth toggling this every once in a while just to see whether it makes a perf diff at all...
 	realThreads := true
 	opt.Loop.ForceThreads.App, opt.Loop.ForceThreads.Prep = realThreads, realThreads
+	// opt.Loop.GcEveryFrame = true
 
-	ng.Diag.WriteTmpFilesTo.BaseDirName = filepath.Join("_tmp", filepath.Base(os.Args[0]))
-	ng.Diag.WriteTmpFilesTo.ShaderPrograms = "glsl"
+	opt.AppDir.BasePath = AppDirBasePath()
+	opt.AppDir.Temp.BaseName = filepath.Join("_tmp", filepath.Base(os.Args[0]))
+	opt.AppDir.Temp.ShaderSources, opt.AppDir.Temp.Textures = "glsl", "tex"
 	// but for now, we don't need separate per-app tmp dirs:
-	ng.Diag.WriteTmpFilesTo.BaseDirName = "_tmp"
+	opt.AppDir.Temp.BaseName = "_tmp"
 
 	//	STEP 1: init go:ngine
-	err := ng.Init(opt)
+	err := ng.Init()
 	if err != nil {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
@@ -137,7 +138,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 		numCgo.preLoop = runtime.NumCgoCall()
 
 		//	STEP 3: enter... Da Loop.
-		ng.Loop.Loop()
+		ng.Loop.Run()
 		numCgo.postLoop = runtime.NumCgoCall()
 		PrintPostLoopSummary() // don't wanna defer this: useless when exit-on-error
 	}

@@ -11,6 +11,8 @@ type FxImage interface {
 }
 
 type FxImageStorage struct {
+	Bgra    bool
+	Cached  bool
 	UintRev bool
 }
 
@@ -32,8 +34,8 @@ func (me *FxImageBase) dispose() {
 
 func (me *FxImageBase) init(glTex *ugl.TextureBase) {
 	me.glTex = glTex
-	me.PreProcess.ToLinear, me.PreProcess.FlipY, me.PreProcess.ToBgra = true, true, true
-	me.Storage = Core.Options.Textures.FxImageStorage
+	me.Storage = Options.Textures.FxImageStorage
+	me.PreProcess.ToLinear, me.PreProcess.FlipY, me.PreProcess.ToBgra = true, true, me.Storage.Bgra
 }
 
 func (me *FxImageBase) gpuSync(tex ugl.Texture) (err error) {
@@ -50,6 +52,10 @@ func (me *FxImageBase) GpuDelete() {
 
 func (me *FxImageBase) GpuSynced() bool {
 	return me.glSynced
+}
+
+func (me *FxImageBase) needPreproc() bool {
+	return me.PreProcess.FlipY || me.PreProcess.ToBgra || me.PreProcess.ToLinear
 }
 
 func (me *FxImageBase) NoAutoMips() {

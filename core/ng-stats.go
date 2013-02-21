@@ -71,7 +71,6 @@ type EngineStats struct {
 	//	1x-per-second-during-Loop GC invokation (but does not track any other GC invokations).
 	Gc TimingStats
 
-	enabled    bool
 	fpsCounter int
 	fpsAll     float64
 
@@ -117,19 +116,15 @@ func (me *TimingStats) combine() {
 }
 
 func (me *TimingStats) begin() {
-	if Stats.enabled {
-		me.measureStartTime = glfw.Time()
-	}
+	me.measureStartTime = glfw.Time()
 }
 
 func (me *TimingStats) end() {
-	if Stats.enabled {
-		if me.thisTime = glfw.Time() - me.measureStartTime; me.thisTime > me.max {
-			me.max = me.thisTime
-		}
-		me.measuredCounter++
-		me.totalAccum += me.thisTime
+	if me.thisTime = glfw.Time() - me.measureStartTime; me.thisTime > me.max {
+		me.max = me.thisTime
 	}
+	me.measuredCounter++
+	me.totalAccum += me.thisTime
 }
 
 //	Returns the maximum cost tracked by this performance indicator.

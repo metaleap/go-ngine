@@ -27,29 +27,20 @@ func (me *FxImage2D) dispose() {
 }
 
 func (me *FxImage2D) GpuSync() (err error) {
-	if err = me.glTex.PrepFromImage(true, me.Storage.UintRev, me.img); err == nil {
+	if err = me.glTex.PrepFromImage(me.Storage.Bgra, me.Storage.UintRev, me.img); err == nil {
 		err = me.gpuSync(&me.glTex)
 	}
 	return
 }
 
 func (me *FxImage2D) Load() (err error) {
-	var img image.Image
 	me.Unload()
-	img, err = me.InitFrom.loadImage(&me.FxImageBase)
-	if err == nil {
-		me.img = img
-	}
+	me.img, err = me.InitFrom.loadImage(&me.FxImageBase)
 	return
 }
 
 func (me *FxImage2D) Loaded() bool {
-	return (me.img != nil)
-}
-
-func (me *FxImage2D) IsRemote() (remote bool) {
-	_, _, remote = me.InitFrom.provider()
-	return
+	return me.img != nil
 }
 
 func (me *FxImage2D) Unload() {
