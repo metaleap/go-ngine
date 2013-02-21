@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"image"
+	"image/png"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -10,6 +13,7 @@ import (
 	"sync"
 	"time"
 
+	ugfx "github.com/metaleap/go-util/gfx"
 	uio "github.com/metaleap/go-util/io"
 )
 
@@ -186,7 +190,7 @@ func main() {
 		}
 	}
 
-	srcDirPathEmbeds := filepath.Join(nginePath, "_examples", "-app-data", "tex", "embed")
+	srcDirPathEmbeds := filepath.Join(nginePath, "_examples", "-app-data", "_embed")
 	if !force {
 		if errs := uio.NewDirWalker(nil, uio.NewWalkerVisitor_IsNewerThan(outFileTime, &srcTimeEmbeds)).Walk(srcDirPathEmbeds); len(errs) > 0 {
 			panic(errs[0])
@@ -208,7 +212,18 @@ func makeEmbeds(srcDirPath string) {
 	defer wait.Done()
 	newSrc.embeds = fmt.Sprintf("\t//\tEmbedded binaries from %s\n", srcDirPath)
 	uio.NewDirWalker(nil, func(_ *uio.DirWalker, filePath string, info os.FileInfo) bool {
-		newSrc.embeds += fmt.Sprintf("\tembeddedBinaries[%#v] = %#v", info.Name(), uio.ReadBinaryFile(filePath, false))
+		if raw := uio.ReadBinaryFile(filePath, true); len(raw) > 0 {
+			if strings.HasSuffix(filePath, ".png") {
+				if src, _, _ := image.Decode(bytes.NewReader(raw)); src != nil {
+					dst := ugfx.CloneImage(src, false)
+					ugfx.Process(src, dst, true, true, true)
+					w := new(bytes.Buffer)
+					png.Encode(w, dst)
+					raw = w.Bytes()
+				}
+			}
+			newSrc.embeds += fmt.Sprintf("\tembeddedBinaries[%#v] = %#v", info.Name(), raw)
+		}
 		return true
 	}).Walk(srcDirPath)
 }

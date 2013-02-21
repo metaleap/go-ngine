@@ -26,14 +26,9 @@ func (me *FxImageInitFrom) loadImage(fxImg *FxImageBase) (img image.Image, err e
 			draw.Draw(tmpImg, rect, img, rect.Min, draw.Src)
 			img = tmpImg
 		}
-		if fxImg.PreProcess.FlipY || fxImg.PreProcess.SrgbToLinear {
-			pic := ugfx.CloneImage(img, !fxImg.PreProcess.FlipY)
-			if fxImg.PreProcess.FlipY {
-				ugfx.FlipVertical(img, pic)
-			}
-			if fxImg.PreProcess.SrgbToLinear {
-				ugfx.SrgbToLinear(pic, pic)
-			}
+		if fxImg.PreProcess.FlipY || fxImg.PreProcess.ToLinear || fxImg.PreProcess.ToBgra {
+			pic := ugfx.CloneImage(img, false)
+			ugfx.Process(img, pic, fxImg.PreProcess.FlipY, fxImg.PreProcess.ToBgra, fxImg.PreProcess.ToLinear)
 			img = pic
 		}
 	}

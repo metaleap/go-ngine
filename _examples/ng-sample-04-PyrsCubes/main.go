@@ -85,6 +85,7 @@ func setupExample_04_PyrsCubes() {
 		"mosaic":  "tex/mosaic.jpeg",
 		"cat":     "tex/cat.png",
 		"dog":     "tex/dog.png",
+		"gopher":  "tex/gopher.png",
 	})
 
 	fx := ng.Core.Libs.Effects["fx_mosaic"]
@@ -119,6 +120,11 @@ func setupExample_04_PyrsCubes() {
 	meshCube.Models.Default().Clone("model_cube_cat").SetMatID("mat_cat")
 	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["front"] = "fx_cat"
 	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["back"] = "fx_dog"
+	mixMat := ng.Core.Libs.Materials.AddNew("mat_mix")
+	mixMat.DefaultEffectID = "fx_crate"
+	mixMat.FaceEffects.ByTag["front"], mixMat.FaceEffects.ByTag["back"] = "fx_cat", "fx_cat"
+	mixMat.FaceEffects.ByTag["top"], mixMat.FaceEffects.ByTag["bottom"] = "fx_dog", "fx_dog"
+	mixMat.FaceEffects.ByTag["left"], mixMat.FaceEffects.ByTag["right"] = "fx_gopher", "fx_gopher"
 
 	bufFloor.Add(meshFloor)
 	bufRest.Add(meshCube)
@@ -141,7 +147,7 @@ func setupExample_04_PyrsCubes() {
 		f = float64(i)
 		crates[i].Transform.SetPosXYZ((f+3)*-2, (f+1)*2, (f+2)*3)
 		if i == 2 {
-			crates[i].SetMatID("mat_dog")
+			crates[i].SetMatID("mat_mix")
 		}
 	}
 
@@ -181,6 +187,7 @@ func setupExample_04_PyrsCubes() {
 
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()
-	camCtl.Pos.X, camCtl.Pos.Y, camCtl.Pos.Z = 35, 1.6, 24
+	camCtl.Pos.X, camCtl.Pos.Y, camCtl.Pos.Z = -3.57, 3.63, 19.53
+	camCtl.TurnRightBy(155)
 	camCtl.EndUpdate()
 }

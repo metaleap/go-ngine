@@ -20,11 +20,6 @@ var (
 	//	invoked every second on the windowing main thread.
 	OnSec = func() {}
 
-	//	In the example apps, PostFxCanvas always renders gamma-correct output.
-	//	If GammaShader is true, this is done in its final fragment shader.
-	//	Otherwise, this is done directly by OpenGL via the SRGB-framebuffer flag.
-	GammaShader = false
-
 	//	The RenderCanvas the example scene is initially being rendered to. This is an off-screen "render-to-texture" RenderCanvas.
 	SceneCanvas *ng.RenderCanvas
 
@@ -139,15 +134,6 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 		numCgo.preLoop = runtime.NumCgoCall()
 
 		//	STEP 3: enter... Da Loop.
-		if setupExampleScene != nil {
-			if GammaShader {
-				fx := &PostFxCam.RenderTechniqueQuad().Effect
-				fx.Ops.EnableGamma(-1)
-				fx.UpdateRoutine()
-			} else {
-				PostFxCanvas.Srgb = true
-			}
-		}
 		ng.Loop.Loop()
 		numCgo.postLoop = runtime.NumCgoCall()
 		PrintPostLoopSummary() // don't wanna defer this: useless when exit-on-error

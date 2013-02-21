@@ -69,9 +69,11 @@ func (_ *EngineCore) init() {
 	Core.initLibs()
 	Core.initRendering()
 	splash := &Core.Libs.Images.SplashScreen
-	splash.InitFrom.RawData = embeddedBinaries["splash.png"]
+	if splash.InitFrom.RawData = Core.Options.Initialization.DefaultCanvas.SplashImage; len(splash.InitFrom.RawData) == 0 {
+		splash.InitFrom.RawData = embeddedBinaries["splash.png"]
+	}
 	splash.init()
-	splash.PreProcess.FlipY, splash.PreProcess.SrgbToLinear = false, false
+	splash.PreProcess.FlipY, splash.PreProcess.ToLinear, splash.PreProcess.ToBgra = false, false, false
 	splash.Load()
 	splash.GpuSync()
 	thrRend.tmpQuadTex = &splash.glTex
@@ -106,7 +108,10 @@ func (_ *EngineCore) initRendering() {
 	rend.Fx.Samplers.FullFilteringClamp.Create().EnableFullFiltering(true, 8).SetWrap(gl.CLAMP_TO_EDGE)
 	rend.Fx.Samplers.NoFilteringClamp.Create().DisableAllFiltering(false).SetWrap(gl.CLAMP_TO_BORDER)
 	rend.Canvases = append(RenderCanvases{}, newRenderCanvas(true, true, 1, 1))
-	rend.Canvases.Final().AddNewCameraQuad()
+	if quadFx := &rend.Canvases.Final().AddNewCameraQuad().RenderTechniqueQuad().Effect; Core.Options.Initialization.DefaultCanvas.GammaViaShader {
+		quadFx.Ops.EnableGamma(-1)
+		quadFx.UpdateRoutine()
+	}
 }
 
 func (_ *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
@@ -125,17 +130,15 @@ func (_ *EngineCore) onSec() {
 }
 
 func (_ *EngineCore) SyncUpdates() (err error) {
-	var (
-		wait sync.WaitGroup
-	)
+	var wait sync.WaitGroup
 	imgLoad := func(img FxImage) {
 		if !img.Loaded() {
 			wait.Add(1)
 			go func() {
+				defer wait.Done()
 				if err = img.Load(); err != nil {
 					Diag.LogErr(err)
 				}
-				wait.Done()
 			}()
 		}
 	}

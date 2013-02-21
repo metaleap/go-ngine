@@ -91,6 +91,11 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
+				<dd><a href="#CameraPerspective">type CameraPerspective</a></dd>
+				
+				
+			
+				
 				<dd><a href="#CameraViewport">type CameraViewport</a></dd>
 				
 				
@@ -355,6 +360,11 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				
 				<dd><a href="#FxImageInitFrom">type FxImageInitFrom</a></dd>
+				
+				
+			
+				
+				<dd><a href="#FxImageStorage">type FxImageStorage</a></dd>
 				
 				
 			
@@ -1179,25 +1189,16 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.go?s=219:1426#L1">Camera</a></h2>
+			<h2 id="Camera">type <a href="/target/camera.go?s=698:1495#L14">Camera</a></h2>
 			<pre>type Camera struct {
     <span class="comment">//	Optical and imager properties for this camera.</span>
     Perspective struct {
+        <span class="comment">//	FovY, ZFar, ZNear</span>
+        CameraPerspective
+
         <span class="comment">//	Whether this is a perspective-projection camera. Defaults to true.</span>
         <span class="comment">//	If false, no projection transformation is applied.</span>
         Use bool
-
-        <span class="comment">//	Vertical field-of-view. Defaults to 37.8493.</span>
-        <span class="comment">//	After changing this value, you must call the ApplyMatrices() method.</span>
-        FovY float64
-
-        <span class="comment">//	Distance of the far-plane from the camera. Defaults to 30000.</span>
-        <span class="comment">//	After changing this value, you must call the ApplyMatrices() method.</span>
-        ZFar float64
-
-        <span class="comment">//	Distance of the near-plane from the camera. Defaults to 0.3.</span>
-        <span class="comment">//	After changing this value, you must call the ApplyMatrices() method.</span>
-        ZNear float64
     }
 
     <span class="comment">//	Encapsulates the position and direction of this camera.</span>
@@ -1230,7 +1231,7 @@ A camera embodies the eye point of the viewer looking at the visual scene.
 
 			
 				
-				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=2829:2862#L88">ApplyMatrices</a></h3>
+				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=2889:2922#L93">ApplyMatrices</a></h3>
 				<pre>func (me *Camera) ApplyMatrices()</pre>
 				<p>
 Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.
@@ -1240,28 +1241,28 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 				
 			
 				
-				<h3 id="Camera.RenderTechniqueQuad">func (*Camera) <a href="/target/camera.go?s=3705:3772#L127">RenderTechniqueQuad</a></h3>
+				<h3 id="Camera.RenderTechniqueQuad">func (*Camera) <a href="/target/camera.go?s=3765:3832#L132">RenderTechniqueQuad</a></h3>
 				<pre>func (me *Camera) RenderTechniqueQuad() (tech *RenderTechniqueQuad)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.RenderTechniqueScene">func (*Camera) <a href="/target/camera.go?s=3843:3912#L132">RenderTechniqueScene</a></h3>
+				<h3 id="Camera.RenderTechniqueScene">func (*Camera) <a href="/target/camera.go?s=3903:3972#L137">RenderTechniqueScene</a></h3>
 				<pre>func (me *Camera) RenderTechniqueScene() (tech *RenderTechniqueScene)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=3357:3389#L108">Scene</a></h3>
+				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=3417:3449#L113">Scene</a></h3>
 				<pre>func (me *Camera) Scene() *Scene</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=3627:3664#L123">SetScene</a></h3>
+				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=3687:3724#L128">SetScene</a></h3>
 				<pre>func (me *Camera) SetScene(id string)</pre>
 				
 				
@@ -1270,7 +1271,35 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 		
 			
 			
-			<h2 id="CameraViewport">type <a href="/target/camera.go?s=4334:4594#L156">CameraViewport</a></h2>
+			<h2 id="CameraPerspective">type <a href="/target/camera.go?s=141:618#L1">CameraPerspective</a></h2>
+			<pre>type CameraPerspective struct {
+    <span class="comment">//	Vertical field-of-view. Defaults to 37.8493.</span>
+    <span class="comment">//	After changing this value, you must call the ApplyMatrices() method.</span>
+    FovY float64
+
+    <span class="comment">//	Distance of the far-plane from the camera. Defaults to 30000.</span>
+    <span class="comment">//	After changing this value, you must call the ApplyMatrices() method.</span>
+    ZFar float64
+
+    <span class="comment">//	Distance of the near-plane from the camera. Defaults to 0.3.</span>
+    <span class="comment">//	After changing this value, you must call the ApplyMatrices() method.</span>
+    ZNear float64
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="CameraViewport">type <a href="/target/camera.go?s=4394:4654#L161">CameraViewport</a></h2>
 			<pre>type CameraViewport struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -1289,7 +1318,7 @@ Encapsulates a device-relative or absolute camera view-port.
 
 			
 				
-				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=4720:4777#L171">SetAbs</a></h3>
+				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=4780:4837#L176">SetAbs</a></h3>
 				<pre>func (me *CameraViewport) SetAbs(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -1299,7 +1328,7 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=5029:5090#L178">SetRel</a></h3>
+				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=5089:5150#L183">SetRel</a></h3>
 				<pre>func (me *CameraViewport) SetRel(x, y, width, height float64)</pre>
 				<p>
 Sets the device-relative viewport origin and dimensions, with the value 1.0
@@ -1312,7 +1341,7 @@ representing the maximum extent of the viewport on that respective axis.
 		
 			
 			
-			<h2 id="Cameras">type <a href="/target/camera.go?s=3984:4006#L137">Cameras</a></h2>
+			<h2 id="Cameras">type <a href="/target/camera.go?s=4044:4066#L142">Cameras</a></h2>
 			<pre>type Cameras []*Camera</pre>
 			
 
@@ -1326,7 +1355,7 @@ representing the maximum extent of the viewport on that respective axis.
 
 			
 				
-				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=4099:4140#L146">Remove</a></h3>
+				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=4159:4200#L151">Remove</a></h3>
 				<pre>func (me *Cameras) Remove(camera *Camera)</pre>
 				
 				
@@ -1414,7 +1443,7 @@ MoveXyz() / TurnXyz() methods that were suspended since BeginUpdate().
 				
 			
 				
-				<h3 id="Controller.MoveBackward">func (*Controller) <a href="/target/controller.go?s=3841:3877#L111">MoveBackward</a></h3>
+				<h3 id="Controller.MoveBackward">func (*Controller) <a href="/target/controller.go?s=3844:3880#L111">MoveBackward</a></h3>
 				<pre>func (me *Controller) MoveBackward()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move backward&#34;.
@@ -1424,7 +1453,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move backward&#34
 				
 			
 				
-				<h3 id="Controller.MoveDown">func (*Controller) <a href="/target/controller.go?s=4037:4069#L117">MoveDown</a></h3>
+				<h3 id="Controller.MoveDown">func (*Controller) <a href="/target/controller.go?s=4040:4072#L117">MoveDown</a></h3>
 				<pre>func (me *Controller) MoveDown()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis to effect a &#34;move downward&#34;.
@@ -1434,7 +1463,7 @@ Recomputes Pos with regards to UpAxis to effect a &#34;move downward&#34;.
 				
 			
 				
-				<h3 id="Controller.MoveForward">func (*Controller) <a href="/target/controller.go?s=4239:4274#L123">MoveForward</a></h3>
+				<h3 id="Controller.MoveForward">func (*Controller) <a href="/target/controller.go?s=4242:4277#L123">MoveForward</a></h3>
 				<pre>func (me *Controller) MoveForward()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move forward&#34;.
@@ -1444,7 +1473,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move forward&#34;
 				
 			
 				
-				<h3 id="Controller.MoveLeft">func (*Controller) <a href="/target/controller.go?s=4443:4475#L129">MoveLeft</a></h3>
+				<h3 id="Controller.MoveLeft">func (*Controller) <a href="/target/controller.go?s=4446:4478#L129">MoveLeft</a></h3>
 				<pre>func (me *Controller) MoveLeft()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move left-ward&#34;.
@@ -1454,7 +1483,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move left-ward&#3
 				
 			
 				
-				<h3 id="Controller.MoveRight">func (*Controller) <a href="/target/controller.go?s=4672:4705#L135">MoveRight</a></h3>
+				<h3 id="Controller.MoveRight">func (*Controller) <a href="/target/controller.go?s=4675:4708#L135">MoveRight</a></h3>
 				<pre>func (me *Controller) MoveRight()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move right-ward&#34;.
@@ -1464,7 +1493,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move right-ward&#
 				
 			
 				
-				<h3 id="Controller.MoveUp">func (*Controller) <a href="/target/controller.go?s=4890:4920#L141">MoveUp</a></h3>
+				<h3 id="Controller.MoveUp">func (*Controller) <a href="/target/controller.go?s=4893:4923#L141">MoveUp</a></h3>
 				<pre>func (me *Controller) MoveUp()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis to effect a &#34;move upward&#34;.
@@ -1474,7 +1503,7 @@ Recomputes Pos with regards to UpAxis to effect a &#34;move upward&#34;.
 				
 			
 				
-				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=5391:5435#L160">StepSizeMove</a></h3>
+				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=5394:5438#L160">StepSizeMove</a></h3>
 				<pre>func (me *Controller) StepSizeMove() float64</pre>
 				<p>
 Returns the current distance that a single MoveXyz() call (per loop iteration) would move.
@@ -1485,7 +1514,7 @@ Returns the current distance that a single MoveXyz() call (per loop iteration) w
 				
 			
 				
-				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=5682:5726#L166">StepSizeTurn</a></h3>
+				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=5685:5729#L166">StepSizeTurn</a></h3>
 				<pre>func (me *Controller) StepSizeTurn() float64</pre>
 				<p>
 Returns the current degrees that a single TurnXyz() call (per loop iteration) would turn.
@@ -1496,7 +1525,7 @@ Returns the current degrees that a single TurnXyz() call (per loop iteration) wo
 				
 			
 				
-				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=5915:5947#L171">TurnDown</a></h3>
+				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=5918:5950#L171">TurnDown</a></h3>
 				<pre>func (me *Controller) TurnDown()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34; by me.StepSizeTurn() degrees.
@@ -1506,7 +1535,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34
 				
 			
 				
-				<h3 id="Controller.TurnDownBy">func (*Controller) <a href="/target/controller.go?s=6090:6135#L176">TurnDownBy</a></h3>
+				<h3 id="Controller.TurnDownBy">func (*Controller) <a href="/target/controller.go?s=6093:6138#L176">TurnDownBy</a></h3>
 				<pre>func (me *Controller) TurnDownBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34; by the specified degrees.
@@ -1516,7 +1545,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34
 				
 			
 				
-				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=6308:6340#L183">TurnLeft</a></h3>
+				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=6311:6343#L183">TurnLeft</a></h3>
 				<pre>func (me *Controller) TurnLeft()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#34; by me.StepSizeTurn() degrees.
@@ -1526,7 +1555,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#3
 				
 			
 				
-				<h3 id="Controller.TurnLeftBy">func (*Controller) <a href="/target/controller.go?s=6484:6529#L188">TurnLeftBy</a></h3>
+				<h3 id="Controller.TurnLeftBy">func (*Controller) <a href="/target/controller.go?s=6487:6532#L188">TurnLeftBy</a></h3>
 				<pre>func (me *Controller) TurnLeftBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#34; by the specified degrees.
@@ -1536,7 +1565,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#3
 				
 			
 				
-				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=6658:6691#L193">TurnRight</a></h3>
+				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=6661:6694#L193">TurnRight</a></h3>
 				<pre>func (me *Controller) TurnRight()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#34; by me.StepSizeTurn() degrees.
@@ -1546,7 +1575,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#
 				
 			
 				
-				<h3 id="Controller.TurnRightBy">func (*Controller) <a href="/target/controller.go?s=6837:6883#L198">TurnRightBy</a></h3>
+				<h3 id="Controller.TurnRightBy">func (*Controller) <a href="/target/controller.go?s=6840:6886#L198">TurnRightBy</a></h3>
 				<pre>func (me *Controller) TurnRightBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#34; by the specified degrees.
@@ -1556,7 +1585,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#
 				
 			
 				
-				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=7009:7039#L203">TurnUp</a></h3>
+				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=7012:7042#L203">TurnUp</a></h3>
 				<pre>func (me *Controller) TurnUp()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; by me.StepSizeTurn() degrees.
@@ -1566,7 +1595,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 				
 			
 				
-				<h3 id="Controller.TurnUpBy">func (*Controller) <a href="/target/controller.go?s=7178:7221#L208">TurnUpBy</a></h3>
+				<h3 id="Controller.TurnUpBy">func (*Controller) <a href="/target/controller.go?s=7181:7224#L208">TurnUpBy</a></h3>
 				<pre>func (me *Controller) TurnUpBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; by the specified degress.
@@ -1578,7 +1607,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="ControllerParams">type <a href="/target/controller.go?s=7283:7917#L214">ControllerParams</a></h2>
+			<h2 id="ControllerParams">type <a href="/target/controller.go?s=7286:7920#L214">ControllerParams</a></h2>
 			<pre>type ControllerParams struct {
     <span class="comment">//	Speed of &#34;moving&#34; in the MoveXyz() methods, in units per second.</span>
     <span class="comment">//	Defaults to 2.</span>
@@ -1610,7 +1639,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 
 			
 				
-				<h3 id="NewControllerParams">func <a href="/target/controller.go?s=7919:7968#L236">NewControllerParams</a></h3>
+				<h3 id="NewControllerParams">func <a href="/target/controller.go?s=7922:7971#L236">NewControllerParams</a></h3>
 				<pre>func NewControllerParams() (me *ControllerParams)</pre>
 				
 				
@@ -1673,7 +1702,7 @@ It is only aware of that instance and does not support any other EngineCore inst
 
 			
 				
-				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3530:3576#L117">SyncUpdates</a></h3>
+				<h3 id="EngineCore.SyncUpdates">func (*EngineCore) <a href="/target/ng-core.go?s=3844:3890#L122">SyncUpdates</a></h3>
 				<pre>func (_ *EngineCore) SyncUpdates() (err error)</pre>
 				
 				
@@ -1871,11 +1900,18 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=931:3675#L21">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=931:3867#L21">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     AppDir struct {
         <span class="comment">//	The base directory path for app file paths.</span>
         BasePath string
+
+        TextureImageCache string
+    }
+
+    Cameras struct {
+        DefaultControllerParams *ControllerParams
+        PerspectiveDefaults     CameraPerspective
     }
 
     Initialization struct {
@@ -1904,6 +1940,10 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
             <span class="comment">//	string, you can use the same placeholders as that one.</span>
             BadVersionMessage string
         }
+        DefaultCanvas struct {
+            GammaViaShader bool
+            SplashImage    []byte
+        }
         Window struct {
             <span class="comment">//	Defaults: R=8 G=8 B=8 A=0 D=8 S=0.</span>
             <span class="comment">//	These defaults are reasonable when using a render-to-texture off-screen</span>
@@ -1930,10 +1970,6 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
         GcEveryFrame bool
     }
 
-    Misc struct {
-        DefaultControllerParams *ControllerParams
-    }
-
     Rendering struct {
         DefaultClearColor ugl.GlVec4
 
@@ -1948,6 +1984,10 @@ Returns the number of seconds expired ever since Loop.Loop() was last called.
         <span class="comment">//	Default render technique for a Camera created via RenderCanvas.AddNewCameraQuad().</span>
         <span class="comment">//	Defaults to &#34;Quad&#34;.</span>
         DefaultTechniqueQuad string
+    }
+
+    Textures struct {
+        FxImageStorage
     }
 }</pre>
 			<p>
@@ -1966,7 +2006,7 @@ received from NewEngineOptions() is no longer used. Slightly confusing, but ther
 
 			
 				
-				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=3750:3844#L101">NewEngineOptions</a></h3>
+				<h3 id="NewEngineOptions">func <a href="/target/ng-options.go?s=3942:4036#L112">NewEngineOptions</a></h3>
 				<pre>func NewEngineOptions(appDirBasePath string, windowOptions *WindowOptions) (me *EngineOptions)</pre>
 				<p>
 Allocates, initializes and returns a new core.EngineOptions instance.
@@ -2281,7 +2321,7 @@ Initializes and returns a new FxEffect with default parameters.
 
 			
 				
-				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=1034:1069#L52">NewFxImage2D</a></h3>
+				<h3 id="NewFxImage2D">func <a href="/target/fx-image-2d.gt.go?s=1060:1095#L52">NewFxImage2D</a></h3>
 				<pre>func NewFxImage2D() (me *FxImage2D)</pre>
 				<p>
 Initializes and returns a new FxImage2D with default parameters.
@@ -2299,28 +2339,28 @@ Initializes and returns a new FxImage2D with default parameters.
 				
 			
 				
-				<h3 id="FxImage2D.IsRemote">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=762:807#L40">IsRemote</a></h3>
+				<h3 id="FxImage2D.IsRemote">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=788:833#L40">IsRemote</a></h3>
 				<pre>func (me *FxImage2D) IsRemote() (remote bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Load">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=525:564#L26">Load</a></h3>
+				<h3 id="FxImage2D.Load">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=551:590#L26">Load</a></h3>
 				<pre>func (me *FxImage2D) Load() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Loaded">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=698:732#L36">Loaded</a></h3>
+				<h3 id="FxImage2D.Loaded">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=724:758#L36">Loaded</a></h3>
 				<pre>func (me *FxImage2D) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2D.Unload">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=860:889#L45">Unload</a></h3>
+				<h3 id="FxImage2D.Unload">func (*FxImage2D) <a href="/target/fx-image-2d.gt.go?s=886:915#L45">Unload</a></h3>
 				<pre>func (me *FxImage2D) Unload()</pre>
 				
 				
@@ -2329,12 +2369,14 @@ Initializes and returns a new FxImage2D with default parameters.
 		
 			
 			
-			<h2 id="FxImageBase">type <a href="/target/fx-image.go?s=138:272#L3">FxImageBase</a></h2>
+			<h2 id="FxImageBase">type <a href="/target/fx-image.go?s=184:350#L7">FxImageBase</a></h2>
 			<pre>type FxImageBase struct {
     PreProcess struct {
-        FlipY        bool
-        SrgbToLinear bool
+        FlipY    bool
+        ToLinear bool
+        ToBgra   bool
     }
+    Storage FxImageStorage
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			
@@ -2349,21 +2391,21 @@ Initializes and returns a new FxImage2D with default parameters.
 
 			
 				
-				<h3 id="FxImageBase.GpuDelete">func (*FxImageBase) <a href="/target/fx-image.go?s=601:635#L29">GpuDelete</a></h3>
+				<h3 id="FxImageBase.GpuDelete">func (*FxImageBase) <a href="/target/fx-image.go?s=754:788#L36">GpuDelete</a></h3>
 				<pre>func (me *FxImageBase) GpuDelete()</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageBase.GpuSynced">func (*FxImageBase) <a href="/target/fx-image.go?s=682:721#L34">GpuSynced</a></h3>
+				<h3 id="FxImageBase.GpuSynced">func (*FxImageBase) <a href="/target/fx-image.go?s=835:874#L41">GpuSynced</a></h3>
 				<pre>func (me *FxImageBase) GpuSynced() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageBase.NoAutoMips">func (*FxImageBase) <a href="/target/fx-image.go?s=747:782#L38">NoAutoMips</a></h3>
+				<h3 id="FxImageBase.NoAutoMips">func (*FxImageBase) <a href="/target/fx-image.go?s=900:935#L45">NoAutoMips</a></h3>
 				<pre>func (me *FxImageBase) NoAutoMips()</pre>
 				
 				
@@ -2388,7 +2430,7 @@ Initializes and returns a new FxImage2D with default parameters.
 
 			
 				
-				<h3 id="NewFxImageCube">func <a href="/target/fx-image-cube.gt.go?s=1201:1240#L61">NewFxImageCube</a></h3>
+				<h3 id="NewFxImageCube">func <a href="/target/fx-image-cube.gt.go?s=1227:1266#L61">NewFxImageCube</a></h3>
 				<pre>func NewFxImageCube() (me *FxImageCube)</pre>
 				<p>
 Initializes and returns a new FxImageCube with default parameters.
@@ -2406,21 +2448,21 @@ Initializes and returns a new FxImageCube with default parameters.
 				
 			
 				
-				<h3 id="FxImageCube.Load">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=583:624#L26">Load</a></h3>
+				<h3 id="FxImageCube.Load">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=609:650#L26">Load</a></h3>
 				<pre>func (me *FxImageCube) Load() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageCube.Loaded">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=827:863#L42">Loaded</a></h3>
+				<h3 id="FxImageCube.Loaded">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=853:889#L42">Loaded</a></h3>
 				<pre>func (me *FxImageCube) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageCube.Unload">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=971:1002#L51">Unload</a></h3>
+				<h3 id="FxImageCube.Unload">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=997:1028#L51">Unload</a></h3>
 				<pre>func (me *FxImageCube) Unload()</pre>
 				
 				
@@ -2433,6 +2475,24 @@ Initializes and returns a new FxImageCube with default parameters.
 			<pre>type FxImageInitFrom struct {
     RawData []byte
     RefUrl  string
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="FxImageStorage">type <a href="/target/fx-image.go?s=138:182#L3">FxImageStorage</a></h2>
+			<pre>type FxImageStorage struct {
+    UintRev bool
 }</pre>
 			
 
@@ -3307,7 +3367,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=1189:1229#L59">LibFxImage2Ds</a></h2>
+			<h2 id="LibFxImage2Ds">type <a href="/target/fx-image-2d.gt.go?s=1215:1255#L59">LibFxImage2Ds</a></h2>
 			<pre>type LibFxImage2Ds map[string]*FxImage2D</pre>
 			<p>
 A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
@@ -3324,7 +3384,7 @@ A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=1356:1414#L63">AddNew</a></h3>
+				<h3 id="LibFxImage2Ds.AddNew">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=1382:1440#L63">AddNew</a></h3>
 				<pre>func (me LibFxImage2Ds) AddNew(id string) (obj *FxImage2D)</pre>
 				<p>
 Creates and initializes a new FxImage2D with default parameters,
@@ -3335,7 +3395,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibFxImage2Ds.Remove">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=1617:1658#L80">Remove</a></h3>
+				<h3 id="LibFxImage2Ds.Remove">func (LibFxImage2Ds) <a href="/target/fx-image-2d.gt.go?s=1643:1684#L80">Remove</a></h3>
 				<pre>func (me LibFxImage2Ds) Remove(id string)</pre>
 				
 				
@@ -3344,7 +3404,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibFxImageCubes">type <a href="/target/fx-image-cube.gt.go?s=1364:1408#L68">LibFxImageCubes</a></h2>
+			<h2 id="LibFxImageCubes">type <a href="/target/fx-image-cube.gt.go?s=1390:1434#L68">LibFxImageCubes</a></h2>
 			<pre>type LibFxImageCubes map[string]*FxImageCube</pre>
 			<p>
 A hash-table of FxImageCubes associated by IDs. Only for use in Core.Libs.
@@ -3361,7 +3421,7 @@ A hash-table of FxImageCubes associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxImageCubes.AddNew">func (LibFxImageCubes) <a href="/target/fx-image-cube.gt.go?s=1537:1599#L72">AddNew</a></h3>
+				<h3 id="LibFxImageCubes.AddNew">func (LibFxImageCubes) <a href="/target/fx-image-cube.gt.go?s=1563:1625#L72">AddNew</a></h3>
 				<pre>func (me LibFxImageCubes) AddNew(id string) (obj *FxImageCube)</pre>
 				<p>
 Creates and initializes a new FxImageCube with default parameters,
@@ -3372,7 +3432,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibFxImageCubes.Remove">func (LibFxImageCubes) <a href="/target/fx-image-cube.gt.go?s=1810:1853#L89">Remove</a></h3>
+				<h3 id="LibFxImageCubes.Remove">func (LibFxImageCubes) <a href="/target/fx-image-cube.gt.go?s=1836:1879#L89">Remove</a></h3>
 				<pre>func (me LibFxImageCubes) Remove(id string)</pre>
 				
 				
@@ -4461,35 +4521,35 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvas.AddNewCamera2D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1477:1549#L42">AddNewCamera2D</a></h3>
+				<h3 id="RenderCanvas.AddNewCamera2D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1545:1617#L42">AddNewCamera2D</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCamera2D(allowOverlaps bool) (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.AddNewCamera3D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1639:1693#L48">AddNewCamera3D</a></h3>
+				<h3 id="RenderCanvas.AddNewCamera3D">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1707:1761#L48">AddNewCamera3D</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCamera3D() (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.AddNewCameraQuad">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1768:1824#L54">AddNewCameraQuad</a></h3>
+				<h3 id="RenderCanvas.AddNewCameraQuad">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1836:1892#L54">AddNewCameraQuad</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.CurrentAbsoluteSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1347:1412#L37">CurrentAbsoluteSize</a></h3>
+				<h3 id="RenderCanvas.CurrentAbsoluteSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=1415:1480#L37">CurrentAbsoluteSize</a></h3>
 				<pre>func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2541:2573#L82">Remove</a></h3>
+				<h3 id="RenderCanvas.Remove">func (*RenderCanvas) <a href="/target/render-canvas.go?s=2609:2641#L82">Remove</a></h3>
 				<pre>func (me *RenderCanvas) Remove()</pre>
 				<p>
 Removes me from Core.Rendering.Canvases and deletes its associated GPU resources.
@@ -4500,7 +4560,7 @@ This renders me invalid for further use.
 				
 			
 				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3170:3239#L101">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.go?s=3238:3307#L101">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
 				<p>
 Sets the 2 dimensions of this render canvas.
@@ -4514,7 +4574,7 @@ Otherwise, width and height are absolute pixel dimensions.
 		
 			
 			
-			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3528:3563#L111">RenderCanvases</a></h2>
+			<h2 id="RenderCanvases">type <a href="/target/render-canvas.go?s=3596:3631#L111">RenderCanvases</a></h2>
 			<pre>type RenderCanvases []*RenderCanvas</pre>
 			<p>
 Only used for Core.Rendering.Canvases.
@@ -4531,7 +4591,7 @@ Only used for Core.Rendering.Canvases.
 
 			
 				
-				<h3 id="RenderCanvases.AddNew">func (RenderCanvases) <a href="/target/render-canvas.go?s=3778:3865#L122">AddNew</a></h3>
+				<h3 id="RenderCanvases.AddNew">func (RenderCanvases) <a href="/target/render-canvas.go?s=3846:3933#L122">AddNew</a></h3>
 				<pre>func (_ RenderCanvases) AddNew(relative bool, width, height float64) (rc *RenderCanvas)</pre>
 				<p>
 Adds a new RenderCanvas and returns it.
@@ -4542,14 +4602,14 @@ The relative, width and height values are passed to a call to SetSize().
 				
 			
 				
-				<h3 id="RenderCanvases.Final">func (RenderCanvases) <a href="/target/render-canvas.go?s=3996:4041#L128">Final</a></h3>
+				<h3 id="RenderCanvases.Final">func (RenderCanvases) <a href="/target/render-canvas.go?s=4064:4109#L128">Final</a></h3>
 				<pre>func (_ RenderCanvases) Final() *RenderCanvas</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4082:4159#L132">Walk</a></h3>
+				<h3 id="RenderCanvases.Walk">func (RenderCanvases) <a href="/target/render-canvas.go?s=4150:4227#L132">Walk</a></h3>
 				<pre>func (_ RenderCanvases) Walk(onCanv func(*RenderCanvas), onCam func(*Camera))</pre>
 				
 				

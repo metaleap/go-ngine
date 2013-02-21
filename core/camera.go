@@ -6,25 +6,30 @@ import (
 	unum "github.com/metaleap/go-util/num"
 )
 
+type CameraPerspective struct {
+	//	Vertical field-of-view. Defaults to 37.8493.
+	//	After changing this value, you must call the ApplyMatrices() method.
+	FovY float64
+
+	//	Distance of the far-plane from the camera. Defaults to 30000.
+	//	After changing this value, you must call the ApplyMatrices() method.
+	ZFar float64
+
+	//	Distance of the near-plane from the camera. Defaults to 0.3.
+	//	After changing this value, you must call the ApplyMatrices() method.
+	ZNear float64
+}
+
 //	A camera embodies the eye point of the viewer looking at the visual scene.
 type Camera struct {
 	//	Optical and imager properties for this camera.
 	Perspective struct {
+		//	FovY, ZFar, ZNear
+		CameraPerspective
+
 		//	Whether this is a perspective-projection camera. Defaults to true.
 		//	If false, no projection transformation is applied.
 		Use bool
-
-		//	Vertical field-of-view. Defaults to 37.8493.
-		//	After changing this value, you must call the ApplyMatrices() method.
-		FovY float64
-
-		//	Distance of the far-plane from the camera. Defaults to 30000.
-		//	After changing this value, you must call the ApplyMatrices() method.
-		ZFar float64
-
-		//	Distance of the near-plane from the camera. Defaults to 0.3.
-		//	After changing this value, you must call the ApplyMatrices() method.
-		ZNear float64
 	}
 
 	//	Encapsulates the position and direction of this camera.
@@ -86,7 +91,7 @@ func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool, technique s
 	} else {
 		rend.States.Other.ClearBits = gl.COLOR_BUFFER_BIT
 	}
-	me.Perspective.Use, me.Perspective.FovY, me.Perspective.ZFar, me.Perspective.ZNear = persp3d, 37.8493, 30000, 0.3
+	me.Perspective.Use, me.Perspective.CameraPerspective = persp3d, Core.Options.Cameras.PerspectiveDefaults
 	unum.Mat4Identities(&me.thrApp.matProj, &me.thrPrep.matProj)
 	me.Controller.init()
 	rend.Viewport.init()

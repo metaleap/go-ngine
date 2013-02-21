@@ -32,6 +32,13 @@ type EngineOptions struct {
 	AppDir struct {
 		//	The base directory path for app file paths.
 		BasePath string
+
+		TextureImageCache string
+	}
+
+	Cameras struct {
+		DefaultControllerParams *ControllerParams
+		PerspectiveDefaults     CameraPerspective
 	}
 
 	Initialization struct {
@@ -60,6 +67,10 @@ type EngineOptions struct {
 			//	string, you can use the same placeholders as that one.
 			BadVersionMessage string
 		}
+		DefaultCanvas struct {
+			GammaViaShader bool
+			SplashImage    []byte
+		}
 		Window struct {
 			//	Defaults: R=8 G=8 B=8 A=0 D=8 S=0.
 			//	These defaults are reasonable when using a render-to-texture off-screen
@@ -86,10 +97,6 @@ type EngineOptions struct {
 		GcEveryFrame bool
 	}
 
-	Misc struct {
-		DefaultControllerParams *ControllerParams
-	}
-
 	Rendering struct {
 		DefaultClearColor ugl.GlVec4
 
@@ -105,20 +112,30 @@ type EngineOptions struct {
 		//	Defaults to "Quad".
 		DefaultTechniqueQuad string
 	}
+
+	Textures struct {
+		FxImageStorage
+	}
 }
 
 //	Allocates, initializes and returns a new core.EngineOptions instance.
 func NewEngineOptions(appDirBasePath string, windowOptions *WindowOptions) (me *EngineOptions) {
-	me = &EngineOptions{}
+	me, UserIO.Window = &EngineOptions{}, *windowOptions
 	me.AppDir.BasePath = appDirBasePath
-	me.Misc.DefaultControllerParams = NewControllerParams()
+	me.Textures.UintRev = true
+
+	me.Cameras.DefaultControllerParams = NewControllerParams()
+	persp := &me.Cameras.PerspectiveDefaults
+	persp.FovY, persp.ZFar, persp.ZNear = 37.8493, 30000, 0.3
+
 	init, isMac, initGl := &me.Initialization, runtime.GOOS == "darwin", &me.Initialization.GlContext
 	initGl.CoreProfile.ForceFirst, initGl.CoreProfile.ForwardCompat, initGl.BadVersionMessage = isMac, isMac, DefaultBadVersionMessage
 	initGl.CoreProfile.VersionHint = ugl.KnownVersions[len(ugl.KnownVersions)-1]
 	init.Window.Rbits, init.Window.Gbits, init.Window.Bbits, init.Window.DepthBits = 8, 8, 8, 8
+
 	rend := &me.Rendering
 	rend.DefaultClearColor = ugl.GlVec4{0, 0, 0, 1}
 	rend.DefaultTechnique2D, rend.DefaultTechnique3D, rend.DefaultTechniqueQuad = "Scene", "Scene", "Quad"
-	UserIO.Window = *windowOptions
+
 	return
 }

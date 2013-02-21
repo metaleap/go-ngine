@@ -51,6 +51,9 @@ func setupExample_03_PyrCube() {
 		"cobbles": urlPrefix + "tex/cobbles.png",
 		"crate":   "tex/crate.jpeg",
 		"mosaic":  "tex/mosaic.jpeg",
+		"gopher":  "tex/gopher.png",
+		"dog":     "tex/dog.png",
+		"cat":     "tex/cat.png",
 	})
 
 	//	meshes / models
@@ -74,8 +77,9 @@ func setupExample_03_PyrCube() {
 	bufRest.Add(meshPyr)
 	meshPyr.Models.Default().SetMatID("mat_mosaic")
 	meshCube.Models.Default().SetMatID("mat_crate")
-	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["front"] = "fx_mosaic"
-	ng.Core.Libs.Materials["mat_mosaic"].FaceEffects.ByID["t3"] = "fx_crate"
+	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["front"] = "fx_dog"
+	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["back"] = "fx_gopher"
+	ng.Core.Libs.Materials["mat_mosaic"].FaceEffects.ByID["t3"] = "fx_cat"
 
 	//	scene
 	scene = apputil.AddScene("", true, "mesh_cube")
