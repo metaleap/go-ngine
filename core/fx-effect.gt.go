@@ -58,9 +58,13 @@ func (me *FxEffect) UpdateRoutine() {
 		}
 	}
 
+	counts := map[string]int{}
 	for _, op = range me.Ops {
 		if op.Enabled() {
 			buf.Write("_%s", op.ProcID())
+			i = counts[op.ProcID()]
+			op.setProcIndex(i)
+			counts[op.ProcID()] = i + 1
 		}
 	}
 	me.uberName = buf.String()

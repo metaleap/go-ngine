@@ -1,12 +1,15 @@
 package main
 
 import (
+	"math"
+
 	apputil "github.com/go3d/go-ngine/_examples/shared-utils"
 	ng "github.com/go3d/go-ngine/core"
 )
 
 var (
 	floor, pyr *ng.Node
+	fxPulse    *ng.FxEffect
 )
 
 func main() {
@@ -15,6 +18,7 @@ func main() {
 
 func onAppThread() {
 	apputil.HandleCamCtlKeys()
+	fxPulse.Ops.GetColor(1).SetMixWeight(0.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*4)))
 }
 
 func onWinThread() {
@@ -37,8 +41,28 @@ func setupScene() {
 		"cat":     "tex/cat.png",
 	})
 
-	ng.Core.Libs.Materials["mat_dog"].FaceEffects.ByID["t1"] = "fx_cat"
-	ng.Core.Libs.Materials["mat_dog"].FaceEffects.ByID["t3"] = "fx_cat"
+	fxBlue := ng.Core.Libs.Effects.AddNew("fx_blue")
+	fxBlue.Ops.EnableColor(-1).SetColor(0, 0.33, 0.66)
+	fxBlue.Ops.EnableTex2D(-1).SetImageID("img_dog").SetMixWeight(0.33)
+	fxBlue.UpdateRoutine()
+
+	fxGreen := ng.Core.Libs.Effects.AddNew("fx_green")
+	fxGreen.Ops.EnableColor(-1).Color.Set(0, 0.66, 0.33)
+	fxGreen.UpdateRoutine()
+
+	fxCat := ng.Core.Libs.Effects["fx_cat"]
+	fxCat.Ops.EnableOrangify(-1)
+	fxCat.UpdateRoutine()
+
+	fxPulse = ng.Core.Libs.Effects.AddNew("fx_pulse")
+	fxPulse.Ops.EnableColor(0).SetColor(0.6, 0, 0)
+	fxPulse.Ops.EnableColor(1).SetColor(0.9, 0.7, 0).SetMixWeight(0.25)
+	fxPulse.UpdateRoutine()
+
+	ng.Core.Libs.Materials["mat_dog"].DefaultEffectID = "fx_blue"
+	ng.Core.Libs.Materials["mat_dog"].FaceEffects.ByID["t0"] = "fx_cat"
+	ng.Core.Libs.Materials["mat_dog"].FaceEffects.ByID["t1"] = "fx_pulse"
+	ng.Core.Libs.Materials["mat_dog"].FaceEffects.ByID["t2"] = "fx_green"
 
 	//	meshes / models
 	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(200, 200)); err != nil {
@@ -67,6 +91,6 @@ func setupScene() {
 
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()
-	camCtl.Pos.Set(-2.5, 2, -7)
+	camCtl.Pos.Set(-1.5, 2, -4)
 	camCtl.EndUpdate()
 }

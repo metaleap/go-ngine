@@ -172,13 +172,27 @@ func (me *uberShader) setShaderSources(vertTech string, fragFx *FxEffect) (err e
 
 func (me *uberShader) setShaderSourceEnsureFunc(op FxOp, fn *uberShaderFunc, srcBody *ustr.Buffer, inputs map[string]bool) error {
 	var (
-		str string
-		df  *uberShaderFunc
+		str, _procID_ string
+		parts         []string
+		df            *uberShaderFunc
 	)
+	isFxOp := strings.HasPrefix(fn.name, "fx_") && op != nil
+	if isFxOp {
+		_procID_ = "_" + op.ProcID() + "_"
+	}
+	rewriteUnis := map[string]string{}
 	for str, _ = range fn.inputs {
+		if isFxOp && strings.HasPrefix(str, "uni_") && strings.Contains(str, _procID_) {
+			parts = strings.Split(str, "_")
+			rewriteUnis[str] = op.unifName(parts[1], parts[3])
+			str = rewriteUnis[str]
+		}
 		inputs[str] = true
 	}
 	for str, _ = range fn.dependsOn {
+		if isFxOp && strings.HasPrefix(str, "fx_") {
+			return errf("%s depends on %s. One fx_ func must not depend directly on another.", fn.name, str)
+		}
 		for _, m := range me.allMaps() {
 			if df = (*m)[str]; df != nil {
 				break
@@ -189,7 +203,14 @@ func (me *uberShader) setShaderSourceEnsureFunc(op FxOp, fn *uberShaderFunc, src
 		}
 		me.setShaderSourceEnsureFunc(nil, df, srcBody, inputs)
 	}
-	srcBody.Writeln(fn.rawSrc + "\n")
+	str = fn.rawSrc
+	if isFxOp {
+		str = strings.Replace(str, fn.name, strf("%s%d", fn.name, op.ProcIndex()), -1)
+		for k, v := range rewriteUnis {
+			str = strings.Replace(str, k, v, -1)
+		}
+	}
+	srcBody.Writeln(str + "\n")
 	return nil
 }
 
@@ -223,6 +244,7 @@ func (me *uberShader) setShaderSourceFrag(fx *FxEffect, inputs map[string]bool) 
 				return
 			}
 			me.setShaderSourceEnsureFunc(op, shFunc, &srcBody, inputs)
+			inputs[op.unifName("float", "MixWeight")] = true
 			for shid, _ = range inputs {
 				if me.tmpq[shid] = op.qualifiers(shid); len(me.tmpq[shid]) > 0 {
 					me.tmpq[shid] = me.tmpq[shid] + " "
@@ -245,7 +267,7 @@ func (me *uberShader) setShaderSourceFrag(fx *FxEffect, inputs map[string]bool) 
 	for _, op = range fx.Ops {
 		if op.Enabled() {
 			shFunc = me.funcs.fragment[Core.Rendering.Fx.procs[op.ProcID()].FuncName]
-			srcBody.Writeln("\t%s(vCol);", shFunc.name)
+			srcBody.Writeln("\tvCol = mix(vCol, %s%d(vCol), %s);", shFunc.name, op.ProcIndex(), op.unifName("float", "MixWeight"))
 		}
 	}
 	srcBody.Writeln("\tout_Color = vCol;")

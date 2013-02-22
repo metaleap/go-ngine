@@ -1,12 +1,15 @@
 package main
 
 import (
+	"math"
+
 	apputil "github.com/go3d/go-ngine/_examples/shared-utils"
 	ng "github.com/go3d/go-ngine/core"
 )
 
 var (
 	floor, box *ng.Node
+	fxPulse    *ng.FxEffect
 )
 
 func main() {
@@ -15,6 +18,7 @@ func main() {
 
 func onAppThread() {
 	apputil.HandleCamCtlKeys()
+	fxPulse.Ops.GetTex2D(1).SetMixWeight(0.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*4)))
 }
 
 func onWinThread() {
@@ -35,9 +39,16 @@ func setupScene() {
 		"cobbles": "tex/cobbles.png",
 		"dog":     "tex/dog.png",
 		"cat":     "tex/cat.png",
+		"gopher":  "tex/gopher.png",
+		"crate":   "tex/crate.jpeg",
 	})
+	fxPulse = ng.Core.Libs.Effects.AddNew("fx_pulse")
+	fxPulse.Ops.EnableTex2D(0).SetImageID("img_crate")
+	fxPulse.Ops.EnableTex2D(1).SetImageID("img_gopher").SetMixWeight(0.5)
+	fxPulse.UpdateRoutine()
 
 	ng.Core.Libs.Materials["mat_dog"].FaceEffects.ByTag["top"] = "fx_cat"
+	ng.Core.Libs.Materials["mat_dog"].FaceEffects.ByTag["front"] = "fx_pulse"
 
 	//	meshes / models
 	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(200, 200)); err != nil {

@@ -85,22 +85,22 @@ func (me *Node) renderSelf() {
 		if me.Rendering.skyMode {
 			Core.Rendering.states.DisableFaceCulling()
 			gl.DepthFunc(gl.LEQUAL)
-			gl.Uniform1i(thrRend.curProg.UnifLocs["uni_int_Sky"], 1)
+			thrRend.curProg.Uniform1i("uni_int_Sky", 1)
 		}
-		gl.UniformMatrix4fv(thrRend.curProg.UnifLocs["uni_mat4_VertexMatrix"], 1, gl.FALSE, &me.thrRend.camProjMats[thrRend.curCam][0])
-		me.model.render()
+		thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &me.thrRend.camProjMats[thrRend.curCam][0])
+		me.model.render(me)
 		if me.Rendering.skyMode {
-			gl.Uniform1i(thrRend.curProg.UnifLocs["uni_int_Sky"], 0)
+			thrRend.curProg.Uniform1i("uni_int_Sky", 0)
 			gl.DepthFunc(gl.LESS)
 		}
 	}
 }
 
-func (me *Model) render() {
-	me.mesh.render()
+func (me *Model) render(node *Node) {
+	me.mesh.render(node)
 }
 
-func (me *Mesh) render() {
+func (me *Mesh) render(node *Node) {
 	if thrRend.curMeshBuf != me.meshBuffer {
 		me.meshBuffer.use()
 	}
@@ -109,6 +109,8 @@ func (me *Mesh) render() {
 			thrRend.tmpEffect = thrRend.curMat.faceEffect(thrRend.tmpFace)
 			Core.useTechFx()
 			thrRend.curEffect.use()
+			me.meshBuffer.use()
+			thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &node.thrRend.camProjMats[thrRend.curCam][0])
 			gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(me.meshBufOffsetIndices+(int32(thrRend.tmpFidx)*3*4))), gl.Int(me.meshBufOffsetBaseIndex))
 		}
 	} else {

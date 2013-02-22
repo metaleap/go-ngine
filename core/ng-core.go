@@ -95,7 +95,7 @@ func (_ *EngineCore) initRendering() {
 		"Quad":  newRenderTechniqueQuad,
 		"Scene": newRenderTechniqueScene,
 	}
-	rend.Fx.KnownProcIDs = []string{"Tex2D", "TexCube", "Grayscale", "Orangify", "Colored", "Gamma"}
+	rend.Fx.KnownProcIDs = fxKnownProcIDs()
 	rend.Fx.procs = map[string]*fxProc{}
 	for _, shaderFunc := range rend.Fx.KnownProcIDs {
 		rend.Fx.procs[shaderFunc] = newFxProc(shaderFunc)

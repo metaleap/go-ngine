@@ -13,8 +13,9 @@ func (me *FxOps) Enable__N__(n int) *FxOp__N__ {
 }
 
 //	Convenience short-hand for me.Get("__N__", n).
-func (me FxOps) Get__N__(n int) *FxOp__N__ {
-	return me.Get("__N__", n).(*FxOp__N__)
+func (me FxOps) Get__N__(n int) (op *FxOp__N__) {
+	op, _ = me.Get("__N__", n).(*FxOp__N__)
+	return
 }
 
 //	Convenience short-hand for me.Toggle("__N__", n).

@@ -21,8 +21,8 @@ func AddScene(id string, mainCamScene bool, skyMeshID string) (me *ng.Scene) {
 		cubeMap.InitFrom[5].RefUrl = "tex/sky/south.png" // negative Z
 		fx := ng.Core.Libs.Effects.AddNew("fx_sky")
 		fx.Ops.EnableTexCube(0).SetImageID("img_sky")
-		fx.Ops.EnableColored(0)
-		fx.Ops.DisableColored(0)
+		fx.Ops.EnableCoords(0)
+		fx.Ops.DisableCoords(0)
 		fx.UpdateRoutine()
 		ng.Core.Libs.Materials.AddNew("mat_sky").DefaultEffectID = "fx_sky"
 
@@ -61,8 +61,8 @@ func AddTextureMaterials(idsUrls map[string]string) {
 		img.InitFrom.RefUrl = refUrl
 		fx := ng.Core.Libs.Effects.AddNew("fx_" + id)
 		fx.Ops.EnableTex2D(0).SetImageID("img_" + id)
-		fx.Ops.EnableColored(0)
-		fx.Ops.DisableColored(0)
+		fx.Ops.EnableCoords(0)
+		fx.Ops.DisableCoords(0)
 		fx.UpdateRoutine()
 		ng.Core.Libs.Materials.AddNew("mat_" + id).DefaultEffectID = "fx_" + id
 	}

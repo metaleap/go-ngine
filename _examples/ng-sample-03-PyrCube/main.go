@@ -24,6 +24,10 @@ func onAppThread() {
 	if !apputil.Paused {
 		apputil.HandleCamCtlKeys()
 
+		//	pulsating materials
+		ng.Core.Libs.Effects["fx_cat"].Ops.GetOrangify(0).SetMixWeight(0.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*4)))
+		ng.Core.Libs.Effects["fx_dog"].Ops.GetTex2D(1).SetMixWeight(0.5 + (0.5 * math.Cos(ng.Loop.Tick.Now*2)))
+
 		//	animate mesh nodes
 		pyr.Transform.Rot.Add3(-0.0005, -0.0005, 0)
 		pyr.Transform.Pos.Set(-1.5, 1.5+(2*math.Sin(ng.Loop.Tick.Now*3)), 7)
@@ -77,8 +81,15 @@ func setupExample_03_PyrCube() {
 	bufRest.Add(meshPyr)
 	meshPyr.Models.Default().SetMatID("mat_mosaic")
 	meshCube.Models.Default().SetMatID("mat_crate")
+
+	fx := ng.Core.Libs.Effects["fx_cat"]
+	fx.Ops.EnableOrangify(-1).SetMixWeight(0.5)
+	fx.UpdateRoutine()
+	fx = ng.Core.Libs.Effects["fx_dog"]
+	fx.Ops.EnableTex2D(1).SetImageID("img_gopher").SetMixWeight(0.5)
+	fx.UpdateRoutine()
 	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["front"] = "fx_dog"
-	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["back"] = "fx_gopher"
+	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["back"] = "fx_dog"
 	ng.Core.Libs.Materials["mat_mosaic"].FaceEffects.ByID["t3"] = "fx_cat"
 
 	//	scene
@@ -93,6 +104,6 @@ func setupExample_03_PyrCube() {
 
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()
-	camCtl.Pos.Y = 1.6
+	camCtl.Pos.X, camCtl.Pos.Y, camCtl.Pos.Z = -1, 1.6, -2
 	camCtl.EndUpdate()
 }

@@ -78,7 +78,7 @@ func glInit() (err error, badVer string) {
 
 func glcProgsMake(forceAll bool, forceSome ...string) (dur time.Duration, err error) {
 	dur, err = glc.progMan.MakeProgramsFromRawSources(forceAll, forceSome...)
-	if err == nil && len(Options.AppDir.Temp.ShaderSources) > 0 {
+	if len(Options.AppDir.Temp.ShaderSources) > 0 {
 		var src string
 		if len(forceSome) == 0 {
 			forceSome = glc.progMan.Names
