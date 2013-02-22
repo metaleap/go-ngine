@@ -1,7 +1,9 @@
 package exampleutils
 
 import (
+	"compress/flate"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -109,9 +111,22 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 
 	opt.AppDir.BasePath = AppDirBasePath()
 	opt.AppDir.Temp.BaseName = filepath.Join("_tmp", filepath.Base(os.Args[0]))
-	opt.AppDir.Temp.ShaderSources, opt.AppDir.Temp.Textures = "glsl", "tex"
+	opt.AppDir.Temp.ShaderSources, opt.AppDir.Temp.CachedTextures = "glsl", "tex"
 	// but for now, we don't need separate per-app tmp dirs:
 	opt.AppDir.Temp.BaseName = "_tmp"
+
+	if compressCachedTextures := true; compressCachedTextures {
+		opt.Textures.Storage.DiskCache.Compressor = func(w io.WriteCloser) (wc io.WriteCloser) {
+			var err error
+			if wc, err = flate.NewWriter(w, 9); err != nil {
+				panic(err)
+			}
+			return
+		}
+		opt.Textures.Storage.DiskCache.Decompressor = func(r io.ReadCloser) io.ReadCloser {
+			return flate.NewReader(r)
+		}
+	}
 
 	//	STEP 1: init go:ngine
 	err := ng.Init(winFullscreen)

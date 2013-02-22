@@ -1,6 +1,8 @@
 package core
 
 import (
+	"io"
+
 	ugl "github.com/go3d/go-opengl/util"
 )
 
@@ -11,9 +13,15 @@ type FxImage interface {
 }
 
 type FxImageStorage struct {
-	Bgra    bool
-	Cached  bool
-	UintRev bool
+	DiskCache struct {
+		Enabled      bool
+		Compressor   func(w io.WriteCloser) io.WriteCloser
+		Decompressor func(r io.ReadCloser) io.ReadCloser
+	}
+	Gpu struct {
+		Bgra    bool
+		UintRev bool
+	}
 }
 
 type FxImageBase struct {
@@ -34,8 +42,8 @@ func (me *FxImageBase) dispose() {
 
 func (me *FxImageBase) init(glTex *ugl.TextureBase) {
 	me.glTex = glTex
-	me.Storage = Options.Textures.FxImageStorage
-	me.PreProcess.ToLinear, me.PreProcess.FlipY, me.PreProcess.ToBgra = true, true, me.Storage.Bgra
+	me.Storage = Options.Textures.Storage
+	me.PreProcess.ToLinear, me.PreProcess.FlipY, me.PreProcess.ToBgra = true, true, me.Storage.Gpu.Bgra
 }
 
 func (me *FxImageBase) gpuSync(tex ugl.Texture) (err error) {

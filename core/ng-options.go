@@ -1,6 +1,7 @@
 package core
 
 import (
+	"io"
 	"runtime"
 
 	ugl "github.com/go3d/go-opengl/util"
@@ -35,9 +36,9 @@ type EngineOptions struct {
 		BasePath string
 
 		Temp struct {
-			BaseName      string
-			ShaderSources string
-			Textures      string
+			BaseName       string
+			ShaderSources  string
+			CachedTextures string
 		}
 	}
 
@@ -127,13 +128,16 @@ type EngineOptions struct {
 	}
 
 	Textures struct {
-		FxImageStorage
+		Storage FxImageStorage
 	}
 }
 
 func init() {
 	o := &Options
-	o.Textures.UintRev, o.Textures.Bgra, o.Textures.Cached = true, true, true
+	o.Textures.Storage.Gpu.UintRev, o.Textures.Storage.Gpu.Bgra = true, true
+	o.Textures.Storage.DiskCache.Enabled = true
+	o.Textures.Storage.DiskCache.Compressor = func(w io.WriteCloser) io.WriteCloser { return w }
+	o.Textures.Storage.DiskCache.Decompressor = func(r io.ReadCloser) io.ReadCloser { return r }
 	o.Cameras.DefaultControllerParams = NewControllerParams()
 	o.Cameras.PerspectiveDefaults.FovY, o.Cameras.PerspectiveDefaults.ZFar, o.Cameras.PerspectiveDefaults.ZNear = 37.8493, 30000, 0.3
 	o.Loop.GcEvery.Sec = true

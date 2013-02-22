@@ -20,19 +20,22 @@ type fxImageCached struct {
 	src                         os.FileInfo
 }
 
-func newFxImageCached(init *FxImageInitFrom, fxImg *FxImageBase) (me *fxImageCached, err error) {
-	var dst os.FileInfo
+func newFxImageCached(init *FxImageInitFrom, fxImg *FxImageBase) (me *fxImageCached) {
+	var (
+		dst os.FileInfo
+		err error
+	)
 	me = &fxImageCached{
-		needImg: true, dirPath: Core.fileIO.resolveLocalFilePath(filepath.Join(Options.AppDir.Temp.BaseName, Options.AppDir.Temp.Textures)),
-		fileName: ugo.Hash(fnv.New64a(), strf("%s_%t_%t_%t_%t", init.RefUrl, fxImg.PreProcess.FlipY, fxImg.PreProcess.ToBgra, fxImg.PreProcess.ToLinear, fxImg.Storage.Bgra)),
+		needImg: true, dirPath: Core.fileIO.resolveLocalFilePath(filepath.Join(Options.AppDir.Temp.BaseName, Options.AppDir.Temp.CachedTextures)),
+		fileName: ugo.Hash(fnv.New64a(), strf("%s_%t_%t_%t_%t", init.RefUrl, fxImg.PreProcess.FlipY, fxImg.PreProcess.ToBgra, fxImg.PreProcess.ToLinear, fxImg.Storage.Gpu.Bgra)),
 	}
 	me.fullPath = filepath.Join(me.dirPath, me.fileName)
 
 	if me.src, err = os.Stat(Core.fileIO.resolveLocalFilePath(init.RefUrl)); err != nil {
-		me.src, err = nil, nil
+		me.src = nil
 	}
 	if dst, err = os.Stat(me.fullPath); err != nil {
-		err, dst = nil, nil
+		dst = nil
 	}
 
 	// if the cached-file exists -- can we use it?
@@ -43,13 +46,15 @@ func newFxImageCached(init *FxImageInitFrom, fxImg *FxImageBase) (me *fxImageCac
 			if file, err = os.Open(me.fullPath); err == nil {
 				// ceched-file can be opened: check.
 				defer file.Close()
-				if err = binary.Read(file, binary.LittleEndian, &me.bounds); err == nil {
+				unpacker := fxImg.Storage.DiskCache.Decompressor(file)
+				defer unpacker.Close()
+				if err = binary.Read(unpacker, binary.LittleEndian, &me.bounds); err == nil {
 					var meta [3]int64
-					if err = binary.Read(file, binary.LittleEndian, &meta); err == nil {
+					if err = binary.Read(unpacker, binary.LittleEndian, &meta); err == nil {
 						if me.src == nil || (me.src.ModTime().UnixNano() == meta[1] && me.src.Size() == meta[2]) {
 							// source file size and mod-time matches those remembered in cached-file: check.
 							if me.pix = make([]byte, meta[0]); meta[0] > 0 {
-								if err = binary.Read(file, binary.LittleEndian, me.pix); err == nil {
+								if err = binary.Read(unpacker, binary.LittleEndian, me.pix); err == nil {
 									// no need to load and process the source file, cached-file loaded successfully
 									me.needImg = false
 								}
@@ -82,16 +87,18 @@ func (me *fxImageCached) Pix() []byte {
 	return me.pix
 }
 
-func (me *fxImageCached) setImg(img image.Image) (err error) {
+func (me *fxImageCached) setImg(img image.Image, fxImg *FxImageBase) (err error) {
 	me.bounds[0], me.bounds[1] = uint64(img.Bounds().Dx()), uint64(img.Bounds().Dy())
 	_, me.pix = ugfx.CloneImage(img, true)
 	if len(me.fullPath) > 0 {
 		var file *os.File
 		if file, err = os.Create(me.fullPath); err == nil {
 			defer file.Close()
-			if err = binary.Write(file, binary.LittleEndian, &me.bounds); err == nil {
-				if err = binary.Write(file, binary.LittleEndian, [3]int64{int64(len(me.pix)), me.src.ModTime().UnixNano(), me.src.Size()}); err == nil {
-					err = binary.Write(file, binary.LittleEndian, me.pix)
+			packer := fxImg.Storage.DiskCache.Compressor(file)
+			defer packer.Close()
+			if err = binary.Write(packer, binary.LittleEndian, &me.bounds); err == nil {
+				if err = binary.Write(packer, binary.LittleEndian, [3]int64{int64(len(me.pix)), me.src.ModTime().UnixNano(), me.src.Size()}); err == nil {
+					err = binary.Write(packer, binary.LittleEndian, me.pix)
 				}
 			}
 		}

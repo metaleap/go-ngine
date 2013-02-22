@@ -27,7 +27,7 @@ func (me *FxImageCube) dispose() {
 }
 
 func (me *FxImageCube) GpuSync() (err error) {
-	if err = me.glTex.PrepFromImages(me.Storage.Bgra, me.Storage.UintRev, me.images...); err == nil {
+	if err = me.glTex.PrepFromImages(me.Storage.Gpu.Bgra, me.Storage.Gpu.UintRev, me.images...); err == nil {
 		err = me.gpuSync(&me.glTex)
 	}
 	return
