@@ -91,15 +91,6 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 				
 				<dd><a href="#PrintPostLoopSummary">func PrintPostLoopSummary()</a></dd>
 			
-				
-				<dd><a href="#ToggleBatching">func ToggleBatching()</a></dd>
-			
-				
-				<dd><a href="#ToggleRetro">func ToggleRetro()</a></dd>
-			
-				
-				<dd><a href="#ToggleTexturing">func ToggleTexturing()</a></dd>
-			
 			
 				
 				<dd><a href="#Gui2D">type Gui2D</a></dd>
@@ -218,11 +209,6 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 )</pre>
 				
 			
-				<pre>var (
-    SkyNode *ng.Node
-)</pre>
-				
-			
 		
 		
 			
@@ -249,7 +235,7 @@ the specified ID, and returns it.
 		
 			
 			
-			<h2 id="AddTextureMaterials">func <a href="/target/assets.go?s=2519:2570#L48">AddTextureMaterials</a></h2>
+			<h2 id="AddTextureMaterials">func <a href="/target/assets.go?s=1814:1865#L33">AddTextureMaterials</a></h2>
 			<pre>func AddTextureMaterials(idsUrls map[string]string)</pre>
 			<p>
 Sets up textures and associated effects/materials with the specified IDs and image URLs.
@@ -319,7 +305,7 @@ Called by each example-app&#39;s func main(). Initializes go:ngine, sets SceneCa
 		
 			
 			
-			<h2 id="PauseResume">func <a href="/target/misc.go?s=266:284#L7">PauseResume</a></h2>
+			<h2 id="PauseResume">func <a href="/target/misc.go?s=239:257#L3">PauseResume</a></h2>
 			<pre>func PauseResume()</pre>
 			<p>
 Pauses rendering or resumes from the current pause.
@@ -330,37 +316,12 @@ When paused, the frame last rendered is frozen and rendered in a gray-scale effe
 		
 			
 			
-			<h2 id="PrintPostLoopSummary">func <a href="/target/misc.go?s=665:692#L23">PrintPostLoopSummary</a></h2>
+			<h2 id="PrintPostLoopSummary">func <a href="/target/misc.go?s=638:665#L19">PrintPostLoopSummary</a></h2>
 			<pre>func PrintPostLoopSummary()</pre>
 			<p>
 Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent example app exits.
 </p>
 
-			
-		
-			
-			
-			<h2 id="ToggleBatching">func <a href="/target/misc.go?s=2355:2376#L53">ToggleBatching</a></h2>
-			<pre>func ToggleBatching()</pre>
-			
-			
-		
-			
-			
-			<h2 id="ToggleRetro">func <a href="/target/misc.go?s=2675:2693#L64">ToggleRetro</a></h2>
-			<pre>func ToggleRetro()</pre>
-			<p>
-Toggles &#34;retro mode&#34; for the example app.
-If retro is on, the resolution of the main canvas is 1/4th of the window resolution.
-</p>
-
-			
-		
-			
-			
-			<h2 id="ToggleTexturing">func <a href="/target/misc.go?s=2858:2880#L74">ToggleTexturing</a></h2>
-			<pre>func ToggleTexturing()</pre>
-			
 			
 		
 		
@@ -399,7 +360,7 @@ Adds a &#34;2D camera&#34; to the main render canvas, and sets up Cat and Dog.
 		
 			
 			
-			<h2 id="RearMirror">type <a href="/target/rear-mirror.go?s=203:245#L1">RearMirror</a></h2>
+			<h2 id="RearMirror">type <a href="/target/rear-mirror.go?s=259:301#L1">RearMirror</a></h2>
 			<pre>type RearMirror struct {
     Cam *ng.Camera
 }</pre>
@@ -412,16 +373,19 @@ A rather simple &#34;rear-view mirror&#34; camera that can be added to the examp
 
 			
 				<pre>var RearView RearMirror</pre>
+				<p>
+Not actively used unless RearView.Setup() is called.
+</p>
+
+			
+
+			
+
+			
+
+			
 				
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="RearMirror.OnApp">func (*RearMirror) <a href="/target/rear-mirror.go?s=369:398#L5">OnApp</a></h3>
+				<h3 id="RearMirror.OnApp">func (*RearMirror) <a href="/target/rear-mirror.go?s=425:454#L6">OnApp</a></h3>
 				<pre>func (me *RearMirror) OnApp()</pre>
 				<p>
 Copies the main camera&#39;s current position and direction and reverses its by 180 degrees to achieve a rear-view mirror.
@@ -431,7 +395,7 @@ Copies the main camera&#39;s current position and direction and reverses its by 
 				
 			
 				
-				<h3 id="RearMirror.OnWin">func (*RearMirror) <a href="/target/rear-mirror.go?s=597:626#L13">OnWin</a></h3>
+				<h3 id="RearMirror.OnWin">func (*RearMirror) <a href="/target/rear-mirror.go?s=653:682#L14">OnWin</a></h3>
 				<pre>func (me *RearMirror) OnWin()</pre>
 				<p>
 Syncs the rear-view camera&#39;s render states with the main camera&#39;s.
@@ -441,7 +405,7 @@ Syncs the rear-view camera&#39;s render states with the main camera&#39;s.
 				
 			
 				
-				<h3 id="RearMirror.Setup">func (*RearMirror) <a href="/target/rear-mirror.go?s=821:850#L18">Setup</a></h3>
+				<h3 id="RearMirror.Setup">func (*RearMirror) <a href="/target/rear-mirror.go?s=877:906#L19">Setup</a></h3>
 				<pre>func (me *RearMirror) Setup()</pre>
 				<p>
 Adds the rear-view mirror&#39;s camera to the main render canvas, at 1/3rd of its width and 1/4th of its height.
@@ -451,9 +415,12 @@ Adds the rear-view mirror&#39;s camera to the main render canvas, at 1/3rd of it
 				
 			
 				
-				<h3 id="RearMirror.Toggle">func (*RearMirror) <a href="/target/rear-mirror.go?s=1045:1075#L25">Toggle</a></h3>
+				<h3 id="RearMirror.Toggle">func (*RearMirror) <a href="/target/rear-mirror.go?s=1147:1177#L27">Toggle</a></h3>
 				<pre>func (me *RearMirror) Toggle()</pre>
-				
+				<p>
+Enables or disables this rear-view mirror.
+</p>
+
 				
 				
 			

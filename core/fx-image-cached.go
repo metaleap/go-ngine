@@ -2,6 +2,7 @@ package core
 
 import (
 	"encoding/binary"
+	"hash/fnv"
 	"image"
 	"image/color"
 	"os"
@@ -11,7 +12,7 @@ import (
 	ugfx "github.com/metaleap/go-util/gfx"
 )
 
-type fxImageRaw struct {
+type fxImageCached struct {
 	pix                         []byte
 	bounds                      [2]uint64
 	needImg                     bool
@@ -19,11 +20,11 @@ type fxImageRaw struct {
 	src                         os.FileInfo
 }
 
-func newFxImageRaw(init *FxImageInitFrom, fxImg *FxImageBase) (me *fxImageRaw, err error) {
+func newFxImageCached(init *FxImageInitFrom, fxImg *FxImageBase) (me *fxImageCached, err error) {
 	var dst os.FileInfo
-	me = &fxImageRaw{
+	me = &fxImageCached{
 		needImg: true, dirPath: Core.fileIO.resolveLocalFilePath(filepath.Join(Options.AppDir.Temp.BaseName, Options.AppDir.Temp.Textures)),
-		fileName:/*filepath.Base(init.RefUrl) + "-" +*/ ugo.Hash(strf("%s_%t_%t_%t_%t", init.RefUrl, fxImg.PreProcess.FlipY, fxImg.PreProcess.ToBgra, fxImg.PreProcess.ToLinear, fxImg.Storage.Bgra)),
+		fileName: ugo.Hash(fnv.New64a(), strf("%s_%t_%t_%t_%t", init.RefUrl, fxImg.PreProcess.FlipY, fxImg.PreProcess.ToBgra, fxImg.PreProcess.ToLinear, fxImg.Storage.Bgra)),
 	}
 	me.fullPath = filepath.Join(me.dirPath, me.fileName)
 
@@ -62,26 +63,26 @@ func newFxImageRaw(init *FxImageInitFrom, fxImg *FxImageBase) (me *fxImageRaw, e
 	return
 }
 
-func (me *fxImageRaw) At(x, y int) (col color.Color) {
-	// dirty, but this part of *fxImageRaw implementing image.Image isn't ever called currently, anyway
+func (me *fxImageCached) At(x, y int) (col color.Color) {
+	// dirty, but this part of *fxImageCached implementing image.Image isn't ever called currently, anyway
 	return nil
 }
 
-func (me *fxImageRaw) Bounds() (r image.Rectangle) {
+func (me *fxImageCached) Bounds() (r image.Rectangle) {
 	r.Max.X, r.Max.Y = int(me.bounds[0]), int(me.bounds[1])
 	return
 }
 
-func (me *fxImageRaw) ColorModel() color.Model {
-	// dirty, but this part of *fxImageRaw implementing image.Image isn't ever called currently, anyway
+func (me *fxImageCached) ColorModel() color.Model {
+	// dirty, but this part of *fxImageCached implementing image.Image isn't ever called currently, anyway
 	return nil
 }
 
-func (me *fxImageRaw) Pix() []byte {
+func (me *fxImageCached) Pix() []byte {
 	return me.pix
 }
 
-func (me *fxImageRaw) setImg(img image.Image) (err error) {
+func (me *fxImageCached) setImg(img image.Image) (err error) {
 	me.bounds[0], me.bounds[1] = uint64(img.Bounds().Dx()), uint64(img.Bounds().Dy())
 	_, me.pix = ugfx.CloneImage(img, true)
 	if len(me.fullPath) > 0 {

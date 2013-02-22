@@ -8,10 +8,6 @@ import (
 	ng "github.com/go3d/go-ngine/core"
 )
 
-var (
-	SkyNode *ng.Node
-)
-
 //	Pauses rendering or resumes from the current pause.
 //	When paused, the frame last rendered is frozen and rendered in a gray-scale effect.
 func PauseResume() {
@@ -60,7 +56,8 @@ func PrintPostLoopSummary() {
 	fmt.Printf("CGO calls: pre-loop init %v, loop %v (avg. %v/frame)\n\n", numCgo.preLoop, numCgo.postLoop-numCgo.preLoop, cgoPerFrame)
 }
 
-func ToggleBatching() {
+//	Experimental.
+func toggleBatching() {
 	if SceneCam != nil {
 		SceneCam.RenderTechniqueScene().ToggleBatching()
 	}
@@ -71,7 +68,7 @@ func ToggleBatching() {
 
 //	Toggles "retro mode" for the example app.
 //	If retro is on, the resolution of the main canvas is 1/4th of the window resolution.
-func ToggleRetro() {
+func toggleRetro() {
 	if SceneCanvas != nil && !Paused {
 		if retro = !retro; retro {
 			SceneCanvas.SetSize(true, 0.25, 0.25)
@@ -81,7 +78,7 @@ func ToggleRetro() {
 	}
 }
 
-func ToggleTexturing() {
+func toggleTexturing() {
 	for _, fx := range ng.Core.Libs.Effects {
 		fx.Ops.ToggleCoords(-1)
 		fx.Ops.Toggle("Tex*", -1)

@@ -16,10 +16,10 @@ type FxImageInitFrom struct {
 }
 
 func (me *FxImageInitFrom) loadImage(fxImg *FxImageBase) (img image.Image, err error) {
-	var rawImg *fxImageRaw
+	var rawImg *fxImageCached
 	prov, arg, remote := me.provider()
 	if fxImg.needPreproc() && fxImg.Storage.Cached && (!remote) && len(me.RefUrl) > 0 && len(Options.AppDir.Temp.Textures) > 0 {
-		rawImg, err = newFxImageRaw(me, fxImg)
+		rawImg, err = newFxImageCached(me, fxImg)
 	}
 	if err == nil && (rawImg == nil || rawImg.needImg) {
 		img, err = prov(arg)

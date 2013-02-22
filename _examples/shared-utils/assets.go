@@ -32,21 +32,6 @@ func AddScene(id string, mainCamScene bool, skyMeshID string) (me *ng.Scene) {
 	return
 }
 
-/*
-//	Sets up plain-color effects/materials with the specified IDs.
-//	For each ID (such as "foo" and "bar"):
-//	-	creates an ng.FxEffect with ID "fx_{ID}" (ie. "fx_foo" and "fx_bar") and adds it
-//	to ng.Core.Libs.Effects; its Diffuse field pointing to the color
-//	-	creates an ng.FxMaterial with ID "mat_{ID}" (ie. "mat_foo" and "mat_bar") and
-//	adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffect.
-// func AddColorMaterials(idsColors map[string][]float64) {
-// 	for id, col := range idsColors {
-// 		ng.Core.Libs.Effects.AddNew("fx_" + id).OldDiffuse = ng.NewFxColor(col...)
-// 		ng.Core.Libs.Materials.AddNew("mat_" + id).DefaultEffectID = "fx_" + id
-// 	}
-// }
-*/
-
 //	Sets up textures and associated effects/materials with the specified IDs and image URLs.
 //	For each ID (such as "foo" and "bar"):
 //	-	creates an ng.FxImage2D with ID "img_{ID}" (ie. "img_foo" and "img_bar") and

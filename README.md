@@ -13,6 +13,7 @@ Current state:
 - Permutated fx-shaders / uber-shader system (fairly simple-minded for now)
 - post-processing effects -- but only a few very simple ones implemented yet (gamma, grayscale...)
 - new: per-face (rather than just per-model) materials/effects
+- new: multi-texturing (specifically, multiple fx of the same type in an effect)
 - new: texture disk cache. Feed the go:ngine normal un-processed texture images -- it fetches instead from a temp dir (or creates in there only if missing) a file containing its equivalent, but readily pre-processed & re-aligned pixel data.
 
 Coming up soon:

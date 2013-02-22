@@ -77,13 +77,13 @@ func CheckAndHandleToggleKeys() {
 		SceneCam.Rendering.States.FaceCulling = !SceneCam.Rendering.States.FaceCulling
 	}
 	if in.KeyToggled(glfw.KeyF3) {
-		ToggleRetro()
+		toggleRetro()
 	}
 	if in.KeyToggled(glfw.KeyF4) {
-		ToggleTexturing()
+		toggleTexturing()
 	}
 	if in.KeyToggled(glfw.KeyF5) {
-		ToggleBatching()
+		toggleBatching()
 	}
 	if in.KeysPressedAll2(glfw.KeyLctrl, 'Q') {
 		ng.Loop.Running = false

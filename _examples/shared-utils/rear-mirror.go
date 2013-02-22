@@ -4,6 +4,7 @@ import (
 	ng "github.com/go3d/go-ngine/core"
 )
 
+//	Not actively used unless RearView.Setup() is called.
 var RearView RearMirror
 
 //	A rather simple "rear-view mirror" camera that can be added to the example-program's main render canvas.
@@ -32,6 +33,7 @@ func (me *RearMirror) Setup() {
 	me.Cam.Perspective.FovY *= 2
 }
 
+//	Enables or disables this rear-view mirror.
 func (me *RearMirror) Toggle() {
 	me.Cam.Enabled = !me.Cam.Enabled
 }
