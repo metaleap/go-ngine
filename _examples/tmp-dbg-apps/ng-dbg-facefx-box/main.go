@@ -18,12 +18,12 @@ func main() {
 
 func onAppThread() {
 	apputil.HandleCamCtlKeys()
-	fxPulse.Ops.GetTex2D(1).SetMixWeight(0.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*4)))
 }
 
 func onWinThread() {
 	apputil.CheckCamCtlKeys()
 	apputil.CheckAndHandleToggleKeys()
+	fxPulse.Ops.GetTex2D(1).SetMixWeight(0.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*4)))
 }
 
 func setupScene() {

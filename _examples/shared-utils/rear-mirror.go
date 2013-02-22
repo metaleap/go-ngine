@@ -31,6 +31,7 @@ func (me *RearMirror) Setup() {
 	me.Cam.Rendering.States.ClearColor.Set(0.125, 0.25, 0.45, 1)
 	me.Cam.Rendering.Viewport.SetRel(0.66, 0.73, 0.33, 0.25)
 	me.Cam.Perspective.FovY *= 2
+	me.Cam.Rendering.FxOps.EnableOrangify(-1).SetMixWeight(0.5)
 }
 
 //	Enables or disables this rear-view mirror.

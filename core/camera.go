@@ -44,6 +44,8 @@ type Camera struct {
 		States ugl.RenderStatesBag
 
 		Technique RenderTechnique
+
+		FxOps FxOps
 	}
 
 	scene *Scene

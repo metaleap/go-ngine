@@ -23,7 +23,6 @@ func newUberShaderFunc(name, rawSrc string) (me *uberShaderFunc) {
 type uberShader struct {
 	rawSources, tmpq map[string]string
 	tmpAtts, tmpUnis []string
-	opIndices        map[FxOp]int
 	pname            string
 	funcs            struct {
 		// compute  map[string]*uberShaderFunc
@@ -162,11 +161,10 @@ func (me *uberShader) ensureProg() {
 
 func (me *uberShader) setShaderSources(vertTech string, fragFx *FxEffect) (err error) {
 	fragInputs := map[string]bool{}
-	me.opIndices, me.tmpq = map[FxOp]int{}, map[string]string{}
+	me.tmpq = map[string]string{}
 	if err = me.setShaderSourceFrag(fragFx, fragInputs); err == nil {
 		err = me.setShaderSourceVert(vertTech, fragInputs)
 	}
-	me.opIndices = nil
 	return
 }
 
@@ -219,35 +217,39 @@ func (me *uberShader) setShaderSourceFrag(fx *FxEffect, inputs map[string]bool) 
 		srcBody, srcHead ustr.Buffer
 		shid             string
 		op               FxOp
+		ops              FxOps
 		shader           *fxProc
 		shFunc           *uberShaderFunc
 	)
 	srcHead.Writeln("out vec3 out_Color;")
-	opc, opCounts := 0, map[string]int{}
-	for _, op = range fx.Ops {
-		if op.Enabled() {
-			opc = opCounts[op.ProcID()]
-			me.opIndices[op] = opc
-			opCounts[op.ProcID()] = opc + 1
+	opc, opCounts, allOps := 0, map[string]int{}, []FxOps{fx.Ops, fx.OpsX}
+	for _, ops = range allOps {
+		for _, op = range ops {
+			if op.Enabled() {
+				opc = opCounts[op.ProcID()]
+				opCounts[op.ProcID()] = opc + 1
+			}
 		}
 	}
 	opCounts = nil
 
-	for _, op = range fx.Ops {
-		if op.Enabled() {
-			if shader = Core.Rendering.Fx.procs[op.ProcID()]; shader == nil {
-				err = errf("uberShader.setShaderSourceFrag('%s') -- unknown fxProc ID '%s'", me.pname, op.ProcID())
-				return
-			}
-			if shFunc = me.funcs.fragment[shader.FuncName]; shFunc == nil {
-				err = errf("uberShader.setShaderSourceFrag('%s') -- unknown fragment func '%s'", me.pname, shader.FuncName)
-				return
-			}
-			me.setShaderSourceEnsureFunc(op, shFunc, &srcBody, inputs)
-			inputs[op.unifName("float", "MixWeight")] = true
-			for shid, _ = range inputs {
-				if me.tmpq[shid] = op.qualifiers(shid); len(me.tmpq[shid]) > 0 {
-					me.tmpq[shid] = me.tmpq[shid] + " "
+	for _, ops = range allOps {
+		for _, op = range ops {
+			if op.Enabled() {
+				if shader = Core.Rendering.Fx.procs[op.ProcID()]; shader == nil {
+					err = errf("uberShader.setShaderSourceFrag('%s') -- unknown fxProc ID '%s'", me.pname, op.ProcID())
+					return
+				}
+				if shFunc = me.funcs.fragment[shader.FuncName]; shFunc == nil {
+					err = errf("uberShader.setShaderSourceFrag('%s') -- unknown fragment func '%s'", me.pname, shader.FuncName)
+					return
+				}
+				me.setShaderSourceEnsureFunc(op, shFunc, &srcBody, inputs)
+				inputs[op.unifName("float", "MixWeight")] = true
+				for shid, _ = range inputs {
+					if me.tmpq[shid] = op.qualifiers(shid); len(me.tmpq[shid]) > 0 {
+						me.tmpq[shid] = me.tmpq[shid] + " "
+					}
 				}
 			}
 		}
@@ -264,10 +266,12 @@ func (me *uberShader) setShaderSourceFrag(fx *FxEffect, inputs map[string]bool) 
 	}
 	srcBody.Writeln("void main () {")
 	srcBody.Writeln("\tvec3 vCol = vec3(0);")
-	for _, op = range fx.Ops {
-		if op.Enabled() {
-			shFunc = me.funcs.fragment[Core.Rendering.Fx.procs[op.ProcID()].FuncName]
-			srcBody.Writeln("\tvCol = mix(vCol, %s%d(vCol), %s);", shFunc.name, op.ProcIndex(), op.unifName("float", "MixWeight"))
+	for _, ops = range allOps {
+		for _, op = range ops {
+			if op.Enabled() {
+				shFunc = me.funcs.fragment[Core.Rendering.Fx.procs[op.ProcID()].FuncName]
+				srcBody.Writeln("\tvCol = mix(vCol, %s%d(vCol), %s);", shFunc.name, op.ProcIndex(), op.unifName("float", "MixWeight"))
+			}
 		}
 	}
 	srcBody.Writeln("\tout_Color = vCol;")

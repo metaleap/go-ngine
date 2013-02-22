@@ -18,15 +18,15 @@ func main() {
 func onWinThread() {
 	apputil.CheckCamCtlKeys()
 	apputil.CheckAndHandleToggleKeys()
+
+	//	pulsating materials
+	ng.Core.Libs.Effects["fx_cat"].Ops.GetOrangify(0).SetMixWeight(0.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*4)))
+	ng.Core.Libs.Effects["fx_dog"].Ops.GetTex2D(1).SetMixWeight(0.5 + (0.5 * math.Cos(ng.Loop.Tick.Now*2)))
 }
 
 func onAppThread() {
 	if !apputil.Paused {
 		apputil.HandleCamCtlKeys()
-
-		//	pulsating materials
-		ng.Core.Libs.Effects["fx_cat"].Ops.GetOrangify(0).SetMixWeight(0.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*4)))
-		ng.Core.Libs.Effects["fx_dog"].Ops.GetTex2D(1).SetMixWeight(0.5 + (0.5 * math.Cos(ng.Loop.Tick.Now*2)))
 
 		//	animate mesh nodes
 		pyr.Transform.Rot.Add3(-0.0005, -0.0005, 0)

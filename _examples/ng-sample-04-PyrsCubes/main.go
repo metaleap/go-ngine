@@ -32,6 +32,10 @@ func onWinThread() {
 		apputil.RearView.Toggle()
 	}
 	apputil.RearView.OnWin()
+
+	//	pulsating fx anims
+	ng.Core.Libs.Effects["fx_mosaic"].Ops.GetTex2D(1).SetMixWeight(0.5 + (0.5 * math.Cos(ng.Loop.Tick.Now*2)))
+	apputil.RearView.Cam.Rendering.FxOps.GetOrangify(0).SetMixWeight(0.75 + (0.25 * math.Sin(ng.Loop.Tick.Now*4)))
 }
 
 func onAppThread() {
@@ -42,7 +46,7 @@ func onAppThread() {
 	apputil.HandleCamCtlKeys()
 	apputil.RearView.OnApp()
 
-	//	animate mesh nodes
+	//	node geometry anims
 	gui2d.Dog.Transform.Rot.Add3(0, -0.005, 0.001)
 	gui2d.Dog.Transform.ApplyMatrices()
 	gui2d.Cat.Transform.Rot.X += 0.003
@@ -89,7 +93,7 @@ func setupExample_04_PyrsCubes() {
 	})
 
 	fx := ng.Core.Libs.Effects["fx_mosaic"]
-	fx.Ops.EnableOrangify(-1)
+	fx.Ops.EnableTex2D(1).SetImageID("img_gopher").SetMixWeight(0.5)
 	fx.UpdateRoutine()
 
 	if err = gui2d.Setup(); err != nil {

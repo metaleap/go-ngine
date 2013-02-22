@@ -183,6 +183,8 @@ func (_ *EngineCore) useTechFx() {
 	if thrRend.curTech != thrRend.tmpTech || thrRend.curEffect != thrRend.tmpEffect {
 		thrRend.curMeshBuf = nil
 		thrRend.curTech = thrRend.tmpTech
+		thrRend.tmpEffect.OpsX = thrRend.curCam.Rendering.FxOps
+		thrRend.tmpEffect.UpdateRoutine()
 		thrRend.curEffect = thrRend.tmpEffect
 		glc.shaderMan.ensureProg()
 		Core.useProg()

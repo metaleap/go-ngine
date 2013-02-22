@@ -18,12 +18,12 @@ func main() {
 
 func onAppThread() {
 	apputil.HandleCamCtlKeys()
-	fxPulse.Ops.GetColor(1).SetMixWeight(0.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*4)))
 }
 
 func onWinThread() {
 	apputil.CheckCamCtlKeys()
 	apputil.CheckAndHandleToggleKeys()
+	fxPulse.Ops.GetColor(1).SetMixWeight(0.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*4)))
 }
 
 func setupScene() {
@@ -42,12 +42,12 @@ func setupScene() {
 	})
 
 	fxBlue := ng.Core.Libs.Effects.AddNew("fx_blue")
-	fxBlue.Ops.EnableColor(-1).SetColor(0, 0.33, 0.66)
+	fxBlue.Ops.EnableColor(-1).SetRgb(0, 0.33, 0.66)
 	fxBlue.Ops.EnableTex2D(-1).SetImageID("img_dog").SetMixWeight(0.33)
 	fxBlue.UpdateRoutine()
 
 	fxGreen := ng.Core.Libs.Effects.AddNew("fx_green")
-	fxGreen.Ops.EnableColor(-1).Color.Set(0, 0.66, 0.33)
+	fxGreen.Ops.EnableColor(-1).SetRgb(0, 0.66, 0.33)
 	fxGreen.UpdateRoutine()
 
 	fxCat := ng.Core.Libs.Effects["fx_cat"]
@@ -55,8 +55,8 @@ func setupScene() {
 	fxCat.UpdateRoutine()
 
 	fxPulse = ng.Core.Libs.Effects.AddNew("fx_pulse")
-	fxPulse.Ops.EnableColor(0).SetColor(0.6, 0, 0)
-	fxPulse.Ops.EnableColor(1).SetColor(0.9, 0.7, 0).SetMixWeight(0.25)
+	fxPulse.Ops.EnableColor(0).SetRgb(0.6, 0, 0)
+	fxPulse.Ops.EnableColor(1).SetRgb(0.9, 0.7, 0).SetMixWeight(0.25)
 	fxPulse.UpdateRoutine()
 
 	ng.Core.Libs.Materials["mat_dog"].DefaultEffectID = "fx_blue"

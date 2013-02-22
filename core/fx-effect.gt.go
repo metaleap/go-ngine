@@ -23,6 +23,8 @@ type FxEffect struct {
 	//	do not require this.
 	Ops FxOps
 
+	OpsX FxOps
+
 	KeepOpsLast []string
 
 	tmpOp      FxOp
@@ -58,24 +60,31 @@ func (me *FxEffect) UpdateRoutine() {
 		}
 	}
 
-	counts := map[string]int{}
-	for _, op = range me.Ops {
-		if op.Enabled() {
-			buf.Write("_%s", op.ProcID())
-			i = counts[op.ProcID()]
-			op.setProcIndex(i)
-			counts[op.ProcID()] = i + 1
+	counts := make(map[string]int, len(me.Ops)+len(me.OpsX))
+	for _, ops := range []FxOps{me.Ops, me.OpsX} {
+		for _, op = range ops {
+			if op.Enabled() {
+				buf.Write("_%s", op.ProcID())
+				i = counts[op.ProcID()]
+				op.setProcIndex(i)
+				counts[op.ProcID()] = i + 1
+			}
 		}
 	}
 	me.uberName = buf.String()
 	for id, _ = range Core.Rendering.KnownTechniques {
 		me.uberPnames[id] = strf("uber_%s%s", id, me.uberName)
 	}
-	thrRend.curEffect, thrRend.tmpEffect = nil, nil
+	thrRend.curEffect = nil
 }
 
 func (me *FxEffect) use() {
 	for _, me.tmpOp = range me.Ops {
+		if me.tmpOp.Enabled() {
+			me.tmpOp.use()
+		}
+	}
+	for _, me.tmpOp = range me.OpsX {
 		if me.tmpOp.Enabled() {
 			me.tmpOp.use()
 		}
