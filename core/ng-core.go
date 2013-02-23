@@ -108,6 +108,7 @@ func (_ *EngineCore) initRendering() {
 	rend.Canvases = append(RenderCanvases{}, newRenderCanvas(true, true, 1, 1))
 	if quadFx := &rend.Canvases.Final().AddNewCameraQuad().RenderTechniqueQuad().Effect; Options.Initialization.DefaultCanvas.GammaViaShader {
 		quadFx.Ops.EnableGamma(-1)
+		quadFx.KeepOpsLast = append(quadFx.KeepOpsLast, "Gamma")
 		quadFx.UpdateRoutine()
 	}
 }

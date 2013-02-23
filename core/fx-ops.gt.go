@@ -227,7 +227,7 @@ func (me *FxOpTex2D) SetImageID(imageID string) *FxOpTex2D {
 
 func (me *FxOpTex2D) use() {
 	me.fxOpTexBase.use()
-	gl.ActiveTexture(gl.Enum(gl.TEXTURE0 + me.procIndex))
+	ugl.Util.ActiveTexture(me.procIndex)
 	me.glTex.Bind()
 	thrRend.curProg.Uniform1i(me.unifName("sampler2D", "Img"), gl.Int(me.procIndex))
 }
