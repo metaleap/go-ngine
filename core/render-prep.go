@@ -21,9 +21,9 @@ func (me *Camera) onPrep() {
 		if thrPrep.curScene = me.scene; thrPrep.curScene != nil {
 			thrPrep.curScene.RootNode.onPrep()
 			thrPrep.curScene.RootNode.Walk(me.thrPrep.onPrepNode)
-			if thrPrep.curTechScene = me.RenderTechniqueScene(); thrPrep.curTechScene != nil && thrPrep.curTechScene.Batch.Enabled {
-				thrPrep.curTechScene.Batch.onPrep()
-			}
+			// if thrPrep.curTechScene = me.RenderTechniqueScene(); thrPrep.curTechScene != nil && thrPrep.curTechScene.Batch.Enabled {
+			// 	thrPrep.curTechScene.Batch.onPrep()
+			// }
 		}
 	}
 }
@@ -40,7 +40,7 @@ func (me *Camera) onPrepNode(node *Node) {
 		} else {
 			node.thrPrep.camProjMats[me].CopyFrom(&node.thrPrep.matModelView)
 		}
-		thrPrep.nodePreBatch.prepNode(node)
+		// thrPrep.nodePreBatch.prepNode(node)
 	}
 }
 

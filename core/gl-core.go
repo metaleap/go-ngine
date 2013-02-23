@@ -84,12 +84,12 @@ func glcProgsMake(forceAll bool, forceSome ...string) (dur time.Duration, err er
 			forceSome = glc.progMan.Names
 		}
 		for ext, sources := range map[string]map[string]string{
-			".glcs": glc.progMan.FinalRealSources.Compute,
-			".glfs": glc.progMan.FinalRealSources.Fragment,
-			".glgs": glc.progMan.FinalRealSources.Geometry,
-			".glhs": glc.progMan.FinalRealSources.TessCtl,
-			".glds": glc.progMan.FinalRealSources.TessEval,
-			".glvs": glc.progMan.FinalRealSources.Vertex,
+			".glcs": glc.progMan.Sources.Out.Compute,
+			".glfs": glc.progMan.Sources.Out.Fragment,
+			".glgs": glc.progMan.Sources.Out.Geometry,
+			".glhs": glc.progMan.Sources.Out.TessCtl,
+			".glds": glc.progMan.Sources.Out.TessEval,
+			".glvs": glc.progMan.Sources.Out.Vertex,
 		} {
 			for _, progName := range forceSome {
 				if src = sources[progName]; len(src) > 0 {

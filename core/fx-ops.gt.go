@@ -85,7 +85,9 @@ type fxOpBase struct {
 
 func (me *fxOpBase) init(procID string, procIndex int) {
 	me.procID = procID
-	me.setProcIndex(procIndex)
+	if procIndex >= 0 {
+		me.setProcIndex(procIndex)
+	}
 	me.weight = 1
 }
 
@@ -194,19 +196,28 @@ func (me *FxOpColor) use() {
 
 type fxOpTexBase struct {
 	fxOpBase
+	glUnitU gl.Uint
+	glUnitE gl.Enum
 
 	//	The sampler to be used.
 	Sampler *ugl.Sampler
 }
 
 func (me *fxOpTexBase) init(s string, i int) {
-	me.fxOpBase.init(s, i)
+	me.fxOpBase.init(s, -1)
 	me.Sampler = &Core.Rendering.Fx.Samplers.FullFilteringRepeat
+	me.setProcIndex(i)
+}
+
+func (me *fxOpTexBase) setProcIndex(index int) {
+	me.fxOpBase.setProcIndex(index)
+	me.glUnitU = gl.Uint(index)
+	me.glUnitE = gl.Enum(gl.TEXTURE0 + index)
 }
 
 func (me *fxOpTexBase) use() {
 	me.fxOpBase.use()
-	thrRend.tmpSampler = me.Sampler
+	thrRend.tmpSampler, thrRend.tmpTexUnit = me.Sampler, me.glUnitU
 	Core.useSampler()
 }
 
@@ -227,7 +238,7 @@ func (me *FxOpTex2D) SetImageID(imageID string) *FxOpTex2D {
 
 func (me *FxOpTex2D) use() {
 	me.fxOpTexBase.use()
-	ugl.Util.ActiveTexture(me.procIndex)
+	ugl.Util.SetActiveTextureUnit(me.glUnitE)
 	me.glTex.Bind()
 	thrRend.curProg.Uniform1i(me.unifName("sampler2D", "Img"), gl.Int(me.procIndex))
 }

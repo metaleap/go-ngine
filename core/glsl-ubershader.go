@@ -4,6 +4,7 @@ import (
 	"strings"
 	"time"
 
+	ugl "github.com/go3d/go-opengl/util"
 	ustr "github.com/metaleap/go-util/str"
 )
 
@@ -24,6 +25,7 @@ type uberShader struct {
 	rawSources, tmpq map[string]string
 	tmpAtts, tmpUnis []string
 	pname            string
+	progTechs        map[*ugl.Program]RenderTechnique
 	funcs            struct {
 		// compute  map[string]*uberShaderFunc
 		// domain   map[string]*uberShaderFunc
@@ -36,6 +38,7 @@ type uberShader struct {
 }
 
 func (me *uberShader) init() {
+	me.progTechs = map[*ugl.Program]RenderTechnique{}
 	me.rawSources = map[string]string{}
 }
 
@@ -148,8 +151,15 @@ func (me *uberShader) ensureProg() {
 				Diag.LogShaders("Built new GLSL shader program '%s' in %v", me.pname, dur)
 				Stats.addProgCompile(1, dur.Nanoseconds())
 				thrRend.tmpProg = glc.progMan.Programs[me.pname]
+				me.progTechs[thrRend.tmpProg] = thrRend.curTech
 				if err = thrRend.tmpProg.SetAttrLocations(me.tmpAtts...); err == nil {
-					err = thrRend.tmpProg.SetUnifLocations(me.tmpUnis...)
+					if err = thrRend.tmpProg.SetUnifLocations(me.tmpUnis...); err == nil {
+						for _, meshBuf := range Core.MeshBuffers.bufs {
+							if err = meshBuf.setupVao(thrRend.tmpProg, thrRend.curTech); err != nil {
+								break
+							}
+						}
+					}
 				}
 			}
 		}
@@ -276,7 +286,7 @@ func (me *uberShader) setShaderSourceFrag(fx *FxEffect, inputs map[string]bool) 
 	}
 	srcBody.Writeln("\tout_Color = vCol;")
 	srcBody.Writeln("}")
-	glc.progMan.RawSources.Fragment[me.pname] = srcHead.String() + "\n" + srcBody.String()
+	glc.progMan.Sources.In.Fragment[me.pname] = srcHead.String() + "\n" + srcBody.String()
 	return
 }
 
@@ -319,6 +329,6 @@ func (me *uberShader) setShaderSourceVert(vertTech string, varyings map[string]b
 		srcBody.Writeln("\t%s = vx_%s_%s();", inout, vertTech, inout)
 	}
 	srcBody.Writeln("}")
-	glc.progMan.RawSources.Vertex[me.pname] = srcHead.String() + "\n" + srcBody.String()
+	glc.progMan.Sources.In.Vertex[me.pname] = srcHead.String() + "\n" + srcBody.String()
 	return
 }

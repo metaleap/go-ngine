@@ -107,7 +107,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	//	Worth toggling this every once in a while just to see whether it makes a perf diff at all...
 	realThreads := true
 	opt.Loop.ForceThreads.App, opt.Loop.ForceThreads.Prep = realThreads, realThreads
-	opt.Loop.GcEvery.Frame = false
+	opt.Loop.GcEvery.Frame = true
 
 	opt.AppDir.BasePath = AppDirBasePath()
 	opt.AppDir.Temp.BaseName = filepath.Join("_tmp", filepath.Base(os.Args[0]))

@@ -76,7 +76,6 @@ type MeshBuffer struct {
 	id                                          string
 	glIbo, glVbo                                ugl.Buffer
 	glVaos                                      map[*ugl.Program]*ugl.VertexArray
-	glTmpVao                                    *ugl.VertexArray
 	meshes                                      map[*Mesh]bool
 }
 
@@ -90,6 +89,13 @@ func newMeshBuffer(id string, params *meshBufferParams) (me *MeshBuffer, err err
 	me.MemSizeVertices = Core.MeshBuffers.MemSizePerVertex() * params.NumVerts
 	if err = me.glVbo.Recreate(gl.ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeVertices), ugl.PtrNil, ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW)); err == nil {
 		err = me.glIbo.Recreate(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeIndices), ugl.PtrNil, ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
+	}
+	if err == nil {
+		for prog, tech := range glc.shaderMan.progTechs {
+			if err = me.setupVao(prog, tech); err != nil {
+				break
+			}
+		}
 	}
 	if err != nil {
 		me.dispose()
@@ -112,23 +118,8 @@ func (me *MeshBuffer) Add(mesh *Mesh) (err error) {
 }
 
 func (me *MeshBuffer) use() {
-	if thrRend.curMeshBuf, me.glTmpVao = me, me.glVaos[thrRend.curProg]; me.glTmpVao == nil {
-		var (
-			sceneTech *RenderTechniqueScene
-			ok        bool
-			err       error
-		)
-		me.glTmpVao = &ugl.VertexArray{}
-		if err = me.glTmpVao.Create(); err != nil {
-			Diag.LogErr(err)
-		} else if sceneTech, ok = thrRend.curTech.(*RenderTechniqueScene); ok {
-			if err = me.glTmpVao.Setup(thrRend.curProg, sceneTech.initMeshBuffer(me), &me.glVbo, &me.glIbo); err != nil {
-				Diag.LogErr(err)
-			}
-		}
-		me.glVaos[thrRend.curProg] = me.glTmpVao
-	}
-	me.glTmpVao.Bind()
+	thrRend.curMeshBuf = me
+	me.glVaos[thrRend.curProg].Bind()
 }
 
 func (me *MeshBuffer) dispose() {
@@ -149,4 +140,20 @@ func (me *MeshBuffer) Remove(mesh *Mesh) {
 		mesh.meshBuffer = nil
 		delete(me.meshes, mesh)
 	}
+}
+
+func (me *MeshBuffer) setupVao(prog *ugl.Program, tech RenderTechnique) (err error) {
+	vao := &ugl.VertexArray{}
+	if err = vao.Create(); err == nil {
+		if sceneTech, ok := tech.(*RenderTechniqueScene); ok {
+			if err = vao.Setup(prog, sceneTech.vertexAttribPointers(me), &me.glVbo, &me.glIbo); err != nil {
+				vao.Dispose()
+				vao = nil
+			}
+		}
+		if vao != nil {
+			me.glVaos[prog] = vao
+		}
+	}
+	return
 }

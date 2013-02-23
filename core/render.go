@@ -50,10 +50,9 @@ func (me *Camera) render() {
 func (me *RenderTechniqueQuad) render() {
 	thrRend.curMat, thrRend.curMatId = nil, ""
 	me.glVao.Bind()
+	me.fxTex.glTex = thrRend.tmpQuadTex
 	thrRend.tmpTech, thrRend.tmpEffect = me, &me.Effect
 	Core.useTechFx()
-	me.fxTex.glTex = thrRend.tmpQuadTex
-	me.Effect.use()
 	gl.DrawArrays(gl.TRIANGLES, 0, 3)
 	me.glVao.Unbind()
 }
@@ -79,7 +78,6 @@ func (me *Node) renderSelf() {
 			if thrRend.curMat = thrRend.tmpMat; thrRend.curMat != nil {
 				thrRend.tmpEffect = Core.Libs.Effects[thrRend.curMat.DefaultEffectID]
 				Core.useTechFx()
-				thrRend.curEffect.use()
 			}
 		}
 		if me.Rendering.skyMode {
@@ -108,7 +106,6 @@ func (me *Mesh) render(node *Node) {
 		for thrRend.tmpFidx, thrRend.tmpFace = range me.raw.faces {
 			thrRend.tmpEffect = thrRend.curMat.faceEffect(thrRend.tmpFace)
 			Core.useTechFx()
-			thrRend.curEffect.use()
 			me.meshBuffer.use()
 			thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &node.thrRend.camProjMats[thrRend.curCam][0])
 			gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(me.meshBufOffsetIndices+(int32(thrRend.tmpFidx)*3*4))), gl.Int(me.meshBufOffsetBaseIndex))
