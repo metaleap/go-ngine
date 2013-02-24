@@ -37,7 +37,7 @@ type renderBucketProgram struct {
 }
 
 func (me *renderBucketProgram) render() {
-	thrRend.tmpTech, thrRend.tmpEffect = me.batch.tech, me.fx
+	thrRend.nextTech, thrRend.nextEffect = me.batch.tech, me.fx
 	Core.useTechFx()
 	me.renderBucketBase.render()
 }

@@ -13,11 +13,11 @@ import (
 )
 
 type fxImageCached struct {
-	pix                         []byte
-	bounds                      [2]uint64
-	needImg                     bool
-	dirPath, fileName, fullPath string
-	src                         os.FileInfo
+	pix      []byte
+	bounds   [2]uint64
+	needImg  bool
+	fullPath string
+	src      os.FileInfo
 }
 
 func newFxImageCached(init *FxImageInitFrom, fxImg *FxImageBase) (me *fxImageCached) {
@@ -25,11 +25,9 @@ func newFxImageCached(init *FxImageInitFrom, fxImg *FxImageBase) (me *fxImageCac
 		dst os.FileInfo
 		err error
 	)
-	me = &fxImageCached{
-		needImg: true, dirPath: Core.fileIO.resolveLocalFilePath(filepath.Join(Options.AppDir.Temp.BaseName, Options.AppDir.Temp.CachedTextures)),
-		fileName: ugo.Hash(fnv.New64a(), strf("%s_%t_%t_%t_%t", init.RefUrl, fxImg.PreProcess.FlipY, fxImg.PreProcess.ToBgra, fxImg.PreProcess.ToLinear, fxImg.Storage.Gpu.Bgra)),
-	}
-	me.fullPath = filepath.Join(me.dirPath, me.fileName)
+	dirPath := Core.fileIO.resolveLocalFilePath(filepath.Join(Options.AppDir.Temp.BaseName, Options.AppDir.Temp.CachedTextures))
+	fileName := ugo.Hash(fnv.New64a(), strf("%s_%t_%t_%t_%t", init.RefUrl, fxImg.PreProcess.FlipY, fxImg.PreProcess.ToBgra, fxImg.PreProcess.ToLinear, fxImg.Storage.Gpu.Bgra))
+	me = &fxImageCached{needImg: true, fullPath: filepath.Join(dirPath, fileName)}
 
 	if me.src, err = os.Stat(Core.fileIO.resolveLocalFilePath(init.RefUrl)); err != nil {
 		me.src = nil
@@ -68,21 +66,23 @@ func newFxImageCached(init *FxImageInitFrom, fxImg *FxImageBase) (me *fxImageCac
 	return
 }
 
+// Returns nil, but this part of *fxImageCached implementing image.Image isn't ever called currently, anyway
 func (me *fxImageCached) At(x, y int) (col color.Color) {
-	// dirty, but this part of *fxImageCached implementing image.Image isn't ever called currently, anyway
 	return nil
 }
 
+//	Implementing image.Image.Bounds()
 func (me *fxImageCached) Bounds() (r image.Rectangle) {
 	r.Max.X, r.Max.Y = int(me.bounds[0]), int(me.bounds[1])
 	return
 }
 
+// Returns nil, but this part of *fxImageCached implementing image.Image isn't ever called currently, anyway
 func (me *fxImageCached) ColorModel() color.Model {
-	// dirty, but this part of *fxImageCached implementing image.Image isn't ever called currently, anyway
 	return nil
 }
 
+//	Used by ugl.TextureXYZ.PrepFromImage/s()
 func (me *fxImageCached) Pix() []byte {
 	return me.pix
 }

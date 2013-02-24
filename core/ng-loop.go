@@ -51,12 +51,6 @@ type EngineLoop struct {
 		//	The delta between Tick.Prev and Tick.Now.
 		Delta float64
 	}
-
-	//	If true (default), Loop() waits for the app and prep threads to finish & sync before
-	//	first calling On.WinThread() and finally waiting for GPU vsync/buffer-swap.
-	//	If false, Loop() allows the app and prep threads to continue running while waiting
-	//	for GPU vsync/buffer-swap; then On.WinThread() is called when all of those 3 waits are over.
-	// SwapLast bool
 }
 
 func (_ *EngineLoop) init() {
@@ -137,12 +131,11 @@ func (_ *EngineLoop) Run() {
 		Loop.Tick.Now = glfw.Time()
 		Loop.Tick.PrevSec, Loop.Tick.Delta = int(Loop.Tick.Now), Loop.Tick.Now-Loop.Tick.Prev
 		Stats.reset()
-		Stats.FrameRenderBoth.comb1, Stats.FrameRenderBoth.comb2 = &Stats.FrameRenderCpu, &Stats.FrameRenderGpu
 		glfw.PollEvents()
 		runtime.GC()
 		gl.Flush()
 		gl.Finish()
-		glfw.SwapBuffers()
+		// glfw.SwapBuffers()
 		Diag.LogMisc("Enter loop...")
 		Loop.Running = glfw.WindowParam(glfw.Opened) == 1
 		for Loop.Running {
@@ -200,7 +193,7 @@ func (_ *EngineLoop) Run() {
 				UserIO.Window.lastResize = 0
 				Core.onResizeWindow(UserIO.Window.width, UserIO.Window.height)
 			}
-			Stats.FrameRenderBoth.combine()
+			Stats.FrameRenderBoth.combine(&Stats.FrameRenderCpu, &Stats.FrameRenderGpu)
 		}
 		Loop.Running = false
 		Diag.LogMisc("Exited loop.")

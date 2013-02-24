@@ -31,11 +31,11 @@ func onAppThread() {
 		//	animate mesh nodes
 		pyr.Transform.Rot.Add3(-0.0005, -0.0005, 0)
 		pyr.Transform.Pos.Set(-1.5, 1.5+(2*math.Sin(ng.Loop.Tick.Now*3)), 7)
-		pyr.Transform.ApplyMatrices()
+		pyr.ApplyTransform()
 
 		box.Transform.Rot.Add3(0, 0.0004, 0.0006)
 		box.Transform.Pos.Set(1.5, 1.5+(2*math.Cos(ng.Loop.Tick.Now*0.3333)), 7)
-		box.Transform.ApplyMatrices()
+		box.ApplyTransform()
 	}
 }
 
@@ -99,8 +99,9 @@ func setupExample_03_PyrCube() {
 	box = scene.RootNode.ChildNodes.AddNew("node_box", "mesh_cube", "")
 
 	floor.SetMatID("mat_cobbles")
-	floor.Transform.SetPosXYZ(0.1, 0, -8)
-	floor.Transform.SetScaleN(1000)
+	floor.Transform.SetPos(0.1, 0, -8)
+	floor.Transform.SetScale(1000)
+	floor.ApplyTransform()
 
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()

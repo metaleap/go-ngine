@@ -108,7 +108,6 @@ func (_ *EngineStats) TotalFrames() float64 {
 //	Helps track average and maximum cost for a variety of performance indicators.
 type TimingStats struct {
 	max, measuredCounter, measureStartTime, thisTime, totalAccum float64
-	comb1, comb2                                                 *TimingStats
 }
 
 //	Returns the average cost tracked by this performance indicator.
@@ -116,11 +115,11 @@ func (me *TimingStats) Average() float64 {
 	return me.totalAccum / me.measuredCounter
 }
 
-func (me *TimingStats) combine() {
+func (me *TimingStats) combine(c1, c2 *TimingStats) {
 	if Stats.enabled {
-		me.max = me.comb1.max + me.comb2.max
-		me.measuredCounter = (me.comb1.measuredCounter + me.comb2.measuredCounter) * 0.5
-		me.totalAccum = me.comb1.totalAccum + me.comb2.totalAccum
+		me.max = c1.max + c2.max
+		me.measuredCounter = (c1.measuredCounter + c2.measuredCounter) * 0.5
+		me.totalAccum = c1.totalAccum + c2.totalAccum
 	}
 }
 

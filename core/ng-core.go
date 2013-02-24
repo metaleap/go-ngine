@@ -36,7 +36,7 @@ type EngineCore struct {
 				FullFilteringClamp  ugl.Sampler
 			}
 
-			procs map[string]*fxProc
+			procFuncs map[string]string
 		}
 		KnownTechniques map[string]RenderTechniqueProvider
 
@@ -73,7 +73,7 @@ func (_ *EngineCore) init() {
 	splash.PreProcess.FlipY, splash.PreProcess.ToLinear, splash.PreProcess.ToBgra = false, false, false
 	splash.Load()
 	splash.GpuSync()
-	thrRend.tmpQuadTex = &splash.glTex
+	thrRend.quadTex = &splash.glTex
 	splash.Unload()
 	embeddedBinaries = nil
 
@@ -96,9 +96,9 @@ func (_ *EngineCore) initRendering() {
 		"Scene": newRenderTechniqueScene,
 	}
 	rend.Fx.KnownProcIDs = fxKnownProcIDs()
-	rend.Fx.procs = map[string]*fxProc{}
+	rend.Fx.procFuncs = map[string]string{}
 	for _, shaderFunc := range rend.Fx.KnownProcIDs {
-		rend.Fx.procs[shaderFunc] = newFxProc(shaderFunc)
+		rend.Fx.procFuncs[shaderFunc] = strf("fx_%s", shaderFunc)
 	}
 
 	rend.states.ForceClearColor(Options.Rendering.DefaultClearColor)
@@ -166,31 +166,30 @@ func (_ *EngineCore) refreshWinSizeRels() {
 	Core.onResizeWindow(UserIO.Window.width, UserIO.Window.height)
 }
 
-func (_ *EngineCore) useProg() {
-	if thrRend.curProg != thrRend.tmpProg {
-		thrRend.curProg = thrRend.tmpProg
+func (_ *EngineCore) useProg(prog *ugl.Program) {
+	if thrRend.curProg != prog {
+		thrRend.curProg = prog
 		thrRend.curProg.Use()
 	}
 }
 
-func (_ *EngineCore) useSampler(unit gl.Uint) {
-	if thrRend.curSampler[unit] != thrRend.tmpSampler {
-		thrRend.curSampler[unit] = thrRend.tmpSampler
-		thrRend.tmpSampler.Bind(unit)
+func (_ *EngineCore) useSampler(sampler *ugl.Sampler, unit gl.Uint) {
+	if thrRend.curSampler[unit] != sampler {
+		thrRend.curSampler[unit] = sampler
+		sampler.Bind(unit)
 	}
 }
 
 func (_ *EngineCore) useTechFx() {
-	if thrRend.curTech != thrRend.tmpTech || thrRend.curEffect != thrRend.tmpEffect {
+	if thrRend.curTech != thrRend.nextTech || thrRend.curEffect != thrRend.nextEffect {
 		thrRend.curMeshBuf = nil
-		thrRend.curTech = thrRend.tmpTech
-		if !(len(thrRend.curCam.Rendering.FxOps) == 0 && len(thrRend.tmpEffect.OpsX) == 0) {
-			thrRend.tmpEffect.OpsX = thrRend.curCam.Rendering.FxOps
-			thrRend.tmpEffect.UpdateRoutine()
+		thrRend.curTech = thrRend.nextTech
+		if !(len(thrRend.curCam.Rendering.FxOps) == 0 && len(thrRend.nextEffect.OpsX) == 0) {
+			thrRend.nextEffect.OpsX = thrRend.curCam.Rendering.FxOps
+			thrRend.nextEffect.UpdateRoutine()
 		}
-		thrRend.curEffect = thrRend.tmpEffect
-		glc.shaderMan.ensureProg()
-		Core.useProg()
+		thrRend.curEffect = thrRend.nextEffect
+		Core.useProg(glc.shaderMan.ensureProg())
 		thrRend.curEffect.use()
 	}
 	return

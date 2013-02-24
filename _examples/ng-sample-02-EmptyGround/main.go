@@ -49,8 +49,9 @@ func setupExample_02_EmptyGround() {
 	scene = apputil.AddScene("", true, "")
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	floor.SetMatID("mat_cobbles")
-	floor.Transform.SetPosXYZ(0.1, 0, -8)
-	floor.Transform.SetScaleN(100)
+	floor.Transform.SetPos(0.1, 0, -8)
+	floor.Transform.SetScale(100)
+	floor.ApplyTransform()
 
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()

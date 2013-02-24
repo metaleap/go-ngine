@@ -29,11 +29,6 @@ type Node struct {
 	thrPrep struct {
 		copyDone, done bool
 		matModelView   unum.Mat4
-		tmpMat         *unum.Mat4
-		model          *Model
-		curId          string
-		curSubNode     *Node
-		tmpCam         *Camera
 		camProjMats    nodeCamProjMats
 		camRender      map[*Camera]bool
 	}
@@ -41,16 +36,14 @@ type Node struct {
 	thrRend struct {
 		copyDone    bool
 		camProjMats nodeCamProjGlMats
-		curId       string
-		curSubNode  *Node
 	}
 
-	mat                               *FxMaterial
-	mesh                              *Mesh
-	model                             *Model
-	curSubNode, parentNode            *Node
-	rootScene                         *Scene
-	curID, matID, meshID, modelID, id string
+	mat                        *FxMaterial
+	mesh                       *Mesh
+	model                      *Model
+	parentNode                 *Node
+	rootScene                  *Scene
+	matID, meshID, modelID, id string
 }
 
 func newNode(id, meshID, modelID string, parent *Node, scene *Scene) (me *Node) {
@@ -58,10 +51,15 @@ func newNode(id, meshID, modelID string, parent *Node, scene *Scene) (me *Node) 
 	me.Rendering.Enabled = true
 	me.Rendering.skyMode = (parent == nil)
 	me.ChildNodes.init(me)
-	me.Transform.init(me)
+	me.Transform.init()
+	me.ApplyTransform()
 	me.SetMeshModelID(meshID, modelID)
 	me.initCamDatas()
 	return
+}
+
+func (me *Node) ApplyTransform() {
+	me.Transform.applyMatrices(me)
 }
 
 func (me *Node) EffectiveMaterial() *FxMaterial {
@@ -129,7 +127,7 @@ func (me *Node) SetMeshModelID(meshID, modelID string) {
 
 func (me *Node) Walk(onNode NodeVisitor) {
 	onNode(me)
-	for me.curID, me.curSubNode = range me.ChildNodes.M {
-		me.curSubNode.Walk(onNode)
+	for _, subNode := range me.ChildNodes.M {
+		subNode.Walk(onNode)
 	}
 }

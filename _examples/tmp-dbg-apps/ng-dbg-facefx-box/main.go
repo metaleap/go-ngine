@@ -68,12 +68,13 @@ func setupScene() {
 	scene = apputil.AddScene("", true, "")
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	floor.SetMatID("mat_cobbles")
-	floor.Transform.SetScaleN(100)
+	floor.Transform.SetScale(100)
+	floor.ApplyTransform()
 
 	box = scene.RootNode.ChildNodes.AddNew("node_box", "mesh_box", "")
 	box.SetMatID("mat_dog")
 	box.Transform.Pos.Y = 2
-	box.Transform.ApplyMatrices()
+	box.ApplyTransform()
 
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()

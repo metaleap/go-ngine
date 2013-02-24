@@ -54,7 +54,6 @@ type Camera struct {
 		matProj unum.Mat4
 	}
 	thrPrep struct {
-		tmpCamRender                bool
 		onPrepNode                  func(*Node)
 		matCamProj, matProj, matPos unum.Mat4
 	}

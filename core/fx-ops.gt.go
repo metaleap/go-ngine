@@ -80,7 +80,7 @@ type fxOpBase struct {
 	procID    string
 	procIndex int
 	weight    gl.Float
-	unifNames map[string]string
+	unifNames map[[2]string]string
 }
 
 func (me *fxOpBase) init(procID string, procIndex int) {
@@ -100,9 +100,10 @@ func (me *fxOpBase) qualifiers(inout string) string {
 }
 
 func (me *fxOpBase) unifName(t, n string) (un string) {
-	if un = me.unifNames[t+"_"+n]; len(un) == 0 {
+	k := [2]string{t, n}
+	if un = me.unifNames[k]; len(un) == 0 {
 		un = strf("uni_%s_%s%d_%s", t, me.procID, me.procIndex, n)
-		me.unifNames[t+"_"+n] = un
+		me.unifNames[k] = un
 	}
 	return
 }
@@ -148,7 +149,7 @@ func (me *fxOpBase) SetMixWeight(weight float64) {
 }
 
 func (me *fxOpBase) setProcIndex(index int) {
-	me.unifNames = map[string]string{}
+	me.unifNames = map[[2]string]string{}
 	me.procIndex = index
 }
 
@@ -197,6 +198,7 @@ func (me *FxOpColor) use() {
 type fxOpTexBase struct {
 	fxOpBase
 	glUnitU gl.Uint
+	glUnitI gl.Int
 	glUnitE gl.Enum
 
 	//	The sampler to be used.
@@ -211,14 +213,14 @@ func (me *fxOpTexBase) init(s string, i int) {
 
 func (me *fxOpTexBase) setProcIndex(index int) {
 	me.fxOpBase.setProcIndex(index)
+	me.glUnitI = gl.Int(index)
 	me.glUnitU = gl.Uint(index)
 	me.glUnitE = gl.Enum(gl.TEXTURE0 + index)
 }
 
 func (me *fxOpTexBase) use() {
 	me.fxOpBase.use()
-	thrRend.tmpSampler = me.Sampler
-	Core.useSampler(me.glUnitU)
+	Core.useSampler(me.Sampler, me.glUnitU)
 }
 
 //	Samples from a 2D texture.
@@ -240,7 +242,7 @@ func (me *FxOpTex2D) use() {
 	me.fxOpTexBase.use()
 	ugl.Util.SetActiveTextureUnit(me.glUnitE)
 	me.glTex.Bind()
-	thrRend.curProg.Uniform1i(me.unifName("sampler2D", "Img"), gl.Int(me.procIndex))
+	thrRend.curProg.Uniform1i(me.unifName("sampler2D", "Img"), me.glUnitI)
 }
 
 type FxOpTexCube struct {

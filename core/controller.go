@@ -77,7 +77,7 @@ func (me *Controller) CopyFrom(ctl *Controller) {
 }
 
 //	The direction being manipulated by this Controller.
-//	CAUTION: this returns a pointer to the direction vector to avoid a copy, but it's
+//	NOTE: this returns a pointer to the direction vector to avoid a copy, but it's
 //	NOT meant to be modified, as the vector is re-computed by the TurnFoo() methods.
 func (me *Controller) Dir() *unum.Vec3 {
 	return &me.dir
@@ -94,7 +94,7 @@ func (me *Controller) EndUpdate() {
 }
 
 func (me *Controller) init() {
-	me.Params = Options.Cameras.DefaultControllerParams
+	me.Params = &Options.Cameras.DefaultControllerParams
 	me.autoUpdate, me.dir.Z, me.UpAxis.Y = true, 1, 1
 	unum.Mat4Identities(&me.thrPrep.mat, &me.thrApp.mat)
 	htarget := &unum.Vec3{X: me.dir.X, Y: 0, Z: me.dir.Z}
@@ -245,7 +245,11 @@ type ControllerParams struct {
 
 func NewControllerParams() (me *ControllerParams) {
 	me = &ControllerParams{}
+	me.init()
+	return
+}
+
+func (me *ControllerParams) init() {
 	me.MoveSpeed, me.MoveSpeedupFactor, me.TurnSpeed, me.TurnSpeedupFactor = 2, 1, 90, 1
 	me.MaxTurnUp, me.MinTurnDown = 90, -90
-	return
 }

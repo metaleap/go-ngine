@@ -1,8 +1,6 @@
 package core
 
 import (
-	"runtime"
-
 	glfw "github.com/go-gl/glfw"
 	ugl "github.com/go3d/go-opengl/util"
 	ugo "github.com/metaleap/go-util"
@@ -38,7 +36,7 @@ func (_ *EngineUserIO) dispose() {
 }
 
 func (_ *EngineUserIO) init(forceContextVersion float64) (err error) {
-	UserIO.KeyToggleMinDelay, UserIO.lastToggles = 0.25, map[int]float64{}
+	UserIO.KeyToggleMinDelay, UserIO.lastToggles = 0.25, make(map[int]float64, 80)
 	if !UserIO.isGlfwInit {
 		if err = glfw.Init(); err == nil {
 			UserIO.isGlfwInit = true
@@ -51,7 +49,7 @@ func (_ *EngineUserIO) init(forceContextVersion float64) (err error) {
 			glfw.OpenWindowHint(glfw.OpenGLVersionMajor, major)
 			glfw.OpenWindowHint(glfw.OpenGLVersionMinor, minor)
 			glfw.OpenWindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
-			if runtime.GOOS == "darwin" {
+			if Options.Initialization.GlContext.CoreProfile.ForwardCompat {
 				glfw.OpenWindowHint(glfw.OpenGLForwardCompat, 1)
 			}
 		}

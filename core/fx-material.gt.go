@@ -26,8 +26,8 @@ func (me *FxMaterial) faceEffect(face *meshRawFace) *FxEffect {
 
 func (me *FxMaterial) faceEffectID(face *meshRawFace) (fxID string) {
 	if fxID = me.FaceEffects.ByID[face.base.ID]; len(fxID) == 0 {
-		for _, thrRend.tmpFaceTag = range face.base.Tags {
-			if fxID = me.FaceEffects.ByTag[thrRend.tmpFaceTag]; len(fxID) > 0 {
+		for _, faceTag := range face.base.Tags {
+			if fxID = me.FaceEffects.ByTag[faceTag]; len(fxID) > 0 {
 				return
 			}
 		}

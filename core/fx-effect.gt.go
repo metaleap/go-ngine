@@ -4,15 +4,6 @@ import (
 	ustr "github.com/metaleap/go-util/str"
 )
 
-type fxProc struct {
-	FuncName string
-}
-
-func newFxProc(name string) (me *fxProc) {
-	me = &fxProc{FuncName: "fx_" + name}
-	return
-}
-
 //	Declares the visual appearance of a surface.
 //	An FxEffect can be reused for multiple surfaces, it is bound to geometry via an FxMaterial.
 type FxEffect struct {
@@ -30,13 +21,6 @@ type FxEffect struct {
 	tmpOp      FxOp
 	uberName   string
 	uberPnames map[string]string
-
-	upd struct {
-		i, idx  int
-		id, pid string
-		counts  map[string]int
-		buf     ustr.Buffer
-	}
 }
 
 func (me *FxEffect) dispose() {
@@ -44,47 +28,47 @@ func (me *FxEffect) dispose() {
 
 func (me *FxEffect) init() {
 	me.uberPnames = make(map[string]string, len(Core.Rendering.KnownTechniques))
-	me.upd.counts = map[string]int{}
 }
 
 func (me *FxEffect) UpdateRoutine() {
-	if me.upd.buf.Reset(); len(me.KeepOpsLast) > 0 {
-		me.upd.idx = len(me.Ops) - 1
-		for _, me.upd.id = range me.KeepOpsLast {
-			for me.upd.i, me.tmpOp = range me.Ops {
-				if me.tmpOp.ProcID() == me.upd.id {
-					if me.upd.i < me.upd.idx {
-						me.Ops[me.upd.i], me.Ops[me.upd.idx] = me.Ops[me.upd.idx], me.Ops[me.upd.i]
-						me.upd.idx--
+	var (
+		id, pid string
+		idx, i  int
+		buf     ustr.Buffer
+	)
+	if len(me.KeepOpsLast) > 0 {
+		idx = len(me.Ops) - 1
+		for _, id = range me.KeepOpsLast {
+			for i, me.tmpOp = range me.Ops {
+				if me.tmpOp.ProcID() == id {
+					if i < idx {
+						me.Ops[i], me.Ops[idx] = me.Ops[idx], me.Ops[i]
+						idx--
 					}
 				}
 			}
 		}
 	}
-	for me.upd.pid, _ = range me.upd.counts {
-		me.upd.counts[me.upd.pid] = 0
+	ops, x, counts := me.Ops, len(me.OpsX) > 0, map[string]int{}
+doOps:
+	for _, me.tmpOp = range ops {
+		if me.tmpOp.Enabled() {
+			pid = me.tmpOp.ProcID()
+			buf.Write("_%s", pid)
+			i = counts[pid]
+			me.tmpOp.setProcIndex(i)
+			counts[pid] = i + 1
+		}
 	}
-	for _, me.tmpOp = range me.Ops {
-		me.updateRoutineOp()
+	if x {
+		x, ops = false, me.OpsX
+		goto doOps
 	}
-	for _, me.tmpOp = range me.OpsX {
-		me.updateRoutineOp()
-	}
-	me.uberName = me.upd.buf.String()
-	for me.upd.id, _ = range Core.Rendering.KnownTechniques {
-		me.uberPnames[me.upd.id] = strf("uber_%s%s", me.upd.id, me.uberName)
+	me.uberName = buf.String()
+	for id, _ = range Core.Rendering.KnownTechniques {
+		me.uberPnames[id] = strf("uber_%s%s", id, me.uberName)
 	}
 	thrRend.curEffect = nil
-}
-
-func (me *FxEffect) updateRoutineOp() {
-	if me.tmpOp.Enabled() {
-		me.upd.pid = me.tmpOp.ProcID()
-		me.upd.buf.Write("_%s", me.upd.pid)
-		me.upd.i = me.upd.counts[me.upd.pid]
-		me.tmpOp.setProcIndex(me.upd.i)
-		me.upd.counts[me.upd.pid] = me.upd.i + 1
-	}
 }
 
 func (me *FxEffect) use() {

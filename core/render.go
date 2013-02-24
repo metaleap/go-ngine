@@ -5,9 +5,10 @@ import (
 )
 
 func (me *EngineCore) onRender() {
+	var canv *RenderCanvas
 	for canvIndex := len(Core.Rendering.Canvases) - 1; canvIndex >= 0; canvIndex-- {
-		if thrRend.curCanv = Core.Rendering.Canvases[canvIndex]; thrRend.curCanv.renderThisFrame() {
-			thrRend.curCanv.render()
+		if canv = Core.Rendering.Canvases[canvIndex]; canv.renderThisFrame() {
+			canv.render()
 		}
 	}
 }
@@ -23,7 +24,7 @@ func (me *RenderCanvas) render() {
 	Core.Rendering.states.SetFramebufferSrgb(false)
 	if !me.isFinal {
 		me.frameBuf.Unbind()
-		thrRend.tmpQuadTex = &me.frameBufTex.Texture2D
+		thrRend.quadTex = &me.frameBufTex.Texture2D
 	}
 }
 
@@ -39,7 +40,6 @@ func (me *Camera) render() {
 		}
 		gl.Viewport(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
 		gl.Clear(me.thrRend.states.Other.ClearBits)
-		thrRend.curScene = me.scene
 		me.Rendering.Technique.render()
 		if me.Rendering.Viewport.shouldScissor {
 			Core.Rendering.states.ForceDisableScissorTest()
@@ -48,35 +48,35 @@ func (me *Camera) render() {
 }
 
 func (me *RenderTechniqueQuad) render() {
-	thrRend.curMat, thrRend.curMatId = nil, ""
+	thrRend.curMat = nil
 	me.glVao.Bind()
-	me.fxTex.glTex = thrRend.tmpQuadTex
-	thrRend.tmpTech, thrRend.tmpEffect = me, &me.Effect
+	me.fxTex.glTex = thrRend.quadTex
+	thrRend.nextTech, thrRend.nextEffect = me, &me.Effect
 	Core.useTechFx()
 	gl.DrawArrays(gl.TRIANGLES, 0, 3)
 	me.glVao.Unbind()
 }
 
 func (me *RenderTechniqueScene) render() {
-	thrRend.curMat, thrRend.curMatId, thrRend.tmpTech = nil, "", me
-	if thrRend.curScene != nil {
-		thrRend.curScene.RootNode.renderChildren()
-		thrRend.curScene.RootNode.renderSelf() // might be a skybox so "render" the root last
+	thrRend.curMat, thrRend.nextTech = nil, me
+	if me.cam.scene != nil {
+		me.cam.scene.RootNode.renderChildren()
+		me.cam.scene.RootNode.renderSelf() // might be a skybox so "render" the root last
 	}
 }
 
 func (me *Node) renderChildren() {
-	for me.thrRend.curId, me.thrRend.curSubNode = range me.ChildNodes.M {
-		me.thrRend.curSubNode.renderSelf()
-		me.thrRend.curSubNode.renderChildren()
+	for _, subNode := range me.ChildNodes.M {
+		subNode.renderSelf()
+		subNode.renderChildren()
 	}
 }
 
 func (me *Node) renderSelf() {
 	if thrRend.curNode = me; me.model != nil {
-		if thrRend.tmpMat = me.EffectiveMaterial(); thrRend.tmpMat != thrRend.curMat {
-			if thrRend.curMat = thrRend.tmpMat; thrRend.curMat != nil {
-				thrRend.tmpEffect = Core.Libs.Effects[thrRend.curMat.DefaultEffectID]
+		if mat := me.EffectiveMaterial(); mat != thrRend.curMat {
+			if thrRend.curMat = mat; thrRend.curMat != nil {
+				thrRend.nextEffect = Core.Libs.Effects[thrRend.curMat.DefaultEffectID]
 				Core.useTechFx()
 			}
 		}
@@ -103,9 +103,8 @@ func (me *Mesh) render(node *Node) {
 		me.meshBuffer.use()
 	}
 	if thrRend.curMat.HasFaceEffects() {
-		var fidx int
-		for fidx, thrRend.tmpFace = range me.raw.faces {
-			thrRend.tmpEffect = thrRend.curMat.faceEffect(thrRend.tmpFace)
+		for fidx, face := range me.raw.faces {
+			thrRend.nextEffect = thrRend.curMat.faceEffect(face)
 			Core.useTechFx()
 			me.meshBuffer.use()
 			thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &node.thrRend.camProjMats[thrRend.curCam][0])

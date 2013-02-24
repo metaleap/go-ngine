@@ -43,7 +43,7 @@ type EngineOptions struct {
 	}
 
 	Cameras struct {
-		DefaultControllerParams *ControllerParams
+		DefaultControllerParams ControllerParams
 		PerspectiveDefaults     CameraPerspective
 	}
 
@@ -58,6 +58,7 @@ type EngineOptions struct {
 
 				//	While required on Mac OS X, really not recommended elsewhere
 				//	(at present). Defaults to true on Mac OS X, to false elsewhere.
+				//	Only used if go:ngine requests the creation of a GL core-profile context.
 				ForwardCompat bool
 
 				//	Defaults to the newest GL version currently supported by the GL
@@ -138,7 +139,7 @@ func init() {
 	o.Textures.Storage.DiskCache.Enabled = true
 	o.Textures.Storage.DiskCache.Compressor = func(w io.WriteCloser) io.WriteCloser { return w }
 	o.Textures.Storage.DiskCache.Decompressor = func(r io.ReadCloser) io.ReadCloser { return r }
-	o.Cameras.DefaultControllerParams = NewControllerParams()
+	o.Cameras.DefaultControllerParams.init()
 	o.Cameras.PerspectiveDefaults.FovY, o.Cameras.PerspectiveDefaults.ZFar, o.Cameras.PerspectiveDefaults.ZNear = 37.8493, 30000, 0.3
 	o.Loop.GcEvery.Sec = true
 

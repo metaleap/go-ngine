@@ -36,15 +36,17 @@ func (me *Gui2D) Setup() (err error) {
 
 	quadMesh.Models.Default().SetMatID("mat_dog")
 	me.Dog = scene.RootNode.ChildNodes.AddNew("gui_dog", "mesh_quad", "")
-	me.Dog.Transform.SetScaleN(0.85)
-	me.Dog.Transform.SetRotZ(unum.DegToRad(90))
+	me.Dog.Transform.SetScale(0.85)
+	me.Dog.Transform.Rot.Z = unum.DegToRad(90)
 
 	quadMesh.Models.Default().Clone("model_cat").SetMatID("mat_cat")
 	me.Cat = scene.RootNode.ChildNodes.AddNew("gui_cat", "mesh_quad", "model_cat")
-	me.Cat.Transform.SetScaleN(0.85)
-	me.Cat.Transform.SetRotZ(unum.DegToRad(90))
+	me.Cat.Transform.SetScale(0.85)
+	me.Cat.Transform.Rot.Z = unum.DegToRad(90)
 
-	me.Dog.Transform.SetPosZ(0.1)
-	me.Cat.Transform.SetPosZ(0.11)
+	me.Dog.Transform.Pos.Z = 0.1
+	me.Cat.Transform.Pos.Z = 0.11
+	me.Dog.ApplyTransform()
+	me.Cat.ApplyTransform()
 	return
 }

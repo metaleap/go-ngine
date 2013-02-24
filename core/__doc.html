@@ -867,6 +867,9 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Node.ApplyTransform">func (me *Node) ApplyTransform()</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Node.EffectiveMaterial">func (me *Node) EffectiveMaterial() *FxMaterial</a></dd>
 				
 					
@@ -902,46 +905,16 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#NodeTransform.AddRotXYZ">func (me *NodeTransform) AddRotXYZ(x, y, z float64)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.ApplyMatrices">func (me *NodeTransform) ApplyMatrices()</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetPos">func (me *NodeTransform) SetPos(posX, posY, posZ float64)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetPos">func (me *NodeTransform) SetPos(pos *unum.Vec3)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetRot">func (me *NodeTransform) SetRot(radX, radY, radZ float64)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetPosX">func (me *NodeTransform) SetPosX(posX float64)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetScale">func (me *NodeTransform) SetScale(s float64)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetPosXYZ">func (me *NodeTransform) SetPosXYZ(posX, posY, posZ float64)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetPosY">func (me *NodeTransform) SetPosY(posY float64)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetPosZ">func (me *NodeTransform) SetPosZ(posZ float64)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetRot">func (me *NodeTransform) SetRot(rot *unum.Vec3)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetRotX">func (me *NodeTransform) SetRotX(rad float64)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetRotXYZ">func (me *NodeTransform) SetRotXYZ(radX, radY, radZ float64)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetRotY">func (me *NodeTransform) SetRotY(rad float64)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetRotZ">func (me *NodeTransform) SetRotZ(rad float64)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetScale">func (me *NodeTransform) SetScale(scale *unum.Vec3)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetScaleN">func (me *NodeTransform) SetScaleN(scale float64)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetScaleXYZ">func (me *NodeTransform) SetScaleXYZ(x, y, z float64)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetScaleXyz">func (me *NodeTransform) SetScaleXyz(x, y, z float64)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#NodeTransform.StepDelta">func (me *NodeTransform) StepDelta(deltaPerSecond float64) float64</a></dd>
@@ -1260,7 +1233,7 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.go?s=698:1510#L14">Camera</a></h2>
+			<h2 id="Camera">type <a href="/target/camera.go?s=698:1475#L14">Camera</a></h2>
 			<pre>type Camera struct {
     <span class="comment">//	Optical and imager properties for this camera.</span>
     Perspective struct {
@@ -1304,7 +1277,7 @@ A camera embodies the eye point of the viewer looking at the visual scene.
 
 			
 				
-				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=2879:2912#L95">ApplyMatrices</a></h3>
+				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=2844:2877#L94">ApplyMatrices</a></h3>
 				<pre>func (me *Camera) ApplyMatrices()</pre>
 				<p>
 Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.
@@ -1314,28 +1287,28 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 				
 			
 				
-				<h3 id="Camera.RenderTechniqueQuad">func (*Camera) <a href="/target/camera.go?s=3739:3806#L134">RenderTechniqueQuad</a></h3>
+				<h3 id="Camera.RenderTechniqueQuad">func (*Camera) <a href="/target/camera.go?s=3704:3771#L133">RenderTechniqueQuad</a></h3>
 				<pre>func (me *Camera) RenderTechniqueQuad() (tech *RenderTechniqueQuad)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.RenderTechniqueScene">func (*Camera) <a href="/target/camera.go?s=3877:3946#L139">RenderTechniqueScene</a></h3>
+				<h3 id="Camera.RenderTechniqueScene">func (*Camera) <a href="/target/camera.go?s=3842:3911#L138">RenderTechniqueScene</a></h3>
 				<pre>func (me *Camera) RenderTechniqueScene() (tech *RenderTechniqueScene)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=3391:3423#L115">Scene</a></h3>
+				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=3356:3388#L114">Scene</a></h3>
 				<pre>func (me *Camera) Scene() *Scene</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=3661:3698#L130">SetScene</a></h3>
+				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=3626:3663#L129">SetScene</a></h3>
 				<pre>func (me *Camera) SetScene(id string)</pre>
 				
 				
@@ -1372,7 +1345,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 		
 			
 			
-			<h2 id="CameraViewport">type <a href="/target/camera.go?s=4368:4628#L163">CameraViewport</a></h2>
+			<h2 id="CameraViewport">type <a href="/target/camera.go?s=4333:4593#L162">CameraViewport</a></h2>
 			<pre>type CameraViewport struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -1391,7 +1364,7 @@ Encapsulates a device-relative or absolute camera view-port.
 
 			
 				
-				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=4754:4811#L178">SetAbs</a></h3>
+				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=4719:4776#L177">SetAbs</a></h3>
 				<pre>func (me *CameraViewport) SetAbs(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -1401,7 +1374,7 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=5063:5124#L185">SetRel</a></h3>
+				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=5028:5089#L184">SetRel</a></h3>
 				<pre>func (me *CameraViewport) SetRel(x, y, width, height float64)</pre>
 				<p>
 Sets the device-relative viewport origin and dimensions, with the value 1.0
@@ -1414,7 +1387,7 @@ representing the maximum extent of the viewport on that respective axis.
 		
 			
 			
-			<h2 id="Cameras">type <a href="/target/camera.go?s=4018:4040#L144">Cameras</a></h2>
+			<h2 id="Cameras">type <a href="/target/camera.go?s=3983:4005#L143">Cameras</a></h2>
 			<pre>type Cameras []*Camera</pre>
 			
 
@@ -1428,7 +1401,7 @@ representing the maximum extent of the viewport on that respective axis.
 
 			
 				
-				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=4133:4174#L153">Remove</a></h3>
+				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=4098:4139#L152">Remove</a></h3>
 				<pre>func (me *Cameras) Remove(camera *Camera)</pre>
 				
 				
@@ -1491,11 +1464,11 @@ EndUpdate() to apply all changes in a final matrix re-calculation.
 				
 			
 				
-				<h3 id="Controller.Dir">func (*Controller) <a href="/target/controller.go?s=2331:2369#L72">Dir</a></h3>
+				<h3 id="Controller.Dir">func (*Controller) <a href="/target/controller.go?s=2328:2366#L72">Dir</a></h3>
 				<pre>func (me *Controller) Dir() *unum.Vec3</pre>
 				<p>
 The direction being manipulated by this Controller.
-CAUTION: this returns a pointer to the direction vector to avoid a copy, but it&#39;s
+NOTE: this returns a pointer to the direction vector to avoid a copy, but it&#39;s
 NOT meant to be modified, as the vector is re-computed by the TurnFoo() methods.
 </p>
 
@@ -1503,7 +1476,7 @@ NOT meant to be modified, as the vector is re-computed by the TurnFoo() methods.
 				
 			
 				
-				<h3 id="Controller.EndUpdate">func (*Controller) <a href="/target/controller.go?s=2696:2729#L80">EndUpdate</a></h3>
+				<h3 id="Controller.EndUpdate">func (*Controller) <a href="/target/controller.go?s=2693:2726#L80">EndUpdate</a></h3>
 				<pre>func (me *Controller) EndUpdate()</pre>
 				<p>
 Applies all changes made to Pos, Dir or UpAxis since BeginUpdate() was last
@@ -1516,7 +1489,7 @@ MoveXyz() / TurnXyz() methods that were suspended since BeginUpdate().
 				
 			
 				
-				<h3 id="Controller.MoveBackward">func (*Controller) <a href="/target/controller.go?s=3569:3605#L111">MoveBackward</a></h3>
+				<h3 id="Controller.MoveBackward">func (*Controller) <a href="/target/controller.go?s=3567:3603#L111">MoveBackward</a></h3>
 				<pre>func (me *Controller) MoveBackward()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move backward&#34;.
@@ -1526,7 +1499,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move backward&#34
 				
 			
 				
-				<h3 id="Controller.MoveDown">func (*Controller) <a href="/target/controller.go?s=3765:3797#L117">MoveDown</a></h3>
+				<h3 id="Controller.MoveDown">func (*Controller) <a href="/target/controller.go?s=3763:3795#L117">MoveDown</a></h3>
 				<pre>func (me *Controller) MoveDown()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis to effect a &#34;move downward&#34;.
@@ -1536,7 +1509,7 @@ Recomputes Pos with regards to UpAxis to effect a &#34;move downward&#34;.
 				
 			
 				
-				<h3 id="Controller.MoveForward">func (*Controller) <a href="/target/controller.go?s=3967:4002#L123">MoveForward</a></h3>
+				<h3 id="Controller.MoveForward">func (*Controller) <a href="/target/controller.go?s=3965:4000#L123">MoveForward</a></h3>
 				<pre>func (me *Controller) MoveForward()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move forward&#34;.
@@ -1546,7 +1519,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move forward&#34;
 				
 			
 				
-				<h3 id="Controller.MoveLeft">func (*Controller) <a href="/target/controller.go?s=4171:4203#L129">MoveLeft</a></h3>
+				<h3 id="Controller.MoveLeft">func (*Controller) <a href="/target/controller.go?s=4169:4201#L129">MoveLeft</a></h3>
 				<pre>func (me *Controller) MoveLeft()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move left-ward&#34;.
@@ -1556,7 +1529,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move left-ward&#3
 				
 			
 				
-				<h3 id="Controller.MoveRight">func (*Controller) <a href="/target/controller.go?s=4400:4433#L135">MoveRight</a></h3>
+				<h3 id="Controller.MoveRight">func (*Controller) <a href="/target/controller.go?s=4398:4431#L135">MoveRight</a></h3>
 				<pre>func (me *Controller) MoveRight()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move right-ward&#34;.
@@ -1566,7 +1539,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move right-ward&#
 				
 			
 				
-				<h3 id="Controller.MoveUp">func (*Controller) <a href="/target/controller.go?s=4618:4648#L141">MoveUp</a></h3>
+				<h3 id="Controller.MoveUp">func (*Controller) <a href="/target/controller.go?s=4616:4646#L141">MoveUp</a></h3>
 				<pre>func (me *Controller) MoveUp()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis to effect a &#34;move upward&#34;.
@@ -1576,7 +1549,7 @@ Recomputes Pos with regards to UpAxis to effect a &#34;move upward&#34;.
 				
 			
 				
-				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=5119:5163#L160">StepSizeMove</a></h3>
+				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=5117:5161#L160">StepSizeMove</a></h3>
 				<pre>func (me *Controller) StepSizeMove() float64</pre>
 				<p>
 Returns the current distance that a single MoveXyz() call (per loop iteration) would move.
@@ -1587,7 +1560,7 @@ Returns the current distance that a single MoveXyz() call (per loop iteration) w
 				
 			
 				
-				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=5410:5454#L166">StepSizeTurn</a></h3>
+				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=5408:5452#L166">StepSizeTurn</a></h3>
 				<pre>func (me *Controller) StepSizeTurn() float64</pre>
 				<p>
 Returns the current degrees that a single TurnXyz() call (per loop iteration) would turn.
@@ -1598,7 +1571,7 @@ Returns the current degrees that a single TurnXyz() call (per loop iteration) wo
 				
 			
 				
-				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=5643:5675#L171">TurnDown</a></h3>
+				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=5641:5673#L171">TurnDown</a></h3>
 				<pre>func (me *Controller) TurnDown()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34; by me.StepSizeTurn() degrees.
@@ -1608,7 +1581,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34
 				
 			
 				
-				<h3 id="Controller.TurnDownBy">func (*Controller) <a href="/target/controller.go?s=5818:5863#L176">TurnDownBy</a></h3>
+				<h3 id="Controller.TurnDownBy">func (*Controller) <a href="/target/controller.go?s=5816:5861#L176">TurnDownBy</a></h3>
 				<pre>func (me *Controller) TurnDownBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34; by the specified degrees.
@@ -1618,7 +1591,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34
 				
 			
 				
-				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=6036:6068#L183">TurnLeft</a></h3>
+				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=6034:6066#L183">TurnLeft</a></h3>
 				<pre>func (me *Controller) TurnLeft()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#34; by me.StepSizeTurn() degrees.
@@ -1628,7 +1601,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#3
 				
 			
 				
-				<h3 id="Controller.TurnLeftBy">func (*Controller) <a href="/target/controller.go?s=6212:6257#L188">TurnLeftBy</a></h3>
+				<h3 id="Controller.TurnLeftBy">func (*Controller) <a href="/target/controller.go?s=6210:6255#L188">TurnLeftBy</a></h3>
 				<pre>func (me *Controller) TurnLeftBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#34; by the specified degrees.
@@ -1638,7 +1611,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#3
 				
 			
 				
-				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=6386:6419#L193">TurnRight</a></h3>
+				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=6384:6417#L193">TurnRight</a></h3>
 				<pre>func (me *Controller) TurnRight()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#34; by me.StepSizeTurn() degrees.
@@ -1648,7 +1621,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#
 				
 			
 				
-				<h3 id="Controller.TurnRightBy">func (*Controller) <a href="/target/controller.go?s=6565:6611#L198">TurnRightBy</a></h3>
+				<h3 id="Controller.TurnRightBy">func (*Controller) <a href="/target/controller.go?s=6563:6609#L198">TurnRightBy</a></h3>
 				<pre>func (me *Controller) TurnRightBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#34; by the specified degrees.
@@ -1658,7 +1631,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#
 				
 			
 				
-				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=6737:6767#L203">TurnUp</a></h3>
+				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=6735:6765#L203">TurnUp</a></h3>
 				<pre>func (me *Controller) TurnUp()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; by me.StepSizeTurn() degrees.
@@ -1668,7 +1641,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 				
 			
 				
-				<h3 id="Controller.TurnUpBy">func (*Controller) <a href="/target/controller.go?s=6906:6949#L208">TurnUpBy</a></h3>
+				<h3 id="Controller.TurnUpBy">func (*Controller) <a href="/target/controller.go?s=6904:6947#L208">TurnUpBy</a></h3>
 				<pre>func (me *Controller) TurnUpBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; by the specified degress.
@@ -1680,7 +1653,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="ControllerParams">type <a href="/target/controller.go?s=7011:7645#L214">ControllerParams</a></h2>
+			<h2 id="ControllerParams">type <a href="/target/controller.go?s=7009:7643#L214">ControllerParams</a></h2>
 			<pre>type ControllerParams struct {
     <span class="comment">//	Speed of &#34;moving&#34; in the MoveXyz() methods, in units per second.</span>
     <span class="comment">//	Defaults to 2.</span>
@@ -1712,7 +1685,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 
 			
 				
-				<h3 id="NewControllerParams">func <a href="/target/controller.go?s=7647:7696#L236">NewControllerParams</a></h3>
+				<h3 id="NewControllerParams">func <a href="/target/controller.go?s=7645:7694#L236">NewControllerParams</a></h3>
 				<pre>func NewControllerParams() (me *ControllerParams)</pre>
 				
 				
@@ -1722,7 +1695,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:1107#L6">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:1110#L6">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Libs        struct {
@@ -1774,7 +1747,7 @@ It is only aware of that instance and does not support any other EngineCore inst
 
 			
 				
-				<h3 id="EngineCore.GpuSyncImageLibs">func (*EngineCore) <a href="/target/ng-core.go?s=3796:3847#L121">GpuSyncImageLibs</a></h3>
+				<h3 id="EngineCore.GpuSyncImageLibs">func (*EngineCore) <a href="/target/ng-core.go?s=3807:3858#L121">GpuSyncImageLibs</a></h3>
 				<pre>func (_ *EngineCore) GpuSyncImageLibs() (err error)</pre>
 				
 				
@@ -1881,7 +1854,7 @@ It is only aware of that instance and does not support any other EngineDiag inst
 		
 			
 			
-			<h2 id="EngineLoop">type <a href="/target/ng-loop.go?s=411:2170#L8">EngineLoop</a></h2>
+			<h2 id="EngineLoop">type <a href="/target/ng-loop.go?s=411:1798#L8">EngineLoop</a></h2>
 			<pre>type EngineLoop struct {
     <span class="comment">//	Set to true by Loop.Run(). Set to false to stop looping.</span>
     Running bool
@@ -1942,7 +1915,7 @@ It is only aware of that instance and does not support any other EngineLoop inst
 
 			
 				
-				<h3 id="EngineLoop.Run">func (*EngineLoop) <a href="/target/ng-loop.go?s=3506:3532#L115">Run</a></h3>
+				<h3 id="EngineLoop.Run">func (*EngineLoop) <a href="/target/ng-loop.go?s=3134:3160#L109">Run</a></h3>
 				<pre>func (_ *EngineLoop) Run()</pre>
 				<p>
 Initiates a rendering loop. This method returns only when the loop is stopped for whatever reason.
@@ -1955,7 +1928,7 @@ Initiates a rendering loop. This method returns only when the loop is stopped fo
 				
 			
 				
-				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=6812:6847#L202">Time</a></h3>
+				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=6381:6416#L195">Time</a></h3>
 				<pre>func (_ *EngineLoop) Time() float64</pre>
 				<p>
 Returns the number of seconds expired ever since Loop.Run() was last called.
@@ -1967,7 +1940,7 @@ Returns the number of seconds expired ever since Loop.Run() was last called.
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=617:3805#L23">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=617:3885#L23">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     AppDir struct {
         <span class="comment">//	The base directory path for app file paths.</span>
@@ -1981,7 +1954,7 @@ Returns the number of seconds expired ever since Loop.Run() was last called.
     }
 
     Cameras struct {
-        DefaultControllerParams *ControllerParams
+        DefaultControllerParams ControllerParams
         PerspectiveDefaults     CameraPerspective
     }
 
@@ -1996,6 +1969,7 @@ Returns the number of seconds expired ever since Loop.Run() was last called.
 
                 <span class="comment">//	While required on Mac OS X, really not recommended elsewhere</span>
                 <span class="comment">//	(at present). Defaults to true on Mac OS X, to false elsewhere.</span>
+                <span class="comment">//	Only used if go:ngine requests the creation of a GL core-profile context.</span>
                 ForwardCompat bool
 
                 <span class="comment">//	Defaults to the newest GL version currently supported by the GL</span>
@@ -2199,7 +2173,7 @@ Returns the average number of frames-per-second since Loop.Loop() was last calle
 		
 			
 			
-			<h2 id="EngineUserIO">type <a href="/target/ng-userio.go?s=500:765#L8">EngineUserIO</a></h2>
+			<h2 id="EngineUserIO">type <a href="/target/ng-userio.go?s=488:753#L6">EngineUserIO</a></h2>
 			<pre>type EngineUserIO struct {
     <span class="comment">//	Minimum delay for EngineUserIO.KeyToggled() method, in seconds. Defaults to 0.25.</span>
     KeyToggleMinDelay float64
@@ -2229,7 +2203,7 @@ Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window m
 
 			
 				
-				<h3 id="EngineUserIO.IifKeyF">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2677:2749#L73">IifKeyF</a></h3>
+				<h3 id="EngineUserIO.IifKeyF">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2707:2779#L71">IifKeyF</a></h3>
 				<pre>func (_ *EngineUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64</pre>
 				<p>
 Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
@@ -2239,7 +2213,7 @@ Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyPressed">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2868:2915#L81">KeyPressed</a></h3>
+				<h3 id="EngineUserIO.KeyPressed">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2898:2945#L79">KeyPressed</a></h3>
 				<pre>func (_ *EngineUserIO) KeyPressed(key int) bool</pre>
 				<p>
 Returns true if the specified key is pressed.
@@ -2249,7 +2223,7 @@ Returns true if the specified key is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyPressedWhich">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3006:3061#L86">KeyPressedWhich</a></h3>
+				<h3 id="EngineUserIO.KeyPressedWhich">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3036:3091#L84">KeyPressedWhich</a></h3>
 				<pre>func (_ *EngineUserIO) KeyPressedWhich(keys ...int) int</pre>
 				<p>
 Returns the first in keys that is pressed.
@@ -2259,7 +2233,7 @@ Returns the first in keys that is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeyToggled">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4079:4126#L116">KeyToggled</a></h3>
+				<h3 id="EngineUserIO.KeyToggled">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4109:4156#L114">KeyToggled</a></h3>
 				<pre>func (_ *EngineUserIO) KeyToggled(key int) bool</pre>
 				<p>
 Returns true if the specified key has been &#34;toggled&#34;, ie. its pressed-state changed within the last me.KeyToggleMinDelay seconds.
@@ -2269,7 +2243,7 @@ Returns true if the specified key has been &#34;toggled&#34;, ie. its pressed-st
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAll2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3243:3298#L96">KeysPressedAll2</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAll2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3273:3328#L94">KeysPressedAll2</a></h3>
 				<pre>func (_ *EngineUserIO) KeysPressedAll2(k1, k2 int) bool</pre>
 				<p>
 Returns true if both specified keys are pressed.
@@ -2279,7 +2253,7 @@ Returns true if both specified keys are pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAll3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3416:3475#L101">KeysPressedAll3</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAll3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3446:3505#L99">KeysPressedAll3</a></h3>
 				<pre>func (_ *EngineUserIO) KeysPressedAll3(k1, k2, k3 int) bool</pre>
 				<p>
 Returns true if all three specified keys are pressed.
@@ -2289,7 +2263,7 @@ Returns true if all three specified keys are pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAny2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3622:3677#L106">KeysPressedAny2</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAny2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3652:3707#L104">KeysPressedAny2</a></h3>
 				<pre>func (_ *EngineUserIO) KeysPressedAny2(k1, k2 int) bool</pre>
 				<p>
 Returns true if any of the two specified keys is pressed.
@@ -2299,7 +2273,7 @@ Returns true if any of the two specified keys is pressed.
 				
 			
 				
-				<h3 id="EngineUserIO.KeysPressedAny3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3801:3860#L111">KeysPressedAny3</a></h3>
+				<h3 id="EngineUserIO.KeysPressedAny3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3831:3890#L109">KeysPressedAny3</a></h3>
 				<pre>func (_ *EngineUserIO) KeysPressedAny3(k1, k2, k3 int) bool</pre>
 				<p>
 Returns true if any of the three specified keys is pressed.
@@ -2311,7 +2285,7 @@ Returns true if any of the three specified keys is pressed.
 		
 			
 			
-			<h2 id="FxEffect">type <a href="/target/fx-effect.gt.go?s=342:936#L8">FxEffect</a></h2>
+			<h2 id="FxEffect">type <a href="/target/fx-effect.gt.go?s=209:707#L1">FxEffect</a></h2>
 			<pre>type FxEffect struct {
     <span class="comment">//	An ordered collection of all FxOps that make up this effect.</span>
     <span class="comment">//	When changing the ordering or disabling, enabling or toggling individual FxOps,</span>
@@ -2339,7 +2313,7 @@ An FxEffect can be reused for multiple surfaces, it is bound to geometry via an 
 
 			
 				
-				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=2479:2512#L96">NewFxEffect</a></h3>
+				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=2002:2035#L80">NewFxEffect</a></h3>
 				<pre>func NewFxEffect() (me *FxEffect)</pre>
 				<p>
 Initializes and returns a new FxEffect with default parameters.
@@ -2350,7 +2324,7 @@ Initializes and returns a new FxEffect with default parameters.
 
 			
 				
-				<h3 id="FxEffect.UpdateRoutine">func (*FxEffect) <a href="/target/fx-effect.gt.go?s=1117:1152#L40">UpdateRoutine</a></h3>
+				<h3 id="FxEffect.UpdateRoutine">func (*FxEffect) <a href="/target/fx-effect.gt.go?s=854:889#L23">UpdateRoutine</a></h3>
 				<pre>func (me *FxEffect) UpdateRoutine()</pre>
 				
 				
@@ -2612,7 +2586,7 @@ A material binds effects (FxEffect in Core.Libs.Effects) to geometry (Model or N
 
 			
 				
-				<h3 id="NewFxMaterial">func <a href="/target/fx-material.gt.go?s=1351:1388#L41">NewFxMaterial</a></h3>
+				<h3 id="NewFxMaterial">func <a href="/target/fx-material.gt.go?s=1330:1367#L41">NewFxMaterial</a></h3>
 				<pre>func NewFxMaterial() (me *FxMaterial)</pre>
 				<p>
 Initializes and returns a new FxMaterial with default parameters.
@@ -2623,7 +2597,7 @@ Initializes and returns a new FxMaterial with default parameters.
 
 			
 				
-				<h3 id="FxMaterial.HasFaceEffects">func (*FxMaterial) <a href="/target/fx-material.gt.go?s=1125:1168#L34">HasFaceEffects</a></h3>
+				<h3 id="FxMaterial.HasFaceEffects">func (*FxMaterial) <a href="/target/fx-material.gt.go?s=1104:1147#L34">HasFaceEffects</a></h3>
 				<pre>func (me *FxMaterial) HasFaceEffects() bool</pre>
 				
 				
@@ -2680,7 +2654,7 @@ Those are created and initializes exclusively through FxOps.Enable(&#34;{procID}
 		
 			
 			
-			<h2 id="FxOpColor">type <a href="/target/fx-ops.gt.go?s=4019:4070#L172">FxOpColor</a></h2>
+			<h2 id="FxOpColor">type <a href="/target/fx-ops.gt.go?s=4035:4086#L173">FxOpColor</a></h2>
 			<pre>type FxOpColor struct {
     Rgb ugl.GlVec3
     <span class="comment">// contains filtered or unexported fields</span>
@@ -2700,7 +2674,7 @@ Colors geometry based on a specified color.
 
 			
 				
-				<h3 id="FxOpColor.Disable">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=2557:2586#L106">Disable</a></h3>
+				<h3 id="FxOpColor.Disable">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=2570:2599#L107">Disable</a></h3>
 				<pre>func (me *FxOpColor) Disable()</pre>
 				<p>
 Disables this FxOp.
@@ -2711,7 +2685,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOpColor.Disabled">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=2664:2699#L111">Disabled</a></h3>
+				<h3 id="FxOpColor.Disabled">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=2677:2712#L112">Disabled</a></h3>
 				<pre>func (me *FxOpColor) Disabled() bool</pre>
 				<p>
 Returns whether this FxOp is currently disabled.
@@ -2721,7 +2695,7 @@ Returns whether this FxOp is currently disabled.
 				
 			
 				
-				<h3 id="FxOpColor.Enable">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=2825:2853#L117">Enable</a></h3>
+				<h3 id="FxOpColor.Enable">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=2838:2866#L118">Enable</a></h3>
 				<pre>func (me *FxOpColor) Enable()</pre>
 				<p>
 Enables this FxOp.
@@ -2732,7 +2706,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOpColor.Enabled">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=2931:2965#L122">Enabled</a></h3>
+				<h3 id="FxOpColor.Enabled">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=2944:2978#L123">Enabled</a></h3>
 				<pre>func (me *FxOpColor) Enabled() bool</pre>
 				<p>
 Returns whether this FxOp is currently enabled.
@@ -2742,7 +2716,7 @@ Returns whether this FxOp is currently enabled.
 				
 			
 				
-				<h3 id="FxOpColor.ProcID">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=3151:3186#L128">ProcID</a></h3>
+				<h3 id="FxOpColor.ProcID">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=3164:3199#L129">ProcID</a></h3>
 				<pre>func (me *FxOpColor) ProcID() string</pre>
 				<p>
 The procID of this FxOp. This is one of the Core.Rendering.Fx.KnownProcIDs.
@@ -2753,28 +2727,28 @@ For example, &#34;Tex2D&#34; for an FxOpTex2D, &#34;Grayscale&#34; for an FxOpGr
 				
 			
 				
-				<h3 id="FxOpColor.ProcIndex">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=3210:3245#L132">ProcIndex</a></h3>
+				<h3 id="FxOpColor.ProcIndex">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=3223:3258#L133">ProcIndex</a></h3>
 				<pre>func (me *FxOpColor) ProcIndex() int</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxOpColor.SetMixWeight">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=3272:3320#L136">SetMixWeight</a></h3>
+				<h3 id="FxOpColor.SetMixWeight">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=3285:3333#L137">SetMixWeight</a></h3>
 				<pre>func (me *FxOpColor) SetMixWeight(weight float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxOpColor.SetRgb">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=4072:4127#L177">SetRgb</a></h3>
+				<h3 id="FxOpColor.SetRgb">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=4088:4143#L178">SetRgb</a></h3>
 				<pre>func (me *FxOpColor) SetRgb(rgb ...gl.Float) *FxOpColor</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxOpColor.Toggle">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=3563:3591#L147">Toggle</a></h3>
+				<h3 id="FxOpColor.Toggle">func (*FxOpColor) <a href="/target/fx-ops.gt.go?s=3579:3607#L148">Toggle</a></h3>
 				<pre>func (me *FxOpColor) Toggle()</pre>
 				<p>
 Toggles this FxOp.
@@ -2787,7 +2761,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 		
 			
 			
-			<h2 id="FxOpCoords">type <a href="/target/fx-ops.gt.go?s=3934:3970#L167">FxOpCoords</a></h2>
+			<h2 id="FxOpCoords">type <a href="/target/fx-ops.gt.go?s=3950:3986#L168">FxOpCoords</a></h2>
 			<pre>type FxOpCoords struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -2806,7 +2780,7 @@ Colors geometry based on texture coordinates.
 
 			
 				
-				<h3 id="FxOpCoords.Disable">func (*FxOpCoords) <a href="/target/fx-ops.gt.go?s=2557:2586#L106">Disable</a></h3>
+				<h3 id="FxOpCoords.Disable">func (*FxOpCoords) <a href="/target/fx-ops.gt.go?s=2570:2599#L107">Disable</a></h3>
 				<pre>func (me *FxOpCoords) Disable()</pre>
 				<p>
 Disables this FxOp.
@@ -2817,7 +2791,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOpCoords.Disabled">func (*FxOpCoords) <a href="/target/fx-ops.gt.go?s=2664:2699#L111">Disabled</a></h3>
+				<h3 id="FxOpCoords.Disabled">func (*FxOpCoords) <a href="/target/fx-ops.gt.go?s=2677:2712#L112">Disabled</a></h3>
 				<pre>func (me *FxOpCoords) Disabled() bool</pre>
 				<p>
 Returns whether this FxOp is currently disabled.
@@ -2827,7 +2801,7 @@ Returns whether this FxOp is currently disabled.
 				
 			
 				
-				<h3 id="FxOpCoords.Enable">func (*FxOpCoords) <a href="/target/fx-ops.gt.go?s=2825:2853#L117">Enable</a></h3>
+				<h3 id="FxOpCoords.Enable">func (*FxOpCoords) <a href="/target/fx-ops.gt.go?s=2838:2866#L118">Enable</a></h3>
 				<pre>func (me *FxOpCoords) Enable()</pre>
 				<p>
 Enables this FxOp.
@@ -2838,7 +2812,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOpCoords.Enabled">func (*FxOpCoords) <a href="/target/fx-ops.gt.go?s=2931:2965#L122">Enabled</a></h3>
+				<h3 id="FxOpCoords.Enabled">func (*FxOpCoords) <a href="/target/fx-ops.gt.go?s=2944:2978#L123">Enabled</a></h3>
 				<pre>func (me *FxOpCoords) Enabled() bool</pre>
 				<p>
 Returns whether this FxOp is currently enabled.
@@ -2848,7 +2822,7 @@ Returns whether this FxOp is currently enabled.
 				
 			
 				
-				<h3 id="FxOpCoords.ProcID">func (*FxOpCoords) <a href="/target/fx-ops.gt.go?s=3151:3186#L128">ProcID</a></h3>
+				<h3 id="FxOpCoords.ProcID">func (*FxOpCoords) <a href="/target/fx-ops.gt.go?s=3164:3199#L129">ProcID</a></h3>
 				<pre>func (me *FxOpCoords) ProcID() string</pre>
 				<p>
 The procID of this FxOp. This is one of the Core.Rendering.Fx.KnownProcIDs.
@@ -2859,21 +2833,21 @@ For example, &#34;Tex2D&#34; for an FxOpTex2D, &#34;Grayscale&#34; for an FxOpGr
 				
 			
 				
-				<h3 id="FxOpCoords.ProcIndex">func (*FxOpCoords) <a href="/target/fx-ops.gt.go?s=3210:3245#L132">ProcIndex</a></h3>
+				<h3 id="FxOpCoords.ProcIndex">func (*FxOpCoords) <a href="/target/fx-ops.gt.go?s=3223:3258#L133">ProcIndex</a></h3>
 				<pre>func (me *FxOpCoords) ProcIndex() int</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxOpCoords.SetMixWeight">func (*FxOpCoords) <a href="/target/fx-ops.gt.go?s=3272:3320#L136">SetMixWeight</a></h3>
+				<h3 id="FxOpCoords.SetMixWeight">func (*FxOpCoords) <a href="/target/fx-ops.gt.go?s=3285:3333#L137">SetMixWeight</a></h3>
 				<pre>func (me *FxOpCoords) SetMixWeight(weight float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxOpCoords.Toggle">func (*FxOpCoords) <a href="/target/fx-ops.gt.go?s=3563:3591#L147">Toggle</a></h3>
+				<h3 id="FxOpCoords.Toggle">func (*FxOpCoords) <a href="/target/fx-ops.gt.go?s=3579:3607#L148">Toggle</a></h3>
 				<pre>func (me *FxOpCoords) Toggle()</pre>
 				<p>
 Toggles this FxOp.
@@ -2886,7 +2860,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 		
 			
 			
-			<h2 id="FxOpGamma">type <a href="/target/fx-ops.gt.go?s=3739:3774#L157">FxOpGamma</a></h2>
+			<h2 id="FxOpGamma">type <a href="/target/fx-ops.gt.go?s=3755:3790#L158">FxOpGamma</a></h2>
 			<pre>type FxOpGamma struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -2905,7 +2879,7 @@ pow(color, 1/2.2)
 
 			
 				
-				<h3 id="FxOpGamma.Disable">func (*FxOpGamma) <a href="/target/fx-ops.gt.go?s=2557:2586#L106">Disable</a></h3>
+				<h3 id="FxOpGamma.Disable">func (*FxOpGamma) <a href="/target/fx-ops.gt.go?s=2570:2599#L107">Disable</a></h3>
 				<pre>func (me *FxOpGamma) Disable()</pre>
 				<p>
 Disables this FxOp.
@@ -2916,7 +2890,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOpGamma.Disabled">func (*FxOpGamma) <a href="/target/fx-ops.gt.go?s=2664:2699#L111">Disabled</a></h3>
+				<h3 id="FxOpGamma.Disabled">func (*FxOpGamma) <a href="/target/fx-ops.gt.go?s=2677:2712#L112">Disabled</a></h3>
 				<pre>func (me *FxOpGamma) Disabled() bool</pre>
 				<p>
 Returns whether this FxOp is currently disabled.
@@ -2926,7 +2900,7 @@ Returns whether this FxOp is currently disabled.
 				
 			
 				
-				<h3 id="FxOpGamma.Enable">func (*FxOpGamma) <a href="/target/fx-ops.gt.go?s=2825:2853#L117">Enable</a></h3>
+				<h3 id="FxOpGamma.Enable">func (*FxOpGamma) <a href="/target/fx-ops.gt.go?s=2838:2866#L118">Enable</a></h3>
 				<pre>func (me *FxOpGamma) Enable()</pre>
 				<p>
 Enables this FxOp.
@@ -2937,7 +2911,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOpGamma.Enabled">func (*FxOpGamma) <a href="/target/fx-ops.gt.go?s=2931:2965#L122">Enabled</a></h3>
+				<h3 id="FxOpGamma.Enabled">func (*FxOpGamma) <a href="/target/fx-ops.gt.go?s=2944:2978#L123">Enabled</a></h3>
 				<pre>func (me *FxOpGamma) Enabled() bool</pre>
 				<p>
 Returns whether this FxOp is currently enabled.
@@ -2947,7 +2921,7 @@ Returns whether this FxOp is currently enabled.
 				
 			
 				
-				<h3 id="FxOpGamma.ProcID">func (*FxOpGamma) <a href="/target/fx-ops.gt.go?s=3151:3186#L128">ProcID</a></h3>
+				<h3 id="FxOpGamma.ProcID">func (*FxOpGamma) <a href="/target/fx-ops.gt.go?s=3164:3199#L129">ProcID</a></h3>
 				<pre>func (me *FxOpGamma) ProcID() string</pre>
 				<p>
 The procID of this FxOp. This is one of the Core.Rendering.Fx.KnownProcIDs.
@@ -2958,21 +2932,21 @@ For example, &#34;Tex2D&#34; for an FxOpTex2D, &#34;Grayscale&#34; for an FxOpGr
 				
 			
 				
-				<h3 id="FxOpGamma.ProcIndex">func (*FxOpGamma) <a href="/target/fx-ops.gt.go?s=3210:3245#L132">ProcIndex</a></h3>
+				<h3 id="FxOpGamma.ProcIndex">func (*FxOpGamma) <a href="/target/fx-ops.gt.go?s=3223:3258#L133">ProcIndex</a></h3>
 				<pre>func (me *FxOpGamma) ProcIndex() int</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxOpGamma.SetMixWeight">func (*FxOpGamma) <a href="/target/fx-ops.gt.go?s=3272:3320#L136">SetMixWeight</a></h3>
+				<h3 id="FxOpGamma.SetMixWeight">func (*FxOpGamma) <a href="/target/fx-ops.gt.go?s=3285:3333#L137">SetMixWeight</a></h3>
 				<pre>func (me *FxOpGamma) SetMixWeight(weight float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxOpGamma.Toggle">func (*FxOpGamma) <a href="/target/fx-ops.gt.go?s=3563:3591#L147">Toggle</a></h3>
+				<h3 id="FxOpGamma.Toggle">func (*FxOpGamma) <a href="/target/fx-ops.gt.go?s=3579:3607#L148">Toggle</a></h3>
 				<pre>func (me *FxOpGamma) Toggle()</pre>
 				<p>
 Toggles this FxOp.
@@ -2985,7 +2959,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 		
 			
 			
-			<h2 id="FxOpGrayscale">type <a href="/target/fx-ops.gt.go?s=3677:3716#L152">FxOpGrayscale</a></h2>
+			<h2 id="FxOpGrayscale">type <a href="/target/fx-ops.gt.go?s=3693:3732#L153">FxOpGrayscale</a></h2>
 			<pre>type FxOpGrayscale struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -3004,7 +2978,7 @@ Yields the grayscale of the current pixel color.
 
 			
 				
-				<h3 id="FxOpGrayscale.Disable">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=2557:2586#L106">Disable</a></h3>
+				<h3 id="FxOpGrayscale.Disable">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=2570:2599#L107">Disable</a></h3>
 				<pre>func (me *FxOpGrayscale) Disable()</pre>
 				<p>
 Disables this FxOp.
@@ -3015,7 +2989,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOpGrayscale.Disabled">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=2664:2699#L111">Disabled</a></h3>
+				<h3 id="FxOpGrayscale.Disabled">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=2677:2712#L112">Disabled</a></h3>
 				<pre>func (me *FxOpGrayscale) Disabled() bool</pre>
 				<p>
 Returns whether this FxOp is currently disabled.
@@ -3025,7 +2999,7 @@ Returns whether this FxOp is currently disabled.
 				
 			
 				
-				<h3 id="FxOpGrayscale.Enable">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=2825:2853#L117">Enable</a></h3>
+				<h3 id="FxOpGrayscale.Enable">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=2838:2866#L118">Enable</a></h3>
 				<pre>func (me *FxOpGrayscale) Enable()</pre>
 				<p>
 Enables this FxOp.
@@ -3036,7 +3010,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOpGrayscale.Enabled">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=2931:2965#L122">Enabled</a></h3>
+				<h3 id="FxOpGrayscale.Enabled">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=2944:2978#L123">Enabled</a></h3>
 				<pre>func (me *FxOpGrayscale) Enabled() bool</pre>
 				<p>
 Returns whether this FxOp is currently enabled.
@@ -3046,7 +3020,7 @@ Returns whether this FxOp is currently enabled.
 				
 			
 				
-				<h3 id="FxOpGrayscale.ProcID">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=3151:3186#L128">ProcID</a></h3>
+				<h3 id="FxOpGrayscale.ProcID">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=3164:3199#L129">ProcID</a></h3>
 				<pre>func (me *FxOpGrayscale) ProcID() string</pre>
 				<p>
 The procID of this FxOp. This is one of the Core.Rendering.Fx.KnownProcIDs.
@@ -3057,21 +3031,21 @@ For example, &#34;Tex2D&#34; for an FxOpTex2D, &#34;Grayscale&#34; for an FxOpGr
 				
 			
 				
-				<h3 id="FxOpGrayscale.ProcIndex">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=3210:3245#L132">ProcIndex</a></h3>
+				<h3 id="FxOpGrayscale.ProcIndex">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=3223:3258#L133">ProcIndex</a></h3>
 				<pre>func (me *FxOpGrayscale) ProcIndex() int</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxOpGrayscale.SetMixWeight">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=3272:3320#L136">SetMixWeight</a></h3>
+				<h3 id="FxOpGrayscale.SetMixWeight">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=3285:3333#L137">SetMixWeight</a></h3>
 				<pre>func (me *FxOpGrayscale) SetMixWeight(weight float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxOpGrayscale.Toggle">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=3563:3591#L147">Toggle</a></h3>
+				<h3 id="FxOpGrayscale.Toggle">func (*FxOpGrayscale) <a href="/target/fx-ops.gt.go?s=3579:3607#L148">Toggle</a></h3>
 				<pre>func (me *FxOpGrayscale) Toggle()</pre>
 				<p>
 Toggles this FxOp.
@@ -3084,7 +3058,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 		
 			
 			
-			<h2 id="FxOpOrangify">type <a href="/target/fx-ops.gt.go?s=3845:3883#L162">FxOpOrangify</a></h2>
+			<h2 id="FxOpOrangify">type <a href="/target/fx-ops.gt.go?s=3861:3899#L163">FxOpOrangify</a></h2>
 			<pre>type FxOpOrangify struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -3103,7 +3077,7 @@ A very simple color &#34;effect&#34;. Tints the current color orange-red.
 
 			
 				
-				<h3 id="FxOpOrangify.Disable">func (*FxOpOrangify) <a href="/target/fx-ops.gt.go?s=2557:2586#L106">Disable</a></h3>
+				<h3 id="FxOpOrangify.Disable">func (*FxOpOrangify) <a href="/target/fx-ops.gt.go?s=2570:2599#L107">Disable</a></h3>
 				<pre>func (me *FxOpOrangify) Disable()</pre>
 				<p>
 Disables this FxOp.
@@ -3114,7 +3088,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOpOrangify.Disabled">func (*FxOpOrangify) <a href="/target/fx-ops.gt.go?s=2664:2699#L111">Disabled</a></h3>
+				<h3 id="FxOpOrangify.Disabled">func (*FxOpOrangify) <a href="/target/fx-ops.gt.go?s=2677:2712#L112">Disabled</a></h3>
 				<pre>func (me *FxOpOrangify) Disabled() bool</pre>
 				<p>
 Returns whether this FxOp is currently disabled.
@@ -3124,7 +3098,7 @@ Returns whether this FxOp is currently disabled.
 				
 			
 				
-				<h3 id="FxOpOrangify.Enable">func (*FxOpOrangify) <a href="/target/fx-ops.gt.go?s=2825:2853#L117">Enable</a></h3>
+				<h3 id="FxOpOrangify.Enable">func (*FxOpOrangify) <a href="/target/fx-ops.gt.go?s=2838:2866#L118">Enable</a></h3>
 				<pre>func (me *FxOpOrangify) Enable()</pre>
 				<p>
 Enables this FxOp.
@@ -3135,7 +3109,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOpOrangify.Enabled">func (*FxOpOrangify) <a href="/target/fx-ops.gt.go?s=2931:2965#L122">Enabled</a></h3>
+				<h3 id="FxOpOrangify.Enabled">func (*FxOpOrangify) <a href="/target/fx-ops.gt.go?s=2944:2978#L123">Enabled</a></h3>
 				<pre>func (me *FxOpOrangify) Enabled() bool</pre>
 				<p>
 Returns whether this FxOp is currently enabled.
@@ -3145,7 +3119,7 @@ Returns whether this FxOp is currently enabled.
 				
 			
 				
-				<h3 id="FxOpOrangify.ProcID">func (*FxOpOrangify) <a href="/target/fx-ops.gt.go?s=3151:3186#L128">ProcID</a></h3>
+				<h3 id="FxOpOrangify.ProcID">func (*FxOpOrangify) <a href="/target/fx-ops.gt.go?s=3164:3199#L129">ProcID</a></h3>
 				<pre>func (me *FxOpOrangify) ProcID() string</pre>
 				<p>
 The procID of this FxOp. This is one of the Core.Rendering.Fx.KnownProcIDs.
@@ -3156,21 +3130,21 @@ For example, &#34;Tex2D&#34; for an FxOpTex2D, &#34;Grayscale&#34; for an FxOpGr
 				
 			
 				
-				<h3 id="FxOpOrangify.ProcIndex">func (*FxOpOrangify) <a href="/target/fx-ops.gt.go?s=3210:3245#L132">ProcIndex</a></h3>
+				<h3 id="FxOpOrangify.ProcIndex">func (*FxOpOrangify) <a href="/target/fx-ops.gt.go?s=3223:3258#L133">ProcIndex</a></h3>
 				<pre>func (me *FxOpOrangify) ProcIndex() int</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxOpOrangify.SetMixWeight">func (*FxOpOrangify) <a href="/target/fx-ops.gt.go?s=3272:3320#L136">SetMixWeight</a></h3>
+				<h3 id="FxOpOrangify.SetMixWeight">func (*FxOpOrangify) <a href="/target/fx-ops.gt.go?s=3285:3333#L137">SetMixWeight</a></h3>
 				<pre>func (me *FxOpOrangify) SetMixWeight(weight float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxOpOrangify.Toggle">func (*FxOpOrangify) <a href="/target/fx-ops.gt.go?s=3563:3591#L147">Toggle</a></h3>
+				<h3 id="FxOpOrangify.Toggle">func (*FxOpOrangify) <a href="/target/fx-ops.gt.go?s=3579:3607#L148">Toggle</a></h3>
 				<pre>func (me *FxOpOrangify) Toggle()</pre>
 				<p>
 Toggles this FxOp.
@@ -3183,7 +3157,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 		
 			
 			
-			<h2 id="FxOpTex2D">type <a href="/target/fx-ops.gt.go?s=4869:4929#L215">FxOpTex2D</a></h2>
+			<h2 id="FxOpTex2D">type <a href="/target/fx-ops.gt.go?s=4908:4968#L217">FxOpTex2D</a></h2>
 			<pre>type FxOpTex2D struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -3202,7 +3176,7 @@ Samples from a 2D texture.
 
 			
 				
-				<h3 id="FxOpTex2D.SetImageID">func (*FxOpTex2D) <a href="/target/fx-ops.gt.go?s=5006:5064#L224">SetImageID</a></h3>
+				<h3 id="FxOpTex2D.SetImageID">func (*FxOpTex2D) <a href="/target/fx-ops.gt.go?s=5045:5103#L226">SetImageID</a></h3>
 				<pre>func (me *FxOpTex2D) SetImageID(imageID string) *FxOpTex2D</pre>
 				
 				
@@ -3211,7 +3185,7 @@ Samples from a 2D texture.
 		
 			
 			
-			<h2 id="FxOpTexCube">type <a href="/target/fx-ops.gt.go?s=5328:5392#L236">FxOpTexCube</a></h2>
+			<h2 id="FxOpTexCube">type <a href="/target/fx-ops.gt.go?s=5357:5421#L238">FxOpTexCube</a></h2>
 			<pre>type FxOpTexCube struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -3227,7 +3201,7 @@ Samples from a 2D texture.
 
 			
 				
-				<h3 id="FxOpTexCube.SetImageID">func (*FxOpTexCube) <a href="/target/fx-ops.gt.go?s=5532:5581#L246">SetImageID</a></h3>
+				<h3 id="FxOpTexCube.SetImageID">func (*FxOpTexCube) <a href="/target/fx-ops.gt.go?s=5561:5610#L248">SetImageID</a></h3>
 				<pre>func (me *FxOpTexCube) SetImageID(imageID string)</pre>
 				
 				
@@ -3236,7 +3210,7 @@ Samples from a 2D texture.
 		
 			
 			
-			<h2 id="FxOps">type <a href="/target/fx-ops.gt.go?s=5837:5854#L257">FxOps</a></h2>
+			<h2 id="FxOps">type <a href="/target/fx-ops.gt.go?s=5866:5883#L259">FxOps</a></h2>
 			<pre>type FxOps []FxOp</pre>
 			<p>
 Used for FxEffect.Ops/OpsX and Camera.Rendering.FxOps.
@@ -3253,7 +3227,7 @@ Used for FxEffect.Ops/OpsX and Camera.Rendering.FxOps.
 
 			
 				
-				<h3 id="FxOps.Disable">func (FxOps) <a href="/target/fx-ops.gt.go?s=6113:6158#L263">Disable</a></h3>
+				<h3 id="FxOps.Disable">func (FxOps) <a href="/target/fx-ops.gt.go?s=6142:6187#L265">Disable</a></h3>
 				<pre>func (me FxOps) Disable(procID string, n int)</pre>
 				<p>
 Disables the nth (0-based) FxOp with the specified procID,
@@ -3266,7 +3240,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.DisableColor">func (FxOps) <a href="/target/fx-ops.gt.go?s=12324:12359#L479">DisableColor</a></h3>
+				<h3 id="FxOps.DisableColor">func (FxOps) <a href="/target/fx-ops.gt.go?s=12353:12388#L481">DisableColor</a></h3>
 				<pre>func (me FxOps) DisableColor(n int)</pre>
 				<p>
 Convenience short-hand for me.Disable(&#34;Color&#34;, n).
@@ -3277,7 +3251,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.DisableCoords">func (FxOps) <a href="/target/fx-ops.gt.go?s=11537:11573#L453">DisableCoords</a></h3>
+				<h3 id="FxOps.DisableCoords">func (FxOps) <a href="/target/fx-ops.gt.go?s=11566:11602#L455">DisableCoords</a></h3>
 				<pre>func (me FxOps) DisableCoords(n int)</pre>
 				<p>
 Convenience short-hand for me.Disable(&#34;Coords&#34;, n).
@@ -3288,7 +3262,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.DisableGamma">func (FxOps) <a href="/target/fx-ops.gt.go?s=13096:13131#L505">DisableGamma</a></h3>
+				<h3 id="FxOps.DisableGamma">func (FxOps) <a href="/target/fx-ops.gt.go?s=13125:13160#L507">DisableGamma</a></h3>
 				<pre>func (me FxOps) DisableGamma(n int)</pre>
 				<p>
 Convenience short-hand for me.Disable(&#34;Gamma&#34;, n).
@@ -3299,7 +3273,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.DisableGrayscale">func (FxOps) <a href="/target/fx-ops.gt.go?s=10704:10743#L427">DisableGrayscale</a></h3>
+				<h3 id="FxOps.DisableGrayscale">func (FxOps) <a href="/target/fx-ops.gt.go?s=10733:10772#L429">DisableGrayscale</a></h3>
 				<pre>func (me FxOps) DisableGrayscale(n int)</pre>
 				<p>
 Convenience short-hand for me.Disable(&#34;Grayscale&#34;, n).
@@ -3310,7 +3284,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.DisableOrangify">func (FxOps) <a href="/target/fx-ops.gt.go?s=9883:9921#L401">DisableOrangify</a></h3>
+				<h3 id="FxOps.DisableOrangify">func (FxOps) <a href="/target/fx-ops.gt.go?s=9912:9950#L403">DisableOrangify</a></h3>
 				<pre>func (me FxOps) DisableOrangify(n int)</pre>
 				<p>
 Convenience short-hand for me.Disable(&#34;Orangify&#34;, n).
@@ -3321,7 +3295,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.DisableTex2D">func (FxOps) <a href="/target/fx-ops.gt.go?s=8304:8339#L349">DisableTex2D</a></h3>
+				<h3 id="FxOps.DisableTex2D">func (FxOps) <a href="/target/fx-ops.gt.go?s=8333:8368#L351">DisableTex2D</a></h3>
 				<pre>func (me FxOps) DisableTex2D(n int)</pre>
 				<p>
 Convenience short-hand for me.Disable(&#34;Tex2D&#34;, n).
@@ -3332,7 +3306,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.DisableTexCube">func (FxOps) <a href="/target/fx-ops.gt.go?s=9078:9115#L375">DisableTexCube</a></h3>
+				<h3 id="FxOps.DisableTexCube">func (FxOps) <a href="/target/fx-ops.gt.go?s=9107:9144#L377">DisableTexCube</a></h3>
 				<pre>func (me FxOps) DisableTexCube(n int)</pre>
 				<p>
 Convenience short-hand for me.Disable(&#34;TexCube&#34;, n).
@@ -3343,7 +3317,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.Enable">func (*FxOps) <a href="/target/fx-ops.gt.go?s=6652:6709#L282">Enable</a></h3>
+				<h3 id="FxOps.Enable">func (*FxOps) <a href="/target/fx-ops.gt.go?s=6681:6738#L284">Enable</a></h3>
 				<pre>func (me *FxOps) Enable(procID string, n int) (fxOp FxOp)</pre>
 				<p>
 Enables the nth (0-based) FxOp with the specified procID,
@@ -3357,7 +3331,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.EnableColor">func (*FxOps) <a href="/target/fx-ops.gt.go?s=12520:12566#L485">EnableColor</a></h3>
+				<h3 id="FxOps.EnableColor">func (*FxOps) <a href="/target/fx-ops.gt.go?s=12549:12595#L487">EnableColor</a></h3>
 				<pre>func (me *FxOps) EnableColor(n int) *FxOpColor</pre>
 				<p>
 Convenience short-hand for me.Enable(&#34;Color&#34;, n).
@@ -3368,7 +3342,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.EnableCoords">func (*FxOps) <a href="/target/fx-ops.gt.go?s=11736:11784#L459">EnableCoords</a></h3>
+				<h3 id="FxOps.EnableCoords">func (*FxOps) <a href="/target/fx-ops.gt.go?s=11765:11813#L461">EnableCoords</a></h3>
 				<pre>func (me *FxOps) EnableCoords(n int) *FxOpCoords</pre>
 				<p>
 Convenience short-hand for me.Enable(&#34;Coords&#34;, n).
@@ -3379,7 +3353,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.EnableGamma">func (*FxOps) <a href="/target/fx-ops.gt.go?s=13292:13338#L511">EnableGamma</a></h3>
+				<h3 id="FxOps.EnableGamma">func (*FxOps) <a href="/target/fx-ops.gt.go?s=13321:13367#L513">EnableGamma</a></h3>
 				<pre>func (me *FxOps) EnableGamma(n int) *FxOpGamma</pre>
 				<p>
 Convenience short-hand for me.Enable(&#34;Gamma&#34;, n).
@@ -3390,7 +3364,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.EnableGrayscale">func (*FxOps) <a href="/target/fx-ops.gt.go?s=10912:10966#L433">EnableGrayscale</a></h3>
+				<h3 id="FxOps.EnableGrayscale">func (*FxOps) <a href="/target/fx-ops.gt.go?s=10941:10995#L435">EnableGrayscale</a></h3>
 				<pre>func (me *FxOps) EnableGrayscale(n int) *FxOpGrayscale</pre>
 				<p>
 Convenience short-hand for me.Enable(&#34;Grayscale&#34;, n).
@@ -3401,7 +3375,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.EnableOrangify">func (*FxOps) <a href="/target/fx-ops.gt.go?s=10088:10140#L407">EnableOrangify</a></h3>
+				<h3 id="FxOps.EnableOrangify">func (*FxOps) <a href="/target/fx-ops.gt.go?s=10117:10169#L409">EnableOrangify</a></h3>
 				<pre>func (me *FxOps) EnableOrangify(n int) *FxOpOrangify</pre>
 				<p>
 Convenience short-hand for me.Enable(&#34;Orangify&#34;, n).
@@ -3412,7 +3386,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.EnableTex2D">func (*FxOps) <a href="/target/fx-ops.gt.go?s=8500:8546#L355">EnableTex2D</a></h3>
+				<h3 id="FxOps.EnableTex2D">func (*FxOps) <a href="/target/fx-ops.gt.go?s=8529:8575#L357">EnableTex2D</a></h3>
 				<pre>func (me *FxOps) EnableTex2D(n int) *FxOpTex2D</pre>
 				<p>
 Convenience short-hand for me.Enable(&#34;Tex2D&#34;, n).
@@ -3423,7 +3397,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.EnableTexCube">func (*FxOps) <a href="/target/fx-ops.gt.go?s=9280:9330#L381">EnableTexCube</a></h3>
+				<h3 id="FxOps.EnableTexCube">func (*FxOps) <a href="/target/fx-ops.gt.go?s=9309:9359#L383">EnableTexCube</a></h3>
 				<pre>func (me *FxOps) EnableTexCube(n int) *FxOpTexCube</pre>
 				<p>
 Convenience short-hand for me.Enable(&#34;TexCube&#34;, n).
@@ -3434,7 +3408,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.Get">func (FxOps) <a href="/target/fx-ops.gt.go?s=7114:7165#L303">Get</a></h3>
+				<h3 id="FxOps.Get">func (FxOps) <a href="/target/fx-ops.gt.go?s=7143:7194#L305">Get</a></h3>
 				<pre>func (me FxOps) Get(procID string, n int) (op FxOp)</pre>
 				<p>
 Returns the nth (0-based) FxOp with the specified procID.
@@ -3445,7 +3419,7 @@ The procID must be one of the Core.Rendering.Fx.KnownProcIDs.
 				
 			
 				
-				<h3 id="FxOps.GetColor">func (FxOps) <a href="/target/fx-ops.gt.go?s=12665:12712#L490">GetColor</a></h3>
+				<h3 id="FxOps.GetColor">func (FxOps) <a href="/target/fx-ops.gt.go?s=12694:12741#L492">GetColor</a></h3>
 				<pre>func (me FxOps) GetColor(n int) (op *FxOpColor)</pre>
 				<p>
 Convenience short-hand for me.Get(&#34;Color&#34;, n).
@@ -3455,7 +3429,7 @@ Convenience short-hand for me.Get(&#34;Color&#34;, n).
 				
 			
 				
-				<h3 id="FxOps.GetCoords">func (FxOps) <a href="/target/fx-ops.gt.go?s=11886:11935#L464">GetCoords</a></h3>
+				<h3 id="FxOps.GetCoords">func (FxOps) <a href="/target/fx-ops.gt.go?s=11915:11964#L466">GetCoords</a></h3>
 				<pre>func (me FxOps) GetCoords(n int) (op *FxOpCoords)</pre>
 				<p>
 Convenience short-hand for me.Get(&#34;Coords&#34;, n).
@@ -3465,7 +3439,7 @@ Convenience short-hand for me.Get(&#34;Coords&#34;, n).
 				
 			
 				
-				<h3 id="FxOps.GetGamma">func (FxOps) <a href="/target/fx-ops.gt.go?s=13437:13484#L516">GetGamma</a></h3>
+				<h3 id="FxOps.GetGamma">func (FxOps) <a href="/target/fx-ops.gt.go?s=13466:13513#L518">GetGamma</a></h3>
 				<pre>func (me FxOps) GetGamma(n int) (op *FxOpGamma)</pre>
 				<p>
 Convenience short-hand for me.Get(&#34;Gamma&#34;, n).
@@ -3475,7 +3449,7 @@ Convenience short-hand for me.Get(&#34;Gamma&#34;, n).
 				
 			
 				
-				<h3 id="FxOps.GetGrayscale">func (FxOps) <a href="/target/fx-ops.gt.go?s=11077:11132#L438">GetGrayscale</a></h3>
+				<h3 id="FxOps.GetGrayscale">func (FxOps) <a href="/target/fx-ops.gt.go?s=11106:11161#L440">GetGrayscale</a></h3>
 				<pre>func (me FxOps) GetGrayscale(n int) (op *FxOpGrayscale)</pre>
 				<p>
 Convenience short-hand for me.Get(&#34;Grayscale&#34;, n).
@@ -3485,7 +3459,7 @@ Convenience short-hand for me.Get(&#34;Grayscale&#34;, n).
 				
 			
 				
-				<h3 id="FxOps.GetOrangify">func (FxOps) <a href="/target/fx-ops.gt.go?s=10248:10301#L412">GetOrangify</a></h3>
+				<h3 id="FxOps.GetOrangify">func (FxOps) <a href="/target/fx-ops.gt.go?s=10277:10330#L414">GetOrangify</a></h3>
 				<pre>func (me FxOps) GetOrangify(n int) (op *FxOpOrangify)</pre>
 				<p>
 Convenience short-hand for me.Get(&#34;Orangify&#34;, n).
@@ -3495,7 +3469,7 @@ Convenience short-hand for me.Get(&#34;Orangify&#34;, n).
 				
 			
 				
-				<h3 id="FxOps.GetTex2D">func (FxOps) <a href="/target/fx-ops.gt.go?s=8645:8692#L360">GetTex2D</a></h3>
+				<h3 id="FxOps.GetTex2D">func (FxOps) <a href="/target/fx-ops.gt.go?s=8674:8721#L362">GetTex2D</a></h3>
 				<pre>func (me FxOps) GetTex2D(n int) (op *FxOpTex2D)</pre>
 				<p>
 Convenience short-hand for me.Get(&#34;Tex2D&#34;, n).
@@ -3505,7 +3479,7 @@ Convenience short-hand for me.Get(&#34;Tex2D&#34;, n).
 				
 			
 				
-				<h3 id="FxOps.GetTexCube">func (FxOps) <a href="/target/fx-ops.gt.go?s=9435:9486#L386">GetTexCube</a></h3>
+				<h3 id="FxOps.GetTexCube">func (FxOps) <a href="/target/fx-ops.gt.go?s=9464:9515#L388">GetTexCube</a></h3>
 				<pre>func (me FxOps) GetTexCube(n int) (op *FxOpTexCube)</pre>
 				<p>
 Convenience short-hand for me.Get(&#34;TexCube&#34;, n).
@@ -3515,7 +3489,7 @@ Convenience short-hand for me.Get(&#34;TexCube&#34;, n).
 				
 			
 				
-				<h3 id="FxOps.Toggle">func (*FxOps) <a href="/target/fx-ops.gt.go?s=7623:7668#L321">Toggle</a></h3>
+				<h3 id="FxOps.Toggle">func (*FxOps) <a href="/target/fx-ops.gt.go?s=7652:7697#L323">Toggle</a></h3>
 				<pre>func (me *FxOps) Toggle(procID string, n int)</pre>
 				<p>
 Toggles the nth (0-based) FxOp with the specified procID,
@@ -3529,7 +3503,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.ToggleColor">func (*FxOps) <a href="/target/fx-ops.gt.go?s=12898:12933#L497">ToggleColor</a></h3>
+				<h3 id="FxOps.ToggleColor">func (*FxOps) <a href="/target/fx-ops.gt.go?s=12927:12962#L499">ToggleColor</a></h3>
 				<pre>func (me *FxOps) ToggleColor(n int)</pre>
 				<p>
 Convenience short-hand for me.Toggle(&#34;Color&#34;, n).
@@ -3540,7 +3514,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.ToggleCoords">func (*FxOps) <a href="/target/fx-ops.gt.go?s=12124:12160#L471">ToggleCoords</a></h3>
+				<h3 id="FxOps.ToggleCoords">func (*FxOps) <a href="/target/fx-ops.gt.go?s=12153:12189#L473">ToggleCoords</a></h3>
 				<pre>func (me *FxOps) ToggleCoords(n int)</pre>
 				<p>
 Convenience short-hand for me.Toggle(&#34;Coords&#34;, n).
@@ -3551,7 +3525,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.ToggleGamma">func (*FxOps) <a href="/target/fx-ops.gt.go?s=13670:13705#L523">ToggleGamma</a></h3>
+				<h3 id="FxOps.ToggleGamma">func (*FxOps) <a href="/target/fx-ops.gt.go?s=13699:13734#L525">ToggleGamma</a></h3>
 				<pre>func (me *FxOps) ToggleGamma(n int)</pre>
 				<p>
 Convenience short-hand for me.Toggle(&#34;Gamma&#34;, n).
@@ -3562,7 +3536,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.ToggleGrayscale">func (*FxOps) <a href="/target/fx-ops.gt.go?s=11330:11369#L445">ToggleGrayscale</a></h3>
+				<h3 id="FxOps.ToggleGrayscale">func (*FxOps) <a href="/target/fx-ops.gt.go?s=11359:11398#L447">ToggleGrayscale</a></h3>
 				<pre>func (me *FxOps) ToggleGrayscale(n int)</pre>
 				<p>
 Convenience short-hand for me.Toggle(&#34;Grayscale&#34;, n).
@@ -3573,7 +3547,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.ToggleOrangify">func (*FxOps) <a href="/target/fx-ops.gt.go?s=10496:10534#L419">ToggleOrangify</a></h3>
+				<h3 id="FxOps.ToggleOrangify">func (*FxOps) <a href="/target/fx-ops.gt.go?s=10525:10563#L421">ToggleOrangify</a></h3>
 				<pre>func (me *FxOps) ToggleOrangify(n int)</pre>
 				<p>
 Convenience short-hand for me.Toggle(&#34;Orangify&#34;, n).
@@ -3584,7 +3558,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.ToggleTex2D">func (*FxOps) <a href="/target/fx-ops.gt.go?s=8878:8913#L367">ToggleTex2D</a></h3>
+				<h3 id="FxOps.ToggleTex2D">func (*FxOps) <a href="/target/fx-ops.gt.go?s=8907:8942#L369">ToggleTex2D</a></h3>
 				<pre>func (me *FxOps) ToggleTex2D(n int)</pre>
 				<p>
 Convenience short-hand for me.Toggle(&#34;Tex2D&#34;, n).
@@ -3595,7 +3569,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="FxOps.ToggleTexCube">func (*FxOps) <a href="/target/fx-ops.gt.go?s=9678:9715#L393">ToggleTexCube</a></h3>
+				<h3 id="FxOps.ToggleTexCube">func (*FxOps) <a href="/target/fx-ops.gt.go?s=9707:9744#L395">ToggleTexCube</a></h3>
 				<pre>func (me *FxOps) ToggleTexCube(n int)</pre>
 				<p>
 Convenience short-hand for me.Toggle(&#34;TexCube&#34;, n).
@@ -3608,7 +3582,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 		
 			
 			
-			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=2630:2668#L103">LibFxEffects</a></h2>
+			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=2153:2191#L87">LibFxEffects</a></h2>
 			<pre>type LibFxEffects map[string]*FxEffect</pre>
 			<p>
 A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
@@ -3625,7 +3599,7 @@ A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2794:2850#L107">AddNew</a></h3>
+				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2317:2373#L91">AddNew</a></h3>
 				<pre>func (me LibFxEffects) AddNew(id string) (obj *FxEffect)</pre>
 				<p>
 Creates and initializes a new FxEffect with default parameters,
@@ -3636,7 +3610,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibFxEffects.Remove">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=3049:3089#L124">Remove</a></h3>
+				<h3 id="LibFxEffects.Remove">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2572:2612#L108">Remove</a></h3>
 				<pre>func (me LibFxEffects) Remove(id string)</pre>
 				
 				
@@ -3719,7 +3693,7 @@ adds it to me under the specified ID, and returns it.
 		
 			
 			
-			<h2 id="LibFxMaterials">type <a href="/target/fx-material.gt.go?s=1510:1552#L48">LibFxMaterials</a></h2>
+			<h2 id="LibFxMaterials">type <a href="/target/fx-material.gt.go?s=1489:1531#L48">LibFxMaterials</a></h2>
 			<pre>type LibFxMaterials map[string]*FxMaterial</pre>
 			<p>
 A hash-table of FxMaterials associated by IDs. Only for use in Core.Libs.
@@ -3736,7 +3710,7 @@ A hash-table of FxMaterials associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxMaterials.AddNew">func (LibFxMaterials) <a href="/target/fx-material.gt.go?s=1680:1740#L52">AddNew</a></h3>
+				<h3 id="LibFxMaterials.AddNew">func (LibFxMaterials) <a href="/target/fx-material.gt.go?s=1659:1719#L52">AddNew</a></h3>
 				<pre>func (me LibFxMaterials) AddNew(id string) (obj *FxMaterial)</pre>
 				<p>
 Creates and initializes a new FxMaterial with default parameters,
@@ -3747,7 +3721,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibFxMaterials.Remove">func (LibFxMaterials) <a href="/target/fx-material.gt.go?s=1947:1989#L69">Remove</a></h3>
+				<h3 id="LibFxMaterials.Remove">func (LibFxMaterials) <a href="/target/fx-material.gt.go?s=1926:1968#L69">Remove</a></h3>
 				<pre>func (me LibFxMaterials) Remove(id string)</pre>
 				
 				
@@ -4369,7 +4343,7 @@ Returns the default Model (with ID &#34;&#34;) for the parent Mesh.
 		
 			
 			
-			<h2 id="Node">type <a href="/target/node.go?s=271:1223#L5">Node</a></h2>
+			<h2 id="Node">type <a href="/target/node.go?s=271:1016#L5">Node</a></h2>
 			<pre>type Node struct {
     Rendering struct {
         <span class="comment">//	Defaults to true. If false, this Node is ignored by the rendering runtime.</span>
@@ -4399,56 +4373,63 @@ Declares a point of interest in a Scene.
 
 			
 				
-				<h3 id="Node.EffectiveMaterial">func (*Node) <a href="/target/node.go?s=1547:1594#L57">EffectiveMaterial</a></h3>
+				<h3 id="Node.ApplyTransform">func (*Node) <a href="/target/node.go?s=1359:1391#L51">ApplyTransform</a></h3>
+				<pre>func (me *Node) ApplyTransform()</pre>
+				
+				
+				
+			
+				
+				<h3 id="Node.EffectiveMaterial">func (*Node) <a href="/target/node.go?s=1429:1476#L55">EffectiveMaterial</a></h3>
 				<pre>func (me *Node) EffectiveMaterial() *FxMaterial</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MatID">func (*Node) <a href="/target/node.go?s=2145:2175#L79">MatID</a></h3>
+				<h3 id="Node.MatID">func (*Node) <a href="/target/node.go?s=2027:2057#L77">MatID</a></h3>
 				<pre>func (me *Node) MatID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MeshID">func (*Node) <a href="/target/node.go?s=2198:2229#L83">MeshID</a></h3>
+				<h3 id="Node.MeshID">func (*Node) <a href="/target/node.go?s=2080:2111#L81">MeshID</a></h3>
 				<pre>func (me *Node) MeshID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.ModelID">func (*Node) <a href="/target/node.go?s=2253:2285#L87">ModelID</a></h3>
+				<h3 id="Node.ModelID">func (*Node) <a href="/target/node.go?s=2135:2167#L85">ModelID</a></h3>
 				<pre>func (me *Node) ModelID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2310:2345#L91">Root</a></h3>
+				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2192:2227#L89">Root</a></h3>
 				<pre>func (me *Node) Root() (root *Node)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=2441:2482#L100">SetMatID</a></h3>
+				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=2323:2364#L98">SetMatID</a></h3>
 				<pre>func (me *Node) SetMatID(newMatID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=2579:2633#L106">SetMeshModelID</a></h3>
+				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=2461:2515#L104">SetMeshModelID</a></h3>
 				<pre>func (me *Node) SetMeshModelID(meshID, modelID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2937:2977#L120">Walk</a></h3>
+				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2819:2859#L118">Walk</a></h3>
 				<pre>func (me *Node) Walk(onNode NodeVisitor)</pre>
 				
 				
@@ -4457,7 +4438,7 @@ Declares a point of interest in a Scene.
 		
 			
 			
-			<h2 id="NodeTransform">type <a href="/target/node-transform.go?s=487:837#L4">NodeTransform</a></h2>
+			<h2 id="NodeTransform">type <a href="/target/node-transform.go?s=467:738#L4">NodeTransform</a></h2>
 			<pre>type NodeTransform struct {
     <span class="comment">//	Translation of the from origin.</span>
     Pos unum.Vec3
@@ -4467,9 +4448,6 @@ Declares a point of interest in a Scene.
 
     <span class="comment">//	Scaling of this node, if any. Defaults to (1, 1, 1) for no scaling.</span>
     Scale unum.Vec3
-
-    <span class="comment">//	An arbitrary additional transformation to apply, if any.</span>
-    Other *unum.Mat4
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
@@ -4480,7 +4458,7 @@ NodeTransform are invalid.)
 </p>
 <p>
 A single NodeTransform encapsulates an unexported 4x4 matrix that is recalculated
-from its exported fields via the AddFoo(), SetFoo() or ApplyMatrices() methods.
+whenever its parent Node.ApplyTransform() method is called.
 </p>
 
 
@@ -4494,168 +4472,49 @@ from its exported fields via the AddFoo(), SetFoo() or ApplyMatrices() methods.
 
 			
 				
-				<h3 id="NodeTransform.AddRot">func (*NodeTransform) <a href="/target/node-transform.go?s=1065:1112#L29">AddRot</a></h3>
+				<h3 id="NodeTransform.AddRot">func (*NodeTransform) <a href="/target/node-transform.go?s=851:898#L24">AddRot</a></h3>
 				<pre>func (me *NodeTransform) AddRot(rot *unum.Vec3)</pre>
-				<p>
-Adds the specified vector to me.Rot and calls ApplyMatrices().
-</p>
-
+				
 				
 				
 			
 				
-				<h3 id="NodeTransform.AddRotXYZ">func (*NodeTransform) <a href="/target/node-transform.go?s=1221:1272#L35">AddRotXYZ</a></h3>
+				<h3 id="NodeTransform.AddRotXYZ">func (*NodeTransform) <a href="/target/node-transform.go?s=921:972#L28">AddRotXYZ</a></h3>
 				<pre>func (me *NodeTransform) AddRotXYZ(x, y, z float64)</pre>
-				<p>
-Adds the specified values to me.Rot and calls ApplyMatrices().
-</p>
-
+				
 				
 				
 			
 				
-				<h3 id="NodeTransform.ApplyMatrices">func (*NodeTransform) <a href="/target/node-transform.go?s=1466:1506#L42">ApplyMatrices</a></h3>
-				<pre>func (me *NodeTransform) ApplyMatrices()</pre>
-				<p>
-Updates the internal 4x4 transformation matrix for all transformations
-in me. It is only this matrix that is used by the rendering runtime.
-</p>
-
+				<h3 id="NodeTransform.SetPos">func (*NodeTransform) <a href="/target/node-transform.go?s=1751:1808#L52">SetPos</a></h3>
+				<pre>func (me *NodeTransform) SetPos(posX, posY, posZ float64)</pre>
+				
 				
 				
 			
 				
-				<h3 id="NodeTransform.SetPos">func (*NodeTransform) <a href="/target/node-transform.go?s=2272:2319#L60">SetPos</a></h3>
-				<pre>func (me *NodeTransform) SetPos(pos *unum.Vec3)</pre>
-				<p>
-Sets me.Pos and calls ApplyMatrices().
-</p>
-
+				<h3 id="NodeTransform.SetRot">func (*NodeTransform) <a href="/target/node-transform.go?s=1863:1920#L56">SetRot</a></h3>
+				<pre>func (me *NodeTransform) SetRot(radX, radY, radZ float64)</pre>
+				
 				
 				
 			
 				
-				<h3 id="NodeTransform.SetPosX">func (*NodeTransform) <a href="/target/node-transform.go?s=2404:2450#L66">SetPosX</a></h3>
-				<pre>func (me *NodeTransform) SetPosX(posX float64)</pre>
-				<p>
-Sets me.Pos.X and calls ApplyMatrices().
-</p>
-
+				<h3 id="NodeTransform.SetScale">func (*NodeTransform) <a href="/target/node-transform.go?s=1975:2019#L60">SetScale</a></h3>
+				<pre>func (me *NodeTransform) SetScale(s float64)</pre>
+				
 				
 				
 			
 				
-				<h3 id="NodeTransform.SetPosXYZ">func (*NodeTransform) <a href="/target/node-transform.go?s=2535:2595#L72">SetPosXYZ</a></h3>
-				<pre>func (me *NodeTransform) SetPosXYZ(posX, posY, posZ float64)</pre>
-				<p>
-Sets me.Pos and calls ApplyMatrices().
-</p>
-
+				<h3 id="NodeTransform.SetScaleXyz">func (*NodeTransform) <a href="/target/node-transform.go?s=2071:2124#L64">SetScaleXyz</a></h3>
+				<pre>func (me *NodeTransform) SetScaleXyz(x, y, z float64)</pre>
+				
 				
 				
 			
 				
-				<h3 id="NodeTransform.SetPosY">func (*NodeTransform) <a href="/target/node-transform.go?s=2714:2760#L78">SetPosY</a></h3>
-				<pre>func (me *NodeTransform) SetPosY(posY float64)</pre>
-				<p>
-Sets me.Pos.Y and calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransform.SetPosZ">func (*NodeTransform) <a href="/target/node-transform.go?s=2847:2893#L84">SetPosZ</a></h3>
-				<pre>func (me *NodeTransform) SetPosZ(posZ float64)</pre>
-				<p>
-Sets me.Pos.Z and calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransform.SetRot">func (*NodeTransform) <a href="/target/node-transform.go?s=2978:3025#L90">SetRot</a></h3>
-				<pre>func (me *NodeTransform) SetRot(rot *unum.Vec3)</pre>
-				<p>
-Sets me.Rot and calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransform.SetRotX">func (*NodeTransform) <a href="/target/node-transform.go?s=3110:3155#L96">SetRotX</a></h3>
-				<pre>func (me *NodeTransform) SetRotX(rad float64)</pre>
-				<p>
-Sets me.Rot.X and calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransform.SetRotXYZ">func (*NodeTransform) <a href="/target/node-transform.go?s=3239:3299#L102">SetRotXYZ</a></h3>
-				<pre>func (me *NodeTransform) SetRotXYZ(radX, radY, radZ float64)</pre>
-				<p>
-Sets me.Rot and calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransform.SetRotY">func (*NodeTransform) <a href="/target/node-transform.go?s=3418:3463#L108">SetRotY</a></h3>
-				<pre>func (me *NodeTransform) SetRotY(rad float64)</pre>
-				<p>
-Sets me.Rot.Y and calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransform.SetRotZ">func (*NodeTransform) <a href="/target/node-transform.go?s=3549:3594#L114">SetRotZ</a></h3>
-				<pre>func (me *NodeTransform) SetRotZ(rad float64)</pre>
-				<p>
-Sets me.Rot.Z and calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransform.SetScale">func (*NodeTransform) <a href="/target/node-transform.go?s=3680:3731#L120">SetScale</a></h3>
-				<pre>func (me *NodeTransform) SetScale(scale *unum.Vec3)</pre>
-				<p>
-Sets me.Scale and calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransform.SetScaleN">func (*NodeTransform) <a href="/target/node-transform.go?s=3820:3869#L126">SetScaleN</a></h3>
-				<pre>func (me *NodeTransform) SetScaleN(scale float64)</pre>
-				<p>
-Sets me.Scale and calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransform.SetScaleXYZ">func (*NodeTransform) <a href="/target/node-transform.go?s=3956:4009#L131">SetScaleXYZ</a></h3>
-				<pre>func (me *NodeTransform) SetScaleXYZ(x, y, z float64)</pre>
-				<p>
-Sets me.Scale and calls ApplyMatrices().
-</p>
-
-				
-				
-			
-				
-				<h3 id="NodeTransform.StepDelta">func (*NodeTransform) <a href="/target/node-transform.go?s=4160:4226#L137">StepDelta</a></h3>
+				<h3 id="NodeTransform.StepDelta">func (*NodeTransform) <a href="/target/node-transform.go?s=2255:2321#L69">StepDelta</a></h3>
 				<pre>func (me *NodeTransform) StepDelta(deltaPerSecond float64) float64</pre>
 				<p>
 Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
@@ -5032,7 +4891,7 @@ Initializes and returns a new Scene with default parameters.
 		
 			
 			
-			<h2 id="TimingStats">type <a href="/target/ng-stats.go?s=4450:4622#L99">TimingStats</a></h2>
+			<h2 id="TimingStats">type <a href="/target/ng-stats.go?s=4450:4547#L99">TimingStats</a></h2>
 			<pre>type TimingStats struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -5051,7 +4910,7 @@ Helps track average and maximum cost for a variety of performance indicators.
 
 			
 				
-				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/ng-stats.go?s=4691:4731#L105">Average</a></h3>
+				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/ng-stats.go?s=4616:4656#L104">Average</a></h3>
 				<pre>func (me *TimingStats) Average() float64</pre>
 				<p>
 Returns the average cost tracked by this performance indicator.
@@ -5061,7 +4920,7 @@ Returns the average cost tracked by this performance indicator.
 				
 			
 				
-				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/ng-stats.go?s=5401:5437#L134">Max</a></h3>
+				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/ng-stats.go?s=5309:5345#L133">Max</a></h3>
 				<pre>func (me *TimingStats) Max() float64</pre>
 				<p>
 Returns the maximum cost tracked by this performance indicator.
