@@ -173,10 +173,10 @@ func (_ *EngineCore) useProg() {
 	}
 }
 
-func (_ *EngineCore) useSampler() {
-	if thrRend.curSampler[thrRend.tmpTexUnit] != thrRend.tmpSampler {
-		thrRend.curSampler[thrRend.tmpTexUnit] = thrRend.tmpSampler
-		thrRend.tmpSampler.Bind(thrRend.tmpTexUnit)
+func (_ *EngineCore) useSampler(unit gl.Uint) {
+	if thrRend.curSampler[unit] != thrRend.tmpSampler {
+		thrRend.curSampler[unit] = thrRend.tmpSampler
+		thrRend.tmpSampler.Bind(unit)
 	}
 }
 

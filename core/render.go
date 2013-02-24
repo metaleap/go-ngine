@@ -5,8 +5,8 @@ import (
 )
 
 func (me *EngineCore) onRender() {
-	for thrRend.curCanvIndex = len(Core.Rendering.Canvases) - 1; thrRend.curCanvIndex >= 0; thrRend.curCanvIndex-- {
-		if thrRend.curCanv = Core.Rendering.Canvases[thrRend.curCanvIndex]; thrRend.curCanv.renderThisFrame() {
+	for canvIndex := len(Core.Rendering.Canvases) - 1; canvIndex >= 0; canvIndex-- {
+		if thrRend.curCanv = Core.Rendering.Canvases[canvIndex]; thrRend.curCanv.renderThisFrame() {
 			thrRend.curCanv.render()
 		}
 	}
@@ -103,12 +103,13 @@ func (me *Mesh) render(node *Node) {
 		me.meshBuffer.use()
 	}
 	if thrRend.curMat.HasFaceEffects() {
-		for thrRend.tmpFidx, thrRend.tmpFace = range me.raw.faces {
+		var fidx int
+		for fidx, thrRend.tmpFace = range me.raw.faces {
 			thrRend.tmpEffect = thrRend.curMat.faceEffect(thrRend.tmpFace)
 			Core.useTechFx()
 			me.meshBuffer.use()
 			thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &node.thrRend.camProjMats[thrRend.curCam][0])
-			gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(me.meshBufOffsetIndices+(int32(thrRend.tmpFidx)*3*4))), gl.Int(me.meshBufOffsetBaseIndex))
+			gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(me.meshBufOffsetIndices+(int32(fidx)*3*4))), gl.Int(me.meshBufOffsetBaseIndex))
 		}
 	} else {
 		gl.DrawElementsBaseVertex(gl.TRIANGLES, gl.Sizei(len(me.raw.indices)), gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(me.meshBufOffsetIndices)), gl.Int(me.meshBufOffsetBaseIndex))

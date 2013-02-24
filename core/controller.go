@@ -37,26 +37,26 @@ type Controller struct {
 
 func (me *Controller) applyTranslation() {
 	if me.autoUpdate {
-		thrApp.ctlTmps.posNeg.SetFromNeg(&me.Pos)
-		thrApp.ctlTmps.matLook.LookAt(&thrApp.numBag, &me.dir, &me.UpAxis)
-		thrApp.ctlTmps.matTrans.Translation(&thrApp.ctlTmps.posNeg)
-		me.thrApp.mat.SetFromMult4(&thrApp.ctlTmps.matLook, &thrApp.ctlTmps.matTrans)
+		var mlook, mtrans unum.Mat4
+		mlook.LookAt(&me.dir, &me.UpAxis)
+		mtrans.Translation(me.Pos.Negated())
+		me.thrApp.mat.SetFromMult4(&mlook, &mtrans)
 	}
 }
 
 func (me *Controller) applyRotation() {
 	if me.autoUpdate {
-		thrApp.ctlTmps.axis.Set(0, 1, 0)
+		axis := unum.Vec3{0, 1, 0}
 		me.dir.Set(0, 0, -1)
-		me.dir.RotateDeg(&thrApp.numBag, me.hAngle, &thrApp.ctlTmps.axis)
+		me.dir.RotateDeg(me.hAngle, &axis)
 		me.dir.Normalize()
 
-		thrApp.ctlTmps.axis.SetFromCross(&me.dir)
-		thrApp.ctlTmps.axis.Normalize()
-		me.dir.RotateDeg(&thrApp.numBag, me.vAngle, &thrApp.ctlTmps.axis)
+		axis.SetFromCross(&me.dir)
+		axis.Normalize()
+		me.dir.RotateDeg(me.vAngle, &axis)
 		me.dir.Normalize()
 
-		me.UpAxis = *me.dir.Cross(&thrApp.ctlTmps.axis)
+		me.UpAxis = *me.dir.Cross(&axis)
 		me.UpAxis.Normalize()
 	}
 }
@@ -71,9 +71,9 @@ func (me *Controller) BeginUpdate() {
 }
 
 func (me *Controller) CopyFrom(ctl *Controller) {
-	thrApp.ctlTmps.tmpCopy = *ctl
-	thrApp.ctlTmps.tmpCopy.thrPrep = me.thrPrep
-	*me = thrApp.ctlTmps.tmpCopy
+	copy := *ctl
+	copy.thrPrep = me.thrPrep
+	*me = copy
 }
 
 //	The direction being manipulated by this Controller.

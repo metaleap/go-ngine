@@ -217,8 +217,8 @@ func (me *fxOpTexBase) setProcIndex(index int) {
 
 func (me *fxOpTexBase) use() {
 	me.fxOpBase.use()
-	thrRend.tmpSampler, thrRend.tmpTexUnit = me.Sampler, me.glUnitU
-	Core.useSampler()
+	thrRend.tmpSampler = me.Sampler
+	Core.useSampler(me.glUnitU)
 }
 
 //	Samples from a 2D texture.
@@ -329,8 +329,11 @@ func (me FxOps) Get(procID string, n int) (op FxOp) {
 //	The procID must be one of the Core.Rendering.Fx.KnownProcIDs.
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 func (me *FxOps) Toggle(procID string, n int) {
-	var op FxOp
-	matcher := ustr.NewMatcher(procID)
+	var (
+		op      FxOp
+		matcher ustr.Matcher
+	)
+	matcher.AddPattern(procID)
 	idx, found, all := -1, false, n < 0
 	for _, op = range *me {
 		if matcher.IsMatch(op.ProcID()) {

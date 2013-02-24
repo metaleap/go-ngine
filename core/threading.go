@@ -5,25 +5,14 @@ import (
 
 	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
-	unum "github.com/metaleap/go-util/num"
 )
 
 var (
 	thrApp struct {
 		sync.Mutex
-		ctlTmps struct {
-			tmpCopy           Controller
-			matTrans, matLook unum.Mat4
-			posNeg, axis      unum.Vec3
-		}
-		numBag    unum.Bag
-		nodeTrans struct {
-			matParent, matTrans, matScale, matRotX, matRotY, matRotZ unum.Mat4
-		}
 	}
 	thrPrep struct {
 		sync.Mutex
-		numBag       unum.Bag
 		curCam       *Camera
 		curCanv      *RenderCanvas
 		curScene     *Scene
@@ -32,8 +21,6 @@ var (
 		nodePreBatch nodeBatchPreps
 	}
 	thrRend struct {
-		asyncResources       map[asyncResource]bool
-		curCanvIndex         int
 		curCanv              *RenderCanvas
 		curCam               *Camera
 		curEffect, tmpEffect *FxEffect
@@ -45,18 +32,14 @@ var (
 		curScene             *Scene
 		curSampler           map[gl.Uint]*ugl.Sampler
 		curTech, tmpTech     RenderTechnique
-		numBag               unum.Bag
 		tmpSampler           *ugl.Sampler
 		tmpQuadTex           *ugl.Texture2D
-		tmpTexUnit           gl.Uint
 		tmpFaceTag           string
 		tmpFace              *meshRawFace
-		tmpFidx              int
 	}
 )
 
 func init() {
-	thrRend.asyncResources = map[asyncResource]bool{}
 	thrRend.curSampler = map[gl.Uint]*ugl.Sampler{}
 }
 

@@ -50,17 +50,18 @@ func (me *NodeTransform) AddRotXYZ(x, y, z float64) {
 //	Updates the internal 4x4 transformation matrix for all transformations
 //	in me. It is only this matrix that is used by the rendering runtime.
 func (me *NodeTransform) ApplyMatrices() {
-	thrApp.nodeTrans.matScale.Scaling(&me.Scale)
-	thrApp.nodeTrans.matTrans.Translation(&me.Pos)
-	thrApp.nodeTrans.matRotX.RotationX(&thrApp.numBag, me.Rot.X)
-	thrApp.nodeTrans.matRotY.RotationY(&thrApp.numBag, me.Rot.Y)
-	thrApp.nodeTrans.matRotZ.RotationZ(&thrApp.numBag, me.Rot.Z)
+	var matParent, matTrans, matScale, matRotX, matRotY, matRotZ unum.Mat4
+	matScale.Scaling(&me.Scale)
+	matTrans.Translation(&me.Pos)
+	matRotX.RotationX(me.Rot.X)
+	matRotY.RotationY(me.Rot.Y)
+	matRotZ.RotationZ(me.Rot.Z)
 	if me.owner.parentNode == nil {
-		thrApp.nodeTrans.matParent.Identity()
+		matParent.Identity()
 	} else {
-		thrApp.nodeTrans.matParent.CopyFrom(&me.owner.parentNode.Transform.matModelView)
+		matParent.CopyFrom(&me.owner.parentNode.Transform.matModelView)
 	}
-	me.matModelView.SetFromMultN(&thrApp.numBag, &thrApp.nodeTrans.matParent, &thrApp.nodeTrans.matTrans, me.Other, &thrApp.nodeTrans.matScale, &thrApp.nodeTrans.matRotX, &thrApp.nodeTrans.matRotY, &thrApp.nodeTrans.matRotZ)
+	me.matModelView.SetFromMultN(&matParent, &matTrans, me.Other, &matScale, &matRotX, &matRotY, &matRotZ)
 	for _, me.owner.curSubNode = range me.owner.ChildNodes.M {
 		me.owner.curSubNode.Transform.ApplyMatrices()
 	}
