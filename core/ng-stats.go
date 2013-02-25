@@ -48,6 +48,10 @@ type EngineStats struct {
 	//	This TimingStats instance tracks over time (both average and maximum) "app code" cost per frame.
 	FrameAppThread TimingStats
 
+	//	Tracks over the time (both average and maximum) cost for Loop.On.EverySec() and,
+	//	if Diag.LogGLErrorsInLoopOnSec is true, Diag.LogIfGlErr().
+	FrameOnSec TimingStats
+
 	//	"Windowing/GPU/IO code" comprises user-specific logic executed every frame via your own
 	//	Loop.OnWinThread() callback. This should be kept to a minimum to fully enjoy
 	//	the benefits of multi-threading. Main use-cases are calls resulting in GPU state
@@ -99,6 +103,16 @@ func (_ *EngineStats) enable() {
 
 func (_ *EngineStats) reset() {
 	Stats.FpsLastSec, Stats.fpsCounter, Stats.fpsAll, Stats.enabled = 0, 0, 0, false
+	Stats.Frame.reset()
+	Stats.FrameAppThread.reset()
+	Stats.FrameOnSec.reset()
+	Stats.FramePrepThread.reset()
+	Stats.FrameRenderBoth.reset()
+	Stats.FrameRenderCpu.reset()
+	Stats.FrameRenderGpu.reset()
+	Stats.FrameThreadSync.reset()
+	Stats.FrameWinThread.reset()
+	Stats.Gc.reset()
 }
 
 func (_ *EngineStats) TotalFrames() float64 {
@@ -142,4 +156,8 @@ func (me *TimingStats) end() {
 //	Returns the maximum cost tracked by this performance indicator.
 func (me *TimingStats) Max() float64 {
 	return me.max
+}
+
+func (me *TimingStats) reset() {
+	*me = TimingStats{}
 }

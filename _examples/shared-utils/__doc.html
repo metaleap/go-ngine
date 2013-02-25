@@ -65,7 +65,10 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 				<dd><a href="#AddKeyHint">func AddKeyHint(key, hint string)</a></dd>
 			
 				
-				<dd><a href="#AddScene">func AddScene(id string, mainCamScene bool, skyMeshID string) (me *ng.Scene)</a></dd>
+				<dd><a href="#AddMainScene">func AddMainScene() (me *ng.Scene)</a></dd>
+			
+				
+				<dd><a href="#AddSkyMesh">func AddSkyMesh(scene *ng.Scene, meshID string)</a></dd>
 			
 				
 				<dd><a href="#AddTextureMaterials">func AddTextureMaterials(idsUrls map[string]string)</a></dd>
@@ -157,19 +160,21 @@ Some common base functionality shared by all the go:ngine example apps in _examp
     <span class="comment">//	invoked every second on the windowing main thread.</span>
     OnSec = func() {}
 
-    <span class="comment">//	The RenderCanvas the example scene is initially being rendered to. This is an off-screen &#34;render-to-texture&#34; RenderCanvas.</span>
+    <span class="comment">//	The RenderCanvas the example scene is initially being rendered to.</span>
+    <span class="comment">//	This is an off-screen &#34;render-to-texture&#34; RenderCanvas.</span>
     SceneCanvas *ng.RenderCanvas
 
     <span class="comment">//	The primary scene-rendering camera, rendering to SceneCanvas.</span>
     SceneCam *ng.Camera
 
-    <span class="comment">//	Unlike the off-screen (render-to-texture) SceneCanvas above, this RenderCanvas epresents the actual screen/window.</span>
+    <span class="comment">//	Unlike the off-screen (render-to-texture) SceneCanvas above,</span>
+    <span class="comment">//	this RenderCanvas epresents the actual screen/window.</span>
     PostFxCanvas *ng.RenderCanvas
 
-    <span class="comment">//	Takes the image rendered to SceneCanvas, may post-process it or not, and blits it to PostFxCanvas.</span>
+    <span class="comment">//	Takes the image rendered to SceneCanvas, may</span>
+    <span class="comment">//	post-process it or not, and blits it to PostFxCanvas.</span>
     PostFxCam *ng.Camera
 
-    <span class="comment">//	Do not set this field directly, only use PauseResume() to toggle it and effect the associated render-state changes.</span>
     Paused bool
 )</pre>
 				
@@ -224,18 +229,21 @@ This function adds a new hint to be included in that rotation.
 		
 			
 			
-			<h2 id="AddScene">func <a href="/target/assets.go?s=172:248#L1">AddScene</a></h2>
-			<pre>func AddScene(id string, mainCamScene bool, skyMeshID string) (me *ng.Scene)</pre>
-			<p>
-Creates a new core.Scene, adds it to the Scenes library under
-the specified ID, and returns it.
-</p>
-
+			<h2 id="AddMainScene">func <a href="/target/assets.go?s=70:104#L1">AddMainScene</a></h2>
+			<pre>func AddMainScene() (me *ng.Scene)</pre>
+			
 			
 		
 			
 			
-			<h2 id="AddTextureMaterials">func <a href="/target/assets.go?s=1763:1814#L31">AddTextureMaterials</a></h2>
+			<h2 id="AddSkyMesh">func <a href="/target/assets.go?s=161:208#L3">AddSkyMesh</a></h2>
+			<pre>func AddSkyMesh(scene *ng.Scene, meshID string)</pre>
+			
+			
+		
+			
+			
+			<h2 id="AddTextureMaterials">func <a href="/target/assets.go?s=1575:1626#L28">AddTextureMaterials</a></h2>
 			<pre>func AddTextureMaterials(idsUrls map[string]string)</pre>
 			<p>
 Sets up textures and associated effects/materials with the specified IDs and image URLs.
@@ -252,7 +260,7 @@ adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffe
 		
 			
 			
-			<h2 id="AppDirBasePath">func <a href="/target/apputil.go?s=1449:1477#L46">AppDirBasePath</a></h2>
+			<h2 id="AppDirBasePath">func <a href="/target/apputil.go?s=1466:1494#L51">AppDirBasePath</a></h2>
 			<pre>func AppDirBasePath() string</pre>
 			<p>
 Returns the base path of the &#34;app dir&#34; for our example apps, in this case: $GOPATH/src/github.com/go3d/go-ngine/_examples/-app-data
@@ -295,7 +303,7 @@ states (from the previous CheckCamCtlKeys() call) for controlling SceneCam.Contr
 		
 			
 			
-			<h2 id="Main">func <a href="/target/apputil.go?s=2545:2606#L74">Main</a></h2>
+			<h2 id="Main">func <a href="/target/apputil.go?s=2562:2623#L79">Main</a></h2>
 			<pre>func Main(setupExampleScene, onAppThread, onWinThread func())</pre>
 			<p>
 Called by each example-app&#39;s func main(). Initializes go:ngine, sets SceneCam/SceneCanvas/PostFxCam/PostFxCanvas etc., calls the specified setupExampleScene function, then enters The Loop.
@@ -327,8 +335,10 @@ Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent 
 		
 			
 			
-			<h2 id="Gui2D">type <a href="/target/gui2d.go?s=366:406#L1">Gui2D</a></h2>
+			<h2 id="Gui2D">type <a href="/target/gui2d.go?s=366:446#L1">Gui2D</a></h2>
 			<pre>type Gui2D struct {
+    Scene    ng.Scene
+    Cam      *ng.Camera
     Cat, Dog *ng.Node
 }</pre>
 			<p>
@@ -348,7 +358,7 @@ inside a red 64x64 px square in the bottom left canvas corner.
 
 			
 				
-				<h3 id="Gui2D.Setup">func (*Gui2D) <a href="/target/gui2d.go?s=482:518#L6">Setup</a></h3>
+				<h3 id="Gui2D.Setup">func (*Gui2D) <a href="/target/gui2d.go?s=522:558#L8">Setup</a></h3>
 				<pre>func (me *Gui2D) Setup() (err error)</pre>
 				<p>
 Adds a &#34;2D camera&#34; to the main render canvas, and sets up Cat and Dog.
@@ -360,12 +370,13 @@ Adds a &#34;2D camera&#34; to the main render canvas, and sets up Cat and Dog.
 		
 			
 			
-			<h2 id="RearMirror">type <a href="/target/rear-mirror.go?s=259:301#L1">RearMirror</a></h2>
+			<h2 id="RearMirror">type <a href="/target/rear-mirror.go?s=262:304#L2">RearMirror</a></h2>
 			<pre>type RearMirror struct {
     Cam *ng.Camera
 }</pre>
 			<p>
-A rather simple &#34;rear-view mirror&#34; camera that can be added to the example-program&#39;s main render canvas.
+A rather simple &#34;rear-view mirror&#34; camera that can
+be added to the example-program&#39;s main render canvas.
 </p>
 
 
@@ -385,7 +396,7 @@ Not actively used unless RearView.Setup() is called.
 
 			
 				
-				<h3 id="RearMirror.OnApp">func (*RearMirror) <a href="/target/rear-mirror.go?s=425:454#L6">OnApp</a></h3>
+				<h3 id="RearMirror.OnApp">func (*RearMirror) <a href="/target/rear-mirror.go?s=428:457#L7">OnApp</a></h3>
 				<pre>func (me *RearMirror) OnApp()</pre>
 				<p>
 Copies the main camera&#39;s current position and direction and reverses its by 180 degrees to achieve a rear-view mirror.
@@ -395,7 +406,7 @@ Copies the main camera&#39;s current position and direction and reverses its by 
 				
 			
 				
-				<h3 id="RearMirror.OnWin">func (*RearMirror) <a href="/target/rear-mirror.go?s=653:682#L14">OnWin</a></h3>
+				<h3 id="RearMirror.OnWin">func (*RearMirror) <a href="/target/rear-mirror.go?s=656:685#L15">OnWin</a></h3>
 				<pre>func (me *RearMirror) OnWin()</pre>
 				<p>
 Syncs the rear-view camera&#39;s render states with the main camera&#39;s.
@@ -405,7 +416,7 @@ Syncs the rear-view camera&#39;s render states with the main camera&#39;s.
 				
 			
 				
-				<h3 id="RearMirror.Setup">func (*RearMirror) <a href="/target/rear-mirror.go?s=877:906#L19">Setup</a></h3>
+				<h3 id="RearMirror.Setup">func (*RearMirror) <a href="/target/rear-mirror.go?s=880:909#L20">Setup</a></h3>
 				<pre>func (me *RearMirror) Setup()</pre>
 				<p>
 Adds the rear-view mirror&#39;s camera to the main render canvas, at 1/3rd of its width and 1/4th of its height.
@@ -415,7 +426,7 @@ Adds the rear-view mirror&#39;s camera to the main render canvas, at 1/3rd of it
 				
 			
 				
-				<h3 id="RearMirror.Toggle">func (*RearMirror) <a href="/target/rear-mirror.go?s=1208:1238#L28">Toggle</a></h3>
+				<h3 id="RearMirror.Toggle">func (*RearMirror) <a href="/target/rear-mirror.go?s=1211:1241#L29">Toggle</a></h3>
 				<pre>func (me *RearMirror) Toggle()</pre>
 				<p>
 Enables or disables this rear-view mirror.

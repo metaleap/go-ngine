@@ -156,11 +156,15 @@ func (_ *EngineLoop) Run() {
 			Stats.fpsAll++
 			//	This branch runs at most and at least 1x per second
 			if secTick = int(Loop.Tick.Now); secTick != Loop.Tick.PrevSec {
+				Stats.FrameOnSec.begin()
 				Stats.FpsLastSec, Loop.Tick.PrevSec = Stats.fpsCounter, secTick
 				Stats.fpsCounter = 0
-				Core.onSec()
+				if Diag.LogGLErrorsInLoopOnSec {
+					Diag.LogIfGlErr("onSec")
+				}
 				Loop.On.EverySec()
 				runGc = Options.Loop.GcEvery.Sec
+				Stats.FrameOnSec.end()
 				Stats.enable() // the first few frames were warm-ups that don't count towards the stats
 			}
 

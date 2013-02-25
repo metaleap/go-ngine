@@ -76,9 +76,9 @@ func onAppThread() {
 func setupExample_04_PyrsCubes() {
 	var (
 		err                          error
-		scene                        *ng.Scene
 		meshFloor, meshPyr, meshCube *ng.Mesh
 		bufFloor, bufRest            *ng.MeshBuffer
+		scene                        *ng.Scene
 		str                          string
 	)
 
@@ -137,8 +137,9 @@ func setupExample_04_PyrsCubes() {
 	bufRest.Add(meshPyr)
 
 	//	scene
-	scene = apputil.AddScene("", true, "mesh_pyramid")
-	apputil.RearView.Cam.SetScene("")
+	scene = apputil.AddMainScene()
+	apputil.AddSkyMesh(scene, "mesh_pyramid")
+	apputil.RearView.Cam.SetScene(scene)
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyramid", "")
 	box = scene.RootNode.ChildNodes.AddNew("node_box", "mesh_cube", "")

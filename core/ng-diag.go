@@ -26,7 +26,7 @@ var (
 			DiagLogCatImages:  "[IMAGES]\t",
 			DiagLogCatMeshes:  "[MESHES]\t",
 		},
-		LogGLErrorsInLoopOnSec: true,
+		LogGLErrorsInLoopOnSec: false,
 	}
 )
 

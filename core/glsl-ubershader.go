@@ -233,17 +233,7 @@ func (me *uberShader) setShaderSourceFrag(fx *FxEffect, inputs map[string]bool) 
 		shFunc           *uberShaderFunc
 	)
 	srcHead.Writeln("out vec3 out_Color;")
-	opc, opCounts, allOps := 0, map[string]int{}, []FxOps{fx.Ops, fx.OpsX}
-	for _, ops = range allOps {
-		for _, op = range ops {
-			if op.Enabled() {
-				opc = opCounts[op.ProcID()]
-				opCounts[op.ProcID()] = opc + 1
-			}
-		}
-	}
-	opCounts = nil
-
+	allOps := []FxOps{fx.Ops, fx.OpsX}
 	for _, ops = range allOps {
 		for _, op = range ops {
 			if op.Enabled() {

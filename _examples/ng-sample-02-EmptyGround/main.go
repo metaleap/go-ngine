@@ -46,7 +46,7 @@ func setupExample_02_EmptyGround() {
 	bufRest.Add(meshFloor) // bufRest.Add(meshCube);
 
 	//	scene
-	scene = apputil.AddScene("", true, "")
+	scene = apputil.AddMainScene()
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	floor.SetMatID("mat_cobbles")
 	floor.Transform.SetPos(0.1, 0, -8)

@@ -68,7 +68,7 @@ func (me LibFxImage2Ds) AddNew(id string) (obj *FxImage2D) {
 }
 
 func (me *LibFxImage2Ds) ctor() {
-	*me = LibFxImage2Ds{}
+	*me = make(LibFxImage2Ds, 50)
 }
 
 func (me *LibFxImage2Ds) dispose() {

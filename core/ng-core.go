@@ -24,7 +24,6 @@ type EngineCore struct {
 			Tex2D        LibFxImage2Ds
 		}
 		Meshes LibMeshes
-		Scenes LibScenes
 	}
 	Rendering struct {
 		Canvases RenderCanvases
@@ -51,7 +50,7 @@ func (_ *EngineCore) dispose() {
 	Core.isInit = false
 	for _, disp := range []disposable{
 		&Core.Rendering.Canvases,
-		&Core.Libs.Images.Tex2D, &Core.Libs.Images.TexCubes, &Core.Libs.Effects, &Core.Libs.Materials, &Core.Libs.Meshes, &Core.Libs.Scenes,
+		&Core.Libs.Images.Tex2D, &Core.Libs.Images.TexCubes, &Core.Libs.Effects, &Core.Libs.Materials, &Core.Libs.Meshes,
 		Core.MeshBuffers,
 	} {
 		disp.dispose()
@@ -65,26 +64,13 @@ func (_ *EngineCore) init() {
 	Core.MeshBuffers = newMeshBuffers()
 	Core.initLibs()
 	Core.initRendering()
-	splash := &Core.Libs.Images.SplashScreen
-	if splash.InitFrom.RawData = Options.Initialization.DefaultCanvas.SplashImage; len(splash.InitFrom.RawData) == 0 {
-		splash.InitFrom.RawData = embeddedBinaries["splash.png"]
-	}
-	splash.init()
-	splash.PreProcess.FlipY, splash.PreProcess.ToLinear, splash.PreProcess.ToBgra = false, false, false
-	splash.Load()
-	splash.GpuSync()
-	thrRend.quadTex = &splash.glTex
-	splash.Unload()
-	embeddedBinaries = nil
-
+	Core.showSplash()
 	Core.isInit = true
-	Core.onRender()
-	glfw.SwapBuffers()
 }
 
 func (_ *EngineCore) initLibs() {
 	libs := &Core.Libs
-	for _, c := range []ctorable{&libs.Images.Tex2D, &libs.Images.TexCubes, &libs.Effects, &libs.Materials, &libs.Meshes, &libs.Scenes} {
+	for _, c := range []ctorable{&libs.Images.Tex2D, &libs.Images.TexCubes, &libs.Effects, &libs.Materials, &libs.Meshes} {
 		c.ctor()
 	}
 }
@@ -96,7 +82,7 @@ func (_ *EngineCore) initRendering() {
 		"Scene": newRenderTechniqueScene,
 	}
 	rend.Fx.KnownProcIDs = fxKnownProcIDs()
-	rend.Fx.procFuncs = map[string]string{}
+	rend.Fx.procFuncs = make(map[string]string, len(rend.Fx.KnownProcIDs))
 	for _, shaderFunc := range rend.Fx.KnownProcIDs {
 		rend.Fx.procFuncs[shaderFunc] = strf("fx_%s", shaderFunc)
 	}
@@ -119,12 +105,6 @@ func (_ *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 			canv.onResize(viewWidth, viewHeight)
 		}
 		Diag.LogIfGlErr("onResizeWindow")
-	}
-}
-
-func (_ *EngineCore) onSec() {
-	if Diag.LogGLErrorsInLoopOnSec {
-		Diag.LogIfGlErr("onSec")
 	}
 }
 
@@ -164,6 +144,19 @@ func (_ *EngineCore) GpuSyncImageLibs() (err error) {
 
 func (_ *EngineCore) refreshWinSizeRels() {
 	Core.onResizeWindow(UserIO.Window.width, UserIO.Window.height)
+}
+
+func (_ *EngineCore) showSplash() {
+	splash := &Core.Libs.Images.SplashScreen
+	splash.init()
+	splash.PreProcess.FlipY, splash.PreProcess.ToLinear, splash.PreProcess.ToBgra = false, false, false
+	splash.Load()
+	splash.GpuSync()
+	thrRend.quadTex = &splash.glTex
+	Core.onRender()
+	splash.Unload()
+	Core.Libs.Images.SplashScreen.InitFrom.RawData = Core.Libs.Images.SplashScreen.InitFrom.RawData[:0]
+	glfw.SwapBuffers()
 }
 
 func (_ *EngineCore) useProg(prog *ugl.Program) {

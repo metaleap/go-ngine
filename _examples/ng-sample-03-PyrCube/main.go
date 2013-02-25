@@ -93,7 +93,8 @@ func setupExample_03_PyrCube() {
 	ng.Core.Libs.Materials["mat_mosaic"].FaceEffects.ByID["t3"] = "fx_cat"
 
 	//	scene
-	scene = apputil.AddScene("", true, "mesh_cube")
+	scene = apputil.AddMainScene()
+	apputil.AddSkyMesh(scene, "mesh_cube")
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyramid", "")
 	box = scene.RootNode.ChildNodes.AddNew("node_box", "mesh_cube", "")

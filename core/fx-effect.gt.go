@@ -105,7 +105,7 @@ func (me LibFxEffects) AddNew(id string) (obj *FxEffect) {
 }
 
 func (me *LibFxEffects) ctor() {
-	*me = LibFxEffects{}
+	*me = make(LibFxEffects, 50)
 }
 
 func (me *LibFxEffects) dispose() {

@@ -77,7 +77,7 @@ func (me LibFxImageCubes) AddNew(id string) (obj *FxImageCube) {
 }
 
 func (me *LibFxImageCubes) ctor() {
-	*me = LibFxImageCubes{}
+	*me = make(LibFxImageCubes, 50)
 }
 
 func (me *LibFxImageCubes) dispose() {

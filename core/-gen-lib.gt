@@ -19,7 +19,7 @@ func (me Lib__T__s) AddNew(id string) (obj *__T__) {
 }
 
 func (me *Lib__T__s) ctor() {
-	*me = Lib__T__s{}
+	*me = make(Lib__T__s, 50)
 }
 
 func (me *Lib__T__s) dispose() {

@@ -32,8 +32,9 @@ func PrintPostLoopSummary() {
 	}
 	fmt.Printf("Average FPS:\t\t%v (total %v over %v)\n", ng.Stats.AverageFps(), ng.Stats.TotalFrames(), time.Duration(int64(ng.Loop.Time()*1000*1000*1000)))
 	printStatSummary("Full Loop Iteration", &ng.Stats.Frame)
-	printStatSummary("Frame OnAppThread", &ng.Stats.FrameAppThread)
-	printStatSummary("Frame OnWinThread", &ng.Stats.FrameWinThread)
+	printStatSummary("Frame On.EverySec", &ng.Stats.FrameOnSec)
+	printStatSummary("Frame On.AppThread", &ng.Stats.FrameAppThread)
+	printStatSummary("Frame On.WinThread", &ng.Stats.FrameWinThread)
 	printStatSummary("Frame Prep Thread", &ng.Stats.FramePrepThread)
 	printStatSummary("Frame Thread Sync", &ng.Stats.FrameThreadSync)
 	printStatSummary("Frame Render (CPU)", &ng.Stats.FrameRenderCpu)

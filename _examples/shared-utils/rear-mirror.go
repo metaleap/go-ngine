@@ -7,7 +7,8 @@ import (
 //	Not actively used unless RearView.Setup() is called.
 var RearView RearMirror
 
-//	A rather simple "rear-view mirror" camera that can be added to the example-program's main render canvas.
+//	A rather simple "rear-view mirror" camera that can
+//	be added to the example-program's main render canvas.
 type RearMirror struct {
 	Cam *ng.Camera
 }

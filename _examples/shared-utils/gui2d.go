@@ -9,6 +9,8 @@ import (
 //	Has two textured quads, a cat and a dog one, shows them both animated and overlapping
 //	inside a red 64x64 px square in the bottom left canvas corner.
 type Gui2D struct {
+	Scene    ng.Scene
+	Cam      *ng.Camera
 	Cat, Dog *ng.Node
 }
 
@@ -18,11 +20,11 @@ func (me *Gui2D) Setup() (err error) {
 		meshBuf  *ng.MeshBuffer
 		quadMesh *ng.Mesh
 	)
-	scene := AddScene("gui2d", false, "")
-	cam := SceneCanvas.AddNewCamera2D(true)
-	cam.Rendering.States.ClearColor.Set(0.75, 0.25, 0.1, 1)
-	cam.Rendering.Viewport.SetAbs(8, 8, 64, 64) //SetRel(0.02, 0.04, 0.125, 0.222)
-	cam.SetScene("gui2d")
+	me.Scene.Init()
+	me.Cam = SceneCanvas.AddNewCamera2D(true)
+	me.Cam.Rendering.States.ClearColor.Set(0.75, 0.25, 0.1, 1)
+	me.Cam.Rendering.Viewport.SetAbs(8, 8, 64, 64) //SetRel(0.02, 0.04, 0.125, 0.222)
+	me.Cam.SetScene(&me.Scene)
 
 	if meshBuf, err = ng.Core.MeshBuffers.Add("buf_quad", ng.Core.MeshBuffers.NewParams(6, 6)); err != nil {
 		return
@@ -35,12 +37,12 @@ func (me *Gui2D) Setup() (err error) {
 	}
 
 	quadMesh.Models.Default().SetMatID("mat_dog")
-	me.Dog = scene.RootNode.ChildNodes.AddNew("gui_dog", "mesh_quad", "")
+	me.Dog = me.Scene.RootNode.ChildNodes.AddNew("gui_dog", "mesh_quad", "")
 	me.Dog.Transform.SetScale(0.85)
 	me.Dog.Transform.Rot.Z = unum.DegToRad(90)
 
 	quadMesh.Models.Default().Clone("model_cat").SetMatID("mat_cat")
-	me.Cat = scene.RootNode.ChildNodes.AddNew("gui_cat", "mesh_quad", "model_cat")
+	me.Cat = me.Scene.RootNode.ChildNodes.AddNew("gui_cat", "mesh_quad", "model_cat")
 	me.Cat.Transform.SetScale(0.85)
 	me.Cat.Transform.Rot.Z = unum.DegToRad(90)
 

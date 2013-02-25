@@ -252,7 +252,7 @@ type FxOpTexCube struct {
 
 func (me *FxOpTexCube) init(s string, i int) {
 	me.fxOpTexBase.init(s, i)
-	me.Sampler = &Core.Rendering.Fx.Samplers.FullFilteringClamp
+	me.Sampler = &Core.Rendering.Fx.Samplers.FullFilteringRepeat
 }
 
 func (me *FxOpTexCube) SetImageID(imageID string) {

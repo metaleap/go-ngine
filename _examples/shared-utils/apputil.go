@@ -22,19 +22,24 @@ var (
 	//	invoked every second on the windowing main thread.
 	OnSec = func() {}
 
-	//	The RenderCanvas the example scene is initially being rendered to. This is an off-screen "render-to-texture" RenderCanvas.
+	//	The RenderCanvas the example scene is initially being rendered to.
+	//	This is an off-screen "render-to-texture" RenderCanvas.
 	SceneCanvas *ng.RenderCanvas
 
 	//	The primary scene-rendering camera, rendering to SceneCanvas.
 	SceneCam *ng.Camera
 
-	//	Unlike the off-screen (render-to-texture) SceneCanvas above, this RenderCanvas epresents the actual screen/window.
+	//	Do not set this field directly, only use PauseResume() to
+	//	toggle it and effect the associated render-state changes.
+
+	//	Unlike the off-screen (render-to-texture) SceneCanvas above,
+	//	this RenderCanvas epresents the actual screen/window.
 	PostFxCanvas *ng.RenderCanvas
 
-	//	Takes the image rendered to SceneCanvas, may post-process it or not, and blits it to PostFxCanvas.
+	//	Takes the image rendered to SceneCanvas, may
+	//	post-process it or not, and blits it to PostFxCanvas.
 	PostFxCam *ng.Camera
 
-	//	Do not set this field directly, only use PauseResume() to toggle it and effect the associated render-state changes.
 	Paused bool
 
 	retro  bool

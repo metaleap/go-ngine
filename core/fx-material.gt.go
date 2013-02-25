@@ -66,7 +66,7 @@ func (me LibFxMaterials) AddNew(id string) (obj *FxMaterial) {
 }
 
 func (me *LibFxMaterials) ctor() {
-	*me = LibFxMaterials{}
+	*me = make(LibFxMaterials, 50)
 }
 
 func (me *LibFxMaterials) dispose() {

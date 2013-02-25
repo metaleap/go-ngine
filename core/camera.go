@@ -125,7 +125,7 @@ func (me *Camera) Scene() *Scene {
 	return me.scene
 }
 
-func (me *Camera) setScene(scene *Scene) {
+func (me *Camera) SetScene(scene *Scene) {
 	if scene != me.scene {
 		me.clearNodeMats()
 		if me.scene = scene; me.scene != nil {
@@ -134,10 +134,6 @@ func (me *Camera) setScene(scene *Scene) {
 			})
 		}
 	}
-}
-
-func (me *Camera) SetScene(id string) {
-	me.setScene(Core.Libs.Scenes[id])
 }
 
 func (me *Camera) RenderTechniqueQuad() (tech *RenderTechniqueQuad) {
