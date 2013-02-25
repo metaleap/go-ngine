@@ -14,7 +14,7 @@ func (me *EngineCore) onRender() {
 }
 
 func (me *RenderCanvas) render() {
-	if !me.isFinal {
+	if me.isRtt {
 		me.frameBuf.Bind()
 	}
 	Core.Rendering.states.SetFramebufferSrgb(me.Srgb)
@@ -22,7 +22,7 @@ func (me *RenderCanvas) render() {
 		thrRend.curCam.render()
 	}
 	Core.Rendering.states.SetFramebufferSrgb(false)
-	if !me.isFinal {
+	if me.isRtt {
 		me.frameBuf.Unbind()
 		thrRend.quadTex = &me.frameBufTex.Texture2D
 	}
@@ -34,8 +34,6 @@ func (me *Camera) render() {
 		Core.Rendering.states.Apply(&me.thrRend.states)
 		if me.Rendering.Viewport.shouldScissor {
 			Core.Rendering.states.ForceEnableScissorTest()
-		}
-		if me.Rendering.Viewport.shouldScissor {
 			gl.Scissor(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
 		}
 		gl.Viewport(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
@@ -74,7 +72,7 @@ func (me *Node) renderChildren() {
 }
 
 func (me *Node) renderSelf() {
-	if me.mesh != nil && me.model != nil {
+	if me.model != nil {
 		if mat := me.EffectiveMaterial(); mat != nil {
 			if mat.HasFaceEffects() {
 				for fidx, face := range me.mesh.raw.faces {

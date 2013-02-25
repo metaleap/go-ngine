@@ -21,7 +21,7 @@ type RenderCanvas struct {
 
 	Srgb bool
 
-	isFinal, viewSizeRelative   bool
+	isRtt, viewSizeRelative     bool
 	absViewWidth, absViewHeight int
 	relViewWidth, relViewHeight float64
 
@@ -30,7 +30,7 @@ type RenderCanvas struct {
 }
 
 func newRenderCanvas(isFinal, relative bool, width, height float64) (me *RenderCanvas) {
-	me = &RenderCanvas{EveryNthFrame: 1, isFinal: isFinal}
+	me = &RenderCanvas{EveryNthFrame: 1, isRtt: !isFinal}
 	me.SetSize(relative, width, height)
 	if isFinal {
 		me.frameBuf.GlTarget, me.Srgb = gl.FRAMEBUFFER, !Options.Initialization.DefaultCanvas.GammaViaShader
@@ -72,7 +72,7 @@ func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera) {
 
 func (me *RenderCanvas) dispose() {
 	me.Cameras.dispose()
-	if !me.isFinal {
+	if me.isRtt {
 		me.frameBuf.Dispose()
 	}
 }
@@ -81,7 +81,7 @@ func (me *RenderCanvas) onResize(viewWidth, viewHeight int) {
 	if me.viewSizeRelative {
 		me.absViewWidth, me.absViewHeight = int(me.relViewWidth*float64(viewWidth)), int(me.relViewHeight*float64(viewHeight))
 	}
-	if !me.isFinal {
+	if me.isRtt {
 		me.frameBuf.Resize(gl.Sizei(me.absViewWidth), gl.Sizei(me.absViewHeight))
 	}
 	for _, cam := range me.Cameras {
@@ -93,7 +93,7 @@ func (me *RenderCanvas) onResize(viewWidth, viewHeight int) {
 //	Removes me from Core.Rendering.Canvases and deletes its associated GPU resources.
 //	This renders me invalid for further use.
 func (me *RenderCanvas) Remove() {
-	if !me.isFinal {
+	if me.isRtt {
 		sl := Core.Rendering.Canvases
 		for i, c := range sl {
 			if c == me {

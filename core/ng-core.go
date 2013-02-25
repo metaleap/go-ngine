@@ -52,8 +52,9 @@ func (_ *EngineCore) dispose() {
 	Core.isInit = false
 	for _, disp := range []disposable{
 		&Core.Rendering.Canvases,
-		&Core.Libs.Images.Tex2D, &Core.Libs.Images.TexCubes, &Core.Libs.Effects, &Core.Libs.Materials, &Core.Libs.Meshes,
-		Core.MeshBuffers,
+		&Core.Libs.Materials, &Core.Libs.Effects,
+		&Core.Libs.Images.Tex2D, &Core.Libs.Images.TexCubes,
+		&Core.Libs.Meshes, Core.MeshBuffers, &Core.Libs.Scenes,
 	} {
 		disp.dispose()
 	}
@@ -72,7 +73,10 @@ func (_ *EngineCore) init() {
 
 func (_ *EngineCore) initLibs() {
 	libs := &Core.Libs
-	for _, c := range []ctorable{&libs.Images.Tex2D, &libs.Images.TexCubes, &libs.Effects, &libs.Materials, &libs.Meshes} {
+	for _, c := range []ctorable{
+		&libs.Images.Tex2D, &libs.Images.TexCubes,
+		&libs.Effects, &libs.Materials, &libs.Meshes, &libs.Scenes,
+	} {
 		c.ctor()
 	}
 }
