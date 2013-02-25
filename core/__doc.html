@@ -84,10 +84,10 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#Camera.RenderTechniqueScene">func (me *Camera) RenderTechniqueScene() (tech *RenderTechniqueScene)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Camera.Scene">func (me *Camera) Scene() *Scene</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Camera.SetScene">func (me *Camera) SetScene(sceneID int)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Camera.SetScene">func (me *Camera) SetScene(scene *Scene)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Camera.Shit">func (me *Camera) Shit() int</a></dd>
 				
 			
 				
@@ -1007,11 +1007,25 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#NewScene">func NewScene() (me *Scene)</a></dd>
 				
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#Scene.Dispose">func (me *Scene) Dispose()</a></dd>
+			
+				
+				<dd><a href="#SceneLib">type SceneLib</a></dd>
+				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Scene.Init">func (me *Scene) Init()</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#SceneLib.AddNew">func (_ SceneLib) AddNew() (id int, ref *Scene)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneLib.Compact">func (_ SceneLib) Compact(onIDChanged func(obj *Scene, oldID int))</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneLib.Get">func (_ SceneLib) Get(id int) (ref *Scene)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneLib.Has">func (_ SceneLib) Has(id int) (has bool)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneLib.Remove">func (_ SceneLib) Remove(fromID, num int)</a></dd>
 				
 			
 				
@@ -1225,7 +1239,7 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.go?s=698:1475#L14">Camera</a></h2>
+			<h2 id="Camera">type <a href="/target/camera.go?s=751:1527#L18">Camera</a></h2>
 			<pre>type Camera struct {
     <span class="comment">//	Optical and imager properties for this camera.</span>
     Perspective struct {
@@ -1269,7 +1283,7 @@ A camera embodies the eye point of the viewer looking at the visual scene.
 
 			
 				
-				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=2844:2877#L94">ApplyMatrices</a></h3>
+				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.go?s=2913:2946#L99">ApplyMatrices</a></h3>
 				<pre>func (me *Camera) ApplyMatrices()</pre>
 				<p>
 Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.
@@ -1279,29 +1293,29 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 				
 			
 				
-				<h3 id="Camera.RenderTechniqueQuad">func (*Camera) <a href="/target/camera.go?s=3626:3693#L129">RenderTechniqueQuad</a></h3>
+				<h3 id="Camera.RenderTechniqueQuad">func (*Camera) <a href="/target/camera.go?s=3757:3824#L135">RenderTechniqueQuad</a></h3>
 				<pre>func (me *Camera) RenderTechniqueQuad() (tech *RenderTechniqueQuad)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.RenderTechniqueScene">func (*Camera) <a href="/target/camera.go?s=3764:3833#L134">RenderTechniqueScene</a></h3>
+				<h3 id="Camera.RenderTechniqueScene">func (*Camera) <a href="/target/camera.go?s=3895:3964#L140">RenderTechniqueScene</a></h3>
 				<pre>func (me *Camera) RenderTechniqueScene() (tech *RenderTechniqueScene)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=3356:3388#L114">Scene</a></h3>
-				<pre>func (me *Camera) Scene() *Scene</pre>
+				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=3519:3558#L123">SetScene</a></h3>
+				<pre>func (me *Camera) SetScene(sceneID int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=3411:3451#L118">SetScene</a></h3>
-				<pre>func (me *Camera) SetScene(scene *Scene)</pre>
+				<h3 id="Camera.Shit">func (*Camera) <a href="/target/camera.go?s=620:648#L13">Shit</a></h3>
+				<pre>func (me *Camera) Shit() int</pre>
 				
 				
 				
@@ -1337,7 +1351,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 		
 			
 			
-			<h2 id="CameraViewport">type <a href="/target/camera.go?s=4255:4515#L158">CameraViewport</a></h2>
+			<h2 id="CameraViewport">type <a href="/target/camera.go?s=4386:4646#L164">CameraViewport</a></h2>
 			<pre>type CameraViewport struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -1356,7 +1370,7 @@ Encapsulates a device-relative or absolute camera view-port.
 
 			
 				
-				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=4641:4698#L173">SetAbs</a></h3>
+				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.go?s=4772:4829#L179">SetAbs</a></h3>
 				<pre>func (me *CameraViewport) SetAbs(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -1366,7 +1380,7 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=4950:5011#L180">SetRel</a></h3>
+				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.go?s=5081:5142#L186">SetRel</a></h3>
 				<pre>func (me *CameraViewport) SetRel(x, y, width, height float64)</pre>
 				<p>
 Sets the device-relative viewport origin and dimensions, with the value 1.0
@@ -1379,7 +1393,7 @@ representing the maximum extent of the viewport on that respective axis.
 		
 			
 			
-			<h2 id="Cameras">type <a href="/target/camera.go?s=3905:3927#L139">Cameras</a></h2>
+			<h2 id="Cameras">type <a href="/target/camera.go?s=4036:4058#L145">Cameras</a></h2>
 			<pre>type Cameras []*Camera</pre>
 			
 
@@ -1393,7 +1407,7 @@ representing the maximum extent of the viewport on that respective axis.
 
 			
 				
-				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=4020:4061#L148">Remove</a></h3>
+				<h3 id="Cameras.Remove">func (*Cameras) <a href="/target/camera.go?s=4151:4192#L154">Remove</a></h3>
 				<pre>func (me *Cameras) Remove(camera *Camera)</pre>
 				
 				
@@ -1687,7 +1701,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:1091#L6">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:1110#L6">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Libs        struct {
@@ -1699,6 +1713,8 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
             Tex2D        LibFxImage2Ds
         }
         Meshes LibMeshes
+
+        Scenes SceneLib
     }
     Rendering struct {
         Canvases RenderCanvases
@@ -1738,7 +1754,7 @@ It is only aware of that instance and does not support any other EngineCore inst
 
 			
 				
-				<h3 id="EngineCore.GpuSyncImageLibs">func (*EngineCore) <a href="/target/ng-core.go?s=3226:3277#L101">GpuSyncImageLibs</a></h3>
+				<h3 id="EngineCore.GpuSyncImageLibs">func (*EngineCore) <a href="/target/ng-core.go?s=3245:3296#L103">GpuSyncImageLibs</a></h3>
 				<pre>func (_ *EngineCore) GpuSyncImageLibs() (err error)</pre>
 				
 				
@@ -1919,7 +1935,7 @@ Initiates a rendering loop. This method returns only when the loop is stopped fo
 				
 			
 				
-				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=6493:6528#L199">Time</a></h3>
+				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=6458:6493#L198">Time</a></h3>
 				<pre>func (_ *EngineLoop) Time() float64</pre>
 				<p>
 Returns the number of seconds expired ever since Loop.Run() was last called.
@@ -1931,7 +1947,7 @@ Returns the number of seconds expired ever since Loop.Run() was last called.
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=617:3885#L23">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=617:3938#L23">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     AppDir struct {
         <span class="comment">//	The base directory path for app file paths.</span>
@@ -1987,6 +2003,11 @@ Returns the number of seconds expired ever since Loop.Run() was last called.
             <span class="comment">//	D shouldn&#39;t be 0 as this causes some Intel HD drivers to bug out badly.</span>
             Rbits, Gbits, Bbits, Abits, DepthBits, StencilBits int
         }
+    }
+
+    Libs struct {
+        InitialCap int
+        GrowCapBy  int
     }
 
     Loop struct {
@@ -2308,7 +2329,7 @@ An FxEffect can be reused for multiple surfaces, it is bound to geometry via an 
 
 			
 				
-				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=2002:2035#L80">NewFxEffect</a></h3>
+				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=2004:2037#L82">NewFxEffect</a></h3>
 				<pre>func NewFxEffect() (me *FxEffect)</pre>
 				<p>
 Initializes and returns a new FxEffect with default parameters.
@@ -3577,7 +3598,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 		
 			
 			
-			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=2153:2191#L87">LibFxEffects</a></h2>
+			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=2155:2193#L89">LibFxEffects</a></h2>
 			<pre>type LibFxEffects map[string]*FxEffect</pre>
 			<p>
 A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
@@ -3594,7 +3615,7 @@ A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
 
 			
 				
-				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2317:2373#L91">AddNew</a></h3>
+				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2319:2375#L93">AddNew</a></h3>
 				<pre>func (me LibFxEffects) AddNew(id string) (obj *FxEffect)</pre>
 				<p>
 Creates and initializes a new FxEffect with default parameters,
@@ -3605,7 +3626,7 @@ adds it to me under the specified ID, and returns it.
 				
 			
 				
-				<h3 id="LibFxEffects.Remove">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2580:2620#L108">Remove</a></h3>
+				<h3 id="LibFxEffects.Remove">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2582:2622#L110">Remove</a></h3>
 				<pre>func (me LibFxEffects) Remove(id string)</pre>
 				
 				
@@ -4338,49 +4359,49 @@ Declares a point of interest in a Scene.
 				
 			
 				
-				<h3 id="Node.MatID">func (*Node) <a href="/target/node.go?s=2027:2057#L77">MatID</a></h3>
+				<h3 id="Node.MatID">func (*Node) <a href="/target/node.go?s=2029:2059#L77">MatID</a></h3>
 				<pre>func (me *Node) MatID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MeshID">func (*Node) <a href="/target/node.go?s=2080:2111#L81">MeshID</a></h3>
+				<h3 id="Node.MeshID">func (*Node) <a href="/target/node.go?s=2082:2113#L81">MeshID</a></h3>
 				<pre>func (me *Node) MeshID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.ModelID">func (*Node) <a href="/target/node.go?s=2135:2167#L85">ModelID</a></h3>
+				<h3 id="Node.ModelID">func (*Node) <a href="/target/node.go?s=2137:2169#L85">ModelID</a></h3>
 				<pre>func (me *Node) ModelID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2192:2227#L89">Root</a></h3>
+				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2194:2229#L89">Root</a></h3>
 				<pre>func (me *Node) Root() (root *Node)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=2323:2364#L98">SetMatID</a></h3>
+				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=2325:2366#L98">SetMatID</a></h3>
 				<pre>func (me *Node) SetMatID(newMatID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=2461:2515#L104">SetMeshModelID</a></h3>
+				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=2463:2517#L104">SetMeshModelID</a></h3>
 				<pre>func (me *Node) SetMeshModelID(meshID, modelID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2819:2859#L118">Walk</a></h3>
+				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2821:2861#L118">Walk</a></h3>
 				<pre>func (me *Node) Walk(onNode NodeVisitor)</pre>
 				
 				
@@ -4811,8 +4832,10 @@ Used only in Core.Rendering.Techniques.
 		
 			
 			
-			<h2 id="Scene">type <a href="/target/scene.gt.go?s=43:119#L1">Scene</a></h2>
+			<h2 id="Scene">type <a href="/target/scene.gt.go?s=43:128#L1">Scene</a></h2>
 			<pre>type Scene struct {
+    ID int
+
     <span class="comment">//	The root Node for this scene graph.</span>
     RootNode Node
 }</pre>
@@ -4829,26 +4852,63 @@ Represents a scene graph.
 
 			
 				
-				<h3 id="NewScene">func <a href="/target/scene.gt.go?s=188:215#L1">NewScene</a></h3>
+				<h3 id="NewScene">func <a href="/target/scene.gt.go?s=130:157#L1">NewScene</a></h3>
 				<pre>func NewScene() (me *Scene)</pre>
-				<p>
-Makes, Init()s and returns a new Scene with default parameters.
+				
+				
+			
+
+			
+		
+			
+			
+			<h2 id="SceneLib">type <a href="/target/scene.gt.go?s=491:512#L22">SceneLib</a></h2>
+			<pre>type SceneLib []Scene</pre>
+			<p>
+Only used for Core.Libs.Scenes.
 </p>
 
-				
+
+			
+
+			
+
+			
+
 			
 
 			
 				
-				<h3 id="Scene.Dispose">func (*Scene) <a href="/target/scene.gt.go?s=257:283#L6">Dispose</a></h3>
-				<pre>func (me *Scene) Dispose()</pre>
+				<h3 id="SceneLib.AddNew">func (SceneLib) <a href="/target/scene.gt.go?s=514:561#L24">AddNew</a></h3>
+				<pre>func (_ SceneLib) AddNew() (id int, ref *Scene)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.Init">func (*Scene) <a href="/target/scene.gt.go?s=396:419#L14">Init</a></h3>
-				<pre>func (me *Scene) Init()</pre>
+				<h3 id="SceneLib.Compact">func (SceneLib) <a href="/target/scene.gt.go?s=896:962#L47">Compact</a></h3>
+				<pre>func (_ SceneLib) Compact(onIDChanged func(obj *Scene, oldID int))</pre>
+				
+				
+				
+			
+				
+				<h3 id="SceneLib.Get">func (SceneLib) <a href="/target/scene.gt.go?s=1503:1545#L78">Get</a></h3>
+				<pre>func (_ SceneLib) Get(id int) (ref *Scene)</pre>
+				
+				
+				
+			
+				
+				<h3 id="SceneLib.Has">func (SceneLib) <a href="/target/scene.gt.go?s=1672:1712#L87">Has</a></h3>
+				<pre>func (_ SceneLib) Has(id int) (has bool)</pre>
+				
+				
+				
+			
+				
+				<h3 id="SceneLib.Remove">func (SceneLib) <a href="/target/scene.gt.go?s=1811:1852#L94">Remove</a></h3>
+				<pre>func (_ SceneLib) Remove(fromID, num int)</pre>
 				
 				
 				

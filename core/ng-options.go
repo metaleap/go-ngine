@@ -87,6 +87,11 @@ type EngineOptions struct {
 		}
 	}
 
+	Libs struct {
+		InitialCap int
+		GrowCapBy  int
+	}
+
 	Loop struct {
 		//	By default, the app and prep "threads" being invoked every frame
 		//	during Loop() are just normal go-routines that may or may not
@@ -142,6 +147,7 @@ func init() {
 	o.Cameras.DefaultControllerParams.init()
 	o.Cameras.PerspectiveDefaults.FovY, o.Cameras.PerspectiveDefaults.ZFar, o.Cameras.PerspectiveDefaults.ZNear = 37.8493, 30000, 0.3
 	o.Loop.GcEvery.Sec = true
+	o.Libs.InitialCap, o.Libs.GrowCapBy = 24, 32
 
 	init, isMac, initGl := &o.Initialization, runtime.GOOS == "darwin", &o.Initialization.GlContext
 	initGl.CoreProfile.ForceFirst, initGl.CoreProfile.ForwardCompat, initGl.BadVersionMessage = isMac, isMac, DefaultBadVersionMessage

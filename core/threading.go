@@ -18,9 +18,7 @@ var (
 	thrRend struct {
 		curCam                *Camera
 		curEffect, nextEffect *FxEffect
-		curMat                *FxMaterial
 		curMeshBuf            *MeshBuffer
-		curNode               *Node
 		curProg               *ugl.Program
 		curSampler            map[gl.Uint]*ugl.Sampler
 		curTech, nextTech     RenderTechnique
@@ -68,15 +66,15 @@ func (me *Camera) copyAppToPrep() {
 	me.thrPrep.matProj = me.thrApp.matProj
 	me.Controller.thrPrep.mat = me.Controller.thrApp.mat
 	me.thrPrep.matPos.Translation(&me.Controller.Pos)
-	if me.scene != nil {
-		me.scene.RootNode.copyAppToPrep()
+	if scene := me.scene(); scene != nil {
+		scene.RootNode.copyAppToPrep()
 	}
 }
 
 func (me *Camera) copyPrepToRend() {
 	me.thrRend.states = me.Rendering.States
-	if me.scene != nil {
-		me.scene.RootNode.copyPrepToRend()
+	if scene := me.scene(); scene != nil {
+		scene.RootNode.copyPrepToRend()
 	}
 }
 

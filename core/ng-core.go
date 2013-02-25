@@ -24,6 +24,8 @@ type EngineCore struct {
 			Tex2D        LibFxImage2Ds
 		}
 		Meshes LibMeshes
+
+		Scenes SceneLib
 	}
 	Rendering struct {
 		Canvases RenderCanvases
@@ -182,7 +184,8 @@ func (_ *EngineCore) useTechFx() {
 			thrRend.nextEffect.UpdateRoutine()
 		}
 		thrRend.curEffect = thrRend.nextEffect
-		Core.useProg(glc.shaderMan.ensureProg())
+		prog := glc.shaderMan.ensureProg()
+		Core.useProg(prog)
 		thrRend.curEffect.use()
 	}
 	return

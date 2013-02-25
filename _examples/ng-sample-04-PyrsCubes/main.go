@@ -82,8 +82,6 @@ func setupExample_04_PyrsCubes() {
 		str                          string
 	)
 
-	apputil.RearView.Setup()
-
 	//	textures / materials
 	apputil.AddTextureMaterials(map[string]string{
 		"cobbles": "tex/cobbles.png",
@@ -97,10 +95,6 @@ func setupExample_04_PyrsCubes() {
 	fx := ng.Core.Libs.Effects["fx_mosaic"]
 	fx.Ops.EnableTex2D(1).SetImageID("img_gopher").SetMixWeight(0.5)
 	fx.UpdateRoutine()
-
-	if err = gui2d.Setup(); err != nil {
-		panic(err)
-	}
 
 	//	meshes / models
 	if bufFloor, err = ng.Core.MeshBuffers.Add("buf_floor", ng.Core.MeshBuffers.NewParams(6, 6)); err != nil {
@@ -139,7 +133,6 @@ func setupExample_04_PyrsCubes() {
 	//	scene
 	scene = apputil.AddMainScene()
 	apputil.AddSkyMesh(scene, "mesh_pyramid")
-	apputil.RearView.Cam.SetScene(scene)
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyramid", "")
 	box = scene.RootNode.ChildNodes.AddNew("node_box", "mesh_cube", "")
@@ -194,6 +187,11 @@ func setupExample_04_PyrsCubes() {
 	floor.Transform.SetPos(0.1, 0, -8)
 	floor.Transform.SetScale(10000)
 	floor.ApplyTransform()
+
+	if err = gui2d.Setup(); err != nil {
+		panic(err)
+	}
+	apputil.RearView.Setup(scene.ID)
 
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()

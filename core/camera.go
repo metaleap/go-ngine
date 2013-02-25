@@ -20,6 +20,10 @@ type CameraPerspective struct {
 	ZNear float64
 }
 
+func (me *Camera) Shit() int {
+	return me.sceneID
+}
+
 //	A camera embodies the eye point of the viewer looking at the visual scene.
 type Camera struct {
 	//	Optical and imager properties for this camera.
@@ -48,7 +52,7 @@ type Camera struct {
 		FxOps FxOps
 	}
 
-	scene *Scene
+	sceneID int
 
 	thrApp struct {
 		matProj unum.Mat4
@@ -82,6 +86,7 @@ func newCameraQuad(canv *RenderCanvas) (me *Camera) {
 
 func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool, technique string) {
 	me.Enabled = true
+	me.sceneID = -1
 	me.thrPrep.onPrepNode = func(n *Node) { me.onPrepNode(n) }
 	rend := &me.Rendering
 	rend.Viewport.canvas = canv
@@ -106,8 +111,8 @@ func (me *Camera) ApplyMatrices() {
 }
 
 func (me *Camera) clearNodeMats() {
-	if me.scene != nil {
-		me.scene.RootNode.Walk(func(node *Node) {
+	if scene := me.scene(); scene != nil {
+		scene.RootNode.Walk(func(node *Node) {
 			delete(node.thrPrep.camProjMats, me)
 			delete(node.thrRend.camProjMats, me)
 			delete(node.thrPrep.camRender, me)
@@ -121,15 +126,16 @@ func (me *Camera) dispose() {
 	me.Rendering.Technique = nil
 }
 
-func (me *Camera) Scene() *Scene {
-	return me.scene
+func (me *Camera) scene() *Scene {
+	return Core.Libs.Scenes.Get(me.sceneID)
 }
 
-func (me *Camera) SetScene(scene *Scene) {
-	if scene != me.scene {
+func (me *Camera) SetScene(sceneID int) {
+	if sceneID != me.sceneID {
 		me.clearNodeMats()
-		if me.scene = scene; me.scene != nil {
-			me.scene.RootNode.Walk(func(node *Node) {
+		me.sceneID = sceneID
+		if scene := me.scene(); scene != nil {
+			scene.RootNode.Walk(func(node *Node) {
 				node.initCamData(me)
 			})
 		}

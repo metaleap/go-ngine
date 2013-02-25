@@ -18,9 +18,9 @@ func (me *RenderCanvas) onPrep() {
 func (me *Camera) onPrep() {
 	if me.Enabled {
 		me.thrPrep.matCamProj.SetFromMult4(&me.thrPrep.matProj, &me.Controller.thrPrep.mat)
-		if me.scene != nil {
-			me.scene.RootNode.onPrep()
-			me.scene.RootNode.Walk(me.thrPrep.onPrepNode)
+		if scene := me.scene(); scene != nil {
+			scene.RootNode.onPrep()
+			scene.RootNode.Walk(me.thrPrep.onPrepNode)
 			// if thrPrep.curTechScene = me.RenderTechniqueScene(); thrPrep.curTechScene != nil && thrPrep.curTechScene.Batch.Enabled {
 			// 	thrPrep.curTechScene.Batch.onPrep()
 			// }

@@ -52,7 +52,8 @@ func setupScene() {
 	bufRest.Add(meshCube)
 
 	//	scene
-	scene = apputil.AddScene("", true, "mesh_cube")
+	scene = apputil.AddMainScene()
+	apputil.AddSkyMesh(scene, "mesh_cube")
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
 	floor.SetMatID("mat_cobbles")
 	floor.Transform.SetScale(100)

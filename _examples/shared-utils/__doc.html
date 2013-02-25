@@ -114,7 +114,7 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 					<dd>&nbsp; &nbsp; <a href="#RearMirror.OnWin">func (me *RearMirror) OnWin()</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RearMirror.Setup">func (me *RearMirror) Setup()</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#RearMirror.Setup">func (me *RearMirror) Setup(sceneID int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#RearMirror.Toggle">func (me *RearMirror) Toggle()</a></dd>
@@ -236,14 +236,14 @@ This function adds a new hint to be included in that rotation.
 		
 			
 			
-			<h2 id="AddSkyMesh">func <a href="/target/assets.go?s=161:208#L3">AddSkyMesh</a></h2>
+			<h2 id="AddSkyMesh">func <a href="/target/assets.go?s=182:229#L3">AddSkyMesh</a></h2>
 			<pre>func AddSkyMesh(scene *ng.Scene, meshID string)</pre>
 			
 			
 		
 			
 			
-			<h2 id="AddTextureMaterials">func <a href="/target/assets.go?s=1575:1626#L28">AddTextureMaterials</a></h2>
+			<h2 id="AddTextureMaterials">func <a href="/target/assets.go?s=1596:1647#L28">AddTextureMaterials</a></h2>
 			<pre>func AddTextureMaterials(idsUrls map[string]string)</pre>
 			<p>
 Sets up textures and associated effects/materials with the specified IDs and image URLs.
@@ -335,9 +335,8 @@ Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent 
 		
 			
 			
-			<h2 id="Gui2D">type <a href="/target/gui2d.go?s=366:446#L1">Gui2D</a></h2>
+			<h2 id="Gui2D">type <a href="/target/gui2d.go?s=366:427#L1">Gui2D</a></h2>
 			<pre>type Gui2D struct {
-    Scene    ng.Scene
     Cam      *ng.Camera
     Cat, Dog *ng.Node
 }</pre>
@@ -358,7 +357,7 @@ inside a red 64x64 px square in the bottom left canvas corner.
 
 			
 				
-				<h3 id="Gui2D.Setup">func (*Gui2D) <a href="/target/gui2d.go?s=522:558#L8">Setup</a></h3>
+				<h3 id="Gui2D.Setup">func (*Gui2D) <a href="/target/gui2d.go?s=503:539#L7">Setup</a></h3>
 				<pre>func (me *Gui2D) Setup() (err error)</pre>
 				<p>
 Adds a &#34;2D camera&#34; to the main render canvas, and sets up Cat and Dog.
@@ -416,8 +415,8 @@ Syncs the rear-view camera&#39;s render states with the main camera&#39;s.
 				
 			
 				
-				<h3 id="RearMirror.Setup">func (*RearMirror) <a href="/target/rear-mirror.go?s=880:909#L20">Setup</a></h3>
-				<pre>func (me *RearMirror) Setup()</pre>
+				<h3 id="RearMirror.Setup">func (*RearMirror) <a href="/target/rear-mirror.go?s=916:956#L22">Setup</a></h3>
+				<pre>func (me *RearMirror) Setup(sceneID int)</pre>
 				<p>
 Adds the rear-view mirror&#39;s camera to the main render canvas, at 1/3rd of its width and 1/4th of its height.
 </p>
@@ -426,7 +425,7 @@ Adds the rear-view mirror&#39;s camera to the main render canvas, at 1/3rd of it
 				
 			
 				
-				<h3 id="RearMirror.Toggle">func (*RearMirror) <a href="/target/rear-mirror.go?s=1211:1241#L29">Toggle</a></h3>
+				<h3 id="RearMirror.Toggle">func (*RearMirror) <a href="/target/rear-mirror.go?s=1284:1314#L32">Toggle</a></h3>
 				<pre>func (me *RearMirror) Toggle()</pre>
 				<p>
 Enables or disables this rear-view mirror.

@@ -138,7 +138,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	if err != nil {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
-		defer ng.Dispose()
+		// defer ng.Dispose()
 
 		//	STEP 2: post-init, pre-loop setup
 		ng.Loop.On.EverySec, ng.Loop.On.AppThread, ng.Loop.On.WinThread = onSec, onAppThread, onWinThread

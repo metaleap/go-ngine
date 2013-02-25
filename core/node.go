@@ -70,7 +70,7 @@ func (me *Node) EffectiveMaterial() *FxMaterial {
 }
 
 func (me *Node) initCamData(cam *Camera) {
-	if cam.scene == me.rootScene {
+	if cam.scene() == me.rootScene {
 		me.thrPrep.camProjMats[cam], me.thrRend.camProjMats[cam] = unum.NewMat4Identity(), ugl.NewGlMat4(nil)
 		me.thrPrep.camRender[cam] = me.Rendering.Enabled
 	}

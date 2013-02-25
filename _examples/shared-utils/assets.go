@@ -5,8 +5,8 @@ import (
 )
 
 func AddMainScene() (me *ng.Scene) {
-	me = ng.NewScene()
-	SceneCam.SetScene(me)
+	_, me = ng.Core.Libs.Scenes.AddNew()
+	SceneCam.SetScene(me.ID)
 	return
 }
 

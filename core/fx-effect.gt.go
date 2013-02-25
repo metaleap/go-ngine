@@ -49,6 +49,7 @@ func (me *FxEffect) UpdateRoutine() {
 			}
 		}
 	}
+
 	ops, x, counts := me.Ops, len(me.OpsX) > 0, map[string]int{}
 doOps:
 	for _, me.tmpOp = range ops {
@@ -64,6 +65,7 @@ doOps:
 		x, ops = false, me.OpsX
 		goto doOps
 	}
+
 	me.uberName = buf.String()
 	for id, _ = range Core.Rendering.KnownTechniques {
 		me.uberPnames[id] = strf("uber_%s%s", id, me.uberName)

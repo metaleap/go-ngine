@@ -124,7 +124,6 @@ func (_ *EngineLoop) Run() {
 	if !Loop.Running {
 		glfw.SetTime(0)
 		Loop.Tick.Now = glfw.Time()
-		Diag.LogIfGlErr("ngine.PreLoop")
 		Core.copyAppToPrep()
 		Core.copyPrepToRend()
 		Loop.Tick.Prev = Loop.Tick.Now

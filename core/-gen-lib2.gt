@@ -1,0 +1,87 @@
+package gt
+
+//	Only used for Core.Libs.__L__.
+type __T__Lib []__T__
+
+func (_ __T__Lib) AddNew() (id int, ref *__T__) {
+	me := &Core.Libs.__L__
+	id = -1
+	for i, _ := range *me {
+		if (*me)[i].ID < 0 {
+			id = i
+			break
+		}
+	}
+	if id < 0 {
+		if id = len(*me); id == cap(*me) {
+			nu := make(__T__Lib, id, id+Options.Libs.GrowCapBy)
+			copy(nu, *me)
+			*me = nu
+		}
+		*me = append(*me, __T__{})
+	}
+	ref = &(*me)[id]
+	ref.ID = id
+	ref.init()
+	return
+}
+
+func (_ __T__Lib) Compact(onIDChanged func(obj *__T__, oldID int)) {
+	var (
+		before, after []__T__
+		oldID         int
+	)
+	me := &Core.Libs.__L__
+	for i, _ := range *me {
+		if (*me)[i].ID < 0 {
+			before, after = (*me)[:i], (*me)[i+1:]
+			*me = append(before, after...)
+		}
+	}
+	for i, _ := range *me {
+		if (*me)[i].ID != i {
+			oldID, (*me)[i].ID = (*me)[i].ID, i
+			onIDChanged(&(*me)[i], oldID)
+		}
+	}
+}
+
+func (_ __T__Lib) ctor() {
+	me := &Core.Libs.__L__
+	*me = make(__T__Lib, 0, Options.Libs.InitialCap)
+}
+
+func (_ __T__Lib) dispose() {
+	me := &Core.Libs.__L__
+	me.Remove(0, 0)
+	*me = (*me)[:0]
+}
+
+func (_ __T__Lib) Get(id int) (ref *__T__) {
+	if id >= 0 && id < len(Core.Libs.__L__) {
+		if ref = &Core.Libs.__L__[id]; ref.ID != id {
+			ref = nil
+		}
+	}
+	return
+}
+
+func (_ __T__Lib) Has(id int) (has bool) {
+	if id >= 0 && id < len(Core.Libs.__L__) {
+		has = Core.Libs.__L__[id].ID == id
+	}
+	return
+}
+
+func (_ __T__Lib) Remove(fromID, num int) {
+	me := &Core.Libs.__L__
+	if l := len(*me); fromID < l {
+		if num < 1 || num > (l-fromID) {
+			num = l - fromID
+		}
+		for id := fromID; id < fromID+num; id++ {
+			(*me)[id].dispose()
+			(*me)[id].ID = -1
+		}
+	}
+}
