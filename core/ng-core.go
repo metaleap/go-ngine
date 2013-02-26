@@ -17,7 +17,7 @@ type EngineCore struct {
 	MeshBuffers *MeshBuffers
 	Libs        struct {
 		Effects   LibFxEffects
-		Materials LibFxMaterials
+		Materials FxMaterialLib
 		Images    struct {
 			SplashScreen FxImage2D
 			TexCubes     LibFxImageCubes
@@ -50,14 +50,7 @@ type EngineCore struct {
 
 func (_ *EngineCore) dispose() {
 	Core.isInit = false
-	for _, disp := range []disposable{
-		&Core.Rendering.Canvases,
-		&Core.Libs.Materials, &Core.Libs.Effects,
-		&Core.Libs.Images.Tex2D, &Core.Libs.Images.TexCubes,
-		&Core.Libs.Meshes, Core.MeshBuffers, &Core.Libs.Scenes,
-	} {
-		disp.dispose()
-	}
+	Core.disposeLibs()
 	Core.Rendering.Fx.Samplers.FullFilteringRepeat.Dispose()
 	Core.Rendering.Fx.Samplers.FullFilteringClamp.Dispose()
 	Core.Rendering.Fx.Samplers.NoFilteringClamp.Dispose()
@@ -69,16 +62,6 @@ func (_ *EngineCore) init() {
 	Core.initRendering()
 	Core.showSplash()
 	Core.isInit = true
-}
-
-func (_ *EngineCore) initLibs() {
-	libs := &Core.Libs
-	for _, c := range []ctorable{
-		&libs.Images.Tex2D, &libs.Images.TexCubes,
-		&libs.Effects, &libs.Materials, &libs.Meshes, &libs.Scenes,
-	} {
-		c.ctor()
-	}
 }
 
 func (_ *EngineCore) initRendering() {

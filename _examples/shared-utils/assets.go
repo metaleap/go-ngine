@@ -4,8 +4,10 @@ import (
 	ng "github.com/go3d/go-ngine/core"
 )
 
+var Materials = map[string]int{}
+
 func AddMainScene() (me *ng.Scene) {
-	_, me = ng.Core.Libs.Scenes.AddNew()
+	me = ng.Core.Libs.Scenes.AddNew()
 	SceneCam.SetScene(me.ID)
 	return
 }
@@ -21,9 +23,11 @@ func AddSkyMesh(scene *ng.Scene, meshID string) {
 	fx := ng.Core.Libs.Effects.AddNew("fx_sky")
 	fx.Ops.EnableTexCube(0).SetImageID("img_sky")
 	fx.UpdateRoutine()
-	ng.Core.Libs.Materials.AddNew("mat_sky").DefaultEffectID = "fx_sky"
+	matSky := ng.Core.Libs.Materials.AddNew()
+	matSky.DefaultEffectID = "fx_sky"
+	Materials["sky"] = matSky.ID
 
-	ng.Core.Libs.Meshes[meshID].Models.Default().Clone("meshmodel_skybox").SetMatID("mat_sky")
+	ng.Core.Libs.Meshes[meshID].Models.Default().Clone("meshmodel_skybox").MatID = matSky.ID
 	scene.RootNode.SetMeshModelID(meshID, "meshmodel_skybox")
 }
 
@@ -36,12 +40,16 @@ func AddSkyMesh(scene *ng.Scene, meshID string) {
 //	-	creates an ng.FxMaterial with ID "mat_{ID}" (ie. "mat_foo" and "mat_bar") and
 //	adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffect.
 func AddTextureMaterials(idsUrls map[string]string) {
+	var mat *ng.FxMaterial
 	for id, refUrl := range idsUrls {
 		img := ng.Core.Libs.Images.Tex2D.AddNew("img_" + id)
 		img.InitFrom.RefUrl = refUrl
 		fx := ng.Core.Libs.Effects.AddNew("fx_" + id)
 		fx.Ops.EnableTex2D(0).SetImageID("img_" + id)
 		fx.UpdateRoutine()
-		ng.Core.Libs.Materials.AddNew("mat_" + id).DefaultEffectID = "fx_" + id
+		mat = ng.Core.Libs.Materials.AddNew()
+		mat.DefaultEffectID = "fx_" + id
+		Materials[id] = mat.ID
 	}
+	return
 }

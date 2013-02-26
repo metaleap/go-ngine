@@ -365,12 +365,29 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				<dd><a href="#FxMaterial">type FxMaterial</a></dd>
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#NewFxMaterial">func NewFxMaterial() (me *FxMaterial)</a></dd>
-				
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#FxMaterial.HasFaceEffects">func (me *FxMaterial) HasFaceEffects() bool</a></dd>
+				
+			
+				
+				<dd><a href="#FxMaterialLib">type FxMaterialLib</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.AddNew">func (_ FxMaterialLib) AddNew() (ref *FxMaterial)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Compact">func (_ FxMaterialLib) Compact()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Get">func (_ FxMaterialLib) Get(id int) (ref *FxMaterial)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Has">func (_ FxMaterialLib) Has(id int) (has bool)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Remove">func (_ FxMaterialLib) Remove(fromID, num int)</a></dd>
 				
 			
 				
@@ -644,6 +661,11 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
+				<dd><a href="#LibElemIDChangedHandler">type LibElemIDChangedHandler</a></dd>
+				
+				
+			
+				
 				<dd><a href="#LibFxEffects">type LibFxEffects</a></dd>
 				
 				
@@ -674,17 +696,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#LibFxImageCubes.Remove">func (me LibFxImageCubes) Remove(id string)</a></dd>
-				
-			
-				
-				<dd><a href="#LibFxMaterials">type LibFxMaterials</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#LibFxMaterials.AddNew">func (me LibFxMaterials) AddNew(id string) (obj *FxMaterial)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#LibFxMaterials.Remove">func (me LibFxMaterials) Remove(id string)</a></dd>
 				
 			
 				
@@ -833,12 +844,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					
 					<dd>&nbsp; &nbsp; <a href="#Model.Clone">func (me *Model) Clone(newModelID string) (clonedModel *Model)</a></dd>
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#Model.MatID">func (me *Model) MatID() string</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#Model.SetMatID">func (me *Model) SetMatID(newMatID string)</a></dd>
-				
 			
 				
 				<dd><a href="#Models">type Models</a></dd>
@@ -856,10 +861,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#Node.ApplyTransform">func (me *Node) ApplyTransform()</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Node.EffectiveMaterial">func (me *Node) EffectiveMaterial() *FxMaterial</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#Node.MatID">func (me *Node) MatID() string</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Node.Material">func (me *Node) Material() (mat *FxMaterial)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Node.MeshID">func (me *Node) MeshID() string</a></dd>
@@ -869,9 +871,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Node.Root">func (me *Node) Root() (root *Node)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#Node.SetMatID">func (me *Node) SetMatID(newMatID string)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Node.SetMeshModelID">func (me *Node) SetMeshModelID(meshID, modelID string)</a></dd>
@@ -923,16 +922,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Nodes.Remove">func (me *Nodes) Remove(id string)</a></dd>
-				
-			
-				
-				<dd><a href="#RenderBatch">type RenderBatch</a></dd>
-				
-				
-			
-				
-				<dd><a href="#RenderBatchCriteria">type RenderBatchCriteria</a></dd>
-				
 				
 			
 				
@@ -1013,10 +1002,10 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#SceneLib.AddNew">func (_ SceneLib) AddNew() (id int, ref *Scene)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#SceneLib.AddNew">func (_ SceneLib) AddNew() (ref *Scene)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#SceneLib.Compact">func (_ SceneLib) Compact(onIDChanged func(obj *Scene, oldID int))</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#SceneLib.Compact">func (_ SceneLib) Compact()</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#SceneLib.Get">func (_ SceneLib) Get(id int) (ref *Scene)</a></dd>
@@ -1125,6 +1114,8 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/ng-diag.go">ng-diag.go</a>
 			
+				<a href="/target/ng-libs.go">ng-libs.go</a>
+			
 				<a href="/target/ng-loop.go">ng-loop.go</a>
 			
 				<a href="/target/ng-options.go">ng-options.go</a>
@@ -1142,10 +1133,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<a href="/target/node.go">node.go</a>
 			
 				<a href="/target/nodes.go">nodes.go</a>
-			
-				<a href="/target/render-batch.go">render-batch.go</a>
-			
-				<a href="/target/render-bucket.go">render-bucket.go</a>
 			
 				<a href="/target/render-canvas.go">render-canvas.go</a>
 			
@@ -1169,13 +1156,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 	
 		
 			<h2 id="pkg-constants">Constants</h2>
-			
-				<pre>const (
-    BatchByProgram
-    BatchByTexture
-    BatchByBuffer
-)</pre>
-				
 			
 				<pre>const DefaultBadVersionMessage = `
 Minimum required OpenGL version is {MINVER}, but your
@@ -1701,12 +1681,12 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:1110#L6">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:1109#L6">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Libs        struct {
         Effects   LibFxEffects
-        Materials LibFxMaterials
+        Materials FxMaterialLib
         Images    struct {
             SplashScreen FxImage2D
             TexCubes     LibFxImageCubes
@@ -1754,7 +1734,7 @@ It is only aware of that instance and does not support any other EngineCore inst
 
 			
 				
-				<h3 id="EngineCore.GpuSyncImageLibs">func (*EngineCore) <a href="/target/ng-core.go?s=3288:3339#L107">GpuSyncImageLibs</a></h3>
+				<h3 id="EngineCore.GpuSyncImageLibs">func (*EngineCore) <a href="/target/ng-core.go?s=2847:2898#L90">GpuSyncImageLibs</a></h3>
 				<pre>func (_ *EngineCore) GpuSyncImageLibs() (err error)</pre>
 				
 				
@@ -1947,7 +1927,7 @@ Returns the number of seconds expired ever since Loop.Run() was last called.
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=617:3938#L23">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=617:4044#L23">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     AppDir struct {
         <span class="comment">//	The base directory path for app file paths.</span>
@@ -2006,8 +1986,12 @@ Returns the number of seconds expired ever since Loop.Run() was last called.
     }
 
     Libs struct {
-        InitialCap int
-        GrowCapBy  int
+        InitialCap   int
+        GrowCapBy    int
+        OnIDsChanged struct {
+            Materials LibElemIDChangedHandler
+            Scenes    LibElemIDChangedHandler
+        }
     }
 
     Loop struct {
@@ -2573,8 +2557,10 @@ Initializes and returns a new FxImageCube with default parameters.
 		
 			
 			
-			<h2 id="FxMaterial">type <a href="/target/fx-material.gt.go?s=103:530#L1">FxMaterial</a></h2>
+			<h2 id="FxMaterial">type <a href="/target/fx-material.gt.go?s=103:539#L1">FxMaterial</a></h2>
 			<pre>type FxMaterial struct {
+    ID int
+
     <span class="comment">//	This effect is used by default for all faces that do not</span>
     <span class="comment">//	match any of the selectors in the FaceEffects field.</span>
     DefaultEffectID string
@@ -2601,20 +2587,65 @@ A material binds effects (FxEffect in Core.Libs.Effects) to geometry (Model or N
 			
 
 			
+
+			
 				
-				<h3 id="NewFxMaterial">func <a href="/target/fx-material.gt.go?s=1330:1367#L41">NewFxMaterial</a></h3>
-				<pre>func NewFxMaterial() (me *FxMaterial)</pre>
-				<p>
-Initializes and returns a new FxMaterial with default parameters.
+				<h3 id="FxMaterial.HasFaceEffects">func (*FxMaterial) <a href="/target/fx-material.gt.go?s=1113:1156#L36">HasFaceEffects</a></h3>
+				<pre>func (me *FxMaterial) HasFaceEffects() bool</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="FxMaterialLib">type <a href="/target/fx-material.gt.go?s=1321:1352#L43">FxMaterialLib</a></h2>
+			<pre>type FxMaterialLib []FxMaterial</pre>
+			<p>
+Only used for Core.Libs.Materials.
 </p>
 
-				
+
+			
+
+			
+
+			
+
 			
 
 			
 				
-				<h3 id="FxMaterial.HasFaceEffects">func (*FxMaterial) <a href="/target/fx-material.gt.go?s=1104:1147#L34">HasFaceEffects</a></h3>
-				<pre>func (me *FxMaterial) HasFaceEffects() bool</pre>
+				<h3 id="FxMaterialLib.AddNew">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=1354:1403#L45">AddNew</a></h3>
+				<pre>func (_ FxMaterialLib) AddNew() (ref *FxMaterial)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxMaterialLib.Compact">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=1750:1782#L67">Compact</a></h3>
+				<pre>func (_ FxMaterialLib) Compact()</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxMaterialLib.Get">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=2545:2597#L105">Get</a></h3>
+				<pre>func (_ FxMaterialLib) Get(id int) (ref *FxMaterial)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxMaterialLib.Has">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=2730:2775#L114">Has</a></h3>
+				<pre>func (_ FxMaterialLib) Has(id int) (has bool)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxMaterialLib.Remove">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=2880:2926#L121">Remove</a></h3>
+				<pre>func (_ FxMaterialLib) Remove(fromID, num int)</pre>
 				
 				
 				
@@ -3598,6 +3629,22 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 		
 			
 			
+			<h2 id="LibElemIDChangedHandler">type <a href="/target/ng-libs.go?s=14:70#L1">LibElemIDChangedHandler</a></h2>
+			<pre>type LibElemIDChangedHandler func(oldNewIDs map[int]int)</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
 			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=2155:2193#L89">LibFxEffects</a></h2>
 			<pre>type LibFxEffects map[string]*FxEffect</pre>
 			<p>
@@ -3702,43 +3749,6 @@ adds it to me under the specified ID, and returns it.
 				
 				<h3 id="LibFxImageCubes.Remove">func (LibFxImageCubes) <a href="/target/fx-image-cube.gt.go?s=1746:1789#L80">Remove</a></h3>
 				<pre>func (me LibFxImageCubes) Remove(id string)</pre>
-				
-				
-				
-			
-		
-			
-			
-			<h2 id="LibFxMaterials">type <a href="/target/fx-material.gt.go?s=1489:1531#L48">LibFxMaterials</a></h2>
-			<pre>type LibFxMaterials map[string]*FxMaterial</pre>
-			<p>
-A hash-table of FxMaterials associated by IDs. Only for use in Core.Libs.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="LibFxMaterials.AddNew">func (LibFxMaterials) <a href="/target/fx-material.gt.go?s=1659:1719#L52">AddNew</a></h3>
-				<pre>func (me LibFxMaterials) AddNew(id string) (obj *FxMaterial)</pre>
-				<p>
-Creates and initializes a new FxMaterial with default parameters,
-adds it to me under the specified ID, and returns it.
-</p>
-
-				
-				
-			
-				
-				<h3 id="LibFxMaterials.Remove">func (LibFxMaterials) <a href="/target/fx-material.gt.go?s=1934:1976#L69">Remove</a></h3>
-				<pre>func (me LibFxMaterials) Remove(id string)</pre>
 				
 				
 				
@@ -4233,8 +4243,9 @@ Represents a 3-component vertex attribute in a MeshData
 		
 			
 			
-			<h2 id="Model">type <a href="/target/model.go?s=593:674#L8">Model</a></h2>
+			<h2 id="Model">type <a href="/target/model.go?s=593:651#L8">Model</a></h2>
 			<pre>type Model struct {
+    MatID int
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
@@ -4258,27 +4269,13 @@ call someMesh.Models[&#34;sourceModelID&#34;].Clone(&#34;newModelID&#34;).
 
 			
 				
-				<h3 id="Model.Clone">func (*Model) <a href="/target/model.go?s=881:943#L22">Clone</a></h3>
+				<h3 id="Model.Clone">func (*Model) <a href="/target/model.go?s=869:931#L22">Clone</a></h3>
 				<pre>func (me *Model) Clone(newModelID string) (clonedModel *Model)</pre>
 				<p>
 Creates a copy of me and adds it to the parent Mesh&#39;s Models
 hash-table under the specified newModelID.
 </p>
 
-				
-				
-			
-				
-				<h3 id="Model.MatID">func (*Model) <a href="/target/model.go?s=1116:1147#L30">MatID</a></h3>
-				<pre>func (me *Model) MatID() string</pre>
-				
-				
-				
-			
-				
-				<h3 id="Model.SetMatID">func (*Model) <a href="/target/model.go?s=1170:1212#L34">SetMatID</a></h3>
-				<pre>func (me *Model) SetMatID(newMatID string)</pre>
-				
 				
 				
 			
@@ -4315,7 +4312,7 @@ Returns the default Model (with ID &#34;&#34;) for the parent Mesh.
 		
 			
 			
-			<h2 id="Node">type <a href="/target/node.go?s=271:1016#L5">Node</a></h2>
+			<h2 id="Node">type <a href="/target/node.go?s=271:953#L5">Node</a></h2>
 			<pre>type Node struct {
     Rendering struct {
         <span class="comment">//	Defaults to true. If false, this Node is ignored by the rendering runtime.</span>
@@ -4328,6 +4325,8 @@ Returns the default Model (with ID &#34;&#34;) for the parent Mesh.
 
     <span class="comment">//	Encapsulates all parent-relative transformations for this Node.</span>
     Transform NodeTransform
+
+    MatID int
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
@@ -4345,63 +4344,49 @@ Declares a point of interest in a Scene.
 
 			
 				
-				<h3 id="Node.ApplyTransform">func (*Node) <a href="/target/node.go?s=1359:1391#L51">ApplyTransform</a></h3>
+				<h3 id="Node.ApplyTransform">func (*Node) <a href="/target/node.go?s=1307:1339#L52">ApplyTransform</a></h3>
 				<pre>func (me *Node) ApplyTransform()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.EffectiveMaterial">func (*Node) <a href="/target/node.go?s=1429:1476#L55">EffectiveMaterial</a></h3>
-				<pre>func (me *Node) EffectiveMaterial() *FxMaterial</pre>
+				<h3 id="Node.Material">func (*Node) <a href="/target/node.go?s=1864:1908#L71">Material</a></h3>
+				<pre>func (me *Node) Material() (mat *FxMaterial)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.MatID">func (*Node) <a href="/target/node.go?s=2029:2059#L77">MatID</a></h3>
-				<pre>func (me *Node) MatID() string</pre>
-				
-				
-				
-			
-				
-				<h3 id="Node.MeshID">func (*Node) <a href="/target/node.go?s=2082:2113#L81">MeshID</a></h3>
+				<h3 id="Node.MeshID">func (*Node) <a href="/target/node.go?s=2031:2062#L78">MeshID</a></h3>
 				<pre>func (me *Node) MeshID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.ModelID">func (*Node) <a href="/target/node.go?s=2137:2169#L85">ModelID</a></h3>
+				<h3 id="Node.ModelID">func (*Node) <a href="/target/node.go?s=2086:2118#L82">ModelID</a></h3>
 				<pre>func (me *Node) ModelID() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2194:2229#L89">Root</a></h3>
+				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2143:2178#L86">Root</a></h3>
 				<pre>func (me *Node) Root() (root *Node)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.SetMatID">func (*Node) <a href="/target/node.go?s=2325:2366#L98">SetMatID</a></h3>
-				<pre>func (me *Node) SetMatID(newMatID string)</pre>
-				
-				
-				
-			
-				
-				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=2463:2517#L104">SetMeshModelID</a></h3>
+				<h3 id="Node.SetMeshModelID">func (*Node) <a href="/target/node.go?s=2274:2328#L95">SetMeshModelID</a></h3>
 				<pre>func (me *Node) SetMeshModelID(meshID, modelID string)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2821:2861#L118">Walk</a></h3>
+				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2632:2672#L109">Walk</a></h3>
 				<pre>func (me *Node) Walk(onNode NodeVisitor)</pre>
 				
 				
@@ -4567,42 +4552,6 @@ Removes the Node with the specified ID from me.M.
 
 				
 				
-			
-		
-			
-			
-			<h2 id="RenderBatch">type <a href="/target/render-batch.go?s=1802:1920#L70">RenderBatch</a></h2>
-			<pre>type RenderBatch struct {
-    Enabled  bool
-    Priority [3]RenderBatchCriteria
-    <span class="comment">// contains filtered or unexported fields</span>
-}</pre>
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="RenderBatchCriteria">type <a href="/target/render-batch.go?s=14:42#L1">RenderBatchCriteria</a></h2>
-			<pre>type RenderBatchCriteria int</pre>
-			
-
-			
-
-			
-
-			
-
-			
-
 			
 		
 			
@@ -4787,9 +4736,8 @@ The relative, width and height values are passed to a call to SetSize().
 		
 			
 			
-			<h2 id="RenderTechniqueScene">type <a href="/target/render-technique-scene.go?s=101:177#L1">RenderTechniqueScene</a></h2>
+			<h2 id="RenderTechniqueScene">type <a href="/target/render-technique-scene.go?s=101:180#L1">RenderTechniqueScene</a></h2>
 			<pre>type RenderTechniqueScene struct {
-    Batch RenderBatch
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			
@@ -4804,7 +4752,7 @@ The relative, width and height values are passed to a call to SetSize().
 
 			
 				
-				<h3 id="RenderTechniqueScene.ToggleBatching">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=351:399#L11">ToggleBatching</a></h3>
+				<h3 id="RenderTechniqueScene.ToggleBatching">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=360:408#L11">ToggleBatching</a></h3>
 				<pre>func (me *RenderTechniqueScene) ToggleBatching()</pre>
 				
 				
@@ -4879,35 +4827,35 @@ Only used for Core.Libs.Scenes.
 
 			
 				
-				<h3 id="SceneLib.AddNew">func (SceneLib) <a href="/target/scene.gt.go?s=514:561#L24">AddNew</a></h3>
-				<pre>func (_ SceneLib) AddNew() (id int, ref *Scene)</pre>
+				<h3 id="SceneLib.AddNew">func (SceneLib) <a href="/target/scene.gt.go?s=514:553#L24">AddNew</a></h3>
+				<pre>func (_ SceneLib) AddNew() (ref *Scene)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Compact">func (SceneLib) <a href="/target/scene.gt.go?s=896:962#L47">Compact</a></h3>
-				<pre>func (_ SceneLib) Compact(onIDChanged func(obj *Scene, oldID int))</pre>
+				<h3 id="SceneLib.Compact">func (SceneLib) <a href="/target/scene.gt.go?s=887:914#L46">Compact</a></h3>
+				<pre>func (_ SceneLib) Compact()</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Get">func (SceneLib) <a href="/target/scene.gt.go?s=1503:1545#L78">Get</a></h3>
+				<h3 id="SceneLib.Get">func (SceneLib) <a href="/target/scene.gt.go?s=1632:1674#L84">Get</a></h3>
 				<pre>func (_ SceneLib) Get(id int) (ref *Scene)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Has">func (SceneLib) <a href="/target/scene.gt.go?s=1672:1712#L87">Has</a></h3>
+				<h3 id="SceneLib.Has">func (SceneLib) <a href="/target/scene.gt.go?s=1801:1841#L93">Has</a></h3>
 				<pre>func (_ SceneLib) Has(id int) (has bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Remove">func (SceneLib) <a href="/target/scene.gt.go?s=1811:1852#L94">Remove</a></h3>
+				<h3 id="SceneLib.Remove">func (SceneLib) <a href="/target/scene.gt.go?s=1940:1981#L100">Remove</a></h3>
 				<pre>func (_ SceneLib) Remove(fromID, num int)</pre>
 				
 				

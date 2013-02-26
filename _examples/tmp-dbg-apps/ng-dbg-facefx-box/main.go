@@ -47,8 +47,9 @@ func setupScene() {
 	fxPulse.Ops.EnableTex2D(1).SetImageID("img_gopher").SetMixWeight(0.5)
 	fxPulse.UpdateRoutine()
 
-	ng.Core.Libs.Materials["mat_dog"].FaceEffects.ByTag["top"] = "fx_cat"
-	ng.Core.Libs.Materials["mat_dog"].FaceEffects.ByTag["front"] = "fx_pulse"
+	dogMat := ng.Core.Libs.Materials[apputil.Materials["dog"]]
+	dogMat.FaceEffects.ByTag["top"] = "fx_cat"
+	dogMat.FaceEffects.ByTag["front"] = "fx_pulse"
 
 	//	meshes / models
 	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(200, 200)); err != nil {
@@ -67,12 +68,12 @@ func setupScene() {
 
 	scene = apputil.AddMainScene()
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
-	floor.SetMatID("mat_cobbles")
+	floor.MatID = apputil.Materials["cobbles"]
 	floor.Transform.SetScale(100)
 	floor.ApplyTransform()
 
 	box = scene.RootNode.ChildNodes.AddNew("node_box", "mesh_box", "")
-	box.SetMatID("mat_dog")
+	box.MatID = apputil.Materials["dog"]
 	box.Transform.Pos.Y = 2
 	box.ApplyTransform()
 

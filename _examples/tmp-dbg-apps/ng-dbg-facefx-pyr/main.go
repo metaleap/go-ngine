@@ -59,10 +59,11 @@ func setupScene() {
 	fxPulse.Ops.EnableColor(1).SetRgb(0.9, 0.7, 0).SetMixWeight(0.25)
 	fxPulse.UpdateRoutine()
 
-	ng.Core.Libs.Materials["mat_dog"].DefaultEffectID = "fx_blue"
-	ng.Core.Libs.Materials["mat_dog"].FaceEffects.ByID["t0"] = "fx_cat"
-	ng.Core.Libs.Materials["mat_dog"].FaceEffects.ByID["t1"] = "fx_pulse"
-	ng.Core.Libs.Materials["mat_dog"].FaceEffects.ByID["t2"] = "fx_green"
+	dogMat := ng.Core.Libs.Materials[apputil.Materials["dog"]]
+	dogMat.DefaultEffectID = "fx_blue"
+	dogMat.FaceEffects.ByID["t0"] = "fx_cat"
+	dogMat.FaceEffects.ByID["t1"] = "fx_pulse"
+	dogMat.FaceEffects.ByID["t2"] = "fx_green"
 
 	//	meshes / models
 	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(200, 200)); err != nil {
@@ -82,12 +83,12 @@ func setupScene() {
 	scene = apputil.AddMainScene()
 	apputil.AddSkyMesh(scene, "mesh_pyr")
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
-	floor.SetMatID("mat_cobbles")
+	floor.MatID = apputil.Materials["cobbles"]
 	floor.Transform.SetScale(100)
 	floor.ApplyTransform()
 
 	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyr", "")
-	pyr.SetMatID("mat_dog")
+	pyr.MatID = apputil.Materials["dog"]
 	pyr.Transform.Pos.Y = 2
 	pyr.ApplyTransform()
 

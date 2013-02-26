@@ -79,8 +79,8 @@ func setupExample_03_PyrCube() {
 	bufFloor.Add(meshFloor)
 	bufRest.Add(meshCube)
 	bufRest.Add(meshPyr)
-	meshPyr.Models.Default().SetMatID("mat_mosaic")
-	meshCube.Models.Default().SetMatID("mat_crate")
+	meshPyr.Models.Default().MatID = apputil.Materials["mosaic"]
+	meshCube.Models.Default().MatID = apputil.Materials["crate"]
 
 	fx := ng.Core.Libs.Effects["fx_cat"]
 	fx.Ops.EnableOrangify(-1).SetMixWeight(0.5)
@@ -88,9 +88,9 @@ func setupExample_03_PyrCube() {
 	fx = ng.Core.Libs.Effects["fx_dog"]
 	fx.Ops.EnableTex2D(1).SetImageID("img_gopher").SetMixWeight(0.5)
 	fx.UpdateRoutine()
-	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["front"] = "fx_dog"
-	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["back"] = "fx_dog"
-	ng.Core.Libs.Materials["mat_mosaic"].FaceEffects.ByID["t3"] = "fx_cat"
+	ng.Core.Libs.Materials[apputil.Materials["crate"]].FaceEffects.ByTag["front"] = "fx_dog"
+	ng.Core.Libs.Materials[apputil.Materials["crate"]].FaceEffects.ByTag["back"] = "fx_dog"
+	ng.Core.Libs.Materials[apputil.Materials["mosaic"]].FaceEffects.ByID["t3"] = "fx_cat"
 
 	//	scene
 	scene = apputil.AddMainScene()
@@ -99,7 +99,7 @@ func setupExample_03_PyrCube() {
 	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyramid", "")
 	box = scene.RootNode.ChildNodes.AddNew("node_box", "mesh_cube", "")
 
-	floor.SetMatID("mat_cobbles")
+	floor.MatID = apputil.Materials["cobbles"]
 	floor.Transform.SetPos(0.1, 0, -8)
 	floor.Transform.SetScale(1000)
 	floor.ApplyTransform()

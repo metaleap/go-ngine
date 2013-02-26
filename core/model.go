@@ -16,14 +16,14 @@ func (me Models) Default() *Model {
 //	accessible via someMesh.Models.Default(). To create new models for a Mesh,
 //	call someMesh.Models["sourceModelID"].Clone("newModelID").
 type Model struct {
-	matID string
-	id    string
-	mat   *FxMaterial
-	mesh  *Mesh
+	MatID int
+
+	id   string
+	mesh *Mesh
 }
 
 func newModel(id string, mesh *Mesh) (me *Model) {
-	me = &Model{id: id, mesh: mesh}
+	me = &Model{id: id, mesh: mesh, MatID: -1}
 	return
 }
 
@@ -35,14 +35,4 @@ func (me *Model) Clone(newModelID string) (clonedModel *Model) {
 		me.mesh.Models[newModelID] = clonedModel
 	}
 	return
-}
-
-func (me *Model) MatID() string {
-	return me.matID
-}
-
-func (me *Model) SetMatID(newMatID string) {
-	if newMatID != me.matID {
-		me.mat, me.matID = Core.Libs.Materials[newMatID], newMatID
-	}
 }

@@ -31,9 +31,8 @@ func (me *Scene) init() {
 //	Only used for Core.Libs.Scenes.
 type SceneLib []Scene
 
-func (_ SceneLib) AddNew() (id int, ref *Scene) {
-	me := &Core.Libs.Scenes
-	id = -1
+func (_ SceneLib) AddNew() (ref *Scene) {
+	me, id := &Core.Libs.Scenes, -1
 	for i, _ := range *me {
 		if (*me)[i].ID < 0 {
 			id = i
@@ -54,9 +53,10 @@ func (_ SceneLib) AddNew() (id int, ref *Scene) {
 	return
 }
 
-func (_ SceneLib) Compact(onIDChanged func(obj *Scene, oldID int)) {
+func (_ SceneLib) Compact() {
 	var (
 		before, after []Scene
+		ref           *Scene
 		oldID         int
 	)
 	me := &Core.Libs.Scenes
@@ -66,11 +66,17 @@ func (_ SceneLib) Compact(onIDChanged func(obj *Scene, oldID int)) {
 			*me = append(before, after...)
 		}
 	}
+	changed := make(map[int]int, len(*me))
 	for i, _ := range *me {
 		if (*me)[i].ID != i {
-			oldID, (*me)[i].ID = (*me)[i].ID, i
-			onIDChanged(&(*me)[i], oldID)
+			ref = &(*me)[i]
+			oldID, ref.ID = ref.ID, i
+			changed[oldID] = i
 		}
+	}
+	if len(changed) > 0 {
+		Core.Libs.Scenes.onSceneIDsChanged(changed)
+		Options.Libs.OnIDsChanged.Scenes(changed)
 	}
 }
 
@@ -107,10 +113,13 @@ func (_ SceneLib) Remove(fromID, num int) {
 		if num < 1 || num > (l-fromID) {
 			num = l - fromID
 		}
+		changed := make(map[int]int, num)
 		for id := fromID; id < fromID+num; id++ {
 			(*me)[id].dispose()
-			(*me)[id].ID = -1
+			changed[id], (*me)[id].ID = -1, -1
 		}
+		Core.Libs.Scenes.onSceneIDsChanged(changed)
+		Options.Libs.OnIDsChanged.Scenes(changed)
 	}
 }
 

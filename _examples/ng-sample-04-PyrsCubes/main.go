@@ -106,25 +106,26 @@ func setupExample_04_PyrsCubes() {
 	if meshFloor, err = ng.Core.Libs.Meshes.AddLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
 		panic(err)
 	}
-	meshFloor.Models.Default().SetMatID("mat_cobbles")
+	meshFloor.Models.Default().MatID = apputil.Materials["cobbles"]
 	if meshPyr, err = ng.Core.Libs.Meshes.AddLoad("mesh_pyramid", ng.MeshProviderPrefabPyramid); err != nil {
 		panic(err)
 	}
-	meshPyr.Models.Default().SetMatID("mat_mosaic")
-	meshPyr.Models.Default().Clone("model_pyramid_dog").SetMatID("mat_dog")
+	meshPyr.Models.Default().MatID = apputil.Materials["mosaic"]
+	meshPyr.Models.Default().Clone("model_pyramid_dog").MatID = apputil.Materials["dog"]
 
 	if meshCube, err = ng.Core.Libs.Meshes.AddLoad("mesh_cube", ng.MeshProviderPrefabCube); err != nil {
 		panic(err)
 	}
-	meshCube.Models.Default().SetMatID("mat_crate")
-	meshCube.Models.Default().Clone("model_cube_cat").SetMatID("mat_cat")
-	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["front"] = "fx_cat"
-	ng.Core.Libs.Materials["mat_crate"].FaceEffects.ByTag["back"] = "fx_dog"
-	mixMat := ng.Core.Libs.Materials.AddNew("mat_mix")
+	meshCube.Models.Default().MatID = apputil.Materials["crate"]
+	meshCube.Models.Default().Clone("model_cube_cat").MatID = apputil.Materials["cat"]
+	ng.Core.Libs.Materials[apputil.Materials["crate"]].FaceEffects.ByTag["front"] = "fx_cat"
+	ng.Core.Libs.Materials[apputil.Materials["crate"]].FaceEffects.ByTag["back"] = "fx_dog"
+	mixMat := ng.Core.Libs.Materials.AddNew()
 	mixMat.DefaultEffectID = "fx_crate"
 	mixMat.FaceEffects.ByTag["front"], mixMat.FaceEffects.ByTag["back"] = "fx_cat", "fx_cat"
 	mixMat.FaceEffects.ByTag["top"], mixMat.FaceEffects.ByTag["bottom"] = "fx_dog", "fx_dog"
 	mixMat.FaceEffects.ByTag["left"], mixMat.FaceEffects.ByTag["right"] = "fx_gopher", "fx_gopher"
+	apputil.Materials["mix"] = mixMat.ID
 
 	bufFloor.Add(meshFloor)
 	bufRest.Add(meshCube)
@@ -148,7 +149,7 @@ func setupExample_04_PyrsCubes() {
 		crates[i].Transform.SetPos((f+3)*-2, (f+1)*2, (f+2)*3)
 		crates[i].ApplyTransform()
 		if i == 2 {
-			crates[i].SetMatID("mat_mix")
+			crates[i].MatID = apputil.Materials["mix"]
 		}
 	}
 

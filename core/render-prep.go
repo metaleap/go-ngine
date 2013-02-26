@@ -1,7 +1,7 @@
 package core
 
 func (me *EngineCore) onPrep() {
-	thrPrep.nodePreBatch.reset()
+	// thrPrep.nodePreBatch.reset()
 	for _, canv := range me.Rendering.Canvases {
 		if canv.renderThisFrame() {
 			canv.onPrep()

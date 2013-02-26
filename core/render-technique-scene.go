@@ -7,19 +7,19 @@ import (
 
 type RenderTechniqueScene struct {
 	renderTechniqueBase
-	Batch RenderBatch
+	// Batch RenderBatch
 }
 
 func newRenderTechniqueScene(cam *Camera) RenderTechnique {
 	me := &RenderTechniqueScene{}
 	me.init("Scene", cam)
-	me.Batch.init(me)
-	me.Batch.Enabled = true
+	// me.Batch.init(me)
+	// me.Batch.Enabled = true
 	return me
 }
 
 func (me *RenderTechniqueScene) ToggleBatching() {
-	me.Batch.Enabled = !me.Batch.Enabled
+	// me.Batch.Enabled = !me.Batch.Enabled
 }
 
 func (me *RenderTechniqueScene) vertexAttribPointers(meshBuffer *MeshBuffer) (atts []*ugl.VertexAttribPointer) {

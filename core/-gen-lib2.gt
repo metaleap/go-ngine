@@ -3,9 +3,8 @@ package gt
 //	Only used for Core.Libs.__L__.
 type __T__Lib []__T__
 
-func (_ __T__Lib) AddNew() (id int, ref *__T__) {
-	me := &Core.Libs.__L__
-	id = -1
+func (_ __T__Lib) AddNew() (ref *__T__) {
+	me, id := &Core.Libs.__L__, -1
 	for i, _ := range *me {
 		if (*me)[i].ID < 0 {
 			id = i
@@ -26,9 +25,10 @@ func (_ __T__Lib) AddNew() (id int, ref *__T__) {
 	return
 }
 
-func (_ __T__Lib) Compact(onIDChanged func(obj *__T__, oldID int)) {
+func (_ __T__Lib) Compact() {
 	var (
 		before, after []__T__
+		ref           *__T__
 		oldID         int
 	)
 	me := &Core.Libs.__L__
@@ -38,11 +38,17 @@ func (_ __T__Lib) Compact(onIDChanged func(obj *__T__, oldID int)) {
 			*me = append(before, after...)
 		}
 	}
+	changed := make(map[int]int, len(*me))
 	for i, _ := range *me {
 		if (*me)[i].ID != i {
-			oldID, (*me)[i].ID = (*me)[i].ID, i
-			onIDChanged(&(*me)[i], oldID)
+			ref = &(*me)[i]
+			oldID, ref.ID = ref.ID, i
+			changed[oldID] = i
 		}
+	}
+	if len(changed) > 0 {
+		Core.Libs.__L__.on__T__IDsChanged(changed)
+		Options.Libs.OnIDsChanged.__L__(changed)
 	}
 }
 
@@ -79,9 +85,12 @@ func (_ __T__Lib) Remove(fromID, num int) {
 		if num < 1 || num > (l-fromID) {
 			num = l - fromID
 		}
+		changed := make(map[int]int, num)
 		for id := fromID; id < fromID+num; id++ {
 			(*me)[id].dispose()
-			(*me)[id].ID = -1
+			changed[id], (*me)[id].ID = -1, -1
 		}
+		Core.Libs.__L__.on__T__IDsChanged(changed)
+		Options.Libs.OnIDsChanged.__L__(changed)
 	}
 }

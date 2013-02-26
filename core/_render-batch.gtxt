@@ -46,7 +46,7 @@ func (me *nodeBatchPreps) prepNode(node *Node) {
 		me.allNodes[node] = true
 		if node.mesh != nil && node.mesh.meshBuffer != nil {
 			me.byBuf.add(node.mesh.meshBuffer.id, node)
-			if me.tmat = node.EffectiveMaterial(); me.tmat != nil {
+			if me.tmat = node.Material(); me.tmat != nil {
 				me.allFx = make(map[*FxEffect]bool, 1+len(me.tmat.FaceEffects.ByID)+len(me.tmat.FaceEffects.ByTag))
 				me.fxId = me.tmat.DefaultEffectID
 				me.prepNodeFx(node)

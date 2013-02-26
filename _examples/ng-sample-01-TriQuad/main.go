@@ -85,6 +85,6 @@ func setupExample_01_TriQuad() {
 	scene = apputil.AddMainScene()
 	tri = scene.RootNode.ChildNodes.AddNew("node_tri", "mesh_tri", "")
 	quad = scene.RootNode.ChildNodes.AddNew("node_quad", "mesh_quad", "")
-	tri.SetMatID("mat_cat")
-	quad.SetMatID("mat_dog")
+	tri.MatID = apputil.Materials["cat"]
+	quad.MatID = apputil.Materials["dog"]
 }

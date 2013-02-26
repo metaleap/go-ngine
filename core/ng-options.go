@@ -88,8 +88,12 @@ type EngineOptions struct {
 	}
 
 	Libs struct {
-		InitialCap int
-		GrowCapBy  int
+		InitialCap   int
+		GrowCapBy    int
+		OnIDsChanged struct {
+			Materials LibElemIDChangedHandler
+			Scenes    LibElemIDChangedHandler
+		}
 	}
 
 	Loop struct {
@@ -148,6 +152,12 @@ func init() {
 	o.Cameras.PerspectiveDefaults.FovY, o.Cameras.PerspectiveDefaults.ZFar, o.Cameras.PerspectiveDefaults.ZNear = 37.8493, 30000, 0.3
 	o.Loop.GcEvery.Sec = true
 	o.Libs.InitialCap, o.Libs.GrowCapBy = 24, 32
+
+	//	Set all ID-changed handlers to empty funcs so we don't need to check for nil
+	on, makeNoopHandlerFunc := &o.Libs.OnIDsChanged, func() LibElemIDChangedHandler { return func(_ map[int]int) {} }
+	for _, fn := range []*LibElemIDChangedHandler{&on.Materials, &on.Scenes} {
+		*fn = makeNoopHandlerFunc()
+	}
 
 	init, isMac, initGl := &o.Initialization, runtime.GOOS == "darwin", &o.Initialization.GlContext
 	initGl.CoreProfile.ForceFirst, initGl.CoreProfile.ForwardCompat, initGl.BadVersionMessage = isMac, isMac, DefaultBadVersionMessage

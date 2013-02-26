@@ -13,7 +13,7 @@ var (
 	}
 	thrPrep struct {
 		sync.Mutex
-		nodePreBatch nodeBatchPreps
+		// nodePreBatch nodeBatchPreps
 	}
 	thrRend struct {
 		curCam                *Camera

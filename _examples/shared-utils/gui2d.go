@@ -19,7 +19,7 @@ func (me *Gui2D) Setup() (err error) {
 		meshBuf  *ng.MeshBuffer
 		quadMesh *ng.Mesh
 	)
-	_, scene := ng.Core.Libs.Scenes.AddNew()
+	scene := ng.Core.Libs.Scenes.AddNew()
 	me.Cam = SceneCanvas.AddNewCamera2D(true)
 	me.Cam.Rendering.States.ClearColor.Set(0.75, 0.25, 0.1, 1)
 	me.Cam.Rendering.Viewport.SetAbs(8, 8, 64, 64) //SetRel(0.02, 0.04, 0.125, 0.222)
@@ -35,12 +35,12 @@ func (me *Gui2D) Setup() (err error) {
 		return
 	}
 
-	quadMesh.Models.Default().SetMatID("mat_dog")
+	quadMesh.Models.Default().MatID = Materials["dog"]
 	me.Dog = scene.RootNode.ChildNodes.AddNew("gui_dog", "mesh_quad", "")
 	me.Dog.Transform.SetScale(0.85)
 	me.Dog.Transform.Rot.Z = unum.DegToRad(90)
 
-	quadMesh.Models.Default().Clone("model_cat").SetMatID("mat_cat")
+	quadMesh.Models.Default().Clone("model_cat").MatID = Materials["cat"]
 	me.Cat = scene.RootNode.ChildNodes.AddNew("gui_cat", "mesh_quad", "model_cat")
 	me.Cat.Transform.SetScale(0.85)
 	me.Cat.Transform.Rot.Z = unum.DegToRad(90)

@@ -48,7 +48,7 @@ func setupExample_02_EmptyGround() {
 	//	scene
 	scene = apputil.AddMainScene()
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
-	floor.SetMatID("mat_cobbles")
+	floor.MatID = apputil.Materials["cobbles"]
 	floor.Transform.SetPos(0.1, 0, -8)
 	floor.Transform.SetScale(100)
 	floor.ApplyTransform()

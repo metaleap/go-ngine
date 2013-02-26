@@ -73,7 +73,7 @@ func (me *Node) renderChildren() {
 
 func (me *Node) renderSelf() {
 	if me.model != nil {
-		if mat := me.EffectiveMaterial(); mat != nil {
+		if mat := me.Material(); mat != nil {
 			if mat.HasFaceEffects() {
 				for fidx, face := range me.mesh.raw.faces {
 					thrRend.nextEffect = mat.faceEffect(face)
