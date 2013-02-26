@@ -34,7 +34,7 @@ func (me *FxImageInitFrom) loadImage(fxImg *FxImageBase) (img image.Image, err e
 		}
 		if fxImg.needPreproc() {
 			pic, _ := ugfx.CloneImage(img, false)
-			ugfx.PreprocessImage(img, pic, fxImg.PreProcess.FlipY, fxImg.PreProcess.ToBgra, fxImg.PreProcess.ToLinear)
+			ugfx.PreprocessImage(img, pic, fxImg.Preprocess.FlipY, fxImg.Preprocess.ToBgra, fxImg.Preprocess.ToLinear)
 			img = pic
 		}
 	}

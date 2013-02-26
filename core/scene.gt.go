@@ -15,11 +15,6 @@ func NewScene() (me *Scene) {
 }
 
 func (me *Scene) dispose() {
-	Core.Rendering.Canvases.Walk(nil, func(cam *Camera) {
-		if cam.scene() == me {
-			cam.SetScene(-1)
-		}
-	})
 }
 
 func (me *Scene) init() {

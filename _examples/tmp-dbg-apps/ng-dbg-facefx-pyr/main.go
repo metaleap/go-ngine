@@ -43,7 +43,7 @@ func setupScene() {
 
 	fxBlue := ng.Core.Libs.Effects.AddNew()
 	fxBlue.Ops.EnableColor(-1).SetRgb(0, 0.33, 0.66)
-	fxBlue.Ops.EnableTex2D(-1).SetImageID("img_dog").SetMixWeight(0.33)
+	fxBlue.Ops.EnableTex2D(-1).SetImageID(apputil.LibIDs.Img["dog"]).SetMixWeight(0.33)
 	fxBlue.UpdateRoutine()
 
 	fxGreen := ng.Core.Libs.Effects.AddNew()

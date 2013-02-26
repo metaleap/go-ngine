@@ -86,7 +86,7 @@ func setupExample_03_PyrCube() {
 	fx.Ops.EnableOrangify(-1).SetMixWeight(0.5)
 	fx.UpdateRoutine()
 	fx = &ng.Core.Libs.Effects[apputil.LibIDs.Fx["dog"]]
-	fx.Ops.EnableTex2D(1).SetImageID("img_gopher").SetMixWeight(0.5)
+	fx.Ops.EnableTex2D(1).SetImageID(apputil.LibIDs.Img["gopher"]).SetMixWeight(0.5)
 	fx.UpdateRoutine()
 	ng.Core.Libs.Materials[apputil.LibIDs.Mat["crate"]].FaceEffects.ByTag["front"] = apputil.LibIDs.Fx["dog"]
 	ng.Core.Libs.Materials[apputil.LibIDs.Mat["crate"]].FaceEffects.ByTag["back"] = apputil.LibIDs.Fx["dog"]

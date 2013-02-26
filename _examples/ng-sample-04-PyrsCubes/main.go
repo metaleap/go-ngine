@@ -93,7 +93,7 @@ func setupExample_04_PyrsCubes() {
 	})
 
 	fx := &ng.Core.Libs.Effects[apputil.LibIDs.Fx["mosaic"]]
-	fx.Ops.EnableTex2D(1).SetImageID("img_gopher").SetMixWeight(0.5)
+	fx.Ops.EnableTex2D(1).SetImageID(apputil.LibIDs.Img["gopher"]).SetMixWeight(0.5)
 	fx.UpdateRoutine()
 
 	//	meshes / models

@@ -21,8 +21,8 @@ type FxMaterial struct {
 
 func (me *FxMaterial) init() {
 	me.DefaultEffectID = -1
-	me.FaceEffects.ByID = map[string]int{}
-	me.FaceEffects.ByTag = map[string]int{}
+	me.FaceEffects.ByID = make(map[string]int, Options.Libs.InitialCap)
+	me.FaceEffects.ByTag = make(map[string]int, Options.Libs.InitialCap)
 }
 
 func (me *FxMaterial) dispose() {

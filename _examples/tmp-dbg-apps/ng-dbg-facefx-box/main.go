@@ -43,8 +43,8 @@ func setupScene() {
 		"crate":   "tex/crate.jpeg",
 	})
 	fxPulse = ng.Core.Libs.Effects.AddNew()
-	fxPulse.Ops.EnableTex2D(0).SetImageID("img_crate")
-	fxPulse.Ops.EnableTex2D(1).SetImageID("img_gopher").SetMixWeight(0.5)
+	fxPulse.Ops.EnableTex2D(0).SetImageID(apputil.LibIDs.Img["crate"])
+	fxPulse.Ops.EnableTex2D(1).SetImageID(apputil.LibIDs.Img["gopher"]).SetMixWeight(0.5)
 	fxPulse.UpdateRoutine()
 
 	dogMat := &ng.Core.Libs.Materials[apputil.LibIDs.Mat["dog"]]

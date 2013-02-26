@@ -47,9 +47,9 @@ func (me *Camera) render() {
 
 func (me *RenderTechniqueQuad) render() {
 	me.glVao.Bind()
-	me.fxTex.glTex = thrRend.quadTex
 	thrRend.nextTech, thrRend.nextEffect = me, &me.Effect
 	Core.useTechFx()
+	thrRend.quadTex.Bind()
 	gl.DrawArrays(gl.TRIANGLES, 0, 3)
 	me.glVao.Unbind()
 }

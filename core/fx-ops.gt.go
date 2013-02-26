@@ -15,7 +15,7 @@ func fxKnownProcIDs() []string {
 type FxOp interface {
 	init(string, int)
 
-	fxImageIDs() []string
+	fxImageIDs() []int
 
 	qualifiers(inout string) string
 
@@ -91,7 +91,7 @@ func (me *fxOpBase) init(procID string, procIndex int) {
 	me.weight = 1
 }
 
-func (me *fxOpBase) fxImageIDs() (ids []string) {
+func (me *fxOpBase) fxImageIDs() (ids []int) {
 	return
 }
 
@@ -197,6 +197,7 @@ func (me *FxOpColor) use() {
 
 type fxOpTexBase struct {
 	fxOpBase
+	ImageID int
 	glUnitU gl.Uint
 	glUnitI gl.Int
 	glUnitE gl.Enum
@@ -206,6 +207,7 @@ type fxOpTexBase struct {
 }
 
 func (me *fxOpTexBase) init(s string, i int) {
+	me.ImageID = -1
 	me.fxOpBase.init(s, -1)
 	me.Sampler = &Core.Rendering.Fx.Samplers.FullFilteringRepeat
 	me.setProcIndex(i)
@@ -226,28 +228,28 @@ func (me *fxOpTexBase) use() {
 //	Samples from a 2D texture.
 type FxOpTex2D struct {
 	fxOpTexBase
-	glTex *ugl.Texture2D
 }
 
 func (me *FxOpTex2D) init(s string, i int) {
 	me.fxOpTexBase.init(s, i)
 }
 
-func (me *FxOpTex2D) SetImageID(imageID string) *FxOpTex2D {
-	me.glTex = &Core.Libs.Images.Tex2D[imageID].glTex
+func (me *FxOpTex2D) SetImageID(imageID int) *FxOpTex2D {
+	me.ImageID = imageID
 	return me
 }
 
 func (me *FxOpTex2D) use() {
 	me.fxOpTexBase.use()
 	ugl.Util.SetActiveTextureUnit(me.glUnitE)
-	me.glTex.Bind()
+	if img := Core.Libs.Images.Tex2D.Get(me.ImageID); img != nil {
+		img.glTex.Bind()
+	}
 	thrRend.curProg.Uniform1i(me.unifName("sampler2D", "Img"), me.glUnitI)
 }
 
 type FxOpTexCube struct {
 	fxOpTexBase
-	glTex *ugl.TextureCube
 }
 
 func (me *FxOpTexCube) init(s string, i int) {
@@ -255,13 +257,16 @@ func (me *FxOpTexCube) init(s string, i int) {
 	me.Sampler = &Core.Rendering.Fx.Samplers.FullFilteringRepeat
 }
 
-func (me *FxOpTexCube) SetImageID(imageID string) {
-	me.glTex = &Core.Libs.Images.TexCubes[imageID].glTex
+func (me *FxOpTexCube) SetImageID(imageID int) *FxOpTexCube {
+	me.ImageID = imageID
+	return me
 }
 
 func (me *FxOpTexCube) use() {
 	me.fxOpTexBase.use()
-	me.glTex.Bind()
+	if img := Core.Libs.Images.TexCube.Get(me.ImageID); img != nil {
+		img.glTex.Bind()
+	}
 	thrRend.curProg.Uniform1i(me.unifName("samplerCube", "Img"), 0)
 }
 

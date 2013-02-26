@@ -47,42 +47,105 @@ func (me *FxImage2D) Unload() {
 	me.img, me.glSynced = nil, false
 }
 
-//#begin-gt -gen-lib.gt T:FxImage2D
+//#begin-gt -gen-lib2.gt T:FxImage2D L:Images.Tex2D
 
-//	Initializes and returns a new FxImage2D with default parameters.
-func NewFxImage2D() (me *FxImage2D) {
-	me = &FxImage2D{}
-	me.init()
+//	Only used for Core.Libs.Images.Tex2D.
+type FxImage2DLib []FxImage2D
+
+func (me *FxImage2DLib) AddNew() (ref *FxImage2D) {
+	id := -1
+	for i := 0; i < len(*me); i++ {
+		if (*me)[i].ID < 0 {
+			id = i
+			break
+		}
+	}
+	if id < 0 {
+		if id = len(*me); id == cap(*me) {
+			nu := make(FxImage2DLib, id, id+Options.Libs.GrowCapBy)
+			copy(nu, *me)
+			*me = nu
+		}
+		*me = append(*me, FxImage2D{})
+	}
+	ref = &(*me)[id]
+	ref.ID = id
+	ref.init()
 	return
 }
 
-//	A hash-table of FxImage2Ds associated by IDs. Only for use in Core.Libs.
-type LibFxImage2Ds map[string]*FxImage2D
+func (me *FxImage2DLib) Compact() {
+	var (
+		before, after []FxImage2D
+		ref           *FxImage2D
+		oldID, i      int
+	)
+	for i = 0; i < len(*me); i++ {
+		if (*me)[i].ID < 0 {
+			before, after = (*me)[:i], (*me)[i+1:]
+			*me = append(before, after...)
+		}
+	}
+	changed := make(map[int]int, len(*me))
+	for i = 0; i < len(*me); i++ {
+		if (*me)[i].ID != i {
+			ref = &(*me)[i]
+			oldID, ref.ID = ref.ID, i
+			changed[oldID] = i
+		}
+	}
+	if len(changed) > 0 {
+		me.onFxImage2DIDsChanged(changed)
+		Options.Libs.OnIDsChanged.Images.Tex2D(changed)
+	}
+}
 
-//	Creates and initializes a new FxImage2D with default parameters,
-//	adds it to me under the specified ID, and returns it.
-func (me LibFxImage2Ds) AddNew(id string) (obj *FxImage2D) {
-	obj = NewFxImage2D()
-	me[id] = obj
+func (me *FxImage2DLib) ctor() {
+	*me = make(FxImage2DLib, 0, Options.Libs.InitialCap)
+}
+
+func (me *FxImage2DLib) dispose() {
+	me.Remove(0, 0)
+	*me = (*me)[:0]
+}
+
+func (me FxImage2DLib) Get(id int) (ref *FxImage2D) {
+	if id >= 0 && id < len(me) {
+		if ref = &me[id]; ref.ID != id {
+			ref = nil
+		}
+	}
 	return
 }
 
-func (me *LibFxImage2Ds) ctor() {
-	*me = make(LibFxImage2Ds, 50)
+func (me FxImage2DLib) Has(id int) (has bool) {
+	if id >= 0 && id < len(me) {
+		has = me[id].ID == id
+	}
+	return
 }
 
-func (me *LibFxImage2Ds) dispose() {
-	for _, o := range *me {
-		o.dispose()
+func (me FxImage2DLib) Remove(fromID, num int) {
+	if l := len(me); fromID < l {
+		if num < 1 || num > (l-fromID) {
+			num = l - fromID
+		}
+		changed := make(map[int]int, num)
+		for id := fromID; id < fromID+num; id++ {
+			me[id].dispose()
+			changed[id], me[id].ID = -1, -1
+		}
+		me.onFxImage2DIDsChanged(changed)
+		Options.Libs.OnIDsChanged.Images.Tex2D(changed)
 	}
-	me.ctor()
 }
 
-func (me LibFxImage2Ds) Remove(id string) {
-	if obj := me[id]; obj != nil {
-		obj.dispose()
+func (me FxImage2DLib) Walk(on func(ref *FxImage2D)) {
+	for id := 0; id < len(me); id++ {
+		if me[id].ID >= 0 {
+			on(&me[id])
+		}
 	}
-	delete(me, id)
 }
 
 //#end-gt

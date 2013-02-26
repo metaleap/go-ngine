@@ -6,7 +6,7 @@ func (_ *EngineCore) disposeLibs() {
 	for _, disp := range []disposable{
 		&Core.Rendering.Canvases,
 		&Core.Libs.Materials, &Core.Libs.Effects,
-		&Core.Libs.Images.Tex2D, &Core.Libs.Images.TexCubes,
+		&Core.Libs.Images.Tex2D, &Core.Libs.Images.TexCube,
 		&Core.Libs.Meshes, Core.MeshBuffers, &Core.Libs.Scenes,
 	} {
 		disp.dispose()
@@ -16,7 +16,7 @@ func (_ *EngineCore) disposeLibs() {
 func (_ *EngineCore) initLibs() {
 	libs := &Core.Libs
 	for _, c := range []ctorable{
-		&libs.Images.Tex2D, &libs.Images.TexCubes,
+		&libs.Images.Tex2D, &libs.Images.TexCube,
 		&libs.Effects, &libs.Materials, &libs.Meshes, &libs.Scenes,
 	} {
 		c.ctor()
@@ -47,6 +47,12 @@ func (_ FxEffectLib) onFxEffectIDsChanged(oldNewIDs map[int]int) {
 			mat.FaceEffects.ByTag[tag] = libElemIDRewrite2(oldNewIDs, mat.FaceEffects.ByTag[tag])
 		}
 	})
+}
+
+func (_ FxImage2DLib) onFxImage2DIDsChanged(oldNewIDs map[int]int) {
+}
+
+func (_ FxImageCubeLib) onFxImageCubeIDsChanged(oldNewIDs map[int]int) {
 }
 
 func (_ FxMaterialLib) onFxMaterialIDsChanged(oldNewIDs map[int]int) {

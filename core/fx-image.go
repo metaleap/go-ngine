@@ -12,6 +12,12 @@ type FxImage interface {
 	GpuSync() error
 }
 
+type FxImagePreprocess struct {
+	FlipY    bool
+	ToLinear bool
+	ToBgra   bool
+}
+
 type FxImageStorage struct {
 	DiskCache struct {
 		Enabled      bool
@@ -25,12 +31,9 @@ type FxImageStorage struct {
 }
 
 type FxImageBase struct {
-	PreProcess struct {
-		FlipY    bool
-		ToLinear bool
-		ToBgra   bool
-	}
-	Storage FxImageStorage
+	ID         int
+	Preprocess FxImagePreprocess
+	Storage    FxImageStorage
 
 	glTex    *ugl.TextureBase
 	glSynced bool
@@ -43,7 +46,7 @@ func (me *FxImageBase) dispose() {
 func (me *FxImageBase) init(glTex *ugl.TextureBase) {
 	me.glTex = glTex
 	me.Storage = Options.Textures.Storage
-	me.PreProcess.ToLinear, me.PreProcess.FlipY, me.PreProcess.ToBgra = true, true, me.Storage.Gpu.Bgra
+	me.Preprocess.ToLinear, me.Preprocess.FlipY, me.Preprocess.ToBgra = true, true, me.Storage.Gpu.Bgra
 }
 
 func (me *FxImageBase) gpuSync(tex ugl.Texture) (err error) {
@@ -63,7 +66,7 @@ func (me *FxImageBase) GpuSynced() bool {
 }
 
 func (me *FxImageBase) needPreproc() bool {
-	return me.PreProcess.FlipY || me.PreProcess.ToBgra || me.PreProcess.ToLinear
+	return me.Preprocess.FlipY || me.Preprocess.ToBgra || me.Preprocess.ToLinear
 }
 
 func (me *FxImageBase) NoAutoMips() {

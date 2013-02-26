@@ -26,7 +26,7 @@ func newFxImageCached(init *FxImageInitFrom, fxImg *FxImageBase) (me *fxImageCac
 		err error
 	)
 	dirPath := Core.fileIO.resolveLocalFilePath(filepath.Join(Options.AppDir.Temp.BaseName, Options.AppDir.Temp.CachedTextures))
-	fileName := ugo.Hash(fnv.New64a(), strf("%s_%t_%t_%t_%t", init.RefUrl, fxImg.PreProcess.FlipY, fxImg.PreProcess.ToBgra, fxImg.PreProcess.ToLinear, fxImg.Storage.Gpu.Bgra))
+	fileName := ugo.Hash(fnv.New64a(), strf("%s_%t_%t_%t_%t", init.RefUrl, fxImg.Preprocess.FlipY, fxImg.Preprocess.ToBgra, fxImg.Preprocess.ToLinear, fxImg.Storage.Gpu.Bgra))
 	me = &fxImageCached{needImg: true, fullPath: filepath.Join(dirPath, fileName)}
 
 	if me.src, err = os.Stat(Core.fileIO.resolveLocalFilePath(init.RefUrl)); err != nil {

@@ -20,8 +20,8 @@ type EngineCore struct {
 		Materials FxMaterialLib
 		Images    struct {
 			SplashScreen FxImage2D
-			TexCubes     LibFxImageCubes
-			Tex2D        LibFxImage2Ds
+			TexCube      FxImageCubeLib
+			Tex2D        FxImage2DLib
 		}
 		Meshes LibMeshes
 
@@ -108,14 +108,14 @@ func (_ *EngineCore) GpuSyncImageLibs() (err error) {
 		ch <- img
 	}
 
-	num := len(Core.Libs.Images.Tex2D) + len(Core.Libs.Images.TexCubes)
+	num := len(Core.Libs.Images.Tex2D) + len(Core.Libs.Images.TexCube)
 	ch, done := make(imgChan, num), 0
-	for _, t2d := range Core.Libs.Images.Tex2D {
+	Core.Libs.Images.Tex2D.Walk(func(t2d *FxImage2D) {
 		go imgLoad(ch, t2d)
-	}
-	for _, tcm := range Core.Libs.Images.TexCubes {
+	})
+	Core.Libs.Images.TexCube.Walk(func(tcm *FxImageCube) {
 		go imgLoad(ch, tcm)
-	}
+	})
 
 	for img := range ch {
 		//	As soon as the first image is processed/loaded, it can be uploaded while others are still busy
@@ -138,7 +138,7 @@ func (_ *EngineCore) refreshWinSizeRels() {
 func (_ *EngineCore) showSplash() {
 	splash := &Core.Libs.Images.SplashScreen
 	splash.init()
-	splash.PreProcess.FlipY, splash.PreProcess.ToLinear, splash.PreProcess.ToBgra = false, false, false
+	splash.Preprocess.FlipY, splash.Preprocess.ToLinear, splash.Preprocess.ToBgra = false, false, false
 	splash.Load()
 	splash.GpuSync()
 	thrRend.quadTex = &splash.glTex
