@@ -41,29 +41,29 @@ func setupScene() {
 		"cat":     "tex/cat.png",
 	})
 
-	fxBlue := ng.Core.Libs.Effects.AddNew("fx_blue")
+	fxBlue := ng.Core.Libs.Effects.AddNew()
 	fxBlue.Ops.EnableColor(-1).SetRgb(0, 0.33, 0.66)
 	fxBlue.Ops.EnableTex2D(-1).SetImageID("img_dog").SetMixWeight(0.33)
 	fxBlue.UpdateRoutine()
 
-	fxGreen := ng.Core.Libs.Effects.AddNew("fx_green")
+	fxGreen := ng.Core.Libs.Effects.AddNew()
 	fxGreen.Ops.EnableColor(-1).SetRgb(0, 0.66, 0.33)
 	fxGreen.UpdateRoutine()
 
-	fxCat := ng.Core.Libs.Effects["fx_cat"]
+	fxCat := &ng.Core.Libs.Effects[apputil.LibIDs.Fx["cat"]]
 	fxCat.Ops.EnableOrangify(-1)
 	fxCat.UpdateRoutine()
 
-	fxPulse = ng.Core.Libs.Effects.AddNew("fx_pulse")
+	fxPulse = ng.Core.Libs.Effects.AddNew()
 	fxPulse.Ops.EnableColor(0).SetRgb(0.6, 0, 0)
 	fxPulse.Ops.EnableColor(1).SetRgb(0.9, 0.7, 0).SetMixWeight(0.25)
 	fxPulse.UpdateRoutine()
 
-	dogMat := ng.Core.Libs.Materials[apputil.Materials["dog"]]
-	dogMat.DefaultEffectID = "fx_blue"
-	dogMat.FaceEffects.ByID["t0"] = "fx_cat"
-	dogMat.FaceEffects.ByID["t1"] = "fx_pulse"
-	dogMat.FaceEffects.ByID["t2"] = "fx_green"
+	dogMat := &ng.Core.Libs.Materials[apputil.LibIDs.Mat["dog"]]
+	dogMat.DefaultEffectID = fxBlue.ID
+	dogMat.FaceEffects.ByID["t0"] = apputil.LibIDs.Fx["cat"]
+	dogMat.FaceEffects.ByID["t1"] = fxPulse.ID
+	dogMat.FaceEffects.ByID["t2"] = fxGreen.ID
 
 	//	meshes / models
 	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(200, 200)); err != nil {
@@ -83,12 +83,12 @@ func setupScene() {
 	scene = apputil.AddMainScene()
 	apputil.AddSkyMesh(scene, "mesh_pyr")
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
-	floor.MatID = apputil.Materials["cobbles"]
+	floor.MatID = apputil.LibIDs.Mat["cobbles"]
 	floor.Transform.SetScale(100)
 	floor.ApplyTransform()
 
 	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyr", "")
-	pyr.MatID = apputil.Materials["dog"]
+	pyr.MatID = apputil.LibIDs.Mat["dog"]
 	pyr.Transform.Pos.Y = 2
 	pyr.ApplyTransform()
 

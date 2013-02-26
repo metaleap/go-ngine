@@ -19,11 +19,11 @@ func main() {
 
 //	called once per second in main thread
 func onSec() {
-	var fx = ng.Core.Libs.Effects["fx_cat"]
+	var fx = ng.Core.Libs.Effects.Get(apputil.LibIDs.Fx["cat"])
 	fx.Ops.ToggleOrangify(0)
 	fx.UpdateRoutine()
 
-	fx = ng.Core.Libs.Effects["fx_dog"]
+	fx = ng.Core.Libs.Effects.Get(apputil.LibIDs.Fx["dog"])
 	fx.Ops.ToggleOrangify(0)
 	fx.UpdateRoutine()
 }
@@ -58,7 +58,7 @@ func setupExample_01_TriQuad() {
 		"cat": "tex/cat.png",
 		"dog": "tex/dog.png",
 	})
-	fx := ng.Core.Libs.Effects["fx_dog"]
+	fx := ng.Core.Libs.Effects.Get(apputil.LibIDs.Fx["dog"])
 	fx.Ops.EnableOrangify(0)
 	fx.UpdateRoutine()
 
@@ -85,6 +85,6 @@ func setupExample_01_TriQuad() {
 	scene = apputil.AddMainScene()
 	tri = scene.RootNode.ChildNodes.AddNew("node_tri", "mesh_tri", "")
 	quad = scene.RootNode.ChildNodes.AddNew("node_quad", "mesh_quad", "")
-	tri.MatID = apputil.Materials["cat"]
-	quad.MatID = apputil.Materials["dog"]
+	tri.MatID = apputil.LibIDs.Mat["cat"]
+	quad.MatID = apputil.LibIDs.Mat["dog"]
 }

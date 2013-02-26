@@ -285,12 +285,32 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				<dd><a href="#FxEffect">type FxEffect</a></dd>
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#NewFxEffect">func NewFxEffect() (me *FxEffect)</a></dd>
-				
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#FxEffect.UpdateRoutine">func (me *FxEffect) UpdateRoutine()</a></dd>
+				
+			
+				
+				<dd><a href="#FxEffectLib">type FxEffectLib</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxEffectLib.AddNew">func (me *FxEffectLib) AddNew() (ref *FxEffect)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxEffectLib.Compact">func (me *FxEffectLib) Compact()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxEffectLib.Get">func (me FxEffectLib) Get(id int) (ref *FxEffect)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxEffectLib.Has">func (me FxEffectLib) Has(id int) (has bool)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxEffectLib.Remove">func (me FxEffectLib) Remove(fromID, num int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxEffectLib.Walk">func (me FxEffectLib) Walk(on func(ref *FxEffect))</a></dd>
 				
 			
 				
@@ -375,19 +395,22 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.AddNew">func (_ FxMaterialLib) AddNew() (ref *FxMaterial)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.AddNew">func (me *FxMaterialLib) AddNew() (ref *FxMaterial)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Compact">func (_ FxMaterialLib) Compact()</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Compact">func (me *FxMaterialLib) Compact()</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Get">func (_ FxMaterialLib) Get(id int) (ref *FxMaterial)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Get">func (me FxMaterialLib) Get(id int) (ref *FxMaterial)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Has">func (_ FxMaterialLib) Has(id int) (has bool)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Has">func (me FxMaterialLib) Has(id int) (has bool)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Remove">func (_ FxMaterialLib) Remove(fromID, num int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Remove">func (me FxMaterialLib) Remove(fromID, num int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Walk">func (me FxMaterialLib) Walk(on func(ref *FxMaterial))</a></dd>
 				
 			
 				
@@ -663,17 +686,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				<dd><a href="#LibElemIDChangedHandler">type LibElemIDChangedHandler</a></dd>
 				
-				
-			
-				
-				<dd><a href="#LibFxEffects">type LibFxEffects</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#LibFxEffects.AddNew">func (me LibFxEffects) AddNew(id string) (obj *FxEffect)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#LibFxEffects.Remove">func (me LibFxEffects) Remove(id string)</a></dd>
 				
 			
 				
@@ -1002,19 +1014,22 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#SceneLib.AddNew">func (_ SceneLib) AddNew() (ref *Scene)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#SceneLib.AddNew">func (me *SceneLib) AddNew() (ref *Scene)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#SceneLib.Compact">func (_ SceneLib) Compact()</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#SceneLib.Compact">func (me *SceneLib) Compact()</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#SceneLib.Get">func (_ SceneLib) Get(id int) (ref *Scene)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#SceneLib.Get">func (me SceneLib) Get(id int) (ref *Scene)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#SceneLib.Has">func (_ SceneLib) Has(id int) (has bool)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#SceneLib.Has">func (me SceneLib) Has(id int) (has bool)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#SceneLib.Remove">func (_ SceneLib) Remove(fromID, num int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#SceneLib.Remove">func (me SceneLib) Remove(fromID, num int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneLib.Walk">func (me SceneLib) Walk(on func(ref *Scene))</a></dd>
 				
 			
 				
@@ -1681,11 +1696,11 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:1109#L6">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:1108#L6">EngineCore</a></h2>
 			<pre>type EngineCore struct {
     MeshBuffers *MeshBuffers
     Libs        struct {
-        Effects   LibFxEffects
+        Effects   FxEffectLib
         Materials FxMaterialLib
         Images    struct {
             SplashScreen FxImage2D
@@ -1734,7 +1749,7 @@ It is only aware of that instance and does not support any other EngineCore inst
 
 			
 				
-				<h3 id="EngineCore.GpuSyncImageLibs">func (*EngineCore) <a href="/target/ng-core.go?s=2847:2898#L90">GpuSyncImageLibs</a></h3>
+				<h3 id="EngineCore.GpuSyncImageLibs">func (*EngineCore) <a href="/target/ng-core.go?s=2846:2897#L90">GpuSyncImageLibs</a></h3>
 				<pre>func (_ *EngineCore) GpuSyncImageLibs() (err error)</pre>
 				
 				
@@ -1927,7 +1942,7 @@ Returns the number of seconds expired ever since Loop.Run() was last called.
 		
 			
 			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=617:4044#L23">EngineOptions</a></h2>
+			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=617:4081#L23">EngineOptions</a></h2>
 			<pre>type EngineOptions struct {
     AppDir struct {
         <span class="comment">//	The base directory path for app file paths.</span>
@@ -1989,6 +2004,7 @@ Returns the number of seconds expired ever since Loop.Run() was last called.
         InitialCap   int
         GrowCapBy    int
         OnIDsChanged struct {
+            Effects   LibElemIDChangedHandler
             Materials LibElemIDChangedHandler
             Scenes    LibElemIDChangedHandler
         }
@@ -2285,8 +2301,10 @@ Returns true if any of the three specified keys is pressed.
 		
 			
 			
-			<h2 id="FxEffect">type <a href="/target/fx-effect.gt.go?s=209:707#L1">FxEffect</a></h2>
+			<h2 id="FxEffect">type <a href="/target/fx-effect.gt.go?s=209:716#L1">FxEffect</a></h2>
 			<pre>type FxEffect struct {
+    ID int
+
     <span class="comment">//	An ordered collection of all FxOps that make up this effect.</span>
     <span class="comment">//	When changing the ordering or disabling, enabling or toggling individual FxOps,</span>
     <span class="comment">//	you need to call the FxEffect.UpdateRoutine() method to reflect such changes.</span>
@@ -2312,20 +2330,72 @@ An FxEffect can be reused for multiple surfaces, it is bound to geometry via an 
 			
 
 			
+
+			
 				
-				<h3 id="NewFxEffect">func <a href="/target/fx-effect.gt.go?s=2004:2037#L82">NewFxEffect</a></h3>
-				<pre>func NewFxEffect() (me *FxEffect)</pre>
-				<p>
-Initializes and returns a new FxEffect with default parameters.
+				<h3 id="FxEffect.UpdateRoutine">func (*FxEffect) <a href="/target/fx-effect.gt.go?s=863:898#L25">UpdateRoutine</a></h3>
+				<pre>func (me *FxEffect) UpdateRoutine()</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="FxEffectLib">type <a href="/target/fx-effect.gt.go?s=1993:2020#L84">FxEffectLib</a></h2>
+			<pre>type FxEffectLib []FxEffect</pre>
+			<p>
+Only used for Core.Libs.Effects.
 </p>
 
-				
+
+			
+
+			
+
+			
+
 			
 
 			
 				
-				<h3 id="FxEffect.UpdateRoutine">func (*FxEffect) <a href="/target/fx-effect.gt.go?s=854:889#L23">UpdateRoutine</a></h3>
-				<pre>func (me *FxEffect) UpdateRoutine()</pre>
+				<h3 id="FxEffectLib.AddNew">func (*FxEffectLib) <a href="/target/fx-effect.gt.go?s=2022:2069#L86">AddNew</a></h3>
+				<pre>func (me *FxEffectLib) AddNew() (ref *FxEffect)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxEffectLib.Compact">func (*FxEffectLib) <a href="/target/fx-effect.gt.go?s=2394:2426#L108">Compact</a></h3>
+				<pre>func (me *FxEffectLib) Compact()</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxEffectLib.Get">func (FxEffectLib) <a href="/target/fx-effect.gt.go?s=3092:3141#L143">Get</a></h3>
+				<pre>func (me FxEffectLib) Get(id int) (ref *FxEffect)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxEffectLib.Has">func (FxEffectLib) <a href="/target/fx-effect.gt.go?s=3240:3284#L152">Has</a></h3>
+				<pre>func (me FxEffectLib) Has(id int) (has bool)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxEffectLib.Remove">func (FxEffectLib) <a href="/target/fx-effect.gt.go?s=3355:3400#L159">Remove</a></h3>
+				<pre>func (me FxEffectLib) Remove(fromID, num int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxEffectLib.Walk">func (FxEffectLib) <a href="/target/fx-effect.gt.go?s=3718:3768#L174">Walk</a></h3>
+				<pre>func (me FxEffectLib) Walk(on func(ref *FxEffect))</pre>
 				
 				
 				
@@ -2557,22 +2627,22 @@ Initializes and returns a new FxImageCube with default parameters.
 		
 			
 			
-			<h2 id="FxMaterial">type <a href="/target/fx-material.gt.go?s=103:539#L1">FxMaterial</a></h2>
+			<h2 id="FxMaterial">type <a href="/target/fx-material.gt.go?s=103:530#L1">FxMaterial</a></h2>
 			<pre>type FxMaterial struct {
     ID int
 
     <span class="comment">//	This effect is used by default for all faces that do not</span>
     <span class="comment">//	match any of the selectors in the FaceEffects field.</span>
-    DefaultEffectID string
+    DefaultEffectID int
 
     <span class="comment">//	Associates certain individual faces or tags of faces</span>
     <span class="comment">//	with specific effect IDs.</span>
     FaceEffects struct {
         <span class="comment">//	Associates face tags with effect IDs.</span>
-        ByTag map[string]string
+        ByTag map[string]int
 
         <span class="comment">//	Associates specific face IDs with effect IDs.</span>
-        ByID map[string]string
+        ByID map[string]int
     }
 }</pre>
 			<p>
@@ -2590,7 +2660,7 @@ A material binds effects (FxEffect in Core.Libs.Effects) to geometry (Model or N
 
 			
 				
-				<h3 id="FxMaterial.HasFaceEffects">func (*FxMaterial) <a href="/target/fx-material.gt.go?s=1113:1156#L36">HasFaceEffects</a></h3>
+				<h3 id="FxMaterial.HasFaceEffects">func (*FxMaterial) <a href="/target/fx-material.gt.go?s=1150:1193#L38">HasFaceEffects</a></h3>
 				<pre>func (me *FxMaterial) HasFaceEffects() bool</pre>
 				
 				
@@ -2599,7 +2669,7 @@ A material binds effects (FxEffect in Core.Libs.Effects) to geometry (Model or N
 		
 			
 			
-			<h2 id="FxMaterialLib">type <a href="/target/fx-material.gt.go?s=1321:1352#L43">FxMaterialLib</a></h2>
+			<h2 id="FxMaterialLib">type <a href="/target/fx-material.gt.go?s=1358:1389#L45">FxMaterialLib</a></h2>
 			<pre>type FxMaterialLib []FxMaterial</pre>
 			<p>
 Only used for Core.Libs.Materials.
@@ -2616,36 +2686,43 @@ Only used for Core.Libs.Materials.
 
 			
 				
-				<h3 id="FxMaterialLib.AddNew">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=1354:1403#L45">AddNew</a></h3>
-				<pre>func (_ FxMaterialLib) AddNew() (ref *FxMaterial)</pre>
+				<h3 id="FxMaterialLib.AddNew">func (*FxMaterialLib) <a href="/target/fx-material.gt.go?s=1391:1442#L47">AddNew</a></h3>
+				<pre>func (me *FxMaterialLib) AddNew() (ref *FxMaterial)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxMaterialLib.Compact">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=1750:1782#L67">Compact</a></h3>
-				<pre>func (_ FxMaterialLib) Compact()</pre>
+				<h3 id="FxMaterialLib.Compact">func (*FxMaterialLib) <a href="/target/fx-material.gt.go?s=1771:1805#L69">Compact</a></h3>
+				<pre>func (me *FxMaterialLib) Compact()</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxMaterialLib.Get">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=2545:2597#L105">Get</a></h3>
-				<pre>func (_ FxMaterialLib) Get(id int) (ref *FxMaterial)</pre>
+				<h3 id="FxMaterialLib.Get">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=2485:2538#L104">Get</a></h3>
+				<pre>func (me FxMaterialLib) Get(id int) (ref *FxMaterial)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxMaterialLib.Has">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=2730:2775#L114">Has</a></h3>
-				<pre>func (_ FxMaterialLib) Has(id int) (has bool)</pre>
+				<h3 id="FxMaterialLib.Has">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=2637:2683#L113">Has</a></h3>
+				<pre>func (me FxMaterialLib) Has(id int) (has bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxMaterialLib.Remove">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=2880:2926#L121">Remove</a></h3>
-				<pre>func (_ FxMaterialLib) Remove(fromID, num int)</pre>
+				<h3 id="FxMaterialLib.Remove">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=2754:2801#L120">Remove</a></h3>
+				<pre>func (me FxMaterialLib) Remove(fromID, num int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="FxMaterialLib.Walk">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=3123:3177#L135">Walk</a></h3>
+				<pre>func (me FxMaterialLib) Walk(on func(ref *FxMaterial))</pre>
 				
 				
 				
@@ -3641,43 +3718,6 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 
 			
 
-			
-		
-			
-			
-			<h2 id="LibFxEffects">type <a href="/target/fx-effect.gt.go?s=2155:2193#L89">LibFxEffects</a></h2>
-			<pre>type LibFxEffects map[string]*FxEffect</pre>
-			<p>
-A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="LibFxEffects.AddNew">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2319:2375#L93">AddNew</a></h3>
-				<pre>func (me LibFxEffects) AddNew(id string) (obj *FxEffect)</pre>
-				<p>
-Creates and initializes a new FxEffect with default parameters,
-adds it to me under the specified ID, and returns it.
-</p>
-
-				
-				
-			
-				
-				<h3 id="LibFxEffects.Remove">func (LibFxEffects) <a href="/target/fx-effect.gt.go?s=2582:2622#L110">Remove</a></h3>
-				<pre>func (me LibFxEffects) Remove(id string)</pre>
-				
-				
-				
 			
 		
 			
@@ -4827,36 +4867,43 @@ Only used for Core.Libs.Scenes.
 
 			
 				
-				<h3 id="SceneLib.AddNew">func (SceneLib) <a href="/target/scene.gt.go?s=514:553#L24">AddNew</a></h3>
-				<pre>func (_ SceneLib) AddNew() (ref *Scene)</pre>
+				<h3 id="SceneLib.AddNew">func (*SceneLib) <a href="/target/scene.gt.go?s=514:555#L24">AddNew</a></h3>
+				<pre>func (me *SceneLib) AddNew() (ref *Scene)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Compact">func (SceneLib) <a href="/target/scene.gt.go?s=887:914#L46">Compact</a></h3>
-				<pre>func (_ SceneLib) Compact()</pre>
+				<h3 id="SceneLib.Compact">func (*SceneLib) <a href="/target/scene.gt.go?s=874:903#L46">Compact</a></h3>
+				<pre>func (me *SceneLib) Compact()</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Get">func (SceneLib) <a href="/target/scene.gt.go?s=1632:1674#L84">Get</a></h3>
-				<pre>func (_ SceneLib) Get(id int) (ref *Scene)</pre>
+				<h3 id="SceneLib.Get">func (SceneLib) <a href="/target/scene.gt.go?s=1550:1593#L81">Get</a></h3>
+				<pre>func (me SceneLib) Get(id int) (ref *Scene)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Has">func (SceneLib) <a href="/target/scene.gt.go?s=1801:1841#L93">Has</a></h3>
-				<pre>func (_ SceneLib) Has(id int) (has bool)</pre>
+				<h3 id="SceneLib.Has">func (SceneLib) <a href="/target/scene.gt.go?s=1692:1733#L90">Has</a></h3>
+				<pre>func (me SceneLib) Has(id int) (has bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Remove">func (SceneLib) <a href="/target/scene.gt.go?s=1940:1981#L100">Remove</a></h3>
-				<pre>func (_ SceneLib) Remove(fromID, num int)</pre>
+				<h3 id="SceneLib.Remove">func (SceneLib) <a href="/target/scene.gt.go?s=1804:1846#L97">Remove</a></h3>
+				<pre>func (me SceneLib) Remove(fromID, num int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="SceneLib.Walk">func (SceneLib) <a href="/target/scene.gt.go?s=2160:2204#L112">Walk</a></h3>
+				<pre>func (me SceneLib) Walk(on func(ref *Scene))</pre>
 				
 				
 				

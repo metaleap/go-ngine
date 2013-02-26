@@ -20,8 +20,8 @@ func onWinThread() {
 	apputil.CheckAndHandleToggleKeys()
 
 	//	pulsating materials
-	ng.Core.Libs.Effects["fx_cat"].Ops.GetOrangify(0).SetMixWeight(0.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*4)))
-	ng.Core.Libs.Effects["fx_dog"].Ops.GetTex2D(1).SetMixWeight(0.5 + (0.5 * math.Cos(ng.Loop.Tick.Now*2)))
+	ng.Core.Libs.Effects[apputil.LibIDs.Fx["cat"]].Ops.GetOrangify(0).SetMixWeight(0.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*4)))
+	ng.Core.Libs.Effects[apputil.LibIDs.Fx["dog"]].Ops.GetTex2D(1).SetMixWeight(0.5 + (0.5 * math.Cos(ng.Loop.Tick.Now*2)))
 }
 
 func onAppThread() {
@@ -79,18 +79,18 @@ func setupExample_03_PyrCube() {
 	bufFloor.Add(meshFloor)
 	bufRest.Add(meshCube)
 	bufRest.Add(meshPyr)
-	meshPyr.Models.Default().MatID = apputil.Materials["mosaic"]
-	meshCube.Models.Default().MatID = apputil.Materials["crate"]
+	meshPyr.Models.Default().MatID = apputil.LibIDs.Mat["mosaic"]
+	meshCube.Models.Default().MatID = apputil.LibIDs.Mat["crate"]
 
-	fx := ng.Core.Libs.Effects["fx_cat"]
+	fx := &ng.Core.Libs.Effects[apputil.LibIDs.Fx["cat"]]
 	fx.Ops.EnableOrangify(-1).SetMixWeight(0.5)
 	fx.UpdateRoutine()
-	fx = ng.Core.Libs.Effects["fx_dog"]
+	fx = &ng.Core.Libs.Effects[apputil.LibIDs.Fx["dog"]]
 	fx.Ops.EnableTex2D(1).SetImageID("img_gopher").SetMixWeight(0.5)
 	fx.UpdateRoutine()
-	ng.Core.Libs.Materials[apputil.Materials["crate"]].FaceEffects.ByTag["front"] = "fx_dog"
-	ng.Core.Libs.Materials[apputil.Materials["crate"]].FaceEffects.ByTag["back"] = "fx_dog"
-	ng.Core.Libs.Materials[apputil.Materials["mosaic"]].FaceEffects.ByID["t3"] = "fx_cat"
+	ng.Core.Libs.Materials[apputil.LibIDs.Mat["crate"]].FaceEffects.ByTag["front"] = apputil.LibIDs.Fx["dog"]
+	ng.Core.Libs.Materials[apputil.LibIDs.Mat["crate"]].FaceEffects.ByTag["back"] = apputil.LibIDs.Fx["dog"]
+	ng.Core.Libs.Materials[apputil.LibIDs.Mat["mosaic"]].FaceEffects.ByID["t3"] = apputil.LibIDs.Fx["cat"]
 
 	//	scene
 	scene = apputil.AddMainScene()
@@ -99,7 +99,7 @@ func setupExample_03_PyrCube() {
 	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyramid", "")
 	box = scene.RootNode.ChildNodes.AddNew("node_box", "mesh_cube", "")
 
-	floor.MatID = apputil.Materials["cobbles"]
+	floor.MatID = apputil.LibIDs.Mat["cobbles"]
 	floor.Transform.SetPos(0.1, 0, -8)
 	floor.Transform.SetScale(1000)
 	floor.ApplyTransform()

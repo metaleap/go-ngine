@@ -6,41 +6,43 @@ type FxMaterial struct {
 
 	//	This effect is used by default for all faces that do not
 	//	match any of the selectors in the FaceEffects field.
-	DefaultEffectID string
+	DefaultEffectID int
 
 	//	Associates certain individual faces or tags of faces
 	//	with specific effect IDs.
 	FaceEffects struct {
 		//	Associates face tags with effect IDs.
-		ByTag map[string]string
+		ByTag map[string]int
 
 		//	Associates specific face IDs with effect IDs.
-		ByID map[string]string
+		ByID map[string]int
 	}
+}
+
+func (me *FxMaterial) init() {
+	me.DefaultEffectID = -1
+	me.FaceEffects.ByID = map[string]int{}
+	me.FaceEffects.ByTag = map[string]int{}
 }
 
 func (me *FxMaterial) dispose() {
 }
 
 func (me *FxMaterial) faceEffect(face *meshRawFace) *FxEffect {
-	return Core.Libs.Effects[me.faceEffectID(face)]
+	return Core.Libs.Effects.Get(me.faceEffectID(face))
 }
 
-func (me *FxMaterial) faceEffectID(face *meshRawFace) (fxID string) {
-	if fxID = me.FaceEffects.ByID[face.base.ID]; len(fxID) == 0 {
+func (me *FxMaterial) faceEffectID(face *meshRawFace) (fxID int) {
+	var ok bool
+	if fxID, ok = me.FaceEffects.ByID[face.base.ID]; (!ok) || fxID < 0 {
 		for _, faceTag := range face.base.Tags {
-			if fxID = me.FaceEffects.ByTag[faceTag]; len(fxID) > 0 {
+			if fxID, ok = me.FaceEffects.ByTag[faceTag]; ok && fxID >= 0 {
 				return
 			}
 		}
 		fxID = me.DefaultEffectID
 	}
 	return
-}
-
-func (me *FxMaterial) init() {
-	me.FaceEffects.ByID = map[string]string{}
-	me.FaceEffects.ByTag = map[string]string{}
 }
 
 func (me *FxMaterial) HasFaceEffects() bool {
@@ -52,9 +54,9 @@ func (me *FxMaterial) HasFaceEffects() bool {
 //	Only used for Core.Libs.Materials.
 type FxMaterialLib []FxMaterial
 
-func (_ FxMaterialLib) AddNew() (ref *FxMaterial) {
-	me, id := &Core.Libs.Materials, -1
-	for i, _ := range *me {
+func (me *FxMaterialLib) AddNew() (ref *FxMaterial) {
+	id := -1
+	for i := 0; i < len(*me); i++ {
 		if (*me)[i].ID < 0 {
 			id = i
 			break
@@ -74,21 +76,20 @@ func (_ FxMaterialLib) AddNew() (ref *FxMaterial) {
 	return
 }
 
-func (_ FxMaterialLib) Compact() {
+func (me *FxMaterialLib) Compact() {
 	var (
 		before, after []FxMaterial
 		ref           *FxMaterial
-		oldID         int
+		oldID, i      int
 	)
-	me := &Core.Libs.Materials
-	for i, _ := range *me {
+	for i = 0; i < len(*me); i++ {
 		if (*me)[i].ID < 0 {
 			before, after = (*me)[:i], (*me)[i+1:]
 			*me = append(before, after...)
 		}
 	}
 	changed := make(map[int]int, len(*me))
-	for i, _ := range *me {
+	for i = 0; i < len(*me); i++ {
 		if (*me)[i].ID != i {
 			ref = &(*me)[i]
 			oldID, ref.ID = ref.ID, i
@@ -96,51 +97,56 @@ func (_ FxMaterialLib) Compact() {
 		}
 	}
 	if len(changed) > 0 {
-		Core.Libs.Materials.onFxMaterialIDsChanged(changed)
+		me.onFxMaterialIDsChanged(changed)
 		Options.Libs.OnIDsChanged.Materials(changed)
 	}
 }
 
-func (_ FxMaterialLib) ctor() {
-	me := &Core.Libs.Materials
+func (me *FxMaterialLib) ctor() {
 	*me = make(FxMaterialLib, 0, Options.Libs.InitialCap)
 }
 
-func (_ FxMaterialLib) dispose() {
-	me := &Core.Libs.Materials
+func (me *FxMaterialLib) dispose() {
 	me.Remove(0, 0)
 	*me = (*me)[:0]
 }
 
-func (_ FxMaterialLib) Get(id int) (ref *FxMaterial) {
-	if id >= 0 && id < len(Core.Libs.Materials) {
-		if ref = &Core.Libs.Materials[id]; ref.ID != id {
+func (me FxMaterialLib) Get(id int) (ref *FxMaterial) {
+	if id >= 0 && id < len(me) {
+		if ref = &me[id]; ref.ID != id {
 			ref = nil
 		}
 	}
 	return
 }
 
-func (_ FxMaterialLib) Has(id int) (has bool) {
-	if id >= 0 && id < len(Core.Libs.Materials) {
-		has = Core.Libs.Materials[id].ID == id
+func (me FxMaterialLib) Has(id int) (has bool) {
+	if id >= 0 && id < len(me) {
+		has = me[id].ID == id
 	}
 	return
 }
 
-func (_ FxMaterialLib) Remove(fromID, num int) {
-	me := &Core.Libs.Materials
-	if l := len(*me); fromID < l {
+func (me FxMaterialLib) Remove(fromID, num int) {
+	if l := len(me); fromID < l {
 		if num < 1 || num > (l-fromID) {
 			num = l - fromID
 		}
 		changed := make(map[int]int, num)
 		for id := fromID; id < fromID+num; id++ {
-			(*me)[id].dispose()
-			changed[id], (*me)[id].ID = -1, -1
+			me[id].dispose()
+			changed[id], me[id].ID = -1, -1
 		}
-		Core.Libs.Materials.onFxMaterialIDsChanged(changed)
+		me.onFxMaterialIDsChanged(changed)
 		Options.Libs.OnIDsChanged.Materials(changed)
+	}
+}
+
+func (me FxMaterialLib) Walk(on func(ref *FxMaterial)) {
+	for id := 0; id < len(me); id++ {
+		if me[id].ID >= 0 {
+			on(&me[id])
+		}
 	}
 }
 

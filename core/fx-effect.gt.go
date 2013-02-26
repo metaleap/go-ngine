@@ -7,6 +7,8 @@ import (
 //	Declares the visual appearance of a surface.
 //	An FxEffect can be reused for multiple surfaces, it is bound to geometry via an FxMaterial.
 type FxEffect struct {
+	ID int
+
 	//	An ordered collection of all FxOps that make up this effect.
 	//	When changing the ordering or disabling, enabling or toggling individual FxOps,
 	//	you need to call the FxEffect.UpdateRoutine() method to reflect such changes.
@@ -86,42 +88,105 @@ func (me *FxEffect) use() {
 	}
 }
 
-//#begin-gt -gen-lib.gt T:FxEffect
+//#begin-gt -gen-lib2.gt T:FxEffect L:Effects
 
-//	Initializes and returns a new FxEffect with default parameters.
-func NewFxEffect() (me *FxEffect) {
-	me = &FxEffect{}
-	me.init()
+//	Only used for Core.Libs.Effects.
+type FxEffectLib []FxEffect
+
+func (me *FxEffectLib) AddNew() (ref *FxEffect) {
+	id := -1
+	for i := 0; i < len(*me); i++ {
+		if (*me)[i].ID < 0 {
+			id = i
+			break
+		}
+	}
+	if id < 0 {
+		if id = len(*me); id == cap(*me) {
+			nu := make(FxEffectLib, id, id+Options.Libs.GrowCapBy)
+			copy(nu, *me)
+			*me = nu
+		}
+		*me = append(*me, FxEffect{})
+	}
+	ref = &(*me)[id]
+	ref.ID = id
+	ref.init()
 	return
 }
 
-//	A hash-table of FxEffects associated by IDs. Only for use in Core.Libs.
-type LibFxEffects map[string]*FxEffect
+func (me *FxEffectLib) Compact() {
+	var (
+		before, after []FxEffect
+		ref           *FxEffect
+		oldID, i      int
+	)
+	for i = 0; i < len(*me); i++ {
+		if (*me)[i].ID < 0 {
+			before, after = (*me)[:i], (*me)[i+1:]
+			*me = append(before, after...)
+		}
+	}
+	changed := make(map[int]int, len(*me))
+	for i = 0; i < len(*me); i++ {
+		if (*me)[i].ID != i {
+			ref = &(*me)[i]
+			oldID, ref.ID = ref.ID, i
+			changed[oldID] = i
+		}
+	}
+	if len(changed) > 0 {
+		me.onFxEffectIDsChanged(changed)
+		Options.Libs.OnIDsChanged.Effects(changed)
+	}
+}
 
-//	Creates and initializes a new FxEffect with default parameters,
-//	adds it to me under the specified ID, and returns it.
-func (me LibFxEffects) AddNew(id string) (obj *FxEffect) {
-	obj = NewFxEffect()
-	me[id] = obj
+func (me *FxEffectLib) ctor() {
+	*me = make(FxEffectLib, 0, Options.Libs.InitialCap)
+}
+
+func (me *FxEffectLib) dispose() {
+	me.Remove(0, 0)
+	*me = (*me)[:0]
+}
+
+func (me FxEffectLib) Get(id int) (ref *FxEffect) {
+	if id >= 0 && id < len(me) {
+		if ref = &me[id]; ref.ID != id {
+			ref = nil
+		}
+	}
 	return
 }
 
-func (me *LibFxEffects) ctor() {
-	*me = make(LibFxEffects, 50)
+func (me FxEffectLib) Has(id int) (has bool) {
+	if id >= 0 && id < len(me) {
+		has = me[id].ID == id
+	}
+	return
 }
 
-func (me *LibFxEffects) dispose() {
-	for _, o := range *me {
-		o.dispose()
+func (me FxEffectLib) Remove(fromID, num int) {
+	if l := len(me); fromID < l {
+		if num < 1 || num > (l-fromID) {
+			num = l - fromID
+		}
+		changed := make(map[int]int, num)
+		for id := fromID; id < fromID+num; id++ {
+			me[id].dispose()
+			changed[id], me[id].ID = -1, -1
+		}
+		me.onFxEffectIDsChanged(changed)
+		Options.Libs.OnIDsChanged.Effects(changed)
 	}
-	me.ctor()
 }
 
-func (me LibFxEffects) Remove(id string) {
-	if obj := me[id]; obj != nil {
-		obj.dispose()
+func (me FxEffectLib) Walk(on func(ref *FxEffect)) {
+	for id := 0; id < len(me); id++ {
+		if me[id].ID >= 0 {
+			on(&me[id])
+		}
 	}
-	delete(me, id)
 }
 
 //#end-gt

@@ -3,9 +3,9 @@ package gt
 //	Only used for Core.Libs.__L__.
 type __T__Lib []__T__
 
-func (_ __T__Lib) AddNew() (ref *__T__) {
-	me, id := &Core.Libs.__L__, -1
-	for i, _ := range *me {
+func (me *__T__Lib) AddNew() (ref *__T__) {
+	id := -1
+	for i := 0; i < len(*me); i++ {
 		if (*me)[i].ID < 0 {
 			id = i
 			break
@@ -25,21 +25,20 @@ func (_ __T__Lib) AddNew() (ref *__T__) {
 	return
 }
 
-func (_ __T__Lib) Compact() {
+func (me *__T__Lib) Compact() {
 	var (
 		before, after []__T__
 		ref           *__T__
-		oldID         int
+		oldID, i      int
 	)
-	me := &Core.Libs.__L__
-	for i, _ := range *me {
+	for i = 0; i < len(*me); i++ {
 		if (*me)[i].ID < 0 {
 			before, after = (*me)[:i], (*me)[i+1:]
 			*me = append(before, after...)
 		}
 	}
 	changed := make(map[int]int, len(*me))
-	for i, _ := range *me {
+	for i = 0; i < len(*me); i++ {
 		if (*me)[i].ID != i {
 			ref = &(*me)[i]
 			oldID, ref.ID = ref.ID, i
@@ -47,50 +46,55 @@ func (_ __T__Lib) Compact() {
 		}
 	}
 	if len(changed) > 0 {
-		Core.Libs.__L__.on__T__IDsChanged(changed)
+		me.on__T__IDsChanged(changed)
 		Options.Libs.OnIDsChanged.__L__(changed)
 	}
 }
 
-func (_ __T__Lib) ctor() {
-	me := &Core.Libs.__L__
+func (me *__T__Lib) ctor() {
 	*me = make(__T__Lib, 0, Options.Libs.InitialCap)
 }
 
-func (_ __T__Lib) dispose() {
-	me := &Core.Libs.__L__
+func (me *__T__Lib) dispose() {
 	me.Remove(0, 0)
 	*me = (*me)[:0]
 }
 
-func (_ __T__Lib) Get(id int) (ref *__T__) {
-	if id >= 0 && id < len(Core.Libs.__L__) {
-		if ref = &Core.Libs.__L__[id]; ref.ID != id {
+func (me __T__Lib) Get(id int) (ref *__T__) {
+	if id >= 0 && id < len(me) {
+		if ref = &me[id]; ref.ID != id {
 			ref = nil
 		}
 	}
 	return
 }
 
-func (_ __T__Lib) Has(id int) (has bool) {
-	if id >= 0 && id < len(Core.Libs.__L__) {
-		has = Core.Libs.__L__[id].ID == id
+func (me __T__Lib) Has(id int) (has bool) {
+	if id >= 0 && id < len(me) {
+		has = me[id].ID == id
 	}
 	return
 }
 
-func (_ __T__Lib) Remove(fromID, num int) {
-	me := &Core.Libs.__L__
-	if l := len(*me); fromID < l {
+func (me __T__Lib) Remove(fromID, num int) {
+	if l := len(me); fromID < l {
 		if num < 1 || num > (l-fromID) {
 			num = l - fromID
 		}
 		changed := make(map[int]int, num)
 		for id := fromID; id < fromID+num; id++ {
-			(*me)[id].dispose()
-			changed[id], (*me)[id].ID = -1, -1
+			me[id].dispose()
+			changed[id], me[id].ID = -1, -1
 		}
-		Core.Libs.__L__.on__T__IDsChanged(changed)
+		me.on__T__IDsChanged(changed)
 		Options.Libs.OnIDsChanged.__L__(changed)
+	}
+}
+
+func (me __T__Lib) Walk(on func(ref *__T__)) {
+	for id := 0; id < len(me); id++ {
+		if me[id].ID >= 0 {
+			on(&me[id])
+		}
 	}
 }

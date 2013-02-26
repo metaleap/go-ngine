@@ -31,9 +31,9 @@ func (me *Scene) init() {
 //	Only used for Core.Libs.Scenes.
 type SceneLib []Scene
 
-func (_ SceneLib) AddNew() (ref *Scene) {
-	me, id := &Core.Libs.Scenes, -1
-	for i, _ := range *me {
+func (me *SceneLib) AddNew() (ref *Scene) {
+	id := -1
+	for i := 0; i < len(*me); i++ {
 		if (*me)[i].ID < 0 {
 			id = i
 			break
@@ -53,21 +53,20 @@ func (_ SceneLib) AddNew() (ref *Scene) {
 	return
 }
 
-func (_ SceneLib) Compact() {
+func (me *SceneLib) Compact() {
 	var (
 		before, after []Scene
 		ref           *Scene
-		oldID         int
+		oldID, i      int
 	)
-	me := &Core.Libs.Scenes
-	for i, _ := range *me {
+	for i = 0; i < len(*me); i++ {
 		if (*me)[i].ID < 0 {
 			before, after = (*me)[:i], (*me)[i+1:]
 			*me = append(before, after...)
 		}
 	}
 	changed := make(map[int]int, len(*me))
-	for i, _ := range *me {
+	for i = 0; i < len(*me); i++ {
 		if (*me)[i].ID != i {
 			ref = &(*me)[i]
 			oldID, ref.ID = ref.ID, i
@@ -75,51 +74,56 @@ func (_ SceneLib) Compact() {
 		}
 	}
 	if len(changed) > 0 {
-		Core.Libs.Scenes.onSceneIDsChanged(changed)
+		me.onSceneIDsChanged(changed)
 		Options.Libs.OnIDsChanged.Scenes(changed)
 	}
 }
 
-func (_ SceneLib) ctor() {
-	me := &Core.Libs.Scenes
+func (me *SceneLib) ctor() {
 	*me = make(SceneLib, 0, Options.Libs.InitialCap)
 }
 
-func (_ SceneLib) dispose() {
-	me := &Core.Libs.Scenes
+func (me *SceneLib) dispose() {
 	me.Remove(0, 0)
 	*me = (*me)[:0]
 }
 
-func (_ SceneLib) Get(id int) (ref *Scene) {
-	if id >= 0 && id < len(Core.Libs.Scenes) {
-		if ref = &Core.Libs.Scenes[id]; ref.ID != id {
+func (me SceneLib) Get(id int) (ref *Scene) {
+	if id >= 0 && id < len(me) {
+		if ref = &me[id]; ref.ID != id {
 			ref = nil
 		}
 	}
 	return
 }
 
-func (_ SceneLib) Has(id int) (has bool) {
-	if id >= 0 && id < len(Core.Libs.Scenes) {
-		has = Core.Libs.Scenes[id].ID == id
+func (me SceneLib) Has(id int) (has bool) {
+	if id >= 0 && id < len(me) {
+		has = me[id].ID == id
 	}
 	return
 }
 
-func (_ SceneLib) Remove(fromID, num int) {
-	me := &Core.Libs.Scenes
-	if l := len(*me); fromID < l {
+func (me SceneLib) Remove(fromID, num int) {
+	if l := len(me); fromID < l {
 		if num < 1 || num > (l-fromID) {
 			num = l - fromID
 		}
 		changed := make(map[int]int, num)
 		for id := fromID; id < fromID+num; id++ {
-			(*me)[id].dispose()
-			changed[id], (*me)[id].ID = -1, -1
+			me[id].dispose()
+			changed[id], me[id].ID = -1, -1
 		}
-		Core.Libs.Scenes.onSceneIDsChanged(changed)
+		me.onSceneIDsChanged(changed)
 		Options.Libs.OnIDsChanged.Scenes(changed)
+	}
+}
+
+func (me SceneLib) Walk(on func(ref *Scene)) {
+	for id := 0; id < len(me); id++ {
+		if me[id].ID >= 0 {
+			on(&me[id])
+		}
 	}
 }
 

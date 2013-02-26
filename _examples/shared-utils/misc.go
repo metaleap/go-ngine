@@ -80,9 +80,9 @@ func toggleRetro() {
 }
 
 func toggleTexturing() {
-	for _, fx := range ng.Core.Libs.Effects {
+	ng.Core.Libs.Effects.Walk(func(fx *ng.FxEffect) {
 		fx.Ops.ToggleCoords(-1)
 		fx.Ops.Toggle("Tex*", -1)
 		fx.UpdateRoutine()
-	}
+	})
 }

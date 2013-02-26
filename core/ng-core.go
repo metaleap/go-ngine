@@ -16,7 +16,7 @@ var (
 type EngineCore struct {
 	MeshBuffers *MeshBuffers
 	Libs        struct {
-		Effects   LibFxEffects
+		Effects   FxEffectLib
 		Materials FxMaterialLib
 		Images    struct {
 			SplashScreen FxImage2D

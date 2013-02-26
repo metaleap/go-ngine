@@ -4,7 +4,9 @@ import (
 	ng "github.com/go3d/go-ngine/core"
 )
 
-var Materials = map[string]int{}
+var LibIDs = struct {
+	Fx, Img, Mat map[string]int
+}{map[string]int{}, map[string]int{}, map[string]int{}}
 
 func AddMainScene() (me *ng.Scene) {
 	me = ng.Core.Libs.Scenes.AddNew()
@@ -20,12 +22,13 @@ func AddSkyMesh(scene *ng.Scene, meshID string) {
 	cubeMap.InitFrom[3].RefUrl = "tex/sky/down.png"  // negative Y
 	cubeMap.InitFrom[4].RefUrl = "tex/sky/north.png" // positive Z
 	cubeMap.InitFrom[5].RefUrl = "tex/sky/south.png" // negative Z
-	fx := ng.Core.Libs.Effects.AddNew("fx_sky")
+	fx := ng.Core.Libs.Effects.AddNew()
+	LibIDs.Fx["sky"] = fx.ID
 	fx.Ops.EnableTexCube(0).SetImageID("img_sky")
 	fx.UpdateRoutine()
 	matSky := ng.Core.Libs.Materials.AddNew()
-	matSky.DefaultEffectID = "fx_sky"
-	Materials["sky"] = matSky.ID
+	matSky.DefaultEffectID = LibIDs.Fx["sky"]
+	LibIDs.Mat["sky"] = matSky.ID
 
 	ng.Core.Libs.Meshes[meshID].Models.Default().Clone("meshmodel_skybox").MatID = matSky.ID
 	scene.RootNode.SetMeshModelID(meshID, "meshmodel_skybox")
@@ -44,12 +47,13 @@ func AddTextureMaterials(idsUrls map[string]string) {
 	for id, refUrl := range idsUrls {
 		img := ng.Core.Libs.Images.Tex2D.AddNew("img_" + id)
 		img.InitFrom.RefUrl = refUrl
-		fx := ng.Core.Libs.Effects.AddNew("fx_" + id)
+		fx := ng.Core.Libs.Effects.AddNew()
+		LibIDs.Fx[id] = fx.ID
 		fx.Ops.EnableTex2D(0).SetImageID("img_" + id)
 		fx.UpdateRoutine()
 		mat = ng.Core.Libs.Materials.AddNew()
-		mat.DefaultEffectID = "fx_" + id
-		Materials[id] = mat.ID
+		mat.DefaultEffectID = fx.ID
+		LibIDs.Mat[id] = mat.ID
 	}
 	return
 }

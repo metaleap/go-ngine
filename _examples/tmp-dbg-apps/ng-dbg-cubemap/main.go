@@ -55,15 +55,15 @@ func setupScene() {
 	scene = apputil.AddMainScene()
 	apputil.AddSkyMesh(scene, "mesh_cube")
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
-	floor.MatID = apputil.Materials["cobbles"]
+	floor.MatID = apputil.LibIDs.Mat["cobbles"]
 	floor.Transform.SetScale(100)
 	floor.ApplyTransform()
 
 	cube = scene.RootNode.ChildNodes.AddNew("node_cube", "mesh_cube", "")
-	cube.MatID = apputil.Materials["sky"]
+	cube.MatID = apputil.LibIDs.Mat["sky"]
 
 	dog = scene.RootNode.ChildNodes.AddNew("node_dog", "mesh_cube", "")
-	dog.MatID = apputil.Materials["dog"]
+	dog.MatID = apputil.LibIDs.Mat["dog"]
 	dog.Transform.Pos.X, dog.Transform.Pos.Z = -2, 2
 	dog.ApplyTransform()
 

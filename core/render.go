@@ -83,7 +83,7 @@ func (me *Node) renderSelf() {
 					gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(me.mesh.meshBufOffsetIndices+(int32(fidx)*3*4))), gl.Int(me.mesh.meshBufOffsetBaseIndex))
 				}
 			} else {
-				thrRend.nextEffect = Core.Libs.Effects[mat.DefaultEffectID]
+				thrRend.nextEffect = Core.Libs.Effects.Get(mat.DefaultEffectID)
 				Core.useTechFx()
 				me.mesh.meshBuffer.use()
 				if me.Rendering.skyMode {

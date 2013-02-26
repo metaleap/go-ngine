@@ -91,6 +91,7 @@ type EngineOptions struct {
 		InitialCap   int
 		GrowCapBy    int
 		OnIDsChanged struct {
+			Effects   LibElemIDChangedHandler
 			Materials LibElemIDChangedHandler
 			Scenes    LibElemIDChangedHandler
 		}
@@ -155,7 +156,7 @@ func init() {
 
 	//	Set all ID-changed handlers to empty funcs so we don't need to check for nil
 	on, makeNoopHandlerFunc := &o.Libs.OnIDsChanged, func() LibElemIDChangedHandler { return func(_ map[int]int) {} }
-	for _, fn := range []*LibElemIDChangedHandler{&on.Materials, &on.Scenes} {
+	for _, fn := range []*LibElemIDChangedHandler{&on.Effects, &on.Materials, &on.Scenes} {
 		*fn = makeNoopHandlerFunc()
 	}
 

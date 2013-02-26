@@ -34,7 +34,7 @@ func onWinThread() {
 	apputil.RearView.OnWin()
 
 	//	pulsating fx anims
-	ng.Core.Libs.Effects["fx_mosaic"].Ops.GetTex2D(1).SetMixWeight(0.5 + (0.5 * math.Cos(ng.Loop.Tick.Now*2)))
+	ng.Core.Libs.Effects[apputil.LibIDs.Fx["mosaic"]].Ops.GetTex2D(1).SetMixWeight(0.5 + (0.5 * math.Cos(ng.Loop.Tick.Now*2)))
 	apputil.RearView.Cam.Rendering.FxOps.GetOrangify(0).SetMixWeight(0.75 + (0.25 * math.Sin(ng.Loop.Tick.Now*4)))
 }
 
@@ -92,7 +92,7 @@ func setupExample_04_PyrsCubes() {
 		"gopher":  "tex/gopher.png",
 	})
 
-	fx := ng.Core.Libs.Effects["fx_mosaic"]
+	fx := &ng.Core.Libs.Effects[apputil.LibIDs.Fx["mosaic"]]
 	fx.Ops.EnableTex2D(1).SetImageID("img_gopher").SetMixWeight(0.5)
 	fx.UpdateRoutine()
 
@@ -106,26 +106,29 @@ func setupExample_04_PyrsCubes() {
 	if meshFloor, err = ng.Core.Libs.Meshes.AddLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
 		panic(err)
 	}
-	meshFloor.Models.Default().MatID = apputil.Materials["cobbles"]
+	meshFloor.Models.Default().MatID = apputil.LibIDs.Mat["cobbles"]
 	if meshPyr, err = ng.Core.Libs.Meshes.AddLoad("mesh_pyramid", ng.MeshProviderPrefabPyramid); err != nil {
 		panic(err)
 	}
-	meshPyr.Models.Default().MatID = apputil.Materials["mosaic"]
-	meshPyr.Models.Default().Clone("model_pyramid_dog").MatID = apputil.Materials["dog"]
+	meshPyr.Models.Default().MatID = apputil.LibIDs.Mat["mosaic"]
+	meshPyr.Models.Default().Clone("model_pyramid_dog").MatID = apputil.LibIDs.Mat["dog"]
 
 	if meshCube, err = ng.Core.Libs.Meshes.AddLoad("mesh_cube", ng.MeshProviderPrefabCube); err != nil {
 		panic(err)
 	}
-	meshCube.Models.Default().MatID = apputil.Materials["crate"]
-	meshCube.Models.Default().Clone("model_cube_cat").MatID = apputil.Materials["cat"]
-	ng.Core.Libs.Materials[apputil.Materials["crate"]].FaceEffects.ByTag["front"] = "fx_cat"
-	ng.Core.Libs.Materials[apputil.Materials["crate"]].FaceEffects.ByTag["back"] = "fx_dog"
-	mixMat := ng.Core.Libs.Materials.AddNew()
-	mixMat.DefaultEffectID = "fx_crate"
-	mixMat.FaceEffects.ByTag["front"], mixMat.FaceEffects.ByTag["back"] = "fx_cat", "fx_cat"
-	mixMat.FaceEffects.ByTag["top"], mixMat.FaceEffects.ByTag["bottom"] = "fx_dog", "fx_dog"
-	mixMat.FaceEffects.ByTag["left"], mixMat.FaceEffects.ByTag["right"] = "fx_gopher", "fx_gopher"
-	apputil.Materials["mix"] = mixMat.ID
+	meshCube.Models.Default().MatID = apputil.LibIDs.Mat["crate"]
+	meshCube.Models.Default().Clone("model_cube_cat").MatID = apputil.LibIDs.Mat["cat"]
+
+	tmpMat := &ng.Core.Libs.Materials[apputil.LibIDs.Mat["crate"]]
+	tmpMat.FaceEffects.ByTag["front"] = apputil.LibIDs.Fx["cat"]
+	tmpMat.FaceEffects.ByTag["back"] = apputil.LibIDs.Fx["dog"]
+
+	tmpMat = ng.Core.Libs.Materials.AddNew()
+	tmpMat.DefaultEffectID = apputil.LibIDs.Fx["crate"]
+	tmpMat.FaceEffects.ByTag["front"], tmpMat.FaceEffects.ByTag["back"] = apputil.LibIDs.Fx["cat"], apputil.LibIDs.Fx["cat"]
+	tmpMat.FaceEffects.ByTag["top"], tmpMat.FaceEffects.ByTag["bottom"] = apputil.LibIDs.Fx["dog"], apputil.LibIDs.Fx["dog"]
+	tmpMat.FaceEffects.ByTag["left"], tmpMat.FaceEffects.ByTag["right"] = apputil.LibIDs.Fx["gopher"], apputil.LibIDs.Fx["gopher"]
+	apputil.LibIDs.Mat["mix"] = tmpMat.ID
 
 	bufFloor.Add(meshFloor)
 	bufRest.Add(meshCube)
@@ -149,7 +152,7 @@ func setupExample_04_PyrsCubes() {
 		crates[i].Transform.SetPos((f+3)*-2, (f+1)*2, (f+2)*3)
 		crates[i].ApplyTransform()
 		if i == 2 {
-			crates[i].MatID = apputil.Materials["mix"]
+			crates[i].MatID = apputil.LibIDs.Mat["mix"]
 		}
 	}
 
