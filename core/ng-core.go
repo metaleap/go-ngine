@@ -23,7 +23,7 @@ type EngineCore struct {
 			TexCube      FxImageCubeLib
 			Tex2D        FxImage2DLib
 		}
-		Meshes LibMeshes
+		Meshes MeshLib
 
 		Scenes SceneLib
 	}

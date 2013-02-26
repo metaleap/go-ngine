@@ -5,11 +5,12 @@ import (
 )
 
 type Mesh struct {
+	ID     int
 	Models Models
+	Name   string
 
 	meshBufOffsetBaseIndex, meshBufOffsetIndices, meshBufOffsetVerts int32
 	gpuSynced                                                        bool
-	id                                                               string
 	meshBuffer                                                       *MeshBuffer
 	raw                                                              *meshRaw
 }
@@ -33,12 +34,12 @@ func (me *Mesh) GpuUpload() (err error) {
 	me.GpuDelete()
 
 	if sizeVerts > gl.Sizeiptr(me.meshBuffer.MemSizeVertices) {
-		err = errf("Cannot upload mesh '%v': vertex size (%vB) exceeds mesh buffer's available vertex memory (%vB)", me.id, sizeVerts, me.meshBuffer.MemSizeVertices)
+		err = errf("Cannot upload mesh '%v': vertex size (%vB) exceeds mesh buffer's available vertex memory (%vB)", me.Name, sizeVerts, me.meshBuffer.MemSizeVertices)
 	} else if sizeIndices > gl.Sizeiptr(me.meshBuffer.MemSizeIndices) {
-		err = errf("Cannot upload mesh '%v': index size (%vB) exceeds mesh buffer's available index memory (%vB)", me.id, sizeIndices, me.meshBuffer.MemSizeIndices)
+		err = errf("Cannot upload mesh '%v': index size (%vB) exceeds mesh buffer's available index memory (%vB)", me.Name, sizeIndices, me.meshBuffer.MemSizeIndices)
 	} else {
 		me.meshBufOffsetBaseIndex, me.meshBufOffsetIndices, me.meshBufOffsetVerts = me.meshBuffer.offsetBaseIndex, me.meshBuffer.offsetIndices, me.meshBuffer.offsetVerts
-		Diag.LogMeshes("Upload %v at voff=%v ioff=%v boff=%v", me.id, me.meshBufOffsetVerts, me.meshBufOffsetIndices, me.meshBufOffsetBaseIndex)
+		Diag.LogMeshes("Upload %v at voff=%v ioff=%v boff=%v", me.Name, me.meshBufOffsetVerts, me.meshBufOffsetIndices, me.meshBufOffsetBaseIndex)
 		me.meshBuffer.glIbo.Bind()
 		defer me.meshBuffer.glIbo.Unbind()
 		me.meshBuffer.glVbo.Bind()
@@ -104,7 +105,7 @@ func (me *Mesh) load(meshData *MeshData) (err error) {
 		}
 		offsetFace++
 	}
-	Diag.LogMeshes("mesh{%v}.Load() gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)", me.id, len(me.raw.faces), len(me.raw.meshVs), numFinalVerts, numVerts, len(me.raw.indices), vreuse)
+	Diag.LogMeshes("mesh{%v}.Load() gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)", me.Name, len(me.raw.faces), len(me.raw.meshVs), numFinalVerts, numVerts, len(me.raw.indices), vreuse)
 	return
 }
 
@@ -112,19 +113,10 @@ func (me *Mesh) Loaded() bool {
 	return me.raw != nil
 }
 
-//	Initializes and returns a new Mesh with default parameters.
-func NewMesh(id string) (me *Mesh) {
-	me = &Mesh{id: id}
-	me.init()
-	return
-}
-
-//	A hash-table of Meshs associated by IDs. Only for use in Core.Libs.
-type LibMeshes map[string]*Mesh
-
-func (me LibMeshes) GpuSync() (err error) {
-	for _, mesh := range me {
-		if !mesh.gpuSynced {
+func (me MeshLib) GpuSync() (err error) {
+	var mesh *Mesh
+	for id, _ := range Core.Libs.Meshes {
+		if mesh = Core.Libs.Meshes.Get(id); mesh != nil && !mesh.gpuSynced {
 			if err = mesh.GpuUpload(); err != nil {
 				return
 			}
@@ -133,33 +125,115 @@ func (me LibMeshes) GpuSync() (err error) {
 	return
 }
 
-//	Creates and initializes a new Mesh with default parameters,
-//	adds it to me under the specified ID, and returns it.
-func (me LibMeshes) AddNew(id string) (obj *Mesh) {
-	obj = NewMesh(id)
-	me[id] = obj
+func (me *MeshLib) AddNewAndLoad(name string, meshProvider MeshProvider, args ...interface{}) (mesh *Mesh, err error) {
+	mesh = me.AddNew()
+	mesh.Name = name
+	if err = mesh.Load(meshProvider, args...); err != nil {
+		me.Remove(mesh.ID, 1)
+		mesh = nil
+	}
 	return
 }
 
-func (me LibMeshes) AddLoad(id string, meshProvider MeshProvider, args ...interface{}) (mesh *Mesh, err error) {
-	if me[id] == nil {
-		mesh = me.AddNew(id)
-		if err = mesh.Load(meshProvider, args...); err != nil {
-			delete(me, id)
-			mesh.dispose()
-			mesh = nil
+//#begin-gt -gen-lib.gt T:Mesh L:Meshes
+
+//	Only used for Core.Libs.Meshes.
+type MeshLib []Mesh
+
+func (me *MeshLib) AddNew() (ref *Mesh) {
+	id := -1
+	for i := 0; i < len(*me); i++ {
+		if (*me)[i].ID < 0 {
+			id = i
+			break
+		}
+	}
+	if id < 0 {
+		if id = len(*me); id == cap(*me) {
+			nu := make(MeshLib, id, id+Options.Libs.GrowCapBy)
+			copy(nu, *me)
+			*me = nu
+		}
+		*me = append(*me, Mesh{})
+	}
+	ref = &(*me)[id]
+	ref.ID = id
+	ref.init()
+	return
+}
+
+func (me *MeshLib) Compact() {
+	var (
+		before, after []Mesh
+		ref           *Mesh
+		oldID, i      int
+	)
+	for i = 0; i < len(*me); i++ {
+		if (*me)[i].ID < 0 {
+			before, after = (*me)[:i], (*me)[i+1:]
+			*me = append(before, after...)
+		}
+	}
+	changed := make(map[int]int, len(*me))
+	for i = 0; i < len(*me); i++ {
+		if (*me)[i].ID != i {
+			ref = &(*me)[i]
+			oldID, ref.ID = ref.ID, i
+			changed[oldID] = i
+		}
+	}
+	if len(changed) > 0 {
+		me.onMeshIDsChanged(changed)
+		Options.Libs.OnIDsChanged.Meshes(changed)
+	}
+}
+
+func (me *MeshLib) ctor() {
+	*me = make(MeshLib, 0, Options.Libs.InitialCap)
+}
+
+func (me *MeshLib) dispose() {
+	me.Remove(0, 0)
+	*me = (*me)[:0]
+}
+
+func (me MeshLib) Get(id int) (ref *Mesh) {
+	if id >= 0 && id < len(me) {
+		if ref = &me[id]; ref.ID != id {
+			ref = nil
 		}
 	}
 	return
 }
 
-func (me *LibMeshes) ctor() {
-	*me = LibMeshes{}
+func (me MeshLib) Has(id int) (has bool) {
+	if id >= 0 && id < len(me) {
+		has = me[id].ID == id
+	}
+	return
 }
 
-func (me *LibMeshes) dispose() {
-	for _, o := range *me {
-		o.dispose()
+func (me MeshLib) Remove(fromID, num int) {
+	if l := len(me); fromID < l {
+		if num < 1 || num > (l-fromID) {
+			num = l - fromID
+		}
+		changed := make(map[int]int, num)
+		for id := fromID; id < fromID+num; id++ {
+			me[id].dispose()
+			changed[id], me[id].ID = -1, -1
+		}
+		me.onMeshIDsChanged(changed)
+		Options.Libs.OnIDsChanged.Meshes(changed)
 	}
-	me.ctor()
 }
+
+func (me MeshLib) Walk(on func(ref *Mesh)) {
+	for id := 0; id < len(me); id++ {
+		if me[id].ID >= 0 {
+			on(&me[id])
+		}
+	}
+}
+
+//#end-gt

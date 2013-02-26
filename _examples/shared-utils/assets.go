@@ -14,7 +14,7 @@ func AddMainScene() (me *ng.Scene) {
 	return
 }
 
-func AddSkyMesh(scene *ng.Scene, meshID string) {
+func AddSkyMesh(scene *ng.Scene, meshID int) {
 	cubeMap := ng.Core.Libs.Images.TexCube.AddNew()
 	LibIDs.Img["sky"] = cubeMap.ID
 	cubeMap.InitFrom[0].RefUrl = "tex/sky/east.png"  // positive X
@@ -34,7 +34,8 @@ func AddSkyMesh(scene *ng.Scene, meshID string) {
 	LibIDs.Mat["sky"] = matSky.ID
 
 	ng.Core.Libs.Meshes[meshID].Models.Default().Clone("meshmodel_skybox").MatID = matSky.ID
-	scene.RootNode.SetMeshModelID(meshID, "meshmodel_skybox")
+	scene.RootNode.MeshID = meshID
+	scene.RootNode.SetModelID("meshmodel_skybox")
 }
 
 //	Sets up textures and associated effects/materials with the specified IDs and image URLs.

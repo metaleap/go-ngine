@@ -10,7 +10,7 @@ func (me *EngineCore) onPrep() {
 }
 
 func (me *RenderCanvas) onPrep() {
-	for _, cam := range me.Cameras {
+	for _, cam := range me.Cams {
 		cam.onPrep()
 	}
 }

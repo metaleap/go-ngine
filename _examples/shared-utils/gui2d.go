@@ -28,7 +28,7 @@ func (me *Gui2D) Setup() (err error) {
 	if meshBuf, err = ng.Core.MeshBuffers.Add("buf_quad", ng.Core.MeshBuffers.NewParams(6, 6)); err != nil {
 		return
 	}
-	if quadMesh, err = ng.Core.Libs.Meshes.AddLoad("mesh_quad", ng.MeshProviderPrefabQuad); err != nil {
+	if quadMesh, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_quad", ng.MeshProviderPrefabQuad); err != nil {
 		return
 	}
 	if err = meshBuf.Add(quadMesh); err != nil {
@@ -36,12 +36,12 @@ func (me *Gui2D) Setup() (err error) {
 	}
 
 	quadMesh.Models.Default().MatID = LibIDs.Mat["dog"]
-	me.Dog = scene.RootNode.ChildNodes.AddNew("gui_dog", "mesh_quad", "")
+	me.Dog = scene.RootNode.ChildNodes.AddNew("gui_dog", quadMesh.ID, "")
 	me.Dog.Transform.SetScale(0.85)
 	me.Dog.Transform.Rot.Z = unum.DegToRad(90)
 
 	quadMesh.Models.Default().Clone("model_cat").MatID = LibIDs.Mat["cat"]
-	me.Cat = scene.RootNode.ChildNodes.AddNew("gui_cat", "mesh_quad", "model_cat")
+	me.Cat = scene.RootNode.ChildNodes.AddNew("gui_cat", quadMesh.ID, "model_cat")
 	me.Cat.Transform.SetScale(0.85)
 	me.Cat.Transform.Rot.Z = unum.DegToRad(90)
 

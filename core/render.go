@@ -18,7 +18,7 @@ func (me *RenderCanvas) render() {
 		me.frameBuf.Bind()
 	}
 	Core.Rendering.states.SetFramebufferSrgb(me.Srgb)
-	for _, thrRend.curCam = range me.Cameras {
+	for _, thrRend.curCam = range me.Cams {
 		thrRend.curCam.render()
 	}
 	Core.Rendering.states.SetFramebufferSrgb(false)
@@ -73,26 +73,26 @@ func (me *Node) renderChildren() {
 
 func (me *Node) renderSelf() {
 	if me.model != nil {
-		if mat := me.Material(); mat != nil {
+		if mat, mesh := me.Material(), me.mesh(); mat != nil {
 			if mat.HasFaceEffects() {
-				for fidx, face := range me.mesh.raw.faces {
+				for fidx, face := range mesh.raw.faces {
 					thrRend.nextEffect = mat.faceEffect(face)
 					Core.useTechFx()
-					me.mesh.meshBuffer.use()
+					mesh.meshBuffer.use()
 					thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &me.thrRend.camProjMats[thrRend.curCam][0])
-					gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(me.mesh.meshBufOffsetIndices+(int32(fidx)*3*4))), gl.Int(me.mesh.meshBufOffsetBaseIndex))
+					gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices+(int32(fidx)*3*4))), gl.Int(mesh.meshBufOffsetBaseIndex))
 				}
 			} else {
 				thrRend.nextEffect = Core.Libs.Effects.Get(mat.DefaultEffectID)
 				Core.useTechFx()
-				me.mesh.meshBuffer.use()
+				mesh.meshBuffer.use()
 				if me.Rendering.skyMode {
 					Core.Rendering.states.DisableFaceCulling()
 					gl.DepthFunc(gl.LEQUAL)
 					thrRend.curProg.Uniform1i("uni_int_Sky", 1)
 				}
 				thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &me.thrRend.camProjMats[thrRend.curCam][0])
-				gl.DrawElementsBaseVertex(gl.TRIANGLES, gl.Sizei(len(me.mesh.raw.indices)), gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(me.mesh.meshBufOffsetIndices)), gl.Int(me.mesh.meshBufOffsetBaseIndex))
+				gl.DrawElementsBaseVertex(gl.TRIANGLES, gl.Sizei(len(mesh.raw.indices)), gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices)), gl.Int(mesh.meshBufOffsetBaseIndex))
 				if me.Rendering.skyMode {
 					thrRend.curProg.Uniform1i("uni_int_Sky", 0)
 					gl.DepthFunc(gl.LESS)

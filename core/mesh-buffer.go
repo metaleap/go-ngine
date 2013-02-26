@@ -106,13 +106,13 @@ func newMeshBuffer(id string, params *meshBufferParams) (me *MeshBuffer, err err
 
 func (me *MeshBuffer) Add(mesh *Mesh) (err error) {
 	if mesh.meshBuffer != nil {
-		err = errf("Cannot add mesh '%v' to mesh buffer '%v': already belongs to mesh buffer '%v'.", mesh.id, me.id, mesh.meshBuffer.id)
+		err = errf("Cannot add mesh '%v' to mesh buffer '%v': already belongs to mesh buffer '%v'.", mesh.Name, me.id, mesh.meshBuffer.id)
 	} else if !me.meshes[mesh] {
 		me.meshes[mesh] = true
 		mesh.gpuSynced = false
 		mesh.meshBuffer = me
 	} else {
-		err = errf("Cannot add mesh '%v' to mesh buffer '%v': already added.", mesh.id, me.id)
+		err = errf("Cannot add mesh '%v' to mesh buffer '%v': already added.", mesh.Name, me.id)
 	}
 	return
 }

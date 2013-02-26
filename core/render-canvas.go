@@ -17,16 +17,16 @@ type RenderCanvas struct {
 	//	0 = this RenderCanvas is disabled for rendering
 	EveryNthFrame float64
 
-	Cameras Cameras
+	Cams Cameras
 
 	Srgb bool
 
 	isRtt, viewSizeRelative     bool
-	absViewWidth, absViewHeight int
+	absViewWidth, absViewHeight float64
 	relViewWidth, relViewHeight float64
 
 	frameBuf    ugl.Framebuffer
-	frameBufTex *ugl.FramebufferRendertexture
+	frameBufTex ugl.FramebufferRendertexture
 }
 
 func newRenderCanvas(isFinal, relative bool, width, height float64) (me *RenderCanvas) {
@@ -36,8 +36,8 @@ func newRenderCanvas(isFinal, relative bool, width, height float64) (me *RenderC
 		me.frameBuf.GlTarget, me.Srgb = gl.FRAMEBUFFER, !Options.Initialization.DefaultCanvas.GammaViaShader
 	} else {
 		me.frameBuf.Create(gl.Sizei(UserIO.Window.width), gl.Sizei(UserIO.Window.height), false)
-		me.frameBufTex = ugl.NewFramebufferRendertexture()
-		me.frameBuf.AttachRendertexture(me.frameBufTex)
+		me.frameBufTex.Init()
+		me.frameBuf.AttachRendertexture(&me.frameBufTex)
 		me.frameBuf.AttachRenderbuffer(ugl.NewFramebufferRenderbuffer())
 	}
 	Diag.LogIfGlErr("newRenderCanvas(%v x %v)", width, height)
@@ -45,33 +45,33 @@ func newRenderCanvas(isFinal, relative bool, width, height float64) (me *RenderC
 }
 
 func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int) {
-	width, height = me.absViewWidth, me.absViewHeight
+	width, height = int(me.absViewWidth), int(me.absViewHeight)
 	return
 }
 
 func (me *RenderCanvas) AddNewCamera2D(allowOverlaps bool) (cam *Camera) {
 	cam = newCamera2D(me, allowOverlaps)
-	me.Cameras = append(me.Cameras, cam)
+	me.Cams = append(me.Cams, cam)
 	Core.refreshWinSizeRels()
 	return
 }
 
 func (me *RenderCanvas) AddNewCamera3D() (cam *Camera) {
 	cam = newCamera3D(me)
-	me.Cameras = append(me.Cameras, cam)
+	me.Cams = append(me.Cams, cam)
 	Core.refreshWinSizeRels()
 	return
 }
 
 func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera) {
 	cam = newCameraQuad(me)
-	me.Cameras = append(me.Cameras, cam)
+	me.Cams = append(me.Cams, cam)
 	Core.refreshWinSizeRels()
 	return
 }
 
 func (me *RenderCanvas) dispose() {
-	me.Cameras.dispose()
+	me.Cams.dispose()
 	if me.isRtt {
 		me.frameBuf.Dispose()
 	}
@@ -79,12 +79,13 @@ func (me *RenderCanvas) dispose() {
 
 func (me *RenderCanvas) onResize(viewWidth, viewHeight int) {
 	if me.viewSizeRelative {
-		me.absViewWidth, me.absViewHeight = int(me.relViewWidth*float64(viewWidth)), int(me.relViewHeight*float64(viewHeight))
+		me.absViewWidth, me.absViewHeight = me.relViewWidth*float64(viewWidth), me.relViewHeight*float64(viewHeight)
 	}
 	if me.isRtt {
-		me.frameBuf.Resize(gl.Sizei(me.absViewWidth), gl.Sizei(me.absViewHeight))
+		me.frameBuf.Resize(gl.Sizei(int(me.absViewWidth)), gl.Sizei(int(me.absViewHeight)))
 	}
-	for _, cam := range me.Cameras {
+	for _, cam := range me.Cams {
+		cam.Rendering.Viewport.canvWidth, cam.Rendering.Viewport.canvHeight = me.absViewWidth, me.absViewHeight
 		cam.Rendering.Viewport.update()
 		cam.ApplyMatrices()
 	}
@@ -115,7 +116,7 @@ func (me *RenderCanvas) SetSize(relative bool, width, height float64) {
 	if me.viewSizeRelative = relative; me.viewSizeRelative {
 		me.relViewWidth, me.relViewHeight = width, height
 	} else {
-		me.absViewWidth, me.absViewHeight = int(width), int(height)
+		me.absViewWidth, me.absViewHeight = width, height
 	}
 	me.onResize(UserIO.Window.width, UserIO.Window.height)
 }
@@ -149,7 +150,7 @@ func (_ RenderCanvases) Walk(onCanv func(*RenderCanvas), onCam func(*Camera)) {
 			onCanv(canv)
 		}
 		if onCam != nil {
-			for _, cam := range canv.Cameras {
+			for _, cam := range canv.Cams {
 				onCam(cam)
 			}
 		}

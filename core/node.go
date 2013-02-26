@@ -38,23 +38,23 @@ type Node struct {
 		camProjMats nodeCamProjGlMats
 	}
 
-	MatID int
+	MatID  int
+	MeshID int
 
-	mesh                *Mesh
-	model               *Model
-	parentNode          *Node
-	rootScene           *Scene
-	meshID, modelID, id string
+	model       *Model
+	parentNode  *Node
+	rootScene   *Scene
+	modelID, id string
 }
 
-func newNode(id, meshID, modelID string, parent *Node, scene *Scene) (me *Node) {
-	me = &Node{id: id, parentNode: parent, rootScene: scene, MatID: -1}
+func newNode(id string, meshID int, modelID string, parent *Node, scene *Scene) (me *Node) {
+	me = &Node{id: id, parentNode: parent, rootScene: scene, MatID: -1, MeshID: meshID}
 	me.Rendering.Enabled = true
 	me.Rendering.skyMode = (parent == nil)
 	me.ChildNodes.init(me)
 	me.Transform.init()
 	me.ApplyTransform()
-	me.SetMeshModelID(meshID, modelID)
+	me.SetModelID(modelID)
 	me.initCamDatas()
 	return
 }
@@ -85,12 +85,12 @@ func (me *Node) Material() (mat *FxMaterial) {
 	return
 }
 
-func (me *Node) MeshID() string {
-	return me.meshID
-}
-
 func (me *Node) ModelID() string {
 	return me.modelID
+}
+
+func (me *Node) mesh() *Mesh {
+	return Core.Libs.Meshes.Get(me.MeshID)
 }
 
 func (me *Node) Root() (root *Node) {
@@ -102,16 +102,13 @@ func (me *Node) Root() (root *Node) {
 	return
 }
 
-func (me *Node) SetMeshModelID(meshID, modelID string) {
-	if meshID != me.meshID {
-		me.mesh, me.meshID = Core.Libs.Meshes[meshID], meshID
-	}
-	if me.mesh == nil {
+func (me *Node) SetModelID(modelID string) {
+	if mesh := me.mesh(); mesh == nil {
 		me.model, me.modelID = nil, ""
 	} else {
-		me.model, me.modelID = me.mesh.Models.Default(), ""
+		me.model, me.modelID = mesh.Models.Default(), ""
 		if modelID != me.modelID {
-			me.model, me.modelID = me.mesh.Models[modelID], modelID
+			me.model, me.modelID = mesh.Models[modelID], modelID
 		}
 	}
 }

@@ -35,18 +35,17 @@ type FxImageBase struct {
 	Preprocess FxImagePreprocess
 	Storage    FxImageStorage
 
-	glTex    *ugl.TextureBase
 	glSynced bool
 }
 
-func (me *FxImageBase) dispose() {
-	me.GpuDelete()
-}
-
-func (me *FxImageBase) init(glTex *ugl.TextureBase) {
-	me.glTex = glTex
+func (me *FxImageBase) init() {
 	me.Storage = Options.Textures.Storage
 	me.Preprocess.ToLinear, me.Preprocess.FlipY, me.Preprocess.ToBgra = true, true, me.Storage.Gpu.Bgra
+}
+
+func (me *FxImageBase) gpuDelete(glTex ugl.Texture) {
+	glTex.Dispose()
+	me.glSynced = false
 }
 
 func (me *FxImageBase) gpuSync(tex ugl.Texture) (err error) {
@@ -54,11 +53,6 @@ func (me *FxImageBase) gpuSync(tex ugl.Texture) (err error) {
 		me.glSynced = true
 	}
 	return
-}
-
-func (me *FxImageBase) GpuDelete() {
-	me.glTex.Dispose()
-	me.glSynced = false
 }
 
 func (me *FxImageBase) GpuSynced() bool {
@@ -69,6 +63,6 @@ func (me *FxImageBase) needPreproc() bool {
 	return me.Preprocess.FlipY || me.Preprocess.ToBgra || me.Preprocess.ToLinear
 }
 
-func (me *FxImageBase) NoAutoMips() {
-	me.glTex.MipMap.AutoGen = false
+func (me *FxImageBase) noAutoMips(glTex *ugl.TextureBase) {
+	glTex.MipMap.AutoGen = false
 }

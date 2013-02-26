@@ -64,10 +64,10 @@ func setupExample_01_TriQuad() {
 
 	//	meshes / models
 
-	if meshTri, err = ng.Core.Libs.Meshes.AddLoad("mesh_tri", ng.MeshProviderPrefabTri); err != nil {
+	if meshTri, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_tri", ng.MeshProviderPrefabTri); err != nil {
 		panic(err)
 	}
-	if meshQuad, err = ng.Core.Libs.Meshes.AddLoad("mesh_quad", ng.MeshProviderPrefabQuad); err != nil {
+	if meshQuad, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_quad", ng.MeshProviderPrefabQuad); err != nil {
 		panic(err)
 	}
 
@@ -83,8 +83,8 @@ func setupExample_01_TriQuad() {
 
 	//	scene
 	scene = apputil.AddMainScene()
-	tri = scene.RootNode.ChildNodes.AddNew("node_tri", "mesh_tri", "")
-	quad = scene.RootNode.ChildNodes.AddNew("node_quad", "mesh_quad", "")
+	tri = scene.RootNode.ChildNodes.AddNew("node_tri", meshTri.ID, "")
+	quad = scene.RootNode.ChildNodes.AddNew("node_quad", meshQuad.ID, "")
 	tri.MatID = apputil.LibIDs.Mat["cat"]
 	quad.MatID = apputil.LibIDs.Mat["dog"]
 }

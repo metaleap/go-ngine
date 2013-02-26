@@ -144,7 +144,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 		ng.Loop.On.EverySec, ng.Loop.On.AppThread, ng.Loop.On.WinThread = onSec, onAppThread, onWinThread
 
 		PostFxCanvas = ng.Core.Rendering.Canvases.Final()
-		PostFxCam = PostFxCanvas.Cameras[0]
+		PostFxCam = PostFxCanvas.Cams[0]
 
 		if setupExampleScene != nil {
 			SceneCanvas = ng.Core.Rendering.Canvases.AddNew(true, 1, 1)

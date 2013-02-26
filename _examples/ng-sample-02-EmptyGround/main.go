@@ -26,7 +26,7 @@ func setupExample_02_EmptyGround() {
 	var (
 		err       error
 		scene     *ng.Scene
-		meshFloor *ng.Mesh
+		meshPlane *ng.Mesh
 		bufRest   *ng.MeshBuffer
 	)
 
@@ -39,15 +39,15 @@ func setupExample_02_EmptyGround() {
 	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(100, 100)); err != nil {
 		panic(err)
 	}
-	if meshFloor, err = ng.Core.Libs.Meshes.AddLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
+	if meshPlane, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
 		panic(err)
 	}
 
-	bufRest.Add(meshFloor) // bufRest.Add(meshCube);
+	bufRest.Add(meshPlane) // bufRest.Add(meshCube);
 
 	//	scene
 	scene = apputil.AddMainScene()
-	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
+	floor = scene.RootNode.ChildNodes.AddNew("node_floor", meshPlane.ID, "")
 	floor.MatID = apputil.LibIDs.Mat["cobbles"]
 	floor.Transform.SetPos(0.1, 0, -8)
 	floor.Transform.SetScale(100)

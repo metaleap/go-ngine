@@ -43,7 +43,7 @@ func setupExample_03_PyrCube() {
 	var (
 		err                          error
 		scene                        *ng.Scene
-		meshFloor, meshPyr, meshCube *ng.Mesh
+		meshPlane, meshPyr, meshCube *ng.Mesh
 		bufFloor, bufRest            *ng.MeshBuffer
 	)
 
@@ -67,16 +67,16 @@ func setupExample_03_PyrCube() {
 	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(36+12, 36+12)); err != nil {
 		panic(err)
 	}
-	if meshFloor, err = ng.Core.Libs.Meshes.AddLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
+	if meshPlane, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
 		panic(err)
 	}
-	if meshPyr, err = ng.Core.Libs.Meshes.AddLoad("mesh_pyramid", ng.MeshProviderPrefabPyramid); err != nil {
+	if meshPyr, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_pyramid", ng.MeshProviderPrefabPyramid); err != nil {
 		panic(err)
 	}
-	if meshCube, err = ng.Core.Libs.Meshes.AddLoad("mesh_cube", ng.MeshProviderPrefabCube); err != nil {
+	if meshCube, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_cube", ng.MeshProviderPrefabCube); err != nil {
 		panic(err)
 	}
-	bufFloor.Add(meshFloor)
+	bufFloor.Add(meshPlane)
 	bufRest.Add(meshCube)
 	bufRest.Add(meshPyr)
 	meshPyr.Models.Default().MatID = apputil.LibIDs.Mat["mosaic"]
@@ -94,10 +94,10 @@ func setupExample_03_PyrCube() {
 
 	//	scene
 	scene = apputil.AddMainScene()
-	apputil.AddSkyMesh(scene, "mesh_cube")
-	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
-	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyramid", "")
-	box = scene.RootNode.ChildNodes.AddNew("node_box", "mesh_cube", "")
+	apputil.AddSkyMesh(scene, meshCube.ID)
+	floor = scene.RootNode.ChildNodes.AddNew("node_floor", meshPlane.ID, "")
+	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", meshPyr.ID, "")
+	box = scene.RootNode.ChildNodes.AddNew("node_box", meshCube.ID, "")
 
 	floor.MatID = apputil.LibIDs.Mat["cobbles"]
 	floor.Transform.SetPos(0.1, 0, -8)

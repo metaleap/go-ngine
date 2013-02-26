@@ -37,42 +37,92 @@ func libElemIDRewrite2(oldNewIDs map[int]int, in int) (out int) {
 	return
 }
 
+func libOnFxImageIDsChanged(oldNewIDs map[int]int) {
+	onOp := func(op FxOp) {
+		if texOp, ok := op.(*fxOpTexBase); ok {
+			libElemIDRewrite(oldNewIDs, &texOp.ImageID)
+		}
+	}
+	var (
+		fx *FxEffect
+		op FxOp
+	)
+	for id, _ := range Core.Libs.Effects {
+		if fx = Core.Libs.Effects.Get(id); fx != nil {
+			for _, op = range fx.Ops {
+				onOp(op)
+			}
+		}
+	}
+	for _, canv := range Core.Rendering.Canvases {
+		for _, cam := range canv.Cams {
+			for _, op = range cam.Rendering.FxOps {
+				onOp(op)
+			}
+		}
+	}
+}
+
 func (_ FxEffectLib) onFxEffectIDsChanged(oldNewIDs map[int]int) {
-	Core.Libs.Materials.Walk(func(mat *FxMaterial) {
-		libElemIDRewrite(oldNewIDs, &mat.DefaultEffectID)
-		for id, _ := range mat.FaceEffects.ByID {
-			mat.FaceEffects.ByID[id] = libElemIDRewrite2(oldNewIDs, mat.FaceEffects.ByID[id])
+	var mat *FxMaterial
+	for id, _ := range Core.Libs.Materials {
+		if mat = Core.Libs.Materials.Get(id); mat != nil {
+			libElemIDRewrite(oldNewIDs, &mat.DefaultEffectID)
+			for id, _ := range mat.FaceEffects.ByID {
+				mat.FaceEffects.ByID[id] = libElemIDRewrite2(oldNewIDs, mat.FaceEffects.ByID[id])
+			}
+			for tag, _ := range mat.FaceEffects.ByTag {
+				mat.FaceEffects.ByTag[tag] = libElemIDRewrite2(oldNewIDs, mat.FaceEffects.ByTag[tag])
+			}
 		}
-		for tag, _ := range mat.FaceEffects.ByTag {
-			mat.FaceEffects.ByTag[tag] = libElemIDRewrite2(oldNewIDs, mat.FaceEffects.ByTag[tag])
-		}
-	})
+	}
 }
 
 func (_ FxImage2DLib) onFxImage2DIDsChanged(oldNewIDs map[int]int) {
+	libOnFxImageIDsChanged(oldNewIDs)
 }
 
 func (_ FxImageCubeLib) onFxImageCubeIDsChanged(oldNewIDs map[int]int) {
+	libOnFxImageIDsChanged(oldNewIDs)
 }
 
 func (_ FxMaterialLib) onFxMaterialIDsChanged(oldNewIDs map[int]int) {
-	Core.Libs.Scenes.Walk(func(scene *Scene) {
-		scene.RootNode.Walk(func(node *Node) {
-			libElemIDRewrite(oldNewIDs, &node.MatID)
-		})
-	})
-	// for meshID, _ := range Core.Libs.Meshes {
-	// 	for modelID, _ := range Core.Libs.Meshes[meshID].Models {
-	// 		if newID, ok = oldNewIDs[model.MatID]; ok {
-	// 			model.MatID = newID
-	// 		}
-	// 	}
-	// }
+	var (
+		scene *Scene
+		mesh  *Mesh
+	)
+	for sceneID, _ := range Core.Libs.Scenes {
+		if scene = Core.Libs.Scenes.Get(sceneID); scene != nil {
+			scene.RootNode.Walk(func(node *Node) {
+				libElemIDRewrite(oldNewIDs, &node.MatID)
+			})
+		}
+	}
+	for meshID, _ := range Core.Libs.Meshes {
+		if mesh = Core.Libs.Meshes.Get(meshID); mesh != nil {
+			for _, model := range Core.Libs.Meshes[meshID].Models {
+				libElemIDRewrite(oldNewIDs, &model.MatID)
+			}
+		}
+	}
+}
+
+func (_ MeshLib) onMeshIDsChanged(oldNewIDs map[int]int) {
+	var (
+		scene *Scene
+	)
+	for sceneID, _ := range Core.Libs.Scenes {
+		if scene = Core.Libs.Scenes.Get(sceneID); scene != nil {
+			scene.RootNode.Walk(func(node *Node) {
+				libElemIDRewrite(oldNewIDs, &node.MeshID)
+			})
+		}
+	}
 }
 
 func (_ SceneLib) onSceneIDsChanged(oldNewIDs map[int]int) {
 	for _, canv := range Core.Rendering.Canvases {
-		for _, cam := range canv.Cameras {
+		for _, cam := range canv.Cams {
 			libElemIDRewrite(oldNewIDs, &cam.sceneID)
 		}
 	}

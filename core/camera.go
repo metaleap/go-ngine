@@ -20,10 +20,6 @@ type CameraPerspective struct {
 	ZNear float64
 }
 
-func (me *Camera) Shit() int {
-	return me.sceneID
-}
-
 //	A camera embodies the eye point of the viewer looking at the visual scene.
 type Camera struct {
 	//	Optical and imager properties for this camera.
@@ -89,7 +85,7 @@ func (me *Camera) init(canv *RenderCanvas, persp3d bool, depth bool, technique s
 	me.sceneID = -1
 	me.thrPrep.onPrepNode = func(n *Node) { me.onPrepNode(n) }
 	rend := &me.Rendering
-	rend.Viewport.canvas = canv
+	rend.Viewport.canvWidth, rend.Viewport.canvHeight = float64(canv.absViewWidth), float64(canv.absViewHeight)
 	rend.States.DepthTest, rend.States.FaceCulling, rend.States.StencilTest = depth, false, false
 	rend.States.ClearColor = Options.Rendering.DefaultClearColor
 	if depth {
@@ -152,24 +148,6 @@ func (me *Camera) RenderTechniqueScene() (tech *RenderTechniqueScene) {
 	return
 }
 
-type Cameras []*Camera
-
-func (me *Cameras) dispose() {
-	for _, cam := range *me {
-		cam.dispose()
-	}
-	*me = nil
-}
-
-func (me *Cameras) Remove(camera *Camera) {
-	for i, cam := range *me {
-		if cam == camera {
-			pre, post := (*me)[:i], (*me)[i+1:]
-			*me = append(pre, post...)
-		}
-	}
-}
-
 //	Encapsulates a device-relative or absolute camera view-port.
 type CameraViewport struct {
 	relative, shouldScissor bool
@@ -178,7 +156,7 @@ type CameraViewport struct {
 	aspect                  float64
 	glVpX, glVpY            gl.Int
 	glVpW, glVpH            gl.Sizei
-	canvas                  *RenderCanvas
+	canvWidth, canvHeight   float64
 }
 
 func (me *CameraViewport) init() {
@@ -201,9 +179,28 @@ func (me *CameraViewport) SetRel(x, y, width, height float64) {
 func (me *CameraViewport) update() {
 	me.shouldScissor = !(me.relative && me.relX == 0 && me.relY == 0 && me.relW == 1 && me.relH == 1)
 	if me.relative {
-		me.absW, me.absH = int(me.relW*float64(me.canvas.absViewWidth)), int(me.relH*float64(me.canvas.absViewHeight))
-		me.absX, me.absY = int(me.relX*float64(me.canvas.absViewWidth)), int(me.relY*float64(me.canvas.absViewHeight))
+		me.absW, me.absH = int(me.relW*float64(me.canvWidth)), int(me.relH*float64(me.canvHeight))
+		me.absX, me.absY = int(me.relX*float64(me.canvWidth)), int(me.relY*float64(me.canvHeight))
 	}
 	me.glVpX, me.glVpY, me.glVpW, me.glVpH = gl.Int(me.absX), gl.Int(me.absY), gl.Sizei(me.absW), gl.Sizei(me.absH)
 	me.aspect = float64(me.absW) / float64(me.absH)
+}
+
+//	Only used for RenderCanvas.Cams
+type Cameras []*Camera
+
+func (me *Cameras) dispose() {
+	for _, cam := range *me {
+		cam.dispose()
+	}
+	*me = nil
+}
+
+func (me *Cameras) Remove(camera *Camera) {
+	for i, cam := range *me {
+		if cam == camera {
+			pre, post := (*me)[:i], (*me)[i+1:]
+			*me = append(pre, post...)
+		}
+	}
 }

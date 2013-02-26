@@ -18,12 +18,15 @@ type FxImage2D struct {
 
 func (me *FxImage2D) init() {
 	me.glTex.Init()
-	me.FxImageBase.init(&me.glTex.TextureBase)
+	me.FxImageBase.init()
 }
 
 func (me *FxImage2D) dispose() {
-	me.FxImageBase.dispose()
 	me.Unload()
+}
+
+func (me *FxImage2D) GpuDelete() {
+	me.FxImageBase.gpuDelete(&me.glTex)
 }
 
 func (me *FxImage2D) GpuSync() (err error) {
@@ -43,11 +46,15 @@ func (me *FxImage2D) Loaded() bool {
 	return me.img != nil
 }
 
+func (me *FxImage2D) NoAutoMips() {
+	me.FxImageBase.noAutoMips(&me.glTex.TextureBase)
+}
+
 func (me *FxImage2D) Unload() {
 	me.img, me.glSynced = nil, false
 }
 
-//#begin-gt -gen-lib2.gt T:FxImage2D L:Images.Tex2D
+//#begin-gt -gen-lib.gt T:FxImage2D L:Images.Tex2D
 
 //	Only used for Core.Libs.Images.Tex2D.
 type FxImage2DLib []FxImage2D

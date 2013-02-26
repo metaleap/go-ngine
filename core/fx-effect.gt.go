@@ -88,7 +88,7 @@ func (me *FxEffect) use() {
 	}
 }
 
-//#begin-gt -gen-lib2.gt T:FxEffect L:Effects
+//#begin-gt -gen-lib.gt T:FxEffect L:Effects
 
 //	Only used for Core.Libs.Effects.
 type FxEffectLib []FxEffect

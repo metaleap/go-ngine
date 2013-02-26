@@ -18,10 +18,10 @@ func (me *Scene) dispose() {
 }
 
 func (me *Scene) init() {
-	me.RootNode = *newNode("", "", "", nil, me)
+	me.RootNode = *newNode("", -1, "", nil, me)
 }
 
-//#begin-gt -gen-lib2.gt T:Scene L:Scenes
+//#begin-gt -gen-lib.gt T:Scene L:Scenes
 
 //	Only used for Core.Libs.Scenes.
 type SceneLib []Scene

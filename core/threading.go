@@ -47,7 +47,7 @@ func (me *EngineCore) copyPrepToRend() {
 }
 
 func (me *RenderCanvas) copyAppToPrep() {
-	for _, cam := range me.Cameras {
+	for _, cam := range me.Cams {
 		if cam.Enabled {
 			cam.copyAppToPrep()
 		}
@@ -55,7 +55,7 @@ func (me *RenderCanvas) copyAppToPrep() {
 }
 
 func (me *RenderCanvas) copyPrepToRend() {
-	for _, cam := range me.Cameras {
+	for _, cam := range me.Cams {
 		if cam.Enabled {
 			cam.copyPrepToRend()
 		}

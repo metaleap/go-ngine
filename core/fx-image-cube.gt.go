@@ -11,23 +11,26 @@ type FxImageCube struct {
 	InitFrom [6]FxImageInitFrom
 
 	glTex  ugl.TextureCube
-	images []image.Image
+	images [6]image.Image
 }
 
 func (me *FxImageCube) init() {
 	me.Unload()
 	me.glTex.Init()
-	me.FxImageBase.init(&me.glTex.TextureBase)
+	me.FxImageBase.init()
 	me.Preprocess.FlipY = false
 }
 
 func (me *FxImageCube) dispose() {
-	me.FxImageBase.dispose()
 	me.Unload()
 }
 
+func (me *FxImageCube) GpuDelete() {
+	me.FxImageBase.gpuDelete(&me.glTex)
+}
+
 func (me *FxImageCube) GpuSync() (err error) {
-	if err = me.glTex.PrepFromImages(me.Storage.Gpu.Bgra, me.Storage.Gpu.UintRev, me.images...); err == nil {
+	if err = me.glTex.PrepFromImages(me.Storage.Gpu.Bgra, me.Storage.Gpu.UintRev, me.images[:]...); err == nil {
 		err = me.gpuSync(&me.glTex)
 	}
 	return
@@ -52,11 +55,18 @@ func (me *FxImageCube) Loaded() bool {
 	return true
 }
 
-func (me *FxImageCube) Unload() {
-	me.glSynced, me.images = false, make([]image.Image, 6)
+func (me *FxImageCube) NoAutoMips() {
+	me.FxImageBase.noAutoMips(&me.glTex.TextureBase)
 }
 
-//#begin-gt -gen-lib2.gt T:FxImageCube L:Images.TexCube
+func (me *FxImageCube) Unload() {
+	me.glSynced = false
+	for i := 0; i < len(me.images); i++ {
+		me.images[i] = nil
+	}
+}
+
+//#begin-gt -gen-lib.gt T:FxImageCube L:Images.TexCube
 
 //	Only used for Core.Libs.Images.TexCube.
 type FxImageCubeLib []FxImageCube
