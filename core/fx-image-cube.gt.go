@@ -129,7 +129,7 @@ func (me *FxImageCubeLib) dispose() {
 }
 
 func (me FxImageCubeLib) Get(id int) (ref *FxImageCube) {
-	if id >= 0 && id < len(me) {
+	if id > -1 && id < len(me) {
 		if ref = &me[id]; ref.ID != id {
 			ref = nil
 		}
@@ -138,10 +138,14 @@ func (me FxImageCubeLib) Get(id int) (ref *FxImageCube) {
 }
 
 func (me FxImageCubeLib) Has(id int) (has bool) {
-	if id >= 0 && id < len(me) {
+	if id > -1 && id < len(me) {
 		has = me[id].ID == id
 	}
 	return
+}
+
+func (me FxImageCubeLib) Ok(id int) bool {
+	return me[id].ID > -1
 }
 
 func (me FxImageCubeLib) Remove(fromID, num int) {
@@ -161,7 +165,7 @@ func (me FxImageCubeLib) Remove(fromID, num int) {
 
 func (me FxImageCubeLib) Walk(on func(ref *FxImageCube)) {
 	for id := 0; id < len(me); id++ {
-		if me[id].ID >= 0 {
+		if me[id].ID > -1 {
 			on(&me[id])
 		}
 	}

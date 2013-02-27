@@ -61,7 +61,7 @@ func (me *__T__Lib) dispose() {
 }
 
 func (me __T__Lib) Get(id int) (ref *__T__) {
-	if id >= 0 && id < len(me) {
+	if id > -1 && id < len(me) {
 		if ref = &me[id]; ref.ID != id {
 			ref = nil
 		}
@@ -70,10 +70,14 @@ func (me __T__Lib) Get(id int) (ref *__T__) {
 }
 
 func (me __T__Lib) Has(id int) (has bool) {
-	if id >= 0 && id < len(me) {
+	if id > -1 && id < len(me) {
 		has = me[id].ID == id
 	}
 	return
+}
+
+func (me __T__Lib) Ok(id int) bool {
+	return me[id].ID > -1
 }
 
 func (me __T__Lib) Remove(fromID, num int) {
@@ -93,7 +97,7 @@ func (me __T__Lib) Remove(fromID, num int) {
 
 func (me __T__Lib) Walk(on func(ref *__T__)) {
 	for id := 0; id < len(me); id++ {
-		if me[id].ID >= 0 {
+		if me[id].ID > -1 {
 			on(&me[id])
 		}
 	}

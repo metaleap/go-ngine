@@ -112,7 +112,7 @@ func (me *FxMaterialLib) dispose() {
 }
 
 func (me FxMaterialLib) Get(id int) (ref *FxMaterial) {
-	if id >= 0 && id < len(me) {
+	if id > -1 && id < len(me) {
 		if ref = &me[id]; ref.ID != id {
 			ref = nil
 		}
@@ -121,10 +121,14 @@ func (me FxMaterialLib) Get(id int) (ref *FxMaterial) {
 }
 
 func (me FxMaterialLib) Has(id int) (has bool) {
-	if id >= 0 && id < len(me) {
+	if id > -1 && id < len(me) {
 		has = me[id].ID == id
 	}
 	return
+}
+
+func (me FxMaterialLib) Ok(id int) bool {
+	return me[id].ID > -1
 }
 
 func (me FxMaterialLib) Remove(fromID, num int) {
@@ -144,7 +148,7 @@ func (me FxMaterialLib) Remove(fromID, num int) {
 
 func (me FxMaterialLib) Walk(on func(ref *FxMaterial)) {
 	for id := 0; id < len(me); id++ {
-		if me[id].ID >= 0 {
+		if me[id].ID > -1 {
 			on(&me[id])
 		}
 	}

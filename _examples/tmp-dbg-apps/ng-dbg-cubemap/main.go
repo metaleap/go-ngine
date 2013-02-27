@@ -41,28 +41,28 @@ func setupScene() {
 		panic(err)
 	}
 
-	if meshFloor, err = ng.Core.Libs.Meshes.AddLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
+	if meshFloor, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
 		panic(err)
 	}
 	bufRest.Add(meshFloor)
 
-	if meshCube, err = ng.Core.Libs.Meshes.AddLoad("mesh_cube", ng.MeshProviderPrefabCube); err != nil {
+	if meshCube, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_cube", ng.MeshProviderPrefabCube); err != nil {
 		panic(err)
 	}
 	bufRest.Add(meshCube)
 
 	//	scene
 	scene = apputil.AddMainScene()
-	apputil.AddSkyMesh(scene, "mesh_cube")
-	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
+	apputil.AddSkyMesh(scene, meshCube.ID)
+	floor = scene.RootNode.ChildNodes.AddNew("node_floor", meshFloor.ID)
 	floor.MatID = apputil.LibIDs.Mat["cobbles"]
 	floor.Transform.SetScale(100)
 	floor.ApplyTransform()
 
-	cube = scene.RootNode.ChildNodes.AddNew("node_cube", "mesh_cube", "")
+	cube = scene.RootNode.ChildNodes.AddNew("node_cube", meshCube.ID)
 	cube.MatID = apputil.LibIDs.Mat["sky"]
 
-	dog = scene.RootNode.ChildNodes.AddNew("node_dog", "mesh_cube", "")
+	dog = scene.RootNode.ChildNodes.AddNew("node_dog", meshCube.ID)
 	dog.MatID = apputil.LibIDs.Mat["dog"]
 	dog.Transform.Pos.X, dog.Transform.Pos.Z = -2, 2
 	dog.ApplyTransform()

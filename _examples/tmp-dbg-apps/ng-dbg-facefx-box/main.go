@@ -56,23 +56,23 @@ func setupScene() {
 		panic(err)
 	}
 
-	if meshFloor, err = ng.Core.Libs.Meshes.AddLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
+	if meshFloor, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
 		panic(err)
 	}
 	bufRest.Add(meshFloor)
 
-	if meshBox, err = ng.Core.Libs.Meshes.AddLoad("mesh_box", ng.MeshProviderPrefabCube); err != nil {
+	if meshBox, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_box", ng.MeshProviderPrefabCube); err != nil {
 		panic(err)
 	}
 	bufRest.Add(meshBox)
 
 	scene = apputil.AddMainScene()
-	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
+	floor = scene.RootNode.ChildNodes.AddNew("node_floor", meshFloor.ID)
 	floor.MatID = apputil.LibIDs.Mat["cobbles"]
 	floor.Transform.SetScale(100)
 	floor.ApplyTransform()
 
-	box = scene.RootNode.ChildNodes.AddNew("node_box", "mesh_box", "")
+	box = scene.RootNode.ChildNodes.AddNew("node_box", meshBox.ID)
 	box.MatID = apputil.LibIDs.Mat["dog"]
 	box.Transform.Pos.Y = 2
 	box.ApplyTransform()

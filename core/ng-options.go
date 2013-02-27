@@ -98,6 +98,7 @@ type EngineOptions struct {
 			}
 			Materials LibElemIDChangedHandler
 			Meshes    LibElemIDChangedHandler
+			Models    LibElemIDChangedHandler
 			Scenes    LibElemIDChangedHandler
 		}
 	}
@@ -161,7 +162,7 @@ func init() {
 
 	//	Set all ID-changed handlers to empty funcs so we don't need to check for nil
 	on, makeNoopHandlerFunc := &o.Libs.OnIDsChanged, func() LibElemIDChangedHandler { return func(_ map[int]int) {} }
-	for _, fn := range []*LibElemIDChangedHandler{&on.Effects, &on.Materials, &on.Meshes, &on.Scenes, &on.Images.Tex2D, &on.Images.TexCube} {
+	for _, fn := range []*LibElemIDChangedHandler{&on.Effects, &on.Materials, &on.Meshes, &on.Models, &on.Scenes, &on.Images.Tex2D, &on.Images.TexCube} {
 		*fn = makeNoopHandlerFunc()
 	}
 

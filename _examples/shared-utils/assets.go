@@ -33,9 +33,8 @@ func AddSkyMesh(scene *ng.Scene, meshID int) {
 	matSky.DefaultEffectID = LibIDs.Fx["sky"]
 	LibIDs.Mat["sky"] = matSky.ID
 
-	ng.Core.Libs.Meshes[meshID].Models.Default().Clone("meshmodel_skybox").MatID = matSky.ID
 	scene.RootNode.MeshID = meshID
-	scene.RootNode.SetModelID("meshmodel_skybox")
+	scene.RootNode.MatID = matSky.ID
 }
 
 //	Sets up textures and associated effects/materials with the specified IDs and image URLs.

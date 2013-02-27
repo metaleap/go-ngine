@@ -5,9 +5,9 @@ import (
 )
 
 type Mesh struct {
-	ID     int
-	Models Models
-	Name   string
+	ID             int
+	DefaultModelID int
+	Name           string
 
 	meshBufOffsetBaseIndex, meshBufOffsetIndices, meshBufOffsetVerts int32
 	gpuSynced                                                        bool
@@ -20,7 +20,7 @@ func (me *Mesh) dispose() {
 }
 
 func (me *Mesh) init() {
-	me.Models = Models{"": newModel("", me)}
+	me.DefaultModelID = -1
 }
 
 func (me *Mesh) GpuDelete() {
@@ -198,7 +198,7 @@ func (me *MeshLib) dispose() {
 }
 
 func (me MeshLib) Get(id int) (ref *Mesh) {
-	if id >= 0 && id < len(me) {
+	if id > -1 && id < len(me) {
 		if ref = &me[id]; ref.ID != id {
 			ref = nil
 		}
@@ -207,10 +207,14 @@ func (me MeshLib) Get(id int) (ref *Mesh) {
 }
 
 func (me MeshLib) Has(id int) (has bool) {
-	if id >= 0 && id < len(me) {
+	if id > -1 && id < len(me) {
 		has = me[id].ID == id
 	}
 	return
+}
+
+func (me MeshLib) Ok(id int) bool {
+	return me[id].ID > -1
 }
 
 func (me MeshLib) Remove(fromID, num int) {
@@ -230,7 +234,7 @@ func (me MeshLib) Remove(fromID, num int) {
 
 func (me MeshLib) Walk(on func(ref *Mesh)) {
 	for id := 0; id < len(me); id++ {
-		if me[id].ID >= 0 {
+		if me[id].ID > -1 {
 			on(&me[id])
 		}
 	}

@@ -117,7 +117,7 @@ func (me *FxImage2DLib) dispose() {
 }
 
 func (me FxImage2DLib) Get(id int) (ref *FxImage2D) {
-	if id >= 0 && id < len(me) {
+	if id > -1 && id < len(me) {
 		if ref = &me[id]; ref.ID != id {
 			ref = nil
 		}
@@ -126,10 +126,14 @@ func (me FxImage2DLib) Get(id int) (ref *FxImage2D) {
 }
 
 func (me FxImage2DLib) Has(id int) (has bool) {
-	if id >= 0 && id < len(me) {
+	if id > -1 && id < len(me) {
 		has = me[id].ID == id
 	}
 	return
+}
+
+func (me FxImage2DLib) Ok(id int) bool {
+	return me[id].ID > -1
 }
 
 func (me FxImage2DLib) Remove(fromID, num int) {
@@ -149,7 +153,7 @@ func (me FxImage2DLib) Remove(fromID, num int) {
 
 func (me FxImage2DLib) Walk(on func(ref *FxImage2D)) {
 	for id := 0; id < len(me); id++ {
-		if me[id].ID >= 0 {
+		if me[id].ID > -1 {
 			on(&me[id])
 		}
 	}

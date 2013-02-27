@@ -18,7 +18,7 @@ func (me *Scene) dispose() {
 }
 
 func (me *Scene) init() {
-	me.RootNode = *newNode("", -1, "", nil, me)
+	me.RootNode = *newNode("", -1, nil, me)
 }
 
 //#begin-gt -gen-lib.gt T:Scene L:Scenes
@@ -84,7 +84,7 @@ func (me *SceneLib) dispose() {
 }
 
 func (me SceneLib) Get(id int) (ref *Scene) {
-	if id >= 0 && id < len(me) {
+	if id > -1 && id < len(me) {
 		if ref = &me[id]; ref.ID != id {
 			ref = nil
 		}
@@ -93,10 +93,14 @@ func (me SceneLib) Get(id int) (ref *Scene) {
 }
 
 func (me SceneLib) Has(id int) (has bool) {
-	if id >= 0 && id < len(me) {
+	if id > -1 && id < len(me) {
 		has = me[id].ID == id
 	}
 	return
+}
+
+func (me SceneLib) Ok(id int) bool {
+	return me[id].ID > -1
 }
 
 func (me SceneLib) Remove(fromID, num int) {
@@ -116,7 +120,7 @@ func (me SceneLib) Remove(fromID, num int) {
 
 func (me SceneLib) Walk(on func(ref *Scene)) {
 	for id := 0; id < len(me); id++ {
-		if me[id].ID >= 0 {
+		if me[id].ID > -1 {
 			on(&me[id])
 		}
 	}

@@ -4,7 +4,6 @@ import (
 	"runtime"
 
 	glfw "github.com/go-gl/glfw"
-	gl "github.com/go3d/go-opengl/core"
 )
 
 var (
@@ -122,6 +121,7 @@ func (_ *EngineLoop) Run() {
 		runGc   = Options.Loop.GcEvery.Frame
 	)
 	if !Loop.Running {
+		Loop.Running = true
 		glfw.SetTime(0)
 		Loop.Tick.Now = glfw.Time()
 		Core.copyAppToPrep()
@@ -130,11 +130,7 @@ func (_ *EngineLoop) Run() {
 		Loop.Tick.Now = glfw.Time()
 		Loop.Tick.PrevSec, Loop.Tick.Delta = int(Loop.Tick.Now), Loop.Tick.Now-Loop.Tick.Prev
 		Stats.reset()
-		glfw.PollEvents()
 		runtime.GC()
-		gl.Flush()
-		gl.Finish()
-		// glfw.SwapBuffers()
 		Diag.LogMisc("Enter loop...")
 		Loop.Running = glfw.WindowParam(glfw.Opened) == 1
 		for Loop.Running {

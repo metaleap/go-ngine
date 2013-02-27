@@ -24,7 +24,7 @@ type EngineCore struct {
 			Tex2D        FxImage2DLib
 		}
 		Meshes MeshLib
-
+		Models ModelLib
 		Scenes SceneLib
 	}
 	Rendering struct {

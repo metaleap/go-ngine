@@ -26,6 +26,14 @@ type Node struct {
 	//	Encapsulates all parent-relative transformations for this Node.
 	Transform NodeTransform
 
+	MatID   int
+	MeshID  int
+	ModelID int
+
+	parentNode *Node
+	rootScene  *Scene
+	id         string
+
 	thrPrep struct {
 		copyDone, done bool
 		matModelView   unum.Mat4
@@ -37,24 +45,15 @@ type Node struct {
 		copyDone    bool
 		camProjMats nodeCamProjGlMats
 	}
-
-	MatID  int
-	MeshID int
-
-	model       *Model
-	parentNode  *Node
-	rootScene   *Scene
-	modelID, id string
 }
 
-func newNode(id string, meshID int, modelID string, parent *Node, scene *Scene) (me *Node) {
-	me = &Node{id: id, parentNode: parent, rootScene: scene, MatID: -1, MeshID: meshID}
+func newNode(id string, meshID int, parent *Node, scene *Scene) (me *Node) {
+	me = &Node{id: id, parentNode: parent, rootScene: scene, MatID: -1, MeshID: meshID, ModelID: -1}
 	me.Rendering.Enabled = true
 	me.Rendering.skyMode = (parent == nil)
 	me.ChildNodes.init(me)
 	me.Transform.init()
 	me.ApplyTransform()
-	me.SetModelID(modelID)
 	me.initCamDatas()
 	return
 }
@@ -78,19 +77,30 @@ func (me *Node) initCamDatas() {
 	})
 }
 
-func (me *Node) Material() (mat *FxMaterial) {
+func (me *Node) material() (mat *FxMaterial) {
 	if mat = Core.Libs.Materials.Get(me.MatID); mat == nil {
-		mat = Core.Libs.Materials.Get(me.model.MatID)
+		if model := me.model(); model != nil {
+			mat = Core.Libs.Materials.Get(model.MatID)
+		}
 	}
 	return
 }
 
-func (me *Node) ModelID() string {
-	return me.modelID
-}
-
 func (me *Node) mesh() *Mesh {
 	return Core.Libs.Meshes.Get(me.MeshID)
+}
+
+func (me *Node) model() *Model {
+	return Core.Libs.Models.Get(me.modelID())
+}
+
+func (me *Node) modelID() (id int) {
+	if id = me.ModelID; id < 0 {
+		if mesh := me.mesh(); mesh != nil {
+			id = mesh.DefaultModelID
+		}
+	}
+	return
 }
 
 func (me *Node) Root() (root *Node) {
@@ -100,17 +110,6 @@ func (me *Node) Root() (root *Node) {
 		root = me.parentNode.Root()
 	}
 	return
-}
-
-func (me *Node) SetModelID(modelID string) {
-	if mesh := me.mesh(); mesh == nil {
-		me.model, me.modelID = nil, ""
-	} else {
-		me.model, me.modelID = mesh.Models.Default(), ""
-		if modelID != me.modelID {
-			me.model, me.modelID = mesh.Models[modelID], modelID
-		}
-	}
 }
 
 func (me *Node) Walk(onNode NodeVisitor) {

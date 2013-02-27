@@ -70,24 +70,24 @@ func setupScene() {
 		panic(err)
 	}
 
-	if meshFloor, err = ng.Core.Libs.Meshes.AddLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
+	if meshFloor, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
 		panic(err)
 	}
 	bufRest.Add(meshFloor)
 
-	if meshPyr, err = ng.Core.Libs.Meshes.AddLoad("mesh_pyr", ng.MeshProviderPrefabPyramid); err != nil {
+	if meshPyr, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_pyr", ng.MeshProviderPrefabPyramid); err != nil {
 		panic(err)
 	}
 	bufRest.Add(meshPyr)
 
 	scene = apputil.AddMainScene()
-	apputil.AddSkyMesh(scene, "mesh_pyr")
-	floor = scene.RootNode.ChildNodes.AddNew("node_floor", "mesh_plane", "")
+	apputil.AddSkyMesh(scene, meshPyr.ID)
+	floor = scene.RootNode.ChildNodes.AddNew("node_floor", meshFloor.ID)
 	floor.MatID = apputil.LibIDs.Mat["cobbles"]
 	floor.Transform.SetScale(100)
 	floor.ApplyTransform()
 
-	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", "mesh_pyr", "")
+	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", meshPyr.ID)
 	pyr.MatID = apputil.LibIDs.Mat["dog"]
 	pyr.Transform.Pos.Y = 2
 	pyr.ApplyTransform()

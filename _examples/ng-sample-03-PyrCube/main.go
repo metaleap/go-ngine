@@ -79,8 +79,14 @@ func setupExample_03_PyrCube() {
 	bufFloor.Add(meshPlane)
 	bufRest.Add(meshCube)
 	bufRest.Add(meshPyr)
-	meshPyr.Models.Default().MatID = apputil.LibIDs.Mat["mosaic"]
-	meshCube.Models.Default().MatID = apputil.LibIDs.Mat["crate"]
+
+	model := ng.Core.Libs.Models.AddNew()
+	model.MatID = apputil.LibIDs.Mat["mosaic"]
+	meshPyr.DefaultModelID = model.ID
+
+	model = ng.Core.Libs.Models.AddNew()
+	model.MatID = apputil.LibIDs.Mat["crate"]
+	meshCube.DefaultModelID = model.ID
 
 	fx := &ng.Core.Libs.Effects[apputil.LibIDs.Fx["cat"]]
 	fx.Ops.EnableOrangify(-1).SetMixWeight(0.5)
@@ -95,9 +101,9 @@ func setupExample_03_PyrCube() {
 	//	scene
 	scene = apputil.AddMainScene()
 	apputil.AddSkyMesh(scene, meshCube.ID)
-	floor = scene.RootNode.ChildNodes.AddNew("node_floor", meshPlane.ID, "")
-	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", meshPyr.ID, "")
-	box = scene.RootNode.ChildNodes.AddNew("node_box", meshCube.ID, "")
+	floor = scene.RootNode.ChildNodes.AddNew("node_floor", meshPlane.ID)
+	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", meshPyr.ID)
+	box = scene.RootNode.ChildNodes.AddNew("node_box", meshCube.ID)
 
 	floor.MatID = apputil.LibIDs.Mat["cobbles"]
 	floor.Transform.SetPos(0.1, 0, -8)
