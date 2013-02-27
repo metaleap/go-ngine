@@ -149,24 +149,16 @@ func (_ *EngineCore) showSplash() {
 	glfw.SwapBuffers()
 }
 
-func (_ *EngineCore) useProg(prog *ugl.Program) {
-	if thrRend.curProg != prog {
-		thrRend.curProg = prog
-		thrRend.curProg.Use()
-	}
-}
-
 func (_ *EngineCore) useTechFx() {
 	if thrRend.curTech != thrRend.nextTech || thrRend.curEffect != thrRend.nextEffect {
-		thrRend.curMeshBuf = nil
 		thrRend.curTech = thrRend.nextTech
 		if !(len(thrRend.curCam.Rendering.FxOps) == 0 && len(thrRend.nextEffect.OpsX) == 0) {
 			thrRend.nextEffect.OpsX = thrRend.curCam.Rendering.FxOps
 			thrRend.nextEffect.UpdateRoutine()
 		}
 		thrRend.curEffect = thrRend.nextEffect
-		prog := glc.shaderMan.ensureProg()
-		Core.useProg(prog)
+		thrRend.curProg = glc.shaderMan.ensureProg()
+		thrRend.curProg.Use()
 		thrRend.curEffect.use()
 	}
 	return

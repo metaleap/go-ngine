@@ -18,9 +18,8 @@ var (
 	thrRend struct {
 		curCam                *Camera
 		curEffect, nextEffect *FxEffect
-		curMeshBuf            *MeshBuffer
-		curProg               *ugl.Program
 		curTech, nextTech     RenderTechnique
+		curProg               *ugl.Program
 		quadTex               gl.Uint
 	}
 )

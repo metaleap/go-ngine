@@ -91,7 +91,7 @@ func (me *Camera) setup(canv *RenderCanvas, persp3d bool, depth bool, technique 
 	me.Controller.init()
 	me.Rendering.Viewport.init()
 	me.ApplyMatrices()
-	me.Rendering.Technique = Core.Rendering.KnownTechniques[technique](me)
+	me.Rendering.Technique = Core.Rendering.KnownTechniques[technique]()
 }
 
 func (me *Camera) init() {
@@ -122,7 +122,6 @@ func (me *Camera) clearNodeMats() {
 func (me *Camera) dispose() {
 	me.clearNodeMats()
 	me.Rendering.Technique.dispose()
-	me.Rendering.Technique = nil
 }
 
 func (me *Camera) scene() *Scene {
@@ -230,8 +229,7 @@ func (me *CameraLib) Compact() {
 	}
 	changed := make(map[int]int, len(*me))
 	for i = 0; i < len(*me); i++ {
-		if (*me)[i].ID != i {
-			ref = &(*me)[i]
+		if ref = &(*me)[i]; ref.ID != i {
 			oldID, ref.ID = ref.ID, i
 			changed[oldID] = i
 		}

@@ -118,10 +118,7 @@ func (me *MeshBuffer) Add(mesh *Mesh) (err error) {
 }
 
 func (me *MeshBuffer) use() {
-	if thrRend.curMeshBuf != me {
-		thrRend.curMeshBuf = me
-		me.glVaos[thrRend.curProg].Bind()
-	}
+	me.glVaos[thrRend.curProg].Bind()
 }
 
 func (me *MeshBuffer) dispose() {

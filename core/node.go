@@ -5,6 +5,10 @@ import (
 	unum "github.com/metaleap/go-util/num"
 )
 
+type refCanvCam struct {
+	canvID, camID int
+}
+
 type nodeCamProjMats map[*Camera]*unum.Mat4
 
 type nodeCamProjGlMats map[*Camera]*ugl.GlMat4

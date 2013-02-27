@@ -5,19 +5,18 @@ import (
 )
 
 type RenderTechniqueQuad struct {
+	renderTechniqueBase
+
 	Effect FxEffect
 
-	fxTex *FxOpTex2D
-	renderTechniqueBase
 	glVao ugl.VertexArray
 }
 
-func newRenderTechniqueQuad(cam *Camera) RenderTechnique {
+func newRenderTechniqueQuad() RenderTechnique {
 	me := &RenderTechniqueQuad{}
-	me.init("Quad", cam)
+	me.init("Quad")
 	me.Effect.init()
-	me.fxTex = me.Effect.Ops.EnableTex2D(-1)
-	me.fxTex.Sampler = &Core.Rendering.Fx.Samplers.NoFilteringClamp
+	me.Effect.Ops.EnableTex2D(-1).Sampler = &Core.Rendering.Fx.Samplers.NoFilteringClamp
 	me.Effect.UpdateRoutine()
 	me.glVao.Create()
 	me.glVao.Setup(nil, nil)

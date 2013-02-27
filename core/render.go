@@ -26,7 +26,7 @@ func (me *RenderCanvas) render() {
 	Core.Rendering.states.SetFramebufferSrgb(false)
 	if me.isRtt {
 		me.frameBuf.Unbind()
-		thrRend.quadTex = me.frameBufTex.Texture2D.GlHandle
+		thrRend.quadTex = me.frameBuf.RenderTextureHandle(0)
 	}
 }
 
@@ -58,7 +58,7 @@ func (me *RenderTechniqueQuad) render() {
 
 func (me *RenderTechniqueScene) render() {
 	thrRend.nextTech = me
-	if scene := me.cam.scene(); scene != nil && scene.RootNode.Rendering.Enabled {
+	if scene := thrRend.curCam.scene(); scene != nil && scene.RootNode.Rendering.Enabled {
 		scene.RootNode.renderChildren()
 		scene.RootNode.renderSelf() // might be a skybox so "render" the root last
 	}

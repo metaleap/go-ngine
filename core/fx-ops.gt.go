@@ -241,7 +241,7 @@ func (me *FxOpTex2D) SetImageID(imageID int) *FxOpTex2D {
 
 func (me *FxOpTex2D) use() {
 	me.fxOpTexBase.use()
-	ugl.Util.SetActiveTextureUnit(me.glUnitE)
+	ugl.Cache.ActiveTexture(me.glUnitE)
 	if Core.Libs.Images.Tex2D.IsOk(me.ImageID) {
 		Core.Libs.Images.Tex2D[me.ImageID].glTex.Bind()
 	}

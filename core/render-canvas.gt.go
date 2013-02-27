@@ -27,8 +27,7 @@ type RenderCanvas struct {
 	absViewWidth, absViewHeight float64
 	relViewWidth, relViewHeight float64
 
-	frameBuf    ugl.Framebuffer
-	frameBufTex ugl.FramebufferRendertexture
+	frameBuf ugl.Framebuffer
 }
 
 func (me *RenderCanvas) init() {
@@ -38,9 +37,8 @@ func (me *RenderCanvas) init() {
 		me.frameBuf.GlTarget, me.Srgb = gl.FRAMEBUFFER, !Options.Initialization.DefaultCanvas.GammaViaShader
 	} else {
 		me.frameBuf.Create(gl.Sizei(UserIO.Window.width), gl.Sizei(UserIO.Window.height), false)
-		me.frameBufTex.Init()
-		me.frameBuf.AttachRendertexture(&me.frameBufTex)
-		me.frameBuf.AttachRenderbuffer(ugl.NewFramebufferRenderbuffer())
+		me.frameBuf.AttachRendertexture()
+		me.frameBuf.AttachRenderbuffer()
 	}
 	Diag.LogIfGlErr("newRenderCanvas()")
 	Core.refreshWinSizeRels()
@@ -152,8 +150,7 @@ func (me *RenderCanvasLib) Compact() {
 	}
 	changed := make(map[int]int, len(*me))
 	for i = 0; i < len(*me); i++ {
-		if (*me)[i].ID != i {
-			ref = &(*me)[i]
+		if ref = &(*me)[i]; ref.ID != i {
 			oldID, ref.ID = ref.ID, i
 			changed[oldID] = i
 		}

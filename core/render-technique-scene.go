@@ -10,9 +10,9 @@ type RenderTechniqueScene struct {
 	// Batch RenderBatch
 }
 
-func newRenderTechniqueScene(cam *Camera) RenderTechnique {
+func newRenderTechniqueScene() RenderTechnique {
 	me := &RenderTechniqueScene{}
-	me.init("Scene", cam)
+	me.init("Scene")
 	// me.Batch.init(me)
 	// me.Batch.Enabled = true
 	return me

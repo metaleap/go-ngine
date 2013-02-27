@@ -129,8 +129,7 @@ func (me *FxEffectLib) Compact() {
 	}
 	changed := make(map[int]int, len(*me))
 	for i = 0; i < len(*me); i++ {
-		if (*me)[i].ID != i {
-			ref = &(*me)[i]
+		if ref = &(*me)[i]; ref.ID != i {
 			oldID, ref.ID = ref.ID, i
 			changed[oldID] = i
 		}

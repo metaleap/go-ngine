@@ -1,6 +1,6 @@
 package core
 
-type RenderTechniqueProvider func(cam *Camera) RenderTechnique
+type RenderTechniqueProvider func() RenderTechnique
 
 type RenderTechnique interface {
 	dispose()
@@ -9,27 +9,16 @@ type RenderTechnique interface {
 }
 
 type renderTechniqueBase struct {
-	cam   *Camera
 	tname string
 }
 
 func (me *renderTechniqueBase) dispose() {
 }
 
-func (me *renderTechniqueBase) init(name string, cam *Camera) {
-	me.cam, me.tname = cam, name
+func (me *renderTechniqueBase) init(name string) {
+	me.tname = name
 }
 
 func (me *renderTechniqueBase) name() string {
 	return me.tname
-}
-
-//	Used only in Core.Rendering.Techniques.
-type RenderTechniques map[string]RenderTechnique
-
-func (me *RenderTechniques) dispose() {
-	for _, o := range *me {
-		o.dispose()
-	}
-	*me = RenderTechniques{}
 }
