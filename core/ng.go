@@ -3,6 +3,7 @@ package core
 import (
 	"fmt"
 	"path/filepath"
+	"runtime"
 
 	ugl "github.com/go3d/go-opengl/util"
 	uio "github.com/metaleap/go-util/io"
@@ -22,6 +23,7 @@ func Init(fullscreen bool) (err error) {
 		badVer     string
 		glVer      float64
 	)
+	defer runtime.GC()
 	if len(Options.AppDir.Temp.BaseName) > 0 {
 		for _, diagTmpDirName := range []string{Options.AppDir.Temp.ShaderSources} {
 			if err = uio.ClearDirectory(Core.fileIO.resolveLocalFilePath(filepath.Join(Options.AppDir.Temp.BaseName, diagTmpDirName))); err != nil {

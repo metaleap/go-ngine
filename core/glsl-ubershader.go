@@ -21,12 +21,22 @@ func newUberShaderFunc(name, rawSrc string) (me *uberShaderFunc) {
 	return
 }
 
-type uberShader struct {
-	rawSources, quals  map[string]string
-	progAtts, progUnis []string
+type uberShaderJob struct {
 	pname              string
-	progTechs          map[*ugl.Program]RenderTechnique
-	funcs              struct {
+	progAtts, progUnis []string
+	quals              map[string]string
+}
+
+func (me *uberShaderJob) init(pname string) {
+	me.pname = pname
+	me.progAtts, me.progUnis = make([]string, 0, 8), make([]string, 0, 8)
+	me.quals = make(map[string]string, 8)
+}
+
+type uberShader struct {
+	rawSources map[string]string
+	progTechs  map[*ugl.Program]RenderTechnique
+	allFuncs   struct {
 		// compute  map[string]*uberShaderFunc
 		// domain   map[string]*uberShaderFunc
 		fragment map[string]*uberShaderFunc
@@ -38,19 +48,19 @@ type uberShader struct {
 }
 
 func (me *uberShader) init() {
-	me.progTechs = make(map[*ugl.Program]RenderTechnique, 32)
-	me.quals, me.rawSources = make(map[string]string, 32), make(map[string]string, 8)
+	me.progTechs = make(map[*ugl.Program]RenderTechnique, 16)
+	me.rawSources = make(map[string]string, 2)
 }
 
 func (me *uberShader) allMaps() map[string]*map[string]*uberShaderFunc {
 	return map[string]*map[string]*uberShaderFunc{
-		// "cx_": &me.funcs.compute,
-		// "dx_": &me.funcs.domain,
-		"fx_": &me.funcs.fragment,
-		// "gx_": &me.funcs.geometry,
-		// "hx_": &me.funcs.hull,
-		"vx_": &me.funcs.vertex,
-		"":    &me.funcs.shared,
+		// "cx_": &me.allFuncs.compute,
+		// "dx_": &me.allFuncs.domain,
+		"fx_": &me.allFuncs.fragment,
+		// "gx_": &me.allFuncs.geometry,
+		// "hx_": &me.allFuncs.hull,
+		"vx_": &me.allFuncs.vertex,
+		"":    &me.allFuncs.shared,
 	}
 }
 
@@ -133,18 +143,20 @@ func (me *uberShader) processFuncs() {
 }
 
 func (me *uberShader) ensureProg() (prog *ugl.Program) {
-	me.pname = thrRend.curEffect.uberPnames[thrRend.curTech.name()]
-	if prog = glc.progMan.Get(me.pname); prog == nil {
-		prog, me.progAtts, me.progUnis = glc.progMan.AddNew(me.pname), me.progAtts[:0], me.progUnis[:0]
+	pname := thrRend.curEffect.uberPnames[thrRend.curTech.name()]
+	if prog = glc.progMan.Get(pname); prog == nil {
+		var job uberShaderJob
+		job.init(pname)
+		prog = glc.progMan.AddNew(pname)
 		var err error
-		if err = me.setShaderSources(prog, thrRend.curTech.name(), thrRend.curEffect); err == nil {
+		if err = me.setShaderSources(prog, &job, thrRend.curTech.name(), thrRend.curEffect); err == nil {
 			var dur time.Duration
-			if dur, err = glcProgsMake(false, me.pname); err == nil {
-				Diag.LogShaders("Built new GLSL shader program '%s' in %v", me.pname, dur)
+			if dur, err = glcProgsMake(false, pname); err == nil {
+				Diag.LogShaders("Built new GLSL shader program '%s' in %v", pname, dur)
 				Stats.addProgCompile(1, dur.Nanoseconds())
 				me.progTechs[prog] = thrRend.curTech
-				if err = prog.SetAttrLocations(me.progAtts...); err == nil {
-					if err = prog.SetUnifLocations(me.progUnis...); err == nil {
+				if err = prog.SetAttrLocations(job.progAtts...); err == nil {
+					if err = prog.SetUnifLocations(job.progUnis...); err == nil {
 						for _, meshBuf := range Core.MeshBuffers.bufs {
 							if err = meshBuf.setupVao(prog, thrRend.curTech); err != nil {
 								break
@@ -157,16 +169,14 @@ func (me *uberShader) ensureProg() (prog *ugl.Program) {
 		if err != nil {
 			Diag.LogErr(err)
 		}
-		me.progAtts, me.progUnis = me.progAtts[:0], me.progUnis[:0]
-		ustr.ClearMap(me.quals)
 	}
 	return
 }
 
-func (me *uberShader) setShaderSources(prog *ugl.Program, vertTech string, fragFx *FxEffect) (err error) {
+func (me *uberShader) setShaderSources(prog *ugl.Program, job *uberShaderJob, vertTech string, fragFx *FxEffect) (err error) {
 	fragInputs := map[string]bool{}
-	if prog.Sources.In.Fragment, err = me.setShaderSourceFrag(fragFx, fragInputs); err == nil {
-		prog.Sources.In.Vertex, err = me.setShaderSourceVert(vertTech, fragInputs)
+	if prog.Sources.In.Fragment, err = me.setShaderSourceFrag(job, fragFx, fragInputs); err == nil {
+		prog.Sources.In.Vertex, err = me.setShaderSourceVert(job, vertTech, fragInputs)
 	}
 	return
 }
@@ -215,7 +225,7 @@ func (me *uberShader) setShaderSourceEnsureFunc(op FxOp, fn *uberShaderFunc, src
 	return nil
 }
 
-func (me *uberShader) setShaderSourceFrag(fx *FxEffect, inputs map[string]bool) (fragSrc string, err error) {
+func (me *uberShader) setShaderSourceFrag(job *uberShaderJob, fx *FxEffect, inputs map[string]bool) (fragSrc string, err error) {
 	var (
 		srcBody, srcHead ustr.Buffer
 		shid             string
@@ -229,18 +239,18 @@ func (me *uberShader) setShaderSourceFrag(fx *FxEffect, inputs map[string]bool) 
 		for _, op = range ops {
 			if op.Enabled() {
 				if shid = Core.Rendering.Fx.procFuncs[op.ProcID()]; len(shid) == 0 {
-					err = errf("uberShader.setShaderSourceFrag('%s') -- unknown fxProc ID '%s'", me.pname, op.ProcID())
+					err = errf("uberShader.setShaderSourceFrag('%s') -- unknown fxProc ID '%s'", job.pname, op.ProcID())
 					return
 				}
-				if shFunc = me.funcs.fragment[shid]; shFunc == nil {
-					err = errf("uberShader.setShaderSourceFrag('%s') -- unknown fragment func '%s'", me.pname, shid)
+				if shFunc = me.allFuncs.fragment[shid]; shFunc == nil {
+					err = errf("uberShader.setShaderSourceFrag('%s') -- unknown fragment func '%s'", job.pname, shid)
 					return
 				}
 				me.setShaderSourceEnsureFunc(op, shFunc, &srcBody, inputs)
 				inputs[op.unifName("float", "MixWeight")] = true
 				for shid, _ = range inputs {
-					if me.quals[shid] = op.qualifiers(shid); len(me.quals[shid]) > 0 {
-						me.quals[shid] = me.quals[shid] + " "
+					if job.quals[shid] = op.qualifiers(shid); len(job.quals[shid]) > 0 {
+						job.quals[shid] = job.quals[shid] + " "
 					}
 				}
 			}
@@ -250,10 +260,10 @@ func (me *uberShader) setShaderSourceFrag(fx *FxEffect, inputs map[string]bool) 
 	for shid, _ = range inputs {
 		switch shid[:4] {
 		case "uni_":
-			ustr.AppendUnique(&me.progUnis, shid)
+			ustr.AppendUnique(&job.progUnis, shid)
 			srcHead.Writeln("uniform %s %s;", me.inoutTypeSpec(shid), shid)
 		case "var_":
-			srcHead.Writeln("%sin %s %s;", me.quals[shid], me.inoutTypeSpec(shid), shid)
+			srcHead.Writeln("%sin %s %s;", job.quals[shid], me.inoutTypeSpec(shid), shid)
 		}
 	}
 	srcBody.Writeln("void main () {")
@@ -261,7 +271,7 @@ func (me *uberShader) setShaderSourceFrag(fx *FxEffect, inputs map[string]bool) 
 	for _, ops = range allOps {
 		for _, op = range ops {
 			if op.Enabled() {
-				shFunc = me.funcs.fragment[Core.Rendering.Fx.procFuncs[op.ProcID()]]
+				shFunc = me.allFuncs.fragment[Core.Rendering.Fx.procFuncs[op.ProcID()]]
 				srcBody.Writeln("\tvCol = mix(vCol, %s%d(vCol), %s);", shFunc.name, op.ProcIndex(), op.unifName("float", "MixWeight"))
 			}
 		}
@@ -272,7 +282,7 @@ func (me *uberShader) setShaderSourceFrag(fx *FxEffect, inputs map[string]bool) 
 	return
 }
 
-func (me *uberShader) setShaderSourceVert(vertTech string, varyings map[string]bool) (vertSrc string, err error) {
+func (me *uberShader) setShaderSourceVert(job *uberShaderJob, vertTech string, varyings map[string]bool) (vertSrc string, err error) {
 	var (
 		i                int
 		srcBody, srcHead ustr.Buffer
@@ -288,10 +298,10 @@ func (me *uberShader) setShaderSourceVert(vertTech string, varyings map[string]b
 	}
 	for i, inout = range outputs {
 		if fname = "vx_" + vertTech + "_" + inout; i > 0 {
-			srcHead.Writeln("%sout %s %s;", me.quals[inout], me.inoutTypeSpec(inout), inout)
+			srcHead.Writeln("%sout %s %s;", job.quals[inout], me.inoutTypeSpec(inout), inout)
 		}
-		if shFunc = me.funcs.vertex[fname]; shFunc == nil {
-			err = errf("uberShader.setShaderSourceVert('%s') -- unknown vertex func '%s'", me.pname, fname)
+		if shFunc = me.allFuncs.vertex[fname]; shFunc == nil {
+			err = errf("uberShader.setShaderSourceVert('%s') -- unknown vertex func '%s'", job.pname, fname)
 			return
 		}
 		me.setShaderSourceEnsureFunc(nil, shFunc, &srcBody, inputs)
@@ -299,10 +309,10 @@ func (me *uberShader) setShaderSourceVert(vertTech string, varyings map[string]b
 	for inout, _ = range inputs {
 		switch inout[:4] {
 		case "att_":
-			ustr.AppendUnique(&me.progAtts, inout)
+			ustr.AppendUnique(&job.progAtts, inout)
 			srcHead.Writeln("in %s %s;", me.inoutTypeSpec(inout), inout)
 		case "uni_":
-			ustr.AppendUnique(&me.progUnis, inout)
+			ustr.AppendUnique(&job.progUnis, inout)
 			srcHead.Writeln("uniform %s %s;", me.inoutTypeSpec(inout), inout)
 		}
 	}
