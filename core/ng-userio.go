@@ -14,7 +14,7 @@ var (
 //	Consider EngineUserIO a "Singleton" type, only valid use is the core.UserIO global variable.
 //	Your gateway for end-user input (key, mouse etc.) and "output" (window management, not the graphics themselves).
 type EngineUserIO struct {
-	//	Minimum delay for EngineUserIO.KeyToggled() method, in seconds. Defaults to 0.25.
+	//	Minimum delay for EngineUserIO.KeyToggled() method, in seconds. Defaults to 0.15.
 	KeyToggleMinDelay float64
 
 	Window WindowOptions
@@ -36,7 +36,7 @@ func (_ *EngineUserIO) dispose() {
 }
 
 func (_ *EngineUserIO) init(forceContextVersion float64) (err error) {
-	UserIO.KeyToggleMinDelay, UserIO.lastToggles = 0.25, make(map[int]float64, 80)
+	UserIO.KeyToggleMinDelay, UserIO.lastToggles = 0.15, make(map[int]float64, 80)
 	if !UserIO.isGlfwInit {
 		if err = glfw.Init(); err == nil {
 			UserIO.isGlfwInit = true

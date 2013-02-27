@@ -47,18 +47,19 @@ func libElemIDChangedRef(oldNewIDs map[int]int, in int) (out int) {
 
 func libOnFxImageIDsChanged(oldNewIDs map[int]int) {
 	onOps := func(ops FxOps) {
-		var ok bool
-		var texOp *fxOpTexBase
-		for _, op := range ops {
-			if texOp, ok = op.(*fxOpTexBase); ok {
-				libElemIDChangeRef(oldNewIDs, &texOp.ImageID)
+		if len(ops) > 0 {
+			var ok bool
+			var texOp *fxOpTexBase
+			for i := 0; i < len(ops); i++ {
+				if texOp, ok = ops[i].(*fxOpTexBase); ok {
+					libElemIDChangeRef(oldNewIDs, &texOp.ImageID)
+				}
 			}
 		}
 	}
-	var fx *FxEffect
-	for id, _ := range Core.Libs.Effects {
-		if fx = Core.Libs.Effects.Get(id); fx != nil {
-			onOps(fx.Ops)
+	for id := 0; id < len(Core.Libs.Effects); id++ {
+		if Core.Libs.Effects.Ok(id) {
+			onOps(Core.Libs.Effects[id].Ops)
 		}
 	}
 	for _, canv := range Core.Rendering.Canvases {
@@ -69,15 +70,18 @@ func libOnFxImageIDsChanged(oldNewIDs map[int]int) {
 }
 
 func (_ FxEffectLib) onFxEffectIDsChanged(oldNewIDs map[int]int) {
-	var mat *FxMaterial
-	for id, _ := range Core.Libs.Materials {
-		if mat = Core.Libs.Materials.Get(id); mat != nil {
-			libElemIDChangeRef(oldNewIDs, &mat.DefaultEffectID)
-			for id, _ := range mat.FaceEffects.ByID {
-				mat.FaceEffects.ByID[id] = libElemIDChangedRef(oldNewIDs, mat.FaceEffects.ByID[id])
-			}
-			for tag, _ := range mat.FaceEffects.ByTag {
-				mat.FaceEffects.ByTag[tag] = libElemIDChangedRef(oldNewIDs, mat.FaceEffects.ByTag[tag])
+	for mid := 0; mid < len(Core.Libs.Materials); mid++ {
+		if Core.Libs.Materials.Ok(mid) {
+			libElemIDChangeRef(oldNewIDs, &Core.Libs.Materials[mid].DefaultEffectID)
+			if Core.Libs.Materials[mid].HasFaceEffects() {
+				var m int
+				var f string
+				for f, m = range Core.Libs.Materials[mid].FaceEffects.ByID {
+					Core.Libs.Materials[mid].FaceEffects.ByID[f] = libElemIDChangedRef(oldNewIDs, m)
+				}
+				for f, m = range Core.Libs.Materials[mid].FaceEffects.ByTag {
+					Core.Libs.Materials[mid].FaceEffects.ByTag[f] = libElemIDChangedRef(oldNewIDs, m)
+				}
 			}
 		}
 	}
@@ -92,31 +96,25 @@ func (_ FxImageCubeLib) onFxImageCubeIDsChanged(oldNewIDs map[int]int) {
 }
 
 func (_ FxMaterialLib) onFxMaterialIDsChanged(oldNewIDs map[int]int) {
-	var (
-		scene *Scene
-		model *Model
-	)
-	for sceneID, _ := range Core.Libs.Scenes {
-		if scene = Core.Libs.Scenes.Get(sceneID); scene != nil {
-			scene.RootNode.Walk(func(node *Node) {
+	var id int
+	for id = 0; id < len(Core.Libs.Scenes); id++ {
+		if Core.Libs.Scenes.Ok(id) {
+			Core.Libs.Scenes[id].RootNode.Walk(func(node *Node) {
 				libElemIDChangeRef(oldNewIDs, &node.MatID)
 			})
 		}
 	}
-	for modelID, _ := range Core.Libs.Models {
-		if model = Core.Libs.Models.Get(modelID); model != nil {
-			libElemIDChangeRef(oldNewIDs, &model.MatID)
+	for id = 0; id < len(Core.Libs.Models); id++ {
+		if Core.Libs.Models.Ok(id) {
+			libElemIDChangeRef(oldNewIDs, &Core.Libs.Models[id].MatID)
 		}
 	}
 }
 
 func (_ MeshLib) onMeshIDsChanged(oldNewIDs map[int]int) {
-	var (
-		scene *Scene
-	)
-	for sceneID, _ := range Core.Libs.Scenes {
-		if scene = Core.Libs.Scenes.Get(sceneID); scene != nil {
-			scene.RootNode.Walk(func(node *Node) {
+	for id := 0; id < len(Core.Libs.Scenes); id++ {
+		if Core.Libs.Scenes.Ok(id) {
+			Core.Libs.Scenes[id].RootNode.Walk(func(node *Node) {
 				libElemIDChangeRef(oldNewIDs, &node.MeshID)
 			})
 		}
@@ -124,18 +122,17 @@ func (_ MeshLib) onMeshIDsChanged(oldNewIDs map[int]int) {
 }
 
 func (_ ModelLib) onModelIDsChanged(oldNewIDs map[int]int) {
-	var scene *Scene
-	for sceneID, _ := range Core.Libs.Scenes {
-		if scene = Core.Libs.Scenes.Get(sceneID); scene != nil {
-			scene.RootNode.Walk(func(node *Node) {
+	var id int
+	for id = 0; id < len(Core.Libs.Scenes); id++ {
+		if Core.Libs.Scenes.Ok(id) {
+			Core.Libs.Scenes[id].RootNode.Walk(func(node *Node) {
 				libElemIDChangeRef(oldNewIDs, &node.ModelID)
 			})
 		}
 	}
-	var mesh *Mesh
-	for meshID, _ := range Core.Libs.Meshes {
-		if mesh = Core.Libs.Meshes.Get(meshID); mesh != nil {
-			libElemIDChangeRef(oldNewIDs, &mesh.DefaultModelID)
+	for id = 0; id < len(Core.Libs.Meshes); id++ {
+		if Core.Libs.Meshes.Ok(id) {
+			libElemIDChangeRef(oldNewIDs, &Core.Libs.Meshes[id].DefaultModelID)
 		}
 	}
 }

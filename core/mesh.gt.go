@@ -114,10 +114,9 @@ func (me *Mesh) Loaded() bool {
 }
 
 func (me MeshLib) GpuSync() (err error) {
-	var mesh *Mesh
-	for id, _ := range Core.Libs.Meshes {
-		if mesh = Core.Libs.Meshes.Get(id); mesh != nil && !mesh.gpuSynced {
-			if err = mesh.GpuUpload(); err != nil {
+	for id := 0; id < len(Core.Libs.Meshes); id++ {
+		if Core.Libs.Meshes.Ok(id) && !Core.Libs.Meshes[id].gpuSynced {
+			if err = Core.Libs.Meshes[id].GpuUpload(); err != nil {
 				return
 			}
 		}
@@ -206,15 +205,15 @@ func (me MeshLib) Get(id int) (ref *Mesh) {
 	return
 }
 
-func (me MeshLib) Has(id int) (has bool) {
+func (me MeshLib) IsOk(id int) (ok bool) {
 	if id > -1 && id < len(me) {
-		has = me[id].ID == id
+		ok = me[id].ID == id
 	}
 	return
 }
 
 func (me MeshLib) Ok(id int) bool {
-	return me[id].ID > -1
+	return me[id].ID == id
 }
 
 func (me MeshLib) Remove(fromID, num int) {

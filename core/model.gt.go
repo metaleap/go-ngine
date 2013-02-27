@@ -99,15 +99,15 @@ func (me ModelLib) Get(id int) (ref *Model) {
 	return
 }
 
-func (me ModelLib) Has(id int) (has bool) {
+func (me ModelLib) IsOk(id int) (ok bool) {
 	if id > -1 && id < len(me) {
-		has = me[id].ID == id
+		ok = me[id].ID == id
 	}
 	return
 }
 
 func (me ModelLib) Ok(id int) bool {
-	return me[id].ID > -1
+	return me[id].ID == id
 }
 
 func (me ModelLib) Remove(fromID, num int) {

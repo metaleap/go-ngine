@@ -26,6 +26,14 @@ func onSec() {
 	fx = ng.Core.Libs.Effects.Get(apputil.LibIDs.Fx["dog"])
 	fx.Ops.ToggleOrangify(0)
 	fx.UpdateRoutine()
+	return
+	fxID := apputil.LibIDs.Fx["cat"]
+	ng.Core.Libs.Effects[fxID].Ops.ToggleOrangify(0)
+	ng.Core.Libs.Effects[fxID].UpdateRoutine()
+
+	fxID = apputil.LibIDs.Fx["dog"]
+	ng.Core.Libs.Effects[fxID].Ops.ToggleOrangify(0)
+	ng.Core.Libs.Effects[fxID].UpdateRoutine()
 }
 
 //	called once per frame in main thread

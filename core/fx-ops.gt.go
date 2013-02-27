@@ -242,8 +242,8 @@ func (me *FxOpTex2D) SetImageID(imageID int) *FxOpTex2D {
 func (me *FxOpTex2D) use() {
 	me.fxOpTexBase.use()
 	ugl.Util.SetActiveTextureUnit(me.glUnitE)
-	if img := Core.Libs.Images.Tex2D.Get(me.ImageID); img != nil {
-		img.glTex.Bind()
+	if Core.Libs.Images.Tex2D.IsOk(me.ImageID) {
+		Core.Libs.Images.Tex2D[me.ImageID].glTex.Bind()
 	}
 	thrRend.curProg.Uniform1i(me.unifName("sampler2D", "Img"), me.glUnitI)
 }
@@ -264,8 +264,8 @@ func (me *FxOpTexCube) SetImageID(imageID int) *FxOpTexCube {
 
 func (me *FxOpTexCube) use() {
 	me.fxOpTexBase.use()
-	if img := Core.Libs.Images.TexCube.Get(me.ImageID); img != nil {
-		img.glTex.Bind()
+	if Core.Libs.Images.TexCube.IsOk(me.ImageID) {
+		Core.Libs.Images.TexCube[me.ImageID].glTex.Bind()
 	}
 	thrRend.curProg.Uniform1i(me.unifName("samplerCube", "Img"), 0)
 }
@@ -385,8 +385,6 @@ func (me *FxOps) ToggleTex2D(n int) {
 	me.Toggle("Tex2D", n)
 }
 
-
-
 //	Convenience short-hand for me.Disable("TexCube", n).
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 func (me FxOps) DisableTexCube(n int) {
@@ -410,8 +408,6 @@ func (me FxOps) GetTexCube(n int) (op *FxOpTexCube) {
 func (me *FxOps) ToggleTexCube(n int) {
 	me.Toggle("TexCube", n)
 }
-
-
 
 //	Convenience short-hand for me.Disable("Orangify", n).
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
@@ -437,8 +433,6 @@ func (me *FxOps) ToggleOrangify(n int) {
 	me.Toggle("Orangify", n)
 }
 
-
-
 //	Convenience short-hand for me.Disable("Grayscale", n).
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 func (me FxOps) DisableGrayscale(n int) {
@@ -462,8 +456,6 @@ func (me FxOps) GetGrayscale(n int) (op *FxOpGrayscale) {
 func (me *FxOps) ToggleGrayscale(n int) {
 	me.Toggle("Grayscale", n)
 }
-
-
 
 //	Convenience short-hand for me.Disable("Coords", n).
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
@@ -489,8 +481,6 @@ func (me *FxOps) ToggleCoords(n int) {
 	me.Toggle("Coords", n)
 }
 
-
-
 //	Convenience short-hand for me.Disable("Color", n).
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 func (me FxOps) DisableColor(n int) {
@@ -514,8 +504,6 @@ func (me FxOps) GetColor(n int) (op *FxOpColor) {
 func (me *FxOps) ToggleColor(n int) {
 	me.Toggle("Color", n)
 }
-
-
 
 //	Convenience short-hand for me.Disable("Gamma", n).
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.

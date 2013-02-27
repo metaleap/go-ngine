@@ -125,15 +125,15 @@ func (me FxImage2DLib) Get(id int) (ref *FxImage2D) {
 	return
 }
 
-func (me FxImage2DLib) Has(id int) (has bool) {
+func (me FxImage2DLib) IsOk(id int) (ok bool) {
 	if id > -1 && id < len(me) {
-		has = me[id].ID == id
+		ok = me[id].ID == id
 	}
 	return
 }
 
 func (me FxImage2DLib) Ok(id int) bool {
-	return me[id].ID > -1
+	return me[id].ID == id
 }
 
 func (me FxImage2DLib) Remove(fromID, num int) {

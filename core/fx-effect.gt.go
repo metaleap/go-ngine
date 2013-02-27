@@ -159,15 +159,15 @@ func (me FxEffectLib) Get(id int) (ref *FxEffect) {
 	return
 }
 
-func (me FxEffectLib) Has(id int) (has bool) {
+func (me FxEffectLib) IsOk(id int) (ok bool) {
 	if id > -1 && id < len(me) {
-		has = me[id].ID == id
+		ok = me[id].ID == id
 	}
 	return
 }
 
 func (me FxEffectLib) Ok(id int) bool {
-	return me[id].ID > -1
+	return me[id].ID == id
 }
 
 func (me FxEffectLib) Remove(fromID, num int) {

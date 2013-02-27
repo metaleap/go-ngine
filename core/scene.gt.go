@@ -92,15 +92,15 @@ func (me SceneLib) Get(id int) (ref *Scene) {
 	return
 }
 
-func (me SceneLib) Has(id int) (has bool) {
+func (me SceneLib) IsOk(id int) (ok bool) {
 	if id > -1 && id < len(me) {
-		has = me[id].ID == id
+		ok = me[id].ID == id
 	}
 	return
 }
 
 func (me SceneLib) Ok(id int) bool {
-	return me[id].ID > -1
+	return me[id].ID == id
 }
 
 func (me SceneLib) Remove(fromID, num int) {

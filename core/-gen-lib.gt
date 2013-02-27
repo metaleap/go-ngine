@@ -69,15 +69,15 @@ func (me __T__Lib) Get(id int) (ref *__T__) {
 	return
 }
 
-func (me __T__Lib) Has(id int) (has bool) {
+func (me __T__Lib) IsOk(id int) (ok bool) {
 	if id > -1 && id < len(me) {
-		has = me[id].ID == id
+		ok = me[id].ID == id
 	}
 	return
 }
 
 func (me __T__Lib) Ok(id int) bool {
-	return me[id].ID > -1
+	return me[id].ID == id
 }
 
 func (me __T__Lib) Remove(fromID, num int) {

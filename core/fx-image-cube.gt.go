@@ -137,15 +137,15 @@ func (me FxImageCubeLib) Get(id int) (ref *FxImageCube) {
 	return
 }
 
-func (me FxImageCubeLib) Has(id int) (has bool) {
+func (me FxImageCubeLib) IsOk(id int) (ok bool) {
 	if id > -1 && id < len(me) {
-		has = me[id].ID == id
+		ok = me[id].ID == id
 	}
 	return
 }
 
 func (me FxImageCubeLib) Ok(id int) bool {
-	return me[id].ID > -1
+	return me[id].ID == id
 }
 
 func (me FxImageCubeLib) Remove(fromID, num int) {

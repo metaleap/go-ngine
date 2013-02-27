@@ -120,15 +120,15 @@ func (me FxMaterialLib) Get(id int) (ref *FxMaterial) {
 	return
 }
 
-func (me FxMaterialLib) Has(id int) (has bool) {
+func (me FxMaterialLib) IsOk(id int) (ok bool) {
 	if id > -1 && id < len(me) {
-		has = me[id].ID == id
+		ok = me[id].ID == id
 	}
 	return
 }
 
 func (me FxMaterialLib) Ok(id int) bool {
-	return me[id].ID > -1
+	return me[id].ID == id
 }
 
 func (me FxMaterialLib) Remove(fromID, num int) {
