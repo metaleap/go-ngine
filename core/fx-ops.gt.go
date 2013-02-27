@@ -340,7 +340,7 @@ func (me *FxOps) Toggle(procID string, n int) {
 		op      FxOp
 		matcher ustr.Matcher
 	)
-	matcher.AddPattern(procID)
+	matcher.AddPatterns(procID)
 	idx, found, all := -1, false, n < 0
 	for _, op = range *me {
 		if matcher.IsMatch(op.ProcID()) {
