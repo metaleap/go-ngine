@@ -134,9 +134,9 @@ func (me *MeshLib) AddNewAndLoad(name string, meshProvider MeshProvider, args ..
 	return
 }
 
-//#begin-gt -gen-lib.gt T:Mesh L:Meshes
+//#begin-gt -gen-lib.gt T:Mesh L:Core.Libs.Meshes
 
-//	Only used for Core.Libs.Meshes.
+//	Only used for Core.Libs.Meshes
 type MeshLib []Mesh
 
 func (me *MeshLib) AddNew() (ref *Mesh) {
@@ -183,7 +183,6 @@ func (me *MeshLib) Compact() {
 	}
 	if len(changed) > 0 {
 		me.onMeshIDsChanged(changed)
-		Options.Libs.OnIDsChanged.Meshes(changed)
 	}
 }
 
@@ -227,7 +226,6 @@ func (me MeshLib) Remove(fromID, num int) {
 			changed[id], me[id].ID = -1, -1
 		}
 		me.onMeshIDsChanged(changed)
-		Options.Libs.OnIDsChanged.Meshes(changed)
 	}
 }
 

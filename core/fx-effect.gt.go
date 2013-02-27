@@ -88,9 +88,9 @@ func (me *FxEffect) use() {
 	}
 }
 
-//#begin-gt -gen-lib.gt T:FxEffect L:Effects
+//#begin-gt -gen-lib.gt T:FxEffect L:Core.Libs.Effects
 
-//	Only used for Core.Libs.Effects.
+//	Only used for Core.Libs.Effects
 type FxEffectLib []FxEffect
 
 func (me *FxEffectLib) AddNew() (ref *FxEffect) {
@@ -137,7 +137,6 @@ func (me *FxEffectLib) Compact() {
 	}
 	if len(changed) > 0 {
 		me.onFxEffectIDsChanged(changed)
-		Options.Libs.OnIDsChanged.Effects(changed)
 	}
 }
 
@@ -181,7 +180,6 @@ func (me FxEffectLib) Remove(fromID, num int) {
 			changed[id], me[id].ID = -1, -1
 		}
 		me.onFxEffectIDsChanged(changed)
-		Options.Libs.OnIDsChanged.Effects(changed)
 	}
 }
 

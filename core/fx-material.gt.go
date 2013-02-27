@@ -49,9 +49,9 @@ func (me *FxMaterial) HasFaceEffects() bool {
 	return len(me.FaceEffects.ByID) > 0 || len(me.FaceEffects.ByTag) > 0
 }
 
-//#begin-gt -gen-lib.gt T:FxMaterial L:Materials
+//#begin-gt -gen-lib.gt T:FxMaterial L:Core.Libs.Materials
 
-//	Only used for Core.Libs.Materials.
+//	Only used for Core.Libs.Materials
 type FxMaterialLib []FxMaterial
 
 func (me *FxMaterialLib) AddNew() (ref *FxMaterial) {
@@ -98,7 +98,6 @@ func (me *FxMaterialLib) Compact() {
 	}
 	if len(changed) > 0 {
 		me.onFxMaterialIDsChanged(changed)
-		Options.Libs.OnIDsChanged.Materials(changed)
 	}
 }
 
@@ -142,7 +141,6 @@ func (me FxMaterialLib) Remove(fromID, num int) {
 			changed[id], me[id].ID = -1, -1
 		}
 		me.onFxMaterialIDsChanged(changed)
-		Options.Libs.OnIDsChanged.Materials(changed)
 	}
 }
 

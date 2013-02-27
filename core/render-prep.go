@@ -1,17 +1,19 @@
 package core
 
-func (me *EngineCore) onPrep() {
+func (_ *EngineCore) onPrep() {
 	// thrPrep.nodePreBatch.reset()
-	for _, canv := range me.Rendering.Canvases {
-		if canv.renderThisFrame() {
-			canv.onPrep()
+	for cid := 0; cid < len(Core.Rendering.Canvases); cid++ {
+		if Core.Rendering.Canvases.Ok(cid) && Core.Rendering.Canvases[cid].renderThisFrame() {
+			Core.Rendering.Canvases[cid].onPrep()
 		}
 	}
 }
 
 func (me *RenderCanvas) onPrep() {
-	for _, cam := range me.Cams {
-		cam.onPrep()
+	for cam := 0; cam < len(me.Cameras); cam++ {
+		if me.Cameras.Ok(cam) {
+			me.Cameras[cam].onPrep()
+		}
 	}
 }
 

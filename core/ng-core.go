@@ -28,7 +28,7 @@ type EngineCore struct {
 		Scenes SceneLib
 	}
 	Rendering struct {
-		Canvases RenderCanvases
+		Canvases RenderCanvasLib
 		Fx       struct {
 			KnownProcIDs []string
 			Samplers     struct {
@@ -80,8 +80,9 @@ func (_ *EngineCore) initRendering() {
 	rend.Fx.Samplers.FullFilteringRepeat.Create().EnableFullFiltering(true, 8).SetWrap(gl.REPEAT)
 	rend.Fx.Samplers.FullFilteringClamp.Create().EnableFullFiltering(true, 8).SetWrap(gl.CLAMP_TO_EDGE)
 	rend.Fx.Samplers.NoFilteringClamp.Create().DisableAllFiltering(false).SetWrap(gl.CLAMP_TO_BORDER)
-	rend.Canvases = append(RenderCanvases{}, newRenderCanvas(true, true, 1, 1))
-	if quadFx := &rend.Canvases.Final().AddNewCameraQuad().RenderTechniqueQuad().Effect; Options.Initialization.DefaultCanvas.GammaViaShader {
+	rend.Canvases = make(RenderCanvasLib, 0, 4)
+	rend.Canvases.AddNew()
+	if quadFx := &rend.Canvases[0].AddNewCameraQuad().RenderTechniqueQuad().Effect; Options.Initialization.DefaultCanvas.GammaViaShader {
 		quadFx.Ops.EnableGamma(-1)
 		quadFx.KeepOpsLast = append(quadFx.KeepOpsLast, "Gamma")
 		quadFx.UpdateRoutine()
@@ -90,10 +91,10 @@ func (_ *EngineCore) initRendering() {
 
 func (_ *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 	if Core.isInit {
-		for _, canv := range Core.Rendering.Canvases {
-			canv.onResize(viewWidth, viewHeight)
+		for i := 0; i < len(Core.Rendering.Canvases); i++ {
+			Core.Rendering.Canvases[i].onResize(viewWidth, viewHeight)
 		}
-		Diag.LogIfGlErr("onResizeWindow")
+		// Diag.LogIfGlErr("onResizeWindow")
 	}
 }
 
@@ -141,7 +142,7 @@ func (_ *EngineCore) showSplash() {
 	splash.Preprocess.FlipY, splash.Preprocess.ToLinear, splash.Preprocess.ToBgra = false, false, false
 	splash.Load()
 	splash.GpuSync()
-	thrRend.quadTex = &splash.glTex
+	thrRend.quadTex = splash.glTex.GlHandle
 	Core.onRender()
 	splash.Unload()
 	Core.Libs.Images.SplashScreen.InitFrom.RawData = Core.Libs.Images.SplashScreen.InitFrom.RawData[:0]
@@ -152,13 +153,6 @@ func (_ *EngineCore) useProg(prog *ugl.Program) {
 	if thrRend.curProg != prog {
 		thrRend.curProg = prog
 		thrRend.curProg.Use()
-	}
-}
-
-func (_ *EngineCore) useSampler(sampler *ugl.Sampler, unit gl.Uint) {
-	if thrRend.curSampler[unit] != sampler {
-		thrRend.curSampler[unit] = sampler
-		sampler.Bind(unit)
 	}
 }
 

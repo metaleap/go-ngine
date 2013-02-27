@@ -21,7 +21,8 @@ type Controller struct {
 	//	do so in between calling the BeginUpdate() and EndUpdate() methods.
 	UpAxis unum.Vec3
 
-	Params *ControllerParams
+	//	Defaults to a copy of Options.Cameras.DefaultControllerParams
+	Params ControllerParams
 
 	thrApp struct {
 		mat unum.Mat4
@@ -70,8 +71,7 @@ func (me *Controller) BeginUpdate() {
 	me.autoUpdate = false
 }
 
-func (me *Controller) CopyFrom(ctl *Controller) {
-	copy := *ctl
+func (me *Controller) CopyFrom(copy Controller) {
 	copy.thrPrep = me.thrPrep
 	*me = copy
 }
@@ -94,7 +94,7 @@ func (me *Controller) EndUpdate() {
 }
 
 func (me *Controller) init() {
-	me.Params = &Options.Cameras.DefaultControllerParams
+	me.Params = Options.Cameras.DefaultControllerParams
 	me.autoUpdate, me.dir.Z, me.UpAxis.Y = true, 1, 1
 	unum.Mat4Identities(&me.thrPrep.mat, &me.thrApp.mat)
 	htarget := &unum.Vec3{X: me.dir.X, Y: 0, Z: me.dir.Z}
@@ -243,13 +243,7 @@ type ControllerParams struct {
 	MinTurnDown float64
 }
 
-func NewControllerParams() (me *ControllerParams) {
-	me = &ControllerParams{}
-	me.init()
-	return
-}
-
-func (me *ControllerParams) init() {
+func (me *ControllerParams) initDefaults() {
 	me.MoveSpeed, me.MoveSpeedupFactor, me.TurnSpeed, me.TurnSpeedupFactor = 2, 1, 90, 1
 	me.MaxTurnUp, me.MinTurnDown = 90, -90
 }

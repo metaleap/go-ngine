@@ -66,9 +66,9 @@ func (me *FxImageCube) Unload() {
 	}
 }
 
-//#begin-gt -gen-lib.gt T:FxImageCube L:Images.TexCube
+//#begin-gt -gen-lib.gt T:FxImageCube L:Core.Libs.Images.TexCube
 
-//	Only used for Core.Libs.Images.TexCube.
+//	Only used for Core.Libs.Images.TexCube
 type FxImageCubeLib []FxImageCube
 
 func (me *FxImageCubeLib) AddNew() (ref *FxImageCube) {
@@ -115,7 +115,6 @@ func (me *FxImageCubeLib) Compact() {
 	}
 	if len(changed) > 0 {
 		me.onFxImageCubeIDsChanged(changed)
-		Options.Libs.OnIDsChanged.Images.TexCube(changed)
 	}
 }
 
@@ -159,7 +158,6 @@ func (me FxImageCubeLib) Remove(fromID, num int) {
 			changed[id], me[id].ID = -1, -1
 		}
 		me.onFxImageCubeIDsChanged(changed)
-		Options.Libs.OnIDsChanged.Images.TexCube(changed)
 	}
 }
 

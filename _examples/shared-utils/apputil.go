@@ -138,16 +138,16 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	if err != nil {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
-		defer ng.Dispose()
+		// defer ng.Dispose()
 
 		//	STEP 2: post-init, pre-loop setup
 		ng.Loop.On.EverySec, ng.Loop.On.AppThread, ng.Loop.On.WinThread = onSec, onAppThread, onWinThread
 
-		PostFxCanvas = ng.Core.Rendering.Canvases.Final()
-		PostFxCam = PostFxCanvas.Cams[0]
+		PostFxCanvas = &ng.Core.Rendering.Canvases[0]
+		PostFxCam = &PostFxCanvas.Cameras[0]
 
 		if setupExampleScene != nil {
-			SceneCanvas = ng.Core.Rendering.Canvases.AddNew(true, 1, 1)
+			SceneCanvas = ng.Core.Rendering.Canvases.AddNew()
 			SceneCam = SceneCanvas.AddNewCamera3D()
 			SceneCam.Rendering.States.ClearColor.Set(0.5, 0.6, 0.85, 1)
 			setupExampleScene()

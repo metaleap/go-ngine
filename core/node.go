@@ -72,9 +72,14 @@ func (me *Node) initCamData(cam *Camera) {
 func (me *Node) initCamDatas() {
 	me.thrPrep.camRender = map[*Camera]bool{}
 	me.thrPrep.camProjMats, me.thrRend.camProjMats = nodeCamProjMats{}, nodeCamProjGlMats{}
-	Core.Rendering.Canvases.Walk(nil, func(cam *Camera) {
-		me.initCamData(cam)
-	})
+	var cam int
+	for canv := 0; canv < len(Core.Rendering.Canvases); canv++ {
+		for cam = 0; cam < len(Core.Rendering.Canvases[canv].Cameras); cam++ {
+			if Core.Rendering.Canvases[canv].Cameras.Ok(cam) {
+				me.initCamData(&Core.Rendering.Canvases[canv].Cameras[cam])
+			}
+		}
+	}
 }
 
 func (me *Node) material() (mat *FxMaterial) {

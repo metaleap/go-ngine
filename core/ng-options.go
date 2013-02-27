@@ -91,15 +91,17 @@ type EngineOptions struct {
 		InitialCap   int
 		GrowCapBy    int
 		OnIDsChanged struct {
+			Cameras LibElemIDChangedHandler
 			Effects LibElemIDChangedHandler
 			Images  struct {
 				TexCube LibElemIDChangedHandler
 				Tex2D   LibElemIDChangedHandler
 			}
-			Materials LibElemIDChangedHandler
-			Meshes    LibElemIDChangedHandler
-			Models    LibElemIDChangedHandler
-			Scenes    LibElemIDChangedHandler
+			Materials      LibElemIDChangedHandler
+			Meshes         LibElemIDChangedHandler
+			Models         LibElemIDChangedHandler
+			RenderCanvases LibElemIDChangedHandler
+			Scenes         LibElemIDChangedHandler
 		}
 	}
 
@@ -155,14 +157,17 @@ func init() {
 	o.Textures.Storage.DiskCache.Enabled = true
 	o.Textures.Storage.DiskCache.Compressor = func(w io.WriteCloser) io.WriteCloser { return w }
 	o.Textures.Storage.DiskCache.Decompressor = func(r io.ReadCloser) io.ReadCloser { return r }
-	o.Cameras.DefaultControllerParams.init()
+	o.Cameras.DefaultControllerParams.initDefaults()
 	o.Cameras.PerspectiveDefaults.FovY, o.Cameras.PerspectiveDefaults.ZFar, o.Cameras.PerspectiveDefaults.ZNear = 37.8493, 30000, 0.3
 	o.Loop.GcEvery.Sec = true
 	o.Libs.InitialCap, o.Libs.GrowCapBy = 24, 32
 
 	//	Set all ID-changed handlers to empty funcs so we don't need to check for nil
 	on, makeNoopHandlerFunc := &o.Libs.OnIDsChanged, func() LibElemIDChangedHandler { return func(_ map[int]int) {} }
-	for _, fn := range []*LibElemIDChangedHandler{&on.Effects, &on.Materials, &on.Meshes, &on.Models, &on.Scenes, &on.Images.Tex2D, &on.Images.TexCube} {
+	for _, fn := range []*LibElemIDChangedHandler{
+		&on.Images.Tex2D, &on.Images.TexCube,
+		&on.Effects, &on.Materials, &on.Meshes, &on.Models, &on.Scenes, &on.RenderCanvases, &on.Cameras,
+	} {
 		*fn = makeNoopHandlerFunc()
 	}
 

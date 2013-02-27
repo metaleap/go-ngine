@@ -21,9 +21,9 @@ func (me *Scene) init() {
 	me.RootNode = *newNode("", -1, nil, me)
 }
 
-//#begin-gt -gen-lib.gt T:Scene L:Scenes
+//#begin-gt -gen-lib.gt T:Scene L:Core.Libs.Scenes
 
-//	Only used for Core.Libs.Scenes.
+//	Only used for Core.Libs.Scenes
 type SceneLib []Scene
 
 func (me *SceneLib) AddNew() (ref *Scene) {
@@ -70,7 +70,6 @@ func (me *SceneLib) Compact() {
 	}
 	if len(changed) > 0 {
 		me.onSceneIDsChanged(changed)
-		Options.Libs.OnIDsChanged.Scenes(changed)
 	}
 }
 
@@ -114,7 +113,6 @@ func (me SceneLib) Remove(fromID, num int) {
 			changed[id], me[id].ID = -1, -1
 		}
 		me.onSceneIDsChanged(changed)
-		Options.Libs.OnIDsChanged.Scenes(changed)
 	}
 }
 

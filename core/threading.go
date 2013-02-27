@@ -20,44 +20,42 @@ var (
 		curEffect, nextEffect *FxEffect
 		curMeshBuf            *MeshBuffer
 		curProg               *ugl.Program
-		curSampler            map[gl.Uint]*ugl.Sampler
 		curTech, nextTech     RenderTechnique
-		quadTex               *ugl.Texture2D
+		quadTex               gl.Uint
 	}
 )
 
 func init() {
-	thrRend.curSampler = map[gl.Uint]*ugl.Sampler{}
 }
 
-func (me *EngineCore) copyAppToPrep() {
-	for _, canv := range me.Rendering.Canvases {
-		if canv.renderThisFrame() {
-			canv.copyAppToPrep()
+func (_ *EngineCore) copyAppToPrep() {
+	for cid := 0; cid < len(Core.Rendering.Canvases); cid++ {
+		if Core.Rendering.Canvases.Ok(cid) && Core.Rendering.Canvases[cid].renderThisFrame() {
+			Core.Rendering.Canvases[cid].copyAppToPrep()
 		}
 	}
 }
 
-func (me *EngineCore) copyPrepToRend() {
-	for _, canv := range me.Rendering.Canvases {
-		if canv.renderThisFrame() {
-			canv.copyPrepToRend()
+func (_ *EngineCore) copyPrepToRend() {
+	for cid := 0; cid < len(Core.Rendering.Canvases); cid++ {
+		if Core.Rendering.Canvases.Ok(cid) && Core.Rendering.Canvases[cid].renderThisFrame() {
+			Core.Rendering.Canvases[cid].copyPrepToRend()
 		}
 	}
 }
 
 func (me *RenderCanvas) copyAppToPrep() {
-	for _, cam := range me.Cams {
-		if cam.Enabled {
-			cam.copyAppToPrep()
+	for cam := 0; cam < len(me.Cameras); cam++ {
+		if me.Cameras.Ok(cam) {
+			me.Cameras[cam].copyAppToPrep()
 		}
 	}
 }
 
 func (me *RenderCanvas) copyPrepToRend() {
-	for _, cam := range me.Cams {
-		if cam.Enabled {
-			cam.copyPrepToRend()
+	for cam := 0; cam < len(me.Cameras); cam++ {
+		if me.Cameras.Ok(cam) {
+			me.Cameras[cam].copyPrepToRend()
 		}
 	}
 }

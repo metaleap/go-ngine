@@ -28,9 +28,9 @@ func (me *Model) Clone() (clonedModel *Model) {
 	return
 }
 
-//#begin-gt -gen-lib.gt T:Model L:Models
+//#begin-gt -gen-lib.gt T:Model L:Core.Libs.Models
 
-//	Only used for Core.Libs.Models.
+//	Only used for Core.Libs.Models
 type ModelLib []Model
 
 func (me *ModelLib) AddNew() (ref *Model) {
@@ -77,7 +77,6 @@ func (me *ModelLib) Compact() {
 	}
 	if len(changed) > 0 {
 		me.onModelIDsChanged(changed)
-		Options.Libs.OnIDsChanged.Models(changed)
 	}
 }
 
@@ -121,7 +120,6 @@ func (me ModelLib) Remove(fromID, num int) {
 			changed[id], me[id].ID = -1, -1
 		}
 		me.onModelIDsChanged(changed)
-		Options.Libs.OnIDsChanged.Models(changed)
 	}
 }
 

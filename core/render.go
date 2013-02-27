@@ -4,11 +4,10 @@ import (
 	gl "github.com/go3d/go-opengl/core"
 )
 
-func (me *EngineCore) onRender() {
-	var canv *RenderCanvas
-	for canvIndex := len(Core.Rendering.Canvases) - 1; canvIndex >= 0; canvIndex-- {
-		if canv = Core.Rendering.Canvases[canvIndex]; canv.renderThisFrame() {
-			canv.render()
+func (_ *EngineCore) onRender() {
+	for cid := len(Core.Rendering.Canvases) - 1; cid >= 0; cid-- {
+		if Core.Rendering.Canvases.Ok(cid) && Core.Rendering.Canvases[cid].renderThisFrame() {
+			Core.Rendering.Canvases[cid].render()
 		}
 	}
 }
@@ -18,13 +17,16 @@ func (me *RenderCanvas) render() {
 		me.frameBuf.Bind()
 	}
 	Core.Rendering.states.SetFramebufferSrgb(me.Srgb)
-	for _, thrRend.curCam = range me.Cams {
-		thrRend.curCam.render()
+	for cam := 0; cam < len(me.Cameras); cam++ {
+		if me.Cameras.Ok(cam) {
+			thrRend.curCam = &me.Cameras[cam]
+			thrRend.curCam.render()
+		}
 	}
 	Core.Rendering.states.SetFramebufferSrgb(false)
 	if me.isRtt {
 		me.frameBuf.Unbind()
-		thrRend.quadTex = &me.frameBufTex.Texture2D
+		thrRend.quadTex = me.frameBufTex.Texture2D.GlHandle
 	}
 }
 
@@ -49,7 +51,7 @@ func (me *RenderTechniqueQuad) render() {
 	me.glVao.Bind()
 	thrRend.nextTech, thrRend.nextEffect = me, &me.Effect
 	Core.useTechFx()
-	thrRend.quadTex.Bind()
+	gl.BindTexture(gl.TEXTURE_2D, thrRend.quadTex)
 	gl.DrawArrays(gl.TRIANGLES, 0, 3)
 	me.glVao.Unbind()
 }

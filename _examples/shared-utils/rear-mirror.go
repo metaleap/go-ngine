@@ -16,7 +16,7 @@ type RearMirror struct {
 //	Copies the main camera's current position and direction and reverses its by 180 degrees to achieve a rear-view mirror.
 func (me *RearMirror) OnApp() {
 	if me.Cam.Enabled && !Paused {
-		me.Cam.Controller.CopyFrom(&SceneCam.Controller)
+		me.Cam.Controller.CopyFrom(SceneCam.Controller)
 		me.Cam.Controller.TurnRightBy(180)
 	}
 }

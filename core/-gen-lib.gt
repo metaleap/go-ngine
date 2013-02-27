@@ -1,6 +1,6 @@
 package gt
 
-//	Only used for Core.Libs.__L__.
+//	Only used for __L__
 type __T__Lib []__T__
 
 func (me *__T__Lib) AddNew() (ref *__T__) {
@@ -47,7 +47,6 @@ func (me *__T__Lib) Compact() {
 	}
 	if len(changed) > 0 {
 		me.on__T__IDsChanged(changed)
-		Options.Libs.OnIDsChanged.__L__(changed)
 	}
 }
 
@@ -91,7 +90,6 @@ func (me __T__Lib) Remove(fromID, num int) {
 			changed[id], me[id].ID = -1, -1
 		}
 		me.on__T__IDsChanged(changed)
-		Options.Libs.OnIDsChanged.__L__(changed)
 	}
 }
 
