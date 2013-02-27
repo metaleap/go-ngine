@@ -62,12 +62,12 @@ type FxImage2DLib []FxImage2D
 func (me *FxImage2DLib) AddNew() (ref *FxImage2D) {
 	id := -1
 	for i := 0; i < len(*me); i++ {
-		if (*me)[i].ID < 0 {
+		if (*me)[i].ID == -1 {
 			id = i
 			break
 		}
 	}
-	if id < 0 {
+	if id == -1 {
 		if id = len(*me); id == cap(*me) {
 			nu := make(FxImage2DLib, id, id+Options.Libs.GrowCapBy)
 			copy(nu, *me)
@@ -86,22 +86,25 @@ func (me *FxImage2DLib) Compact() {
 		before, after []FxImage2D
 		ref           *FxImage2D
 		oldID, i      int
+		compact       bool
 	)
 	for i = 0; i < len(*me); i++ {
-		if (*me)[i].ID < 0 {
-			before, after = (*me)[:i], (*me)[i+1:]
+		if (*me)[i].ID == -1 {
+			compact, before, after = true, (*me)[:i], (*me)[i+1:]
 			*me = append(before, after...)
 		}
 	}
-	changed := make(map[int]int, len(*me))
-	for i = 0; i < len(*me); i++ {
-		if ref = &(*me)[i]; ref.ID != i {
-			oldID, ref.ID = ref.ID, i
-			changed[oldID] = i
+	if compact {
+		changed := make(map[int]int, len(*me))
+		for i = 0; i < len(*me); i++ {
+			if ref = &(*me)[i]; ref.ID != i {
+				oldID, ref.ID = ref.ID, i
+				changed[oldID] = i
+			}
 		}
-	}
-	if len(changed) > 0 {
-		me.onFxImage2DIDsChanged(changed)
+		if len(changed) > 0 {
+			me.onFxImage2DIDsChanged(changed)
+		}
 	}
 }
 
@@ -115,10 +118,8 @@ func (me *FxImage2DLib) dispose() {
 }
 
 func (me FxImage2DLib) Get(id int) (ref *FxImage2D) {
-	if id > -1 && id < len(me) {
-		if ref = &me[id]; ref.ID != id {
-			ref = nil
-		}
+	if me.IsOk(id) {
+		ref = &me[id]
 	}
 	return
 }
@@ -135,7 +136,7 @@ func (me FxImage2DLib) Ok(id int) bool {
 }
 
 func (me FxImage2DLib) Remove(fromID, num int) {
-	if l := len(me); fromID < l {
+	if l := len(me); fromID > -1 && fromID < l {
 		if num < 1 || num > (l-fromID) {
 			num = l - fromID
 		}
@@ -150,7 +151,7 @@ func (me FxImage2DLib) Remove(fromID, num int) {
 
 func (me FxImage2DLib) Walk(on func(ref *FxImage2D)) {
 	for id := 0; id < len(me); id++ {
-		if me[id].ID > -1 {
+		if me.Ok(id) {
 			on(&me[id])
 		}
 	}

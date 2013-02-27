@@ -22,7 +22,7 @@ var (
 		lastBadVer string
 		isInit     bool
 		progMan    ugl.ProgramManager
-		shaderMan  uberShader
+		uberShader uberShader
 	}
 )
 
@@ -33,7 +33,7 @@ func init() {
 func glDispose() {
 	if glc.isInit {
 		glc.isInit = false
-		glc.progMan.Reset()
+		glc.progMan.Dispose()
 	}
 }
 
@@ -61,8 +61,8 @@ func glInit() (err error, badVer string) {
 					}
 				}
 				if err == nil {
-					glc.shaderMan.loadFromRawSources()
-					glc.shaderMan.processFuncs()
+					glc.uberShader.loadFromRawSources()
+					glc.uberShader.processFuncs()
 				}
 			}
 		}
@@ -77,27 +77,22 @@ func glInit() (err error, badVer string) {
 }
 
 func glcProgsMake(forceAll bool, forceSome ...string) (dur time.Duration, err error) {
-	dur, err = glc.progMan.MakeProgramsFromRawSources(forceAll, forceSome...)
+	var progsMade []bool
+	dur, progsMade, err = glc.progMan.MakeProgramsFromRawSources(nil, forceAll, forceSome...)
 	if len(Options.AppDir.Temp.ShaderSources) > 0 {
-		var src string
-		if len(forceSome) == 0 {
-			forceSome = glc.progMan.Names
+		writeSrc := func(i int, ext, src string) {
+			if len(src) > 0 {
+				uio.WriteTextFile(Core.fileIO.resolveLocalFilePath(path.Join(Options.AppDir.Temp.BaseName, Options.AppDir.Temp.ShaderSources, glc.progMan.Programs[i].Name+ext)), src)
+			}
 		}
-		for ext, sources := range map[string]map[string]string{
-			".glcs": glc.progMan.Sources.Out.Compute,
-			".glfs": glc.progMan.Sources.Out.Fragment,
-			".glgs": glc.progMan.Sources.Out.Geometry,
-			".glhs": glc.progMan.Sources.Out.TessCtl,
-			".glds": glc.progMan.Sources.Out.TessEval,
-			".glvs": glc.progMan.Sources.Out.Vertex,
-		} {
-			for _, progName := range forceSome {
-				if src = sources[progName]; len(src) > 0 {
-					src = "/*\tTemp file written at runtime for diagnostic purposes.\n\tThe following is a runtime-generated GLSL source string,\n\texactly as it was sent to the GL for compilation and linking: */\n" + src
-					if err = uio.WriteTextFile(Core.fileIO.resolveLocalFilePath(path.Join(Options.AppDir.Temp.BaseName, Options.AppDir.Temp.ShaderSources, progName+ext)), src); err != nil {
-						return
-					}
-				}
+		for i := 0; i < len(glc.progMan.Programs); i++ {
+			if progsMade[i] {
+				writeSrc(i, ".glcs", glc.progMan.Programs[i].Sources.Out.Compute)
+				writeSrc(i, ".glfs", glc.progMan.Programs[i].Sources.Out.Fragment)
+				writeSrc(i, ".glgs", glc.progMan.Programs[i].Sources.Out.Geometry)
+				writeSrc(i, ".glhs", glc.progMan.Programs[i].Sources.Out.TessCtl)
+				writeSrc(i, ".glds", glc.progMan.Programs[i].Sources.Out.TessEval)
+				writeSrc(i, ".glvs", glc.progMan.Programs[i].Sources.Out.Vertex)
 			}
 		}
 	}

@@ -91,7 +91,7 @@ func newMeshBuffer(id string, params *meshBufferParams) (me *MeshBuffer, err err
 		err = me.glIbo.Recreate(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeIndices), ugl.PtrNil, ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
 	}
 	if err == nil {
-		for prog, tech := range glc.shaderMan.progTechs {
+		for prog, tech := range glc.uberShader.progTechs {
 			if err = me.setupVao(prog, tech); err != nil {
 				break
 			}

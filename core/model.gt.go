@@ -36,12 +36,12 @@ type ModelLib []Model
 func (me *ModelLib) AddNew() (ref *Model) {
 	id := -1
 	for i := 0; i < len(*me); i++ {
-		if (*me)[i].ID < 0 {
+		if (*me)[i].ID == -1 {
 			id = i
 			break
 		}
 	}
-	if id < 0 {
+	if id == -1 {
 		if id = len(*me); id == cap(*me) {
 			nu := make(ModelLib, id, id+Options.Libs.GrowCapBy)
 			copy(nu, *me)
@@ -60,22 +60,25 @@ func (me *ModelLib) Compact() {
 		before, after []Model
 		ref           *Model
 		oldID, i      int
+		compact       bool
 	)
 	for i = 0; i < len(*me); i++ {
-		if (*me)[i].ID < 0 {
-			before, after = (*me)[:i], (*me)[i+1:]
+		if (*me)[i].ID == -1 {
+			compact, before, after = true, (*me)[:i], (*me)[i+1:]
 			*me = append(before, after...)
 		}
 	}
-	changed := make(map[int]int, len(*me))
-	for i = 0; i < len(*me); i++ {
-		if ref = &(*me)[i]; ref.ID != i {
-			oldID, ref.ID = ref.ID, i
-			changed[oldID] = i
+	if compact {
+		changed := make(map[int]int, len(*me))
+		for i = 0; i < len(*me); i++ {
+			if ref = &(*me)[i]; ref.ID != i {
+				oldID, ref.ID = ref.ID, i
+				changed[oldID] = i
+			}
 		}
-	}
-	if len(changed) > 0 {
-		me.onModelIDsChanged(changed)
+		if len(changed) > 0 {
+			me.onModelIDsChanged(changed)
+		}
 	}
 }
 
@@ -89,10 +92,8 @@ func (me *ModelLib) dispose() {
 }
 
 func (me ModelLib) Get(id int) (ref *Model) {
-	if id > -1 && id < len(me) {
-		if ref = &me[id]; ref.ID != id {
-			ref = nil
-		}
+	if me.IsOk(id) {
+		ref = &me[id]
 	}
 	return
 }
@@ -109,7 +110,7 @@ func (me ModelLib) Ok(id int) bool {
 }
 
 func (me ModelLib) Remove(fromID, num int) {
-	if l := len(me); fromID < l {
+	if l := len(me); fromID > -1 && fromID < l {
 		if num < 1 || num > (l-fromID) {
 			num = l - fromID
 		}
@@ -124,7 +125,7 @@ func (me ModelLib) Remove(fromID, num int) {
 
 func (me ModelLib) Walk(on func(ref *Model)) {
 	for id := 0; id < len(me); id++ {
-		if me[id].ID > -1 {
+		if me.Ok(id) {
 			on(&me[id])
 		}
 	}

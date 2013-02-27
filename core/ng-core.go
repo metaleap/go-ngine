@@ -145,7 +145,7 @@ func (_ *EngineCore) showSplash() {
 	thrRend.quadTex = splash.glTex.GlHandle
 	Core.onRender()
 	splash.Unload()
-	Core.Libs.Images.SplashScreen.InitFrom.RawData = Core.Libs.Images.SplashScreen.InitFrom.RawData[:0]
+	splash.InitFrom.RawData = nil
 	glfw.SwapBuffers()
 }
 
@@ -157,7 +157,7 @@ func (_ *EngineCore) useTechFx() {
 			thrRend.nextEffect.UpdateRoutine()
 		}
 		thrRend.curEffect = thrRend.nextEffect
-		thrRend.curProg = glc.shaderMan.ensureProg()
+		thrRend.curProg = glc.uberShader.ensureProg()
 		thrRend.curProg.Use()
 		thrRend.curEffect.use()
 	}

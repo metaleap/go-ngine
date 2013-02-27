@@ -15,6 +15,7 @@ import (
 
 	ugfx "github.com/metaleap/go-util/gfx"
 	uio "github.com/metaleap/go-util/io"
+	ustr "github.com/metaleap/go-util/str"
 )
 
 type shaderSrc struct {
@@ -94,13 +95,12 @@ func collectShaders(srcDirPath string, allShaders *shaderSrcSortables, incShader
 func generateShadersSource(srcDirPath string, stripComments bool) (err error, newSrc string) {
 	var (
 		shaderSource       shaderSrc
-		allNames           []string
 		shaderName, tmpSrc string
+		srcBuf             ustr.Buffer
 	)
-	newSrc = "\tglc.progMan.Reset()\n\tglc.shaderMan.init()\n"
+	srcBuf.Writeln("\tglc.progMan.Init()\n\tglc.uberShader.init()")
 	allShaders := shaderSrcSortables{shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}}
 	incShaders := map[string]string{}
-	// oldSrc := uio.ReadTextFile(outFilePath, false, "")
 	collectShaders(srcDirPath, &allShaders, incShaders, stripComments)
 	sort.Sort(allShaders.comp)
 	sort.Sort(allShaders.frag)
@@ -108,18 +108,20 @@ func generateShadersSource(srcDirPath string, stripComments bool) (err error, ne
 	sort.Sort(allShaders.tessCtl)
 	sort.Sort(allShaders.tessEval)
 	sort.Sort(allShaders.vert)
+	allNames := map[string]bool{}
 	for varName, shaderSrcItem := range allShaders.mapAll() {
 		for _, shaderSource = range shaderSrcItem {
-			if shaderName = shaderSource.name[:strings.LastIndex(shaderSource.name, ".")]; !inSlice(allNames, shaderName) {
-				allNames = append(allNames, shaderName)
+			if shaderName = shaderSource.name[:strings.LastIndex(shaderSource.name, ".")]; !allNames[shaderName] {
+				srcBuf.Writeln("\tglc.progMan.AddNew(%#v)", shaderName)
+				allNames[shaderName] = true
 			}
-			newSrc += fmt.Sprintf("\tglc.progMan.RawSources.%s[\"%s\"] = %#v\n", varName, shaderName, includeShaders(shaderSource.name, shaderSource.src, incShaders))
+			srcBuf.Writeln("\tglc.progMan.Get(%#v).Sources.In.%s = %#v", shaderName, varName, includeShaders(shaderSource.name, shaderSource.src, incShaders))
 		}
 	}
 	for shaderName, tmpSrc = range incShaders {
-		newSrc += fmt.Sprintf("\tglc.shaderMan.rawSources[%#v] = %#v\n", shaderName[:strings.Index(shaderName, ".")], tmpSrc)
+		srcBuf.Writeln("\tglc.uberShader.rawSources[%#v] = %#v", shaderName[:strings.Index(shaderName, ".")], tmpSrc)
 	}
-	newSrc += fmt.Sprintf("\tglc.progMan.Names = %#v\n", allNames)
+	newSrc = srcBuf.String()
 	return
 }
 
@@ -138,12 +140,12 @@ func includeShaders(fileName, shaderSource string, incShaders map[string]string)
 		}
 	}
 	if len(includes) > 0 {
-		shaderSource = fmt.Sprintf("#line 1" /*+" \"%v\""*/ +"\n" /*, fileName*/) + strings.Join(lines[:i], "\n")
+		shaderSource = fmt.Sprintf("#line 1\n") + strings.Join(lines[:i], "\n")
 		for _, str = range includes {
-			shaderSource += fmt.Sprintf("\n#line %v" /*+" \"%v\""*/ +"\n", 1 /*, str*/)
+			shaderSource += fmt.Sprintf("\n#line %v\n", 1)
 			shaderSource += fmt.Sprintf("%v\n", incShaders[str])
 		}
-		shaderSource += fmt.Sprintf("#line %v" /*+" \"%v\""*/ +"\n", i+1 /*fileName*/)
+		shaderSource += fmt.Sprintf("#line %v\n", i+1)
 		shaderSource += strings.Join(lines[i+1:], "\n")
 		return includeShaders(fileName, shaderSource, incShaders)
 	}
@@ -173,7 +175,7 @@ func main() {
 	var srcTimeGlsl, srcTimeEmbeds time.Time
 	force := false
 	nginePath = os.Args[1]
-	outFilePath = filepath.Join(nginePath, "core", "-auto-generated.go")
+	outFilePath = filepath.Join(nginePath, "core", "-gen-embed.go")
 	if fileInfo, err := os.Stat(outFilePath); err == nil {
 		outFileTime = fileInfo.ModTime()
 	} else {
@@ -204,7 +206,8 @@ func main() {
 func makeEmbeds(srcDirPath string) {
 	defer wait.Done()
 	filePath := filepath.Join(srcDirPath, "splash.png")
-	newSrc.embeds = fmt.Sprintf("\t//\tEmbedded binary from %s\n", filePath)
+	var buf ustr.Buffer
+	buf.Writeln("\t//\tEmbedded binary from %s", filePath)
 	if raw := uio.ReadBinaryFile(filePath, true); len(raw) > 0 {
 		if strings.HasSuffix(filePath, ".png") {
 			if src, _, err := image.Decode(bytes.NewReader(raw)); err == nil {
@@ -217,8 +220,11 @@ func makeEmbeds(srcDirPath string) {
 				panic(err)
 			}
 		}
-		newSrc.embeds += fmt.Sprintf("\tCore.Libs.Images.SplashScreen.InitFrom.RawData = %#v", raw)
+		if len(raw) > 0 {
+			buf.Writeln("\tCore.Libs.Images.SplashScreen.InitFrom.RawData = %#v", raw)
+		}
 	}
+	newSrc.embeds = buf.String()
 }
 
 func makeShaders(srcDirPath string) {

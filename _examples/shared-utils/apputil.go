@@ -108,6 +108,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 
 	//	Release apps shouldn't do this, but here we're verifying everything runs in the oldest-supported GL version:
 	opt.Initialization.GlContext.CoreProfile.VersionHint = 3.3
+	opt.Initialization.DefaultCanvas.GammaViaShader = true
 
 	//	Worth toggling this every once in a while just to see whether it makes a perf diff at all...
 	realThreads := true
