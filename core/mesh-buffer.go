@@ -91,9 +91,13 @@ func newMeshBuffer(id string, params *meshBufferParams) (me *MeshBuffer, err err
 		err = me.glIbo.Recreate(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeIndices), ugl.PtrNil, ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
 	}
 	if err == nil {
-		for prog, tech := range glc.uberShader.progTechs {
-			if err = me.setupVao(prog, tech); err != nil {
-				break
+		var tech RenderTechnique
+		var ok bool
+		for i := 0; i < len(glc.progMan.Programs); i++ {
+			if tech, ok = glc.progMan.Programs[i].Tag.(RenderTechnique); ok {
+				if err = me.setupVao(&glc.progMan.Programs[i], tech); err != nil {
+					break
+				}
 			}
 		}
 	}

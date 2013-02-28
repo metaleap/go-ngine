@@ -9,15 +9,12 @@ import (
 )
 
 type uberShaderFunc struct {
-	name, rawSrc      string
-	dependsOn, inputs map[string]bool
+	name, rawSrc         string
+	dependsOn, allInputs []string
 }
 
 func newUberShaderFunc(name, rawSrc string) (me *uberShaderFunc) {
-	me = &uberShaderFunc{
-		name: name, rawSrc: rawSrc,
-		dependsOn: map[string]bool{}, inputs: map[string]bool{},
-	}
+	me = &uberShaderFunc{name: name, rawSrc: rawSrc}
 	return
 }
 
@@ -33,9 +30,8 @@ func (me *uberShaderJob) init(pname string) {
 	me.quals = make(map[string]string, 8)
 }
 
-type uberShader struct {
+type uberShaders struct {
 	rawSources map[string]string
-	progTechs  map[*ugl.Program]RenderTechnique
 	allFuncs   struct {
 		// compute  map[string]*uberShaderFunc
 		// domain   map[string]*uberShaderFunc
@@ -47,12 +43,11 @@ type uberShader struct {
 	}
 }
 
-func (me *uberShader) init() {
-	me.progTechs = make(map[*ugl.Program]RenderTechnique, 16)
+func (me *uberShaders) init() {
 	me.rawSources = make(map[string]string, 2)
 }
 
-func (me *uberShader) allMaps() map[string]*map[string]*uberShaderFunc {
+func (me *uberShaders) allMaps() map[string]*map[string]*uberShaderFunc {
 	return map[string]*map[string]*uberShaderFunc{
 		// "cx_": &me.allFuncs.compute,
 		// "dx_": &me.allFuncs.domain,
@@ -64,12 +59,12 @@ func (me *uberShader) allMaps() map[string]*map[string]*uberShaderFunc {
 	}
 }
 
-func (me *uberShader) inoutTypeSpec(inout string) string {
+func (me *uberShaders) inoutTypeSpec(inout string) string {
 	inout = inout[strings.Index(inout, "_")+1:]
 	return inout[:strings.Index(inout, "_")]
 }
 
-func (me *uberShader) loadFromRawSources() {
+func (me *uberShaders) loadFromRawSources() {
 	var (
 		lines, funcLines []string
 		line, funcName   string
@@ -105,7 +100,7 @@ func (me *uberShader) loadFromRawSources() {
 	}
 }
 
-func (me *uberShader) processFuncs() {
+func (me *uberShaders) processFuncs() {
 	var (
 		pref, pref2 string
 		fn, fn2     *uberShaderFunc
@@ -117,7 +112,7 @@ func (me *uberShader) processFuncs() {
 			//	annotate other funcs depending on this func
 			for _, fn2 = range *mp {
 				if fn2 != fn && strings.Index(fn2.rawSrc, fn.name) > 0 {
-					fn2.dependsOn[fn.name] = true
+					ustr.AppendUnique(&fn2.dependsOn, fn.name)
 				}
 			}
 			if len(pref) == 0 {
@@ -126,7 +121,7 @@ func (me *uberShader) processFuncs() {
 					if pref2 != pref {
 						for _, fn2 = range *mp2 {
 							if fn2 != fn && strings.Index(fn2.rawSrc, fn.name) > 0 {
-								fn2.dependsOn[fn.name] = true
+								ustr.AppendUnique(&fn2.dependsOn, fn.name)
 							}
 						}
 					}
@@ -135,14 +130,14 @@ func (me *uberShader) processFuncs() {
 			//	annotate this func for any uniforms, varyings or attributes
 			for _, pref = range []string{"att_", "uni_", "var_"} {
 				for _, pref2 = range ustr.ExtractAllIdentifiers(fn.rawSrc, pref) {
-					fn.inputs[pref2] = true
+					ustr.AppendUnique(&fn.allInputs, pref2)
 				}
 			}
 		}
 	}
 }
 
-func (me *uberShader) ensureProg() (prog *ugl.Program) {
+func (me *uberShaders) ensureProg() (prog *ugl.Program) {
 	pname := thrRend.curEffect.uberPnames[thrRend.curTech.name()]
 	if prog = glc.progMan.Get(pname); prog == nil {
 		var job uberShaderJob
@@ -154,7 +149,7 @@ func (me *uberShader) ensureProg() (prog *ugl.Program) {
 			if dur, err = glcProgsMake(false, pname); err == nil {
 				Diag.LogShaders("Built new GLSL shader program '%s' in %v", pname, dur)
 				Stats.addProgCompile(1, dur.Nanoseconds())
-				me.progTechs[prog] = thrRend.curTech
+				prog.Tag = thrRend.curTech
 				if err = prog.SetAttrLocations(job.progAtts...); err == nil {
 					if err = prog.SetUnifLocations(job.progUnis...); err == nil {
 						for _, meshBuf := range Core.MeshBuffers.bufs {
@@ -173,7 +168,7 @@ func (me *uberShader) ensureProg() (prog *ugl.Program) {
 	return
 }
 
-func (me *uberShader) setShaderSources(prog *ugl.Program, job *uberShaderJob, vertTech string, fragFx *FxEffect) (err error) {
+func (me *uberShaders) setShaderSources(prog *ugl.Program, job *uberShaderJob, vertTech string, fragFx *FxEffect) (err error) {
 	fragInputs := map[string]bool{}
 	if prog.Sources.In.Fragment, err = me.setShaderSourceFrag(job, fragFx, fragInputs); err == nil {
 		prog.Sources.In.Vertex, err = me.setShaderSourceVert(job, vertTech, fragInputs)
@@ -181,7 +176,7 @@ func (me *uberShader) setShaderSources(prog *ugl.Program, job *uberShaderJob, ve
 	return
 }
 
-func (me *uberShader) setShaderSourceEnsureFunc(op FxOp, fn *uberShaderFunc, srcBody *ustr.Buffer, inputs map[string]bool) error {
+func (me *uberShaders) setShaderSourceEnsureFunc(op FxOp, fn *uberShaderFunc, srcBody *ustr.Buffer, inputs map[string]bool) error {
 	var (
 		str, _procID_ string
 		parts         []string
@@ -192,7 +187,7 @@ func (me *uberShader) setShaderSourceEnsureFunc(op FxOp, fn *uberShaderFunc, src
 		_procID_ = "_" + op.ProcID() + "_"
 	}
 	rewriteUnis := map[string]string{}
-	for str, _ = range fn.inputs {
+	for _, str = range fn.allInputs {
 		if isFxOp && strings.HasPrefix(str, "uni_") && strings.Contains(str, _procID_) {
 			parts = strings.Split(str, "_")
 			rewriteUnis[str] = op.unifName(parts[1], parts[3])
@@ -200,7 +195,7 @@ func (me *uberShader) setShaderSourceEnsureFunc(op FxOp, fn *uberShaderFunc, src
 		}
 		inputs[str] = true
 	}
-	for str, _ = range fn.dependsOn {
+	for _, str = range fn.dependsOn {
 		if isFxOp && strings.HasPrefix(str, "fx_") {
 			return errf("%s depends on %s. One fx_ func must not depend directly on another.", fn.name, str)
 		}
@@ -225,7 +220,7 @@ func (me *uberShader) setShaderSourceEnsureFunc(op FxOp, fn *uberShaderFunc, src
 	return nil
 }
 
-func (me *uberShader) setShaderSourceFrag(job *uberShaderJob, fx *FxEffect, inputs map[string]bool) (fragSrc string, err error) {
+func (me *uberShaders) setShaderSourceFrag(job *uberShaderJob, fx *FxEffect, inputs map[string]bool) (fragSrc string, err error) {
 	var (
 		srcBody, srcHead ustr.Buffer
 		shid             string
@@ -282,7 +277,7 @@ func (me *uberShader) setShaderSourceFrag(job *uberShaderJob, fx *FxEffect, inpu
 	return
 }
 
-func (me *uberShader) setShaderSourceVert(job *uberShaderJob, vertTech string, varyings map[string]bool) (vertSrc string, err error) {
+func (me *uberShaders) setShaderSourceVert(job *uberShaderJob, vertTech string, varyings map[string]bool) (vertSrc string, err error) {
 	var (
 		i                int
 		srcBody, srcHead ustr.Buffer

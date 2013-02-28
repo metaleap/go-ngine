@@ -157,7 +157,7 @@ func (_ *EngineCore) useTechFx() {
 			thrRend.nextEffect.UpdateRoutine()
 		}
 		thrRend.curEffect = thrRend.nextEffect
-		thrRend.curProg = glc.uberShader.ensureProg()
+		thrRend.curProg = glc.uberShaders.ensureProg()
 		thrRend.curProg.Use()
 		thrRend.curEffect.use()
 	}

@@ -20,14 +20,6 @@ func (me *Model) init() {
 	return
 }
 
-//	Creates a copy of me and adds it to the parent Mesh's Models
-//	hash-table under the specified newModelID.
-func (me *Model) Clone() (clonedModel *Model) {
-	clonedModel = Core.Libs.Models.AddNew()
-	clonedModel.MatID = me.MatID
-	return
-}
-
 //#begin-gt -gen-lib.gt T:Model L:Core.Libs.Models
 
 //	Only used for Core.Libs.Models

@@ -19,10 +19,10 @@ const (
 
 var (
 	glc struct {
-		lastBadVer string
-		isInit     bool
-		progMan    ugl.ProgramManager
-		uberShader uberShader
+		lastBadVer  string
+		isInit      bool
+		progMan     ugl.ProgramManager
+		uberShaders uberShaders
 	}
 )
 
@@ -61,8 +61,8 @@ func glInit() (err error, badVer string) {
 					}
 				}
 				if err == nil {
-					glc.uberShader.loadFromRawSources()
-					glc.uberShader.processFuncs()
+					glc.uberShaders.loadFromRawSources()
+					glc.uberShaders.processFuncs()
 				}
 			}
 		}

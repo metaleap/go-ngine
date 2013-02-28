@@ -921,9 +921,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<dd><a href="#Model">type Model</a></dd>
 				
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#Model.Clone">func (me *Model) Clone() (clonedModel *Model)</a></dd>
-				
 			
 				
 				<dd><a href="#ModelLib">type ModelLib</a></dd>
@@ -1194,7 +1191,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/gl-core.go">gl-core.go</a>
 			
-				<a href="/target/glsl-ubershader.go">glsl-ubershader.go</a>
+				<a href="/target/glsl-ubershaders.go">glsl-ubershaders.go</a>
 			
 				<a href="/target/mesh-buffer.go">mesh-buffer.go</a>
 			
@@ -1294,7 +1291,7 @@ recent driver for {GPU}.
 		
 			
 			
-			<h2 id="Dispose">func <a href="/target/ng.go?s=227:241#L2">Dispose</a></h2>
+			<h2 id="Dispose">func <a href="/target/ng.go?s=238:252#L3">Dispose</a></h2>
 			<pre>func Dispose()</pre>
 			<p>
 Call this to &#34;un-init&#34; go:ngine and to release any and all GPU or RAM resources still allocated.
@@ -1304,7 +1301,7 @@ Call this to &#34;un-init&#34; go:ngine and to release any and all GPU or RAM re
 		
 			
 			
-			<h2 id="Init">func <a href="/target/ng.go?s=448:486#L9">Init</a></h2>
+			<h2 id="Init">func <a href="/target/ng.go?s=459:497#L10">Init</a></h2>
 			<pre>func Init(fullscreen bool) (err error)</pre>
 			<p>
 Initializes go:ngine; this first attempts to initialize OpenGL and then open a window to your supplied specifications with a GL 3.3-or-higher profile.
@@ -4083,14 +4080,14 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 
 			
 				
-				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=3049:3098#L97">Add</a></h3>
+				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=3185:3234#L101">Add</a></h3>
 				<pre>func (me *MeshBuffer) Add(mesh *Mesh) (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=3783:3823#L126">Remove</a></h3>
+				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.go?s=3919:3959#L130">Remove</a></h3>
 				<pre>func (me *MeshBuffer) Remove(mesh *Mesh)</pre>
 				
 				
@@ -4553,21 +4550,10 @@ call someMesh.Models[&#34;sourceModelID&#34;].Clone(&#34;newModelID&#34;).
 			
 
 			
-				
-				<h3 id="Model.Clone">func (*Model) <a href="/target/model.gt.go?s=616:661#L15">Clone</a></h3>
-				<pre>func (me *Model) Clone() (clonedModel *Model)</pre>
-				<p>
-Creates a copy of me and adds it to the parent Mesh&#39;s Models
-hash-table under the specified newModelID.
-</p>
-
-				
-				
-			
 		
 			
 			
-			<h2 id="ModelLib">type <a href="/target/model.gt.go?s=832:853#L24">ModelLib</a></h2>
+			<h2 id="ModelLib">type <a href="/target/model.gt.go?s=592:613#L16">ModelLib</a></h2>
 			<pre>type ModelLib []Model</pre>
 			<p>
 Only used for Core.Libs.Models
@@ -4584,49 +4570,49 @@ Only used for Core.Libs.Models
 
 			
 				
-				<h3 id="ModelLib.AddNew">func (*ModelLib) <a href="/target/model.gt.go?s=855:896#L26">AddNew</a></h3>
+				<h3 id="ModelLib.AddNew">func (*ModelLib) <a href="/target/model.gt.go?s=615:656#L18">AddNew</a></h3>
 				<pre>func (me *ModelLib) AddNew() (ref *Model)</pre>
 				
 				
 				
 			
 				
-				<h3 id="ModelLib.Compact">func (*ModelLib) <a href="/target/model.gt.go?s=1219:1248#L48">Compact</a></h3>
+				<h3 id="ModelLib.Compact">func (*ModelLib) <a href="/target/model.gt.go?s=979:1008#L40">Compact</a></h3>
 				<pre>func (me *ModelLib) Compact()</pre>
 				
 				
 				
 			
 				
-				<h3 id="ModelLib.Get">func (ModelLib) <a href="/target/model.gt.go?s=1909:1952#L84">Get</a></h3>
+				<h3 id="ModelLib.Get">func (ModelLib) <a href="/target/model.gt.go?s=1669:1712#L76">Get</a></h3>
 				<pre>func (me ModelLib) Get(id int) (ref *Model)</pre>
 				
 				
 				
 			
 				
-				<h3 id="ModelLib.IsOk">func (ModelLib) <a href="/target/model.gt.go?s=2003:2044#L91">IsOk</a></h3>
+				<h3 id="ModelLib.IsOk">func (ModelLib) <a href="/target/model.gt.go?s=1763:1804#L83">IsOk</a></h3>
 				<pre>func (me ModelLib) IsOk(id int) (ok bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="ModelLib.Ok">func (ModelLib) <a href="/target/model.gt.go?s=2114:2148#L98">Ok</a></h3>
+				<h3 id="ModelLib.Ok">func (ModelLib) <a href="/target/model.gt.go?s=1874:1908#L90">Ok</a></h3>
 				<pre>func (me ModelLib) Ok(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="ModelLib.Remove">func (ModelLib) <a href="/target/model.gt.go?s=2178:2220#L102">Remove</a></h3>
+				<h3 id="ModelLib.Remove">func (ModelLib) <a href="/target/model.gt.go?s=1938:1980#L94">Remove</a></h3>
 				<pre>func (me ModelLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="ModelLib.Walk">func (ModelLib) <a href="/target/model.gt.go?s=2505:2549#L116">Walk</a></h3>
+				<h3 id="ModelLib.Walk">func (ModelLib) <a href="/target/model.gt.go?s=2265:2309#L108">Walk</a></h3>
 				<pre>func (me ModelLib) Walk(on func(ref *Model))</pre>
 				
 				
