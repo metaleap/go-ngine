@@ -25,8 +25,8 @@ func (me *Model) init() {
 //	Only used for Core.Libs.Models
 type ModelLib []Model
 
-func (me *ModelLib) AddNew() (ref *Model) {
-	id := -1
+func (me *ModelLib) AddNew() (id int) {
+	id = -1
 	for i := 0; i < len(*me); i++ {
 		if (*me)[i].ID == -1 {
 			id = i
@@ -41,7 +41,7 @@ func (me *ModelLib) AddNew() (ref *Model) {
 		}
 		*me = append(*me, Model{})
 	}
-	ref = &(*me)[id]
+	ref := &(*me)[id]
 	ref.ID = id
 	ref.init()
 	return
@@ -74,7 +74,7 @@ func (me *ModelLib) Compact() {
 	}
 }
 
-func (me *ModelLib) ctor() {
+func (me *ModelLib) init() {
 	*me = make(ModelLib, 0, Options.Libs.InitialCap)
 }
 
@@ -83,7 +83,7 @@ func (me *ModelLib) dispose() {
 	*me = (*me)[:0]
 }
 
-func (me ModelLib) Get(id int) (ref *Model) {
+func (me ModelLib) get(id int) (ref *Model) {
 	if me.IsOk(id) {
 		ref = &me[id]
 	}

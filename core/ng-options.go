@@ -91,17 +91,15 @@ type EngineOptions struct {
 		InitialCap   int
 		GrowCapBy    int
 		OnIDsChanged struct {
-			Cameras LibElemIDChangedHandler
-			Effects LibElemIDChangedHandler
+			Effects LibElemIDChangedHandlers
 			Images  struct {
-				TexCube LibElemIDChangedHandler
-				Tex2D   LibElemIDChangedHandler
+				TexCube LibElemIDChangedHandlers
+				Tex2D   LibElemIDChangedHandlers
 			}
-			Materials      LibElemIDChangedHandler
-			Meshes         LibElemIDChangedHandler
-			Models         LibElemIDChangedHandler
-			RenderCanvases LibElemIDChangedHandler
-			Scenes         LibElemIDChangedHandler
+			Materials LibElemIDChangedHandlers
+			Meshes    LibElemIDChangedHandlers
+			Models    LibElemIDChangedHandlers
+			Scenes    LibElemIDChangedHandlers
 		}
 	}
 
@@ -160,17 +158,9 @@ func init() {
 	o.Cameras.DefaultControllerParams.initDefaults()
 	o.Cameras.PerspectiveDefaults.FovY, o.Cameras.PerspectiveDefaults.ZFar, o.Cameras.PerspectiveDefaults.ZNear = 37.8493, 30000, 0.3
 	o.Loop.GcEvery.Sec = true
-	o.Libs.InitialCap, o.Libs.GrowCapBy = 24, 32
+	o.Libs.InitialCap, o.Libs.GrowCapBy = 2, 2
 
 	//	Set all ID-changed handlers to empty funcs so we don't need to check for nil
-	on, makeNoopHandlerFunc := &o.Libs.OnIDsChanged, func() LibElemIDChangedHandler { return func(_ map[int]int) {} }
-	for _, fn := range []*LibElemIDChangedHandler{
-		&on.Images.Tex2D, &on.Images.TexCube,
-		&on.Effects, &on.Materials, &on.Meshes, &on.Models, &on.Scenes, &on.RenderCanvases, &on.Cameras,
-	} {
-		*fn = makeNoopHandlerFunc()
-	}
-
 	init, isMac, initGl := &o.Initialization, runtime.GOOS == "darwin", &o.Initialization.GlContext
 	initGl.CoreProfile.ForceFirst, initGl.CoreProfile.ForwardCompat, initGl.BadVersionMessage = isMac, isMac, DefaultBadVersionMessage
 	initGl.CoreProfile.VersionHint = ugl.KnownVersions[len(ugl.KnownVersions)-1]

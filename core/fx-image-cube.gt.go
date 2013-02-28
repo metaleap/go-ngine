@@ -71,8 +71,8 @@ func (me *FxImageCube) Unload() {
 //	Only used for Core.Libs.Images.TexCube
 type FxImageCubeLib []FxImageCube
 
-func (me *FxImageCubeLib) AddNew() (ref *FxImageCube) {
-	id := -1
+func (me *FxImageCubeLib) AddNew() (id int) {
+	id = -1
 	for i := 0; i < len(*me); i++ {
 		if (*me)[i].ID == -1 {
 			id = i
@@ -87,7 +87,7 @@ func (me *FxImageCubeLib) AddNew() (ref *FxImageCube) {
 		}
 		*me = append(*me, FxImageCube{})
 	}
-	ref = &(*me)[id]
+	ref := &(*me)[id]
 	ref.ID = id
 	ref.init()
 	return
@@ -120,7 +120,7 @@ func (me *FxImageCubeLib) Compact() {
 	}
 }
 
-func (me *FxImageCubeLib) ctor() {
+func (me *FxImageCubeLib) init() {
 	*me = make(FxImageCubeLib, 0, Options.Libs.InitialCap)
 }
 
@@ -129,7 +129,7 @@ func (me *FxImageCubeLib) dispose() {
 	*me = (*me)[:0]
 }
 
-func (me FxImageCubeLib) Get(id int) (ref *FxImageCube) {
+func (me FxImageCubeLib) get(id int) (ref *FxImageCube) {
 	if me.IsOk(id) {
 		ref = &me[id]
 	}

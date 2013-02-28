@@ -29,7 +29,7 @@ func (me *FxMaterial) dispose() {
 }
 
 func (me *FxMaterial) faceEffect(face *meshRawFace) *FxEffect {
-	return Core.Libs.Effects.Get(me.faceEffectID(face))
+	return Core.Libs.Effects.get(me.faceEffectID(face))
 }
 
 func (me *FxMaterial) faceEffectID(face *meshRawFace) (fxID int) {
@@ -54,8 +54,8 @@ func (me *FxMaterial) HasFaceEffects() bool {
 //	Only used for Core.Libs.Materials
 type FxMaterialLib []FxMaterial
 
-func (me *FxMaterialLib) AddNew() (ref *FxMaterial) {
-	id := -1
+func (me *FxMaterialLib) AddNew() (id int) {
+	id = -1
 	for i := 0; i < len(*me); i++ {
 		if (*me)[i].ID == -1 {
 			id = i
@@ -70,7 +70,7 @@ func (me *FxMaterialLib) AddNew() (ref *FxMaterial) {
 		}
 		*me = append(*me, FxMaterial{})
 	}
-	ref = &(*me)[id]
+	ref := &(*me)[id]
 	ref.ID = id
 	ref.init()
 	return
@@ -103,7 +103,7 @@ func (me *FxMaterialLib) Compact() {
 	}
 }
 
-func (me *FxMaterialLib) ctor() {
+func (me *FxMaterialLib) init() {
 	*me = make(FxMaterialLib, 0, Options.Libs.InitialCap)
 }
 
@@ -112,7 +112,7 @@ func (me *FxMaterialLib) dispose() {
 	*me = (*me)[:0]
 }
 
-func (me FxMaterialLib) Get(id int) (ref *FxMaterial) {
+func (me FxMaterialLib) get(id int) (ref *FxMaterial) {
 	if me.IsOk(id) {
 		ref = &me[id]
 	}

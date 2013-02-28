@@ -59,8 +59,8 @@ func (me *FxImage2D) Unload() {
 //	Only used for Core.Libs.Images.Tex2D
 type FxImage2DLib []FxImage2D
 
-func (me *FxImage2DLib) AddNew() (ref *FxImage2D) {
-	id := -1
+func (me *FxImage2DLib) AddNew() (id int) {
+	id = -1
 	for i := 0; i < len(*me); i++ {
 		if (*me)[i].ID == -1 {
 			id = i
@@ -75,7 +75,7 @@ func (me *FxImage2DLib) AddNew() (ref *FxImage2D) {
 		}
 		*me = append(*me, FxImage2D{})
 	}
-	ref = &(*me)[id]
+	ref := &(*me)[id]
 	ref.ID = id
 	ref.init()
 	return
@@ -108,7 +108,7 @@ func (me *FxImage2DLib) Compact() {
 	}
 }
 
-func (me *FxImage2DLib) ctor() {
+func (me *FxImage2DLib) init() {
 	*me = make(FxImage2DLib, 0, Options.Libs.InitialCap)
 }
 
@@ -117,7 +117,7 @@ func (me *FxImage2DLib) dispose() {
 	*me = (*me)[:0]
 }
 
-func (me FxImage2DLib) Get(id int) (ref *FxImage2D) {
+func (me FxImage2DLib) get(id int) (ref *FxImage2D) {
 	if me.IsOk(id) {
 		ref = &me[id]
 	}

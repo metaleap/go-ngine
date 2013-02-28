@@ -22,8 +22,6 @@ type CameraPerspective struct {
 
 //	A camera embodies the eye point of the viewer looking at the visual scene.
 type Camera struct {
-	ID int
-
 	//	Optical and imager properties for this camera.
 	Perspective struct {
 		//	FovY, ZFar, ZNear
@@ -91,7 +89,7 @@ func (me *Camera) setup(canv *RenderCanvas, persp3d bool, depth bool, technique 
 	me.Controller.init()
 	me.Rendering.Viewport.init()
 	me.ApplyMatrices()
-	me.Rendering.Technique = Core.Rendering.KnownTechniques[technique]()
+	me.Rendering.Technique = Core.Render.KnownTechniques[technique]()
 }
 
 func (me *Camera) init() {
@@ -125,7 +123,7 @@ func (me *Camera) dispose() {
 }
 
 func (me *Camera) scene() *Scene {
-	return Core.Libs.Scenes.Get(me.sceneID)
+	return Core.Libs.Scenes.get(me.sceneID)
 }
 
 func (me *Camera) SetScene(sceneID int) {
@@ -188,106 +186,53 @@ func (me *CameraViewport) update() {
 	me.aspect = float64(me.absW) / float64(me.absH)
 }
 
-//#begin-gt -gen-lib.gt T:Camera L:Core.Rendering.Canvases[id].Cameras
+//#begin-gt -gen-reflib.gt T:Camera L:Core.Render.Canvases[id].Cams
 
-//	Only used for Core.Rendering.Canvases[id].Cameras
-type CameraLib []Camera
+//	Only used for Core.Render.Canvases[id].Cams
+type CameraLib []*Camera
 
 func (me *CameraLib) AddNew() (ref *Camera) {
-	id := -1
-	for i := 0; i < len(*me); i++ {
-		if (*me)[i].ID == -1 {
-			id = i
-			break
-		}
-	}
-	if id == -1 {
-		if id = len(*me); id == cap(*me) {
-			nu := make(CameraLib, id, id+Options.Libs.GrowCapBy)
-			copy(nu, *me)
-			*me = nu
-		}
-		*me = append(*me, Camera{})
-	}
-	ref = &(*me)[id]
-	ref.ID = id
+	ref = new(Camera)
+	*me = append(*me, ref)
 	ref.init()
 	return
 }
 
-func (me *CameraLib) Compact() {
-	var (
-		before, after []Camera
-		ref           *Camera
-		oldID, i      int
-		compact       bool
-	)
-	for i = 0; i < len(*me); i++ {
-		if (*me)[i].ID == -1 {
-			compact, before, after = true, (*me)[:i], (*me)[i+1:]
-			*me = append(before, after...)
-		}
-	}
-	if compact {
-		changed := make(map[int]int, len(*me))
-		for i = 0; i < len(*me); i++ {
-			if ref = &(*me)[i]; ref.ID != i {
-				oldID, ref.ID = ref.ID, i
-				changed[oldID] = i
-			}
-		}
-		if len(changed) > 0 {
-			me.onCameraIDsChanged(changed)
-		}
-	}
-}
-
-func (me *CameraLib) ctor() {
-	*me = make(CameraLib, 0, Options.Libs.InitialCap)
+func (me *CameraLib) init() {
+	*me = make(CameraLib, 0, 4)
 }
 
 func (me *CameraLib) dispose() {
 	me.Remove(0, 0)
-	*me = (*me)[:0]
 }
 
 func (me CameraLib) Get(id int) (ref *Camera) {
 	if me.IsOk(id) {
-		ref = &me[id]
+		ref = me[id]
 	}
 	return
 }
 
-func (me CameraLib) IsOk(id int) (ok bool) {
-	if id > -1 && id < len(me) {
-		ok = me[id].ID == id
-	}
-	return
+func (me CameraLib) IsOk(id int) bool {
+	return id > -1 && id < len(me)
 }
 
-func (me CameraLib) Ok(id int) bool {
-	return me[id].ID == id
-}
-
-func (me CameraLib) Remove(fromID, num int) {
-	if l := len(me); fromID > -1 && fromID < l {
+func (me *CameraLib) Remove(fromID, num int) {
+	if l := len(*me); fromID > -1 && fromID < l {
 		if num < 1 || num > (l-fromID) {
 			num = l - fromID
 		}
-		changed := make(map[int]int, num)
-		for id := fromID; id < fromID+num; id++ {
-			me[id].dispose()
-			changed[id], me[id].ID = -1, -1
+		for i := fromID; i < fromID+num; i++ {
+			(*me)[fromID].dispose()
 		}
-		me.onCameraIDsChanged(changed)
+		before, after := (*me)[:fromID], (*me)[fromID+num:]
+		*me = append(before, after...)
 	}
 }
 
 func (me CameraLib) Walk(on func(ref *Camera)) {
 	for id := 0; id < len(me); id++ {
-		if me.Ok(id) {
-			on(&me[id])
-		}
+		on(me[id])
 	}
 }
 

@@ -35,7 +35,7 @@ type FxOp interface {
 	//	Returns whether this FxOp is currently enabled.
 	Enabled() bool
 
-	//	The procID of this FxOp. This is one of the Core.Rendering.Fx.KnownProcIDs.
+	//	The procID of this FxOp. This is one of the Core.Render.Fx.KnownProcIDs.
 	//	For example, "Tex2D" for an FxOpTex2D, "Grayscale" for an FxOpGrayscale etc.
 	ProcID() string
 
@@ -134,7 +134,7 @@ func (me *fxOpBase) Enabled() bool {
 	return !me.disabled
 }
 
-//	The procID of this FxOp. This is one of the Core.Rendering.Fx.KnownProcIDs.
+//	The procID of this FxOp. This is one of the Core.Render.Fx.KnownProcIDs.
 //	For example, "Tex2D" for an FxOpTex2D, "Grayscale" for an FxOpGrayscale etc.
 func (me *fxOpBase) ProcID() string {
 	return me.procID
@@ -209,7 +209,7 @@ type fxOpTexBase struct {
 func (me *fxOpTexBase) init(s string, i int) {
 	me.ImageID = -1
 	me.fxOpBase.init(s, -1)
-	me.Sampler = &Core.Rendering.Fx.Samplers.FullFilteringRepeat
+	me.Sampler = &Core.Render.Fx.Samplers.FullFilteringRepeat
 	me.setProcIndex(i)
 }
 
@@ -254,7 +254,7 @@ type FxOpTexCube struct {
 
 func (me *FxOpTexCube) init(s string, i int) {
 	me.fxOpTexBase.init(s, i)
-	me.Sampler = &Core.Rendering.Fx.Samplers.FullFilteringRepeat
+	me.Sampler = &Core.Render.Fx.Samplers.FullFilteringRepeat
 }
 
 func (me *FxOpTexCube) SetImageID(imageID int) *FxOpTexCube {
@@ -275,7 +275,7 @@ type FxOps []FxOp
 
 //	Disables the nth (0-based) FxOp with the specified procID,
 //	or all FxOps with the specified procID if n < 0.
-//	The procID must be one of the Core.Rendering.Fx.KnownProcIDs.
+//	The procID must be one of the Core.Render.Fx.KnownProcIDs.
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 func (me FxOps) Disable(procID string, n int) {
 	idx, all := -1, n < 0
@@ -294,7 +294,7 @@ func (me FxOps) Disable(procID string, n int) {
 //	Enables the nth (0-based) FxOp with the specified procID,
 //	or all FxOps with the specified procID if n < 0.
 //	If me has no FxOp with the specified procID, appends a new one.
-//	The procID must be one of the Core.Rendering.Fx.KnownProcIDs.
+//	The procID must be one of the Core.Render.Fx.KnownProcIDs.
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 func (me *FxOps) Enable(procID string, n int) (fxOp FxOp) {
 	var op FxOp
@@ -316,7 +316,7 @@ func (me *FxOps) Enable(procID string, n int) (fxOp FxOp) {
 }
 
 //	Returns the nth (0-based) FxOp with the specified procID.
-//	The procID must be one of the Core.Rendering.Fx.KnownProcIDs.
+//	The procID must be one of the Core.Render.Fx.KnownProcIDs.
 func (me FxOps) Get(procID string, n int) (op FxOp) {
 	idx := -1
 	for _, op = range me {
@@ -333,7 +333,7 @@ func (me FxOps) Get(procID string, n int) (op FxOp) {
 //	Toggles the nth (0-based) FxOp with the specified procID,
 //	or all FxOps with the specified procID if n < 0.
 //	If me has no FxOp with the specified procID, appends a new one.
-//	The procID must be one of the Core.Rendering.Fx.KnownProcIDs.
+//	The procID must be one of the Core.Render.Fx.KnownProcIDs.
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 func (me *FxOps) Toggle(procID string, n int) {
 	var (

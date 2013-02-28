@@ -9,8 +9,6 @@ import (
 
 //	Represents a surface (texture framebuffer) that can be rendered to.
 type RenderCanvas struct {
-	ID int
-
 	//	This should be an non-negative integer, it's a float64 just to avoid a
 	//	type conversion. How often this RenderCanvas is included in rendering:
 	//	1 = every frame (this is the default value)
@@ -19,7 +17,7 @@ type RenderCanvas struct {
 	//	0 = this RenderCanvas is disabled for rendering
 	EveryNthFrame float64
 
-	Cameras CameraLib
+	Cams CameraLib
 
 	Srgb bool
 
@@ -31,7 +29,8 @@ type RenderCanvas struct {
 }
 
 func (me *RenderCanvas) init() {
-	me.EveryNthFrame, me.isRtt, me.Cameras = 1, me.ID > 0, make(CameraLib, 0, 4)
+	me.EveryNthFrame, me.isRtt = 1, len(Core.Render.Canvases) > 1
+	me.Cams.init()
 	me.SetSize(true, 1, 1)
 	if !me.isRtt {
 		me.frameBuf.GlTarget, me.Srgb = gl.FRAMEBUFFER, !Options.Initialization.DefaultCanvas.GammaViaShader
@@ -50,28 +49,28 @@ func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int) {
 }
 
 func (me *RenderCanvas) AddNewCamera2D(allowOverlaps bool) (cam *Camera) {
-	cam = me.Cameras.AddNew()
+	cam = me.Cams.AddNew()
 	cam.setup2D(me, allowOverlaps)
 	Core.refreshWinSizeRels()
 	return
 }
 
 func (me *RenderCanvas) AddNewCamera3D() (cam *Camera) {
-	cam = me.Cameras.AddNew()
+	cam = me.Cams.AddNew()
 	cam.setup3D(me)
 	Core.refreshWinSizeRels()
 	return
 }
 
 func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera) {
-	cam = me.Cameras.AddNew()
+	cam = me.Cams.AddNew()
 	cam.setupQuad(me)
 	Core.refreshWinSizeRels()
 	return
 }
 
 func (me *RenderCanvas) dispose() {
-	me.Cameras.dispose()
+	me.Cams.dispose()
 	if me.isRtt {
 		me.frameBuf.Dispose()
 	}
@@ -84,12 +83,10 @@ func (me *RenderCanvas) onResize(viewWidth, viewHeight int) {
 	if me.isRtt {
 		me.frameBuf.Resize(gl.Sizei(int(me.absViewWidth)), gl.Sizei(int(me.absViewHeight)))
 	}
-	for cam := 0; cam < len(me.Cameras); cam++ {
-		if me.Cameras.Ok(cam) {
-			me.Cameras[cam].Rendering.Viewport.canvWidth, me.Cameras[cam].Rendering.Viewport.canvHeight = me.absViewWidth, me.absViewHeight
-			me.Cameras[cam].Rendering.Viewport.update()
-			me.Cameras[cam].ApplyMatrices()
-		}
+	for cam := 0; cam < len(me.Cams); cam++ {
+		me.Cams[cam].Rendering.Viewport.canvWidth, me.Cams[cam].Rendering.Viewport.canvHeight = me.absViewWidth, me.absViewHeight
+		me.Cams[cam].Rendering.Viewport.update()
+		me.Cams[cam].ApplyMatrices()
 	}
 }
 
@@ -109,106 +106,53 @@ func (me *RenderCanvas) SetSize(relative bool, width, height float64) {
 	me.onResize(UserIO.Window.width, UserIO.Window.height)
 }
 
-//#begin-gt -gen-lib.gt T:RenderCanvas L:Core.Rendering.Canvases
+//#begin-gt -gen-reflib.gt T:RenderCanvas L:Core.Render.Canvases
 
-//	Only used for Core.Rendering.Canvases
-type RenderCanvasLib []RenderCanvas
+//	Only used for Core.Render.Canvases
+type RenderCanvasLib []*RenderCanvas
 
 func (me *RenderCanvasLib) AddNew() (ref *RenderCanvas) {
-	id := -1
-	for i := 0; i < len(*me); i++ {
-		if (*me)[i].ID == -1 {
-			id = i
-			break
-		}
-	}
-	if id == -1 {
-		if id = len(*me); id == cap(*me) {
-			nu := make(RenderCanvasLib, id, id+Options.Libs.GrowCapBy)
-			copy(nu, *me)
-			*me = nu
-		}
-		*me = append(*me, RenderCanvas{})
-	}
-	ref = &(*me)[id]
-	ref.ID = id
+	ref = new(RenderCanvas)
+	*me = append(*me, ref)
 	ref.init()
 	return
 }
 
-func (me *RenderCanvasLib) Compact() {
-	var (
-		before, after []RenderCanvas
-		ref           *RenderCanvas
-		oldID, i      int
-		compact       bool
-	)
-	for i = 0; i < len(*me); i++ {
-		if (*me)[i].ID == -1 {
-			compact, before, after = true, (*me)[:i], (*me)[i+1:]
-			*me = append(before, after...)
-		}
-	}
-	if compact {
-		changed := make(map[int]int, len(*me))
-		for i = 0; i < len(*me); i++ {
-			if ref = &(*me)[i]; ref.ID != i {
-				oldID, ref.ID = ref.ID, i
-				changed[oldID] = i
-			}
-		}
-		if len(changed) > 0 {
-			me.onRenderCanvasIDsChanged(changed)
-		}
-	}
-}
-
-func (me *RenderCanvasLib) ctor() {
-	*me = make(RenderCanvasLib, 0, Options.Libs.InitialCap)
+func (me *RenderCanvasLib) init() {
+	*me = make(RenderCanvasLib, 0, 4)
 }
 
 func (me *RenderCanvasLib) dispose() {
 	me.Remove(0, 0)
-	*me = (*me)[:0]
 }
 
 func (me RenderCanvasLib) Get(id int) (ref *RenderCanvas) {
 	if me.IsOk(id) {
-		ref = &me[id]
+		ref = me[id]
 	}
 	return
 }
 
-func (me RenderCanvasLib) IsOk(id int) (ok bool) {
-	if id > -1 && id < len(me) {
-		ok = me[id].ID == id
-	}
-	return
+func (me RenderCanvasLib) IsOk(id int) bool {
+	return id > -1 && id < len(me)
 }
 
-func (me RenderCanvasLib) Ok(id int) bool {
-	return me[id].ID == id
-}
-
-func (me RenderCanvasLib) Remove(fromID, num int) {
-	if l := len(me); fromID > -1 && fromID < l {
+func (me *RenderCanvasLib) Remove(fromID, num int) {
+	if l := len(*me); fromID > -1 && fromID < l {
 		if num < 1 || num > (l-fromID) {
 			num = l - fromID
 		}
-		changed := make(map[int]int, num)
-		for id := fromID; id < fromID+num; id++ {
-			me[id].dispose()
-			changed[id], me[id].ID = -1, -1
+		for i := fromID; i < fromID+num; i++ {
+			(*me)[fromID].dispose()
 		}
-		me.onRenderCanvasIDsChanged(changed)
+		before, after := (*me)[:fromID], (*me)[fromID+num:]
+		*me = append(before, after...)
 	}
 }
 
 func (me RenderCanvasLib) Walk(on func(ref *RenderCanvas)) {
 	for id := 0; id < len(me); id++ {
-		if me.Ok(id) {
-			on(&me[id])
-		}
+		on(me[id])
 	}
 }
 

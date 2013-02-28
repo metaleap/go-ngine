@@ -1,0 +1,50 @@
+package gt
+
+//	Only used for __L__
+type __T__Lib []__T__
+
+func (me *__T__Lib) AddNew() (id int) {
+	id = len(*me)
+	*me = append(*me, __T__{})
+	ref := &(*me)[id]
+	ref.init()
+	return
+}
+
+func (me *__T__Lib) init() {
+	*me = make(__T__Lib, 0, 4)
+}
+
+func (me *__T__Lib) dispose() {
+	me.Remove(0, 0)
+}
+
+func (me __T__Lib) get(id int) (ref *__T__) {
+	if me.IsOk(id) {
+		ref = &me[id]
+	}
+	return
+}
+
+func (me __T__Lib) IsOk(id int) bool {
+	return id > -1 && id < len(me)
+}
+
+func (me *__T__Lib) Remove(fromID, num int) {
+	if l := len(*me); fromID > -1 && fromID < l {
+		if num < 1 || num > (l-fromID) {
+			num = l - fromID
+		}
+		for i := fromID; i < fromID+num; i++ {
+			(*me)[fromID].dispose()
+		}
+		before, after := (*me)[:fromID], (*me)[fromID+num:]
+		*me = append(before, after...)
+	}
+}
+
+func (me __T__Lib) Walk(on func(ref *__T__)) {
+	for id := 0; id < len(me); id++ {
+		on(&me[id])
+	}
+}

@@ -215,8 +215,8 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 				
 			
 				<pre>var LibIDs = struct {
-    Fx, Img, Mat map[string]int
-}{map[string]int{}, map[string]int{}, map[string]int{}}</pre>
+    Fx, Img2D, ImgCube, Mat map[string]int
+}{map[string]int{}, map[string]int{}, map[string]int{}, map[string]int{}}</pre>
 				
 			
 		
@@ -234,21 +234,21 @@ This function adds a new hint to be included in that rotation.
 		
 			
 			
-			<h2 id="AddMainScene">func <a href="/target/assets.go?s=178:212#L1">AddMainScene</a></h2>
+			<h2 id="AddMainScene">func <a href="/target/assets.go?s=207:241#L1">AddMainScene</a></h2>
 			<pre>func AddMainScene() (me *ng.Scene)</pre>
 			
 			
 		
 			
 			
-			<h2 id="AddSkyMesh">func <a href="/target/assets.go?s=287:331#L7">AddSkyMesh</a></h2>
+			<h2 id="AddSkyMesh">func <a href="/target/assets.go?s=345:389#L8">AddSkyMesh</a></h2>
 			<pre>func AddSkyMesh(scene *ng.Scene, meshID int)</pre>
 			
 			
 		
 			
 			
-			<h2 id="AddTextureMaterials">func <a href="/target/assets.go?s=1749:1800#L38">AddTextureMaterials</a></h2>
+			<h2 id="AddTextureMaterials">func <a href="/target/assets.go?s=1914:1965#L41">AddTextureMaterials</a></h2>
 			<pre>func AddTextureMaterials(idsUrls map[string]string)</pre>
 			<p>
 Sets up textures and associated effects/materials with the specified IDs and image URLs.
@@ -308,7 +308,7 @@ states (from the previous CheckCamCtlKeys() call) for controlling SceneCam.Contr
 		
 			
 			
-			<h2 id="Main">func <a href="/target/apputil.go?s=2562:2623#L79">Main</a></h2>
+			<h2 id="Main">func <a href="/target/apputil.go?s=2565:2626#L79">Main</a></h2>
 			<pre>func Main(setupExampleScene, onAppThread, onWinThread func())</pre>
 			<p>
 Called by each example-app&#39;s func main(). Initializes go:ngine, sets SceneCam/SceneCanvas/PostFxCam/PostFxCanvas etc., calls the specified setupExampleScene function, then enters The Loop.

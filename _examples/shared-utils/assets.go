@@ -4,37 +4,48 @@ import (
 	ng "github.com/go3d/go-ngine/core"
 )
 
-var LibIDs = struct {
-	Fx, Img, Mat map[string]int
-}{map[string]int{}, map[string]int{}, map[string]int{}}
+var LibIDs struct {
+	Fx, Img2D, ImgCube, Mat map[string]int
+}
+
+func init() {
+	const cap = 16
+	LibIDs.Fx = make(map[string]int, cap)
+	LibIDs.Mat = make(map[string]int, cap)
+	LibIDs.Img2D = make(map[string]int, cap)
+	LibIDs.ImgCube = make(map[string]int, 1)
+}
 
 func AddMainScene() (me *ng.Scene) {
-	me = ng.Core.Libs.Scenes.AddNew()
-	SceneCam.SetScene(me.ID)
+	id := ng.Core.Libs.Scenes.AddNew()
+	me = &ng.Core.Libs.Scenes[id]
+	SceneCam.SetScene(id)
 	return
 }
 
 func AddSkyMesh(scene *ng.Scene, meshID int) {
-	cubeMap := ng.Core.Libs.Images.TexCube.AddNew()
-	LibIDs.Img["sky"] = cubeMap.ID
+	cubeMapID := ng.Core.Libs.Images.TexCube.AddNew()
+	cubeMap := &ng.Core.Libs.Images.TexCube[cubeMapID]
+	LibIDs.ImgCube["sky"] = cubeMapID
 	cubeMap.InitFrom[0].RefUrl = "tex/sky/east.png"  // positive X
 	cubeMap.InitFrom[1].RefUrl = "tex/sky/west.png"  // negative X
 	cubeMap.InitFrom[2].RefUrl = "tex/sky/up.png"    // positive Y
 	cubeMap.InitFrom[3].RefUrl = "tex/sky/down.png"  // negative Y
 	cubeMap.InitFrom[4].RefUrl = "tex/sky/north.png" // positive Z
 	cubeMap.InitFrom[5].RefUrl = "tex/sky/south.png" // negative Z
-	fx := ng.Core.Libs.Effects.AddNew()
-	LibIDs.Fx["sky"] = fx.ID
+	fxID := ng.Core.Libs.Effects.AddNew()
+	LibIDs.Fx["sky"] = fxID
+	fx := &ng.Core.Libs.Effects[fxID]
 	fx.Ops.EnableTexCube(0).ImageID = cubeMap.ID
 	fx.Ops.EnableCoords(0)
 	fx.Ops.DisableCoords(0)
 	fx.UpdateRoutine()
-	matSky := ng.Core.Libs.Materials.AddNew()
-	matSky.DefaultEffectID = LibIDs.Fx["sky"]
-	LibIDs.Mat["sky"] = matSky.ID
+	matID := ng.Core.Libs.Materials.AddNew()
+	ng.Core.Libs.Materials[matID].DefaultEffectID = LibIDs.Fx["sky"]
+	LibIDs.Mat["sky"] = matID
 
 	scene.RootNode.MeshID = meshID
-	scene.RootNode.MatID = matSky.ID
+	scene.RootNode.MatID = matID
 }
 
 //	Sets up textures and associated effects/materials with the specified IDs and image URLs.
@@ -47,23 +58,37 @@ func AddSkyMesh(scene *ng.Scene, meshID int) {
 //	adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffect.
 func AddTextureMaterials(idsUrls map[string]string) {
 	var (
-		img *ng.FxImage2D
-		fx  *ng.FxEffect
-		mat *ng.FxMaterial
+		imgID, fxID, matID int
+		fx                 *ng.FxEffect
 	)
 	for id, refUrl := range idsUrls {
-		img = ng.Core.Libs.Images.Tex2D.AddNew()
-		LibIDs.Img[id] = img.ID
-		img.InitFrom.RefUrl = refUrl
-		fx = ng.Core.Libs.Effects.AddNew()
-		LibIDs.Fx[id] = fx.ID
-		fx.Ops.EnableTex2D(0).ImageID = img.ID
+		imgID = ng.Core.Libs.Images.Tex2D.AddNew()
+		LibIDs.Img2D[id] = imgID
+		ng.Core.Libs.Images.Tex2D[imgID].InitFrom.RefUrl = refUrl
+		fxID = ng.Core.Libs.Effects.AddNew()
+		fx = &ng.Core.Libs.Effects[fxID]
+		LibIDs.Fx[id] = fxID
+		fx.Ops.EnableTex2D(0).ImageID = imgID
 		fx.Ops.EnableCoords(0)
 		fx.Ops.DisableCoords(0)
 		fx.UpdateRoutine()
-		mat = ng.Core.Libs.Materials.AddNew()
-		mat.DefaultEffectID = fx.ID
-		LibIDs.Mat[id] = mat.ID
+		matID = ng.Core.Libs.Materials.AddNew()
+		ng.Core.Libs.Materials[matID].DefaultEffectID = fxID
+		LibIDs.Mat[id] = matID
 	}
 	return
+}
+
+func setupIDHandlers() {
+	setup := func(handlers ng.LibElemIDChangedHandlers, namedIDs map[string]int) {
+		handlers.Add(func(oldNewIDs map[int]int) {
+			for k, v := range namedIDs {
+				namedIDs[k] = ng.Core.Libs.UpdatedIDRef(oldNewIDs, v)
+			}
+		})
+	}
+	setup(ng.Options.Libs.OnIDsChanged.Effects, LibIDs.Fx)
+	setup(ng.Options.Libs.OnIDsChanged.Images.Tex2D, LibIDs.Img2D)
+	setup(ng.Options.Libs.OnIDsChanged.Images.TexCube, LibIDs.ImgCube)
+	setup(ng.Options.Libs.OnIDsChanged.Materials, LibIDs.Mat)
 }

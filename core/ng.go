@@ -12,7 +12,7 @@ import (
 //	Call this to "un-init" go:ngine and to release any and all GPU or RAM resources still allocated.
 func Dispose() {
 	Core.dispose()
-	glDispose()
+	ogl.dispose()
 	UserIO.dispose()
 }
 
@@ -42,10 +42,12 @@ func Init(fullscreen bool) (err error) {
 tryInit:
 	glVer, UserIO.Window.fullscreen = ugl.KnownVersions[glVerIndex], fullscreen
 	if err = UserIO.init(glVer); err == nil {
-		if err, badVer = glInit(); err == nil && len(badVer) == 0 {
+		if err, badVer = ogl.init(); err == nil && len(badVer) == 0 {
 			Stats.reset()
 			Loop.init()
-			Core.init()
+			if err = Core.init(); err != nil {
+				return
+			}
 			Diag.LogIfGlErr("INIT")
 		} else if len(badVer) > 0 && !Options.Initialization.GlContext.CoreProfile.ForceFirst {
 			Options.Initialization.GlContext.CoreProfile.ForceFirst = true
@@ -57,10 +59,10 @@ tryInit:
 		UserIO.isGlfwInit, UserIO.Window.isCreated = false, false
 		goto tryInit
 	} else {
-		badVer = glc.lastBadVer
+		badVer = ogl.lastBadVer
 	}
 	if len(badVer) > 0 {
-		err = errf(glVersionErrorMessage(glMinVerStr, badVer))
+		err = errf(ogl.versionErrorMessage(glMinVerStr, badVer))
 	}
 	return
 }

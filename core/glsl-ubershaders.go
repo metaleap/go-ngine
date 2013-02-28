@@ -139,14 +139,14 @@ func (me *uberShaders) processFuncs() {
 
 func (me *uberShaders) ensureProg() (prog *ugl.Program) {
 	pname := thrRend.curEffect.uberPnames[thrRend.curTech.name()]
-	if prog = glc.progMan.Get(pname); prog == nil {
+	if prog = ogl.progs.Get(pname); prog == nil {
 		var job uberShaderJob
 		job.init(pname)
-		prog = glc.progMan.AddNew(pname)
+		prog = ogl.progs.AddNew(pname)
 		var err error
 		if err = me.setShaderSources(prog, &job, thrRend.curTech.name(), thrRend.curEffect); err == nil {
 			var dur time.Duration
-			if dur, err = glcProgsMake(false, pname); err == nil {
+			if dur, err = ogl.makeProgs(false, pname); err == nil {
 				Diag.LogShaders("Built new GLSL shader program '%s' in %v", pname, dur)
 				Stats.addProgCompile(1, dur.Nanoseconds())
 				prog.Tag = thrRend.curTech
@@ -233,7 +233,7 @@ func (me *uberShaders) setShaderSourceFrag(job *uberShaderJob, fx *FxEffect, inp
 	for _, ops = range allOps {
 		for _, op = range ops {
 			if op.Enabled() {
-				if shid = Core.Rendering.Fx.procFuncs[op.ProcID()]; len(shid) == 0 {
+				if shid = Core.Render.Fx.procFuncs[op.ProcID()]; len(shid) == 0 {
 					err = errf("uberShader.setShaderSourceFrag('%s') -- unknown fxProc ID '%s'", job.pname, op.ProcID())
 					return
 				}
@@ -266,7 +266,7 @@ func (me *uberShaders) setShaderSourceFrag(job *uberShaderJob, fx *FxEffect, inp
 	for _, ops = range allOps {
 		for _, op = range ops {
 			if op.Enabled() {
-				shFunc = me.allFuncs.fragment[Core.Rendering.Fx.procFuncs[op.ProcID()]]
+				shFunc = me.allFuncs.fragment[Core.Render.Fx.procFuncs[op.ProcID()]]
 				srcBody.Writeln("\tvCol = mix(vCol, %s%d(vCol), %s);", shFunc.name, op.ProcIndex(), op.unifName("float", "MixWeight"))
 			}
 		}

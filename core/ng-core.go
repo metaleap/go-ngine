@@ -14,20 +14,9 @@ var (
 //	EngineCore is a singleton type, only used for the core.Core package-global exported variable.
 //	It is only aware of that instance and does not support any other EngineCore instances.
 type EngineCore struct {
-	MeshBuffers *MeshBuffers
-	Libs        struct {
-		Effects   FxEffectLib
-		Materials FxMaterialLib
-		Images    struct {
-			SplashScreen FxImage2D
-			TexCube      FxImageCubeLib
-			Tex2D        FxImage2DLib
-		}
-		Meshes MeshLib
-		Models ModelLib
-		Scenes SceneLib
-	}
-	Rendering struct {
+	MeshBuffers MeshBuffers
+	Libs        EngineLibs
+	Render      struct {
 		Canvases RenderCanvasLib
 		Fx       struct {
 			KnownProcIDs []string
@@ -50,22 +39,23 @@ type EngineCore struct {
 
 func (_ *EngineCore) dispose() {
 	Core.isInit = false
-	Core.disposeLibs()
-	Core.Rendering.Fx.Samplers.FullFilteringRepeat.Dispose()
-	Core.Rendering.Fx.Samplers.FullFilteringClamp.Dispose()
-	Core.Rendering.Fx.Samplers.NoFilteringClamp.Dispose()
+	Core.Libs.dispose()
+	Core.Render.Fx.Samplers.FullFilteringRepeat.Dispose()
+	Core.Render.Fx.Samplers.FullFilteringClamp.Dispose()
+	Core.Render.Fx.Samplers.NoFilteringClamp.Dispose()
 }
 
-func (_ *EngineCore) init() {
-	Core.MeshBuffers = newMeshBuffers()
-	Core.initLibs()
+func (_ *EngineCore) init() (err error) {
+	Core.MeshBuffers.init()
+	Core.Libs.init()
 	Core.initRendering()
-	Core.showSplash()
+	err = Core.showSplash()
 	Core.isInit = true
+	return
 }
 
 func (_ *EngineCore) initRendering() {
-	rend := &Core.Rendering
+	rend := &Core.Render
 	rend.KnownTechniques = map[string]RenderTechniqueProvider{
 		"Quad":  newRenderTechniqueQuad,
 		"Scene": newRenderTechniqueScene,
@@ -80,9 +70,7 @@ func (_ *EngineCore) initRendering() {
 	rend.Fx.Samplers.FullFilteringRepeat.Create().EnableFullFiltering(true, 8).SetWrap(gl.REPEAT)
 	rend.Fx.Samplers.FullFilteringClamp.Create().EnableFullFiltering(true, 8).SetWrap(gl.CLAMP_TO_EDGE)
 	rend.Fx.Samplers.NoFilteringClamp.Create().DisableAllFiltering(false).SetWrap(gl.CLAMP_TO_BORDER)
-	rend.Canvases = make(RenderCanvasLib, 0, 4)
-	rend.Canvases.AddNew()
-	if quadFx := &rend.Canvases[0].AddNewCameraQuad().RenderTechniqueQuad().Effect; Options.Initialization.DefaultCanvas.GammaViaShader {
+	if quadFx := &rend.Canvases.AddNew().AddNewCameraQuad().RenderTechniqueQuad().Effect; Options.Initialization.DefaultCanvas.GammaViaShader {
 		quadFx.Ops.EnableGamma(-1)
 		quadFx.KeepOpsLast = append(quadFx.KeepOpsLast, "Gamma")
 		quadFx.UpdateRoutine()
@@ -91,8 +79,8 @@ func (_ *EngineCore) initRendering() {
 
 func (_ *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 	if Core.isInit {
-		for i := 0; i < len(Core.Rendering.Canvases); i++ {
-			Core.Rendering.Canvases[i].onResize(viewWidth, viewHeight)
+		for i := 0; i < len(Core.Render.Canvases); i++ {
+			Core.Render.Canvases[i].onResize(viewWidth, viewHeight)
 		}
 		// Diag.LogIfGlErr("onResizeWindow")
 	}
@@ -136,17 +124,20 @@ func (_ *EngineCore) refreshWinSizeRels() {
 	Core.onResizeWindow(UserIO.Window.width, UserIO.Window.height)
 }
 
-func (_ *EngineCore) showSplash() {
+func (_ *EngineCore) showSplash() (err error) {
 	splash := &Core.Libs.Images.SplashScreen
 	splash.init()
 	splash.Preprocess.FlipY, splash.Preprocess.ToLinear, splash.Preprocess.ToBgra = false, false, false
 	splash.Load()
-	splash.GpuSync()
+	if err = splash.GpuSync(); err != nil {
+		return
+	}
 	thrRend.quadTex = splash.glTex.GlHandle
 	Core.onRender()
 	splash.Unload()
 	splash.InitFrom.RawData = nil
 	glfw.SwapBuffers()
+	return
 }
 
 func (_ *EngineCore) useTechFx() {
@@ -157,7 +148,7 @@ func (_ *EngineCore) useTechFx() {
 			thrRend.nextEffect.UpdateRoutine()
 		}
 		thrRend.curEffect = thrRend.nextEffect
-		thrRend.curProg = glc.uberShaders.ensureProg()
+		thrRend.curProg = ogl.uber.ensureProg()
 		thrRend.curProg.Use()
 		thrRend.curEffect.use()
 	}

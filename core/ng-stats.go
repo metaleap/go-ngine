@@ -55,7 +55,7 @@ type EngineStats struct {
 	//	"Windowing/GPU/IO code" comprises user-specific logic executed every frame via your own
 	//	Loop.OnWinThread() callback. This should be kept to a minimum to fully enjoy
 	//	the benefits of multi-threading. Main use-cases are calls resulting in GPU state
-	//	changes (such as toggling effects in Core.Rendering.PostFx) and working with UserIO
+	//	changes (such as toggling effects in Core.Render.PostFx) and working with UserIO
 	//	to poll for user input -- but do consider executing resulting logic in your OnAppThread().
 	//	This TimingStats instance tracks over time (both average and maximum) "input code" cost per frame.
 	FrameWinThread TimingStats

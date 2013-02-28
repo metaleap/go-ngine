@@ -15,10 +15,8 @@ type MeshBuffers struct {
 	bufs map[string]*MeshBuffer
 }
 
-func newMeshBuffers() (me *MeshBuffers) {
-	me = &MeshBuffers{}
+func (me *MeshBuffers) init() {
 	me.bufs = map[string]*MeshBuffer{}
-	return
 }
 
 func (me *MeshBuffers) Add(id string, params *meshBufferParams) (buf *MeshBuffer, err error) {
@@ -42,12 +40,12 @@ func (me *MeshBuffers) dispose() {
 	me.bufs = map[string]*MeshBuffer{}
 }
 
-func (me *MeshBuffers) FloatsPerVertex() int32 {
+func (_ *MeshBuffers) FloatsPerVertex() int32 {
 	const numVertPosFloats, numVertTexCoordFloats, numVertNormalFloats int32 = 3, 2, 3
 	return numVertPosFloats + numVertNormalFloats + numVertTexCoordFloats
 }
 
-func (me *MeshBuffers) MemSizePerIndex() int32 {
+func (_ *MeshBuffers) MemSizePerIndex() int32 {
 	return 4
 }
 
@@ -70,7 +68,8 @@ func (me *MeshBuffers) Remove(id string) {
 
 type MeshBuffer struct {
 	MemSizeIndices, MemSizeVertices int32
-	Params                          *meshBufferParams
+	// Params                         meshBufferParams
+	Name string
 
 	offsetBaseIndex, offsetIndices, offsetVerts int32
 	id                                          string
@@ -79,11 +78,14 @@ type MeshBuffer struct {
 	meshes                                      map[*Mesh]bool
 }
 
+func (me *MeshBuffer) init() {
+}
+
 func newMeshBuffer(id string, params *meshBufferParams) (me *MeshBuffer, err error) {
 	me = &MeshBuffer{}
 	me.id = id
 	me.meshes = map[*Mesh]bool{}
-	me.Params = params
+	// me.Params = *params
 	me.glVaos = map[*ugl.Program]*ugl.VertexArray{}
 	me.MemSizeIndices = Core.MeshBuffers.MemSizePerIndex() * params.NumIndices
 	me.MemSizeVertices = Core.MeshBuffers.MemSizePerVertex() * params.NumVerts
@@ -93,9 +95,9 @@ func newMeshBuffer(id string, params *meshBufferParams) (me *MeshBuffer, err err
 	if err == nil {
 		var tech RenderTechnique
 		var ok bool
-		for i := 0; i < len(glc.progMan.Programs); i++ {
-			if tech, ok = glc.progMan.Programs[i].Tag.(RenderTechnique); ok {
-				if err = me.setupVao(&glc.progMan.Programs[i], tech); err != nil {
+		for i := 0; i < len(ogl.progs.All); i++ {
+			if tech, ok = ogl.progs.All[i].Tag.(RenderTechnique); ok {
+				if err = me.setupVao(&ogl.progs.All[i], tech); err != nil {
 					break
 				}
 			}
@@ -160,3 +162,55 @@ func (me *MeshBuffer) setupVao(prog *ugl.Program, tech RenderTechnique) (err err
 	}
 	return
 }
+
+//#begin-gt -gen-reflib.gt T:MeshBuffer L:Core.MeshBuffers
+
+//	Only used for Core.MeshBuffers
+type MeshBufferLib []*MeshBuffer
+
+func (me *MeshBufferLib) AddNew() (ref *MeshBuffer) {
+	ref = new(MeshBuffer)
+	*me = append(*me, ref)
+	ref.init()
+	return
+}
+
+func (me *MeshBufferLib) init() {
+	*me = make(MeshBufferLib, 0, 4)
+}
+
+func (me *MeshBufferLib) dispose() {
+	me.Remove(0, 0)
+}
+
+func (me MeshBufferLib) Get(id int) (ref *MeshBuffer) {
+	if me.IsOk(id) {
+		ref = me[id]
+	}
+	return
+}
+
+func (me MeshBufferLib) IsOk(id int) bool {
+	return id > -1 && id < len(me)
+}
+
+func (me *MeshBufferLib) Remove(fromID, num int) {
+	if l := len(*me); fromID > -1 && fromID < l {
+		if num < 1 || num > (l-fromID) {
+			num = l - fromID
+		}
+		for i := fromID; i < fromID+num; i++ {
+			(*me)[fromID].dispose()
+		}
+		before, after := (*me)[:fromID], (*me)[fromID+num:]
+		*me = append(before, after...)
+	}
+}
+
+func (me MeshBufferLib) Walk(on func(ref *MeshBuffer)) {
+	for id := 0; id < len(me); id++ {
+		on(me[id])
+	}
+}
+
+//#end-gt

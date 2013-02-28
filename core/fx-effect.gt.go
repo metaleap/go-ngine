@@ -29,7 +29,7 @@ func (me *FxEffect) dispose() {
 }
 
 func (me *FxEffect) init() {
-	me.uberPnames = make(map[string]string, len(Core.Rendering.KnownTechniques))
+	me.uberPnames = make(map[string]string, len(Core.Render.KnownTechniques))
 }
 
 func (me *FxEffect) UpdateRoutine() {
@@ -69,7 +69,7 @@ doOps:
 	}
 
 	me.uberName = buf.String()
-	for id, _ = range Core.Rendering.KnownTechniques {
+	for id, _ = range Core.Render.KnownTechniques {
 		me.uberPnames[id] = strf("uber_%s%s", id, me.uberName)
 	}
 	thrRend.curEffect = nil
@@ -93,8 +93,8 @@ func (me *FxEffect) use() {
 //	Only used for Core.Libs.Effects
 type FxEffectLib []FxEffect
 
-func (me *FxEffectLib) AddNew() (ref *FxEffect) {
-	id := -1
+func (me *FxEffectLib) AddNew() (id int) {
+	id = -1
 	for i := 0; i < len(*me); i++ {
 		if (*me)[i].ID == -1 {
 			id = i
@@ -109,7 +109,7 @@ func (me *FxEffectLib) AddNew() (ref *FxEffect) {
 		}
 		*me = append(*me, FxEffect{})
 	}
-	ref = &(*me)[id]
+	ref := &(*me)[id]
 	ref.ID = id
 	ref.init()
 	return
@@ -142,7 +142,7 @@ func (me *FxEffectLib) Compact() {
 	}
 }
 
-func (me *FxEffectLib) ctor() {
+func (me *FxEffectLib) init() {
 	*me = make(FxEffectLib, 0, Options.Libs.InitialCap)
 }
 
@@ -151,7 +151,7 @@ func (me *FxEffectLib) dispose() {
 	*me = (*me)[:0]
 }
 
-func (me FxEffectLib) Get(id int) (ref *FxEffect) {
+func (me FxEffectLib) get(id int) (ref *FxEffect) {
 	if me.IsOk(id) {
 		ref = &me[id]
 	}

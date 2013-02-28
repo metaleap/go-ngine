@@ -77,30 +77,28 @@ func (me *Node) initCamDatas() {
 	me.thrPrep.camRender = map[*Camera]bool{}
 	me.thrPrep.camProjMats, me.thrRend.camProjMats = nodeCamProjMats{}, nodeCamProjGlMats{}
 	var cam int
-	for canv := 0; canv < len(Core.Rendering.Canvases); canv++ {
-		for cam = 0; cam < len(Core.Rendering.Canvases[canv].Cameras); cam++ {
-			if Core.Rendering.Canvases[canv].Cameras.Ok(cam) {
-				me.initCamData(&Core.Rendering.Canvases[canv].Cameras[cam])
-			}
+	for canv := 0; canv < len(Core.Render.Canvases); canv++ {
+		for cam = 0; cam < len(Core.Render.Canvases[canv].Cams); cam++ {
+			me.initCamData(Core.Render.Canvases[canv].Cams[cam])
 		}
 	}
 }
 
 func (me *Node) material() (mat *FxMaterial) {
-	if mat = Core.Libs.Materials.Get(me.MatID); mat == nil {
+	if mat = Core.Libs.Materials.get(me.MatID); mat == nil {
 		if model := me.model(); model != nil {
-			mat = Core.Libs.Materials.Get(model.MatID)
+			mat = Core.Libs.Materials.get(model.MatID)
 		}
 	}
 	return
 }
 
 func (me *Node) mesh() *Mesh {
-	return Core.Libs.Meshes.Get(me.MeshID)
+	return Core.Libs.Meshes.get(me.MeshID)
 }
 
 func (me *Node) model() *Model {
-	return Core.Libs.Models.Get(me.modelID())
+	return Core.Libs.Models.get(me.modelID())
 }
 
 func (me *Node) modelID() (id int) {

@@ -75,10 +75,10 @@ func onAppThread() {
 
 func setupExample_04_PyrsCubes() {
 	var (
-		err                          error
-		meshPlane, meshPyr, meshCube *ng.Mesh
-		bufFloor, bufRest            *ng.MeshBuffer
-		scene                        *ng.Scene
+		err                                error
+		meshPlaneID, meshPyrID, meshCubeID int
+		bufFloor, bufRest                  *ng.MeshBuffer
+		scene                              *ng.Scene
 	)
 
 	//	textures / materials
@@ -92,7 +92,7 @@ func setupExample_04_PyrsCubes() {
 	})
 
 	fx := &ng.Core.Libs.Effects[apputil.LibIDs.Fx["mosaic"]]
-	fx.Ops.EnableTex2D(1).SetImageID(apputil.LibIDs.Img["gopher"]).SetMixWeight(0.5)
+	fx.Ops.EnableTex2D(1).SetImageID(apputil.LibIDs.Img2D["gopher"]).SetMixWeight(0.5)
 	fx.UpdateRoutine()
 
 	//	meshes / models
@@ -103,57 +103,57 @@ func setupExample_04_PyrsCubes() {
 		panic(err)
 	}
 
-	if meshPlane, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
+	if meshPlaneID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
 		panic(err)
 	}
-	modelPlaneDefault := ng.Core.Libs.Models.AddNew()
-	modelPlaneDefault.MatID = apputil.LibIDs.Mat["cobbles"]
-	meshPlane.DefaultModelID = modelPlaneDefault.ID
+	modelPlaneDefaultID := ng.Core.Libs.Models.AddNew()
+	ng.Core.Libs.Models[modelPlaneDefaultID].MatID = apputil.LibIDs.Mat["cobbles"]
+	ng.Core.Libs.Meshes[meshPlaneID].DefaultModelID = modelPlaneDefaultID
 
-	if meshPyr, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_pyramid", ng.MeshProviderPrefabPyramid); err != nil {
+	if meshPyrID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_pyramid", ng.MeshProviderPrefabPyramid); err != nil {
 		panic(err)
 	}
-	modelPyrDefault := ng.Core.Libs.Models.AddNew()
-	modelPyrDefault.MatID = apputil.LibIDs.Mat["mosaic"]
-	meshPyr.DefaultModelID = modelPyrDefault.ID
-	modelPyrDog := ng.Core.Libs.Models.AddNew()
-	modelPyrDog.MatID = apputil.LibIDs.Mat["dog"]
+	modelPyrDefaultID := ng.Core.Libs.Models.AddNew()
+	ng.Core.Libs.Models[modelPyrDefaultID].MatID = apputil.LibIDs.Mat["mosaic"]
+	ng.Core.Libs.Meshes[meshPyrID].DefaultModelID = modelPyrDefaultID
+	modelPyrDogID := ng.Core.Libs.Models.AddNew()
+	ng.Core.Libs.Models[modelPyrDogID].MatID = apputil.LibIDs.Mat["dog"]
 
-	if meshCube, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_cube", ng.MeshProviderPrefabCube); err != nil {
+	if meshCubeID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_cube", ng.MeshProviderPrefabCube); err != nil {
 		panic(err)
 	}
-	modelCubeDefault := ng.Core.Libs.Models.AddNew()
-	modelCubeDefault.MatID = apputil.LibIDs.Mat["crate"]
-	meshCube.DefaultModelID = modelCubeDefault.ID
-	modelCubeCat := ng.Core.Libs.Models.AddNew()
-	modelCubeCat.MatID = apputil.LibIDs.Mat["cat"]
+	modelCubeDefaultID := ng.Core.Libs.Models.AddNew()
+	ng.Core.Libs.Models[modelCubeDefaultID].MatID = apputil.LibIDs.Mat["crate"]
+	ng.Core.Libs.Meshes[meshCubeID].DefaultModelID = modelCubeDefaultID
+	modelCubeCatID := ng.Core.Libs.Models.AddNew()
+	ng.Core.Libs.Models[modelCubeCatID].MatID = apputil.LibIDs.Mat["cat"]
 
 	tmpMat := &ng.Core.Libs.Materials[apputil.LibIDs.Mat["crate"]]
 	tmpMat.FaceEffects.ByTag["front"] = apputil.LibIDs.Fx["cat"]
 	tmpMat.FaceEffects.ByTag["back"] = apputil.LibIDs.Fx["dog"]
 
-	tmpMat = ng.Core.Libs.Materials.AddNew()
+	tmpMat = &ng.Core.Libs.Materials[ng.Core.Libs.Materials.AddNew()]
 	tmpMat.DefaultEffectID = apputil.LibIDs.Fx["crate"]
 	tmpMat.FaceEffects.ByTag["front"], tmpMat.FaceEffects.ByTag["back"] = apputil.LibIDs.Fx["cat"], apputil.LibIDs.Fx["cat"]
 	tmpMat.FaceEffects.ByTag["top"], tmpMat.FaceEffects.ByTag["bottom"] = apputil.LibIDs.Fx["dog"], apputil.LibIDs.Fx["dog"]
 	tmpMat.FaceEffects.ByTag["left"], tmpMat.FaceEffects.ByTag["right"] = apputil.LibIDs.Fx["gopher"], apputil.LibIDs.Fx["gopher"]
 	apputil.LibIDs.Mat["mix"] = tmpMat.ID
 
-	bufFloor.Add(meshPlane)
-	bufRest.Add(meshCube)
-	bufRest.Add(meshPyr)
+	bufFloor.Add(&ng.Core.Libs.Meshes[meshPlaneID])
+	bufRest.Add(&ng.Core.Libs.Meshes[meshCubeID])
+	bufRest.Add(&ng.Core.Libs.Meshes[meshPyrID])
 
 	//	scene
 	scene = apputil.AddMainScene()
-	apputil.AddSkyMesh(scene, meshPyr.ID)
-	floor = scene.RootNode.ChildNodes.AddNew("node_floor", meshPlane.ID)
-	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", meshPyr.ID)
-	box = scene.RootNode.ChildNodes.AddNew("node_box", meshCube.ID)
+	apputil.AddSkyMesh(scene, meshPyrID)
+	floor = scene.RootNode.ChildNodes.AddNew("node_floor", meshPlaneID)
+	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", meshPyrID)
+	box = scene.RootNode.ChildNodes.AddNew("node_box", meshCubeID)
 
 	for i = 0; i < len(crates); i++ {
-		crates[i] = scene.RootNode.ChildNodes.AddNew(fmt.Sprintf("node_box_%v", i), meshCube.ID)
+		crates[i] = scene.RootNode.ChildNodes.AddNew(fmt.Sprintf("node_box_%v", i), meshCubeID)
 		if i == 0 {
-			crates[i].ModelID = modelCubeCat.ID
+			crates[i].ModelID = modelCubeCatID
 		}
 		f = float64(i)
 		crates[i].Transform.SetPos((f+3)*-2, (f+1)*2, (f+2)*3)
@@ -164,9 +164,9 @@ func setupExample_04_PyrsCubes() {
 	}
 
 	for i = 0; i < len(pyramids); i++ {
-		pyramids[i] = scene.RootNode.ChildNodes.AddNew(fmt.Sprintf("nody_pyr_%v", i), meshPyr.ID)
+		pyramids[i] = scene.RootNode.ChildNodes.AddNew(fmt.Sprintf("nody_pyr_%v", i), meshPyrID)
 		if i > 1 {
-			pyramids[i].ModelID = modelPyrDog.ID
+			pyramids[i].ModelID = modelPyrDogID
 		}
 		f = float64(len(pyramids) - i)
 		pyramids[i].Transform.SetScale((f + 1) * 2)

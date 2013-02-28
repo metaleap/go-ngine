@@ -67,9 +67,9 @@ func appWindowTitle() string {
 	winTitle.cw, winTitle.ch = ng.UserIO.Window.Width(), ng.UserIO.Window.Height()
 	if SceneCanvas != nil {
 		winTitle.cw, winTitle.ch = SceneCanvas.CurrentAbsoluteSize()
-	}
-	if SceneCam != nil {
-		winTitle.camPos, winTitle.camDir = SceneCam.Controller.Pos, *SceneCam.Controller.Dir()
+		if SceneCam != nil {
+			winTitle.camPos, winTitle.camDir = SceneCam.Controller.Pos, *SceneCam.Controller.Dir()
+		}
 	}
 	return fmt.Sprintf("%s   |   %v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", winTitle.appName, ng.Stats.FpsLastSec, winTitle.cw, winTitle.ch, KeyHints[curKeyHint], winTitle.camPos.String(), winTitle.camDir.String())
 }
@@ -113,7 +113,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	//	Worth toggling this every once in a while just to see whether it makes a perf diff at all...
 	realThreads := true
 	opt.Loop.ForceThreads.App, opt.Loop.ForceThreads.Prep = realThreads, realThreads
-	opt.Loop.GcEvery.Frame = false
+	opt.Loop.GcEvery.Frame = true
 
 	opt.AppDir.BasePath = AppDirBasePath()
 	opt.AppDir.Temp.BaseName = filepath.Join("_tmp", filepath.Base(os.Args[0]))
@@ -139,16 +139,15 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	if err != nil {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {
-		defer ng.Dispose()
-
 		//	STEP 2: post-init, pre-loop setup
 		ng.Loop.On.EverySec, ng.Loop.On.AppThread, ng.Loop.On.WinThread = onSec, onAppThread, onWinThread
 
-		PostFxCanvas = &ng.Core.Rendering.Canvases[0]
-		PostFxCam = &PostFxCanvas.Cameras[0]
+		PostFxCanvas = ng.Core.Render.Canvases[0]
+		PostFxCam = PostFxCanvas.Cams[0]
+		PostFxCam.Rendering.States.ClearColor.Set(0.9, 0.6, 0.3, 1)
 
 		if setupExampleScene != nil {
-			SceneCanvas = ng.Core.Rendering.Canvases.AddNew()
+			SceneCanvas = ng.Core.Render.Canvases.AddNew()
 			SceneCam = SceneCanvas.AddNewCamera3D()
 			SceneCam.Rendering.States.ClearColor.Set(0.5, 0.6, 0.85, 1)
 			setupExampleScene()
@@ -163,6 +162,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 		//	STEP 3: enter... Da Loop.
 		ng.Loop.Run()
 		numCgo.postLoop = runtime.NumCgoCall()
-		PrintPostLoopSummary() // don't wanna defer this: useless when exit-on-error
+		PrintPostLoopSummary() // don't wanna defer this: useless when exit-on-panic
+		ng.Dispose()           // don't wanna defer this: unpredictable state when exit-on-panic
 	}
 }

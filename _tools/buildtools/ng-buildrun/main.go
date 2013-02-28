@@ -98,7 +98,7 @@ func generateShadersSource(srcDirPath string, stripComments bool) (err error, ne
 		shaderName, tmpSrc string
 		srcBuf             ustr.Buffer
 	)
-	srcBuf.Writeln("\tglc.progMan.Init()\n\tglc.uberShaders.init()")
+	srcBuf.Writeln("\togl.progs.Init()\n\togl.uber.init()")
 	allShaders := shaderSrcSortables{shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}, shaderSrcSortable{}}
 	incShaders := map[string]string{}
 	collectShaders(srcDirPath, &allShaders, incShaders, stripComments)
@@ -112,14 +112,14 @@ func generateShadersSource(srcDirPath string, stripComments bool) (err error, ne
 	for varName, shaderSrcItem := range allShaders.mapAll() {
 		for _, shaderSource = range shaderSrcItem {
 			if shaderName = shaderSource.name[:strings.LastIndex(shaderSource.name, ".")]; !allNames[shaderName] {
-				srcBuf.Writeln("\tglc.progMan.AddNew(%#v)", shaderName)
+				srcBuf.Writeln("\togl.progs.AddNew(%#v)", shaderName)
 				allNames[shaderName] = true
 			}
-			srcBuf.Writeln("\tglc.progMan.Get(%#v).Sources.In.%s = %#v", shaderName, varName, includeShaders(shaderSource.name, shaderSource.src, incShaders))
+			srcBuf.Writeln("\togl.progs.Get(%#v).Sources.In.%s = %#v", shaderName, varName, includeShaders(shaderSource.name, shaderSource.src, incShaders))
 		}
 	}
 	for shaderName, tmpSrc = range incShaders {
-		srcBuf.Writeln("\tglc.uberShaders.rawSources[%#v] = %#v", shaderName[:strings.Index(shaderName, ".")], tmpSrc)
+		srcBuf.Writeln("\togl.uber.rawSources[%#v] = %#v", shaderName[:strings.Index(shaderName, ".")], tmpSrc)
 	}
 	newSrc = srcBuf.String()
 	return

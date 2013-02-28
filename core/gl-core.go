@@ -17,36 +17,36 @@ const (
 	glMinVerStr = "3.3"
 )
 
-var (
-	glc struct {
-		lastBadVer  string
-		isInit      bool
-		progMan     ugl.ProgramManager
-		uberShaders uberShaders
-	}
-)
+type glMan struct {
+	lastBadVer string
+	isInit     bool
+	progs      ugl.ProgramManager
+	uber       uberShaders
+}
+
+var ogl glMan
 
 func init() {
-	glc.lastBadVer = "0"
+	ogl.lastBadVer = "0"
 }
 
-func glDispose() {
-	if glc.isInit {
-		glc.isInit = false
-		glc.progMan.Dispose()
+func (_ *glMan) dispose() {
+	if ogl.isInit {
+		ogl.isInit = false
+		ogl.progs.Dispose()
 	}
 }
 
-func glInit() (err error, badVer string) {
-	if !glc.isInit {
+func (_ *glMan) init() (err error, badVer string) {
+	if !ogl.isInit {
 		if !gl.Util.Init() {
-			badVer = glc.lastBadVer
+			badVer = ogl.lastBadVer
 			return
 		} else {
 			ugl.Init()
 			if !ugl.VersionMatch(glMinVer) {
 				badVer = strf("%v.%v", ugl.Support.GlVersion.MajorMinor[0], ugl.Support.GlVersion.MajorMinor[1])
-				glc.lastBadVer = badVer
+				ogl.lastBadVer = badVer
 				return
 			} else {
 				var dur time.Duration
@@ -54,15 +54,15 @@ func glInit() (err error, badVer string) {
 				gl.CullFace(gl.BACK)
 				gl.Enable(gl.TEXTURE_CUBE_MAP_SEAMLESS)
 				Diag.LogMisc(ugl.Util.ConnInfo())
-				if len(glc.progMan.Programs) > 0 {
-					if dur, err = glcProgsMake(true); err == nil {
-						Diag.LogShaders("Total shader compilation time for all %v auxiliary (non-ubershader) programs: %v\n", len(glc.progMan.Programs), dur)
-						Stats.addProgCompile(len(glc.progMan.Programs), dur.Nanoseconds())
+				if len(ogl.progs.All) > 0 {
+					if dur, err = ogl.makeProgs(true); err == nil {
+						Diag.LogShaders("Total shader compilation time for all %v auxiliary (non-ubershader) programs: %v\n", len(ogl.progs.All), dur)
+						Stats.addProgCompile(len(ogl.progs.All), dur.Nanoseconds())
 					}
 				}
 				if err == nil {
-					glc.uberShaders.loadFromRawSources()
-					glc.uberShaders.processFuncs()
+					ogl.uber.loadFromRawSources()
+					ogl.uber.processFuncs()
 				}
 			}
 		}
@@ -70,36 +70,36 @@ func glInit() (err error, badVer string) {
 			err = ugl.Util.LastError("ng-gl-core.Init")
 		}
 		if err == nil {
-			glc.isInit = true
+			ogl.isInit = true
 		}
 	}
 	return
 }
 
-func glcProgsMake(forceAll bool, forceSome ...string) (dur time.Duration, err error) {
+func (_ *glMan) makeProgs(forceAll bool, forceSome ...string) (dur time.Duration, err error) {
 	var progsMade []bool
-	dur, progsMade, err = glc.progMan.MakeProgramsFromRawSources(nil, forceAll, forceSome...)
+	dur, progsMade, err = ogl.progs.MakeProgramsFromRawSources(nil, forceAll, forceSome...)
 	if len(Options.AppDir.Temp.ShaderSources) > 0 {
 		writeSrc := func(i int, ext, src string) {
 			if len(src) > 0 {
-				uio.WriteTextFile(Core.fileIO.resolveLocalFilePath(path.Join(Options.AppDir.Temp.BaseName, Options.AppDir.Temp.ShaderSources, glc.progMan.Programs[i].Name+ext)), src)
+				uio.WriteTextFile(Core.fileIO.resolveLocalFilePath(path.Join(Options.AppDir.Temp.BaseName, Options.AppDir.Temp.ShaderSources, ogl.progs.All[i].Name+ext)), src)
 			}
 		}
-		for i := 0; i < len(glc.progMan.Programs); i++ {
+		for i := 0; i < len(ogl.progs.All); i++ {
 			if progsMade[i] {
-				writeSrc(i, ".glcs", glc.progMan.Programs[i].Sources.Out.Compute)
-				writeSrc(i, ".glfs", glc.progMan.Programs[i].Sources.Out.Fragment)
-				writeSrc(i, ".glgs", glc.progMan.Programs[i].Sources.Out.Geometry)
-				writeSrc(i, ".glhs", glc.progMan.Programs[i].Sources.Out.TessCtl)
-				writeSrc(i, ".glds", glc.progMan.Programs[i].Sources.Out.TessEval)
-				writeSrc(i, ".glvs", glc.progMan.Programs[i].Sources.Out.Vertex)
+				writeSrc(i, ".glcs", ogl.progs.All[i].Sources.Out.Compute)
+				writeSrc(i, ".glfs", ogl.progs.All[i].Sources.Out.Fragment)
+				writeSrc(i, ".glgs", ogl.progs.All[i].Sources.Out.Geometry)
+				writeSrc(i, ".glhs", ogl.progs.All[i].Sources.Out.TessCtl)
+				writeSrc(i, ".glds", ogl.progs.All[i].Sources.Out.TessEval)
+				writeSrc(i, ".glvs", ogl.progs.All[i].Sources.Out.Vertex)
 			}
 		}
 	}
 	return
 }
 
-func glVersionErrorMessage(minVer, curVer string) string {
+func (_ *glMan) versionErrorMessage(minVer, curVer string) string {
 	return ustr.Replace(Options.Initialization.GlContext.BadVersionMessage, map[string]string{
 		"{MINVER}": minVer,
 		"{CURVER}": curVer,

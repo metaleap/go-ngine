@@ -28,34 +28,30 @@ func init() {
 }
 
 func (_ *EngineCore) copyAppToPrep() {
-	for cid := 0; cid < len(Core.Rendering.Canvases); cid++ {
-		if Core.Rendering.Canvases.Ok(cid) && Core.Rendering.Canvases[cid].renderThisFrame() {
-			Core.Rendering.Canvases[cid].copyAppToPrep()
+	for cid := 0; cid < len(Core.Render.Canvases); cid++ {
+		if Core.Render.Canvases[cid].renderThisFrame() {
+			Core.Render.Canvases[cid].copyAppToPrep()
 		}
 	}
 }
 
 func (_ *EngineCore) copyPrepToRend() {
-	for cid := 0; cid < len(Core.Rendering.Canvases); cid++ {
-		if Core.Rendering.Canvases.Ok(cid) && Core.Rendering.Canvases[cid].renderThisFrame() {
-			Core.Rendering.Canvases[cid].copyPrepToRend()
+	for cid := 0; cid < len(Core.Render.Canvases); cid++ {
+		if Core.Render.Canvases[cid].renderThisFrame() {
+			Core.Render.Canvases[cid].copyPrepToRend()
 		}
 	}
 }
 
 func (me *RenderCanvas) copyAppToPrep() {
-	for cam := 0; cam < len(me.Cameras); cam++ {
-		if me.Cameras.Ok(cam) {
-			me.Cameras[cam].copyAppToPrep()
-		}
+	for cam := 0; cam < len(me.Cams); cam++ {
+		me.Cams[cam].copyAppToPrep()
 	}
 }
 
 func (me *RenderCanvas) copyPrepToRend() {
-	for cam := 0; cam < len(me.Cameras); cam++ {
-		if me.Cameras.Ok(cam) {
-			me.Cameras[cam].copyPrepToRend()
-		}
+	for cam := 0; cam < len(me.Cams); cam++ {
+		me.Cams[cam].copyPrepToRend()
 	}
 }
 

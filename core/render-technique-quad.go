@@ -16,7 +16,7 @@ func newRenderTechniqueQuad() RenderTechnique {
 	me := &RenderTechniqueQuad{}
 	me.init("Quad")
 	me.Effect.init()
-	me.Effect.Ops.EnableTex2D(-1).Sampler = &Core.Rendering.Fx.Samplers.NoFilteringClamp
+	me.Effect.Ops.EnableTex2D(-1).Sampler = &Core.Render.Fx.Samplers.NoFilteringClamp
 	me.Effect.UpdateRoutine()
 	me.glVao.Create()
 	me.glVao.Setup(nil, nil)

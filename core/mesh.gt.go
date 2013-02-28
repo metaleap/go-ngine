@@ -32,7 +32,6 @@ func (me *Mesh) GpuDelete() {
 func (me *Mesh) GpuUpload() (err error) {
 	sizeVerts, sizeIndices := gl.Sizeiptr(4*len(me.raw.meshVs)), gl.Sizeiptr(4*len(me.raw.indices))
 	me.GpuDelete()
-
 	if sizeVerts > gl.Sizeiptr(me.meshBuffer.MemSizeVertices) {
 		err = errf("Cannot upload mesh '%v': vertex size (%vB) exceeds mesh buffer's available vertex memory (%vB)", me.Name, sizeVerts, me.meshBuffer.MemSizeVertices)
 	} else if sizeIndices > gl.Sizeiptr(me.meshBuffer.MemSizeIndices) {
@@ -113,9 +112,10 @@ func (me *Mesh) Loaded() bool {
 	return me.raw != nil
 }
 
-func (me MeshLib) GpuSync() (err error) {
+func (_ MeshLib) GpuSync() (err error) {
 	for id := 0; id < len(Core.Libs.Meshes); id++ {
 		if Core.Libs.Meshes.Ok(id) && !Core.Libs.Meshes[id].gpuSynced {
+			println(Core.Libs.Meshes[id].meshBuffer == nil)
 			if err = Core.Libs.Meshes[id].GpuUpload(); err != nil {
 				return
 			}
@@ -124,12 +124,13 @@ func (me MeshLib) GpuSync() (err error) {
 	return
 }
 
-func (me *MeshLib) AddNewAndLoad(name string, meshProvider MeshProvider, args ...interface{}) (mesh *Mesh, err error) {
-	mesh = me.AddNew()
+func (me *MeshLib) AddNewAndLoad(name string, meshProvider MeshProvider, args ...interface{}) (meshID int, err error) {
+	meshID = me.AddNew()
+	mesh := &(*me)[meshID]
 	mesh.Name = name
 	if err = mesh.Load(meshProvider, args...); err != nil {
-		me.Remove(mesh.ID, 1)
-		mesh = nil
+		me.Remove(meshID, 1)
+		meshID = -1
 	}
 	return
 }
@@ -139,8 +140,8 @@ func (me *MeshLib) AddNewAndLoad(name string, meshProvider MeshProvider, args ..
 //	Only used for Core.Libs.Meshes
 type MeshLib []Mesh
 
-func (me *MeshLib) AddNew() (ref *Mesh) {
-	id := -1
+func (me *MeshLib) AddNew() (id int) {
+	id = -1
 	for i := 0; i < len(*me); i++ {
 		if (*me)[i].ID == -1 {
 			id = i
@@ -155,7 +156,7 @@ func (me *MeshLib) AddNew() (ref *Mesh) {
 		}
 		*me = append(*me, Mesh{})
 	}
-	ref = &(*me)[id]
+	ref := &(*me)[id]
 	ref.ID = id
 	ref.init()
 	return
@@ -188,7 +189,7 @@ func (me *MeshLib) Compact() {
 	}
 }
 
-func (me *MeshLib) ctor() {
+func (me *MeshLib) init() {
 	*me = make(MeshLib, 0, Options.Libs.InitialCap)
 }
 
@@ -197,7 +198,7 @@ func (me *MeshLib) dispose() {
 	*me = (*me)[:0]
 }
 
-func (me MeshLib) Get(id int) (ref *Mesh) {
+func (me MeshLib) get(id int) (ref *Mesh) {
 	if me.IsOk(id) {
 		ref = &me[id]
 	}

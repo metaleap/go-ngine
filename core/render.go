@@ -5,9 +5,9 @@ import (
 )
 
 func (_ *EngineCore) onRender() {
-	for cid := len(Core.Rendering.Canvases) - 1; cid >= 0; cid-- {
-		if Core.Rendering.Canvases.Ok(cid) && Core.Rendering.Canvases[cid].renderThisFrame() {
-			Core.Rendering.Canvases[cid].render()
+	for cid := len(Core.Render.Canvases) - 1; cid >= 0; cid-- {
+		if Core.Render.Canvases[cid].renderThisFrame() {
+			Core.Render.Canvases[cid].render()
 		}
 	}
 }
@@ -16,14 +16,12 @@ func (me *RenderCanvas) render() {
 	if me.isRtt {
 		me.frameBuf.Bind()
 	}
-	Core.Rendering.states.SetFramebufferSrgb(me.Srgb)
-	for cam := 0; cam < len(me.Cameras); cam++ {
-		if me.Cameras.Ok(cam) {
-			thrRend.curCam = &me.Cameras[cam]
-			thrRend.curCam.render()
-		}
+	Core.Render.states.SetFramebufferSrgb(me.Srgb)
+	for cam := 0; cam < len(me.Cams); cam++ {
+		thrRend.curCam = me.Cams[cam]
+		thrRend.curCam.render()
 	}
-	Core.Rendering.states.SetFramebufferSrgb(false)
+	Core.Render.states.SetFramebufferSrgb(false)
 	if me.isRtt {
 		me.frameBuf.Unbind()
 		thrRend.quadTex = me.frameBuf.RenderTextureHandle(0)
@@ -33,16 +31,16 @@ func (me *RenderCanvas) render() {
 func (me *Camera) render() {
 	if me.Enabled {
 		thrRend.curTech, thrRend.curEffect = me.Rendering.Technique, nil
-		Core.Rendering.states.Apply(&me.thrRend.states)
+		Core.Render.states.Apply(&me.thrRend.states)
 		if me.Rendering.Viewport.shouldScissor {
-			Core.Rendering.states.ForceEnableScissorTest()
+			Core.Render.states.ForceEnableScissorTest()
 			gl.Scissor(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
 		}
 		gl.Viewport(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
 		gl.Clear(me.thrRend.states.Other.ClearBits)
 		me.Rendering.Technique.render()
 		if me.Rendering.Viewport.shouldScissor {
-			Core.Rendering.states.ForceDisableScissorTest()
+			Core.Render.states.ForceDisableScissorTest()
 		}
 	}
 }
@@ -84,11 +82,11 @@ func (me *Node) renderSelf() {
 				gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices+(int32(fidx)*3*4))), gl.Int(mesh.meshBufOffsetBaseIndex))
 			}
 		} else {
-			thrRend.nextEffect = Core.Libs.Effects.Get(mat.DefaultEffectID)
+			thrRend.nextEffect = Core.Libs.Effects.get(mat.DefaultEffectID)
 			Core.useTechFx()
 			mesh.meshBuffer.use()
 			if me.Rendering.skyMode {
-				Core.Rendering.states.DisableFaceCulling()
+				Core.Render.states.DisableFaceCulling()
 				gl.DepthFunc(gl.LEQUAL)
 				thrRend.curProg.Uniform1i("uni_int_Sky", 1)
 			}

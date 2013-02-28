@@ -2,18 +2,16 @@ package core
 
 func (_ *EngineCore) onPrep() {
 	// thrPrep.nodePreBatch.reset()
-	for cid := 0; cid < len(Core.Rendering.Canvases); cid++ {
-		if Core.Rendering.Canvases.Ok(cid) && Core.Rendering.Canvases[cid].renderThisFrame() {
-			Core.Rendering.Canvases[cid].onPrep()
+	for cid := 0; cid < len(Core.Render.Canvases); cid++ {
+		if Core.Render.Canvases[cid].renderThisFrame() {
+			Core.Render.Canvases[cid].onPrep()
 		}
 	}
 }
 
 func (me *RenderCanvas) onPrep() {
-	for cam := 0; cam < len(me.Cameras); cam++ {
-		if me.Cameras.Ok(cam) {
-			me.Cameras[cam].onPrep()
-		}
+	for cam := 0; cam < len(me.Cams); cam++ {
+		me.Cams[cam].onPrep()
 	}
 }
 

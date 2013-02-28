@@ -19,14 +19,6 @@ func main() {
 
 //	called once per second in main thread
 func onSec() {
-	var fx = ng.Core.Libs.Effects.Get(apputil.LibIDs.Fx["cat"])
-	fx.Ops.ToggleOrangify(0)
-	fx.UpdateRoutine()
-
-	fx = ng.Core.Libs.Effects.Get(apputil.LibIDs.Fx["dog"])
-	fx.Ops.ToggleOrangify(0)
-	fx.UpdateRoutine()
-	return
 	fxID := apputil.LibIDs.Fx["cat"]
 	ng.Core.Libs.Effects[fxID].Ops.ToggleOrangify(0)
 	ng.Core.Libs.Effects[fxID].UpdateRoutine()
@@ -55,10 +47,10 @@ func onAppThread() {
 
 func setupExample_01_TriQuad() {
 	var (
-		err               error
-		scene             *ng.Scene
-		meshTri, meshQuad *ng.Mesh
-		meshBuf           *ng.MeshBuffer
+		err                   error
+		scene                 *ng.Scene
+		meshTriID, meshQuadID int
+		meshBuf               *ng.MeshBuffer
 	)
 
 	//	textures / materials
@@ -66,33 +58,33 @@ func setupExample_01_TriQuad() {
 		"cat": "tex/cat.png",
 		"dog": "tex/dog.png",
 	})
-	fx := ng.Core.Libs.Effects.Get(apputil.LibIDs.Fx["dog"])
+	fx := &ng.Core.Libs.Effects[apputil.LibIDs.Fx["dog"]]
 	fx.Ops.EnableOrangify(0)
 	fx.UpdateRoutine()
 
 	//	meshes / models
 
-	if meshTri, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_tri", ng.MeshProviderPrefabTri); err != nil {
+	if meshTriID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_tri", ng.MeshProviderPrefabTri); err != nil {
 		panic(err)
 	}
-	if meshQuad, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_quad", ng.MeshProviderPrefabQuad); err != nil {
+	if meshQuadID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_quad", ng.MeshProviderPrefabQuad); err != nil {
 		panic(err)
 	}
 
 	if meshBuf, err = ng.Core.MeshBuffers.Add("meshbuf", ng.Core.MeshBuffers.NewParams(9, 9)); err != nil {
 		panic(err)
 	}
-	if err = meshBuf.Add(meshTri); err != nil {
+	if err = meshBuf.Add(&ng.Core.Libs.Meshes[meshTriID]); err != nil {
 		panic(err)
 	}
-	if err = meshBuf.Add(meshQuad); err != nil {
+	if err = meshBuf.Add(&ng.Core.Libs.Meshes[meshQuadID]); err != nil {
 		panic(err)
 	}
 
 	//	scene
 	scene = apputil.AddMainScene()
-	tri = scene.RootNode.ChildNodes.AddNew("node_tri", meshTri.ID)
-	quad = scene.RootNode.ChildNodes.AddNew("node_quad", meshQuad.ID)
+	tri = scene.RootNode.ChildNodes.AddNew("node_tri", meshTriID)
+	quad = scene.RootNode.ChildNodes.AddNew("node_quad", meshQuadID)
 	tri.MatID = apputil.LibIDs.Mat["cat"]
 	quad.MatID = apputil.LibIDs.Mat["dog"]
 }

@@ -26,8 +26,8 @@ func (me *Scene) init() {
 //	Only used for Core.Libs.Scenes
 type SceneLib []Scene
 
-func (me *SceneLib) AddNew() (ref *Scene) {
-	id := -1
+func (me *SceneLib) AddNew() (id int) {
+	id = -1
 	for i := 0; i < len(*me); i++ {
 		if (*me)[i].ID == -1 {
 			id = i
@@ -42,7 +42,7 @@ func (me *SceneLib) AddNew() (ref *Scene) {
 		}
 		*me = append(*me, Scene{})
 	}
-	ref = &(*me)[id]
+	ref := &(*me)[id]
 	ref.ID = id
 	ref.init()
 	return
@@ -75,7 +75,7 @@ func (me *SceneLib) Compact() {
 	}
 }
 
-func (me *SceneLib) ctor() {
+func (me *SceneLib) init() {
 	*me = make(SceneLib, 0, Options.Libs.InitialCap)
 }
 
@@ -84,7 +84,7 @@ func (me *SceneLib) dispose() {
 	*me = (*me)[:0]
 }
 
-func (me SceneLib) Get(id int) (ref *Scene) {
+func (me SceneLib) get(id int) (ref *Scene) {
 	if me.IsOk(id) {
 		ref = &me[id]
 	}
