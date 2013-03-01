@@ -139,9 +139,9 @@ func setupExample_04_PyrsCubes() {
 	tmpMat.FaceEffects.ByTag["left"], tmpMat.FaceEffects.ByTag["right"] = apputil.LibIDs.Fx["gopher"], apputil.LibIDs.Fx["gopher"]
 	apputil.LibIDs.Mat["mix"] = tmpMat.ID
 
-	bufFloor.Add(&ng.Core.Libs.Meshes[meshPlaneID])
-	bufRest.Add(&ng.Core.Libs.Meshes[meshCubeID])
-	bufRest.Add(&ng.Core.Libs.Meshes[meshPyrID])
+	bufFloor.Add(meshPlaneID)
+	bufRest.Add(meshCubeID)
+	bufRest.Add(meshPyrID)
 
 	//	scene
 	scene = apputil.AddMainScene()

@@ -152,7 +152,13 @@ func (_ FxMaterialLib) onFxMaterialIDsChanged(oldNewIDs map[int]int) {
 }
 
 func (_ MeshLib) onMeshIDsChanged(oldNewIDs map[int]int) {
-	for id := 0; id < len(Core.Libs.Scenes); id++ {
+	var id, v int
+	for _, meshBuf := range Core.MeshBuffers {
+		for id, v = range meshBuf.meshIDs {
+			meshBuf.meshIDs[id] = Core.Libs.UpdatedIDRef(oldNewIDs, v)
+		}
+	}
+	for id = 0; id < len(Core.Libs.Scenes); id++ {
 		if Core.Libs.Scenes.Ok(id) {
 			Core.Libs.Scenes[id].RootNode.Walk(func(node *Node) {
 				Core.Libs.UpdateIDRef(oldNewIDs, &node.MeshID)

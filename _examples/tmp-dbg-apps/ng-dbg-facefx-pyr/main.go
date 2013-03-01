@@ -78,8 +78,8 @@ func setupScene() {
 	if meshPyrID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_pyr", ng.MeshProviderPrefabPyramid); err != nil {
 		panic(err)
 	}
-	bufRest.Add(&ng.Core.Libs.Meshes[meshFloorID])
-	bufRest.Add(&ng.Core.Libs.Meshes[meshPyrID])
+	bufRest.Add(meshFloorID)
+	bufRest.Add(meshPyrID)
 
 	scene = apputil.AddMainScene()
 	apputil.AddSkyMesh(scene, meshPyrID)

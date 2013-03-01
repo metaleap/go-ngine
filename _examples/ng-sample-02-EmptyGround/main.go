@@ -43,7 +43,7 @@ func setupExample_02_EmptyGround() {
 		panic(err)
 	}
 
-	bufRest.Add(&ng.Core.Libs.Meshes[meshPlaneID]) // bufRest.Add(meshCube);
+	bufRest.Add(meshPlaneID) // bufRest.Add(meshCube);
 
 	//	scene
 	scene = apputil.AddMainScene()

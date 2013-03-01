@@ -205,13 +205,6 @@ func (me *CameraLib) dispose() {
 	me.Remove(0, 0)
 }
 
-func (me CameraLib) Get(id int) (ref *Camera) {
-	if me.IsOk(id) {
-		ref = me[id]
-	}
-	return
-}
-
 func (me CameraLib) IsOk(id int) bool {
 	return id > -1 && id < len(me)
 }

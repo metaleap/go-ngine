@@ -4,6 +4,7 @@ import (
 	gl "github.com/go3d/go-opengl/core"
 
 	ugl "github.com/go3d/go-opengl/util"
+	ugo "github.com/metaleap/go-util"
 )
 
 type MeshBufferParams struct {
@@ -17,32 +18,29 @@ type MeshBuffer struct {
 
 	offsetBaseIndex, offsetIndices, offsetVerts int32
 	glIbo, glVbo                                ugl.Buffer
-	glVaos                                      map[*ugl.Program]*ugl.VertexArray
-	meshes                                      map[*Mesh]bool
+	glVaos                                      []ugl.VertexArray
+	meshIDs                                     []int
 }
 
 func newMeshBuffer(name string, params MeshBufferParams) (me *MeshBuffer, err error) {
 	me = &MeshBuffer{}
 	me.Name = name
-	me.meshes = map[*Mesh]bool{}
+	me.meshIDs = make([]int, 0, 256)
 	me.Params = params
-	me.glVaos = map[*ugl.Program]*ugl.VertexArray{}
+	me.glVaos = make([]ugl.VertexArray, 16)
 	me.MemSizeIndices = Core.MeshBuffers.MemSizePerIndex() * params.NumIndices
 	me.MemSizeVertices = Core.MeshBuffers.MemSizePerVertex() * params.NumVerts
 	if err = me.glVbo.Recreate(gl.ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeVertices), ugl.PtrNil, gl.STATIC_DRAW); err == nil {
 		err = me.glIbo.Recreate(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeIndices), ugl.PtrNil, gl.STATIC_DRAW)
 	}
-	if err == nil {
-		var tech RenderTechnique
-		var ok bool
-		for i := 0; i < len(ogl.progs.All); i++ {
-			if tech, ok = ogl.progs.All[i].Tag.(RenderTechnique); ok {
-				if err = me.setupVao(&ogl.progs.All[i], tech); err != nil {
-					break
-				}
-			}
-		}
-	}
+	// if err == nil {
+	// 	var ok bool
+	// 	for i := 0; i < len(ogl.progs.All); i++ {
+	// 		if err = me.setupVao(i); err != nil {
+	// 			break
+	// 		}
+	// 	}
+	// }
 	if err != nil {
 		me.dispose()
 		me = nil
@@ -54,53 +52,63 @@ func (me *MeshBuffer) init() {
 }
 
 func (me *MeshBuffer) dispose() {
-	for mesh, _ := range me.meshes {
-		mesh.meshBuffer, mesh.gpuSynced = nil, false
+	for _, meshID := range me.meshIDs {
+		if Core.Libs.Meshes.IsOk(meshID) {
+			Core.Libs.Meshes[meshID].meshBuffer, Core.Libs.Meshes[meshID].gpuSynced = nil, false
+		}
 	}
 	me.glIbo.Dispose()
 	me.glVbo.Dispose()
-	for _, glVao := range me.glVaos {
-		glVao.Dispose()
+	for i := 0; i < len(me.glVaos); i++ {
+		me.glVaos[i].Dispose()
 	}
 	me.glVaos = nil
 }
 
-func (me *MeshBuffer) Add(mesh *Mesh) (err error) {
-	if mesh.meshBuffer != nil {
-		err = errf("Cannot add mesh '%v' to mesh buffer '%v': already belongs to mesh buffer '%v'.", mesh.Name, me.Name, mesh.meshBuffer.Name)
-	} else if !me.meshes[mesh] {
-		me.meshes[mesh] = true
-		mesh.gpuSynced = false
-		mesh.meshBuffer = me
-	} else {
-		err = errf("Cannot add mesh '%v' to mesh buffer '%v': already added.", mesh.Name, me.Name)
+func (me *MeshBuffer) Add(meshID int) (err error) {
+	if mesh := Core.Libs.Meshes.get(meshID); mesh != nil && mesh.meshBuffer != me {
+		if mesh.meshBuffer != nil {
+			err = errf("Cannot add mesh '%v' to mesh buffer '%v': already belongs to mesh buffer '%v'.", mesh.Name, me.Name, mesh.meshBuffer.Name)
+		} else {
+			ugo.AppendUniqueInt(&me.meshIDs, meshID)
+			mesh.gpuSynced, mesh.meshBuffer = false, me
+		}
 	}
 	return
 }
 
 func (me *MeshBuffer) use() {
-	me.glVaos[thrRend.curProg].Bind()
+	if thrRend.curProg.Index >= len(me.glVaos) || me.glVaos[thrRend.curProg.Index].GlHandle == 0 {
+		me.setupVao(thrRend.curProg.Index)
+	}
+	me.glVaos[thrRend.curProg.Index].Bind()
 }
 
-func (me *MeshBuffer) Remove(mesh *Mesh) {
-	if mesh.meshBuffer == me {
+func (me *MeshBuffer) Remove(meshID int) {
+	if mesh := Core.Libs.Meshes.get(meshID); mesh != nil && mesh.meshBuffer == me {
 		mesh.GpuDelete()
 		mesh.meshBuffer = nil
-		delete(me.meshes, mesh)
+	}
+	for i, mid := range me.meshIDs {
+		if mid == meshID {
+			before, after := me.meshIDs[:i], me.meshIDs[i+1:]
+			me.meshIDs = append(before, after...)
+			break
+		}
 	}
 }
 
-func (me *MeshBuffer) setupVao(prog *ugl.Program, tech RenderTechnique) (err error) {
-	vao := &ugl.VertexArray{}
-	if err = vao.Create(); err == nil {
-		if sceneTech, ok := tech.(*RenderTechniqueScene); ok {
-			if err = vao.Setup(prog, sceneTech.vertexAttribPointers(me), &me.glVbo, &me.glIbo); err != nil {
-				vao.Dispose()
-				vao = nil
+func (me *MeshBuffer) setupVao(progIndex int) (err error) {
+	if progIndex >= len(me.glVaos) {
+		nuVaos := make([]ugl.VertexArray, len(me.glVaos)+16)
+		copy(nuVaos, me.glVaos)
+		me.glVaos = nuVaos
+	}
+	if err = me.glVaos[progIndex].Create(); err == nil {
+		if sceneTech, ok := ogl.progs.All[progIndex].Tag.(*RenderTechniqueScene); ok {
+			if err = me.glVaos[progIndex].Setup(&ogl.progs.All[progIndex], sceneTech.vertexAttribPointers(), &me.glVbo, &me.glIbo); err != nil {
+				return
 			}
-		}
-		if vao != nil {
-			me.glVaos[prog] = vao
 		}
 	}
 	return
@@ -147,13 +155,6 @@ func (me *MeshBufferLib) init() {
 
 func (me *MeshBufferLib) dispose() {
 	me.Remove(0, 0)
-}
-
-func (me MeshBufferLib) Get(id int) (ref *MeshBuffer) {
-	if me.IsOk(id) {
-		ref = me[id]
-	}
-	return
 }
 
 func (me MeshBufferLib) IsOk(id int) bool {

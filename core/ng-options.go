@@ -158,7 +158,7 @@ func init() {
 	o.Cameras.DefaultControllerParams.initDefaults()
 	o.Cameras.PerspectiveDefaults.FovY, o.Cameras.PerspectiveDefaults.ZFar, o.Cameras.PerspectiveDefaults.ZNear = 37.8493, 30000, 0.3
 	o.Loop.GcEvery.Sec = true
-	o.Libs.InitialCap, o.Libs.GrowCapBy = 2, 2
+	o.Libs.InitialCap, o.Libs.GrowCapBy = 16, 32
 
 	//	Set all ID-changed handlers to empty funcs so we don't need to check for nil
 	init, isMac, initGl := &o.Initialization, runtime.GOOS == "darwin", &o.Initialization.GlContext

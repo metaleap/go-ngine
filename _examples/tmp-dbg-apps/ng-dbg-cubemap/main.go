@@ -48,8 +48,8 @@ func setupScene() {
 	if meshCubeID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_cube", ng.MeshProviderPrefabCube); err != nil {
 		panic(err)
 	}
-	bufRest.Add(&ng.Core.Libs.Meshes[meshFloorID])
-	bufRest.Add(&ng.Core.Libs.Meshes[meshCubeID])
+	bufRest.Add(meshFloorID)
+	bufRest.Add(meshCubeID)
 
 	//	scene
 	scene = apputil.AddMainScene()

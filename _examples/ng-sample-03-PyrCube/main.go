@@ -76,9 +76,9 @@ func setupExample_03_PyrCube() {
 	if meshCubeID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_cube", ng.MeshProviderPrefabCube); err != nil {
 		panic(err)
 	}
-	bufFloor.Add(&ng.Core.Libs.Meshes[meshPlaneID])
-	bufRest.Add(&ng.Core.Libs.Meshes[meshCubeID])
-	bufRest.Add(&ng.Core.Libs.Meshes[meshPyrID])
+	bufFloor.Add(meshPlaneID)
+	bufRest.Add(meshCubeID)
+	bufRest.Add(meshPyrID)
 
 	fx := &ng.Core.Libs.Effects[apputil.LibIDs.Fx["cat"]]
 	fx.Ops.EnableOrangify(-1).SetMixWeight(0.5)

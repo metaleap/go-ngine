@@ -152,11 +152,11 @@ func (me *uberShaders) ensureProg() (prog *ugl.Program) {
 				prog.Tag = thrRend.curTech
 				if err = prog.SetAttrLocations(job.progAtts...); err == nil {
 					if err = prog.SetUnifLocations(job.progUnis...); err == nil {
-						for _, meshBuf := range Core.MeshBuffers {
-							if err = meshBuf.setupVao(prog, thrRend.curTech); err != nil {
-								break
-							}
-						}
+						// for _, meshBuf := range Core.MeshBuffers {
+						// 	if err = meshBuf.setupVao(prog.Index); err != nil {
+						// 		break
+						// 	}
+						// }
 					}
 				}
 			}

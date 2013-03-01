@@ -134,13 +134,6 @@ func (me *RenderCanvasLib) dispose() {
 	me.Remove(0, 0)
 }
 
-func (me RenderCanvasLib) Get(id int) (ref *RenderCanvas) {
-	if me.IsOk(id) {
-		ref = me[id]
-	}
-	return
-}
-
 func (me RenderCanvasLib) IsOk(id int) bool {
 	return id > -1 && id < len(me)
 }

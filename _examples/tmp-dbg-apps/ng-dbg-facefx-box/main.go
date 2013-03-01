@@ -62,8 +62,8 @@ func setupScene() {
 	if meshBoxID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_box", ng.MeshProviderPrefabCube); err != nil {
 		panic(err)
 	}
-	bufRest.Add(&ng.Core.Libs.Meshes[meshFloorID])
-	bufRest.Add(&ng.Core.Libs.Meshes[meshBoxID])
+	bufRest.Add(meshFloorID)
+	bufRest.Add(meshBoxID)
 
 	scene = apputil.AddMainScene()
 	floor = scene.RootNode.ChildNodes.AddNew("node_floor", meshFloorID)
