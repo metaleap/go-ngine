@@ -77,9 +77,9 @@ func newFxOp(procID string, procIndex int) (me FxOp) {
 
 type fxOpBase struct {
 	disabled  bool
-	procID    string
-	procIndex int
 	weight    gl.Float
+	procIndex int
+	procID    string
 	unifNames map[[2]string]string
 }
 
@@ -202,14 +202,13 @@ type fxOpTexBase struct {
 	glUnitI gl.Int
 	glUnitE gl.Enum
 
-	//	The sampler to be used.
-	Sampler *ugl.Sampler
+	Sampler ugl.Sampler
 }
 
 func (me *fxOpTexBase) init(s string, i int) {
 	me.ImageID = -1
 	me.fxOpBase.init(s, -1)
-	me.Sampler = &Core.Render.Fx.Samplers.FullFilteringRepeat
+	me.Sampler = Core.Render.Fx.Samplers.FullFilteringRepeat
 	me.setProcIndex(i)
 }
 
@@ -223,6 +222,7 @@ func (me *fxOpTexBase) setProcIndex(index int) {
 func (me *fxOpTexBase) use() {
 	me.fxOpBase.use()
 	me.Sampler.Bind(me.glUnitU)
+	ugl.Cache.ActiveTexture(me.glUnitE)
 }
 
 //	Samples from a 2D texture.
@@ -241,11 +241,10 @@ func (me *FxOpTex2D) SetImageID(imageID int) *FxOpTex2D {
 
 func (me *FxOpTex2D) use() {
 	me.fxOpTexBase.use()
-	ugl.Cache.ActiveTexture(me.glUnitE)
+	thrRend.curProg.Uniform1i(me.unifName("sampler2D", "Img"), me.glUnitI)
 	if Core.Libs.Images.Tex2D.IsOk(me.ImageID) {
 		Core.Libs.Images.Tex2D[me.ImageID].glTex.Bind()
 	}
-	thrRend.curProg.Uniform1i(me.unifName("sampler2D", "Img"), me.glUnitI)
 }
 
 type FxOpTexCube struct {
@@ -254,7 +253,6 @@ type FxOpTexCube struct {
 
 func (me *FxOpTexCube) init(s string, i int) {
 	me.fxOpTexBase.init(s, i)
-	me.Sampler = &Core.Render.Fx.Samplers.FullFilteringRepeat
 }
 
 func (me *FxOpTexCube) SetImageID(imageID int) *FxOpTexCube {
@@ -264,10 +262,10 @@ func (me *FxOpTexCube) SetImageID(imageID int) *FxOpTexCube {
 
 func (me *FxOpTexCube) use() {
 	me.fxOpTexBase.use()
+	thrRend.curProg.Uniform1i(me.unifName("samplerCube", "Img"), me.glUnitI)
 	if Core.Libs.Images.TexCube.IsOk(me.ImageID) {
 		Core.Libs.Images.TexCube[me.ImageID].glTex.Bind()
 	}
-	thrRend.curProg.Uniform1i(me.unifName("samplerCube", "Img"), 0)
 }
 
 //	Used for FxEffect.Ops/OpsX and Camera.Rendering.FxOps.
@@ -385,8 +383,6 @@ func (me *FxOps) ToggleTex2D(n int) {
 	me.Toggle("Tex2D", n)
 }
 
-
-
 //	Convenience short-hand for me.Disable("TexCube", n).
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 func (me FxOps) DisableTexCube(n int) {
@@ -410,8 +406,6 @@ func (me FxOps) GetTexCube(n int) (op *FxOpTexCube) {
 func (me *FxOps) ToggleTexCube(n int) {
 	me.Toggle("TexCube", n)
 }
-
-
 
 //	Convenience short-hand for me.Disable("Orangify", n).
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
@@ -437,8 +431,6 @@ func (me *FxOps) ToggleOrangify(n int) {
 	me.Toggle("Orangify", n)
 }
 
-
-
 //	Convenience short-hand for me.Disable("Grayscale", n).
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 func (me FxOps) DisableGrayscale(n int) {
@@ -462,8 +454,6 @@ func (me FxOps) GetGrayscale(n int) (op *FxOpGrayscale) {
 func (me *FxOps) ToggleGrayscale(n int) {
 	me.Toggle("Grayscale", n)
 }
-
-
 
 //	Convenience short-hand for me.Disable("Coords", n).
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
@@ -489,8 +479,6 @@ func (me *FxOps) ToggleCoords(n int) {
 	me.Toggle("Coords", n)
 }
 
-
-
 //	Convenience short-hand for me.Disable("Color", n).
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 func (me FxOps) DisableColor(n int) {
@@ -514,8 +502,6 @@ func (me FxOps) GetColor(n int) (op *FxOpColor) {
 func (me *FxOps) ToggleColor(n int) {
 	me.Toggle("Color", n)
 }
-
-
 
 //	Convenience short-hand for me.Disable("Gamma", n).
 //	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.

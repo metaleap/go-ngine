@@ -25,7 +25,7 @@ func (me *Gui2D) Setup() (err error) {
 	me.Cam.Rendering.States.ClearColor.Set(0.75, 0.25, 0.1, 1)
 	me.Cam.Rendering.Viewport.SetAbs(8, 8, 64, 64) //SetRel(0.02, 0.04, 0.125, 0.222)
 	me.Cam.SetScene(sceneID)
-	if meshBuf, err = ng.Core.MeshBuffers.AddNew("buf_quad", ng.MeshBufferParams{6, 6}); err != nil {
+	if meshBuf, err = ng.Core.MeshBuffers.AddNew("buf_quad", 6); err != nil {
 		return
 	}
 	if quadMeshID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_quad", ng.MeshProviderPrefabQuad); err != nil {

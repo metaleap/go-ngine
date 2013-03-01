@@ -86,8 +86,8 @@ func (_ *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 }
 
 func (_ *EngineCore) GpuSyncImageLibs() (err error) {
-	type imgChan chan FxImage
-	imgLoad := func(ch imgChan, img FxImage) {
+	type imgChan chan fxImage
+	imgLoad := func(ch imgChan, img fxImage) {
 		if !img.Loaded() {
 			if err := img.Load(); err != nil {
 				Diag.LogErr(err)

@@ -7,31 +7,27 @@ import (
 	ugo "github.com/metaleap/go-util"
 )
 
-type MeshBufferParams struct {
-	NumVerts, NumIndices int32
-}
-
 type MeshBuffer struct {
-	MemSizeIndices, MemSizeVertices int32
-	Params                          MeshBufferParams
-	Name                            string
+	Name string
 
+	memSizeIndices, memSizeVertices             int32
 	offsetBaseIndex, offsetIndices, offsetVerts int32
-	glIbo, glVbo                                ugl.Buffer
-	glVaos                                      []ugl.VertexArray
-	meshIDs                                     []int
+
+	glIbo, glVbo ugl.Buffer
+	glVaos       []ugl.VertexArray
+	meshIDs      []int
 }
 
-func newMeshBuffer(name string, params MeshBufferParams) (me *MeshBuffer, err error) {
+func newMeshBuffer(name string, capacity int32) (me *MeshBuffer, err error) {
 	me = &MeshBuffer{}
 	me.Name = name
 	me.meshIDs = make([]int, 0, 256)
-	me.Params = params
 	me.glVaos = make([]ugl.VertexArray, 16)
-	me.MemSizeIndices = Core.MeshBuffers.MemSizePerIndex() * params.NumIndices
-	me.MemSizeVertices = Core.MeshBuffers.MemSizePerVertex() * params.NumVerts
-	if err = me.glVbo.Recreate(gl.ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeVertices), ugl.PtrNil, gl.STATIC_DRAW); err == nil {
-		err = me.glIbo.Recreate(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeIndices), ugl.PtrNil, gl.STATIC_DRAW)
+	numVerts, numIndices := capacity, capacity
+	me.memSizeIndices = Core.MeshBuffers.MemSizePerIndex() * numIndices
+	me.memSizeVertices = Core.MeshBuffers.MemSizePerVertex() * numVerts
+	if err = me.glVbo.Recreate(gl.ARRAY_BUFFER, gl.Sizeiptr(me.memSizeVertices), ugl.PtrNil, gl.STATIC_DRAW); err == nil {
+		err = me.glIbo.Recreate(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.memSizeIndices), ugl.PtrNil, gl.STATIC_DRAW)
 	}
 	// if err == nil {
 	// 	var ok bool
@@ -114,8 +110,8 @@ func (me *MeshBuffer) setupVao(progIndex int) (err error) {
 	return
 }
 
-func (me *MeshBufferLib) AddNew(name string, params MeshBufferParams) (buf *MeshBuffer, err error) {
-	if buf, err = newMeshBuffer(name, params); err == nil {
+func (me *MeshBufferLib) AddNew(name string, capacity int32) (buf *MeshBuffer, err error) {
+	if buf, err = newMeshBuffer(name, capacity); err == nil {
 		me.add(buf)
 	} else if buf != nil {
 		buf.dispose()

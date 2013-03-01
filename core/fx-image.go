@@ -6,7 +6,7 @@ import (
 	ugl "github.com/go3d/go-opengl/util"
 )
 
-type FxImage interface {
+type fxImage interface {
 	Load() error
 	Loaded() bool
 	GpuSync() error

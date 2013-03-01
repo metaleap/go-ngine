@@ -96,10 +96,10 @@ func setupExample_04_PyrsCubes() {
 	fx.UpdateRoutine()
 
 	//	meshes / models
-	if bufFloor, err = ng.Core.MeshBuffers.AddNew("buf_floor", ng.MeshBufferParams{6, 6}); err != nil {
+	if bufFloor, err = ng.Core.MeshBuffers.AddNew("buf_floor", 6); err != nil {
 		panic(err)
 	}
-	if bufRest, err = ng.Core.MeshBuffers.AddNew("buf_rest", ng.MeshBufferParams{36 + 12, 36 + 12}); err != nil {
+	if bufRest, err = ng.Core.MeshBuffers.AddNew("buf_rest", 36+12); err != nil {
 		panic(err)
 	}
 

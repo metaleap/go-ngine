@@ -71,7 +71,7 @@ func setupExample_01_TriQuad() {
 		panic(err)
 	}
 
-	if meshBuf, err = ng.Core.MeshBuffers.AddNew("meshbuf", ng.MeshBufferParams{9, 9}); err != nil {
+	if meshBuf, err = ng.Core.MeshBuffers.AddNew("meshbuf", 9); err != nil {
 		panic(err)
 	}
 	if err = meshBuf.Add(meshTriID); err != nil {
