@@ -645,10 +645,13 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#Mesh.GpuUploaded">func (me *Mesh) GpuUploaded() bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Mesh.Load">func (me *Mesh) Load(provider MeshProvider, args ...interface{}) (err error)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Mesh.Load">func (me *Mesh) Load(provider MeshProvider) (err error)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Mesh.Loaded">func (me *Mesh) Loaded() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Mesh.Unload">func (me *Mesh) Unload()</a></dd>
 				
 			
 				
@@ -689,46 +692,58 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#MeshData">type MeshData</a></dd>
+				<dd><a href="#MeshDescF3">type MeshDescF3</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#MeshProviderPrefabCube">func MeshProviderPrefabCube(args ...interface{}) (meshData *MeshData, err error)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NewMeshDescF3">func NewMeshDescF3(tags, id string, verts ...MeshDescF3V) (me *MeshDescF3)</a></dd>
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshProviderPrefabPlane">func MeshProviderPrefabPlane(args ...interface{}) (meshData *MeshData, err error)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshProviderPrefabPyramid">func MeshProviderPrefabPyramid(args ...interface{}) (meshData *MeshData, err error)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshProviderPrefabQuad">func MeshProviderPrefabQuad(args ...interface{}) (meshData *MeshData, err error)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshProviderPrefabTri">func MeshProviderPrefabTri(args ...interface{}) (meshData *MeshData, err error)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NewMeshData">func NewMeshData() (me *MeshData)</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshData.AddFaces">func (me *MeshData) AddFaces(faces ...*MeshF3)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshData.AddNormals">func (me *MeshData) AddNormals(normals ...MeshVA3)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshData.AddPositions">func (me *MeshData) AddPositions(positions ...MeshVA3)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshData.AddTexCoords">func (me *MeshData) AddTexCoords(texCoords ...MeshVA2)</a></dd>
 				
 			
 				
-				<dd><a href="#MeshF3">type MeshF3</a></dd>
+				<dd><a href="#MeshDescF3V">type MeshDescF3V</a></dd>
+				
+				
+			
+				
+				<dd><a href="#MeshDescVA2">type MeshDescVA2</a></dd>
+				
+				
+			
+				
+				<dd><a href="#MeshDescVA3">type MeshDescVA3</a></dd>
+				
+				
+			
+				
+				<dd><a href="#MeshDescriptor">type MeshDescriptor</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#NewMeshF3">func NewMeshF3(tags, id string, verts ...MeshV) (me *MeshF3)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#MeshDescriptorCube">func MeshDescriptorCube() (meshDescriptor *MeshDescriptor, err error)</a></dd>
 				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshDescriptorPlane">func MeshDescriptorPlane() (meshDescriptor *MeshDescriptor, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshDescriptorPyramid">func MeshDescriptorPyramid() (meshDescriptor *MeshDescriptor, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshDescriptorQuad">func MeshDescriptorQuad() (meshDescriptor *MeshDescriptor, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshDescriptorTri">func MeshDescriptorTri() (meshDescriptor *MeshDescriptor, err error)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshDescriptor.AddFaces">func (me *MeshDescriptor) AddFaces(faces ...*MeshDescF3)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshDescriptor.AddNormals">func (me *MeshDescriptor) AddNormals(normals ...MeshDescVA3)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshDescriptor.AddPositions">func (me *MeshDescriptor) AddPositions(positions ...MeshDescVA3)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshDescriptor.AddTexCoords">func (me *MeshDescriptor) AddTexCoords(texCoords ...MeshDescVA2)</a></dd>
 				
 			
 				
@@ -744,7 +759,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#MeshLib.AddNew">func (me *MeshLib) AddNew() (id int)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#MeshLib.AddNewAndLoad">func (me *MeshLib) AddNewAndLoad(name string, meshProvider MeshProvider, args ...interface{}) (meshID int, err error)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#MeshLib.AddNewAndLoad">func (me *MeshLib) AddNewAndLoad(name string, meshProvider MeshProvider) (meshID int, err error)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#MeshLib.Compact">func (me *MeshLib) Compact()</a></dd>
@@ -767,21 +782,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				
 				<dd><a href="#MeshProvider">type MeshProvider</a></dd>
-				
-				
-			
-				
-				<dd><a href="#MeshV">type MeshV</a></dd>
-				
-				
-			
-				
-				<dd><a href="#MeshVA2">type MeshVA2</a></dd>
-				
-				
-			
-				
-				<dd><a href="#MeshVA3">type MeshVA3</a></dd>
 				
 				
 			
@@ -2556,42 +2556,42 @@ Only used for Core.Libs.Images.Tex2D
 
 			
 				
-				<h3 id="FxImageCube.GpuDelete">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=361:395#L18">GpuDelete</a></h3>
+				<h3 id="FxImageCube.GpuDelete">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=348:382#L17">GpuDelete</a></h3>
 				<pre>func (me *FxImageCube) GpuDelete()</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageCube.GpuSync">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=438:482#L22">GpuSync</a></h3>
+				<h3 id="FxImageCube.GpuSync">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=425:469#L21">GpuSync</a></h3>
 				<pre>func (me *FxImageCube) GpuSync() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageCube.Load">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=639:680#L29">Load</a></h3>
+				<h3 id="FxImageCube.Load">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=626:667#L28">Load</a></h3>
 				<pre>func (me *FxImageCube) Load() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageCube.Loaded">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=830:866#L39">Loaded</a></h3>
+				<h3 id="FxImageCube.Loaded">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=817:853#L38">Loaded</a></h3>
 				<pre>func (me *FxImageCube) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageCube.NoAutoMips">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=961:996#L48">NoAutoMips</a></h3>
+				<h3 id="FxImageCube.NoAutoMips">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=948:983#L47">NoAutoMips</a></h3>
 				<pre>func (me *FxImageCube) NoAutoMips()</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageCube.Unload">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=1052:1083#L52">Unload</a></h3>
+				<h3 id="FxImageCube.Unload">func (*FxImageCube) <a href="/target/fx-image-cube.gt.go?s=1039:1070#L51">Unload</a></h3>
 				<pre>func (me *FxImageCube) Unload()</pre>
 				
 				
@@ -2600,7 +2600,7 @@ Only used for Core.Libs.Images.Tex2D
 		
 			
 			
-			<h2 id="FxImageCubeLib">type <a href="/target/fx-image-cube.gt.go?s=1281:1314#L62">FxImageCubeLib</a></h2>
+			<h2 id="FxImageCubeLib">type <a href="/target/fx-image-cube.gt.go?s=1268:1301#L61">FxImageCubeLib</a></h2>
 			<pre>type FxImageCubeLib []FxImageCube</pre>
 			<p>
 Only used for Core.Libs.Images.TexCube
@@ -2617,42 +2617,42 @@ Only used for Core.Libs.Images.TexCube
 
 			
 				
-				<h3 id="FxImageCubeLib.AddNew">func (*FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=1316:1359#L64">AddNew</a></h3>
+				<h3 id="FxImageCubeLib.AddNew">func (*FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=1303:1346#L63">AddNew</a></h3>
 				<pre>func (me *FxImageCubeLib) AddNew() (id int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageCubeLib.Compact">func (*FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=1694:1729#L86">Compact</a></h3>
+				<h3 id="FxImageCubeLib.Compact">func (*FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=1681:1716#L85">Compact</a></h3>
 				<pre>func (me *FxImageCubeLib) Compact()</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageCubeLib.IsOk">func (FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=2532:2579#L129">IsOk</a></h3>
+				<h3 id="FxImageCubeLib.IsOk">func (FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=2519:2566#L128">IsOk</a></h3>
 				<pre>func (me FxImageCubeLib) IsOk(id int) (ok bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageCubeLib.Ok">func (FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=2649:2689#L136">Ok</a></h3>
+				<h3 id="FxImageCubeLib.Ok">func (FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=2636:2676#L135">Ok</a></h3>
 				<pre>func (me FxImageCubeLib) Ok(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageCubeLib.Remove">func (FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=2719:2767#L140">Remove</a></h3>
+				<h3 id="FxImageCubeLib.Remove">func (FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=2706:2754#L139">Remove</a></h3>
 				<pre>func (me FxImageCubeLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageCubeLib.Walk">func (FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=3058:3114#L154">Walk</a></h3>
+				<h3 id="FxImageCubeLib.Walk">func (FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=3045:3101#L153">Walk</a></h3>
 				<pre>func (me FxImageCubeLib) Walk(on func(ref *FxImageCube))</pre>
 				
 				
@@ -3361,7 +3361,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 		
 			
 			
-			<h2 id="Mesh">type <a href="/target/mesh.gt.go?s=63:443#L1">Mesh</a></h2>
+			<h2 id="Mesh">type <a href="/target/mesh.gt.go?s=63:442#L1">Mesh</a></h2>
 			<pre>type Mesh struct {
     ID             int
     DefaultModelID int
@@ -3380,36 +3380,43 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 
 			
 				
-				<h3 id="Mesh.GpuDelete">func (*Mesh) <a href="/target/mesh.gt.go?s=544:571#L16">GpuDelete</a></h3>
+				<h3 id="Mesh.GpuDelete">func (*Mesh) <a href="/target/mesh.gt.go?s=543:570#L16">GpuDelete</a></h3>
 				<pre>func (me *Mesh) GpuDelete()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.GpuUpload">func (*Mesh) <a href="/target/mesh.gt.go?s=622:661#L22">GpuUpload</a></h3>
+				<h3 id="Mesh.GpuUpload">func (*Mesh) <a href="/target/mesh.gt.go?s=621:660#L22">GpuUpload</a></h3>
 				<pre>func (me *Mesh) GpuUpload() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.gt.go?s=2174:2208#L50">GpuUploaded</a></h3>
+				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.gt.go?s=2171:2205#L50">GpuUploaded</a></h3>
 				<pre>func (me *Mesh) GpuUploaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Load">func (*Mesh) <a href="/target/mesh.gt.go?s=2235:2311#L54">Load</a></h3>
-				<pre>func (me *Mesh) Load(provider MeshProvider, args ...interface{}) (err error)</pre>
+				<h3 id="Mesh.Load">func (*Mesh) <a href="/target/mesh.gt.go?s=2232:2287#L54">Load</a></h3>
+				<pre>func (me *Mesh) Load(provider MeshProvider) (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.gt.go?s=4055:4084#L101">Loaded</a></h3>
+				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.gt.go?s=4127:4156#L102">Loaded</a></h3>
 				<pre>func (me *Mesh) Loaded() bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.gt.go?s=4192:4216#L106">Unload</a></h3>
+				<pre>func (me *Mesh) Unload()</pre>
 				
 				
 				
@@ -3518,155 +3525,16 @@ Only used for Core.MeshBuffers
 		
 			
 			
-			<h2 id="MeshData">type <a href="/target/mesh-data.go?s=2044:2252#L78">MeshData</a></h2>
-			<pre>type MeshData struct {
-    <span class="comment">//	Vertex positions</span>
-    Positions []MeshVA3
-
-    <span class="comment">//	Vertex texture coordinates</span>
-    TexCoords []MeshVA2
-
-    <span class="comment">//	Vertex normals</span>
-    Normals []MeshVA3
-
-    <span class="comment">//	Indexed triangle definitions</span>
-    Faces []MeshF3
-}</pre>
-			<p>
-Represents yet-unprocessed mesh source data.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="MeshProviderPrefabCube">func <a href="/target/mesh-provider.go?s=306:386#L1">MeshProviderPrefabCube</a></h3>
-				<pre>func MeshProviderPrefabCube(args ...interface{}) (meshData *MeshData, err error)</pre>
-				<p>
-A MeshProvider that creates MeshData for a cube with extents -1 .. 1.
-args is ignored and err is always nil.
-The returned MeshData contains 12 triangle faces with IDs &#34;t0&#34; through &#34;t11&#34;.
-These faces are classified in 6 distinct tags: &#34;front&#34;,&#34;back&#34;,&#34;top&#34;,&#34;bottom&#34;,&#34;right&#34;,&#34;left&#34;.
-</p>
-
-				
-			
-				
-				<h3 id="MeshProviderPrefabPlane">func <a href="/target/mesh-provider.go?s=2168:2249#L46">MeshProviderPrefabPlane</a></h3>
-				<pre>func MeshProviderPrefabPlane(args ...interface{}) (meshData *MeshData, err error)</pre>
-				<p>
-A MeshProvider that creates MeshData for a flat ground plane with extents -1 .. 1.
-args is ignored and err is always nil.
-The returned MeshData contains 2 triangle faces with IDs &#34;t0&#34; through &#34;t1&#34;.
-These faces are all classified with tag: &#34;plane&#34;.
-</p>
-
-				
-			
-				
-				<h3 id="MeshProviderPrefabPyramid">func <a href="/target/mesh-provider.go?s=2942:3025#L61">MeshProviderPrefabPyramid</a></h3>
-				<pre>func MeshProviderPrefabPyramid(args ...interface{}) (meshData *MeshData, err error)</pre>
-				<p>
-A MeshProvider that creates MeshData for a pyramid with extents -1 .. 1.
-args is ignored and err is always nil.
-The returned MeshData contains 4 triangle faces with IDs &#34;t0&#34; through &#34;t3&#34;.
-These faces are all classified with tag: &#34;pyr&#34;.
-</p>
-
-				
-			
-				
-				<h3 id="MeshProviderPrefabQuad">func <a href="/target/mesh-provider.go?s=3913:3993#L78">MeshProviderPrefabQuad</a></h3>
-				<pre>func MeshProviderPrefabQuad(args ...interface{}) (meshData *MeshData, err error)</pre>
-				<p>
-A MeshProvider that creates MeshData for a quad with extents -1 .. 1.
-args is ignored and err is always nil.
-The returned MeshData contains 2 triangle faces with IDs &#34;t0&#34; through &#34;t1&#34;.
-These faces are all classified with tag: &#34;quad&#34;.
-</p>
-
-				
-			
-				
-				<h3 id="MeshProviderPrefabTri">func <a href="/target/mesh-provider.go?s=4621:4700#L92">MeshProviderPrefabTri</a></h3>
-				<pre>func MeshProviderPrefabTri(args ...interface{}) (meshData *MeshData, err error)</pre>
-				<p>
-A MeshProvider that creates MeshData for a triangle with extents -1 .. 1.
-args is ignored and err is always nil.
-The returned MeshData contains 1 triangle face with ID &#34;t0&#34; and tag &#34;tri&#34;.
-</p>
-
-				
-			
-				
-				<h3 id="NewMeshData">func <a href="/target/mesh-data.go?s=2308:2341#L93">NewMeshData</a></h3>
-				<pre>func NewMeshData() (me *MeshData)</pre>
-				<p>
-Initializes and returns a new *MeshData* instance.
-</p>
-
-				
-			
-
-			
-				
-				<h3 id="MeshData.AddFaces">func (*MeshData) <a href="/target/mesh-data.go?s=2419:2465#L99">AddFaces</a></h3>
-				<pre>func (me *MeshData) AddFaces(faces ...*MeshF3)</pre>
-				<p>
-Adds all specified Faces to this MeshData.
-</p>
-
-				
-				
-			
-				
-				<h3 id="MeshData.AddNormals">func (*MeshData) <a href="/target/mesh-data.go?s=2748:2798#L111">AddNormals</a></h3>
-				<pre>func (me *MeshData) AddNormals(normals ...MeshVA3)</pre>
-				<p>
-Adds all the specified Normals to this MeshData.
-</p>
-
-				
-				
-			
-				
-				<h3 id="MeshData.AddPositions">func (*MeshData) <a href="/target/mesh-data.go?s=2585:2639#L106">AddPositions</a></h3>
-				<pre>func (me *MeshData) AddPositions(positions ...MeshVA3)</pre>
-				<p>
-Adds all specified Positions to this MeshData.
-</p>
-
-				
-				
-			
-				
-				<h3 id="MeshData.AddTexCoords">func (*MeshData) <a href="/target/mesh-data.go?s=2903:2957#L116">AddTexCoords</a></h3>
-				<pre>func (me *MeshData) AddTexCoords(texCoords ...MeshVA2)</pre>
-				<p>
-Adds all the specified TexCoords to this MeshData.
-</p>
-
-				
-				
-			
-		
-			
-			
-			<h2 id="MeshF3">type <a href="/target/mesh-data.go?s=435:547#L11">MeshF3</a></h2>
-			<pre>type MeshF3 struct {
-    <span class="comment">//	The indexed vertices making up this triangle.</span>
-    V [3]MeshV
+			<h2 id="MeshDescF3">type <a href="/target/mesh-data.go?s=672:799#L30">MeshDescF3</a></h2>
+			<pre>type MeshDescF3 struct {
+    <span class="comment">//	The indexed vertices making up this triangle face.</span>
+    V [3]MeshDescF3V
 
     <span class="comment">//	ID, Tags</span>
     MeshFaceBase
 }</pre>
 			<p>
-Represents an indexed triangle.
+Represents an indexed triangle face.
 </p>
 
 
@@ -3678,10 +3546,10 @@ Represents an indexed triangle.
 
 			
 				
-				<h3 id="NewMeshF3">func <a href="/target/mesh-data.go?s=759:819#L22">NewMeshF3</a></h3>
-				<pre>func NewMeshF3(tags, id string, verts ...MeshV) (me *MeshF3)</pre>
+				<h3 id="NewMeshDescF3">func <a href="/target/mesh-data.go?s=1017:1091#L41">NewMeshDescF3</a></h3>
+				<pre>func NewMeshDescF3(tags, id string, verts ...MeshDescF3V) (me *MeshDescF3)</pre>
 				<p>
-Creates and initializes a new MeshV with the specified tags,
+Creates and initializes a new MeshDescF3V with the specified tags,
 ID and verts, and returns it. tags may be empty or contain multiple
 classification tags separated by spaces, which will be split into Tags.
 </p>
@@ -3693,7 +3561,205 @@ classification tags separated by spaces, which will be split into Tags.
 		
 			
 			
-			<h2 id="MeshFaceBase">type <a href="/target/mesh-data.go?s=252:398#L2">MeshFaceBase</a></h2>
+			<h2 id="MeshDescF3V">type <a href="/target/mesh-data.go?s=1293:1483#L50">MeshDescF3V</a></h2>
+			<pre>type MeshDescF3V struct {
+    <span class="comment">//	Index of the vertex position</span>
+    PosIndex uint32
+
+    <span class="comment">//	Index of the texture-coordinate.</span>
+    TexCoordIndex uint32
+
+    <span class="comment">//	Index of the vertex normal.</span>
+    NormalIndex uint32
+}</pre>
+			<p>
+Represents an indexed vertex in a MeshDescF3.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="MeshDescVA2">type <a href="/target/mesh-data.go?s=1596:1623#L63">MeshDescVA2</a></h2>
+			<pre>type MeshDescVA2 [2]float32</pre>
+			<p>
+Represents a 2-component vertex attribute in a MeshDescriptor.
+(such as for example texture-coordinates)
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="MeshDescVA3">type <a href="/target/mesh-data.go?s=1730:1757#L67">MeshDescVA3</a></h2>
+			<pre>type MeshDescVA3 [3]float32</pre>
+			<p>
+Represents a 3-component vertex attribute in a MeshDescriptor
+(such as for example vertex-normals)
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="MeshDescriptor">type <a href="/target/mesh-data.go?s=1820:2050#L70">MeshDescriptor</a></h2>
+			<pre>type MeshDescriptor struct {
+    <span class="comment">//	Vertex positions</span>
+    Positions []MeshDescVA3
+
+    <span class="comment">//	Vertex texture coordinates</span>
+    TexCoords []MeshDescVA2
+
+    <span class="comment">//	Vertex normals</span>
+    Normals []MeshDescVA3
+
+    <span class="comment">//	Indexed triangle definitions</span>
+    Faces []MeshDescF3
+}</pre>
+			<p>
+Represents yet-unprocessed, descriptive mesh source data.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="MeshDescriptorCube">func <a href="/target/mesh-provider.go?s=369:438#L1">MeshDescriptorCube</a></h3>
+				<pre>func MeshDescriptorCube() (meshDescriptor *MeshDescriptor, err error)</pre>
+				<p>
+A MeshProvider that creates MeshDescriptor for a cube with extents -1 .. 1.
+args is ignored and err is always nil.
+The returned MeshDescriptor contains 12 triangle faces with IDs &#34;t0&#34; through &#34;t11&#34;.
+These faces are classified in 6 distinct tags: &#34;front&#34;,&#34;back&#34;,&#34;top&#34;,&#34;bottom&#34;,&#34;right&#34;,&#34;left&#34;.
+</p>
+
+				
+			
+				
+				<h3 id="MeshDescriptorPlane">func <a href="/target/mesh-provider.go?s=2563:2633#L49">MeshDescriptorPlane</a></h3>
+				<pre>func MeshDescriptorPlane() (meshDescriptor *MeshDescriptor, err error)</pre>
+				<p>
+A MeshProvider that creates MeshDescriptor for a flat ground plane with extents -1 .. 1.
+args is ignored and err is always nil.
+The returned MeshDescriptor contains 2 triangle faces with IDs &#34;t0&#34; through &#34;t1&#34;.
+These faces are all classified with tag: &#34;plane&#34;.
+</p>
+
+				
+			
+				
+				<h3 id="MeshDescriptorPyramid">func <a href="/target/mesh-provider.go?s=3413:3485#L65">MeshDescriptorPyramid</a></h3>
+				<pre>func MeshDescriptorPyramid() (meshDescriptor *MeshDescriptor, err error)</pre>
+				<p>
+A MeshProvider that creates MeshDescriptor for a pyramid with extents -1 .. 1.
+args is ignored and err is always nil.
+The returned MeshDescriptor contains 4 triangle faces with IDs &#34;t0&#34; through &#34;t3&#34;.
+These faces are all classified with tag: &#34;pyr&#34;.
+</p>
+
+				
+			
+				
+				<h3 id="MeshDescriptorQuad">func <a href="/target/mesh-provider.go?s=4516:4585#L83">MeshDescriptorQuad</a></h3>
+				<pre>func MeshDescriptorQuad() (meshDescriptor *MeshDescriptor, err error)</pre>
+				<p>
+A MeshProvider that creates MeshDescriptor for a quad with extents -1 .. 1.
+args is ignored and err is always nil.
+The returned MeshDescriptor contains 2 triangle faces with IDs &#34;t0&#34; through &#34;t1&#34;.
+These faces are all classified with tag: &#34;quad&#34;.
+</p>
+
+				
+			
+				
+				<h3 id="MeshDescriptorTri">func <a href="/target/mesh-provider.go?s=5300:5368#L98">MeshDescriptorTri</a></h3>
+				<pre>func MeshDescriptorTri() (meshDescriptor *MeshDescriptor, err error)</pre>
+				<p>
+A MeshProvider that creates MeshDescriptor for a triangle with extents -1 .. 1.
+args is ignored and err is always nil.
+The returned MeshDescriptor contains 1 triangle face with ID &#34;t0&#34; and tag &#34;tri&#34;.
+</p>
+
+				
+			
+
+			
+				
+				<h3 id="MeshDescriptor.AddFaces">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=2104:2160#L85">AddFaces</a></h3>
+				<pre>func (me *MeshDescriptor) AddFaces(faces ...*MeshDescF3)</pre>
+				<p>
+Adds all specified Faces to this MeshDescriptor.
+</p>
+
+				
+				
+			
+				
+				<h3 id="MeshDescriptor.AddNormals">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=2555:2615#L100">AddNormals</a></h3>
+				<pre>func (me *MeshDescriptor) AddNormals(normals ...MeshDescVA3)</pre>
+				<p>
+Adds all the specified Normals to this MeshDescriptor.
+</p>
+
+				
+				
+			
+				
+				<h3 id="MeshDescriptor.AddPositions">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=2376:2440#L95">AddPositions</a></h3>
+				<pre>func (me *MeshDescriptor) AddPositions(positions ...MeshDescVA3)</pre>
+				<p>
+Adds all specified Positions to this MeshDescriptor.
+</p>
+
+				
+				
+			
+				
+				<h3 id="MeshDescriptor.AddTexCoords">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=2726:2790#L105">AddTexCoords</a></h3>
+				<pre>func (me *MeshDescriptor) AddTexCoords(texCoords ...MeshDescVA2)</pre>
+				<p>
+Adds all the specified TexCoords to this MeshDescriptor.
+</p>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="MeshFaceBase">type <a href="/target/mesh-data.go?s=484:630#L21">MeshFaceBase</a></h2>
 			<pre>type MeshFaceBase struct {
     <span class="comment">//	Mesh-unique identifier for this face.</span>
     ID string
@@ -3715,7 +3781,7 @@ classification tags separated by spaces, which will be split into Tags.
 		
 			
 			
-			<h2 id="MeshLib">type <a href="/target/mesh.gt.go?s=4738:4757#L130">MeshLib</a></h2>
+			<h2 id="MeshLib">type <a href="/target/mesh.gt.go?s=4859:4878#L135">MeshLib</a></h2>
 			<pre>type MeshLib []Mesh</pre>
 			<p>
 Only used for Core.Libs.Meshes
@@ -3732,56 +3798,56 @@ Only used for Core.Libs.Meshes
 
 			
 				
-				<h3 id="MeshLib.AddNew">func (*MeshLib) <a href="/target/mesh.gt.go?s=4759:4795#L132">AddNew</a></h3>
+				<h3 id="MeshLib.AddNew">func (*MeshLib) <a href="/target/mesh.gt.go?s=4880:4916#L137">AddNew</a></h3>
 				<pre>func (me *MeshLib) AddNew() (id int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.AddNewAndLoad">func (*MeshLib) <a href="/target/mesh.gt.go?s=4361:4478#L116">AddNewAndLoad</a></h3>
-				<pre>func (me *MeshLib) AddNewAndLoad(name string, meshProvider MeshProvider, args ...interface{}) (meshID int, err error)</pre>
+				<h3 id="MeshLib.AddNewAndLoad">func (*MeshLib) <a href="/target/mesh.gt.go?s=4512:4608#L121">AddNewAndLoad</a></h3>
+				<pre>func (me *MeshLib) AddNewAndLoad(name string, meshProvider MeshProvider) (meshID int, err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.Compact">func (*MeshLib) <a href="/target/mesh.gt.go?s=5116:5144#L154">Compact</a></h3>
+				<h3 id="MeshLib.Compact">func (*MeshLib) <a href="/target/mesh.gt.go?s=5237:5265#L159">Compact</a></h3>
 				<pre>func (me *MeshLib) Compact()</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.GpuSync">func (MeshLib) <a href="/target/mesh.gt.go?s=4112:4150#L105">GpuSync</a></h3>
+				<h3 id="MeshLib.GpuSync">func (MeshLib) <a href="/target/mesh.gt.go?s=4263:4301#L110">GpuSync</a></h3>
 				<pre>func (_ MeshLib) GpuSync() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.IsOk">func (MeshLib) <a href="/target/mesh.gt.go?s=5891:5931#L197">IsOk</a></h3>
+				<h3 id="MeshLib.IsOk">func (MeshLib) <a href="/target/mesh.gt.go?s=6012:6052#L202">IsOk</a></h3>
 				<pre>func (me MeshLib) IsOk(id int) (ok bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.Ok">func (MeshLib) <a href="/target/mesh.gt.go?s=6001:6034#L204">Ok</a></h3>
+				<h3 id="MeshLib.Ok">func (MeshLib) <a href="/target/mesh.gt.go?s=6122:6155#L209">Ok</a></h3>
 				<pre>func (me MeshLib) Ok(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.Remove">func (MeshLib) <a href="/target/mesh.gt.go?s=6064:6105#L208">Remove</a></h3>
+				<h3 id="MeshLib.Remove">func (MeshLib) <a href="/target/mesh.gt.go?s=6185:6226#L213">Remove</a></h3>
 				<pre>func (me MeshLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.Walk">func (MeshLib) <a href="/target/mesh.gt.go?s=6389:6431#L222">Walk</a></h3>
+				<h3 id="MeshLib.Walk">func (MeshLib) <a href="/target/mesh.gt.go?s=6510:6552#L227">Walk</a></h3>
 				<pre>func (me MeshLib) Walk(on func(ref *Mesh))</pre>
 				
 				
@@ -3790,82 +3856,9 @@ Only used for Core.Libs.Meshes
 		
 			
 			
-			<h2 id="MeshProvider">type <a href="/target/mesh-data.go?s=188:250#L1">MeshProvider</a></h2>
-			<pre>type MeshProvider func(args ...interface{}) (*MeshData, error)</pre>
-			<p>
-Provides MeshData for constructing a Mesh. An implementation
-might load a certain file format or procedurally generate
-the returned MeshData.
-</p>
-
-
+			<h2 id="MeshProvider">type <a href="/target/mesh-provider.go?s=14:63#L1">MeshProvider</a></h2>
+			<pre>type MeshProvider func() (*MeshDescriptor, error)</pre>
 			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="MeshV">type <a href="/target/mesh-data.go?s=1556:1740#L58">MeshV</a></h2>
-			<pre>type MeshV struct {
-    <span class="comment">//	Index of the vertex position</span>
-    PosIndex uint32
-
-    <span class="comment">//	Index of the texture-coordinate.</span>
-    TexCoordIndex uint32
-
-    <span class="comment">//	Index of the vertex normal.</span>
-    NormalIndex uint32
-}</pre>
-			<p>
-Represents an indexed vertex in a MeshF3.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="MeshVA2">type <a href="/target/mesh-data.go?s=1847:1870#L71">MeshVA2</a></h2>
-			<pre>type MeshVA2 [2]float32</pre>
-			<p>
-Represents a 2-component vertex attribute in a MeshData.
-(such as for example texture-coordinates)
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="MeshVA3">type <a href="/target/mesh-data.go?s=1971:1994#L75">MeshVA3</a></h2>
-			<pre>type MeshVA3 [3]float32</pre>
-			<p>
-Represents a 3-component vertex attribute in a MeshData
-(such as for example vertex-normals)
-</p>
-
 
 			
 

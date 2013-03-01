@@ -64,10 +64,10 @@ func setupExample_01_TriQuad() {
 
 	//	meshes / models
 
-	if meshTriID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_tri", ng.MeshProviderPrefabTri); err != nil {
+	if meshTriID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_tri", ng.MeshDescriptorTri); err != nil {
 		panic(err)
 	}
-	if meshQuadID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_quad", ng.MeshProviderPrefabQuad); err != nil {
+	if meshQuadID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_quad", ng.MeshDescriptorQuad); err != nil {
 		panic(err)
 	}
 

@@ -56,10 +56,10 @@ func setupScene() {
 	if bufRest, err = ng.Core.MeshBuffers.AddNew("buf_rest", 200); err != nil {
 		panic(err)
 	}
-	if meshFloorID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
+	if meshFloorID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.MeshDescriptorPlane); err != nil {
 		panic(err)
 	}
-	if meshBoxID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_box", ng.MeshProviderPrefabCube); err != nil {
+	if meshBoxID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_box", ng.MeshDescriptorCube); err != nil {
 		panic(err)
 	}
 	bufRest.Add(meshFloorID)

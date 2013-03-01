@@ -103,14 +103,14 @@ func setupExample_04_PyrsCubes() {
 		panic(err)
 	}
 
-	if meshPlaneID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {
+	if meshPlaneID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.MeshDescriptorPlane); err != nil {
 		panic(err)
 	}
 	modelPlaneDefaultID := ng.Core.Libs.Models.AddNew()
 	ng.Core.Libs.Models[modelPlaneDefaultID].MatID = apputil.LibIDs.Mat["cobbles"]
 	ng.Core.Libs.Meshes[meshPlaneID].DefaultModelID = modelPlaneDefaultID
 
-	if meshPyrID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_pyramid", ng.MeshProviderPrefabPyramid); err != nil {
+	if meshPyrID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_pyramid", ng.MeshDescriptorPyramid); err != nil {
 		panic(err)
 	}
 	modelPyrDefaultID := ng.Core.Libs.Models.AddNew()
@@ -119,7 +119,7 @@ func setupExample_04_PyrsCubes() {
 	modelPyrDogID := ng.Core.Libs.Models.AddNew()
 	ng.Core.Libs.Models[modelPyrDogID].MatID = apputil.LibIDs.Mat["dog"]
 
-	if meshCubeID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_cube", ng.MeshProviderPrefabCube); err != nil {
+	if meshCubeID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_cube", ng.MeshDescriptorCube); err != nil {
 		panic(err)
 	}
 	modelCubeDefaultID := ng.Core.Libs.Models.AddNew()

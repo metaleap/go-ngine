@@ -153,6 +153,10 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 			setupExampleScene()
 			if err = ng.Core.Libs.Meshes.GpuSync(); err != nil {
 				panic(err)
+			} else {
+				for m := 0; m < len(ng.Core.Libs.Meshes); m++ {
+					ng.Core.Libs.Meshes[m].Unload()
+				}
 			}
 			ng.Core.GpuSyncImageLibs()
 		}

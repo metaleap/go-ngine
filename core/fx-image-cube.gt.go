@@ -15,7 +15,6 @@ type FxImageCube struct {
 }
 
 func (me *FxImageCube) init() {
-	me.Unload()
 	me.glTex.Init()
 	me.FxImageBase.init()
 	me.Preprocess.FlipY = false

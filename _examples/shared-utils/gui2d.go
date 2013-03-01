@@ -28,7 +28,7 @@ func (me *Gui2D) Setup() (err error) {
 	if meshBuf, err = ng.Core.MeshBuffers.AddNew("buf_quad", 6); err != nil {
 		return
 	}
-	if quadMeshID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_quad", ng.MeshProviderPrefabQuad); err != nil {
+	if quadMeshID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_quad", ng.MeshDescriptorQuad); err != nil {
 		return
 	}
 	if err = meshBuf.Add(quadMeshID); err != nil {
