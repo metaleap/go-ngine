@@ -4,21 +4,53 @@ package core
 type Scene struct {
 	ID int
 
+	allNodes SceneNodeLib
+
 	//	The root Node for this scene graph.
 	RootNode Node
-}
 
-func NewScene() (me *Scene) {
-	me = new(Scene)
-	me.init()
-	return
+	thrPrep struct {
+		copyDone, done bool
+	}
+
+	thrRend struct {
+		copyDone bool
+	}
 }
 
 func (me *Scene) dispose() {
+	me.allNodes.dispose()
 }
 
 func (me *Scene) init() {
 	me.RootNode = *newNode("", -1, nil, me)
+	me.allNodes.init()
+	root := &me.allNodes[me.allNodes.AddNew()]
+	root.Render.skyMode = true
+	root.parentID = -1
+}
+
+func (me *Scene) AddNewChildNode(parentNodeID int) (childNodeID int) {
+	childNodeID = me.allNodes.AddNew()
+	me.allNodes[childNodeID].parentID = parentNodeID
+	return
+}
+
+func (me *Scene) ParentNodeID(childNodeID int) (parentID int) {
+	if me.allNodes.IsOk(childNodeID) {
+		parentID = me.allNodes[childNodeID].parentID
+	}
+	return
+}
+
+func (me *Scene) RemoveNodes(fromID, num int) {
+	if fromID > 0 {
+		me.allNodes.Remove(fromID, num)
+	}
+}
+
+func (me *Scene) Root() *SceneNode {
+	return &me.allNodes[0]
 }
 
 //#begin-gt -gen-lib.gt T:Scene L:Core.Libs.Scenes
@@ -102,15 +134,15 @@ func (me SceneLib) Ok(id int) bool {
 	return me[id].ID == id
 }
 
-func (me SceneLib) Remove(fromID, num int) {
-	if l := len(me); fromID > -1 && fromID < l {
+func (me *SceneLib) Remove(fromID, num int) {
+	if l := len(*me); fromID > -1 && fromID < l {
 		if num < 1 || num > (l-fromID) {
 			num = l - fromID
 		}
 		changed := make(map[int]int, num)
 		for id := fromID; id < fromID+num; id++ {
-			me[id].dispose()
-			changed[id], me[id].ID = -1, -1
+			(*me)[id].dispose()
+			changed[id], (*me)[id].ID = -1, -1
 		}
 		me.onSceneIDsChanged(changed)
 	}

@@ -1,27 +1,13 @@
 package core
 
-//	A Model is a parameterized instantiation of its parent Mesh geometry
-//	with unique appearance, material or other properties.
-type Model struct {
-	ID    int
-	MatID int
-	Name  string
-}
+type sceneChildNodes []int
 
-func (me *Model) dispose() {
-}
+//#begin-gt -gen-lib.gt T:SceneNode L:Core.Scenes[id].allNodes
 
-func (me *Model) init() {
-	me.MatID = -1
-	return
-}
+//	Only used for Core.Scenes[id].allNodes
+type SceneNodeLib []SceneNode
 
-//#begin-gt -gen-lib.gt T:Model L:Core.Libs.Models
-
-//	Only used for Core.Libs.Models
-type ModelLib []Model
-
-func (me *ModelLib) AddNew() (id int) {
+func (me *SceneNodeLib) AddNew() (id int) {
 	id = -1
 	for i := 0; i < len(*me); i++ {
 		if (*me)[i].ID == -1 {
@@ -31,11 +17,11 @@ func (me *ModelLib) AddNew() (id int) {
 	}
 	if id == -1 {
 		if id = len(*me); id == cap(*me) {
-			nu := make(ModelLib, id, id+Options.Libs.GrowCapBy)
+			nu := make(SceneNodeLib, id, id+Options.Libs.GrowCapBy)
 			copy(nu, *me)
 			*me = nu
 		}
-		*me = append(*me, Model{})
+		*me = append(*me, SceneNode{})
 	}
 	ref := &(*me)[id]
 	ref.ID = id
@@ -43,10 +29,10 @@ func (me *ModelLib) AddNew() (id int) {
 	return
 }
 
-func (me *ModelLib) Compact() {
+func (me *SceneNodeLib) Compact() {
 	var (
-		before, after []Model
-		ref           *Model
+		before, after []SceneNode
+		ref           *SceneNode
 		oldID, i      int
 		compact       bool
 	)
@@ -65,39 +51,39 @@ func (me *ModelLib) Compact() {
 			}
 		}
 		if len(changed) > 0 {
-			me.onModelIDsChanged(changed)
+			me.onSceneNodeIDsChanged(changed)
 		}
 	}
 }
 
-func (me *ModelLib) init() {
-	*me = make(ModelLib, 0, Options.Libs.InitialCap)
+func (me *SceneNodeLib) init() {
+	*me = make(SceneNodeLib, 0, Options.Libs.InitialCap)
 }
 
-func (me *ModelLib) dispose() {
+func (me *SceneNodeLib) dispose() {
 	me.Remove(0, 0)
 	*me = (*me)[:0]
 }
 
-func (me ModelLib) get(id int) (ref *Model) {
+func (me SceneNodeLib) get(id int) (ref *SceneNode) {
 	if me.IsOk(id) {
 		ref = &me[id]
 	}
 	return
 }
 
-func (me ModelLib) IsOk(id int) (ok bool) {
+func (me SceneNodeLib) IsOk(id int) (ok bool) {
 	if id > -1 && id < len(me) {
 		ok = me[id].ID == id
 	}
 	return
 }
 
-func (me ModelLib) Ok(id int) bool {
+func (me SceneNodeLib) Ok(id int) bool {
 	return me[id].ID == id
 }
 
-func (me *ModelLib) Remove(fromID, num int) {
+func (me *SceneNodeLib) Remove(fromID, num int) {
 	if l := len(*me); fromID > -1 && fromID < l {
 		if num < 1 || num > (l-fromID) {
 			num = l - fromID
@@ -107,11 +93,11 @@ func (me *ModelLib) Remove(fromID, num int) {
 			(*me)[id].dispose()
 			changed[id], (*me)[id].ID = -1, -1
 		}
-		me.onModelIDsChanged(changed)
+		me.onSceneNodeIDsChanged(changed)
 	}
 }
 
-func (me ModelLib) Walk(on func(ref *Model)) {
+func (me SceneNodeLib) Walk(on func(ref *SceneNode)) {
 	for id := 0; id < len(me); id++ {
 		if me.Ok(id) {
 			on(&me[id])

@@ -130,15 +130,15 @@ func (me FxMaterialLib) Ok(id int) bool {
 	return me[id].ID == id
 }
 
-func (me FxMaterialLib) Remove(fromID, num int) {
-	if l := len(me); fromID > -1 && fromID < l {
+func (me *FxMaterialLib) Remove(fromID, num int) {
+	if l := len(*me); fromID > -1 && fromID < l {
 		if num < 1 || num > (l-fromID) {
 			num = l - fromID
 		}
 		changed := make(map[int]int, num)
 		for id := fromID; id < fromID+num; id++ {
-			me[id].dispose()
-			changed[id], me[id].ID = -1, -1
+			(*me)[id].dispose()
+			changed[id], (*me)[id].ID = -1, -1
 		}
 		me.onFxMaterialIDsChanged(changed)
 	}

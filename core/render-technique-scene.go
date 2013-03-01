@@ -8,11 +8,19 @@ import (
 type RenderTechniqueScene struct {
 	renderTechniqueBase
 	// Batch RenderBatch
+
+	thrPrep struct {
+		nodeRender map[*Node]bool
+	}
+
+	thrRend struct {
+		nodeRender map[*Node]bool
+	}
 }
 
-func newRenderTechniqueScene() RenderTechnique {
+func newRenderTechniqueScene(cam *Camera) RenderTechnique {
 	me := &RenderTechniqueScene{}
-	me.init("Scene")
+	me.init("Scene", cam)
 	// me.Batch.init(me)
 	// me.Batch.Enabled = true
 	return me

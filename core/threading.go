@@ -5,6 +5,7 @@ import (
 
 	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
+	unum "github.com/metaleap/go-util/num"
 )
 
 var (
@@ -59,37 +60,41 @@ func (me *Camera) copyAppToPrep() {
 	me.thrPrep.matProj = me.thrApp.matProj
 	me.Controller.thrPrep.mat = me.Controller.thrApp.mat
 	me.thrPrep.matPos.Translation(&me.Controller.Pos)
-	if scene := me.scene(); scene != nil {
+	if scene := me.scene(); scene != nil && !scene.thrPrep.copyDone {
+		scene.thrPrep.copyDone = true
 		scene.RootNode.copyAppToPrep()
 	}
 }
 
 func (me *Camera) copyPrepToRend() {
-	me.thrRend.states = me.Rendering.States
-	if scene := me.scene(); scene != nil {
+	me.thrRend.states = me.Render.States
+	if scene := me.scene(); scene != nil && !scene.thrRend.copyDone {
+		scene.thrRend.copyDone = true
 		scene.RootNode.copyPrepToRend()
+		scene.thrPrep.done = false
 	}
 }
 
 func (me *Node) copyAppToPrep() {
-	if !me.thrPrep.copyDone {
-		me.thrPrep.copyDone = true
-		me.thrPrep.matModelView = me.Transform.matModelView
-		for _, subNode := range me.ChildNodes.M {
-			subNode.copyAppToPrep()
-		}
+	me.thrPrep.matModelView = me.Transform.matModelView
+	for _, subNode := range me.ChildNodes.M {
+		subNode.copyAppToPrep()
 	}
 }
 
 func (me *Node) copyPrepToRend() {
-	if !me.thrRend.copyDone {
-		me.thrRend.copyDone = true
-		for cam, mat := range me.thrPrep.camProjMats {
-			me.thrRend.camProjMats[cam].Load(mat)
-		}
-		for _, subNode := range me.ChildNodes.M {
-			subNode.copyPrepToRend()
-		}
-		me.thrPrep.done = false
+	var (
+		cam *Camera
+		mat *unum.Mat4
+		cr  bool
+	)
+	for cam, cr = range me.thrPrep.camRender {
+		me.thrRend.camRender[cam] = cr
+	}
+	for cam, mat = range me.thrPrep.camProjMats {
+		me.thrRend.camProjMats[cam].Load(mat)
+	}
+	for _, subNode := range me.ChildNodes.M {
+		subNode.copyPrepToRend()
 	}
 }

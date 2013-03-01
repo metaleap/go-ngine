@@ -98,7 +98,7 @@ func (_ *EngineLibs) onFxImageIDsChanged(procID string, oldNewIDs map[int]int) {
 	}
 	for id = 0; id < len(Core.Render.Canvases); id++ {
 		for camID = 0; camID < len(Core.Render.Canvases[id].Cams); camID++ {
-			onOps(Core.Render.Canvases[id].Cams[camID].Rendering.FxProcs)
+			onOps(Core.Render.Canvases[id].Cams[camID].Render.FxProcs)
 		}
 	}
 }
@@ -133,12 +133,17 @@ func (_ FxImageCubeLib) onFxImageCubeIDsChanged(oldNewIDs map[int]int) {
 }
 
 func (_ FxMaterialLib) onFxMaterialIDsChanged(oldNewIDs map[int]int) {
-	var id int
+	var id, v int
 	for id = 0; id < len(Core.Libs.Scenes); id++ {
 		if Core.Libs.Scenes.Ok(id) {
 			Core.Libs.Scenes[id].RootNode.Walk(func(node *Node) {
 				Core.Libs.UpdateIDRef(oldNewIDs, &node.MatID)
 			})
+			for v = 0; v < len(Core.Libs.Scenes[id].allNodes); v++ {
+				if Core.Libs.Scenes[id].allNodes.Ok(v) {
+					Core.Libs.UpdateIDRef(oldNewIDs, &Core.Libs.Scenes[id].allNodes[v].Render.MatID)
+				}
+			}
 		}
 	}
 	for id = 0; id < len(Core.Libs.Models); id++ {
@@ -161,18 +166,28 @@ func (_ MeshLib) onMeshIDsChanged(oldNewIDs map[int]int) {
 			Core.Libs.Scenes[id].RootNode.Walk(func(node *Node) {
 				Core.Libs.UpdateIDRef(oldNewIDs, &node.MeshID)
 			})
+			for v = 0; v < len(Core.Libs.Scenes[id].allNodes); v++ {
+				if Core.Libs.Scenes[id].allNodes.Ok(v) {
+					Core.Libs.UpdateIDRef(oldNewIDs, &Core.Libs.Scenes[id].allNodes[v].Render.MeshID)
+				}
+			}
 		}
 	}
 	Options.Libs.OnIDsChanged.Meshes.callAll(oldNewIDs)
 }
 
 func (_ ModelLib) onModelIDsChanged(oldNewIDs map[int]int) {
-	var id int
+	var id, i int
 	for id = 0; id < len(Core.Libs.Scenes); id++ {
 		if Core.Libs.Scenes.Ok(id) {
 			Core.Libs.Scenes[id].RootNode.Walk(func(node *Node) {
 				Core.Libs.UpdateIDRef(oldNewIDs, &node.ModelID)
 			})
+			for i = 0; i < len(Core.Libs.Scenes[id].allNodes); i++ {
+				if Core.Libs.Scenes[id].allNodes.Ok(i) {
+					Core.Libs.UpdateIDRef(oldNewIDs, &Core.Libs.Scenes[id].allNodes[i].Render.ModelID)
+				}
+			}
 		}
 	}
 	for id = 0; id < len(Core.Libs.Meshes); id++ {
@@ -191,4 +206,18 @@ func (_ SceneLib) onSceneIDsChanged(oldNewIDs map[int]int) {
 		}
 	}
 	Options.Libs.OnIDsChanged.Scenes.callAll(oldNewIDs)
+}
+
+func (me *SceneNodeLib) onSceneNodeIDsChanged(oldNewIDs map[int]int) {
+	var i int
+	for i = 0; i < len(*me); i++ {
+		if me.Ok(i) {
+			Core.Libs.UpdateIDRef(oldNewIDs, &(*me)[i].parentID)
+		}
+	}
+	for id := 0; id < len(Core.Libs.Scenes); id++ {
+		if Core.Libs.Scenes.Ok(id) && &Core.Libs.Scenes[id].allNodes == me {
+			break
+		}
+	}
 }

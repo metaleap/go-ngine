@@ -19,7 +19,11 @@ func (me *Camera) onPrep() {
 	if me.Enabled {
 		me.thrPrep.matCamProj.SetFromMult4(&me.thrPrep.matProj, &me.Controller.thrPrep.mat)
 		if scene := me.scene(); scene != nil {
-			scene.RootNode.onPrep()
+			if !scene.thrPrep.done {
+				scene.thrPrep.done = true
+				scene.thrPrep.copyDone, scene.thrRend.copyDone = false, false
+				scene.RootNode.onPrep()
+			}
 			scene.RootNode.Walk(me.thrPrep.onPrepNode)
 			// if thrPrep.curTechScene = me.RenderTechniqueScene(); thrPrep.curTechScene != nil && thrPrep.curTechScene.Batch.Enabled {
 			// 	thrPrep.curTechScene.Batch.onPrep()
@@ -45,8 +49,7 @@ func (me *Camera) onPrepNode(node *Node) {
 }
 
 func (me *Node) onPrep() {
-	if me.Rendering.Enabled && !me.thrPrep.done {
-		me.thrPrep.done, me.thrPrep.copyDone, me.thrRend.copyDone = true, false, false
+	if me.Rendering.Enabled {
 		for _, subNode := range me.ChildNodes.M {
 			subNode.onPrep()
 		}

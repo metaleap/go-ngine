@@ -28,7 +28,7 @@ type EngineCore struct {
 
 			procFuncs map[string]string
 		}
-		KnownTechniques map[string]RenderTechniqueProvider
+		KnownTechniques map[string]renderTechniqueProvider
 
 		states ugl.RenderStates
 	}
@@ -55,7 +55,7 @@ func (_ *EngineCore) init() (err error) {
 
 func (_ *EngineCore) initRendering() {
 	rend := &Core.Render
-	rend.KnownTechniques = map[string]RenderTechniqueProvider{
+	rend.KnownTechniques = map[string]renderTechniqueProvider{
 		"Quad":  newRenderTechniqueQuad,
 		"Scene": newRenderTechniqueScene,
 	}
@@ -142,8 +142,8 @@ func (_ *EngineCore) showSplash() (err error) {
 func (_ *EngineCore) useTechFx() {
 	if thrRend.curTech != thrRend.nextTech || thrRend.curEffect != thrRend.nextEffect {
 		thrRend.curTech = thrRend.nextTech
-		if !(len(thrRend.curCam.Rendering.FxProcs) == 0 && len(thrRend.nextEffect.Ext) == 0) {
-			thrRend.nextEffect.Ext = thrRend.curCam.Rendering.FxProcs
+		if !(len(thrRend.curCam.Render.FxProcs) == 0 && len(thrRend.nextEffect.ext) == 0) {
+			thrRend.nextEffect.ext = thrRend.curCam.Render.FxProcs
 			thrRend.nextEffect.UpdateRoutine()
 		}
 		thrRend.curEffect = thrRend.nextEffect

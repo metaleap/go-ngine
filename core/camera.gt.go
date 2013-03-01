@@ -37,7 +37,7 @@ type Camera struct {
 
 	Enabled bool
 
-	Rendering struct {
+	Render struct {
 		//	The device-relative or absolute view-port for this Camera.
 		Viewport CameraViewport
 
@@ -78,33 +78,33 @@ func (me *Camera) setupQuad(canv *RenderCanvas) {
 }
 
 func (me *Camera) setup(canv *RenderCanvas, persp3d bool, depth bool, technique string) {
-	me.Rendering.Viewport.canvWidth, me.Rendering.Viewport.canvHeight = float64(canv.absViewWidth), float64(canv.absViewHeight)
+	me.Render.Viewport.canvWidth, me.Render.Viewport.canvHeight = float64(canv.absViewWidth), float64(canv.absViewHeight)
 	me.Perspective.Use = persp3d
-	me.Rendering.States.DepthTest = depth
+	me.Render.States.DepthTest = depth
 	if depth {
-		me.Rendering.States.Other.ClearBits = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT
+		me.Render.States.Other.ClearBits = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT
 	} else {
-		me.Rendering.States.Other.ClearBits = gl.COLOR_BUFFER_BIT
+		me.Render.States.Other.ClearBits = gl.COLOR_BUFFER_BIT
 	}
 	me.Controller.init()
-	me.Rendering.Viewport.init()
+	me.Render.Viewport.init()
 	me.ApplyMatrices()
-	me.Rendering.Technique = Core.Render.KnownTechniques[technique]()
+	me.Render.Technique = Core.Render.KnownTechniques[technique](me)
 }
 
 func (me *Camera) init() {
 	me.Enabled = true
 	me.sceneID = -1
 	me.thrPrep.onPrepNode = func(n *Node) { me.onPrepNode(n) }
-	me.Rendering.States.FaceCulling, me.Rendering.States.StencilTest = false, false
-	me.Rendering.States.ClearColor = Options.Rendering.DefaultClearColor
+	me.Render.States.FaceCulling, me.Render.States.StencilTest = false, false
+	me.Render.States.ClearColor = Options.Rendering.DefaultClearColor
 	me.Perspective.CameraPerspective = Options.Cameras.PerspectiveDefaults
 	unum.Mat4Identities(&me.thrApp.matProj, &me.thrPrep.matProj)
 }
 
 //	Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.
 func (me *Camera) ApplyMatrices() {
-	me.thrApp.matProj.Perspective(me.Perspective.FovY, me.Rendering.Viewport.aspect, me.Perspective.ZNear, me.Perspective.ZFar)
+	me.thrApp.matProj.Perspective(me.Perspective.FovY, me.Render.Viewport.aspect, me.Perspective.ZNear, me.Perspective.ZFar)
 }
 
 func (me *Camera) clearNodeMats() {
@@ -113,13 +113,14 @@ func (me *Camera) clearNodeMats() {
 			delete(node.thrPrep.camProjMats, me)
 			delete(node.thrRend.camProjMats, me)
 			delete(node.thrPrep.camRender, me)
+			delete(node.thrRend.camRender, me)
 		})
 	}
 }
 
 func (me *Camera) dispose() {
 	me.clearNodeMats()
-	me.Rendering.Technique.dispose()
+	me.Render.Technique.dispose()
 }
 
 func (me *Camera) scene() *Scene {
@@ -139,12 +140,12 @@ func (me *Camera) SetScene(sceneID int) {
 }
 
 func (me *Camera) RenderTechniqueQuad() (tech *RenderTechniqueQuad) {
-	tech, _ = me.Rendering.Technique.(*RenderTechniqueQuad)
+	tech, _ = me.Render.Technique.(*RenderTechniqueQuad)
 	return
 }
 
 func (me *Camera) RenderTechniqueScene() (tech *RenderTechniqueScene) {
-	tech, _ = me.Rendering.Technique.(*RenderTechniqueScene)
+	tech, _ = me.Render.Technique.(*RenderTechniqueScene)
 	return
 }
 

@@ -16,10 +16,9 @@ type FxEffect struct {
 
 	ID int
 
-	Ext FxProcs
-
 	KeepProcIDsLast []string
 
+	ext        FxProcs
 	uberName   string
 	uberPnames map[string]string
 }
@@ -40,10 +39,10 @@ func (me *FxEffect) UpdateRoutine() {
 	)
 	if len(me.KeepProcIDsLast) > 0 {
 		me.FxProcs.EnsureLast(me.KeepProcIDsLast...)
-		me.Ext.EnsureLast(me.KeepProcIDsLast...)
+		me.ext.EnsureLast(me.KeepProcIDsLast...)
 	}
 
-	ops, ext, counts := me.FxProcs, len(me.Ext) > 0, make(map[string]int, len(me.FxProcs)+len(me.Ext))
+	ops, ext, counts := me.FxProcs, len(me.ext) > 0, make(map[string]int, len(me.FxProcs)+len(me.ext))
 doOps:
 	for o := 0; o < len(ops); o++ {
 		if ops[o].Enabled {
@@ -54,7 +53,7 @@ doOps:
 		}
 	}
 	if ext {
-		ext, ops = false, me.Ext
+		ext, ops = false, me.ext
 		goto doOps
 	}
 
@@ -67,7 +66,7 @@ doOps:
 
 func (me *FxEffect) use() {
 	me.useProcs(me.FxProcs)
-	me.useProcs(me.Ext)
+	me.useProcs(me.ext)
 }
 
 func (me *FxEffect) useProcs(ops FxProcs) {
@@ -159,15 +158,15 @@ func (me FxEffectLib) Ok(id int) bool {
 	return me[id].ID == id
 }
 
-func (me FxEffectLib) Remove(fromID, num int) {
-	if l := len(me); fromID > -1 && fromID < l {
+func (me *FxEffectLib) Remove(fromID, num int) {
+	if l := len(*me); fromID > -1 && fromID < l {
 		if num < 1 || num > (l-fromID) {
 			num = l - fromID
 		}
 		changed := make(map[int]int, num)
 		for id := fromID; id < fromID+num; id++ {
-			me[id].dispose()
-			changed[id], me[id].ID = -1, -1
+			(*me)[id].dispose()
+			changed[id], (*me)[id].ID = -1, -1
 		}
 		me.onFxEffectIDsChanged(changed)
 	}

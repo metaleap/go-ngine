@@ -5,10 +5,6 @@ import (
 	unum "github.com/metaleap/go-util/num"
 )
 
-type refCanvCam struct {
-	canvID, camID int
-}
-
 type nodeCamProjMats map[*Camera]*unum.Mat4
 
 type nodeCamProjGlMats map[*Camera]*ugl.GlMat4
@@ -28,7 +24,7 @@ type Node struct {
 	ChildNodes Nodes
 
 	//	Encapsulates all parent-relative transformations for this Node.
-	Transform NodeTransform
+	Transform SceneNodeTransform
 
 	MatID   int
 	MeshID  int
@@ -39,15 +35,14 @@ type Node struct {
 	id         string
 
 	thrPrep struct {
-		copyDone, done bool
-		matModelView   unum.Mat4
-		camProjMats    nodeCamProjMats
-		camRender      map[*Camera]bool
+		matModelView unum.Mat4
+		camProjMats  nodeCamProjMats
+		camRender    map[*Camera]bool
 	}
 
 	thrRend struct {
-		copyDone    bool
 		camProjMats nodeCamProjGlMats
+		camRender   map[*Camera]bool
 	}
 }
 
@@ -70,11 +65,12 @@ func (me *Node) initCamData(cam *Camera) {
 	if cam.scene() == me.rootScene {
 		me.thrPrep.camProjMats[cam], me.thrRend.camProjMats[cam] = unum.NewMat4Identity(), ugl.NewGlMat4(nil)
 		me.thrPrep.camRender[cam] = me.Rendering.Enabled
+		me.thrRend.camRender[cam] = me.Rendering.Enabled
 	}
 }
 
 func (me *Node) initCamDatas() {
-	me.thrPrep.camRender = map[*Camera]bool{}
+	me.thrPrep.camRender, me.thrRend.camRender = map[*Camera]bool{}, map[*Camera]bool{}
 	me.thrPrep.camProjMats, me.thrRend.camProjMats = nodeCamProjMats{}, nodeCamProjGlMats{}
 	var cam int
 	for canv := 0; canv < len(Core.Render.Canvases); canv++ {

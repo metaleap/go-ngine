@@ -321,7 +321,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#FxEffectLib.Ok">func (me FxEffectLib) Ok(id int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#FxEffectLib.Remove">func (me FxEffectLib) Remove(fromID, num int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#FxEffectLib.Remove">func (me *FxEffectLib) Remove(fromID, num int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#FxEffectLib.Walk">func (me FxEffectLib) Walk(on func(ref *FxEffect))</a></dd>
@@ -367,7 +367,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#FxImage2DLib.Ok">func (me FxImage2DLib) Ok(id int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#FxImage2DLib.Remove">func (me FxImage2DLib) Remove(fromID, num int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#FxImage2DLib.Remove">func (me *FxImage2DLib) Remove(fromID, num int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#FxImage2DLib.Walk">func (me FxImage2DLib) Walk(on func(ref *FxImage2D))</a></dd>
@@ -421,7 +421,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#FxImageCubeLib.Ok">func (me FxImageCubeLib) Ok(id int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#FxImageCubeLib.Remove">func (me FxImageCubeLib) Remove(fromID, num int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#FxImageCubeLib.Remove">func (me *FxImageCubeLib) Remove(fromID, num int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#FxImageCubeLib.Walk">func (me FxImageCubeLib) Walk(on func(ref *FxImageCube))</a></dd>
@@ -467,7 +467,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Ok">func (me FxMaterialLib) Ok(id int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Remove">func (me FxMaterialLib) Remove(fromID, num int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Remove">func (me *FxMaterialLib) Remove(fromID, num int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Walk">func (me FxMaterialLib) Walk(on func(ref *FxMaterial))</a></dd>
@@ -774,7 +774,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#MeshLib.Ok">func (me MeshLib) Ok(id int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#MeshLib.Remove">func (me MeshLib) Remove(fromID, num int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#MeshLib.Remove">func (me *MeshLib) Remove(fromID, num int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#MeshLib.Walk">func (me MeshLib) Walk(on func(ref *Mesh))</a></dd>
@@ -807,7 +807,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#ModelLib.Ok">func (me ModelLib) Ok(id int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#ModelLib.Remove">func (me ModelLib) Remove(fromID, num int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#ModelLib.Remove">func (me *ModelLib) Remove(fromID, num int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#ModelLib.Walk">func (me ModelLib) Walk(on func(ref *Model))</a></dd>
@@ -825,32 +825,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Node.Walk">func (me *Node) Walk(onNode NodeVisitor)</a></dd>
-				
-			
-				
-				<dd><a href="#NodeTransform">type NodeTransform</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.AddRot">func (me *NodeTransform) AddRot(rot *unum.Vec3)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.AddRotXYZ">func (me *NodeTransform) AddRotXYZ(x, y, z float64)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetPos">func (me *NodeTransform) SetPos(posX, posY, posZ float64)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetRot">func (me *NodeTransform) SetRot(radX, radY, radZ float64)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetScale">func (me *NodeTransform) SetScale(s float64)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.SetScaleXyz">func (me *NodeTransform) SetScaleXyz(x, y, z float64)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NodeTransform.StepDelta">func (me *NodeTransform) StepDelta(deltaPerSecond float64) float64</a></dd>
 				
 			
 				
@@ -915,11 +889,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#RenderTechniqueProvider">type RenderTechniqueProvider</a></dd>
-				
-				
-			
-				
 				<dd><a href="#RenderTechniqueQuad">type RenderTechniqueQuad</a></dd>
 				
 				
@@ -935,9 +904,18 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				<dd><a href="#Scene">type Scene</a></dd>
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#NewScene">func NewScene() (me *Scene)</a></dd>
 				
+					
+					<dd>&nbsp; &nbsp; <a href="#Scene.AddNewChildNode">func (me *Scene) AddNewChildNode(parentNodeID int) (childNodeID int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Scene.ParentNodeID">func (me *Scene) ParentNodeID(childNodeID int) (parentID int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Scene.RemoveNodes">func (me *Scene) RemoveNodes(fromID, num int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Scene.Root">func (me *Scene) Root() *SceneNode</a></dd>
 				
 			
 				
@@ -957,10 +935,64 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#SceneLib.Ok">func (me SceneLib) Ok(id int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#SceneLib.Remove">func (me SceneLib) Remove(fromID, num int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#SceneLib.Remove">func (me *SceneLib) Remove(fromID, num int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#SceneLib.Walk">func (me SceneLib) Walk(on func(ref *Scene))</a></dd>
+				
+			
+				
+				<dd><a href="#SceneNode">type SceneNode</a></dd>
+				
+				
+			
+				
+				<dd><a href="#SceneNodeLib">type SceneNodeLib</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneNodeLib.AddNew">func (me *SceneNodeLib) AddNew() (id int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneNodeLib.Compact">func (me *SceneNodeLib) Compact()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneNodeLib.IsOk">func (me SceneNodeLib) IsOk(id int) (ok bool)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneNodeLib.Ok">func (me SceneNodeLib) Ok(id int) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneNodeLib.Remove">func (me *SceneNodeLib) Remove(fromID, num int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneNodeLib.Walk">func (me SceneNodeLib) Walk(on func(ref *SceneNode))</a></dd>
+				
+			
+				
+				<dd><a href="#SceneNodeTransform">type SceneNodeTransform</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneNodeTransform.AddRot">func (me *SceneNodeTransform) AddRot(rot *unum.Vec3)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneNodeTransform.AddRotXYZ">func (me *SceneNodeTransform) AddRotXYZ(x, y, z float64)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneNodeTransform.SetPos">func (me *SceneNodeTransform) SetPos(posX, posY, posZ float64)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneNodeTransform.SetRot">func (me *SceneNodeTransform) SetRot(radX, radY, radZ float64)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneNodeTransform.SetScale">func (me *SceneNodeTransform) SetScale(s float64)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneNodeTransform.SetScaleXyz">func (me *SceneNodeTransform) SetScaleXyz(x, y, z float64)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SceneNodeTransform.StepDelta">func (me *SceneNodeTransform) StepDelta(deltaPerSecond float64) float64</a></dd>
 				
 			
 				
@@ -1076,8 +1108,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/ng.go">ng.go</a>
 			
-				<a href="/target/node-transform.go">node-transform.go</a>
-			
 				<a href="/target/node.go">node.go</a>
 			
 				<a href="/target/nodes.go">nodes.go</a>
@@ -1093,6 +1123,12 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				<a href="/target/render-technique.go">render-technique.go</a>
 			
 				<a href="/target/render.go">render.go</a>
+			
+				<a href="/target/scene-node-transform.go">scene-node-transform.go</a>
+			
+				<a href="/target/scene-node.go">scene-node.go</a>
+			
+				<a href="/target/scene-nodes.gt.go">scene-nodes.gt.go</a>
 			
 				<a href="/target/scene.gt.go">scene.gt.go</a>
 			
@@ -1167,7 +1203,7 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.gt.go?s=698:1478#L14">Camera</a></h2>
+			<h2 id="Camera">type <a href="/target/camera.gt.go?s=698:1475#L14">Camera</a></h2>
 			<pre>type Camera struct {
     <span class="comment">//	Optical and imager properties for this camera.</span>
     Perspective struct {
@@ -1184,7 +1220,7 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 
     Enabled bool
 
-    Rendering struct {
+    Render struct {
         <span class="comment">//	The device-relative or absolute view-port for this Camera.</span>
         Viewport CameraViewport
 
@@ -1211,7 +1247,7 @@ A camera embodies the eye point of the viewer looking at the visual scene.
 
 			
 				
-				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.gt.go?s=2964:2997#L96">ApplyMatrices</a></h3>
+				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.gt.go?s=2933:2966#L96">ApplyMatrices</a></h3>
 				<pre>func (me *Camera) ApplyMatrices()</pre>
 				<p>
 Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.
@@ -1221,21 +1257,21 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 				
 			
 				
-				<h3 id="Camera.RenderTechniqueQuad">func (*Camera) <a href="/target/camera.gt.go?s=3778:3845#L131">RenderTechniqueQuad</a></h3>
+				<h3 id="Camera.RenderTechniqueQuad">func (*Camera) <a href="/target/camera.gt.go?s=3779:3846#L132">RenderTechniqueQuad</a></h3>
 				<pre>func (me *Camera) RenderTechniqueQuad() (tech *RenderTechniqueQuad)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.RenderTechniqueScene">func (*Camera) <a href="/target/camera.gt.go?s=3916:3985#L136">RenderTechniqueScene</a></h3>
+				<h3 id="Camera.RenderTechniqueScene">func (*Camera) <a href="/target/camera.gt.go?s=3914:3983#L137">RenderTechniqueScene</a></h3>
 				<pre>func (me *Camera) RenderTechniqueScene() (tech *RenderTechniqueScene)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.gt.go?s=3540:3579#L119">SetScene</a></h3>
+				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.gt.go?s=3541:3580#L120">SetScene</a></h3>
 				<pre>func (me *Camera) SetScene(sceneID int)</pre>
 				
 				
@@ -1244,7 +1280,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 		
 			
 			
-			<h2 id="CameraLib">type <a href="/target/camera.gt.go?s=5591:5615#L182">CameraLib</a></h2>
+			<h2 id="CameraLib">type <a href="/target/camera.gt.go?s=5586:5610#L183">CameraLib</a></h2>
 			<pre>type CameraLib []*Camera</pre>
 			<p>
 Only used for Core.Render.Canvases[id].Cams
@@ -1261,21 +1297,21 @@ Only used for Core.Render.Canvases[id].Cams
 
 			
 				
-				<h3 id="CameraLib.IsOk">func (CameraLib) <a href="/target/camera.gt.go?s=5819:5856#L198">IsOk</a></h3>
+				<h3 id="CameraLib.IsOk">func (CameraLib) <a href="/target/camera.gt.go?s=5814:5851#L199">IsOk</a></h3>
 				<pre>func (me CameraLib) IsOk(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="CameraLib.Remove">func (*CameraLib) <a href="/target/camera.gt.go?s=5894:5938#L202">Remove</a></h3>
+				<h3 id="CameraLib.Remove">func (*CameraLib) <a href="/target/camera.gt.go?s=5889:5933#L203">Remove</a></h3>
 				<pre>func (me *CameraLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="CameraLib.Walk">func (CameraLib) <a href="/target/camera.gt.go?s=6212:6258#L215">Walk</a></h3>
+				<h3 id="CameraLib.Walk">func (CameraLib) <a href="/target/camera.gt.go?s=6207:6253#L216">Walk</a></h3>
 				<pre>func (me CameraLib) Walk(on func(ref *Camera))</pre>
 				
 				
@@ -1312,7 +1348,7 @@ Only used for Core.Render.Canvases[id].Cams
 		
 			
 			
-			<h2 id="CameraViewport">type <a href="/target/camera.gt.go?s=4121:4375#L142">CameraViewport</a></h2>
+			<h2 id="CameraViewport">type <a href="/target/camera.gt.go?s=4116:4370#L143">CameraViewport</a></h2>
 			<pre>type CameraViewport struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -1331,7 +1367,7 @@ Encapsulates a device-relative or absolute camera view-port.
 
 			
 				
-				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.gt.go?s=4501:4558#L157">SetAbs</a></h3>
+				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.gt.go?s=4496:4553#L158">SetAbs</a></h3>
 				<pre>func (me *CameraViewport) SetAbs(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -1341,7 +1377,7 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.gt.go?s=4810:4871#L164">SetRel</a></h3>
+				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.gt.go?s=4805:4866#L165">SetRel</a></h3>
 				<pre>func (me *CameraViewport) SetRel(x, y, width, height float64)</pre>
 				<p>
 Sets the device-relative viewport origin and dimensions, with the value 1.0
@@ -1649,7 +1685,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
             }
             <span class="comment">// contains filtered or unexported fields</span>
         }
-        KnownTechniques map[string]RenderTechniqueProvider
+        KnownTechniques map[string]renderTechniqueProvider
         <span class="comment">// contains filtered or unexported fields</span>
     }
     <span class="comment">// contains filtered or unexported fields</span>
@@ -2285,7 +2321,7 @@ Returns true if any of the three specified keys is pressed.
 		
 			
 			
-			<h2 id="FxEffect">type <a href="/target/fx-effect.gt.go?s=209:712#L1">FxEffect</a></h2>
+			<h2 id="FxEffect">type <a href="/target/fx-effect.gt.go?s=209:718#L1">FxEffect</a></h2>
 			<pre>type FxEffect struct {
     <span class="comment">//	An ordered collection of all FxProcs that make up this effect.</span>
     <span class="comment">//	When changing the ordering or disabling, enabling or toggling individual FxProcs,</span>
@@ -2295,8 +2331,6 @@ Returns true if any of the three specified keys is pressed.
     FxProcs
 
     ID int
-
-    Ext FxProcs
 
     KeepProcIDsLast []string
     <span class="comment">// contains filtered or unexported fields</span>
@@ -2317,7 +2351,7 @@ An FxEffect can be reused for multiple surfaces, it is bound to geometry via an 
 
 			
 				
-				<h3 id="FxEffect.UpdateRoutine">func (*FxEffect) <a href="/target/fx-effect.gt.go?s=890:925#L25">UpdateRoutine</a></h3>
+				<h3 id="FxEffect.UpdateRoutine">func (*FxEffect) <a href="/target/fx-effect.gt.go?s=896:931#L24">UpdateRoutine</a></h3>
 				<pre>func (me *FxEffect) UpdateRoutine()</pre>
 				
 				
@@ -2326,7 +2360,7 @@ An FxEffect can be reused for multiple surfaces, it is bound to geometry via an 
 		
 			
 			
-			<h2 id="FxEffectLib">type <a href="/target/fx-effect.gt.go?s=1911:1938#L74">FxEffectLib</a></h2>
+			<h2 id="FxEffectLib">type <a href="/target/fx-effect.gt.go?s=1917:1944#L73">FxEffectLib</a></h2>
 			<pre>type FxEffectLib []FxEffect</pre>
 			<p>
 Only used for Core.Libs.Effects
@@ -2343,42 +2377,42 @@ Only used for Core.Libs.Effects
 
 			
 				
-				<h3 id="FxEffectLib.AddNew">func (*FxEffectLib) <a href="/target/fx-effect.gt.go?s=1940:1980#L76">AddNew</a></h3>
+				<h3 id="FxEffectLib.AddNew">func (*FxEffectLib) <a href="/target/fx-effect.gt.go?s=1946:1986#L75">AddNew</a></h3>
 				<pre>func (me *FxEffectLib) AddNew() (id int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxEffectLib.Compact">func (*FxEffectLib) <a href="/target/fx-effect.gt.go?s=2309:2341#L98">Compact</a></h3>
+				<h3 id="FxEffectLib.Compact">func (*FxEffectLib) <a href="/target/fx-effect.gt.go?s=2315:2347#L97">Compact</a></h3>
 				<pre>func (me *FxEffectLib) Compact()</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxEffectLib.IsOk">func (FxEffectLib) <a href="/target/fx-effect.gt.go?s=3120:3164#L141">IsOk</a></h3>
+				<h3 id="FxEffectLib.IsOk">func (FxEffectLib) <a href="/target/fx-effect.gt.go?s=3126:3170#L140">IsOk</a></h3>
 				<pre>func (me FxEffectLib) IsOk(id int) (ok bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxEffectLib.Ok">func (FxEffectLib) <a href="/target/fx-effect.gt.go?s=3234:3271#L148">Ok</a></h3>
+				<h3 id="FxEffectLib.Ok">func (FxEffectLib) <a href="/target/fx-effect.gt.go?s=3240:3277#L147">Ok</a></h3>
 				<pre>func (me FxEffectLib) Ok(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxEffectLib.Remove">func (FxEffectLib) <a href="/target/fx-effect.gt.go?s=3301:3346#L152">Remove</a></h3>
-				<pre>func (me FxEffectLib) Remove(fromID, num int)</pre>
+				<h3 id="FxEffectLib.Remove">func (*FxEffectLib) <a href="/target/fx-effect.gt.go?s=3307:3353#L151">Remove</a></h3>
+				<pre>func (me *FxEffectLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxEffectLib.Walk">func (FxEffectLib) <a href="/target/fx-effect.gt.go?s=3634:3684#L166">Walk</a></h3>
+				<h3 id="FxEffectLib.Walk">func (FxEffectLib) <a href="/target/fx-effect.gt.go?s=3648:3698#L165">Walk</a></h3>
 				<pre>func (me FxEffectLib) Walk(on func(ref *FxEffect))</pre>
 				
 				
@@ -2494,14 +2528,14 @@ Only used for Core.Libs.Images.Tex2D
 				
 			
 				
-				<h3 id="FxImage2DLib.Remove">func (FxImage2DLib) <a href="/target/fx-image-2d.gt.go?s=2446:2492#L128">Remove</a></h3>
-				<pre>func (me FxImage2DLib) Remove(fromID, num int)</pre>
+				<h3 id="FxImage2DLib.Remove">func (*FxImage2DLib) <a href="/target/fx-image-2d.gt.go?s=2446:2493#L128">Remove</a></h3>
+				<pre>func (me *FxImage2DLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2DLib.Walk">func (FxImage2DLib) <a href="/target/fx-image-2d.gt.go?s=2781:2833#L142">Walk</a></h3>
+				<h3 id="FxImage2DLib.Walk">func (FxImage2DLib) <a href="/target/fx-image-2d.gt.go?s=2789:2841#L142">Walk</a></h3>
 				<pre>func (me FxImage2DLib) Walk(on func(ref *FxImage2D))</pre>
 				
 				
@@ -2645,14 +2679,14 @@ Only used for Core.Libs.Images.TexCube
 				
 			
 				
-				<h3 id="FxImageCubeLib.Remove">func (FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=2706:2754#L139">Remove</a></h3>
-				<pre>func (me FxImageCubeLib) Remove(fromID, num int)</pre>
+				<h3 id="FxImageCubeLib.Remove">func (*FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=2706:2755#L139">Remove</a></h3>
+				<pre>func (me *FxImageCubeLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageCubeLib.Walk">func (FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=3045:3101#L153">Walk</a></h3>
+				<h3 id="FxImageCubeLib.Walk">func (FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=3053:3109#L153">Walk</a></h3>
 				<pre>func (me FxImageCubeLib) Walk(on func(ref *FxImageCube))</pre>
 				
 				
@@ -2813,14 +2847,14 @@ Only used for Core.Libs.Materials
 				
 			
 				
-				<h3 id="FxMaterialLib.Remove">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=2846:2893#L123">Remove</a></h3>
-				<pre>func (me FxMaterialLib) Remove(fromID, num int)</pre>
+				<h3 id="FxMaterialLib.Remove">func (*FxMaterialLib) <a href="/target/fx-material.gt.go?s=2846:2894#L123">Remove</a></h3>
+				<pre>func (me *FxMaterialLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxMaterialLib.Walk">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=3183:3237#L137">Walk</a></h3>
+				<h3 id="FxMaterialLib.Walk">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=3191:3245#L137">Walk</a></h3>
 				<pre>func (me FxMaterialLib) Walk(on func(ref *FxMaterial))</pre>
 				
 				
@@ -2857,7 +2891,7 @@ Only used for Core.Libs.Materials
 
 			
 				
-				<h3 id="FxProc.Color_SetRgb">func (*FxProc) <a href="/target/fx-proc.go?s=2021:2076#L82">Color_SetRgb</a></h3>
+				<h3 id="FxProc.Color_SetRgb">func (*FxProc) <a href="/target/fx-proc.go?s=2077:2132#L84">Color_SetRgb</a></h3>
 				<pre>func (me *FxProc) Color_SetRgb(rgb ...gl.Float) *FxProc</pre>
 				
 				
@@ -2899,7 +2933,7 @@ Only used for Core.Libs.Materials
 				
 			
 				
-				<h3 id="FxProc.IsTex">func (*FxProc) <a href="/target/fx-proc.go?s=2215:2245#L92">IsTex</a></h3>
+				<h3 id="FxProc.IsTex">func (*FxProc) <a href="/target/fx-proc.go?s=2271:2301#L94">IsTex</a></h3>
 				<pre>func (me *FxProc) IsTex() bool</pre>
 				
 				
@@ -2920,21 +2954,21 @@ Only used for Core.Libs.Materials
 				
 			
 				
-				<h3 id="FxProc.SetMixWeight">func (*FxProc) <a href="/target/fx-proc.go?s=1881:1927#L74">SetMixWeight</a></h3>
+				<h3 id="FxProc.SetMixWeight">func (*FxProc) <a href="/target/fx-proc.go?s=1937:1983#L76">SetMixWeight</a></h3>
 				<pre>func (me *FxProc) SetMixWeight(weight float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxProc.Tex_SetImageID">func (*FxProc) <a href="/target/fx-proc.go?s=2119:2172#L87">Tex_SetImageID</a></h3>
+				<h3 id="FxProc.Tex_SetImageID">func (*FxProc) <a href="/target/fx-proc.go?s=2175:2228#L89">Tex_SetImageID</a></h3>
 				<pre>func (me *FxProc) Tex_SetImageID(imageID int) *FxProc</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxProc.Toggle">func (*FxProc) <a href="/target/fx-proc.go?s=1963:1989#L78">Toggle</a></h3>
+				<h3 id="FxProc.Toggle">func (*FxProc) <a href="/target/fx-proc.go?s=2019:2045#L80">Toggle</a></h3>
 				<pre>func (me *FxProc) Toggle()</pre>
 				
 				
@@ -3840,14 +3874,14 @@ Only used for Core.Libs.Meshes
 				
 			
 				
-				<h3 id="MeshLib.Remove">func (MeshLib) <a href="/target/mesh.gt.go?s=6185:6226#L213">Remove</a></h3>
-				<pre>func (me MeshLib) Remove(fromID, num int)</pre>
+				<h3 id="MeshLib.Remove">func (*MeshLib) <a href="/target/mesh.gt.go?s=6185:6227#L213">Remove</a></h3>
+				<pre>func (me *MeshLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.Walk">func (MeshLib) <a href="/target/mesh.gt.go?s=6510:6552#L227">Walk</a></h3>
+				<h3 id="MeshLib.Walk">func (MeshLib) <a href="/target/mesh.gt.go?s=6518:6560#L227">Walk</a></h3>
 				<pre>func (me MeshLib) Walk(on func(ref *Mesh))</pre>
 				
 				
@@ -3872,7 +3906,7 @@ Only used for Core.Libs.Meshes
 		
 			
 			
-			<h2 id="Model">type <a href="/target/model.gt.go?s=363:420#L1">Model</a></h2>
+			<h2 id="Model">type <a href="/target/model.gt.go?s=143:200#L1">Model</a></h2>
 			<pre>type Model struct {
     ID    int
     MatID int
@@ -3881,11 +3915,6 @@ Only used for Core.Libs.Meshes
 			<p>
 A Model is a parameterized instantiation of its parent Mesh geometry
 with unique appearance, material or other properties.
-</p>
-<p>
-Each Mesh provides at least one Model, the &#34;default model&#34; (with ID &#34;&#34;),
-accessible via someMesh.Models.Default(). To create new models for a Mesh,
-call someMesh.Models[&#34;sourceModelID&#34;].Clone(&#34;newModelID&#34;).
 </p>
 
 
@@ -3901,7 +3930,7 @@ call someMesh.Models[&#34;sourceModelID&#34;].Clone(&#34;newModelID&#34;).
 		
 			
 			
-			<h2 id="ModelLib">type <a href="/target/model.gt.go?s=592:613#L16">ModelLib</a></h2>
+			<h2 id="ModelLib">type <a href="/target/model.gt.go?s=372:393#L12">ModelLib</a></h2>
 			<pre>type ModelLib []Model</pre>
 			<p>
 Only used for Core.Libs.Models
@@ -3918,42 +3947,42 @@ Only used for Core.Libs.Models
 
 			
 				
-				<h3 id="ModelLib.AddNew">func (*ModelLib) <a href="/target/model.gt.go?s=615:652#L18">AddNew</a></h3>
+				<h3 id="ModelLib.AddNew">func (*ModelLib) <a href="/target/model.gt.go?s=395:432#L14">AddNew</a></h3>
 				<pre>func (me *ModelLib) AddNew() (id int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="ModelLib.Compact">func (*ModelLib) <a href="/target/model.gt.go?s=975:1004#L40">Compact</a></h3>
+				<h3 id="ModelLib.Compact">func (*ModelLib) <a href="/target/model.gt.go?s=755:784#L36">Compact</a></h3>
 				<pre>func (me *ModelLib) Compact()</pre>
 				
 				
 				
 			
 				
-				<h3 id="ModelLib.IsOk">func (ModelLib) <a href="/target/model.gt.go?s=1759:1800#L83">IsOk</a></h3>
+				<h3 id="ModelLib.IsOk">func (ModelLib) <a href="/target/model.gt.go?s=1539:1580#L79">IsOk</a></h3>
 				<pre>func (me ModelLib) IsOk(id int) (ok bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="ModelLib.Ok">func (ModelLib) <a href="/target/model.gt.go?s=1870:1904#L90">Ok</a></h3>
+				<h3 id="ModelLib.Ok">func (ModelLib) <a href="/target/model.gt.go?s=1650:1684#L86">Ok</a></h3>
 				<pre>func (me ModelLib) Ok(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="ModelLib.Remove">func (ModelLib) <a href="/target/model.gt.go?s=1934:1976#L94">Remove</a></h3>
-				<pre>func (me ModelLib) Remove(fromID, num int)</pre>
+				<h3 id="ModelLib.Remove">func (*ModelLib) <a href="/target/model.gt.go?s=1714:1757#L90">Remove</a></h3>
+				<pre>func (me *ModelLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="ModelLib.Walk">func (ModelLib) <a href="/target/model.gt.go?s=2261:2305#L108">Walk</a></h3>
+				<h3 id="ModelLib.Walk">func (ModelLib) <a href="/target/model.gt.go?s=2049:2093#L104">Walk</a></h3>
 				<pre>func (me ModelLib) Walk(on func(ref *Model))</pre>
 				
 				
@@ -3962,7 +3991,7 @@ Only used for Core.Libs.Models
 		
 			
 			
-			<h2 id="Node">type <a href="/target/node.go?s=318:946#L9">Node</a></h2>
+			<h2 id="Node">type <a href="/target/node.go?s=271:888#L5">Node</a></h2>
 			<pre>type Node struct {
     Rendering struct {
         <span class="comment">//	Defaults to true. If false, this Node is ignored by the rendering runtime.</span>
@@ -3974,7 +4003,7 @@ Only used for Core.Libs.Models
     ChildNodes Nodes
 
     <span class="comment">//	Encapsulates all parent-relative transformations for this Node.</span>
-    Transform NodeTransform
+    Transform SceneNodeTransform
 
     MatID   int
     MeshID  int
@@ -3996,21 +4025,21 @@ Declares a point of interest in a Scene.
 
 			
 				
-				<h3 id="Node.ApplyTransform">func (*Node) <a href="/target/node.go?s=1288:1320#L55">ApplyTransform</a></h3>
+				<h3 id="Node.ApplyTransform">func (*Node) <a href="/target/node.go?s=1230:1262#L50">ApplyTransform</a></h3>
 				<pre>func (me *Node) ApplyTransform()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2480:2515#L103">Root</a></h3>
+				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2515:2550#L99">Root</a></h3>
 				<pre>func (me *Node) Root() (root *Node)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2611:2651#L112">Walk</a></h3>
+				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2646:2686#L108">Walk</a></h3>
 				<pre>func (me *Node) Walk(onNode NodeVisitor)</pre>
 				
 				
@@ -4019,95 +4048,7 @@ Declares a point of interest in a Scene.
 		
 			
 			
-			<h2 id="NodeTransform">type <a href="/target/node-transform.go?s=467:738#L4">NodeTransform</a></h2>
-			<pre>type NodeTransform struct {
-    <span class="comment">//	Translation of the from origin.</span>
-    Pos unum.Vec3
-
-    <span class="comment">//	Rotation for each axis in radians.</span>
-    Rot unum.Vec3
-
-    <span class="comment">//	Scaling of this node, if any. Defaults to (1, 1, 1) for no scaling.</span>
-    Scale unum.Vec3
-    <span class="comment">// contains filtered or unexported fields</span>
-}</pre>
-			<p>
-Represents one or more transformations of a Node.
-This is only used by Node objects, which initialize their NodeTransform with the
-proper defaults and associate themselves with their NodeTransform. (Any other
-NodeTransform are invalid.)
-</p>
-<p>
-A single NodeTransform encapsulates an unexported 4x4 matrix that is recalculated
-whenever its parent Node.ApplyTransform() method is called.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="NodeTransform.AddRot">func (*NodeTransform) <a href="/target/node-transform.go?s=851:898#L24">AddRot</a></h3>
-				<pre>func (me *NodeTransform) AddRot(rot *unum.Vec3)</pre>
-				
-				
-				
-			
-				
-				<h3 id="NodeTransform.AddRotXYZ">func (*NodeTransform) <a href="/target/node-transform.go?s=921:972#L28">AddRotXYZ</a></h3>
-				<pre>func (me *NodeTransform) AddRotXYZ(x, y, z float64)</pre>
-				
-				
-				
-			
-				
-				<h3 id="NodeTransform.SetPos">func (*NodeTransform) <a href="/target/node-transform.go?s=1751:1808#L52">SetPos</a></h3>
-				<pre>func (me *NodeTransform) SetPos(posX, posY, posZ float64)</pre>
-				
-				
-				
-			
-				
-				<h3 id="NodeTransform.SetRot">func (*NodeTransform) <a href="/target/node-transform.go?s=1863:1920#L56">SetRot</a></h3>
-				<pre>func (me *NodeTransform) SetRot(radX, radY, radZ float64)</pre>
-				
-				
-				
-			
-				
-				<h3 id="NodeTransform.SetScale">func (*NodeTransform) <a href="/target/node-transform.go?s=1975:2019#L60">SetScale</a></h3>
-				<pre>func (me *NodeTransform) SetScale(s float64)</pre>
-				
-				
-				
-			
-				
-				<h3 id="NodeTransform.SetScaleXyz">func (*NodeTransform) <a href="/target/node-transform.go?s=2071:2124#L64">SetScaleXyz</a></h3>
-				<pre>func (me *NodeTransform) SetScaleXyz(x, y, z float64)</pre>
-				
-				
-				
-			
-				
-				<h3 id="NodeTransform.StepDelta">func (*NodeTransform) <a href="/target/node-transform.go?s=2255:2321#L69">StepDelta</a></h3>
-				<pre>func (me *NodeTransform) StepDelta(deltaPerSecond float64) float64</pre>
-				<p>
-Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
-</p>
-
-				
-				
-			
-		
-			
-			
-			<h2 id="NodeVisitor">type <a href="/target/node.go?s=244:272#L6">NodeVisitor</a></h2>
+			<h2 id="NodeVisitor">type <a href="/target/node.go?s=197:225#L2">NodeVisitor</a></h2>
 			<pre>type NodeVisitor func(*Node)</pre>
 			
 
@@ -4238,7 +4179,7 @@ Represents a surface (texture framebuffer) that can be rendered to.
 				
 			
 				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=2530:2599#L83">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=2521:2590#L83">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
 				<p>
 Sets the 2 dimensions of this render canvas.
@@ -4252,7 +4193,7 @@ Otherwise, width and height are absolute pixel dimensions.
 		
 			
 			
-			<h2 id="RenderCanvasLib">type <a href="/target/render-canvas.gt.go?s=3496:3532#L111">RenderCanvasLib</a></h2>
+			<h2 id="RenderCanvasLib">type <a href="/target/render-canvas.gt.go?s=3487:3523#L111">RenderCanvasLib</a></h2>
 			<pre>type RenderCanvasLib []*RenderCanvas</pre>
 			<p>
 Only used for Core.Render.Canvases
@@ -4269,28 +4210,28 @@ Only used for Core.Render.Canvases
 
 			
 				
-				<h3 id="RenderCanvasLib.AddNew">func (*RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=2836:2928#L92">AddNew</a></h3>
+				<h3 id="RenderCanvasLib.AddNew">func (*RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=2827:2919#L92">AddNew</a></h3>
 				<pre>func (me *RenderCanvasLib) AddNew(relative bool, width, height float64) (canv *RenderCanvas)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvasLib.IsOk">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3766:3809#L127">IsOk</a></h3>
+				<h3 id="RenderCanvasLib.IsOk">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3757:3800#L127">IsOk</a></h3>
 				<pre>func (me RenderCanvasLib) IsOk(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvasLib.Remove">func (*RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3847:3897#L131">Remove</a></h3>
+				<h3 id="RenderCanvasLib.Remove">func (*RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3838:3888#L131">Remove</a></h3>
 				<pre>func (me *RenderCanvasLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvasLib.Walk">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=4171:4229#L144">Walk</a></h3>
+				<h3 id="RenderCanvasLib.Walk">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=4162:4220#L144">Walk</a></h3>
 				<pre>func (me RenderCanvasLib) Walk(on func(ref *RenderCanvas))</pre>
 				
 				
@@ -4299,26 +4240,10 @@ Only used for Core.Render.Canvases
 		
 			
 			
-			<h2 id="RenderTechnique">type <a href="/target/render-technique.go?s=67:137#L1">RenderTechnique</a></h2>
+			<h2 id="RenderTechnique">type <a href="/target/render-technique.go?s=78:148#L1">RenderTechnique</a></h2>
 			<pre>type RenderTechnique interface {
     <span class="comment">// contains filtered or unexported methods</span>
 }</pre>
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="RenderTechniqueProvider">type <a href="/target/render-technique.go?s=14:65#L1">RenderTechniqueProvider</a></h2>
-			<pre>type RenderTechniqueProvider func() RenderTechnique</pre>
 			
 
 			
@@ -4352,7 +4277,7 @@ Only used for Core.Render.Canvases
 		
 			
 			
-			<h2 id="RenderTechniqueScene">type <a href="/target/render-technique-scene.go?s=101:180#L1">RenderTechniqueScene</a></h2>
+			<h2 id="RenderTechniqueScene">type <a href="/target/render-technique-scene.go?s=101:280#L1">RenderTechniqueScene</a></h2>
 			<pre>type RenderTechniqueScene struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -4368,7 +4293,7 @@ Only used for Core.Render.Canvases
 
 			
 				
-				<h3 id="RenderTechniqueScene.ToggleBatching">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=344:392#L11">ToggleBatching</a></h3>
+				<h3 id="RenderTechniqueScene.ToggleBatching">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=460:508#L19">ToggleBatching</a></h3>
 				<pre>func (me *RenderTechniqueScene) ToggleBatching()</pre>
 				
 				
@@ -4377,12 +4302,13 @@ Only used for Core.Render.Canvases
 		
 			
 			
-			<h2 id="Scene">type <a href="/target/scene.gt.go?s=43:128#L1">Scene</a></h2>
+			<h2 id="Scene">type <a href="/target/scene.gt.go?s=43:234#L1">Scene</a></h2>
 			<pre>type Scene struct {
     ID int
 
     <span class="comment">//	The root Node for this scene graph.</span>
     RootNode Node
+    <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
 Represents a scene graph.
@@ -4396,18 +4322,40 @@ Represents a scene graph.
 			
 
 			
+
+			
 				
-				<h3 id="NewScene">func <a href="/target/scene.gt.go?s=130:157#L1">NewScene</a></h3>
-				<pre>func NewScene() (me *Scene)</pre>
+				<h3 id="Scene.AddNewChildNode">func (*Scene) <a href="/target/scene.gt.go?s=473:541#L23">AddNewChildNode</a></h3>
+				<pre>func (me *Scene) AddNewChildNode(parentNodeID int) (childNodeID int)</pre>
+				
 				
 				
 			
-
+				
+				<h3 id="Scene.ParentNodeID">func (*Scene) <a href="/target/scene.gt.go?s=641:702#L29">ParentNodeID</a></h3>
+				<pre>func (me *Scene) ParentNodeID(childNodeID int) (parentID int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Scene.RemoveNodes">func (*Scene) <a href="/target/scene.gt.go?s=802:847#L36">RemoveNodes</a></h3>
+				<pre>func (me *Scene) RemoveNodes(fromID, num int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="Scene.Root">func (*Scene) <a href="/target/scene.gt.go?s=907:941#L42">Root</a></h3>
+				<pre>func (me *Scene) Root() *SceneNode</pre>
+				
+				
+				
 			
 		
 			
 			
-			<h2 id="SceneLib">type <a href="/target/scene.gt.go?s=387:408#L17">SceneLib</a></h2>
+			<h2 id="SceneLib">type <a href="/target/scene.gt.go?s=1057:1078#L49">SceneLib</a></h2>
 			<pre>type SceneLib []Scene</pre>
 			<p>
 Only used for Core.Libs.Scenes
@@ -4424,44 +4372,221 @@ Only used for Core.Libs.Scenes
 
 			
 				
-				<h3 id="SceneLib.AddNew">func (*SceneLib) <a href="/target/scene.gt.go?s=410:447#L19">AddNew</a></h3>
+				<h3 id="SceneLib.AddNew">func (*SceneLib) <a href="/target/scene.gt.go?s=1080:1117#L51">AddNew</a></h3>
 				<pre>func (me *SceneLib) AddNew() (id int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Compact">func (*SceneLib) <a href="/target/scene.gt.go?s=770:799#L41">Compact</a></h3>
+				<h3 id="SceneLib.Compact">func (*SceneLib) <a href="/target/scene.gt.go?s=1440:1469#L73">Compact</a></h3>
 				<pre>func (me *SceneLib) Compact()</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.IsOk">func (SceneLib) <a href="/target/scene.gt.go?s=1554:1595#L84">IsOk</a></h3>
+				<h3 id="SceneLib.IsOk">func (SceneLib) <a href="/target/scene.gt.go?s=2224:2265#L116">IsOk</a></h3>
 				<pre>func (me SceneLib) IsOk(id int) (ok bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Ok">func (SceneLib) <a href="/target/scene.gt.go?s=1665:1699#L91">Ok</a></h3>
+				<h3 id="SceneLib.Ok">func (SceneLib) <a href="/target/scene.gt.go?s=2335:2369#L123">Ok</a></h3>
 				<pre>func (me SceneLib) Ok(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Remove">func (SceneLib) <a href="/target/scene.gt.go?s=1729:1771#L95">Remove</a></h3>
-				<pre>func (me SceneLib) Remove(fromID, num int)</pre>
+				<h3 id="SceneLib.Remove">func (*SceneLib) <a href="/target/scene.gt.go?s=2399:2442#L127">Remove</a></h3>
+				<pre>func (me *SceneLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Walk">func (SceneLib) <a href="/target/scene.gt.go?s=2056:2100#L109">Walk</a></h3>
+				<h3 id="SceneLib.Walk">func (SceneLib) <a href="/target/scene.gt.go?s=2734:2778#L141">Walk</a></h3>
 				<pre>func (me SceneLib) Walk(on func(ref *Scene))</pre>
 				
+				
+				
+			
+		
+			
+			
+			<h2 id="SceneNode">type <a href="/target/scene-node.go?s=14:176#L1">SceneNode</a></h2>
+			<pre>type SceneNode struct {
+    SceneNodeTransform
+    ID int
+
+    Render struct {
+        Enabled bool
+        MatID   int
+        MeshID  int
+        ModelID int
+        <span class="comment">// contains filtered or unexported fields</span>
+    }
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="SceneNodeLib">type <a href="/target/scene-nodes.gt.go?s=148:177#L1">SceneNodeLib</a></h2>
+			<pre>type SceneNodeLib []SceneNode</pre>
+			<p>
+Only used for Core.Scenes[id].allNodes
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="SceneNodeLib.AddNew">func (*SceneNodeLib) <a href="/target/scene-nodes.gt.go?s=179:220#L1">AddNew</a></h3>
+				<pre>func (me *SceneNodeLib) AddNew() (id int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="SceneNodeLib.Compact">func (*SceneNodeLib) <a href="/target/scene-nodes.gt.go?s=551:584#L22">Compact</a></h3>
+				<pre>func (me *SceneNodeLib) Compact()</pre>
+				
+				
+				
+			
+				
+				<h3 id="SceneNodeLib.IsOk">func (SceneNodeLib) <a href="/target/scene-nodes.gt.go?s=1371:1416#L65">IsOk</a></h3>
+				<pre>func (me SceneNodeLib) IsOk(id int) (ok bool)</pre>
+				
+				
+				
+			
+				
+				<h3 id="SceneNodeLib.Ok">func (SceneNodeLib) <a href="/target/scene-nodes.gt.go?s=1486:1524#L72">Ok</a></h3>
+				<pre>func (me SceneNodeLib) Ok(id int) bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="SceneNodeLib.Remove">func (*SceneNodeLib) <a href="/target/scene-nodes.gt.go?s=1554:1601#L76">Remove</a></h3>
+				<pre>func (me *SceneNodeLib) Remove(fromID, num int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="SceneNodeLib.Walk">func (SceneNodeLib) <a href="/target/scene-nodes.gt.go?s=1897:1949#L90">Walk</a></h3>
+				<pre>func (me SceneNodeLib) Walk(on func(ref *SceneNode))</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="SceneNodeTransform">type <a href="/target/scene-node-transform.go?s=487:763#L4">SceneNodeTransform</a></h2>
+			<pre>type SceneNodeTransform struct {
+    <span class="comment">//	Translation of the from origin.</span>
+    Pos unum.Vec3
+
+    <span class="comment">//	Rotation for each axis in radians.</span>
+    Rot unum.Vec3
+
+    <span class="comment">//	Scaling of this node, if any. Defaults to (1, 1, 1) for no scaling.</span>
+    Scale unum.Vec3
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+Represents one or more transformations of a Node.
+This is only used by Node objects, which initialize their SceneNodeTransform with the
+proper defaults and associate themselves with their SceneNodeTransform. (Any other
+SceneNodeTransform are invalid.)
+</p>
+<p>
+A single SceneNodeTransform encapsulates an unexported 4x4 matrix that is recalculated
+whenever its parent Node.ApplyTransform() method is called.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="SceneNodeTransform.AddRot">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=881:933#L24">AddRot</a></h3>
+				<pre>func (me *SceneNodeTransform) AddRot(rot *unum.Vec3)</pre>
+				
+				
+				
+			
+				
+				<h3 id="SceneNodeTransform.AddRotXYZ">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=956:1012#L28">AddRotXYZ</a></h3>
+				<pre>func (me *SceneNodeTransform) AddRotXYZ(x, y, z float64)</pre>
+				
+				
+				
+			
+				
+				<h3 id="SceneNodeTransform.SetPos">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1796:1858#L52">SetPos</a></h3>
+				<pre>func (me *SceneNodeTransform) SetPos(posX, posY, posZ float64)</pre>
+				
+				
+				
+			
+				
+				<h3 id="SceneNodeTransform.SetRot">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1913:1975#L56">SetRot</a></h3>
+				<pre>func (me *SceneNodeTransform) SetRot(radX, radY, radZ float64)</pre>
+				
+				
+				
+			
+				
+				<h3 id="SceneNodeTransform.SetScale">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=2030:2079#L60">SetScale</a></h3>
+				<pre>func (me *SceneNodeTransform) SetScale(s float64)</pre>
+				
+				
+				
+			
+				
+				<h3 id="SceneNodeTransform.SetScaleXyz">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=2131:2189#L64">SetScaleXyz</a></h3>
+				<pre>func (me *SceneNodeTransform) SetScaleXyz(x, y, z float64)</pre>
+				
+				
+				
+			
+				
+				<h3 id="SceneNodeTransform.StepDelta">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=2320:2391#L69">StepDelta</a></h3>
+				<pre>func (me *SceneNodeTransform) StepDelta(deltaPerSecond float64) float64</pre>
+				<p>
+Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
+</p>
+
 				
 				
 			

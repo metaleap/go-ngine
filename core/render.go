@@ -30,16 +30,16 @@ func (me *RenderCanvas) render() {
 
 func (me *Camera) render() {
 	if me.Enabled {
-		thrRend.curTech, thrRend.curEffect = me.Rendering.Technique, nil
+		thrRend.curTech, thrRend.curEffect = me.Render.Technique, nil
 		Core.Render.states.Apply(&me.thrRend.states)
-		if me.Rendering.Viewport.shouldScissor {
+		if me.Render.Viewport.shouldScissor {
 			Core.Render.states.ForceEnableScissorTest()
-			gl.Scissor(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
+			gl.Scissor(me.Render.Viewport.glVpX, me.Render.Viewport.glVpY, me.Render.Viewport.glVpW, me.Render.Viewport.glVpH)
 		}
-		gl.Viewport(me.Rendering.Viewport.glVpX, me.Rendering.Viewport.glVpY, me.Rendering.Viewport.glVpW, me.Rendering.Viewport.glVpH)
+		gl.Viewport(me.Render.Viewport.glVpX, me.Render.Viewport.glVpY, me.Render.Viewport.glVpW, me.Render.Viewport.glVpH)
 		gl.Clear(me.thrRend.states.Other.ClearBits)
-		me.Rendering.Technique.render()
-		if me.Rendering.Viewport.shouldScissor {
+		me.Render.Technique.render()
+		if me.Render.Viewport.shouldScissor {
 			Core.Render.states.ForceDisableScissorTest()
 		}
 	}
@@ -56,7 +56,7 @@ func (me *RenderTechniqueQuad) render() {
 
 func (me *RenderTechniqueScene) render() {
 	thrRend.nextTech = me
-	if scene := thrRend.curCam.scene(); scene != nil && scene.RootNode.Rendering.Enabled {
+	if scene := thrRend.curCam.scene(); scene != nil && scene.RootNode.thrRend.camRender[thrRend.curCam] {
 		scene.RootNode.renderChildren()
 		scene.RootNode.renderSelf() // might be a skybox so "render" the root last
 	}
@@ -64,7 +64,7 @@ func (me *RenderTechniqueScene) render() {
 
 func (me *Node) renderChildren() {
 	for _, subNode := range me.ChildNodes.M {
-		if subNode.Rendering.Enabled {
+		if subNode.thrRend.camRender[thrRend.curCam] {
 			subNode.renderSelf()
 			subNode.renderChildren()
 		}
@@ -72,29 +72,31 @@ func (me *Node) renderChildren() {
 }
 
 func (me *Node) renderSelf() {
-	if mesh, mat := me.mesh(), me.material(); mesh != nil && mat != nil {
-		if mat.HasFaceEffects() {
-			for i, l := int32(0), int32(len(mesh.raw.faces)); i < l; i++ {
-				thrRend.nextEffect = mat.faceEffect(&mesh.raw.faces[i])
+	if mesh := me.mesh(); mesh != nil {
+		if mat := me.material(); mat != nil {
+			if mat.HasFaceEffects() {
+				for i, l := int32(0), int32(len(mesh.raw.faces)); i < l; i++ {
+					thrRend.nextEffect = mat.faceEffect(&mesh.raw.faces[i])
+					Core.useTechFx()
+					mesh.meshBuffer.use()
+					thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &me.thrRend.camProjMats[thrRend.curCam][0])
+					gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices+(i*3*4))), gl.Int(mesh.meshBufOffsetBaseIndex))
+				}
+			} else {
+				thrRend.nextEffect = Core.Libs.Effects.get(mat.DefaultEffectID)
 				Core.useTechFx()
 				mesh.meshBuffer.use()
+				if me.Rendering.skyMode {
+					Core.Render.states.DisableFaceCulling()
+					gl.DepthFunc(gl.LEQUAL)
+					thrRend.curProg.Uniform1i("uni_int_Sky", 1)
+				}
 				thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &me.thrRend.camProjMats[thrRend.curCam][0])
-				gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices+(i*3*4))), gl.Int(mesh.meshBufOffsetBaseIndex))
-			}
-		} else {
-			thrRend.nextEffect = Core.Libs.Effects.get(mat.DefaultEffectID)
-			Core.useTechFx()
-			mesh.meshBuffer.use()
-			if me.Rendering.skyMode {
-				Core.Render.states.DisableFaceCulling()
-				gl.DepthFunc(gl.LEQUAL)
-				thrRend.curProg.Uniform1i("uni_int_Sky", 1)
-			}
-			thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &me.thrRend.camProjMats[thrRend.curCam][0])
-			gl.DrawElementsBaseVertex(gl.TRIANGLES, mesh.raw.lastNumIndices, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices)), gl.Int(mesh.meshBufOffsetBaseIndex))
-			if me.Rendering.skyMode {
-				thrRend.curProg.Uniform1i("uni_int_Sky", 0)
-				gl.DepthFunc(gl.LESS)
+				gl.DrawElementsBaseVertex(gl.TRIANGLES, mesh.raw.lastNumIndices, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices)), gl.Int(mesh.meshBufOffsetBaseIndex))
+				if me.Rendering.skyMode {
+					thrRend.curProg.Uniform1i("uni_int_Sky", 0)
+					gl.DepthFunc(gl.LESS)
+				}
 			}
 		}
 	}

@@ -5,13 +5,13 @@ import (
 )
 
 //	Represents one or more transformations of a Node.
-//	This is only used by Node objects, which initialize their NodeTransform with the
-//	proper defaults and associate themselves with their NodeTransform. (Any other
-//	NodeTransform are invalid.)
+//	This is only used by Node objects, which initialize their SceneNodeTransform with the
+//	proper defaults and associate themselves with their SceneNodeTransform. (Any other
+//	SceneNodeTransform are invalid.)
 //	
-//	A single NodeTransform encapsulates an unexported 4x4 matrix that is recalculated
+//	A single SceneNodeTransform encapsulates an unexported 4x4 matrix that is recalculated
 //	whenever its parent Node.ApplyTransform() method is called.
-type NodeTransform struct {
+type SceneNodeTransform struct {
 	//	Translation of the from origin.
 	Pos unum.Vec3
 
@@ -26,22 +26,22 @@ type NodeTransform struct {
 	matModelView unum.Mat4
 }
 
-func (me *NodeTransform) init() {
+func (me *SceneNodeTransform) init() {
 	me.Scale.X, me.Scale.Y, me.Scale.Z = 1, 1, 1
 	me.matModelView.Identity()
 }
 
-func (me *NodeTransform) AddRot(rot *unum.Vec3) {
+func (me *SceneNodeTransform) AddRot(rot *unum.Vec3) {
 	me.Rot.Add(rot)
 }
 
-func (me *NodeTransform) AddRotXYZ(x, y, z float64) {
+func (me *SceneNodeTransform) AddRotXYZ(x, y, z float64) {
 	me.Rot.Add3(x, y, z)
 }
 
 //	Updates the internal 4x4 transformation matrix for all transformations
 //	in me. It is only this matrix that is used by the rendering runtime.
-func (me *NodeTransform) applyMatrices(owner *Node) {
+func (me *SceneNodeTransform) applyMatrices(owner *Node) {
 	var matParent, matTrans, matScale, matRotX, matRotY, matRotZ unum.Mat4
 	matScale.Scaling(&me.Scale)
 	matTrans.Translation(&me.Pos)
@@ -59,23 +59,23 @@ func (me *NodeTransform) applyMatrices(owner *Node) {
 	}
 }
 
-func (me *NodeTransform) SetPos(posX, posY, posZ float64) {
+func (me *SceneNodeTransform) SetPos(posX, posY, posZ float64) {
 	me.Pos.X, me.Pos.Y, me.Pos.Z = posX, posY, posZ
 }
 
-func (me *NodeTransform) SetRot(radX, radY, radZ float64) {
+func (me *SceneNodeTransform) SetRot(radX, radY, radZ float64) {
 	me.Rot.X, me.Rot.Y, me.Rot.Z = radX, radY, radZ
 }
 
-func (me *NodeTransform) SetScale(s float64) {
+func (me *SceneNodeTransform) SetScale(s float64) {
 	me.Scale.X, me.Scale.Y, me.Scale.Z = s, s, s
 }
 
-func (me *NodeTransform) SetScaleXyz(x, y, z float64) {
+func (me *SceneNodeTransform) SetScaleXyz(x, y, z float64) {
 	me.Scale.X, me.Scale.Y, me.Scale.Z = x, y, z
 }
 
 //	Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
-func (me *NodeTransform) StepDelta(deltaPerSecond float64) float64 {
+func (me *SceneNodeTransform) StepDelta(deltaPerSecond float64) float64 {
 	return Loop.Tick.Delta * deltaPerSecond
 }

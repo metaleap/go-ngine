@@ -77,8 +77,8 @@ func (me *RenderCanvas) onResize(viewWidth, viewHeight int) {
 		me.frameBuf.Resize(gl.Sizei(int(me.absViewWidth)), gl.Sizei(int(me.absViewHeight)))
 	}
 	for cam := 0; cam < len(me.Cams); cam++ {
-		me.Cams[cam].Rendering.Viewport.canvWidth, me.Cams[cam].Rendering.Viewport.canvHeight = me.absViewWidth, me.absViewHeight
-		me.Cams[cam].Rendering.Viewport.update()
+		me.Cams[cam].Render.Viewport.canvWidth, me.Cams[cam].Render.Viewport.canvHeight = me.absViewWidth, me.absViewHeight
+		me.Cams[cam].Render.Viewport.update()
 		me.Cams[cam].ApplyMatrices()
 	}
 }

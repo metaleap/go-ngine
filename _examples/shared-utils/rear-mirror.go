@@ -24,17 +24,17 @@ func (me *RearMirror) OnApp() {
 //	Syncs the rear-view camera's render states with the main camera's.
 func (me *RearMirror) OnWin() {
 	if me.Cam.Enabled && !Paused {
-		me.Cam.Rendering.States.FaceCulling = SceneCam.Rendering.States.FaceCulling
+		me.Cam.Render.States.FaceCulling = SceneCam.Render.States.FaceCulling
 	}
 }
 
 //	Adds the rear-view mirror's camera to the main render canvas, at 1/3rd of its width and 1/4th of its height.
 func (me *RearMirror) Setup(sceneID int) {
 	me.Cam = SceneCanvas.AddNewCamera3D()
-	me.Cam.Rendering.States.ClearColor.Set(0.125, 0.25, 0.45, 1)
-	me.Cam.Rendering.Viewport.SetRel(0.66, 0.73, 0.33, 0.25)
+	me.Cam.Render.States.ClearColor.Set(0.125, 0.25, 0.45, 1)
+	me.Cam.Render.Viewport.SetRel(0.66, 0.73, 0.33, 0.25)
 	me.Cam.Perspective.FovY *= 2
-	me.Cam.Rendering.FxProcs.EnableOrangify(-1).SetMixWeight(0.5)
+	me.Cam.Render.FxProcs.EnableOrangify(-1).SetMixWeight(0.5)
 	me.Cam.SetScene(sceneID)
 }
 

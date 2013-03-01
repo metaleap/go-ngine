@@ -28,7 +28,7 @@ type FxProc struct {
 }
 
 func (me *FxProc) init(procID string, procIndex int) {
-	me.procID, me.Enabled, me.weight = procID, true, 1
+	me.procID, me.procIndex, me.Enabled, me.weight = procID, -1, true, 1
 	me.setProcIndex(procIndex)
 	if me.IsTex() {
 		me.Tex.ImageID = -1
@@ -41,12 +41,14 @@ func (me *FxProc) qualifiers(inout string) (q string) {
 }
 
 func (me *FxProc) setProcIndex(index int) {
-	me.unifNames = map[[2]string]string{}
-	me.procIndex = index
-	if me.IsTex() {
-		me.Tex.glUnitI = gl.Int(index)
-		me.Tex.glUnitU = gl.Uint(index)
-		me.Tex.glUnitE = gl.Enum(gl.TEXTURE0 + index)
+	if index != me.procIndex {
+		me.procIndex = index
+		me.unifNames = map[[2]string]string{}
+		if me.IsTex() {
+			me.Tex.glUnitI = gl.Int(index)
+			me.Tex.glUnitU = gl.Uint(index)
+			me.Tex.glUnitE = gl.Enum(gl.TEXTURE0 + index)
+		}
 	}
 }
 
