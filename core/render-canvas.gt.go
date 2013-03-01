@@ -31,16 +31,6 @@ type RenderCanvas struct {
 func (me *RenderCanvas) init() {
 	me.EveryNthFrame, me.isRtt = 1, len(Core.Render.Canvases) > 1
 	me.Cams.init()
-	me.SetSize(true, 1, 1)
-	if !me.isRtt {
-		me.frameBuf.GlTarget, me.Srgb = gl.FRAMEBUFFER, !Options.Initialization.DefaultCanvas.GammaViaShader
-	} else {
-		me.frameBuf.Create(gl.Sizei(UserIO.Window.width), gl.Sizei(UserIO.Window.height), false)
-		me.frameBuf.AttachRendertexture()
-		me.frameBuf.AttachRenderbuffer()
-	}
-	Diag.LogIfGlErr("newRenderCanvas()")
-	Core.refreshWinSizeRels()
 }
 
 func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int) {
@@ -49,21 +39,24 @@ func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int) {
 }
 
 func (me *RenderCanvas) AddNewCamera2D(allowOverlaps bool) (cam *Camera) {
-	cam = me.Cams.AddNew()
+	cam = new(Camera)
+	me.Cams.add(cam)
 	cam.setup2D(me, allowOverlaps)
 	Core.refreshWinSizeRels()
 	return
 }
 
 func (me *RenderCanvas) AddNewCamera3D() (cam *Camera) {
-	cam = me.Cams.AddNew()
+	cam = new(Camera)
+	me.Cams.add(cam)
 	cam.setup3D(me)
 	Core.refreshWinSizeRels()
 	return
 }
 
 func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera) {
-	cam = me.Cams.AddNew()
+	cam = new(Camera)
+	me.Cams.add(cam)
 	cam.setupQuad(me)
 	Core.refreshWinSizeRels()
 	return
@@ -106,13 +99,28 @@ func (me *RenderCanvas) SetSize(relative bool, width, height float64) {
 	me.onResize(UserIO.Window.width, UserIO.Window.height)
 }
 
+func (me *RenderCanvasLib) AddNew(relative bool, width, height float64) (canv *RenderCanvas) {
+	canv = new(RenderCanvas)
+	me.add(canv)
+	canv.SetSize(relative, width, height)
+	if !canv.isRtt {
+		canv.frameBuf.GlTarget, canv.Srgb = gl.FRAMEBUFFER, !Options.Initialization.DefaultCanvas.GammaViaShader
+	} else {
+		canv.frameBuf.Create(gl.Sizei(UserIO.Window.width), gl.Sizei(UserIO.Window.height), false)
+		canv.frameBuf.AttachRendertexture()
+		canv.frameBuf.AttachRenderbuffer()
+	}
+	Diag.LogIfGlErr("newRenderCanvas()")
+	Core.refreshWinSizeRels()
+	return
+}
+
 //#begin-gt -gen-reflib.gt T:RenderCanvas L:Core.Render.Canvases
 
 //	Only used for Core.Render.Canvases
 type RenderCanvasLib []*RenderCanvas
 
-func (me *RenderCanvasLib) AddNew() (ref *RenderCanvas) {
-	ref = new(RenderCanvas)
+func (me *RenderCanvasLib) add(ref *RenderCanvas) {
 	*me = append(*me, ref)
 	ref.init()
 	return

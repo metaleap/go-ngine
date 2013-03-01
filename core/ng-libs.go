@@ -35,9 +35,9 @@ func (me *EngineLibs) dispose() {
 		dispose()
 	}{
 		&Core.Render.Canvases, &Core.MeshBuffers,
-		&me.Materials, &me.Effects,
+		&me.Models, &me.Materials, &me.Effects,
 		&me.Images.Tex2D, &me.Images.TexCube,
-		&me.Meshes, &me.Models, &me.Scenes,
+		&me.Meshes, &me.Scenes,
 	} {
 		disp.dispose()
 	}
@@ -47,9 +47,10 @@ func (me *EngineLibs) init() {
 	for _, c := range []interface {
 		init()
 	}{
-		&Core.Render.Canvases,
+		&Core.Render.Canvases, &Core.MeshBuffers,
+		&me.Models, &me.Materials, &me.Effects,
 		&me.Images.Tex2D, &me.Images.TexCube,
-		&me.Effects, &me.Materials, &me.Meshes, &me.Models, &me.Scenes,
+		&me.Meshes, &me.Scenes,
 	} {
 		c.init()
 	}

@@ -191,8 +191,7 @@ func (me *CameraViewport) update() {
 //	Only used for Core.Render.Canvases[id].Cams
 type CameraLib []*Camera
 
-func (me *CameraLib) AddNew() (ref *Camera) {
-	ref = new(Camera)
+func (me *CameraLib) add(ref *Camera) {
 	*me = append(*me, ref)
 	ref.init()
 	return

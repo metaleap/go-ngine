@@ -36,7 +36,7 @@ func setupExample_02_EmptyGround() {
 	})
 
 	//	meshes / models
-	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(100, 100)); err != nil {
+	if bufRest, err = ng.Core.MeshBuffers.AddNew("buf_rest", ng.MeshBufferParams{100, 100}); err != nil {
 		panic(err)
 	}
 	if meshPlaneID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {

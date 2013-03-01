@@ -61,10 +61,10 @@ func setupExample_03_PyrCube() {
 	})
 
 	//	meshes
-	if bufFloor, err = ng.Core.MeshBuffers.Add("buf_floor", ng.Core.MeshBuffers.NewParams(6, 6)); err != nil {
+	if bufFloor, err = ng.Core.MeshBuffers.AddNew("buf_floor", ng.MeshBufferParams{6, 6}); err != nil {
 		panic(err)
 	}
-	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(36+12, 36+12)); err != nil {
+	if bufRest, err = ng.Core.MeshBuffers.AddNew("buf_rest", ng.MeshBufferParams{36 + 12, 36 + 12}); err != nil {
 		panic(err)
 	}
 	if meshPlaneID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.MeshProviderPrefabPlane); err != nil {

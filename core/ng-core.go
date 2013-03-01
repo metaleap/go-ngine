@@ -14,7 +14,7 @@ var (
 //	EngineCore is a singleton type, only used for the core.Core package-global exported variable.
 //	It is only aware of that instance and does not support any other EngineCore instances.
 type EngineCore struct {
-	MeshBuffers MeshBuffers
+	MeshBuffers MeshBufferLib
 	Libs        EngineLibs
 	Render      struct {
 		Canvases RenderCanvasLib
@@ -46,7 +46,6 @@ func (_ *EngineCore) dispose() {
 }
 
 func (_ *EngineCore) init() (err error) {
-	Core.MeshBuffers.init()
 	Core.Libs.init()
 	Core.initRendering()
 	err = Core.showSplash()
@@ -70,7 +69,7 @@ func (_ *EngineCore) initRendering() {
 	rend.Fx.Samplers.FullFilteringRepeat.Create().EnableFullFiltering(true, 8).SetWrap(gl.REPEAT)
 	rend.Fx.Samplers.FullFilteringClamp.Create().EnableFullFiltering(true, 8).SetWrap(gl.CLAMP_TO_EDGE)
 	rend.Fx.Samplers.NoFilteringClamp.Create().DisableAllFiltering(false).SetWrap(gl.CLAMP_TO_BORDER)
-	if quadFx := &rend.Canvases.AddNew().AddNewCameraQuad().RenderTechniqueQuad().Effect; Options.Initialization.DefaultCanvas.GammaViaShader {
+	if quadFx := &rend.Canvases.AddNew(true, 1, 1).AddNewCameraQuad().RenderTechniqueQuad().Effect; Options.Initialization.DefaultCanvas.GammaViaShader {
 		quadFx.Ops.EnableGamma(-1)
 		quadFx.KeepOpsLast = append(quadFx.KeepOpsLast, "Gamma")
 		quadFx.UpdateRoutine()

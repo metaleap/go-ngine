@@ -37,7 +37,7 @@ func setupScene() {
 	})
 
 	//	meshes / models
-	if bufRest, err = ng.Core.MeshBuffers.Add("buf_rest", ng.Core.MeshBuffers.NewParams(200, 200)); err != nil {
+	if bufRest, err = ng.Core.MeshBuffers.AddNew("buf_rest", ng.MeshBufferParams{200, 200}); err != nil {
 		panic(err)
 	}
 

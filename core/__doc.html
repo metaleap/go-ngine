@@ -92,9 +92,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#CameraLib.AddNew">func (me *CameraLib) AddNew() (ref *Camera)</a></dd>
-				
-					
 					<dd>&nbsp; &nbsp; <a href="#CameraLib.Get">func (me CameraLib) Get(id int) (ref *Camera)</a></dd>
 				
 					
@@ -803,13 +800,22 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#MeshBufferLib.AddNew">func (me *MeshBufferLib) AddNew() (ref *MeshBuffer)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#MeshBufferLib.AddNew">func (me *MeshBufferLib) AddNew(name string, params MeshBufferParams) (buf *MeshBuffer, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshBufferLib.FloatsPerVertex">func (_ MeshBufferLib) FloatsPerVertex() int32</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#MeshBufferLib.Get">func (me MeshBufferLib) Get(id int) (ref *MeshBuffer)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#MeshBufferLib.IsOk">func (me MeshBufferLib) IsOk(id int) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshBufferLib.MemSizePerIndex">func (_ MeshBufferLib) MemSizePerIndex() int32</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshBufferLib.MemSizePerVertex">func (_ MeshBufferLib) MemSizePerVertex() int32</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#MeshBufferLib.Remove">func (me *MeshBufferLib) Remove(fromID, num int)</a></dd>
@@ -819,26 +825,8 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#MeshBuffers">type MeshBuffers</a></dd>
+				<dd><a href="#MeshBufferParams">type MeshBufferParams</a></dd>
 				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshBuffers.Add">func (me *MeshBuffers) Add(id string, params *meshBufferParams) (buf *MeshBuffer, err error)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshBuffers.FloatsPerVertex">func (_ *MeshBuffers) FloatsPerVertex() int32</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshBuffers.MemSizePerIndex">func (_ *MeshBuffers) MemSizePerIndex() int32</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshBuffers.MemSizePerVertex">func (me *MeshBuffers) MemSizePerVertex() int32</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshBuffers.NewParams">func (me *MeshBuffers) NewParams(numVerts, numIndices int32) (params *meshBufferParams)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshBuffers.Remove">func (me *MeshBuffers) Remove(id string)</a></dd>
 				
 			
 				
@@ -1050,7 +1038,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RenderCanvasLib.AddNew">func (me *RenderCanvasLib) AddNew() (ref *RenderCanvas)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#RenderCanvasLib.AddNew">func (me *RenderCanvasLib) AddNew(relative bool, width, height float64) (canv *RenderCanvas)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#RenderCanvasLib.Get">func (me RenderCanvasLib) Get(id int) (ref *RenderCanvas)</a></dd>
@@ -1415,35 +1403,28 @@ Only used for Core.Render.Canvases[id].Cams
 
 			
 				
-				<h3 id="CameraLib.AddNew">func (*CameraLib) <a href="/target/camera.gt.go?s=5613:5656#L184">AddNew</a></h3>
-				<pre>func (me *CameraLib) AddNew() (ref *Camera)</pre>
-				
-				
-				
-			
-				
-				<h3 id="CameraLib.Get">func (CameraLib) <a href="/target/camera.gt.go?s=5840:5885#L199">Get</a></h3>
+				<h3 id="CameraLib.Get">func (CameraLib) <a href="/target/camera.gt.go?s=5815:5860#L198">Get</a></h3>
 				<pre>func (me CameraLib) Get(id int) (ref *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="CameraLib.IsOk">func (CameraLib) <a href="/target/camera.gt.go?s=5935:5972#L206">IsOk</a></h3>
+				<h3 id="CameraLib.IsOk">func (CameraLib) <a href="/target/camera.gt.go?s=5910:5947#L205">IsOk</a></h3>
 				<pre>func (me CameraLib) IsOk(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="CameraLib.Remove">func (*CameraLib) <a href="/target/camera.gt.go?s=6010:6054#L210">Remove</a></h3>
+				<h3 id="CameraLib.Remove">func (*CameraLib) <a href="/target/camera.gt.go?s=5985:6029#L209">Remove</a></h3>
 				<pre>func (me *CameraLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="CameraLib.Walk">func (CameraLib) <a href="/target/camera.gt.go?s=6328:6374#L223">Walk</a></h3>
+				<h3 id="CameraLib.Walk">func (CameraLib) <a href="/target/camera.gt.go?s=6303:6349#L222">Walk</a></h3>
 				<pre>func (me CameraLib) Walk(on func(ref *Camera))</pre>
 				
 				
@@ -1802,9 +1783,9 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:908#L6">EngineCore</a></h2>
+			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:910#L6">EngineCore</a></h2>
 			<pre>type EngineCore struct {
-    MeshBuffers MeshBuffers
+    MeshBuffers MeshBufferLib
     Libs        EngineLibs
     Render      struct {
         Canvases RenderCanvasLib
@@ -1844,7 +1825,7 @@ It is only aware of that instance and does not support any other EngineCore inst
 
 			
 				
-				<h3 id="EngineCore.GpuSyncImageLibs">func (*EngineCore) <a href="/target/ng-core.go?s=2572:2623#L78">GpuSyncImageLibs</a></h3>
+				<h3 id="EngineCore.GpuSyncImageLibs">func (*EngineCore) <a href="/target/ng-core.go?s=2585:2636#L78">GpuSyncImageLibs</a></h3>
 				<pre>func (_ *EngineCore) GpuSyncImageLibs() (err error)</pre>
 				
 				
@@ -1979,21 +1960,21 @@ Only used for Core.Libs.
 
 			
 				
-				<h3 id="EngineLibs.UpdateIDRef">func (*EngineLibs) <a href="/target/ng-libs.go?s=1116:1181#L48">UpdateIDRef</a></h3>
+				<h3 id="EngineLibs.UpdateIDRef">func (*EngineLibs) <a href="/target/ng-libs.go?s=1137:1202#L49">UpdateIDRef</a></h3>
 				<pre>func (_ *EngineLibs) UpdateIDRef(oldNewIDs map[int]int, ptr *int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineLibs.UpdateIDRefs">func (*EngineLibs) <a href="/target/ng-libs.go?s=1244:1314#L54">UpdateIDRefs</a></h3>
+				<h3 id="EngineLibs.UpdateIDRefs">func (*EngineLibs) <a href="/target/ng-libs.go?s=1265:1335#L55">UpdateIDRefs</a></h3>
 				<pre>func (_ *EngineLibs) UpdateIDRefs(oldNewIDs map[int]int, ptrs ...*int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="EngineLibs.UpdatedIDRef">func (*EngineLibs) <a href="/target/ng-libs.go?s=1438:1512#L64">UpdatedIDRef</a></h3>
+				<h3 id="EngineLibs.UpdatedIDRef">func (*EngineLibs) <a href="/target/ng-libs.go?s=1459:1533#L65">UpdatedIDRef</a></h3>
 				<pre>func (_ *EngineLibs) UpdatedIDRef(oldNewIDs map[int]int, in int) (out int)</pre>
 				
 				
@@ -4088,11 +4069,11 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 		
 			
 			
-			<h2 id="MeshBuffer">type <a href="/target/mesh-buffer.gt.go?s=1683:2112#L59">MeshBuffer</a></h2>
+			<h2 id="MeshBuffer">type <a href="/target/mesh-buffer.gt.go?s=164:566#L3">MeshBuffer</a></h2>
 			<pre>type MeshBuffer struct {
     MemSizeIndices, MemSizeVertices int32
-    <span class="comment">// Params                         meshBufferParams</span>
-    Name string
+    Params                          MeshBufferParams
+    Name                            string
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			
@@ -4107,14 +4088,14 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 
 			
 				
-				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.gt.go?s=3175:3224#L103">Add</a></h3>
+				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.gt.go?s=1758:1807#L58">Add</a></h3>
 				<pre>func (me *MeshBuffer) Add(mesh *Mesh) (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.gt.go?s=3909:3949#L132">Remove</a></h3>
+				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.gt.go?s=2264:2304#L75">Remove</a></h3>
 				<pre>func (me *MeshBuffer) Remove(mesh *Mesh)</pre>
 				
 				
@@ -4123,7 +4104,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 		
 			
 			
-			<h2 id="MeshBufferLib">type <a href="/target/mesh-buffer.gt.go?s=4558:4590#L159">MeshBufferLib</a></h2>
+			<h2 id="MeshBufferLib">type <a href="/target/mesh-buffer.gt.go?s=3561:3593#L126">MeshBufferLib</a></h2>
 			<pre>type MeshBufferLib []*MeshBuffer</pre>
 			<p>
 Only used for Core.MeshBuffers
@@ -4140,35 +4121,56 @@ Only used for Core.MeshBuffers
 
 			
 				
-				<h3 id="MeshBufferLib.AddNew">func (*MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=4592:4643#L161">AddNew</a></h3>
-				<pre>func (me *MeshBufferLib) AddNew() (ref *MeshBuffer)</pre>
+				<h3 id="MeshBufferLib.AddNew">func (*MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=2819:2917#L99">AddNew</a></h3>
+				<pre>func (me *MeshBufferLib) AddNew(name string, params MeshBufferParams) (buf *MeshBuffer, err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBufferLib.Get">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=4843:4896#L176">Get</a></h3>
+				<h3 id="MeshBufferLib.FloatsPerVertex">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=3057:3103#L109">FloatsPerVertex</a></h3>
+				<pre>func (_ MeshBufferLib) FloatsPerVertex() int32</pre>
+				
+				
+				
+			
+				
+				<h3 id="MeshBufferLib.Get">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=3817:3870#L142">Get</a></h3>
 				<pre>func (me MeshBufferLib) Get(id int) (ref *MeshBuffer)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBufferLib.IsOk">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=4946:4987#L183">IsOk</a></h3>
+				<h3 id="MeshBufferLib.IsOk">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=3920:3961#L149">IsOk</a></h3>
 				<pre>func (me MeshBufferLib) IsOk(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBufferLib.Remove">func (*MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=5025:5073#L187">Remove</a></h3>
+				<h3 id="MeshBufferLib.MemSizePerIndex">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=3264:3310#L114">MemSizePerIndex</a></h3>
+				<pre>func (_ MeshBufferLib) MemSizePerIndex() int32</pre>
+				
+				
+				
+			
+				
+				<h3 id="MeshBufferLib.MemSizePerVertex">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=3326:3373#L118">MemSizePerVertex</a></h3>
+				<pre>func (_ MeshBufferLib) MemSizePerVertex() int32</pre>
+				
+				
+				
+			
+				
+				<h3 id="MeshBufferLib.Remove">func (*MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=3999:4047#L153">Remove</a></h3>
 				<pre>func (me *MeshBufferLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBufferLib.Walk">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=5347:5401#L200">Walk</a></h3>
+				<h3 id="MeshBufferLib.Walk">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=4321:4375#L166">Walk</a></h3>
 				<pre>func (me MeshBufferLib) Walk(on func(ref *MeshBuffer))</pre>
 				
 				
@@ -4177,9 +4179,9 @@ Only used for Core.MeshBuffers
 		
 			
 			
-			<h2 id="MeshBuffers">type <a href="/target/mesh-buffer.gt.go?s=363:419#L4">MeshBuffers</a></h2>
-			<pre>type MeshBuffers struct {
-    <span class="comment">// contains filtered or unexported fields</span>
+			<h2 id="MeshBufferParams">type <a href="/target/mesh-buffer.gt.go?s=102:162#L1">MeshBufferParams</a></h2>
+			<pre>type MeshBufferParams struct {
+    NumVerts, NumIndices int32
 }</pre>
 			
 
@@ -4191,48 +4193,6 @@ Only used for Core.MeshBuffers
 
 			
 
-			
-				
-				<h3 id="MeshBuffers.Add">func (*MeshBuffers) <a href="/target/mesh-buffer.gt.go?s=492:584#L12">Add</a></h3>
-				<pre>func (me *MeshBuffers) Add(id string, params *meshBufferParams) (buf *MeshBuffer, err error)</pre>
-				
-				
-				
-			
-				
-				<h3 id="MeshBuffers.FloatsPerVertex">func (*MeshBuffers) <a href="/target/mesh-buffer.gt.go?s=972:1017#L33">FloatsPerVertex</a></h3>
-				<pre>func (_ *MeshBuffers) FloatsPerVertex() int32</pre>
-				
-				
-				
-			
-				
-				<h3 id="MeshBuffers.MemSizePerIndex">func (*MeshBuffers) <a href="/target/mesh-buffer.gt.go?s=1178:1223#L38">MemSizePerIndex</a></h3>
-				<pre>func (_ *MeshBuffers) MemSizePerIndex() int32</pre>
-				
-				
-				
-			
-				
-				<h3 id="MeshBuffers.MemSizePerVertex">func (*MeshBuffers) <a href="/target/mesh-buffer.gt.go?s=1239:1286#L42">MemSizePerVertex</a></h3>
-				<pre>func (me *MeshBuffers) MemSizePerVertex() int32</pre>
-				
-				
-				
-			
-				
-				<h3 id="MeshBuffers.NewParams">func (*MeshBuffers) <a href="/target/mesh-buffer.gt.go?s=1366:1453#L47">NewParams</a></h3>
-				<pre>func (me *MeshBuffers) NewParams(numVerts, numIndices int32) (params *meshBufferParams)</pre>
-				
-				
-				
-			
-				
-				<h3 id="MeshBuffers.Remove">func (*MeshBuffers) <a href="/target/mesh-buffer.gt.go?s=1559:1599#L52">Remove</a></h3>
-				<pre>func (me *MeshBuffers) Remove(id string)</pre>
-				
-				
-				
 			
 		
 			
@@ -4936,35 +4896,35 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvas.AddNewCamera2D">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=1361:1433#L41">AddNewCamera2D</a></h3>
+				<h3 id="RenderCanvas.AddNewCamera2D">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=978:1050#L31">AddNewCamera2D</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCamera2D(allowOverlaps bool) (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.AddNewCamera3D">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=1530:1584#L48">AddNewCamera3D</a></h3>
+				<h3 id="RenderCanvas.AddNewCamera3D">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=1160:1214#L39">AddNewCamera3D</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCamera3D() (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.AddNewCameraQuad">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=1666:1722#L55">AddNewCameraQuad</a></h3>
+				<h3 id="RenderCanvas.AddNewCameraQuad">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=1309:1365#L47">AddNewCameraQuad</a></h3>
 				<pre>func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.CurrentAbsoluteSize">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=1221:1286#L36">CurrentAbsoluteSize</a></h3>
+				<h3 id="RenderCanvas.CurrentAbsoluteSize">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=838:903#L26">CurrentAbsoluteSize</a></h3>
 				<pre>func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=2874:2943#L90">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=2530:2599#L83">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
 				<p>
 Sets the 2 dimensions of this render canvas.
@@ -4978,7 +4938,7 @@ Otherwise, width and height are absolute pixel dimensions.
 		
 			
 			
-			<h2 id="RenderCanvasLib">type <a href="/target/render-canvas.gt.go?s=3284:3320#L102">RenderCanvasLib</a></h2>
+			<h2 id="RenderCanvasLib">type <a href="/target/render-canvas.gt.go?s=3496:3532#L111">RenderCanvasLib</a></h2>
 			<pre>type RenderCanvasLib []*RenderCanvas</pre>
 			<p>
 Only used for Core.Render.Canvases
@@ -4995,35 +4955,35 @@ Only used for Core.Render.Canvases
 
 			
 				
-				<h3 id="RenderCanvasLib.AddNew">func (*RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3322:3377#L104">AddNew</a></h3>
-				<pre>func (me *RenderCanvasLib) AddNew() (ref *RenderCanvas)</pre>
+				<h3 id="RenderCanvasLib.AddNew">func (*RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=2836:2928#L92">AddNew</a></h3>
+				<pre>func (me *RenderCanvasLib) AddNew(relative bool, width, height float64) (canv *RenderCanvas)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvasLib.Get">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3585:3642#L119">Get</a></h3>
+				<h3 id="RenderCanvasLib.Get">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3766:3823#L127">Get</a></h3>
 				<pre>func (me RenderCanvasLib) Get(id int) (ref *RenderCanvas)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvasLib.IsOk">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3692:3735#L126">IsOk</a></h3>
+				<h3 id="RenderCanvasLib.IsOk">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3873:3916#L134">IsOk</a></h3>
 				<pre>func (me RenderCanvasLib) IsOk(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvasLib.Remove">func (*RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3773:3823#L130">Remove</a></h3>
+				<h3 id="RenderCanvasLib.Remove">func (*RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3954:4004#L138">Remove</a></h3>
 				<pre>func (me *RenderCanvasLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvasLib.Walk">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=4097:4155#L143">Walk</a></h3>
+				<h3 id="RenderCanvasLib.Walk">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=4278:4336#L151">Walk</a></h3>
 				<pre>func (me RenderCanvasLib) Walk(on func(ref *RenderCanvas))</pre>
 				
 				

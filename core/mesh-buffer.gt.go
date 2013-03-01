@@ -6,91 +6,31 @@ import (
 	ugl "github.com/go3d/go-opengl/util"
 )
 
-type meshBufferParams struct {
-	HugeMeshSupport, MostlyStatic, CompressTexCoords, CompressTexCoordsNeg, CompressNormals, CompressPositions bool
-	NumVerts, NumIndices                                                                                       int32
-}
-
-type MeshBuffers struct {
-	bufs map[string]*MeshBuffer
-}
-
-func (me *MeshBuffers) init() {
-	me.bufs = map[string]*MeshBuffer{}
-}
-
-func (me *MeshBuffers) Add(id string, params *meshBufferParams) (buf *MeshBuffer, err error) {
-	buf = me.bufs[id]
-	if buf == nil {
-		if buf, err = newMeshBuffer(id, params); err == nil {
-			me.bufs[id] = buf
-		} else if buf != nil {
-			buf.dispose()
-		}
-	} else {
-		err = errf("Cannot add a new mesh buffer with ID '%v': already exists", id)
-	}
-	return
-}
-
-func (me *MeshBuffers) dispose() {
-	for _, buf := range me.bufs {
-		buf.dispose()
-	}
-	me.bufs = map[string]*MeshBuffer{}
-}
-
-func (_ *MeshBuffers) FloatsPerVertex() int32 {
-	const numVertPosFloats, numVertTexCoordFloats, numVertNormalFloats int32 = 3, 2, 3
-	return numVertPosFloats + numVertNormalFloats + numVertTexCoordFloats
-}
-
-func (_ *MeshBuffers) MemSizePerIndex() int32 {
-	return 4
-}
-
-func (me *MeshBuffers) MemSizePerVertex() int32 {
-	const sizePerFloat int32 = 4
-	return sizePerFloat * me.FloatsPerVertex()
-}
-
-func (me *MeshBuffers) NewParams(numVerts, numIndices int32) (params *meshBufferParams) {
-	params = &meshBufferParams{MostlyStatic: true, NumIndices: numIndices, NumVerts: numVerts}
-	return
-}
-
-func (me *MeshBuffers) Remove(id string) {
-	if buf := me.bufs[id]; buf != nil {
-		buf.dispose()
-		delete(me.bufs, id)
-	}
+type MeshBufferParams struct {
+	NumVerts, NumIndices int32
 }
 
 type MeshBuffer struct {
 	MemSizeIndices, MemSizeVertices int32
-	// Params                         meshBufferParams
-	Name string
+	Params                          MeshBufferParams
+	Name                            string
 
 	offsetBaseIndex, offsetIndices, offsetVerts int32
-	id                                          string
 	glIbo, glVbo                                ugl.Buffer
 	glVaos                                      map[*ugl.Program]*ugl.VertexArray
 	meshes                                      map[*Mesh]bool
 }
 
-func (me *MeshBuffer) init() {
-}
-
-func newMeshBuffer(id string, params *meshBufferParams) (me *MeshBuffer, err error) {
+func newMeshBuffer(name string, params MeshBufferParams) (me *MeshBuffer, err error) {
 	me = &MeshBuffer{}
-	me.id = id
+	me.Name = name
 	me.meshes = map[*Mesh]bool{}
-	// me.Params = *params
+	me.Params = params
 	me.glVaos = map[*ugl.Program]*ugl.VertexArray{}
 	me.MemSizeIndices = Core.MeshBuffers.MemSizePerIndex() * params.NumIndices
 	me.MemSizeVertices = Core.MeshBuffers.MemSizePerVertex() * params.NumVerts
-	if err = me.glVbo.Recreate(gl.ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeVertices), ugl.PtrNil, ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW)); err == nil {
-		err = me.glIbo.Recreate(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeIndices), ugl.PtrNil, ugl.Typed.Ife(params.MostlyStatic, gl.STATIC_DRAW, gl.DYNAMIC_DRAW))
+	if err = me.glVbo.Recreate(gl.ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeVertices), ugl.PtrNil, gl.STATIC_DRAW); err == nil {
+		err = me.glIbo.Recreate(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.MemSizeIndices), ugl.PtrNil, gl.STATIC_DRAW)
 	}
 	if err == nil {
 		var tech RenderTechnique
@@ -110,21 +50,7 @@ func newMeshBuffer(id string, params *meshBufferParams) (me *MeshBuffer, err err
 	return
 }
 
-func (me *MeshBuffer) Add(mesh *Mesh) (err error) {
-	if mesh.meshBuffer != nil {
-		err = errf("Cannot add mesh '%v' to mesh buffer '%v': already belongs to mesh buffer '%v'.", mesh.Name, me.id, mesh.meshBuffer.id)
-	} else if !me.meshes[mesh] {
-		me.meshes[mesh] = true
-		mesh.gpuSynced = false
-		mesh.meshBuffer = me
-	} else {
-		err = errf("Cannot add mesh '%v' to mesh buffer '%v': already added.", mesh.Name, me.id)
-	}
-	return
-}
-
-func (me *MeshBuffer) use() {
-	me.glVaos[thrRend.curProg].Bind()
+func (me *MeshBuffer) init() {
 }
 
 func (me *MeshBuffer) dispose() {
@@ -137,6 +63,23 @@ func (me *MeshBuffer) dispose() {
 		glVao.Dispose()
 	}
 	me.glVaos = nil
+}
+
+func (me *MeshBuffer) Add(mesh *Mesh) (err error) {
+	if mesh.meshBuffer != nil {
+		err = errf("Cannot add mesh '%v' to mesh buffer '%v': already belongs to mesh buffer '%v'.", mesh.Name, me.Name, mesh.meshBuffer.Name)
+	} else if !me.meshes[mesh] {
+		me.meshes[mesh] = true
+		mesh.gpuSynced = false
+		mesh.meshBuffer = me
+	} else {
+		err = errf("Cannot add mesh '%v' to mesh buffer '%v': already added.", mesh.Name, me.Name)
+	}
+	return
+}
+
+func (me *MeshBuffer) use() {
+	me.glVaos[thrRend.curProg].Bind()
 }
 
 func (me *MeshBuffer) Remove(mesh *Mesh) {
@@ -163,13 +106,36 @@ func (me *MeshBuffer) setupVao(prog *ugl.Program, tech RenderTechnique) (err err
 	return
 }
 
+func (me *MeshBufferLib) AddNew(name string, params MeshBufferParams) (buf *MeshBuffer, err error) {
+	if buf, err = newMeshBuffer(name, params); err == nil {
+		me.add(buf)
+	} else if buf != nil {
+		buf.dispose()
+		buf = nil
+	}
+	return
+}
+
+func (_ MeshBufferLib) FloatsPerVertex() int32 {
+	const numVertPosFloats, numVertTexCoordFloats, numVertNormalFloats int32 = 3, 2, 3
+	return numVertPosFloats + numVertNormalFloats + numVertTexCoordFloats
+}
+
+func (_ MeshBufferLib) MemSizePerIndex() int32 {
+	return 4
+}
+
+func (_ MeshBufferLib) MemSizePerVertex() int32 {
+	const sizePerFloat int32 = 4
+	return sizePerFloat * Core.MeshBuffers.FloatsPerVertex()
+}
+
 //#begin-gt -gen-reflib.gt T:MeshBuffer L:Core.MeshBuffers
 
 //	Only used for Core.MeshBuffers
 type MeshBufferLib []*MeshBuffer
 
-func (me *MeshBufferLib) AddNew() (ref *MeshBuffer) {
-	ref = new(MeshBuffer)
+func (me *MeshBufferLib) add(ref *MeshBuffer) {
 	*me = append(*me, ref)
 	ref.init()
 	return

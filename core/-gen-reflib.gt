@@ -3,8 +3,7 @@ package gt
 //	Only used for __L__
 type __T__Lib []*__T__
 
-func (me *__T__Lib) AddNew() (ref *__T__) {
-	ref = new(__T__)
+func (me *__T__Lib) add(ref *__T__) {
 	*me = append(*me, ref)
 	ref.init()
 	return

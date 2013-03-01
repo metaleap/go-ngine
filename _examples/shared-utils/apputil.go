@@ -147,7 +147,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 		PostFxCam.Rendering.States.ClearColor.Set(0.9, 0.6, 0.3, 1)
 
 		if setupExampleScene != nil {
-			SceneCanvas = ng.Core.Render.Canvases.AddNew()
+			SceneCanvas = ng.Core.Render.Canvases.AddNew(true, 1, 1)
 			SceneCam = SceneCanvas.AddNewCamera3D()
 			SceneCam.Rendering.States.ClearColor.Set(0.5, 0.6, 0.85, 1)
 			setupExampleScene()
