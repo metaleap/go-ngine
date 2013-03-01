@@ -1,0 +1,28 @@
+package gt
+
+func (me *FxProc) Is__N__() bool {
+	return me.procID == "__N__"
+}
+
+//	Convenience short-hand for me.Disable("__N__", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me FxProcs) Disable__N__(n int) {
+	me.Disable("__N__", n)
+}
+
+//	Convenience short-hand for me.Enable("__N__", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me *FxProcs) Enable__N__(n int) *FxProc {
+	return me.Enable("__N__", n)
+}
+
+//	Convenience short-hand for me.Get("__N__", n).
+func (me FxProcs) Get__N__(n int) *FxProc {
+	return me.Get("__N__", n)
+}
+
+//	Convenience short-hand for me.Toggle("__N__", n).
+//	For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
+func (me *FxProcs) Toggle__N__(n int) {
+	me.Toggle("__N__", n)
+}

@@ -22,7 +22,7 @@ func onAppThread() {
 func onWinThread() {
 	apputil.CheckCamCtlKeys()
 	apputil.CheckAndHandleToggleKeys()
-	ng.Core.Libs.Effects[apputil.LibIDs.Fx["pulse"]].Ops.GetColor(1).SetMixWeight(0.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*4)))
+	ng.Core.Libs.Effects[apputil.LibIDs.Fx["pulse"]].GetColor(1).SetMixWeight(0.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*4)))
 }
 
 func setupScene() {
@@ -42,24 +42,24 @@ func setupScene() {
 
 	fxBlueID := ng.Core.Libs.Effects.AddNew()
 	fxBlue := &ng.Core.Libs.Effects[fxBlueID]
-	fxBlue.Ops.EnableColor(-1).SetRgb(0, 0.33, 0.66)
-	fxBlue.Ops.EnableTex2D(-1).SetImageID(apputil.LibIDs.Img2D["dog"]).SetMixWeight(0.33)
+	fxBlue.EnableColor(-1).Color_SetRgb(0, 0.33, 0.66)
+	fxBlue.EnableTex2D(-1).Tex_SetImageID(apputil.LibIDs.Img2D["dog"]).SetMixWeight(0.33)
 	fxBlue.UpdateRoutine()
 
 	fxGreenID := ng.Core.Libs.Effects.AddNew()
 	fxGreen := &ng.Core.Libs.Effects[fxGreenID]
-	fxGreen.Ops.EnableColor(-1).SetRgb(0, 0.66, 0.33)
+	fxGreen.EnableColor(-1).Color_SetRgb(0, 0.66, 0.33)
 	fxGreen.UpdateRoutine()
 
 	fxCat := &ng.Core.Libs.Effects[apputil.LibIDs.Fx["cat"]]
-	fxCat.Ops.EnableOrangify(-1)
+	fxCat.EnableOrangify(-1)
 	fxCat.UpdateRoutine()
 
 	fxPulseID := ng.Core.Libs.Effects.AddNew()
 	apputil.LibIDs.Fx["pulse"] = fxPulseID
 	fxPulse := &ng.Core.Libs.Effects[fxPulseID]
-	fxPulse.Ops.EnableColor(0).SetRgb(0.6, 0, 0)
-	fxPulse.Ops.EnableColor(1).SetRgb(0.9, 0.7, 0).SetMixWeight(0.25)
+	fxPulse.EnableColor(0).Color_SetRgb(0.6, 0, 0)
+	fxPulse.EnableColor(1).Color_SetRgb(0.9, 0.7, 0).SetMixWeight(0.25)
 	fxPulse.UpdateRoutine()
 
 	dogMat := &ng.Core.Libs.Materials[apputil.LibIDs.Mat["dog"]]

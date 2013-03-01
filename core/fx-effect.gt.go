@@ -7,20 +7,19 @@ import (
 //	Declares the visual appearance of a surface.
 //	An FxEffect can be reused for multiple surfaces, it is bound to geometry via an FxMaterial.
 type FxEffect struct {
+	//	An ordered collection of all FxProcs that make up this effect.
+	//	When changing the ordering or disabling, enabling or toggling individual FxProcs,
+	//	you need to call the FxEffect.UpdateRoutine() method to reflect such changes.
+	//	All other dynamic, individual FxProc-specific parameter changes
+	//	(colors, image bindings, weights etc.pp.) do not require this.
+	FxProcs
+
 	ID int
 
-	//	An ordered collection of all FxOps that make up this effect.
-	//	When changing the ordering or disabling, enabling or toggling individual FxOps,
-	//	you need to call the FxEffect.UpdateRoutine() method to reflect such changes.
-	//	Other dynamic, individual FxOp-specific parameter changes (colors, image bindings, weights etc.pp.)
-	//	do not require this.
-	Ops FxOps
+	Ext FxProcs
 
-	OpsX FxOps
+	KeepProcIDsLast []string
 
-	KeepOpsLast []string
-
-	tmpOp      FxOp
 	uberName   string
 	uberPnames map[string]string
 }
@@ -30,41 +29,32 @@ func (me *FxEffect) dispose() {
 
 func (me *FxEffect) init() {
 	me.uberPnames = make(map[string]string, len(Core.Render.KnownTechniques))
+	me.FxProcs = make(FxProcs, 0, 4)
 }
 
 func (me *FxEffect) UpdateRoutine() {
 	var (
-		id, pid string
-		idx, i  int
-		buf     ustr.Buffer
+		i   int
+		buf ustr.Buffer
+		id  string
 	)
-	if len(me.KeepOpsLast) > 0 {
-		idx = len(me.Ops) - 1
-		for _, id = range me.KeepOpsLast {
-			for i, me.tmpOp = range me.Ops {
-				if me.tmpOp.ProcID() == id {
-					if i < idx {
-						me.Ops[i], me.Ops[idx] = me.Ops[idx], me.Ops[i]
-						idx--
-					}
-				}
-			}
-		}
+	if len(me.KeepProcIDsLast) > 0 {
+		me.FxProcs.EnsureLast(me.KeepProcIDsLast...)
+		me.Ext.EnsureLast(me.KeepProcIDsLast...)
 	}
 
-	ops, x, counts := me.Ops, len(me.OpsX) > 0, map[string]int{}
+	ops, ext, counts := me.FxProcs, len(me.Ext) > 0, make(map[string]int, len(me.FxProcs)+len(me.Ext))
 doOps:
-	for _, me.tmpOp = range ops {
-		if me.tmpOp.Enabled() {
-			pid = me.tmpOp.ProcID()
-			buf.Write("_%s", pid)
-			i = counts[pid]
-			me.tmpOp.setProcIndex(i)
-			counts[pid] = i + 1
+	for o := 0; o < len(ops); o++ {
+		if ops[o].Enabled {
+			buf.Write("_%s", ops[o].procID)
+			i = counts[ops[o].procID]
+			ops[o].setProcIndex(i)
+			counts[ops[o].procID] = i + 1
 		}
 	}
-	if x {
-		x, ops = false, me.OpsX
+	if ext {
+		ext, ops = false, me.Ext
 		goto doOps
 	}
 
@@ -76,14 +66,14 @@ doOps:
 }
 
 func (me *FxEffect) use() {
-	for _, me.tmpOp = range me.Ops {
-		if me.tmpOp.Enabled() {
-			me.tmpOp.use()
-		}
-	}
-	for _, me.tmpOp = range me.OpsX {
-		if me.tmpOp.Enabled() {
-			me.tmpOp.use()
+	me.useProcs(me.FxProcs)
+	me.useProcs(me.Ext)
+}
+
+func (me *FxEffect) useProcs(ops FxProcs) {
+	for i := 0; i < len(ops); i++ {
+		if ops[i].Enabled {
+			ops[i].use()
 		}
 	}
 }

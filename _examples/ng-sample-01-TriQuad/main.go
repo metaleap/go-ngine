@@ -20,11 +20,11 @@ func main() {
 //	called once per second in main thread
 func onSec() {
 	fxID := apputil.LibIDs.Fx["cat"]
-	ng.Core.Libs.Effects[fxID].Ops.ToggleOrangify(0)
+	ng.Core.Libs.Effects[fxID].ToggleOrangify(0)
 	ng.Core.Libs.Effects[fxID].UpdateRoutine()
 
 	fxID = apputil.LibIDs.Fx["dog"]
-	ng.Core.Libs.Effects[fxID].Ops.ToggleOrangify(0)
+	ng.Core.Libs.Effects[fxID].ToggleOrangify(0)
 	ng.Core.Libs.Effects[fxID].UpdateRoutine()
 }
 
@@ -59,7 +59,7 @@ func setupExample_01_TriQuad() {
 		"dog": "tex/dog.png",
 	})
 	fx := &ng.Core.Libs.Effects[apputil.LibIDs.Fx["dog"]]
-	fx.Ops.EnableOrangify(0)
+	fx.EnableOrangify(0)
 	fx.UpdateRoutine()
 
 	//	meshes / models

@@ -20,8 +20,8 @@ func onWinThread() {
 	apputil.CheckAndHandleToggleKeys()
 
 	//	pulsating materials
-	ng.Core.Libs.Effects[apputil.LibIDs.Fx["cat"]].Ops.GetOrangify(0).SetMixWeight(0.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*4)))
-	ng.Core.Libs.Effects[apputil.LibIDs.Fx["dog"]].Ops.GetTex2D(1).SetMixWeight(0.5 + (0.5 * math.Cos(ng.Loop.Tick.Now*2)))
+	ng.Core.Libs.Effects[apputil.LibIDs.Fx["cat"]].GetOrangify(0).SetMixWeight(0.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*4)))
+	ng.Core.Libs.Effects[apputil.LibIDs.Fx["dog"]].GetTex2D(1).SetMixWeight(0.5 + (0.5 * math.Cos(ng.Loop.Tick.Now*2)))
 }
 
 func onAppThread() {
@@ -81,10 +81,10 @@ func setupExample_03_PyrCube() {
 	bufRest.Add(meshPyrID)
 
 	fx := &ng.Core.Libs.Effects[apputil.LibIDs.Fx["cat"]]
-	fx.Ops.EnableOrangify(-1).SetMixWeight(0.5)
+	fx.EnableOrangify(-1).SetMixWeight(0.5)
 	fx.UpdateRoutine()
 	fx = &ng.Core.Libs.Effects[apputil.LibIDs.Fx["dog"]]
-	fx.Ops.EnableTex2D(1).SetImageID(apputil.LibIDs.Img2D["gopher"]).SetMixWeight(0.5)
+	fx.EnableTex2D(1).Tex_SetImageID(apputil.LibIDs.Img2D["gopher"]).SetMixWeight(0.5)
 	fx.UpdateRoutine()
 	ng.Core.Libs.Materials[apputil.LibIDs.Mat["crate"]].FaceEffects.ByTag["front"] = apputil.LibIDs.Fx["dog"]
 	ng.Core.Libs.Materials[apputil.LibIDs.Mat["crate"]].FaceEffects.ByTag["back"] = apputil.LibIDs.Fx["dog"]

@@ -70,8 +70,8 @@ func (_ *EngineCore) initRendering() {
 	rend.Fx.Samplers.FullFilteringClamp.Create().EnableFullFiltering(true, 8).SetWrap(gl.CLAMP_TO_EDGE)
 	rend.Fx.Samplers.NoFilteringClamp.Create().DisableAllFiltering(false).SetWrap(gl.CLAMP_TO_BORDER)
 	if quadFx := &rend.Canvases.AddNew(true, 1, 1).AddNewCameraQuad().RenderTechniqueQuad().Effect; Options.Initialization.DefaultCanvas.GammaViaShader {
-		quadFx.Ops.EnableGamma(-1)
-		quadFx.KeepOpsLast = append(quadFx.KeepOpsLast, "Gamma")
+		quadFx.FxProcs.EnableGamma(-1)
+		quadFx.KeepProcIDsLast = append(quadFx.KeepProcIDsLast, "Gamma")
 		quadFx.UpdateRoutine()
 	}
 }
@@ -142,8 +142,8 @@ func (_ *EngineCore) showSplash() (err error) {
 func (_ *EngineCore) useTechFx() {
 	if thrRend.curTech != thrRend.nextTech || thrRend.curEffect != thrRend.nextEffect {
 		thrRend.curTech = thrRend.nextTech
-		if !(len(thrRend.curCam.Rendering.FxOps) == 0 && len(thrRend.nextEffect.OpsX) == 0) {
-			thrRend.nextEffect.OpsX = thrRend.curCam.Rendering.FxOps
+		if !(len(thrRend.curCam.Rendering.FxProcs) == 0 && len(thrRend.nextEffect.Ext) == 0) {
+			thrRend.nextEffect.Ext = thrRend.curCam.Rendering.FxProcs
 			thrRend.nextEffect.UpdateRoutine()
 		}
 		thrRend.curEffect = thrRend.nextEffect

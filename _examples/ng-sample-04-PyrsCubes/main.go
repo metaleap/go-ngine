@@ -34,8 +34,8 @@ func onWinThread() {
 	apputil.RearView.OnWin()
 
 	//	pulsating fx anims
-	ng.Core.Libs.Effects[apputil.LibIDs.Fx["mosaic"]].Ops.GetTex2D(1).SetMixWeight(0.5 + (0.5 * math.Cos(ng.Loop.Tick.Now*2)))
-	apputil.RearView.Cam.Rendering.FxOps.GetOrangify(0).SetMixWeight(0.75 + (0.25 * math.Sin(ng.Loop.Tick.Now*4)))
+	ng.Core.Libs.Effects[apputil.LibIDs.Fx["mosaic"]].GetTex2D(1).SetMixWeight(0.5 + (0.5 * math.Cos(ng.Loop.Tick.Now*2)))
+	apputil.RearView.Cam.Rendering.FxProcs.GetOrangify(0).SetMixWeight(0.75 + (0.25 * math.Sin(ng.Loop.Tick.Now*4)))
 }
 
 func onAppThread() {
@@ -92,7 +92,7 @@ func setupExample_04_PyrsCubes() {
 	})
 
 	fx := &ng.Core.Libs.Effects[apputil.LibIDs.Fx["mosaic"]]
-	fx.Ops.EnableTex2D(1).SetImageID(apputil.LibIDs.Img2D["gopher"]).SetMixWeight(0.5)
+	fx.EnableTex2D(1).Tex_SetImageID(apputil.LibIDs.Img2D["gopher"]).SetMixWeight(0.5)
 	fx.UpdateRoutine()
 
 	//	meshes / models

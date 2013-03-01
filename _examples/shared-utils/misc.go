@@ -12,7 +12,7 @@ import (
 //	When paused, the frame last rendered is frozen and rendered in a gray-scale effect.
 func PauseResume() {
 	tech := PostFxCam.RenderTechniqueQuad()
-	tech.Effect.Ops.ToggleGrayscale(-1)
+	tech.Effect.ToggleGrayscale(-1)
 	tech.Effect.UpdateRoutine()
 	if Paused = !Paused; Paused {
 		if SceneCanvas != nil {
@@ -81,8 +81,8 @@ func toggleRetro() {
 
 func toggleTexturing() {
 	ng.Core.Libs.Effects.Walk(func(fx *ng.FxEffect) {
-		fx.Ops.ToggleCoords(-1)
-		fx.Ops.Toggle("Tex*", -1)
+		fx.ToggleCoords(-1)
+		fx.Toggle("Tex*", -1)
 		fx.UpdateRoutine()
 	})
 }

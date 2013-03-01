@@ -6,16 +6,10 @@ import (
 	ustr "github.com/metaleap/go-util/str"
 )
 
-func fxKnownProcIDs() []string {
-	return []string{"Color", "Tex2D", "TexCube", "Grayscale", "Orangify", "Coords", "Gamma"}
-}
-
 //	Implemented by specialized types such as FxOpTex2D, FxOpGrayscale etc.
 //	Those are created and initializes exclusively through FxOps.Enable("{procID}") or the specialized FxOps.EnableFoo() methods.
 type FxOp interface {
 	init(string, int)
-
-	fxImageIDs() []int
 
 	qualifiers(inout string) string
 
@@ -89,10 +83,6 @@ func (me *fxOpBase) init(procID string, procIndex int) {
 		me.setProcIndex(procIndex)
 	}
 	me.weight = 1
-}
-
-func (me *fxOpBase) fxImageIDs() (ids []int) {
-	return
 }
 
 func (me *fxOpBase) qualifiers(inout string) string {

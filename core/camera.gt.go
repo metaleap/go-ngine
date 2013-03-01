@@ -45,7 +45,7 @@ type Camera struct {
 
 		Technique RenderTechnique
 
-		FxOps FxOps
+		FxProcs FxProcs
 	}
 
 	sceneID int

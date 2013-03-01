@@ -22,7 +22,7 @@ func onAppThread() {
 func onWinThread() {
 	apputil.CheckCamCtlKeys()
 	apputil.CheckAndHandleToggleKeys()
-	ng.Core.Libs.Effects[apputil.LibIDs.Fx["pulse"]].Ops.GetTex2D(1).SetMixWeight(0.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*4)))
+	ng.Core.Libs.Effects[apputil.LibIDs.Fx["pulse"]].GetTex2D(1).SetMixWeight(0.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*4)))
 }
 
 func setupScene() {
@@ -44,8 +44,8 @@ func setupScene() {
 	fxPulseID := ng.Core.Libs.Effects.AddNew()
 	apputil.LibIDs.Fx["pulse"] = fxPulseID
 	fxPulse := &ng.Core.Libs.Effects[fxPulseID]
-	fxPulse.Ops.EnableTex2D(0).SetImageID(apputil.LibIDs.Img2D["crate"])
-	fxPulse.Ops.EnableTex2D(1).SetImageID(apputil.LibIDs.Img2D["gopher"]).SetMixWeight(0.5)
+	fxPulse.EnableTex2D(0).Tex_SetImageID(apputil.LibIDs.Img2D["crate"])
+	fxPulse.EnableTex2D(1).Tex_SetImageID(apputil.LibIDs.Img2D["gopher"]).SetMixWeight(0.5)
 	fxPulse.UpdateRoutine()
 
 	dogMat := &ng.Core.Libs.Materials[apputil.LibIDs.Mat["dog"]]

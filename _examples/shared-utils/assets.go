@@ -36,9 +36,9 @@ func AddSkyMesh(scene *ng.Scene, meshID int) {
 	fxID := ng.Core.Libs.Effects.AddNew()
 	LibIDs.Fx["sky"] = fxID
 	fx := &ng.Core.Libs.Effects[fxID]
-	fx.Ops.EnableTexCube(0).ImageID = cubeMap.ID
-	fx.Ops.EnableCoords(0)
-	fx.Ops.DisableCoords(0)
+	fx.EnableTexCube(0).Tex.ImageID = cubeMap.ID
+	fx.EnableCoords(0)
+	fx.DisableCoords(0)
 	fx.UpdateRoutine()
 	matID := ng.Core.Libs.Materials.AddNew()
 	ng.Core.Libs.Materials[matID].DefaultEffectID = LibIDs.Fx["sky"]
@@ -68,9 +68,9 @@ func AddTextureMaterials(idsUrls map[string]string) {
 		fxID = ng.Core.Libs.Effects.AddNew()
 		fx = &ng.Core.Libs.Effects[fxID]
 		LibIDs.Fx[id] = fxID
-		fx.Ops.EnableTex2D(0).ImageID = imgID
-		fx.Ops.EnableCoords(0)
-		fx.Ops.DisableCoords(0)
+		fx.EnableTex2D(0).Tex.ImageID = imgID
+		fx.EnableCoords(0)
+		fx.DisableCoords(0)
 		fx.UpdateRoutine()
 		matID = ng.Core.Libs.Materials.AddNew()
 		ng.Core.Libs.Materials[matID].DefaultEffectID = fxID

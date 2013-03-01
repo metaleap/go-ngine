@@ -81,13 +81,11 @@ func (_ *EngineLibs) UpdatedIDRef(oldNewIDs map[int]int, in int) (out int) {
 }
 
 func (_ *EngineLibs) onFxImageIDsChanged(procID string, oldNewIDs map[int]int) {
-	onOps := func(ops FxOps) {
+	onOps := func(ops FxProcs) {
 		if len(ops) > 0 {
-			var ok bool
-			var texOp *fxOpTexBase
 			for i := 0; i < len(ops); i++ {
-				if texOp, ok = ops[i].(*fxOpTexBase); ok && texOp.ProcID() == procID {
-					Core.Libs.UpdateIDRef(oldNewIDs, &texOp.ImageID)
+				if ops[i].procID == procID {
+					Core.Libs.UpdateIDRef(oldNewIDs, &ops[i].Tex.ImageID)
 				}
 			}
 		}
@@ -95,12 +93,12 @@ func (_ *EngineLibs) onFxImageIDsChanged(procID string, oldNewIDs map[int]int) {
 	var id, camID int
 	for id = 0; id < len(Core.Libs.Effects); id++ {
 		if Core.Libs.Effects.Ok(id) {
-			onOps(Core.Libs.Effects[id].Ops)
+			onOps(Core.Libs.Effects[id].FxProcs)
 		}
 	}
 	for id = 0; id < len(Core.Render.Canvases); id++ {
 		for camID = 0; camID < len(Core.Render.Canvases[id].Cams); camID++ {
-			onOps(Core.Render.Canvases[id].Cams[camID].Rendering.FxOps)
+			onOps(Core.Render.Canvases[id].Cams[camID].Rendering.FxProcs)
 		}
 	}
 }
