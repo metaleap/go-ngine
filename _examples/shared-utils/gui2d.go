@@ -21,10 +21,10 @@ func (me *Gui2D) Setup() (err error) {
 	sceneID := ng.Core.Libs.Scenes.AddNew()
 	scene := &ng.Core.Libs.Scenes[sceneID]
 	me.View = SceneCanvas.AddNewView("Scene")
+	cam := &me.View.Technique_Scene().Camera
+	cam.Perspective.Enabled = false
 	me.View.RenderStates.ClearColor.Set(0.75, 0.25, 0.1, 1)
 	me.View.Port.SetAbsolute(8, 8, 64, 64) //SetRel(0.02, 0.04, 0.125, 0.222)
-	cam := &me.View.RenderTechniqueScene().Camera
-	cam.Perspective.Enabled = false
 	cam.SetScene(sceneID)
 	if meshBuf, err = ng.Core.MeshBuffers.AddNew("buf_quad", 6); err != nil {
 		return

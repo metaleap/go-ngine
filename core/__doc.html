@@ -858,7 +858,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RenderTechniqueScene.ApplyPerspectiveProjection">func (me *RenderTechniqueScene) ApplyPerspectiveProjection()</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#RenderTechniqueScene.ApplyCameraProjection">func (me *RenderTechniqueScene) ApplyCameraProjection()</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#RenderTechniqueScene.ToggleBatching">func (me *RenderTechniqueScene) ToggleBatching()</a></dd>
@@ -869,10 +869,10 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RenderView.RenderTechniqueQuad">func (me *RenderView) RenderTechniqueQuad() (tech *RenderTechniqueQuad)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#RenderView.Technique_Quad">func (me *RenderView) Technique_Quad() (tech *RenderTechniqueQuad)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RenderView.RenderTechniqueScene">func (me *RenderView) RenderTechniqueScene() (tech *RenderTechniqueScene)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#RenderView.Technique_Scene">func (me *RenderView) Technique_Scene() (tech *RenderTechniqueScene)</a></dd>
 				
 			
 				
@@ -3258,7 +3258,7 @@ It is only aware of that instance and does not support any other NgCore instance
 
 			
 				
-				<h3 id="NgCore.GpuSyncImageLibs">func (*NgCore) <a href="/target/ng-core.go?s=2561:2608#L78">GpuSyncImageLibs</a></h3>
+				<h3 id="NgCore.GpuSyncImageLibs">func (*NgCore) <a href="/target/ng-core.go?s=2556:2603#L78">GpuSyncImageLibs</a></h3>
 				<pre>func (_ *NgCore) GpuSyncImageLibs() (err error)</pre>
 				
 				
@@ -3896,14 +3896,14 @@ Declares a point of interest in a Scene.
 				
 			
 				
-				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2626:2661#L102">Root</a></h3>
+				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2687:2722#L102">Root</a></h3>
 				<pre>func (me *Node) Root() (root *Node)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2757:2797#L111">Walk</a></h3>
+				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2818:2858#L111">Walk</a></h3>
 				<pre>func (me *Node) Walk(onNode NodeVisitor)</pre>
 				
 				
@@ -4029,7 +4029,7 @@ Represents a surface (texture framebuffer) that can be rendered to.
 				
 			
 				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=2298:2367#L70">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=2288:2357#L70">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
 				<p>
 Sets the 2 dimensions of this render canvas.
@@ -4043,7 +4043,7 @@ Otherwise, width and height are absolute pixel dimensions.
 		
 			
 			
-			<h2 id="RenderCanvasLib">type <a href="/target/render-canvas.gt.go?s=3264:3300#L98">RenderCanvasLib</a></h2>
+			<h2 id="RenderCanvasLib">type <a href="/target/render-canvas.gt.go?s=3254:3290#L98">RenderCanvasLib</a></h2>
 			<pre>type RenderCanvasLib []*RenderCanvas</pre>
 			<p>
 Only used for Core.Render.Canvases
@@ -4060,28 +4060,28 @@ Only used for Core.Render.Canvases
 
 			
 				
-				<h3 id="RenderCanvasLib.AddNew">func (*RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=2604:2696#L79">AddNew</a></h3>
+				<h3 id="RenderCanvasLib.AddNew">func (*RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=2594:2686#L79">AddNew</a></h3>
 				<pre>func (me *RenderCanvasLib) AddNew(relative bool, width, height float64) (canv *RenderCanvas)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvasLib.IsOk">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3534:3577#L114">IsOk</a></h3>
+				<h3 id="RenderCanvasLib.IsOk">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3524:3567#L114">IsOk</a></h3>
 				<pre>func (me RenderCanvasLib) IsOk(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvasLib.Remove">func (*RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3615:3665#L118">Remove</a></h3>
+				<h3 id="RenderCanvasLib.Remove">func (*RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3605:3655#L118">Remove</a></h3>
 				<pre>func (me *RenderCanvasLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvasLib.Walk">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3939:3997#L131">Walk</a></h3>
+				<h3 id="RenderCanvasLib.Walk">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3929:3987#L131">Walk</a></h3>
 				<pre>func (me RenderCanvasLib) Walk(on func(ref *RenderCanvas))</pre>
 				
 				
@@ -4144,17 +4144,17 @@ Only used for Core.Render.Canvases
 
 			
 				
-				<h3 id="RenderTechniqueScene.ApplyPerspectiveProjection">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=763:823#L30">ApplyPerspectiveProjection</a></h3>
-				<pre>func (me *RenderTechniqueScene) ApplyPerspectiveProjection()</pre>
+				<h3 id="RenderTechniqueScene.ApplyCameraProjection">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=767:822#L30">ApplyCameraProjection</a></h3>
+				<pre>func (me *RenderTechniqueScene) ApplyCameraProjection()</pre>
 				<p>
-Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Camera.Perspective.
+Applies changes made to the Enabled, FovY, ZNear and/or ZFar parameters in me.Camera.Perspective.
 </p>
 
 				
 				
 			
 				
-				<h3 id="RenderTechniqueScene.ToggleBatching">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=1013:1061#L36">ToggleBatching</a></h3>
+				<h3 id="RenderTechniqueScene.ToggleBatching">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=1060:1108#L38">ToggleBatching</a></h3>
 				<pre>func (me *RenderTechniqueScene) ToggleBatching()</pre>
 				
 				
@@ -4188,15 +4188,15 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Camera.Pers
 
 			
 				
-				<h3 id="RenderView.RenderTechniqueQuad">func (*RenderView) <a href="/target/render-view.gt.go?s=982:1053#L32">RenderTechniqueQuad</a></h3>
-				<pre>func (me *RenderView) RenderTechniqueQuad() (tech *RenderTechniqueQuad)</pre>
+				<h3 id="RenderView.Technique_Quad">func (*RenderView) <a href="/target/render-view.gt.go?s=982:1048#L32">Technique_Quad</a></h3>
+				<pre>func (me *RenderView) Technique_Quad() (tech *RenderTechniqueQuad)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderView.RenderTechniqueScene">func (*RenderView) <a href="/target/render-view.gt.go?s=1114:1187#L37">RenderTechniqueScene</a></h3>
-				<pre>func (me *RenderView) RenderTechniqueScene() (tech *RenderTechniqueScene)</pre>
+				<h3 id="RenderView.Technique_Scene">func (*RenderView) <a href="/target/render-view.gt.go?s=1109:1177#L37">Technique_Scene</a></h3>
+				<pre>func (me *RenderView) Technique_Scene() (tech *RenderTechniqueScene)</pre>
 				
 				
 				
@@ -4204,7 +4204,7 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Camera.Pers
 		
 			
 			
-			<h2 id="RenderViewLib">type <a href="/target/render-view.gt.go?s=2779:2811#L83">RenderViewLib</a></h2>
+			<h2 id="RenderViewLib">type <a href="/target/render-view.gt.go?s=2769:2801#L83">RenderViewLib</a></h2>
 			<pre>type RenderViewLib []*RenderView</pre>
 			<p>
 Only used for Core.Render.Canvases[id].Views
@@ -4221,21 +4221,21 @@ Only used for Core.Render.Canvases[id].Views
 
 			
 				
-				<h3 id="RenderViewLib.IsOk">func (RenderViewLib) <a href="/target/render-view.gt.go?s=3035:3076#L99">IsOk</a></h3>
+				<h3 id="RenderViewLib.IsOk">func (RenderViewLib) <a href="/target/render-view.gt.go?s=3025:3066#L99">IsOk</a></h3>
 				<pre>func (me RenderViewLib) IsOk(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderViewLib.Remove">func (*RenderViewLib) <a href="/target/render-view.gt.go?s=3114:3162#L103">Remove</a></h3>
+				<h3 id="RenderViewLib.Remove">func (*RenderViewLib) <a href="/target/render-view.gt.go?s=3104:3152#L103">Remove</a></h3>
 				<pre>func (me *RenderViewLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderViewLib.Walk">func (RenderViewLib) <a href="/target/render-view.gt.go?s=3436:3490#L116">Walk</a></h3>
+				<h3 id="RenderViewLib.Walk">func (RenderViewLib) <a href="/target/render-view.gt.go?s=3426:3480#L116">Walk</a></h3>
 				<pre>func (me RenderViewLib) Walk(on func(ref *RenderView))</pre>
 				
 				
@@ -4244,7 +4244,7 @@ Only used for Core.Render.Canvases[id].Views
 		
 			
 			
-			<h2 id="RenderViewport">type <a href="/target/render-view.gt.go?s=1282:1536#L43">RenderViewport</a></h2>
+			<h2 id="RenderViewport">type <a href="/target/render-view.gt.go?s=1272:1526#L43">RenderViewport</a></h2>
 			<pre>type RenderViewport struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -4263,7 +4263,7 @@ Only used for RenderView.Port
 
 			
 				
-				<h3 id="RenderViewport.SetAbsolute">func (*RenderViewport) <a href="/target/render-view.gt.go?s=1667:1729#L58">SetAbsolute</a></h3>
+				<h3 id="RenderViewport.SetAbsolute">func (*RenderViewport) <a href="/target/render-view.gt.go?s=1657:1719#L58">SetAbsolute</a></h3>
 				<pre>func (me *RenderViewport) SetAbsolute(x, y, width, height int)</pre>
 				<p>
 Sets the absolute viewport origin and dimensions in pixels.
@@ -4273,7 +4273,7 @@ Sets the absolute viewport origin and dimensions in pixels.
 				
 			
 				
-				<h3 id="RenderViewport.SetRelative">func (*RenderViewport) <a href="/target/render-view.gt.go?s=1987:2053#L65">SetRelative</a></h3>
+				<h3 id="RenderViewport.SetRelative">func (*RenderViewport) <a href="/target/render-view.gt.go?s=1977:2043#L65">SetRelative</a></h3>
 				<pre>func (me *RenderViewport) SetRelative(x, y, width, height float64)</pre>
 				<p>
 Sets the RenderCanvas-relative viewport origin and dimensions, with the value 1.0

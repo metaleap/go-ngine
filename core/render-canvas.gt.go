@@ -64,8 +64,8 @@ func (me *RenderCanvas) onResize(viewWidth, viewHeight int) {
 	for i := 0; i < len(me.Views); i++ {
 		me.Views[i].Port.canvWidth, me.Views[i].Port.canvHeight = me.absViewWidth, me.absViewHeight
 		me.Views[i].Port.update()
-		if rts = me.Views[i].RenderTechniqueScene(); rts != nil {
-			rts.ApplyPerspectiveProjection()
+		if rts = me.Views[i].Technique_Scene(); rts != nil {
+			rts.ApplyCameraProjection()
 		}
 	}
 }

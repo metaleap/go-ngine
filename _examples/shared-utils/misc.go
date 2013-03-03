@@ -11,7 +11,7 @@ import (
 //	Pauses rendering or resumes from the current pause.
 //	When paused, the frame last rendered is frozen and rendered in a gray-scale effect.
 func PauseResume() {
-	tech := PostFxView.RenderTechniqueQuad()
+	tech := PostFxView.Technique_Quad()
 	tech.Effect.ToggleGrayscale(-1)
 	tech.Effect.UpdateRoutine()
 	if Paused = !Paused; Paused {
@@ -60,10 +60,10 @@ func PrintPostLoopSummary() {
 //	Experimental.
 func toggleBatching() {
 	if SceneView != nil {
-		SceneView.RenderTechniqueScene().ToggleBatching()
+		SceneView.Technique_Scene().ToggleBatching()
 	}
 	if RearView.View != nil {
-		RearView.View.RenderTechniqueScene().ToggleBatching()
+		RearView.View.Technique_Scene().ToggleBatching()
 	}
 }
 

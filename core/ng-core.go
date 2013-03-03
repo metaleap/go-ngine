@@ -69,7 +69,7 @@ func (_ *NgCore) initRendering() {
 	rend.Fx.Samplers.FullFilteringRepeat.Create().EnableFullFiltering(true, 8).SetWrap(gl.REPEAT)
 	rend.Fx.Samplers.FullFilteringClamp.Create().EnableFullFiltering(true, 8).SetWrap(gl.CLAMP_TO_EDGE)
 	rend.Fx.Samplers.NoFilteringClamp.Create().DisableAllFiltering(false).SetWrap(gl.CLAMP_TO_BORDER)
-	if quadFx := &rend.Canvases.AddNew(true, 1, 1).AddNewView("Quad").RenderTechniqueQuad().Effect; Options.Initialization.DefaultCanvas.GammaViaShader {
+	if quadFx := &rend.Canvases.AddNew(true, 1, 1).AddNewView("Quad").Technique_Quad().Effect; Options.Initialization.DefaultCanvas.GammaViaShader {
 		quadFx.FxProcs.EnableGamma(-1)
 		quadFx.KeepProcIDsLast = append(quadFx.KeepProcIDsLast, "Gamma")
 		quadFx.UpdateRoutine()

@@ -70,13 +70,13 @@ func (me *Node) initCamData(view *Camera) {
 }
 
 func (me *Node) initCamDatas() {
-	me.thrPrep.camRender, me.thrRend.camRender = map[*Camera]bool{}, map[*Camera]bool{}
-	me.thrPrep.camProjMats, me.thrRend.camProjMats = nodeCamProjMats{}, nodeCamProjGlMats{}
+	me.thrPrep.camRender, me.thrRend.camRender = make(map[*Camera]bool, 1), make(map[*Camera]bool, 1)
+	me.thrPrep.camProjMats, me.thrRend.camProjMats = make(nodeCamProjMats, 1), make(nodeCamProjGlMats, 1)
 	var view int
 	var rts *RenderTechniqueScene
 	for canv := 0; canv < len(Core.Render.Canvases); canv++ {
 		for view = 0; view < len(Core.Render.Canvases[canv].Views); view++ {
-			if rts = Core.Render.Canvases[canv].Views[view].RenderTechniqueScene(); rts != nil {
+			if rts = Core.Render.Canvases[canv].Views[view].Technique_Scene(); rts != nil && rts.Camera.scene() == me.rootScene {
 				me.initCamData(&rts.Camera)
 			}
 		}

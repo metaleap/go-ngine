@@ -39,12 +39,12 @@ func (me *RenderView) setup(canv *RenderCanvas, technique string) {
 	}
 }
 
-func (me *RenderView) RenderTechniqueQuad() (tech *RenderTechniqueQuad) {
+func (me *RenderView) Technique_Quad() (tech *RenderTechniqueQuad) {
 	tech, _ = me.Technique.(*RenderTechniqueQuad)
 	return
 }
 
-func (me *RenderView) RenderTechniqueScene() (tech *RenderTechniqueScene) {
+func (me *RenderView) Technique_Scene() (tech *RenderTechniqueScene) {
 	tech, _ = me.Technique.(*RenderTechniqueScene)
 	return
 }

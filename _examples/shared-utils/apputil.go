@@ -150,7 +150,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 		if setupExampleScene != nil {
 			SceneCanvas = ng.Core.Render.Canvases.AddNew(true, 1, 1)
 			SceneView = SceneCanvas.AddNewView("Scene")
-			SceneCam = &SceneView.RenderTechniqueScene().Camera
+			SceneCam = &SceneView.Technique_Scene().Camera
 			SceneView.RenderStates.ClearColor.Set(0.5, 0.6, 0.85, 1)
 			setupExampleScene()
 			if err = ng.Core.Libs.Meshes.GpuSync(); err != nil {

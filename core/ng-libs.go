@@ -203,7 +203,7 @@ func (_ SceneLib) onSceneIDsChanged(oldNewIDs map[int]int) {
 	var rts *RenderTechniqueScene
 	for id = 0; id < len(Core.Render.Canvases); id++ {
 		for vid = 0; vid < len(Core.Render.Canvases[id].Views); vid++ {
-			if rts = Core.Render.Canvases[id].Views[vid].RenderTechniqueScene(); rts != nil {
+			if rts = Core.Render.Canvases[id].Views[vid].Technique_Scene(); rts != nil {
 				Core.Libs.UpdateIDRef(oldNewIDs, &rts.Camera.sceneID)
 			}
 		}
