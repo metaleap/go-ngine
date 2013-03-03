@@ -42,7 +42,7 @@ func setupExample_02_EmptyGround() {
 		panic(err)
 	}
 
-	bufRest.Add(meshPlaneID) // bufRest.Add(meshCube);
+	bufRest.Add(meshPlaneID)
 
 	//	scene
 	scene := apputil.AddMainScene()

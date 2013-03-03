@@ -7,7 +7,6 @@ import (
 
 type RenderTechniqueScene struct {
 	renderTechniqueBase
-	// Batch RenderBatch
 
 	Camera Camera
 }
@@ -17,8 +16,6 @@ func newRenderTechniqueScene(view *RenderView) RenderTechnique {
 	view.RenderStates.DepthTest = true
 	me.init("Scene", view)
 	me.Camera.init()
-	// me.Batch.init(me)
-	// me.Batch.Enabled = true
 	me.ApplyCameraProjection()
 	return me
 }
