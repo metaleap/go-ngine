@@ -5,7 +5,6 @@ import (
 
 	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
-	unum "github.com/metaleap/go-util/num"
 )
 
 var (
@@ -83,14 +82,9 @@ func (me *Camera) copyAppToPrep() {
 }
 
 func (me *Camera) copyPrepToRend() {
-	var node *SceneNode
-	var nr bool
-	var pm *unum.Mat4
-	for node, nr = range me.thrPrep.nodeRender {
-		me.thrRend.nodeRender[node] = nr
-	}
-	for node, pm = range me.thrPrep.nodeProjMats {
-		me.thrRend.nodeProjMats[node].Load(pm)
+	copy(me.thrRend.nodeRender, me.thrPrep.nodeRender)
+	for i := 0; i < len(me.thrPrep.nodeProjMats); i++ {
+		me.thrRend.nodeProjMats[i].Load(&me.thrPrep.nodeProjMats[i])
 	}
 	if scene := me.Scene(); scene != nil {
 		scene.copyPrepToRend()

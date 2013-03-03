@@ -3,11 +3,8 @@ package core
 import (
 	ugl "github.com/go3d/go-opengl/util"
 	unum "github.com/metaleap/go-util/num"
+	usl "github.com/metaleap/go-util/slice"
 )
-
-type camNodeProjMats map[*SceneNode]*unum.Mat4
-
-type camNodeProjGlMats map[*SceneNode]*ugl.GlMat4
 
 type CameraPerspective struct {
 	//	Whether this is a perspective-projection camera. Defaults to true.
@@ -41,12 +38,12 @@ type Camera struct {
 	}
 	thrPrep struct {
 		matCamProj, matProj, matPos unum.Mat4
-		nodeRender                  map[*SceneNode]bool
-		nodeProjMats                camNodeProjMats
+		nodeRender                  []bool
+		nodeProjMats                []unum.Mat4
 	}
 	thrRend struct {
-		nodeProjMats camNodeProjGlMats
-		nodeRender   map[*SceneNode]bool
+		nodeProjMats []ugl.GlMat4
+		nodeRender   []bool
 	}
 }
 
@@ -57,11 +54,26 @@ func (me *Camera) init() {
 	me.Controller.init()
 }
 
-func (me *Camera) initNodeCamData(node *SceneNode) {
-	me.thrPrep.nodeProjMats[node] = unum.NewMat4Identity()
-	me.thrRend.nodeProjMats[node] = ugl.NewGlMat4(nil)
-	me.thrPrep.nodeRender[node] = node.Render.Enabled
-	me.thrRend.nodeRender[node] = node.Render.Enabled
+func (me *Camera) ensureProjMats(length int) {
+	if len(me.thrPrep.nodeProjMats) < length {
+		nu := make([]unum.Mat4, length)
+		copy(nu, me.thrPrep.nodeProjMats)
+		me.thrPrep.nodeProjMats = nu
+	}
+	if len(me.thrRend.nodeProjMats) < length {
+		nu := make([]ugl.GlMat4, length)
+		copy(nu, me.thrRend.nodeProjMats)
+		me.thrRend.nodeProjMats = nu
+	}
+}
+
+func (me *Camera) initNodeCamData(all SceneNodeLib, nodeID int) {
+	me.ensureProjMats(len(all))
+	me.thrPrep.nodeProjMats[nodeID].Identity()
+	usl.BoolEnsureLen(&me.thrPrep.nodeRender, len(all))
+	usl.BoolEnsureLen(&me.thrRend.nodeRender, len(all))
+	me.thrPrep.nodeRender[nodeID] = all[nodeID].Render.Enabled
+	me.thrRend.nodeRender[nodeID] = all[nodeID].Render.Enabled
 }
 
 func (me *Camera) Scene() *Scene {
@@ -70,13 +82,15 @@ func (me *Camera) Scene() *Scene {
 
 func (me *Camera) SetScene(sceneID int) {
 	if sceneID != me.sceneID {
-		me.thrPrep.nodeRender, me.thrRend.nodeRender = make(map[*SceneNode]bool, 1), make(map[*SceneNode]bool, 1)
-		me.thrPrep.nodeProjMats, me.thrRend.nodeProjMats = make(camNodeProjMats, 1), make(camNodeProjGlMats, 1)
 		me.sceneID = sceneID
 		if scene := me.Scene(); scene != nil {
+			cap := len(scene.allNodes)
+			me.ensureProjMats(cap)
+			usl.BoolEnsureLen(&me.thrPrep.nodeRender, cap)
+			usl.BoolEnsureLen(&me.thrRend.nodeRender, cap)
 			for i := 0; i < len(scene.allNodes); i++ {
 				if scene.allNodes.Ok(i) {
-					me.initNodeCamData(&scene.allNodes[i])
+					me.initNodeCamData(scene.allNodes, i)
 				}
 			}
 		}

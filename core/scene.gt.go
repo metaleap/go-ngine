@@ -34,18 +34,6 @@ func (me *Scene) init() {
 	root.parentID = -1
 }
 
-func (me *Scene) initCamNodeData(nodeID int) {
-	var view int
-	var rts *RenderTechniqueScene
-	for canv := 0; canv < len(Core.Render.Canvases); canv++ {
-		for view = 0; view < len(Core.Render.Canvases[canv].Views); view++ {
-			if rts = Core.Render.Canvases[canv].Views[view].Technique_Scene(); rts != nil && rts.Camera.sceneID == me.ID {
-				rts.Camera.initNodeCamData(&me.allNodes[nodeID])
-			}
-		}
-	}
-}
-
 func (me *Scene) AddNewChildNode(parentNodeID int) (childNodeID int) {
 	childNodeID = -1
 	if me.allNodes.IsOk(parentNodeID) {
@@ -53,18 +41,24 @@ func (me *Scene) AddNewChildNode(parentNodeID int) (childNodeID int) {
 		me.allNodes[childNodeID].parentID = parentNodeID
 
 		if len(me.allNodes[parentNodeID].childNodeIDs) == cap(me.allNodes[parentNodeID].childNodeIDs) {
-			nuCap := sceneNodeChildCap
 			if len(me.allNodes[parentNodeID].childNodeIDs) > 0 {
-				nuCap = len(me.allNodes[parentNodeID].childNodeIDs) * 2
+				usl.IntSetCap(&me.allNodes[parentNodeID].childNodeIDs, 2*len(me.allNodes[parentNodeID].childNodeIDs))
+			} else {
+				usl.IntSetCap(&me.allNodes[parentNodeID].childNodeIDs, sceneNodeChildCap)
 			}
-			nu := make([]int, len(me.allNodes[parentNodeID].childNodeIDs), nuCap)
-			copy(nu, me.allNodes[parentNodeID].childNodeIDs)
-			me.allNodes[parentNodeID].childNodeIDs = nu
 		}
 		usl.IntAppendUnique(&me.allNodes[parentNodeID].childNodeIDs, childNodeID)
-
-		me.initCamNodeData(childNodeID)
 		me.ApplyNodeTransforms(childNodeID)
+
+		var view int
+		var rts *RenderTechniqueScene
+		for canv := 0; canv < len(Core.Render.Canvases); canv++ {
+			for view = 0; view < len(Core.Render.Canvases[canv].Views); view++ {
+				if rts = Core.Render.Canvases[canv].Views[view].Technique_Scene(); rts != nil && rts.Camera.sceneID == me.ID {
+					rts.Camera.initNodeCamData(me.allNodes, childNodeID)
+				}
+			}
+		}
 	}
 	return
 }
@@ -107,6 +101,11 @@ func (me *Scene) ParentNodeID(childNodeID int) (parentID int) {
 func (me *Scene) RemoveNode(fromID int) {
 	if fromID > 0 {
 		me.allNodes.Remove(fromID, 1)
+		for i := 0; i < len(me.allNodes); i++ {
+			if me.allNodes.Ok(i) && me.allNodes[i].parentID == fromID {
+				me.RemoveNode(i)
+			}
+		}
 	}
 }
 

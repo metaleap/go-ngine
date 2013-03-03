@@ -1179,7 +1179,7 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.go?s=823:1312#L20">Camera</a></h2>
+			<h2 id="Camera">type <a href="/target/camera.go?s=765:1219#L17">Camera</a></h2>
 			<pre>type Camera struct {
     <span class="comment">//	Optical and imager properties for this camera.</span>
     Perspective CameraPerspective
@@ -1200,14 +1200,14 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 
 			
 				
-				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=1765:1797#L57">Scene</a></h3>
+				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=2193:2225#L70">Scene</a></h3>
 				<pre>func (me *Camera) Scene() *Scene</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=1844:1883#L61">SetScene</a></h3>
+				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=2272:2311#L74">SetScene</a></h3>
 				<pre>func (me *Camera) SetScene(sceneID int)</pre>
 				
 				
@@ -1216,7 +1216,7 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="CameraPerspective">type <a href="/target/camera.go?s=203:821#L2">CameraPerspective</a></h2>
+			<h2 id="CameraPerspective">type <a href="/target/camera.go?s=145:763#L1">CameraPerspective</a></h2>
 			<pre>type CameraPerspective struct {
     <span class="comment">//	Whether this is a perspective-projection camera. Defaults to true.</span>
     <span class="comment">//	If false, no projection transformation is applied.</span>
@@ -4165,14 +4165,14 @@ Represents a scene graph.
 
 			
 				
-				<h3 id="Scene.AddNewChildNode">func (*Scene) <a href="/target/scene.gt.go?s=958:1026#L39">AddNewChildNode</a></h3>
+				<h3 id="Scene.AddNewChildNode">func (*Scene) <a href="/target/scene.gt.go?s=554:622#L27">AddNewChildNode</a></h3>
 				<pre>func (me *Scene) AddNewChildNode(parentNodeID int) (childNodeID int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.ApplyNodeTransforms">func (*Scene) <a href="/target/scene.gt.go?s=1939:1987#L64">ApplyNodeTransforms</a></h3>
+				<h3 id="Scene.ApplyNodeTransforms">func (*Scene) <a href="/target/scene.gt.go?s=1802:1850#L58">ApplyNodeTransforms</a></h3>
 				<pre>func (me *Scene) ApplyNodeTransforms(nodeID int)</pre>
 				<p>
 Updates the internal 4x4 transformation matrix for all transformations of the specified
@@ -4183,28 +4183,28 @@ node and child-nodes. It is only this matrix that is used by the rendering runti
 				
 			
 				
-				<h3 id="Scene.Node">func (*Scene) <a href="/target/scene.gt.go?s=2867:2907#L86">Node</a></h3>
+				<h3 id="Scene.Node">func (*Scene) <a href="/target/scene.gt.go?s=2730:2770#L80">Node</a></h3>
 				<pre>func (me *Scene) Node(id int) *SceneNode</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.ParentNodeID">func (*Scene) <a href="/target/scene.gt.go?s=2941:3002#L90">ParentNodeID</a></h3>
+				<h3 id="Scene.ParentNodeID">func (*Scene) <a href="/target/scene.gt.go?s=2804:2865#L84">ParentNodeID</a></h3>
 				<pre>func (me *Scene) ParentNodeID(childNodeID int) (parentID int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.RemoveNode">func (*Scene) <a href="/target/scene.gt.go?s=3102:3141#L97">RemoveNode</a></h3>
+				<h3 id="Scene.RemoveNode">func (*Scene) <a href="/target/scene.gt.go?s=2965:3004#L91">RemoveNode</a></h3>
 				<pre>func (me *Scene) RemoveNode(fromID int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.Root">func (*Scene) <a href="/target/scene.gt.go?s=3199:3233#L103">Root</a></h3>
+				<h3 id="Scene.Root">func (*Scene) <a href="/target/scene.gt.go?s=3197:3231#L102">Root</a></h3>
 				<pre>func (me *Scene) Root() *SceneNode</pre>
 				
 				
@@ -4213,7 +4213,7 @@ node and child-nodes. It is only this matrix that is used by the rendering runti
 		
 			
 			
-			<h2 id="SceneLib">type <a href="/target/scene.gt.go?s=3349:3370#L110">SceneLib</a></h2>
+			<h2 id="SceneLib">type <a href="/target/scene.gt.go?s=3347:3368#L109">SceneLib</a></h2>
 			<pre>type SceneLib []Scene</pre>
 			<p>
 Only used for Core.Libs.Scenes
@@ -4230,42 +4230,42 @@ Only used for Core.Libs.Scenes
 
 			
 				
-				<h3 id="SceneLib.AddNew">func (*SceneLib) <a href="/target/scene.gt.go?s=3372:3409#L112">AddNew</a></h3>
+				<h3 id="SceneLib.AddNew">func (*SceneLib) <a href="/target/scene.gt.go?s=3370:3407#L111">AddNew</a></h3>
 				<pre>func (me *SceneLib) AddNew() (id int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Compact">func (*SceneLib) <a href="/target/scene.gt.go?s=3732:3761#L134">Compact</a></h3>
+				<h3 id="SceneLib.Compact">func (*SceneLib) <a href="/target/scene.gt.go?s=3730:3759#L133">Compact</a></h3>
 				<pre>func (me *SceneLib) Compact()</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.IsOk">func (SceneLib) <a href="/target/scene.gt.go?s=4516:4557#L177">IsOk</a></h3>
+				<h3 id="SceneLib.IsOk">func (SceneLib) <a href="/target/scene.gt.go?s=4514:4555#L176">IsOk</a></h3>
 				<pre>func (me SceneLib) IsOk(id int) (ok bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Ok">func (SceneLib) <a href="/target/scene.gt.go?s=4627:4661#L184">Ok</a></h3>
+				<h3 id="SceneLib.Ok">func (SceneLib) <a href="/target/scene.gt.go?s=4625:4659#L183">Ok</a></h3>
 				<pre>func (me SceneLib) Ok(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Remove">func (SceneLib) <a href="/target/scene.gt.go?s=4691:4733#L188">Remove</a></h3>
+				<h3 id="SceneLib.Remove">func (SceneLib) <a href="/target/scene.gt.go?s=4689:4731#L187">Remove</a></h3>
 				<pre>func (me SceneLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Walk">func (SceneLib) <a href="/target/scene.gt.go?s=5018:5062#L202">Walk</a></h3>
+				<h3 id="SceneLib.Walk">func (SceneLib) <a href="/target/scene.gt.go?s=5016:5060#L201">Walk</a></h3>
 				<pre>func (me SceneLib) Walk(on func(ref *Scene))</pre>
 				
 				
