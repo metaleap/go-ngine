@@ -164,8 +164,9 @@ Some common base functionality shared by all the go:ngine example apps in _examp
     <span class="comment">//	This is an off-screen &#34;render-to-texture&#34; RenderCanvas.</span>
     SceneCanvas *ng.RenderCanvas
 
-    <span class="comment">//	The primary scene-rendering camera, rendering to SceneCanvas.</span>
     SceneCam *ng.Camera
+
+    SceneView *ng.RenderView
 
     <span class="comment">//	Unlike the off-screen (render-to-texture) SceneCanvas above,</span>
     <span class="comment">//	this RenderCanvas epresents the actual screen/window.</span>
@@ -173,7 +174,7 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 
     <span class="comment">//	Takes the image rendered to SceneCanvas, may</span>
     <span class="comment">//	post-process it or not, and blits it to PostFxCanvas.</span>
-    PostFxCam *ng.Camera
+    PostFxView *ng.RenderView
 
     Paused bool
 )</pre>
@@ -265,7 +266,7 @@ adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffe
 		
 			
 			
-			<h2 id="AppDirBasePath">func <a href="/target/apputil.go?s=1466:1494#L51">AppDirBasePath</a></h2>
+			<h2 id="AppDirBasePath">func <a href="/target/apputil.go?s=1432:1460#L52">AppDirBasePath</a></h2>
 			<pre>func AppDirBasePath() string</pre>
 			<p>
 Returns the base path of the &#34;app dir&#34; for our example apps, in this case: $GOPATH/src/github.com/go3d/go-ngine/_examples/-app-data
@@ -297,7 +298,7 @@ states for controlling (in HandleCamCtlKeys() in onAppThread()!) SceneCam.Contro
 		
 			
 			
-			<h2 id="HandleCamCtlKeys">func <a href="/target/user-input.go?s=3150:3173#L85">HandleCamCtlKeys</a></h2>
+			<h2 id="HandleCamCtlKeys">func <a href="/target/user-input.go?s=3151:3174#L85">HandleCamCtlKeys</a></h2>
 			<pre>func HandleCamCtlKeys()</pre>
 			<p>
 To be called every frame (by the parent example app, ONLY in onAppThread()!) to process key-press
@@ -308,10 +309,10 @@ states (from the previous CheckCamCtlKeys() call) for controlling SceneCam.Contr
 		
 			
 			
-			<h2 id="Main">func <a href="/target/apputil.go?s=2565:2626#L79">Main</a></h2>
+			<h2 id="Main">func <a href="/target/apputil.go?s=2476:2537#L80">Main</a></h2>
 			<pre>func Main(setupExampleScene, onAppThread, onWinThread func())</pre>
 			<p>
-Called by each example-app&#39;s func main(). Initializes go:ngine, sets SceneCam/SceneCanvas/PostFxCam/PostFxCanvas etc., calls the specified setupExampleScene function, then enters The Loop.
+Called by each example-app&#39;s func main(). Initializes go:ngine, calls the specified setupExampleScene function, then enters The Loop.
 </p>
 
 			
@@ -329,7 +330,7 @@ When paused, the frame last rendered is frozen and rendered in a gray-scale effe
 		
 			
 			
-			<h2 id="PrintPostLoopSummary">func <a href="/target/misc.go?s=634:661#L19">PrintPostLoopSummary</a></h2>
+			<h2 id="PrintPostLoopSummary">func <a href="/target/misc.go?s=635:662#L19">PrintPostLoopSummary</a></h2>
 			<pre>func PrintPostLoopSummary()</pre>
 			<p>
 Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent example app exits.
@@ -340,9 +341,9 @@ Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent 
 		
 			
 			
-			<h2 id="Gui2D">type <a href="/target/gui2d.go?s=366:427#L1">Gui2D</a></h2>
+			<h2 id="Gui2D">type <a href="/target/gui2d.go?s=366:431#L1">Gui2D</a></h2>
 			<pre>type Gui2D struct {
-    Cam      *ng.Camera
+    View     *ng.RenderView
     Cat, Dog *ng.Node
 }</pre>
 			<p>
@@ -362,24 +363,22 @@ inside a red 64x64 px square in the bottom left canvas corner.
 
 			
 				
-				<h3 id="Gui2D.Setup">func (*Gui2D) <a href="/target/gui2d.go?s=503:539#L7">Setup</a></h3>
+				<h3 id="Gui2D.Setup">func (*Gui2D) <a href="/target/gui2d.go?s=433:469#L6">Setup</a></h3>
 				<pre>func (me *Gui2D) Setup() (err error)</pre>
-				<p>
-Adds a &#34;2D camera&#34; to the main render canvas, and sets up Cat and Dog.
-</p>
-
+				
 				
 				
 			
 		
 			
 			
-			<h2 id="RearMirror">type <a href="/target/rear-mirror.go?s=262:304#L2">RearMirror</a></h2>
+			<h2 id="RearMirror">type <a href="/target/rear-mirror.go?s=260:324#L2">RearMirror</a></h2>
 			<pre>type RearMirror struct {
-    Cam *ng.Camera
+    Cam  *ng.Camera
+    View *ng.RenderView
 }</pre>
 			<p>
-A rather simple &#34;rear-view mirror&#34; camera that can
+A rather simple &#34;rear-view mirror&#34; view that can
 be added to the example-program&#39;s main render canvas.
 </p>
 
@@ -400,7 +399,7 @@ Not actively used unless RearView.Setup() is called.
 
 			
 				
-				<h3 id="RearMirror.OnApp">func (*RearMirror) <a href="/target/rear-mirror.go?s=428:457#L7">OnApp</a></h3>
+				<h3 id="RearMirror.OnApp">func (*RearMirror) <a href="/target/rear-mirror.go?s=448:477#L8">OnApp</a></h3>
 				<pre>func (me *RearMirror) OnApp()</pre>
 				<p>
 Copies the main camera&#39;s current position and direction and reverses its by 180 degrees to achieve a rear-view mirror.
@@ -410,7 +409,7 @@ Copies the main camera&#39;s current position and direction and reverses its by 
 				
 			
 				
-				<h3 id="RearMirror.OnWin">func (*RearMirror) <a href="/target/rear-mirror.go?s=655:684#L15">OnWin</a></h3>
+				<h3 id="RearMirror.OnWin">func (*RearMirror) <a href="/target/rear-mirror.go?s=676:705#L16">OnWin</a></h3>
 				<pre>func (me *RearMirror) OnWin()</pre>
 				<p>
 Syncs the rear-view camera&#39;s render states with the main camera&#39;s.
@@ -420,7 +419,7 @@ Syncs the rear-view camera&#39;s render states with the main camera&#39;s.
 				
 			
 				
-				<h3 id="RearMirror.Setup">func (*RearMirror) <a href="/target/rear-mirror.go?s=909:949#L22">Setup</a></h3>
+				<h3 id="RearMirror.Setup">func (*RearMirror) <a href="/target/rear-mirror.go?s=931:971#L23">Setup</a></h3>
 				<pre>func (me *RearMirror) Setup(sceneID int)</pre>
 				<p>
 Adds the rear-view mirror&#39;s camera to the main render canvas, at 1/3rd of its width and 1/4th of its height.
@@ -430,7 +429,7 @@ Adds the rear-view mirror&#39;s camera to the main render canvas, at 1/3rd of it
 				
 			
 				
-				<h3 id="RearMirror.Toggle">func (*RearMirror) <a href="/target/rear-mirror.go?s=1270:1300#L32">Toggle</a></h3>
+				<h3 id="RearMirror.Toggle">func (*RearMirror) <a href="/target/rear-mirror.go?s=1334:1364#L34">Toggle</a></h3>
 				<pre>func (me *RearMirror) Toggle()</pre>
 				<p>
 Enables or disables this rear-view mirror.

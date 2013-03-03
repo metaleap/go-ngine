@@ -35,7 +35,7 @@ func (me *FxEffect) UpdateRoutine() {
 	var (
 		i   int
 		buf ustr.Buffer
-		id  string
+		rt  string
 	)
 	if len(me.KeepProcIDsLast) > 0 {
 		me.FxProcs.EnsureLast(me.KeepProcIDsLast...)
@@ -58,8 +58,8 @@ doOps:
 	}
 
 	me.uberName = buf.String()
-	for id, _ = range Core.Render.KnownTechniques {
-		me.uberPnames[id] = strf("uber_%s%s", id, me.uberName)
+	for rt, _ = range Core.Render.KnownTechniques {
+		me.uberPnames[rt] = strf("uber_%s%s", rt, me.uberName)
 	}
 	thrRend.curEffect = nil
 }

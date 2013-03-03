@@ -75,46 +75,12 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Camera.ApplyMatrices">func (me *Camera) ApplyMatrices()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#Camera.RenderTechniqueQuad">func (me *Camera) RenderTechniqueQuad() (tech *RenderTechniqueQuad)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#Camera.RenderTechniqueScene">func (me *Camera) RenderTechniqueScene() (tech *RenderTechniqueScene)</a></dd>
-				
-					
 					<dd>&nbsp; &nbsp; <a href="#Camera.SetScene">func (me *Camera) SetScene(sceneID int)</a></dd>
-				
-			
-				
-				<dd><a href="#CameraLib">type CameraLib</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#CameraLib.IsOk">func (me CameraLib) IsOk(id int) bool</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#CameraLib.Remove">func (me *CameraLib) Remove(fromID, num int)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#CameraLib.Walk">func (me CameraLib) Walk(on func(ref *Camera))</a></dd>
 				
 			
 				
 				<dd><a href="#CameraPerspective">type CameraPerspective</a></dd>
 				
-				
-			
-				
-				<dd><a href="#CameraViewport">type CameraViewport</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#CameraViewport.SetAbs">func (me *CameraViewport) SetAbs(x, y, width, height int)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#CameraViewport.SetRel">func (me *CameraViewport) SetRel(x, y, width, height float64)</a></dd>
 				
 			
 				
@@ -185,115 +151,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				<dd><a href="#ControllerParams">type ControllerParams</a></dd>
 				
-				
-			
-				
-				<dd><a href="#EngineCore">type EngineCore</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineCore.GpuSyncImageLibs">func (_ *EngineCore) GpuSyncImageLibs() (err error)</a></dd>
-				
-			
-				
-				<dd><a href="#EngineDiag">type EngineDiag</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiag.Log">func (_ *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{})</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogErr">func (_ *EngineDiag) LogErr(err error)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogIfGlErr">func (_ *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{})</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogImages">func (_ *EngineDiag) LogImages(fmt string, fmtArgs ...interface{})</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogMeshes">func (_ *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{})</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogMisc">func (_ *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{})</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineDiag.LogShaders">func (_ *EngineDiag) LogShaders(fmt string, fmtArgs ...interface{})</a></dd>
-				
-			
-				
-				<dd><a href="#EngineDiagLogCategory">type EngineDiagLogCategory</a></dd>
-				
-				
-			
-				
-				<dd><a href="#EngineLibs">type EngineLibs</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineLibs.UpdateIDRef">func (_ *EngineLibs) UpdateIDRef(oldNewIDs map[int]int, ptr *int)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineLibs.UpdateIDRefs">func (_ *EngineLibs) UpdateIDRefs(oldNewIDs map[int]int, ptrs ...*int)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineLibs.UpdatedIDRef">func (_ *EngineLibs) UpdatedIDRef(oldNewIDs map[int]int, in int) (out int)</a></dd>
-				
-			
-				
-				<dd><a href="#EngineLoop">type EngineLoop</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineLoop.Run">func (_ *EngineLoop) Run()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineLoop.Time">func (_ *EngineLoop) Time() float64</a></dd>
-				
-			
-				
-				<dd><a href="#EngineOptions">type EngineOptions</a></dd>
-				
-				
-			
-				
-				<dd><a href="#EngineStats">type EngineStats</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineStats.AverageFps">func (_ *EngineStats) AverageFps() float64</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineStats.TotalFrames">func (_ *EngineStats) TotalFrames() float64</a></dd>
-				
-			
-				
-				<dd><a href="#EngineUserIO">type EngineUserIO</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.IifKeyF">func (_ *EngineUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeyPressed">func (_ *EngineUserIO) KeyPressed(key int) bool</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeyPressedWhich">func (_ *EngineUserIO) KeyPressedWhich(keys ...int) int</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeyToggled">func (_ *EngineUserIO) KeyToggled(key int) bool</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeysPressedAll2">func (_ *EngineUserIO) KeysPressedAll2(k1, k2 int) bool</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeysPressedAll3">func (_ *EngineUserIO) KeysPressedAll3(k1, k2, k3 int) bool</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeysPressedAny2">func (_ *EngineUserIO) KeysPressedAny2(k1, k2 int) bool</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#EngineUserIO.KeysPressedAny3">func (_ *EngineUserIO) KeysPressedAny3(k1, k2, k3 int) bool</a></dd>
 				
 			
 				
@@ -814,6 +671,115 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
+				<dd><a href="#NgCore">type NgCore</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgCore.GpuSyncImageLibs">func (_ *NgCore) GpuSyncImageLibs() (err error)</a></dd>
+				
+			
+				
+				<dd><a href="#NgDiag">type NgDiag</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgDiag.Log">func (_ *NgDiag) Log(cat NgDiagLogCategory, fmt string, fmtArgs ...interface{})</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgDiag.LogErr">func (_ *NgDiag) LogErr(err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgDiag.LogIfGlErr">func (_ *NgDiag) LogIfGlErr(fmt string, fmtArgs ...interface{})</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgDiag.LogImages">func (_ *NgDiag) LogImages(fmt string, fmtArgs ...interface{})</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgDiag.LogMeshes">func (_ *NgDiag) LogMeshes(fmt string, fmtArgs ...interface{})</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgDiag.LogMisc">func (_ *NgDiag) LogMisc(fmt string, fmtArgs ...interface{})</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgDiag.LogShaders">func (_ *NgDiag) LogShaders(fmt string, fmtArgs ...interface{})</a></dd>
+				
+			
+				
+				<dd><a href="#NgDiagLogCategory">type NgDiagLogCategory</a></dd>
+				
+				
+			
+				
+				<dd><a href="#NgLibs">type NgLibs</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgLibs.UpdateIDRef">func (_ *NgLibs) UpdateIDRef(oldNewIDs map[int]int, ptr *int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgLibs.UpdateIDRefs">func (_ *NgLibs) UpdateIDRefs(oldNewIDs map[int]int, ptrs ...*int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgLibs.UpdatedIDRef">func (_ *NgLibs) UpdatedIDRef(oldNewIDs map[int]int, in int) (out int)</a></dd>
+				
+			
+				
+				<dd><a href="#NgLoop">type NgLoop</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgLoop.Run">func (_ *NgLoop) Run()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgLoop.Time">func (_ *NgLoop) Time() float64</a></dd>
+				
+			
+				
+				<dd><a href="#NgOptions">type NgOptions</a></dd>
+				
+				
+			
+				
+				<dd><a href="#NgStats">type NgStats</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgStats.AverageFps">func (_ *NgStats) AverageFps() float64</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgStats.TotalFrames">func (_ *NgStats) TotalFrames() float64</a></dd>
+				
+			
+				
+				<dd><a href="#NgUserIO">type NgUserIO</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgUserIO.IifKeyF">func (_ *NgUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgUserIO.KeyPressed">func (_ *NgUserIO) KeyPressed(key int) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgUserIO.KeyPressedWhich">func (_ *NgUserIO) KeyPressedWhich(keys ...int) int</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgUserIO.KeyToggled">func (_ *NgUserIO) KeyToggled(key int) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgUserIO.KeysPressedAll2">func (_ *NgUserIO) KeysPressedAll2(k1, k2 int) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgUserIO.KeysPressedAll3">func (_ *NgUserIO) KeysPressedAll3(k1, k2, k3 int) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgUserIO.KeysPressedAny2">func (_ *NgUserIO) KeysPressedAny2(k1, k2 int) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgUserIO.KeysPressedAny3">func (_ *NgUserIO) KeysPressedAny3(k1, k2, k3 int) bool</a></dd>
+				
+			
+				
 				<dd><a href="#Node">type Node</a></dd>
 				
 				
@@ -851,13 +817,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.AddNewCamera2D">func (me *RenderCanvas) AddNewCamera2D(allowOverlaps bool) (cam *Camera)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.AddNewCamera3D">func (me *RenderCanvas) AddNewCamera3D() (cam *Camera)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.AddNewCameraQuad">func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.AddNewView">func (me *RenderCanvas) AddNewView(renderTechnique string) (view *RenderView)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#RenderCanvas.CurrentAbsoluteSize">func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int)</a></dd>
@@ -898,7 +858,46 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#RenderTechniqueScene.ApplyPerspectiveProjection">func (me *RenderTechniqueScene) ApplyPerspectiveProjection()</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#RenderTechniqueScene.ToggleBatching">func (me *RenderTechniqueScene) ToggleBatching()</a></dd>
+				
+			
+				
+				<dd><a href="#RenderView">type RenderView</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RenderView.RenderTechniqueQuad">func (me *RenderView) RenderTechniqueQuad() (tech *RenderTechniqueQuad)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RenderView.RenderTechniqueScene">func (me *RenderView) RenderTechniqueScene() (tech *RenderTechniqueScene)</a></dd>
+				
+			
+				
+				<dd><a href="#RenderViewLib">type RenderViewLib</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RenderViewLib.IsOk">func (me RenderViewLib) IsOk(id int) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RenderViewLib.Remove">func (me *RenderViewLib) Remove(fromID, num int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RenderViewLib.Walk">func (me RenderViewLib) Walk(on func(ref *RenderView))</a></dd>
+				
+			
+				
+				<dd><a href="#RenderViewport">type RenderViewport</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RenderViewport.SetAbsolute">func (me *RenderViewport) SetAbsolute(x, y, width, height int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RenderViewport.SetRelative">func (me *RenderViewport) SetRelative(x, y, width, height float64)</a></dd>
 				
 			
 				
@@ -1050,7 +1049,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/-gen-embed.go">-gen-embed.go</a>
 			
-				<a href="/target/camera.gt.go">camera.gt.go</a>
+				<a href="/target/camera.go">camera.go</a>
 			
 				<a href="/target/controller.go">controller.go</a>
 			
@@ -1116,11 +1115,13 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/render-prep.go">render-prep.go</a>
 			
+				<a href="/target/render-technique-base.go">render-technique-base.go</a>
+			
 				<a href="/target/render-technique-quad.go">render-technique-quad.go</a>
 			
 				<a href="/target/render-technique-scene.go">render-technique-scene.go</a>
 			
-				<a href="/target/render-technique.go">render-technique.go</a>
+				<a href="/target/render-view.gt.go">render-view.gt.go</a>
 			
 				<a href="/target/render.go">render.go</a>
 			
@@ -1165,9 +1166,9 @@ recent driver for {GPU}.
 			<h2 id="pkg-variables">Variables</h2>
 			
 				<pre>var (
-    Diag = EngineDiag{
+    Diag = NgDiag{
         LogCategories: DiagLogCatAll,
-        LogCategoryNames: map[EngineDiagLogCategory]string{
+        LogCategoryNames: map[NgDiagLogCategory]string{
             DiagLogCatMisc:    &#34;[INFO]\t\t&#34;,
             DiagLogCatShaders: &#34;[SHADER]\t&#34;,
             DiagLogCatImages:  &#34;[IMAGES]\t&#34;,
@@ -1203,39 +1204,16 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.gt.go?s=698:1475#L14">Camera</a></h2>
+			<h2 id="Camera">type <a href="/target/camera.go?s=686:1032#L15">Camera</a></h2>
 			<pre>type Camera struct {
     <span class="comment">//	Optical and imager properties for this camera.</span>
-    Perspective struct {
-        <span class="comment">//	FovY, ZFar, ZNear</span>
-        CameraPerspective
-
-        <span class="comment">//	Whether this is a perspective-projection camera. Defaults to true.</span>
-        <span class="comment">//	If false, no projection transformation is applied.</span>
-        Use bool
-    }
+    Perspective CameraPerspective
 
     <span class="comment">//	Encapsulates the position and direction of this camera.</span>
     Controller Controller
-
-    Enabled bool
-
-    Render struct {
-        <span class="comment">//	The device-relative or absolute view-port for this Camera.</span>
-        Viewport CameraViewport
-
-        States ugl.RenderStatesBag
-
-        Technique RenderTechnique
-
-        FxProcs FxProcs
-    }
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
-			<p>
-A camera embodies the eye point of the viewer looking at the visual scene.
-</p>
-
+			
 
 			
 
@@ -1247,31 +1225,7 @@ A camera embodies the eye point of the viewer looking at the visual scene.
 
 			
 				
-				<h3 id="Camera.ApplyMatrices">func (*Camera) <a href="/target/camera.gt.go?s=2933:2966#L96">ApplyMatrices</a></h3>
-				<pre>func (me *Camera) ApplyMatrices()</pre>
-				<p>
-Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective.
-</p>
-
-				
-				
-			
-				
-				<h3 id="Camera.RenderTechniqueQuad">func (*Camera) <a href="/target/camera.gt.go?s=3779:3846#L132">RenderTechniqueQuad</a></h3>
-				<pre>func (me *Camera) RenderTechniqueQuad() (tech *RenderTechniqueQuad)</pre>
-				
-				
-				
-			
-				
-				<h3 id="Camera.RenderTechniqueScene">func (*Camera) <a href="/target/camera.gt.go?s=3914:3983#L137">RenderTechniqueScene</a></h3>
-				<pre>func (me *Camera) RenderTechniqueScene() (tech *RenderTechniqueScene)</pre>
-				
-				
-				
-			
-				
-				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.gt.go?s=3541:3580#L120">SetScene</a></h3>
+				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=1695:1734#L60">SetScene</a></h3>
 				<pre>func (me *Camera) SetScene(sceneID int)</pre>
 				
 				
@@ -1280,48 +1234,12 @@ Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Perspective
 		
 			
 			
-			<h2 id="CameraLib">type <a href="/target/camera.gt.go?s=5586:5610#L183">CameraLib</a></h2>
-			<pre>type CameraLib []*Camera</pre>
-			<p>
-Only used for Core.Render.Canvases[id].Cams
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="CameraLib.IsOk">func (CameraLib) <a href="/target/camera.gt.go?s=5814:5851#L199">IsOk</a></h3>
-				<pre>func (me CameraLib) IsOk(id int) bool</pre>
-				
-				
-				
-			
-				
-				<h3 id="CameraLib.Remove">func (*CameraLib) <a href="/target/camera.gt.go?s=5889:5933#L203">Remove</a></h3>
-				<pre>func (me *CameraLib) Remove(fromID, num int)</pre>
-				
-				
-				
-			
-				
-				<h3 id="CameraLib.Walk">func (CameraLib) <a href="/target/camera.gt.go?s=6207:6253#L216">Walk</a></h3>
-				<pre>func (me CameraLib) Walk(on func(ref *Camera))</pre>
-				
-				
-				
-			
-		
-			
-			
-			<h2 id="CameraPerspective">type <a href="/target/camera.gt.go?s=141:618#L1">CameraPerspective</a></h2>
+			<h2 id="CameraPerspective">type <a href="/target/camera.go?s=66:684#L1">CameraPerspective</a></h2>
 			<pre>type CameraPerspective struct {
+    <span class="comment">//	Whether this is a perspective-projection camera. Defaults to true.</span>
+    <span class="comment">//	If false, no projection transformation is applied.</span>
+    Enabled bool
+
     <span class="comment">//	Vertical field-of-view. Defaults to 37.8493.</span>
     <span class="comment">//	After changing this value, you must call the ApplyMatrices() method.</span>
     FovY float64
@@ -1344,48 +1262,6 @@ Only used for Core.Render.Canvases[id].Cams
 
 			
 
-			
-		
-			
-			
-			<h2 id="CameraViewport">type <a href="/target/camera.gt.go?s=4116:4370#L143">CameraViewport</a></h2>
-			<pre>type CameraViewport struct {
-    <span class="comment">// contains filtered or unexported fields</span>
-}</pre>
-			<p>
-Encapsulates a device-relative or absolute camera view-port.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="CameraViewport.SetAbs">func (*CameraViewport) <a href="/target/camera.gt.go?s=4496:4553#L158">SetAbs</a></h3>
-				<pre>func (me *CameraViewport) SetAbs(x, y, width, height int)</pre>
-				<p>
-Sets the absolute viewport origin and dimensions in pixels.
-</p>
-
-				
-				
-			
-				
-				<h3 id="CameraViewport.SetRel">func (*CameraViewport) <a href="/target/camera.gt.go?s=4805:4866#L165">SetRel</a></h3>
-				<pre>func (me *CameraViewport) SetRel(x, y, width, height float64)</pre>
-				<p>
-Sets the device-relative viewport origin and dimensions, with the value 1.0
-representing the maximum extent of the viewport on that respective axis.
-</p>
-
-				
-				
 			
 		
 			
@@ -1666,657 +1542,6 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 
 			
 
-			
-		
-			
-			
-			<h2 id="EngineCore">type <a href="/target/ng-core.go?s=453:910#L6">EngineCore</a></h2>
-			<pre>type EngineCore struct {
-    MeshBuffers MeshBufferLib
-    Libs        EngineLibs
-    Render      struct {
-        Canvases RenderCanvasLib
-        Fx       struct {
-            KnownProcIDs []string
-            Samplers     struct {
-                NoFilteringClamp    ugl.Sampler
-                FullFilteringRepeat ugl.Sampler
-                FullFilteringClamp  ugl.Sampler
-            }
-            <span class="comment">// contains filtered or unexported fields</span>
-        }
-        KnownTechniques map[string]renderTechniqueProvider
-        <span class="comment">// contains filtered or unexported fields</span>
-    }
-    <span class="comment">// contains filtered or unexported fields</span>
-}</pre>
-			<p>
-EngineCore is a singleton type, only used for the core.Core package-global exported variable.
-It is only aware of that instance and does not support any other EngineCore instances.
-</p>
-
-
-			
-
-			
-				<pre>var (
-    <span class="comment">//	The heart and brain of go:ngine --- a container for all runtime resources and responsible for rendering.</span>
-    Core EngineCore
-)</pre>
-				
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="EngineCore.GpuSyncImageLibs">func (*EngineCore) <a href="/target/ng-core.go?s=2597:2648#L78">GpuSyncImageLibs</a></h3>
-				<pre>func (_ *EngineCore) GpuSyncImageLibs() (err error)</pre>
-				
-				
-				
-			
-		
-			
-			
-			<h2 id="EngineDiag">type <a href="/target/ng-diag.go?s=987:1145#L29">EngineDiag</a></h2>
-			<pre>type EngineDiag struct {
-    LogCategories          EngineDiagLogCategory
-    LogCategoryNames       map[EngineDiagLogCategory]string
-    LogGLErrorsInLoopOnSec bool
-}</pre>
-			<p>
-EngineDiag is a singleton type, only used for the core.Diag package-global exported variable.
-It is only aware of that instance and does not support any other EngineDiag instances.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="EngineDiag.Log">func (*EngineDiag) <a href="/target/ng-diag.go?s=1147:1234#L35">Log</a></h3>
-				<pre>func (_ *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{})</pre>
-				
-				
-				
-			
-				
-				<h3 id="EngineDiag.LogErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=1340:1378#L41">LogErr</a></h3>
-				<pre>func (_ *EngineDiag) LogErr(err error)</pre>
-				
-				
-				
-			
-				
-				<h3 id="EngineDiag.LogIfGlErr">func (*EngineDiag) <a href="/target/ng-diag.go?s=1403:1470#L45">LogIfGlErr</a></h3>
-				<pre>func (_ *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{})</pre>
-				
-				
-				
-			
-				
-				<h3 id="EngineDiag.LogImages">func (*EngineDiag) <a href="/target/ng-diag.go?s=1511:1577#L49">LogImages</a></h3>
-				<pre>func (_ *EngineDiag) LogImages(fmt string, fmtArgs ...interface{})</pre>
-				
-				
-				
-			
-				
-				<h3 id="EngineDiag.LogMeshes">func (*EngineDiag) <a href="/target/ng-diag.go?s=1628:1694#L53">LogMeshes</a></h3>
-				<pre>func (_ *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{})</pre>
-				
-				
-				
-			
-				
-				<h3 id="EngineDiag.LogMisc">func (*EngineDiag) <a href="/target/ng-diag.go?s=1745:1809#L57">LogMisc</a></h3>
-				<pre>func (_ *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{})</pre>
-				
-				
-				
-			
-				
-				<h3 id="EngineDiag.LogShaders">func (*EngineDiag) <a href="/target/ng-diag.go?s=1858:1925#L61">LogShaders</a></h3>
-				<pre>func (_ *EngineDiag) LogShaders(fmt string, fmtArgs ...interface{})</pre>
-				
-				
-				
-			
-		
-			
-			
-			<h2 id="EngineDiagLogCategory">type <a href="/target/ng-diag.go?s=107:137#L1">EngineDiagLogCategory</a></h2>
-			<pre>type EngineDiagLogCategory int</pre>
-			
-
-			
-				<pre>const (
-    DiagLogCatMisc    EngineDiagLogCategory = 1
-    DiagLogCatMeshes  EngineDiagLogCategory = 2
-    DiagLogCatShaders EngineDiagLogCategory = 4
-    DiagLogCatImages  EngineDiagLogCategory = 8
-    DiagLogCatAll     EngineDiagLogCategory = DiagLogCatMeshes | DiagLogCatMisc | DiagLogCatShaders | DiagLogCatImages
-)</pre>
-				
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="EngineLibs">type <a href="/target/ng-libs.go?s=388:618#L10">EngineLibs</a></h2>
-			<pre>type EngineLibs struct {
-    Effects   FxEffectLib
-    Materials FxMaterialLib
-    Images    struct {
-        SplashScreen FxImage2D
-        TexCube      FxImageCubeLib
-        Tex2D        FxImage2DLib
-    }
-    Meshes MeshLib
-    Models ModelLib
-    Scenes SceneLib
-}</pre>
-			<p>
-Only used for Core.Libs.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="EngineLibs.UpdateIDRef">func (*EngineLibs) <a href="/target/ng-libs.go?s=1137:1202#L49">UpdateIDRef</a></h3>
-				<pre>func (_ *EngineLibs) UpdateIDRef(oldNewIDs map[int]int, ptr *int)</pre>
-				
-				
-				
-			
-				
-				<h3 id="EngineLibs.UpdateIDRefs">func (*EngineLibs) <a href="/target/ng-libs.go?s=1265:1335#L55">UpdateIDRefs</a></h3>
-				<pre>func (_ *EngineLibs) UpdateIDRefs(oldNewIDs map[int]int, ptrs ...*int)</pre>
-				
-				
-				
-			
-				
-				<h3 id="EngineLibs.UpdatedIDRef">func (*EngineLibs) <a href="/target/ng-libs.go?s=1459:1533#L65">UpdatedIDRef</a></h3>
-				<pre>func (_ *EngineLibs) UpdatedIDRef(oldNewIDs map[int]int, in int) (out int)</pre>
-				
-				
-				
-			
-		
-			
-			
-			<h2 id="EngineLoop">type <a href="/target/ng-loop.go?s=374:1761#L7">EngineLoop</a></h2>
-			<pre>type EngineLoop struct {
-    <span class="comment">//	Set to true by Loop.Run(). Set to false to stop looping.</span>
-    Running bool
-
-    On struct {
-        <span class="comment">//	While Loop.Run() is running, this callback is invoked (in its own &#34;app thread&#34;)</span>
-        <span class="comment">//	every loop iteration (ie. once per frame).</span>
-        <span class="comment">//	This callback may run in parallel with On.EverySec(), but never with On.WinThread().</span>
-        AppThread func()
-
-        <span class="comment">//	While Loop.Run() is running, this callback is invoked (on the main windowing thread)</span>
-        <span class="comment">//	every loop iteration (ie. once per frame).</span>
-        <span class="comment">//	This callback is guaranteed to never run in parallel with</span>
-        <span class="comment">//	(and always after) the On.AppThread() and On.EverySec() callbacks.</span>
-        WinThread func()
-
-        <span class="comment">//	While Loop.Run() is running, this callback is invoked (on the main windowing thread)</span>
-        <span class="comment">//	at least and at most once per second, a useful entry point for non-real-time periodically recurring code.</span>
-        <span class="comment">//	Caution: unlike On.WinThread(), this callback runs in parallel with your On.AppThread() callback.</span>
-        EverySec func()
-    }
-
-    Tick struct {
-        <span class="comment">//	The tick-time when the Loop.On.EverySec() callback was last invoked.</span>
-        PrevSec int
-
-        <span class="comment">//	While Loop.Run() is running, is set to the current &#34;tick-time&#34;:</span>
-        <span class="comment">//	the time in seconds expired ever since Loop.Run() was last called.</span>
-        Now float64
-
-        <span class="comment">//	While Loop.Run() is running, is set to the previous tick-time.</span>
-        Prev float64
-
-        <span class="comment">//	The delta between Tick.Prev and Tick.Now.</span>
-        Delta float64
-    }
-}</pre>
-			<p>
-EngineLoop is a singleton type, only used for the Loop variable.
-It is only aware of that instance and does not support any other EngineLoop instances.
-</p>
-
-
-			
-
-			
-				<pre>var (
-    <span class="comment">//	Manages your main-thread&#39;s render loop.</span>
-    <span class="comment">//	Call it&#39;s Run() method once after go:ngine initialization (see examples).</span>
-    Loop EngineLoop
-)</pre>
-				
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="EngineLoop.Run">func (*EngineLoop) <a href="/target/ng-loop.go?s=3097:3123#L108">Run</a></h3>
-				<pre>func (_ *EngineLoop) Run()</pre>
-				<p>
-Initiates a rendering loop. This method returns only when the loop is stopped for whatever reason.
-</p>
-<p>
-(Before entering the loop, this method performs a one-off GC invokation.)
-</p>
-
-				
-				
-			
-				
-				<h3 id="EngineLoop.Time">func (*EngineLoop) <a href="/target/ng-loop.go?s=6372:6407#L194">Time</a></h3>
-				<pre>func (_ *EngineLoop) Time() float64</pre>
-				<p>
-Returns the number of seconds expired ever since Loop.Run() was last called.
-</p>
-
-				
-				
-			
-		
-			
-			
-			<h2 id="EngineOptions">type <a href="/target/ng-options.go?s=617:4257#L23">EngineOptions</a></h2>
-			<pre>type EngineOptions struct {
-    AppDir struct {
-        <span class="comment">//	The base directory path for app file paths.</span>
-        BasePath string
-
-        Temp struct {
-            BaseName       string
-            ShaderSources  string
-            CachedTextures string
-        }
-    }
-
-    Cameras struct {
-        DefaultControllerParams ControllerParams
-        PerspectiveDefaults     CameraPerspective
-    }
-
-    Initialization struct {
-        GlContext struct {
-            CoreProfile struct {
-                <span class="comment">//	Required on Mac OS X, not necessary elsewhere.</span>
-                <span class="comment">//	While potentially slightly beneficial with recent GL drivers,</span>
-                <span class="comment">//	might also fail with a select few rather outdated ones.</span>
-                <span class="comment">//	Defaults to true on Mac OS X, to false elsewhere.</span>
-                ForceFirst bool
-
-                <span class="comment">//	While required on Mac OS X, really not recommended elsewhere</span>
-                <span class="comment">//	(at present). Defaults to true on Mac OS X, to false elsewhere.</span>
-                <span class="comment">//	Only used if go:ngine requests the creation of a GL core-profile context.</span>
-                ForwardCompat bool
-
-                <span class="comment">//	Defaults to the newest GL version currently supported by the GL</span>
-                <span class="comment">//	binding used by go:ngine. The binding adaptively uses features</span>
-                <span class="comment">//	of GL versions newer than 3.3 only if they are available, so this</span>
-                <span class="comment">//	is a most strongly recommended default for release apps. But for</span>
-                <span class="comment">//	testing, this is useful to test performance in older GL versions.</span>
-                <span class="comment">//	Must be one of the values in glutil.KnownVersions.</span>
-                VersionHint float64
-            }
-
-            <span class="comment">//	Defaults to the DefaultBadVersionMessage constant. If using a custom</span>
-            <span class="comment">//	string, you can use the same placeholders as that one.</span>
-            BadVersionMessage string
-        }
-        DefaultCanvas struct {
-            GammaViaShader bool
-            SplashImage    []byte
-        }
-        Window struct {
-            <span class="comment">//	Defaults: R=8 G=8 B=8 A=0 D=8 S=0.</span>
-            <span class="comment">//	These defaults are reasonable when using a render-to-texture off-screen</span>
-            <span class="comment">//	RenderCanvas. Otherwise, may want to bump D to at least 24 or 32.</span>
-            <span class="comment">//	D shouldn&#39;t be 0 as this causes some Intel HD drivers to bug out badly.</span>
-            Rbits, Gbits, Bbits, Abits, DepthBits, StencilBits int
-        }
-    }
-
-    Libs struct {
-        InitialCap   int
-        GrowCapBy    int
-        OnIDsChanged struct {
-            Effects LibElemIDChangedHandlers
-            Images  struct {
-                TexCube LibElemIDChangedHandlers
-                Tex2D   LibElemIDChangedHandlers
-            }
-            Materials LibElemIDChangedHandlers
-            Meshes    LibElemIDChangedHandlers
-            Models    LibElemIDChangedHandlers
-            Scenes    LibElemIDChangedHandlers
-        }
-    }
-
-    Loop struct {
-        <span class="comment">//	By default, the app and prep &#34;threads&#34; being invoked every frame</span>
-        <span class="comment">//	during Loop() are just normal go-routines that may or may not</span>
-        <span class="comment">//	correspond to real separate OS thread contexts.</span>
-        ForceThreads struct {
-            <span class="comment">//	If true, each On.AppThread() go-routine invokation locks its own exclusive thread context.</span>
-            App bool
-
-            <span class="comment">//	If true, each prep-stage go-routine invokation locks its own exclusive thread context.</span>
-            Prep bool
-        }
-
-        <span class="comment">//	Controls whether and how often the Garbage Collector</span>
-        <span class="comment">//	is invoked during the Loop.</span>
-        GcEvery struct {
-            <span class="comment">//	Defaults to false. If true, GC will</span>
-            <span class="comment">//	be invoked every frame during the Loop.</span>
-            Frame bool
-
-            <span class="comment">//	Defaults to true. If true, GC will be invoked at</span>
-            <span class="comment">//	least and at most once per second during the Loop.</span>
-            Sec bool
-        }
-    }
-
-    Rendering struct {
-        DefaultClearColor ugl.GlVec4
-
-        <span class="comment">//	Default render technique for a Camera created via RenderCanvas.AddNewCamera2D().</span>
-        <span class="comment">//	Defaults to &#34;Scene&#34;.</span>
-        DefaultTechnique2D string
-
-        <span class="comment">//	Default render technique for a Camera created via RenderCanvas.AddNewCamera3D().</span>
-        <span class="comment">//	Defaults to &#34;Scene&#34;.</span>
-        DefaultTechnique3D string
-
-        <span class="comment">//	Default render technique for a Camera created via RenderCanvas.AddNewCameraQuad().</span>
-        <span class="comment">//	Defaults to &#34;Quad&#34;.</span>
-        DefaultTechniqueQuad string
-    }
-
-    Textures struct {
-        Storage FxImageStorage
-    }
-}</pre>
-			<p>
-Only used for the Options variable.
-</p>
-
-
-			
-
-			
-				<pre>var (
-    Options EngineOptions
-)</pre>
-				
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="EngineStats">type <a href="/target/ng-stats.go?s=299:3922#L4">EngineStats</a></h2>
-			<pre>type EngineStats struct {
-    <span class="comment">//	Gives the total number of frames rendered during the &#34;previous&#34;</span>
-    <span class="comment">//	(not the current) second. Good enough for just a simple-minded FPS indicator.</span>
-    FpsLastSec int
-
-    <span class="comment">//	This TimingStats instance combines all the individual FrameFoo fields</span>
-    <span class="comment">//	to track over time (both average and maximum) total cost per frame.</span>
-    Frame TimingStats
-
-    <span class="comment">//	&#34;Rendering&#34; consists of a CPU-side and a GPU-side cost.</span>
-    <span class="comment">//	This TimingStats instance combines both to track over time</span>
-    <span class="comment">//	(both average and maximum) total rendering cost per frame.</span>
-    FrameRenderBoth TimingStats
-
-    <span class="comment">//	The CPU-side cost of rendering comprises sending pre-batched</span>
-    <span class="comment">//	rendering commands (prepared by the &#34;prep&#34; stage) to the GPU.</span>
-    <span class="comment">//	This TimingStats instance tracks over time (both average</span>
-    <span class="comment">//	and maximum) CPU-side rendering cost per frame.</span>
-    FrameRenderCpu TimingStats
-
-    <span class="comment">//	The GPU-side cost of rendering comprises execution of all draw calls</span>
-    <span class="comment">//	sent by the CPU-side, plus waiting for V-sync if enabled.</span>
-    <span class="comment">//	This TimingStats instance tracks over time (both average</span>
-    <span class="comment">//	and maximum) GPU-side rendering cost per frame.</span>
-    FrameRenderGpu TimingStats
-
-    <span class="comment">//	&#34;Prep code&#34; comprises all go:ngine logic executed every frame in parallel to cull</span>
-    <span class="comment">//	geometry and prepare a batch of rendering commands for the next (not current) frame.</span>
-    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;prep code&#34; cost per frame.</span>
-    FramePrepThread TimingStats
-
-    <span class="comment">//	&#34;App code&#34; comprises (mostly user-specific) logic executed every frame in parallel in</span>
-    <span class="comment">//	your Loop.OnAppThread() callback. Such code may freely modify dynamic Cameras, Nodes etc.</span>
-    <span class="comment">//	Unlike OnWinThread() code, &#34;app code&#34; always runs in its own thread in parallel to the prep and main threads.</span>
-    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;app code&#34; cost per frame.</span>
-    FrameAppThread TimingStats
-
-    <span class="comment">//	Tracks over the time (both average and maximum) cost for Loop.On.EverySec() and,</span>
-    <span class="comment">//	if Diag.LogGLErrorsInLoopOnSec is true, Diag.LogIfGlErr().</span>
-    FrameOnSec TimingStats
-
-    <span class="comment">//	&#34;Windowing/GPU/IO code&#34; comprises user-specific logic executed every frame via your own</span>
-    <span class="comment">//	Loop.OnWinThread() callback. This should be kept to a minimum to fully enjoy</span>
-    <span class="comment">//	the benefits of multi-threading. Main use-cases are calls resulting in GPU state</span>
-    <span class="comment">//	changes (such as toggling effects in Core.Render.PostFx) and working with UserIO</span>
-    <span class="comment">//	to poll for user input -- but do consider executing resulting logic in your OnAppThread().</span>
-    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;input code&#34; cost per frame.</span>
-    FrameWinThread TimingStats
-
-    <span class="comment">//	When CPU-side rendering is completed, Loop waits for the app thread and prep thread</span>
-    <span class="comment">//	to finish (either before or after GPU-side rendering depending on Loop.SwapLast).</span>
-    <span class="comment">//	It then moves &#34;prep results&#34; to the render thread and &#34;app results&#34; to the prep thread.</span>
-    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;thread sync&#34; cost per frame.</span>
-    FrameThreadSync TimingStats
-
-    <span class="comment">//	During the Loop, the Go Garbge Collector is invoked at least and at most once per second.</span>
-    <span class="comment">//	</span>
-    <span class="comment">//	Forcing GC &#34;that often&#34; practically guarantees it will almost never have so much work to do as to</span>
-    <span class="comment">//	noticably block user interaction --- typically well below 10ms, most often around 1ms.</span>
-    <span class="comment">//	</span>
-    <span class="comment">//	This TimingStats instance over time tracks the maximum and average time spent on that</span>
-    <span class="comment">//	1x-per-second-during-Loop GC invokation (but does not track any other GC invokations).</span>
-    Gc TimingStats
-
-    Programs struct {
-        NumProgsCompiled int
-        TotalTimeCost    int64
-    }
-    <span class="comment">// contains filtered or unexported fields</span>
-}</pre>
-			<p>
-Consider EngineStats a &#34;Singleton&#34; type, only valid use is the core.Stats global variable.
-Tracks various go:ngine performance indicators over time.
-</p>
-
-
-			
-
-			
-				<pre>var (
-    <span class="comment">//	Tracks various go:ngine performance counters over time.</span>
-    Stats EngineStats
-)</pre>
-				
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="EngineStats.AverageFps">func (*EngineStats) <a href="/target/ng-stats.go?s=4169:4211#L84">AverageFps</a></h3>
-				<pre>func (_ *EngineStats) AverageFps() float64</pre>
-				<p>
-Returns the average number of frames-per-second since Loop.Loop() was last called.
-</p>
-
-				
-				
-			
-				
-				<h3 id="EngineStats.TotalFrames">func (*EngineStats) <a href="/target/ng-stats.go?s=4747:4790#L108">TotalFrames</a></h3>
-				<pre>func (_ *EngineStats) TotalFrames() float64</pre>
-				
-				
-				
-			
-		
-			
-			
-			<h2 id="EngineUserIO">type <a href="/target/ng-userio.go?s=488:753#L6">EngineUserIO</a></h2>
-			<pre>type EngineUserIO struct {
-    <span class="comment">//	Minimum delay for EngineUserIO.KeyToggled() method, in seconds. Defaults to 0.15.</span>
-    KeyToggleMinDelay float64
-
-    Window WindowOptions
-    <span class="comment">// contains filtered or unexported fields</span>
-}</pre>
-			<p>
-Consider EngineUserIO a &#34;Singleton&#34; type, only valid use is the core.UserIO global variable.
-Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window management, not the graphics themselves).
-</p>
-
-
-			
-
-			
-				<pre>var (
-    <span class="comment">//	Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window management, not the graphics themselves).</span>
-    UserIO EngineUserIO
-)</pre>
-				
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="EngineUserIO.IifKeyF">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2707:2779#L71">IifKeyF</a></h3>
-				<pre>func (_ *EngineUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64</pre>
-				<p>
-Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
-</p>
-
-				
-				
-			
-				
-				<h3 id="EngineUserIO.KeyPressed">func (*EngineUserIO) <a href="/target/ng-userio.go?s=2898:2945#L79">KeyPressed</a></h3>
-				<pre>func (_ *EngineUserIO) KeyPressed(key int) bool</pre>
-				<p>
-Returns true if the specified key is pressed.
-</p>
-
-				
-				
-			
-				
-				<h3 id="EngineUserIO.KeyPressedWhich">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3036:3091#L84">KeyPressedWhich</a></h3>
-				<pre>func (_ *EngineUserIO) KeyPressedWhich(keys ...int) int</pre>
-				<p>
-Returns the first in keys that is pressed.
-</p>
-
-				
-				
-			
-				
-				<h3 id="EngineUserIO.KeyToggled">func (*EngineUserIO) <a href="/target/ng-userio.go?s=4109:4156#L114">KeyToggled</a></h3>
-				<pre>func (_ *EngineUserIO) KeyToggled(key int) bool</pre>
-				<p>
-Returns true if the specified key has been &#34;toggled&#34;, ie. its pressed-state changed within the last me.KeyToggleMinDelay seconds.
-</p>
-
-				
-				
-			
-				
-				<h3 id="EngineUserIO.KeysPressedAll2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3273:3328#L94">KeysPressedAll2</a></h3>
-				<pre>func (_ *EngineUserIO) KeysPressedAll2(k1, k2 int) bool</pre>
-				<p>
-Returns true if both specified keys are pressed.
-</p>
-
-				
-				
-			
-				
-				<h3 id="EngineUserIO.KeysPressedAll3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3446:3505#L99">KeysPressedAll3</a></h3>
-				<pre>func (_ *EngineUserIO) KeysPressedAll3(k1, k2, k3 int) bool</pre>
-				<p>
-Returns true if all three specified keys are pressed.
-</p>
-
-				
-				
-			
-				
-				<h3 id="EngineUserIO.KeysPressedAny2">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3652:3707#L104">KeysPressedAny2</a></h3>
-				<pre>func (_ *EngineUserIO) KeysPressedAny2(k1, k2 int) bool</pre>
-				<p>
-Returns true if any of the two specified keys is pressed.
-</p>
-
-				
-				
-			
-				
-				<h3 id="EngineUserIO.KeysPressedAny3">func (*EngineUserIO) <a href="/target/ng-userio.go?s=3831:3890#L109">KeysPressedAny3</a></h3>
-				<pre>func (_ *EngineUserIO) KeysPressedAny3(k1, k2, k3 int) bool</pre>
-				<p>
-Returns true if any of the three specified keys is pressed.
-</p>
-
-				
-				
 			
 		
 			
@@ -3991,6 +3216,645 @@ Only used for Core.Libs.Models
 		
 			
 			
+			<h2 id="NgCore">type <a href="/target/ng-core.go?s=441:890#L6">NgCore</a></h2>
+			<pre>type NgCore struct {
+    MeshBuffers MeshBufferLib
+    Libs        NgLibs
+    Render      struct {
+        Canvases RenderCanvasLib
+        Fx       struct {
+            KnownProcIDs []string
+            Samplers     struct {
+                NoFilteringClamp    ugl.Sampler
+                FullFilteringRepeat ugl.Sampler
+                FullFilteringClamp  ugl.Sampler
+            }
+            <span class="comment">// contains filtered or unexported fields</span>
+        }
+        KnownTechniques map[string]renderTechniqueProvider
+        <span class="comment">// contains filtered or unexported fields</span>
+    }
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+NgCore is a singleton type, only used for the core.Core package-global exported variable.
+It is only aware of that instance and does not support any other NgCore instances.
+</p>
+
+
+			
+
+			
+				<pre>var (
+    <span class="comment">//	The heart and brain of go:ngine --- a container for all runtime resources and responsible for rendering.</span>
+    Core NgCore
+)</pre>
+				
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NgCore.GpuSyncImageLibs">func (*NgCore) <a href="/target/ng-core.go?s=2561:2608#L78">GpuSyncImageLibs</a></h3>
+				<pre>func (_ *NgCore) GpuSyncImageLibs() (err error)</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="NgDiag">type <a href="/target/ng-diag.go?s=947:1093#L29">NgDiag</a></h2>
+			<pre>type NgDiag struct {
+    LogCategories          NgDiagLogCategory
+    LogCategoryNames       map[NgDiagLogCategory]string
+    LogGLErrorsInLoopOnSec bool
+}</pre>
+			<p>
+NgDiag is a singleton type, only used for the core.Diag package-global exported variable.
+It is only aware of that instance and does not support any other NgDiag instances.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NgDiag.Log">func (*NgDiag) <a href="/target/ng-diag.go?s=1095:1174#L35">Log</a></h3>
+				<pre>func (_ *NgDiag) Log(cat NgDiagLogCategory, fmt string, fmtArgs ...interface{})</pre>
+				
+				
+				
+			
+				
+				<h3 id="NgDiag.LogErr">func (*NgDiag) <a href="/target/ng-diag.go?s=1280:1314#L41">LogErr</a></h3>
+				<pre>func (_ *NgDiag) LogErr(err error)</pre>
+				
+				
+				
+			
+				
+				<h3 id="NgDiag.LogIfGlErr">func (*NgDiag) <a href="/target/ng-diag.go?s=1339:1402#L45">LogIfGlErr</a></h3>
+				<pre>func (_ *NgDiag) LogIfGlErr(fmt string, fmtArgs ...interface{})</pre>
+				
+				
+				
+			
+				
+				<h3 id="NgDiag.LogImages">func (*NgDiag) <a href="/target/ng-diag.go?s=1443:1505#L49">LogImages</a></h3>
+				<pre>func (_ *NgDiag) LogImages(fmt string, fmtArgs ...interface{})</pre>
+				
+				
+				
+			
+				
+				<h3 id="NgDiag.LogMeshes">func (*NgDiag) <a href="/target/ng-diag.go?s=1556:1618#L53">LogMeshes</a></h3>
+				<pre>func (_ *NgDiag) LogMeshes(fmt string, fmtArgs ...interface{})</pre>
+				
+				
+				
+			
+				
+				<h3 id="NgDiag.LogMisc">func (*NgDiag) <a href="/target/ng-diag.go?s=1669:1729#L57">LogMisc</a></h3>
+				<pre>func (_ *NgDiag) LogMisc(fmt string, fmtArgs ...interface{})</pre>
+				
+				
+				
+			
+				
+				<h3 id="NgDiag.LogShaders">func (*NgDiag) <a href="/target/ng-diag.go?s=1778:1841#L61">LogShaders</a></h3>
+				<pre>func (_ *NgDiag) LogShaders(fmt string, fmtArgs ...interface{})</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="NgDiagLogCategory">type <a href="/target/ng-diag.go?s=107:133#L1">NgDiagLogCategory</a></h2>
+			<pre>type NgDiagLogCategory int</pre>
+			
+
+			
+				<pre>const (
+    DiagLogCatMisc    NgDiagLogCategory = 1
+    DiagLogCatMeshes  NgDiagLogCategory = 2
+    DiagLogCatShaders NgDiagLogCategory = 4
+    DiagLogCatImages  NgDiagLogCategory = 8
+    DiagLogCatAll     NgDiagLogCategory = DiagLogCatMeshes | DiagLogCatMisc | DiagLogCatShaders | DiagLogCatImages
+)</pre>
+				
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="NgLibs">type <a href="/target/ng-libs.go?s=388:614#L10">NgLibs</a></h2>
+			<pre>type NgLibs struct {
+    Effects   FxEffectLib
+    Materials FxMaterialLib
+    Images    struct {
+        SplashScreen FxImage2D
+        TexCube      FxImageCubeLib
+        Tex2D        FxImage2DLib
+    }
+    Meshes MeshLib
+    Models ModelLib
+    Scenes SceneLib
+}</pre>
+			<p>
+Only used for Core.Libs.
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NgLibs.UpdateIDRef">func (*NgLibs) <a href="/target/ng-libs.go?s=1125:1186#L49">UpdateIDRef</a></h3>
+				<pre>func (_ *NgLibs) UpdateIDRef(oldNewIDs map[int]int, ptr *int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="NgLibs.UpdateIDRefs">func (*NgLibs) <a href="/target/ng-libs.go?s=1249:1315#L55">UpdateIDRefs</a></h3>
+				<pre>func (_ *NgLibs) UpdateIDRefs(oldNewIDs map[int]int, ptrs ...*int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="NgLibs.UpdatedIDRef">func (*NgLibs) <a href="/target/ng-libs.go?s=1439:1509#L65">UpdatedIDRef</a></h3>
+				<pre>func (_ *NgLibs) UpdatedIDRef(oldNewIDs map[int]int, in int) (out int)</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="NgLoop">type <a href="/target/ng-loop.go?s=362:1745#L7">NgLoop</a></h2>
+			<pre>type NgLoop struct {
+    <span class="comment">//	Set to true by Loop.Run(). Set to false to stop looping.</span>
+    Running bool
+
+    On struct {
+        <span class="comment">//	While Loop.Run() is running, this callback is invoked (in its own &#34;app thread&#34;)</span>
+        <span class="comment">//	every loop iteration (ie. once per frame).</span>
+        <span class="comment">//	This callback may run in parallel with On.EverySec(), but never with On.WinThread().</span>
+        AppThread func()
+
+        <span class="comment">//	While Loop.Run() is running, this callback is invoked (on the main windowing thread)</span>
+        <span class="comment">//	every loop iteration (ie. once per frame).</span>
+        <span class="comment">//	This callback is guaranteed to never run in parallel with</span>
+        <span class="comment">//	(and always after) the On.AppThread() and On.EverySec() callbacks.</span>
+        WinThread func()
+
+        <span class="comment">//	While Loop.Run() is running, this callback is invoked (on the main windowing thread)</span>
+        <span class="comment">//	at least and at most once per second, a useful entry point for non-real-time periodically recurring code.</span>
+        <span class="comment">//	Caution: unlike On.WinThread(), this callback runs in parallel with your On.AppThread() callback.</span>
+        EverySec func()
+    }
+
+    Tick struct {
+        <span class="comment">//	The tick-time when the Loop.On.EverySec() callback was last invoked.</span>
+        PrevSec int
+
+        <span class="comment">//	While Loop.Run() is running, is set to the current &#34;tick-time&#34;:</span>
+        <span class="comment">//	the time in seconds expired ever since Loop.Run() was last called.</span>
+        Now float64
+
+        <span class="comment">//	While Loop.Run() is running, is set to the previous tick-time.</span>
+        Prev float64
+
+        <span class="comment">//	The delta between Tick.Prev and Tick.Now.</span>
+        Delta float64
+    }
+}</pre>
+			<p>
+NgLoop is a singleton type, only used for the Loop variable.
+It is only aware of that instance and does not support any other NgLoop instances.
+</p>
+
+
+			
+
+			
+				<pre>var (
+    <span class="comment">//	Manages your main-thread&#39;s render loop.</span>
+    <span class="comment">//	Call it&#39;s Run() method once after go:ngine initialization (see examples).</span>
+    Loop NgLoop
+)</pre>
+				
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NgLoop.Run">func (*NgLoop) <a href="/target/ng-loop.go?s=3053:3075#L108">Run</a></h3>
+				<pre>func (_ *NgLoop) Run()</pre>
+				<p>
+Initiates a rendering loop. This method returns only when the loop is stopped for whatever reason.
+</p>
+<p>
+(Before entering the loop, this method performs a one-off GC invokation.)
+</p>
+
+				
+				
+			
+				
+				<h3 id="NgLoop.Time">func (*NgLoop) <a href="/target/ng-loop.go?s=6324:6355#L194">Time</a></h3>
+				<pre>func (_ *NgLoop) Time() float64</pre>
+				<p>
+Returns the number of seconds expired ever since Loop.Run() was last called.
+</p>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="NgOptions">type <a href="/target/ng-options.go?s=613:3823#L23">NgOptions</a></h2>
+			<pre>type NgOptions struct {
+    AppDir struct {
+        <span class="comment">//	The base directory path for app file paths.</span>
+        BasePath string
+
+        Temp struct {
+            BaseName       string
+            ShaderSources  string
+            CachedTextures string
+        }
+    }
+
+    Cameras struct {
+        DefaultControllerParams ControllerParams
+        PerspectiveDefaults     CameraPerspective
+    }
+
+    Initialization struct {
+        GlContext struct {
+            CoreProfile struct {
+                <span class="comment">//	Required on Mac OS X, not necessary elsewhere.</span>
+                <span class="comment">//	While potentially slightly beneficial with recent GL drivers,</span>
+                <span class="comment">//	might also fail with a select few rather outdated ones.</span>
+                <span class="comment">//	Defaults to true on Mac OS X, to false elsewhere.</span>
+                ForceFirst bool
+
+                <span class="comment">//	While required on Mac OS X, really not recommended elsewhere</span>
+                <span class="comment">//	(at present). Defaults to true on Mac OS X, to false elsewhere.</span>
+                <span class="comment">//	Only used if go:ngine requests the creation of a GL core-profile context.</span>
+                ForwardCompat bool
+
+                <span class="comment">//	Defaults to the newest GL version currently supported by the GL</span>
+                <span class="comment">//	binding used by go:ngine. The binding adaptively uses features</span>
+                <span class="comment">//	of GL versions newer than 3.3 only if they are available, so this</span>
+                <span class="comment">//	is a most strongly recommended default for release apps. But for</span>
+                <span class="comment">//	testing, this is useful to test performance in older GL versions.</span>
+                <span class="comment">//	Must be one of the values in glutil.KnownVersions.</span>
+                VersionHint float64
+            }
+
+            <span class="comment">//	Defaults to the DefaultBadVersionMessage constant. If using a custom</span>
+            <span class="comment">//	string, you can use the same placeholders as that one.</span>
+            BadVersionMessage string
+        }
+        DefaultCanvas struct {
+            GammaViaShader bool
+            SplashImage    []byte
+        }
+        Window struct {
+            <span class="comment">//	Defaults: R=8 G=8 B=8 A=0 D=8 S=0.</span>
+            <span class="comment">//	These defaults are reasonable when using a render-to-texture off-screen</span>
+            <span class="comment">//	RenderCanvas. Otherwise, may want to bump D to at least 24 or 32.</span>
+            <span class="comment">//	D shouldn&#39;t be 0 as this causes some Intel HD drivers to bug out badly.</span>
+            Rbits, Gbits, Bbits, Abits, DepthBits, StencilBits int
+        }
+    }
+
+    Libs struct {
+        InitialCap   int
+        GrowCapBy    int
+        OnIDsChanged struct {
+            Effects LibElemIDChangedHandlers
+            Images  struct {
+                TexCube LibElemIDChangedHandlers
+                Tex2D   LibElemIDChangedHandlers
+            }
+            Materials LibElemIDChangedHandlers
+            Meshes    LibElemIDChangedHandlers
+            Models    LibElemIDChangedHandlers
+            Scenes    LibElemIDChangedHandlers
+        }
+    }
+
+    Loop struct {
+        <span class="comment">//	By default, the app and prep &#34;threads&#34; being invoked every frame</span>
+        <span class="comment">//	during Loop() are just normal go-routines that may or may not</span>
+        <span class="comment">//	correspond to real separate OS thread contexts.</span>
+        ForceThreads struct {
+            <span class="comment">//	If true, each On.AppThread() go-routine invokation locks its own exclusive thread context.</span>
+            App bool
+
+            <span class="comment">//	If true, each prep-stage go-routine invokation locks its own exclusive thread context.</span>
+            Prep bool
+        }
+
+        <span class="comment">//	Controls whether and how often the Garbage Collector</span>
+        <span class="comment">//	is invoked during the Loop.</span>
+        GcEvery struct {
+            <span class="comment">//	Defaults to false. If true, GC will</span>
+            <span class="comment">//	be invoked every frame during the Loop.</span>
+            Frame bool
+
+            <span class="comment">//	Defaults to true. If true, GC will be invoked at</span>
+            <span class="comment">//	least and at most once per second during the Loop.</span>
+            Sec bool
+        }
+    }
+
+    Rendering struct {
+        DefaultClearColor ugl.GlVec4
+    }
+
+    Textures struct {
+        Storage FxImageStorage
+    }
+}</pre>
+			<p>
+Only used for the Options variable.
+</p>
+
+
+			
+
+			
+				<pre>var (
+    Options NgOptions
+)</pre>
+				
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="NgStats">type <a href="/target/ng-stats.go?s=291:3910#L4">NgStats</a></h2>
+			<pre>type NgStats struct {
+    <span class="comment">//	Gives the total number of frames rendered during the &#34;previous&#34;</span>
+    <span class="comment">//	(not the current) second. Good enough for just a simple-minded FPS indicator.</span>
+    FpsLastSec int
+
+    <span class="comment">//	This TimingStats instance combines all the individual FrameFoo fields</span>
+    <span class="comment">//	to track over time (both average and maximum) total cost per frame.</span>
+    Frame TimingStats
+
+    <span class="comment">//	&#34;Rendering&#34; consists of a CPU-side and a GPU-side cost.</span>
+    <span class="comment">//	This TimingStats instance combines both to track over time</span>
+    <span class="comment">//	(both average and maximum) total rendering cost per frame.</span>
+    FrameRenderBoth TimingStats
+
+    <span class="comment">//	The CPU-side cost of rendering comprises sending pre-batched</span>
+    <span class="comment">//	rendering commands (prepared by the &#34;prep&#34; stage) to the GPU.</span>
+    <span class="comment">//	This TimingStats instance tracks over time (both average</span>
+    <span class="comment">//	and maximum) CPU-side rendering cost per frame.</span>
+    FrameRenderCpu TimingStats
+
+    <span class="comment">//	The GPU-side cost of rendering comprises execution of all draw calls</span>
+    <span class="comment">//	sent by the CPU-side, plus waiting for V-sync if enabled.</span>
+    <span class="comment">//	This TimingStats instance tracks over time (both average</span>
+    <span class="comment">//	and maximum) GPU-side rendering cost per frame.</span>
+    FrameRenderGpu TimingStats
+
+    <span class="comment">//	&#34;Prep code&#34; comprises all go:ngine logic executed every frame in parallel to cull</span>
+    <span class="comment">//	geometry and prepare a batch of rendering commands for the next (not current) frame.</span>
+    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;prep code&#34; cost per frame.</span>
+    FramePrepThread TimingStats
+
+    <span class="comment">//	&#34;App code&#34; comprises (mostly user-specific) logic executed every frame in parallel in</span>
+    <span class="comment">//	your Loop.OnAppThread() callback. Such code may freely modify dynamic Cameras, Nodes etc.</span>
+    <span class="comment">//	Unlike OnWinThread() code, &#34;app code&#34; always runs in its own thread in parallel to the prep and main threads.</span>
+    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;app code&#34; cost per frame.</span>
+    FrameAppThread TimingStats
+
+    <span class="comment">//	Tracks over the time (both average and maximum) cost for Loop.On.EverySec() and,</span>
+    <span class="comment">//	if Diag.LogGLErrorsInLoopOnSec is true, Diag.LogIfGlErr().</span>
+    FrameOnSec TimingStats
+
+    <span class="comment">//	&#34;Windowing/GPU/IO code&#34; comprises user-specific logic executed every frame via your own</span>
+    <span class="comment">//	Loop.OnWinThread() callback. This should be kept to a minimum to fully enjoy</span>
+    <span class="comment">//	the benefits of multi-threading. Main use-cases are calls resulting in GPU state</span>
+    <span class="comment">//	changes (such as toggling effects in Core.Render.PostFx) and working with UserIO</span>
+    <span class="comment">//	to poll for user input -- but do consider executing resulting logic in your OnAppThread().</span>
+    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;input code&#34; cost per frame.</span>
+    FrameWinThread TimingStats
+
+    <span class="comment">//	When CPU-side rendering is completed, Loop waits for the app thread and prep thread</span>
+    <span class="comment">//	to finish (either before or after GPU-side rendering depending on Loop.SwapLast).</span>
+    <span class="comment">//	It then moves &#34;prep results&#34; to the render thread and &#34;app results&#34; to the prep thread.</span>
+    <span class="comment">//	This TimingStats instance tracks over time (both average and maximum) &#34;thread sync&#34; cost per frame.</span>
+    FrameThreadSync TimingStats
+
+    <span class="comment">//	During the Loop, the Go Garbge Collector is invoked at least and at most once per second.</span>
+    <span class="comment">//	</span>
+    <span class="comment">//	Forcing GC &#34;that often&#34; practically guarantees it will almost never have so much work to do as to</span>
+    <span class="comment">//	noticably block user interaction --- typically well below 10ms, most often around 1ms.</span>
+    <span class="comment">//	</span>
+    <span class="comment">//	This TimingStats instance over time tracks the maximum and average time spent on that</span>
+    <span class="comment">//	1x-per-second-during-Loop GC invokation (but does not track any other GC invokations).</span>
+    Gc TimingStats
+
+    Programs struct {
+        NumProgsCompiled int
+        TotalTimeCost    int64
+    }
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+Consider NgStats a &#34;Singleton&#34; type, only valid use is the core.Stats global variable.
+Tracks various go:ngine performance indicators over time.
+</p>
+
+
+			
+
+			
+				<pre>var (
+    <span class="comment">//	Tracks various go:ngine performance counters over time.</span>
+    Stats NgStats
+)</pre>
+				
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NgStats.AverageFps">func (*NgStats) <a href="/target/ng-stats.go?s=4153:4191#L84">AverageFps</a></h3>
+				<pre>func (_ *NgStats) AverageFps() float64</pre>
+				<p>
+Returns the average number of frames-per-second since Loop.Loop() was last called.
+</p>
+
+				
+				
+			
+				
+				<h3 id="NgStats.TotalFrames">func (*NgStats) <a href="/target/ng-stats.go?s=4719:4758#L108">TotalFrames</a></h3>
+				<pre>func (_ *NgStats) TotalFrames() float64</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="NgUserIO">type <a href="/target/ng-userio.go?s=480:737#L6">NgUserIO</a></h2>
+			<pre>type NgUserIO struct {
+    <span class="comment">//	Minimum delay for NgUserIO.KeyToggled() method, in seconds. Defaults to 0.15.</span>
+    KeyToggleMinDelay float64
+
+    Window WindowOptions
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+Consider NgUserIO a &#34;Singleton&#34; type, only valid use is the core.UserIO global variable.
+Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window management, not the graphics themselves).
+</p>
+
+
+			
+
+			
+				<pre>var (
+    <span class="comment">//	Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window management, not the graphics themselves).</span>
+    UserIO NgUserIO
+)</pre>
+				
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NgUserIO.IifKeyF">func (*NgUserIO) <a href="/target/ng-userio.go?s=2679:2747#L71">IifKeyF</a></h3>
+				<pre>func (_ *NgUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64</pre>
+				<p>
+Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
+</p>
+
+				
+				
+			
+				
+				<h3 id="NgUserIO.KeyPressed">func (*NgUserIO) <a href="/target/ng-userio.go?s=2866:2909#L79">KeyPressed</a></h3>
+				<pre>func (_ *NgUserIO) KeyPressed(key int) bool</pre>
+				<p>
+Returns true if the specified key is pressed.
+</p>
+
+				
+				
+			
+				
+				<h3 id="NgUserIO.KeyPressedWhich">func (*NgUserIO) <a href="/target/ng-userio.go?s=3000:3051#L84">KeyPressedWhich</a></h3>
+				<pre>func (_ *NgUserIO) KeyPressedWhich(keys ...int) int</pre>
+				<p>
+Returns the first in keys that is pressed.
+</p>
+
+				
+				
+			
+				
+				<h3 id="NgUserIO.KeyToggled">func (*NgUserIO) <a href="/target/ng-userio.go?s=4053:4096#L114">KeyToggled</a></h3>
+				<pre>func (_ *NgUserIO) KeyToggled(key int) bool</pre>
+				<p>
+Returns true if the specified key has been &#34;toggled&#34;, ie. its pressed-state changed within the last me.KeyToggleMinDelay seconds.
+</p>
+
+				
+				
+			
+				
+				<h3 id="NgUserIO.KeysPressedAll2">func (*NgUserIO) <a href="/target/ng-userio.go?s=3233:3284#L94">KeysPressedAll2</a></h3>
+				<pre>func (_ *NgUserIO) KeysPressedAll2(k1, k2 int) bool</pre>
+				<p>
+Returns true if both specified keys are pressed.
+</p>
+
+				
+				
+			
+				
+				<h3 id="NgUserIO.KeysPressedAll3">func (*NgUserIO) <a href="/target/ng-userio.go?s=3402:3457#L99">KeysPressedAll3</a></h3>
+				<pre>func (_ *NgUserIO) KeysPressedAll3(k1, k2, k3 int) bool</pre>
+				<p>
+Returns true if all three specified keys are pressed.
+</p>
+
+				
+				
+			
+				
+				<h3 id="NgUserIO.KeysPressedAny2">func (*NgUserIO) <a href="/target/ng-userio.go?s=3604:3655#L104">KeysPressedAny2</a></h3>
+				<pre>func (_ *NgUserIO) KeysPressedAny2(k1, k2 int) bool</pre>
+				<p>
+Returns true if any of the two specified keys is pressed.
+</p>
+
+				
+				
+			
+				
+				<h3 id="NgUserIO.KeysPressedAny3">func (*NgUserIO) <a href="/target/ng-userio.go?s=3779:3834#L109">KeysPressedAny3</a></h3>
+				<pre>func (_ *NgUserIO) KeysPressedAny3(k1, k2, k3 int) bool</pre>
+				<p>
+Returns true if any of the three specified keys is pressed.
+</p>
+
+				
+				
+			
+		
+			
+			
 			<h2 id="Node">type <a href="/target/node.go?s=271:888#L5">Node</a></h2>
 			<pre>type Node struct {
     Rendering struct {
@@ -4032,14 +3896,14 @@ Declares a point of interest in a Scene.
 				
 			
 				
-				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2515:2550#L99">Root</a></h3>
+				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2626:2661#L102">Root</a></h3>
 				<pre>func (me *Node) Root() (root *Node)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2646:2686#L108">Walk</a></h3>
+				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2757:2797#L111">Walk</a></h3>
 				<pre>func (me *Node) Walk(onNode NodeVisitor)</pre>
 				
 				
@@ -4121,7 +3985,7 @@ Removes the Node with the specified ID from me.M.
 		
 			
 			
-			<h2 id="RenderCanvas">type <a href="/target/render-canvas.gt.go?s=181:721#L1">RenderCanvas</a></h2>
+			<h2 id="RenderCanvas">type <a href="/target/render-canvas.gt.go?s=181:726#L1">RenderCanvas</a></h2>
 			<pre>type RenderCanvas struct {
     <span class="comment">//	This should be an non-negative integer, it&#39;s a float64 just to avoid a</span>
     <span class="comment">//	type conversion. How often this RenderCanvas is included in rendering:</span>
@@ -4131,7 +3995,7 @@ Removes the Node with the specified ID from me.M.
     <span class="comment">//	0 = this RenderCanvas is disabled for rendering</span>
     EveryNthFrame float64
 
-    Cams CameraLib
+    Views RenderViewLib
 
     Srgb bool
     <span class="comment">// contains filtered or unexported fields</span>
@@ -4151,35 +4015,21 @@ Represents a surface (texture framebuffer) that can be rendered to.
 
 			
 				
-				<h3 id="RenderCanvas.AddNewCamera2D">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=978:1050#L31">AddNewCamera2D</a></h3>
-				<pre>func (me *RenderCanvas) AddNewCamera2D(allowOverlaps bool) (cam *Camera)</pre>
+				<h3 id="RenderCanvas.AddNewView">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=984:1061#L31">AddNewView</a></h3>
+				<pre>func (me *RenderCanvas) AddNewView(renderTechnique string) (view *RenderView)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.AddNewCamera3D">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=1160:1214#L39">AddNewCamera3D</a></h3>
-				<pre>func (me *RenderCanvas) AddNewCamera3D() (cam *Camera)</pre>
-				
-				
-				
-			
-				
-				<h3 id="RenderCanvas.AddNewCameraQuad">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=1309:1365#L47">AddNewCameraQuad</a></h3>
-				<pre>func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera)</pre>
-				
-				
-				
-			
-				
-				<h3 id="RenderCanvas.CurrentAbsoluteSize">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=838:903#L26">CurrentAbsoluteSize</a></h3>
+				<h3 id="RenderCanvas.CurrentAbsoluteSize">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=844:909#L26">CurrentAbsoluteSize</a></h3>
 				<pre>func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=2521:2590#L83">SetSize</a></h3>
+				<h3 id="RenderCanvas.SetSize">func (*RenderCanvas) <a href="/target/render-canvas.gt.go?s=2298:2367#L70">SetSize</a></h3>
 				<pre>func (me *RenderCanvas) SetSize(relative bool, width, height float64)</pre>
 				<p>
 Sets the 2 dimensions of this render canvas.
@@ -4193,7 +4043,7 @@ Otherwise, width and height are absolute pixel dimensions.
 		
 			
 			
-			<h2 id="RenderCanvasLib">type <a href="/target/render-canvas.gt.go?s=3487:3523#L111">RenderCanvasLib</a></h2>
+			<h2 id="RenderCanvasLib">type <a href="/target/render-canvas.gt.go?s=3264:3300#L98">RenderCanvasLib</a></h2>
 			<pre>type RenderCanvasLib []*RenderCanvas</pre>
 			<p>
 Only used for Core.Render.Canvases
@@ -4210,28 +4060,28 @@ Only used for Core.Render.Canvases
 
 			
 				
-				<h3 id="RenderCanvasLib.AddNew">func (*RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=2827:2919#L92">AddNew</a></h3>
+				<h3 id="RenderCanvasLib.AddNew">func (*RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=2604:2696#L79">AddNew</a></h3>
 				<pre>func (me *RenderCanvasLib) AddNew(relative bool, width, height float64) (canv *RenderCanvas)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvasLib.IsOk">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3757:3800#L127">IsOk</a></h3>
+				<h3 id="RenderCanvasLib.IsOk">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3534:3577#L114">IsOk</a></h3>
 				<pre>func (me RenderCanvasLib) IsOk(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvasLib.Remove">func (*RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3838:3888#L131">Remove</a></h3>
+				<h3 id="RenderCanvasLib.Remove">func (*RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3615:3665#L118">Remove</a></h3>
 				<pre>func (me *RenderCanvasLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="RenderCanvasLib.Walk">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=4162:4220#L144">Walk</a></h3>
+				<h3 id="RenderCanvasLib.Walk">func (RenderCanvasLib) <a href="/target/render-canvas.gt.go?s=3939:3997#L131">Walk</a></h3>
 				<pre>func (me RenderCanvasLib) Walk(on func(ref *RenderCanvas))</pre>
 				
 				
@@ -4240,7 +4090,7 @@ Only used for Core.Render.Canvases
 		
 			
 			
-			<h2 id="RenderTechnique">type <a href="/target/render-technique.go?s=78:148#L1">RenderTechnique</a></h2>
+			<h2 id="RenderTechnique">type <a href="/target/render-technique-base.go?s=83:198#L1">RenderTechnique</a></h2>
 			<pre>type RenderTechnique interface {
     <span class="comment">// contains filtered or unexported methods</span>
 }</pre>
@@ -4277,8 +4127,9 @@ Only used for Core.Render.Canvases
 		
 			
 			
-			<h2 id="RenderTechniqueScene">type <a href="/target/render-technique-scene.go?s=101:280#L1">RenderTechniqueScene</a></h2>
+			<h2 id="RenderTechniqueScene">type <a href="/target/render-technique-scene.go?s=101:296#L1">RenderTechniqueScene</a></h2>
 			<pre>type RenderTechniqueScene struct {
+    Camera Camera
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			
@@ -4293,9 +4144,142 @@ Only used for Core.Render.Canvases
 
 			
 				
-				<h3 id="RenderTechniqueScene.ToggleBatching">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=460:508#L19">ToggleBatching</a></h3>
+				<h3 id="RenderTechniqueScene.ApplyPerspectiveProjection">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=763:823#L30">ApplyPerspectiveProjection</a></h3>
+				<pre>func (me *RenderTechniqueScene) ApplyPerspectiveProjection()</pre>
+				<p>
+Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Camera.Perspective.
+</p>
+
+				
+				
+			
+				
+				<h3 id="RenderTechniqueScene.ToggleBatching">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=1013:1061#L36">ToggleBatching</a></h3>
 				<pre>func (me *RenderTechniqueScene) ToggleBatching()</pre>
 				
+				
+				
+			
+		
+			
+			
+			<h2 id="RenderView">type <a href="/target/render-view.gt.go?s=101:305#L1">RenderView</a></h2>
+			<pre>type RenderView struct {
+    Enabled bool
+
+    FxProcs FxProcs
+
+    <span class="comment">//	The device-relative or absolute view-port for this view.</span>
+    Port RenderViewport
+
+    RenderStates ugl.RenderStatesBag
+
+    Technique RenderTechnique
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="RenderView.RenderTechniqueQuad">func (*RenderView) <a href="/target/render-view.gt.go?s=982:1053#L32">RenderTechniqueQuad</a></h3>
+				<pre>func (me *RenderView) RenderTechniqueQuad() (tech *RenderTechniqueQuad)</pre>
+				
+				
+				
+			
+				
+				<h3 id="RenderView.RenderTechniqueScene">func (*RenderView) <a href="/target/render-view.gt.go?s=1114:1187#L37">RenderTechniqueScene</a></h3>
+				<pre>func (me *RenderView) RenderTechniqueScene() (tech *RenderTechniqueScene)</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="RenderViewLib">type <a href="/target/render-view.gt.go?s=2779:2811#L83">RenderViewLib</a></h2>
+			<pre>type RenderViewLib []*RenderView</pre>
+			<p>
+Only used for Core.Render.Canvases[id].Views
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="RenderViewLib.IsOk">func (RenderViewLib) <a href="/target/render-view.gt.go?s=3035:3076#L99">IsOk</a></h3>
+				<pre>func (me RenderViewLib) IsOk(id int) bool</pre>
+				
+				
+				
+			
+				
+				<h3 id="RenderViewLib.Remove">func (*RenderViewLib) <a href="/target/render-view.gt.go?s=3114:3162#L103">Remove</a></h3>
+				<pre>func (me *RenderViewLib) Remove(fromID, num int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="RenderViewLib.Walk">func (RenderViewLib) <a href="/target/render-view.gt.go?s=3436:3490#L116">Walk</a></h3>
+				<pre>func (me RenderViewLib) Walk(on func(ref *RenderView))</pre>
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="RenderViewport">type <a href="/target/render-view.gt.go?s=1282:1536#L43">RenderViewport</a></h2>
+			<pre>type RenderViewport struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+Only used for RenderView.Port
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="RenderViewport.SetAbsolute">func (*RenderViewport) <a href="/target/render-view.gt.go?s=1667:1729#L58">SetAbsolute</a></h3>
+				<pre>func (me *RenderViewport) SetAbsolute(x, y, width, height int)</pre>
+				<p>
+Sets the absolute viewport origin and dimensions in pixels.
+</p>
+
+				
+				
+			
+				
+				<h3 id="RenderViewport.SetRelative">func (*RenderViewport) <a href="/target/render-view.gt.go?s=1987:2053#L65">SetRelative</a></h3>
+				<pre>func (me *RenderViewport) SetRelative(x, y, width, height float64)</pre>
+				<p>
+Sets the RenderCanvas-relative viewport origin and dimensions, with the value 1.0
+representing the maximum extent of the viewport on that respective axis.
+</p>
+
 				
 				
 			
@@ -4593,7 +4577,7 @@ Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.
 		
 			
 			
-			<h2 id="TimingStats">type <a href="/target/ng-stats.go?s=4898:4995#L113">TimingStats</a></h2>
+			<h2 id="TimingStats">type <a href="/target/ng-stats.go?s=4866:4963#L113">TimingStats</a></h2>
 			<pre>type TimingStats struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -4612,7 +4596,7 @@ Helps track average and maximum cost for a variety of performance indicators.
 
 			
 				
-				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/ng-stats.go?s=5064:5104#L118">Average</a></h3>
+				<h3 id="TimingStats.Average">func (*TimingStats) <a href="/target/ng-stats.go?s=5032:5072#L118">Average</a></h3>
 				<pre>func (me *TimingStats) Average() float64</pre>
 				<p>
 Returns the average cost tracked by this performance indicator.
@@ -4622,7 +4606,7 @@ Returns the average cost tracked by this performance indicator.
 				
 			
 				
-				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/ng-stats.go?s=5757:5793#L147">Max</a></h3>
+				<h3 id="TimingStats.Max">func (*TimingStats) <a href="/target/ng-stats.go?s=5725:5761#L147">Max</a></h3>
 				<pre>func (me *TimingStats) Max() float64</pre>
 				<p>
 Returns the maximum cost tracked by this performance indicator.
@@ -4634,19 +4618,18 @@ Returns the maximum cost tracked by this performance indicator.
 		
 			
 			
-			<h2 id="WindowOptions">type <a href="/target/ng-window.go?s=239:599#L1">WindowOptions</a></h2>
+			<h2 id="WindowOptions">type <a href="/target/ng-window.go?s=56:521#L1">WindowOptions</a></h2>
 			<pre>type WindowOptions struct {
+    <span class="comment">//	Defaults to a function that returns true to allow closing the window.</span>
+    OnCloseRequested func() bool
+
     <span class="comment">//	Minimum delay, in seconds, to wait after the last window-resize event received from</span>
     <span class="comment">//	the OS before notifying the rendering runtime of the new window dimensions.</span>
     <span class="comment">//	Defaults to 0.15.</span>
     ResizeMinDelay float64
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
-			<p>
-Only used for core.UserIO.Window after initialization, BUT: core.UserIO.Window gets
-initialized from a copy of your NewWindowOptions() that you pass to your NewEngineOptions().
-</p>
-
+			
 
 			
 
@@ -4658,21 +4641,21 @@ initialized from a copy of your NewWindowOptions() that you pass to your NewEngi
 
 			
 				
-				<h3 id="WindowOptions.Created">func (*WindowOptions) <a href="/target/ng-window.go?s=601:640#L11">Created</a></h3>
+				<h3 id="WindowOptions.Created">func (*WindowOptions) <a href="/target/ng-window.go?s=523:562#L12">Created</a></h3>
 				<pre>func (me *WindowOptions) Created() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="WindowOptions.Fullscreen">func (*WindowOptions) <a href="/target/ng-window.go?s=688:730#L15">Fullscreen</a></h3>
+				<h3 id="WindowOptions.Fullscreen">func (*WindowOptions) <a href="/target/ng-window.go?s=610:652#L16">Fullscreen</a></h3>
 				<pre>func (me *WindowOptions) Fullscreen() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="WindowOptions.Height">func (*WindowOptions) <a href="/target/ng-window.go?s=805:842#L20">Height</a></h3>
+				<h3 id="WindowOptions.Height">func (*WindowOptions) <a href="/target/ng-window.go?s=727:764#L21">Height</a></h3>
 				<pre>func (me *WindowOptions) Height() int</pre>
 				<p>
 Returns the height of the window in pixels.
@@ -4682,21 +4665,21 @@ Returns the height of the window in pixels.
 				
 			
 				
-				<h3 id="WindowOptions.SetSize">func (*WindowOptions) <a href="/target/ng-window.go?s=866:917#L24">SetSize</a></h3>
+				<h3 id="WindowOptions.SetSize">func (*WindowOptions) <a href="/target/ng-window.go?s=788:839#L25">SetSize</a></h3>
 				<pre>func (me *WindowOptions) SetSize(width, height int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="WindowOptions.SetSwapInterval">func (*WindowOptions) <a href="/target/ng-window.go?s=1018:1071#L30">SetSwapInterval</a></h3>
+				<h3 id="WindowOptions.SetSwapInterval">func (*WindowOptions) <a href="/target/ng-window.go?s=940:993#L31">SetSwapInterval</a></h3>
 				<pre>func (me *WindowOptions) SetSwapInterval(newSwap int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="WindowOptions.SetTitle">func (*WindowOptions) <a href="/target/ng-window.go?s=1188:1238#L38">SetTitle</a></h3>
+				<h3 id="WindowOptions.SetTitle">func (*WindowOptions) <a href="/target/ng-window.go?s=1110:1160#L39">SetTitle</a></h3>
 				<pre>func (me *WindowOptions) SetTitle(newTitle string)</pre>
 				<p>
 Sets the window title to newTitle.
@@ -4706,21 +4689,21 @@ Sets the window title to newTitle.
 				
 			
 				
-				<h3 id="WindowOptions.SwapInterval">func (*WindowOptions) <a href="/target/ng-window.go?s=1319:1362#L45">SwapInterval</a></h3>
+				<h3 id="WindowOptions.SwapInterval">func (*WindowOptions) <a href="/target/ng-window.go?s=1241:1284#L46">SwapInterval</a></h3>
 				<pre>func (me *WindowOptions) SwapInterval() int</pre>
 				
 				
 				
 			
 				
-				<h3 id="WindowOptions.Title">func (*WindowOptions) <a href="/target/ng-window.go?s=1384:1423#L49">Title</a></h3>
+				<h3 id="WindowOptions.Title">func (*WindowOptions) <a href="/target/ng-window.go?s=1306:1345#L50">Title</a></h3>
 				<pre>func (me *WindowOptions) Title() string</pre>
 				
 				
 				
 			
 				
-				<h3 id="WindowOptions.Width">func (*WindowOptions) <a href="/target/ng-window.go?s=1492:1528#L54">Width</a></h3>
+				<h3 id="WindowOptions.Width">func (*WindowOptions) <a href="/target/ng-window.go?s=1414:1450#L55">Width</a></h3>
 				<pre>func (me *WindowOptions) Width() int</pre>
 				<p>
 Returns the width of the window in pixels.

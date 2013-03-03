@@ -9,12 +9,12 @@ import (
 var (
 	//	Manages your main-thread's render loop.
 	//	Call it's Run() method once after go:ngine initialization (see examples).
-	Loop EngineLoop
+	Loop NgLoop
 )
 
-//	EngineLoop is a singleton type, only used for the Loop variable.
-//	It is only aware of that instance and does not support any other EngineLoop instances.
-type EngineLoop struct {
+//	NgLoop is a singleton type, only used for the Loop variable.
+//	It is only aware of that instance and does not support any other NgLoop instances.
+type NgLoop struct {
 	//	Set to true by Loop.Run(). Set to false to stop looping.
 	Running bool
 
@@ -52,23 +52,23 @@ type EngineLoop struct {
 	}
 }
 
-func (_ *EngineLoop) init() {
+func (_ *NgLoop) init() {
 	Loop.On.EverySec, Loop.On.AppThread, Loop.On.WinThread = func() {}, func() {}, func() {}
 }
 
-func (_ *EngineLoop) onGC() {
+func (_ *NgLoop) onGC() {
 	Stats.Gc.begin()
 	runtime.GC()
 	Stats.Gc.end()
 }
 
-func (_ *EngineLoop) onSwap() {
+func (_ *NgLoop) onSwap() {
 	Stats.FrameRenderGpu.begin()
 	glfw.SwapBuffers()
 	Stats.FrameRenderGpu.end()
 }
 
-func (_ *EngineLoop) onThreadApp() {
+func (_ *NgLoop) onThreadApp() {
 	Stats.FrameAppThread.begin()
 	if Options.Loop.ForceThreads.App {
 		runtime.LockOSThread()
@@ -78,7 +78,7 @@ func (_ *EngineLoop) onThreadApp() {
 	thrApp.Unlock()
 }
 
-func (_ *EngineLoop) onThreadPrep() {
+func (_ *NgLoop) onThreadPrep() {
 	Stats.FramePrepThread.begin()
 	if Options.Loop.ForceThreads.Prep {
 		runtime.LockOSThread()
@@ -88,7 +88,7 @@ func (_ *EngineLoop) onThreadPrep() {
 	thrPrep.Unlock()
 }
 
-func (_ *EngineLoop) onThreadWin() {
+func (_ *NgLoop) onThreadWin() {
 	Stats.FrameWinThread.begin()
 	if glfw.PollEvents(); glfw.WindowParam(glfw.Opened) == 1 {
 		Loop.On.WinThread()
@@ -98,7 +98,7 @@ func (_ *EngineLoop) onThreadWin() {
 	Stats.FrameWinThread.end()
 }
 
-func (_ *EngineLoop) onWaitForThreads() {
+func (_ *NgLoop) onWaitForThreads() {
 	Stats.FrameThreadSync.begin()
 
 	thrPrep.Lock()
@@ -115,7 +115,7 @@ func (_ *EngineLoop) onWaitForThreads() {
 //	Initiates a rendering loop. This method returns only when the loop is stopped for whatever reason.
 //	
 //	(Before entering the loop, this method performs a one-off GC invokation.)
-func (_ *EngineLoop) Run() {
+func (_ *NgLoop) Run() {
 	var (
 		secTick int
 		runGc   = Options.Loop.GcEvery.Frame
@@ -201,6 +201,6 @@ func (_ *EngineLoop) Run() {
 }
 
 //	Returns the number of seconds expired ever since Loop.Run() was last called.
-func (_ *EngineLoop) Time() float64 {
+func (_ *NgLoop) Time() float64 {
 	return glfw.Time()
 }

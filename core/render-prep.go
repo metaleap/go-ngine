@@ -1,6 +1,6 @@
 package core
 
-func (_ *EngineCore) onPrep() {
+func (_ *NgCore) onPrep() {
 	// thrPrep.nodePreBatch.reset()
 	for cid := 0; cid < len(Core.Render.Canvases); cid++ {
 		if Core.Render.Canvases[cid].renderThisFrame() {
@@ -10,32 +10,36 @@ func (_ *EngineCore) onPrep() {
 }
 
 func (me *RenderCanvas) onPrep() {
-	for cam := 0; cam < len(me.Cams); cam++ {
-		me.Cams[cam].onPrep()
+	for view := 0; view < len(me.Views); view++ {
+		me.Views[view].onPrep()
 	}
 }
 
-func (me *Camera) onPrep() {
+func (me *RenderView) onPrep() {
 	if me.Enabled {
-		me.thrPrep.matCamProj.SetFromMult4(&me.thrPrep.matProj, &me.Controller.thrPrep.mat)
-		if scene := me.scene(); scene != nil {
-			if !scene.thrPrep.done {
-				scene.thrPrep.done = true
-				scene.thrPrep.copyDone, scene.thrRend.copyDone = false, false
-				scene.RootNode.onPrep()
-			}
-			scene.RootNode.Walk(me.thrPrep.onPrepNode)
-			// if thrPrep.curTechScene = me.RenderTechniqueScene(); thrPrep.curTechScene != nil && thrPrep.curTechScene.Batch.Enabled {
-			// 	thrPrep.curTechScene.Batch.onPrep()
-			// }
+		me.Technique.onPrep()
+	}
+}
+
+func (me *RenderTechniqueScene) onPrep() {
+	me.Camera.thrPrep.matCamProj.SetFromMult4(&me.Camera.thrPrep.matProj, &me.Camera.Controller.thrPrep.mat)
+	if scene := me.Camera.scene(); scene != nil {
+		if !scene.thrPrep.done {
+			scene.thrPrep.done = true
+			scene.thrPrep.copyDone, scene.thrRend.copyDone = false, false
+			scene.RootNode.onPrep()
 		}
+		scene.RootNode.Walk(me.Camera.thrPrep.onPrepNode)
+		// if thrPrep.curTechScene = me.RenderTechniqueScene(); thrPrep.curTechScene != nil && thrPrep.curTechScene.Batch.Enabled {
+		// 	thrPrep.curTechScene.Batch.onPrep()
+		// }
 	}
 }
 
 func (me *Camera) onPrepNode(node *Node) {
 	camNodeRender := node.Rendering.Enabled && (node.parentNode == nil || node.parentNode.thrPrep.camRender[me]) // && inFrustum etc.
 	if node.thrPrep.camRender[me] = camNodeRender; camNodeRender {
-		if me.Perspective.Use {
+		if me.Perspective.Enabled {
 			if node.Rendering.skyMode {
 				node.thrPrep.camProjMats[me].SetFromMult4(&me.thrPrep.matCamProj, &me.thrPrep.matPos)
 			} else {

@@ -26,11 +26,11 @@ recent driver for {GPU}.
 `
 
 var (
-	Options EngineOptions
+	Options NgOptions
 )
 
 //	Only used for the Options variable.
-type EngineOptions struct {
+type NgOptions struct {
 	AppDir struct {
 		//	The base directory path for app file paths.
 		BasePath string
@@ -130,18 +130,6 @@ type EngineOptions struct {
 
 	Rendering struct {
 		DefaultClearColor ugl.GlVec4
-
-		//	Default render technique for a Camera created via RenderCanvas.AddNewCamera2D().
-		//	Defaults to "Scene".
-		DefaultTechnique2D string
-
-		//	Default render technique for a Camera created via RenderCanvas.AddNewCamera3D().
-		//	Defaults to "Scene".
-		DefaultTechnique3D string
-
-		//	Default render technique for a Camera created via RenderCanvas.AddNewCameraQuad().
-		//	Defaults to "Quad".
-		DefaultTechniqueQuad string
 	}
 
 	Textures struct {
@@ -156,7 +144,8 @@ func init() {
 	o.Textures.Storage.DiskCache.Compressor = func(w io.WriteCloser) io.WriteCloser { return w }
 	o.Textures.Storage.DiskCache.Decompressor = func(r io.ReadCloser) io.ReadCloser { return r }
 	o.Cameras.DefaultControllerParams.initDefaults()
-	o.Cameras.PerspectiveDefaults.FovY, o.Cameras.PerspectiveDefaults.ZFar, o.Cameras.PerspectiveDefaults.ZNear = 37.8493, 30000, 0.3
+	persp := &o.Cameras.PerspectiveDefaults
+	persp.FovY, persp.ZFar, persp.ZNear, persp.Enabled = 37.8493, 30000, 0.3, true
 	o.Loop.GcEvery.Sec = true
 	o.Libs.InitialCap, o.Libs.GrowCapBy = 16, 32
 
@@ -168,8 +157,8 @@ func init() {
 
 	rend := &o.Rendering
 	rend.DefaultClearColor = ugl.GlVec4{0, 0, 0, 1}
-	rend.DefaultTechnique2D, rend.DefaultTechnique3D, rend.DefaultTechniqueQuad = "Scene", "Scene", "Quad"
 
 	win := &UserIO.Window
+	win.OnCloseRequested = func() bool { return true }
 	win.title, win.width, win.height, win.swap, win.ResizeMinDelay = "go:ngine", 1024, 576, 1, 0.15
 }

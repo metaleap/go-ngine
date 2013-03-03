@@ -17,7 +17,7 @@ func (me LibElemIDChangedHandlers) callAll(oldNewIDs map[int]int) {
 }
 
 //	Only used for Core.Libs.
-type EngineLibs struct {
+type NgLibs struct {
 	Effects   FxEffectLib
 	Materials FxMaterialLib
 	Images    struct {
@@ -30,7 +30,7 @@ type EngineLibs struct {
 	Scenes SceneLib
 }
 
-func (me *EngineLibs) dispose() {
+func (me *NgLibs) dispose() {
 	for _, disp := range []interface {
 		dispose()
 	}{
@@ -43,7 +43,7 @@ func (me *EngineLibs) dispose() {
 	}
 }
 
-func (me *EngineLibs) init() {
+func (me *NgLibs) init() {
 	for _, c := range []interface {
 		init()
 	}{
@@ -56,13 +56,13 @@ func (me *EngineLibs) init() {
 	}
 }
 
-func (_ *EngineLibs) UpdateIDRef(oldNewIDs map[int]int, ptr *int) {
+func (_ *NgLibs) UpdateIDRef(oldNewIDs map[int]int, ptr *int) {
 	if newID, ok := oldNewIDs[*ptr]; ok {
 		*ptr = newID
 	}
 }
 
-func (_ *EngineLibs) UpdateIDRefs(oldNewIDs map[int]int, ptrs ...*int) {
+func (_ *NgLibs) UpdateIDRefs(oldNewIDs map[int]int, ptrs ...*int) {
 	var newID int
 	var ok bool
 	for _, ptr := range ptrs {
@@ -72,7 +72,7 @@ func (_ *EngineLibs) UpdateIDRefs(oldNewIDs map[int]int, ptrs ...*int) {
 	}
 }
 
-func (_ *EngineLibs) UpdatedIDRef(oldNewIDs map[int]int, in int) (out int) {
+func (_ *NgLibs) UpdatedIDRef(oldNewIDs map[int]int, in int) (out int) {
 	var ok bool
 	if out, ok = oldNewIDs[in]; !ok {
 		out = in
@@ -80,7 +80,7 @@ func (_ *EngineLibs) UpdatedIDRef(oldNewIDs map[int]int, in int) (out int) {
 	return
 }
 
-func (_ *EngineLibs) onFxImageIDsChanged(procID string, oldNewIDs map[int]int) {
+func (_ *NgLibs) onFxImageIDsChanged(procID string, oldNewIDs map[int]int) {
 	onOps := func(ops FxProcs) {
 		if len(ops) > 0 {
 			for i := 0; i < len(ops); i++ {
@@ -90,15 +90,15 @@ func (_ *EngineLibs) onFxImageIDsChanged(procID string, oldNewIDs map[int]int) {
 			}
 		}
 	}
-	var id, camID int
+	var id, vid int
 	for id = 0; id < len(Core.Libs.Effects); id++ {
 		if Core.Libs.Effects.Ok(id) {
 			onOps(Core.Libs.Effects[id].FxProcs)
 		}
 	}
 	for id = 0; id < len(Core.Render.Canvases); id++ {
-		for camID = 0; camID < len(Core.Render.Canvases[id].Cams); camID++ {
-			onOps(Core.Render.Canvases[id].Cams[camID].Render.FxProcs)
+		for vid = 0; vid < len(Core.Render.Canvases[id].Views); vid++ {
+			onOps(Core.Render.Canvases[id].Views[vid].FxProcs)
 		}
 	}
 }
@@ -199,10 +199,13 @@ func (_ ModelLib) onModelIDsChanged(oldNewIDs map[int]int) {
 }
 
 func (_ SceneLib) onSceneIDsChanged(oldNewIDs map[int]int) {
-	var id, camID int
+	var id, vid int
+	var rts *RenderTechniqueScene
 	for id = 0; id < len(Core.Render.Canvases); id++ {
-		for camID = 0; camID < len(Core.Render.Canvases[id].Cams); camID++ {
-			Core.Libs.UpdateIDRef(oldNewIDs, &Core.Render.Canvases[id].Cams[camID].sceneID)
+		for vid = 0; vid < len(Core.Render.Canvases[id].Views); vid++ {
+			if rts = Core.Render.Canvases[id].Views[vid].RenderTechniqueScene(); rts != nil {
+				Core.Libs.UpdateIDRef(oldNewIDs, &rts.Camera.sceneID)
+			}
 		}
 	}
 	Options.Libs.OnIDsChanged.Scenes.callAll(oldNewIDs)

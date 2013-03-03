@@ -9,11 +9,10 @@ import (
 //	Has two textured quads, a cat and a dog one, shows them both animated and overlapping
 //	inside a red 64x64 px square in the bottom left canvas corner.
 type Gui2D struct {
-	Cam      *ng.Camera
+	View     *ng.RenderView
 	Cat, Dog *ng.Node
 }
 
-//	Adds a "2D camera" to the main render canvas, and sets up Cat and Dog.
 func (me *Gui2D) Setup() (err error) {
 	var (
 		meshBuf    *ng.MeshBuffer
@@ -21,10 +20,12 @@ func (me *Gui2D) Setup() (err error) {
 	)
 	sceneID := ng.Core.Libs.Scenes.AddNew()
 	scene := &ng.Core.Libs.Scenes[sceneID]
-	me.Cam = SceneCanvas.AddNewCamera2D(true)
-	me.Cam.Render.States.ClearColor.Set(0.75, 0.25, 0.1, 1)
-	me.Cam.Render.Viewport.SetAbs(8, 8, 64, 64) //SetRel(0.02, 0.04, 0.125, 0.222)
-	me.Cam.SetScene(sceneID)
+	me.View = SceneCanvas.AddNewView("Scene")
+	me.View.RenderStates.ClearColor.Set(0.75, 0.25, 0.1, 1)
+	me.View.Port.SetAbsolute(8, 8, 64, 64) //SetRel(0.02, 0.04, 0.125, 0.222)
+	cam := &me.View.RenderTechniqueScene().Camera
+	cam.Perspective.Enabled = false
+	cam.SetScene(sceneID)
 	if meshBuf, err = ng.Core.MeshBuffers.AddNew("buf_quad", 6); err != nil {
 		return
 	}

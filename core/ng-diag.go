@@ -7,20 +7,20 @@ import (
 	ugo "github.com/metaleap/go-util"
 )
 
-type EngineDiagLogCategory int
+type NgDiagLogCategory int
 
 const (
-	DiagLogCatMisc    EngineDiagLogCategory = 1
-	DiagLogCatMeshes  EngineDiagLogCategory = 2
-	DiagLogCatShaders EngineDiagLogCategory = 4
-	DiagLogCatImages  EngineDiagLogCategory = 8
-	DiagLogCatAll     EngineDiagLogCategory = DiagLogCatMeshes | DiagLogCatMisc | DiagLogCatShaders | DiagLogCatImages
+	DiagLogCatMisc    NgDiagLogCategory = 1
+	DiagLogCatMeshes  NgDiagLogCategory = 2
+	DiagLogCatShaders NgDiagLogCategory = 4
+	DiagLogCatImages  NgDiagLogCategory = 8
+	DiagLogCatAll     NgDiagLogCategory = DiagLogCatMeshes | DiagLogCatMisc | DiagLogCatShaders | DiagLogCatImages
 )
 
 var (
-	Diag = EngineDiag{
+	Diag = NgDiag{
 		LogCategories: DiagLogCatAll,
-		LogCategoryNames: map[EngineDiagLogCategory]string{
+		LogCategoryNames: map[NgDiagLogCategory]string{
 			DiagLogCatMisc:    "[INFO]\t\t",
 			DiagLogCatShaders: "[SHADER]\t",
 			DiagLogCatImages:  "[IMAGES]\t",
@@ -34,40 +34,40 @@ func init() {
 	ugo.LogErrorFormat = "[ERROR!]\t%v"
 }
 
-//	EngineDiag is a singleton type, only used for the core.Diag package-global exported variable.
-//	It is only aware of that instance and does not support any other EngineDiag instances.
-type EngineDiag struct {
-	LogCategories          EngineDiagLogCategory
-	LogCategoryNames       map[EngineDiagLogCategory]string
+//	NgDiag is a singleton type, only used for the core.Diag package-global exported variable.
+//	It is only aware of that instance and does not support any other NgDiag instances.
+type NgDiag struct {
+	LogCategories          NgDiagLogCategory
+	LogCategoryNames       map[NgDiagLogCategory]string
 	LogGLErrorsInLoopOnSec bool
 }
 
-func (_ *EngineDiag) Log(cat EngineDiagLogCategory, fmt string, fmtArgs ...interface{}) {
+func (_ *NgDiag) Log(cat NgDiagLogCategory, fmt string, fmtArgs ...interface{}) {
 	if (Diag.LogCategories & cat) == cat {
 		log.Printf(Diag.LogCategoryNames[cat]+fmt, fmtArgs...)
 	}
 }
 
-func (_ *EngineDiag) LogErr(err error) {
+func (_ *NgDiag) LogErr(err error) {
 	ugo.LogError(err)
 }
 
-func (_ *EngineDiag) LogIfGlErr(fmt string, fmtArgs ...interface{}) {
+func (_ *NgDiag) LogIfGlErr(fmt string, fmtArgs ...interface{}) {
 	ugl.LogLastError(fmt, fmtArgs...)
 }
 
-func (_ *EngineDiag) LogImages(fmt string, fmtArgs ...interface{}) {
+func (_ *NgDiag) LogImages(fmt string, fmtArgs ...interface{}) {
 	Diag.Log(DiagLogCatImages, fmt, fmtArgs...)
 }
 
-func (_ *EngineDiag) LogMeshes(fmt string, fmtArgs ...interface{}) {
+func (_ *NgDiag) LogMeshes(fmt string, fmtArgs ...interface{}) {
 	Diag.Log(DiagLogCatMeshes, fmt, fmtArgs...)
 }
 
-func (_ *EngineDiag) LogMisc(fmt string, fmtArgs ...interface{}) {
+func (_ *NgDiag) LogMisc(fmt string, fmtArgs ...interface{}) {
 	Diag.Log(DiagLogCatMisc, fmt, fmtArgs...)
 }
 
-func (_ *EngineDiag) LogShaders(fmt string, fmtArgs ...interface{}) {
+func (_ *NgDiag) LogShaders(fmt string, fmtArgs ...interface{}) {
 	Diag.Log(DiagLogCatShaders, fmt, fmtArgs...)
 }

@@ -18,6 +18,7 @@ var (
 	}
 	thrRend struct {
 		curCam                *Camera
+		curView               *RenderView
 		curEffect, nextEffect *FxEffect
 		curTech, nextTech     RenderTechnique
 		curProg               *ugl.Program
@@ -28,7 +29,7 @@ var (
 func init() {
 }
 
-func (_ *EngineCore) copyAppToPrep() {
+func (_ *NgCore) copyAppToPrep() {
 	for cid := 0; cid < len(Core.Render.Canvases); cid++ {
 		if Core.Render.Canvases[cid].renderThisFrame() {
 			Core.Render.Canvases[cid].copyAppToPrep()
@@ -36,7 +37,7 @@ func (_ *EngineCore) copyAppToPrep() {
 	}
 }
 
-func (_ *EngineCore) copyPrepToRend() {
+func (_ *NgCore) copyPrepToRend() {
 	for cid := 0; cid < len(Core.Render.Canvases); cid++ {
 		if Core.Render.Canvases[cid].renderThisFrame() {
 			Core.Render.Canvases[cid].copyPrepToRend()
@@ -45,15 +46,31 @@ func (_ *EngineCore) copyPrepToRend() {
 }
 
 func (me *RenderCanvas) copyAppToPrep() {
-	for cam := 0; cam < len(me.Cams); cam++ {
-		me.Cams[cam].copyAppToPrep()
+	for view := 0; view < len(me.Views); view++ {
+		me.Views[view].copyAppToPrep()
 	}
 }
 
 func (me *RenderCanvas) copyPrepToRend() {
-	for cam := 0; cam < len(me.Cams); cam++ {
-		me.Cams[cam].copyPrepToRend()
+	for view := 0; view < len(me.Views); view++ {
+		me.Views[view].copyPrepToRend()
 	}
+}
+
+func (me *RenderView) copyAppToPrep() {
+	me.Technique.copyAppToPrep()
+}
+
+func (me *RenderView) copyPrepToRend() {
+	me.Technique.copyPrepToRend()
+}
+
+func (me *RenderTechniqueScene) copyAppToPrep() {
+	me.Camera.copyAppToPrep()
+}
+
+func (me *RenderTechniqueScene) copyPrepToRend() {
+	me.Camera.copyPrepToRend()
 }
 
 func (me *Camera) copyAppToPrep() {
@@ -67,7 +84,6 @@ func (me *Camera) copyAppToPrep() {
 }
 
 func (me *Camera) copyPrepToRend() {
-	me.thrRend.states = me.Render.States
 	if scene := me.scene(); scene != nil && !scene.thrRend.copyDone {
 		scene.thrRend.copyDone = true
 		scene.RootNode.copyPrepToRend()

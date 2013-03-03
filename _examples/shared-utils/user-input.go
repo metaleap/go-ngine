@@ -73,8 +73,8 @@ func CheckAndHandleToggleKeys() {
 	if in.KeyToggled(glfw.KeyEsc) {
 		PauseResume()
 	}
-	if SceneCam != nil && in.KeyToggled(glfw.KeyF2) {
-		SceneCam.Render.States.FaceCulling = !SceneCam.Render.States.FaceCulling
+	if SceneView != nil && in.KeyToggled(glfw.KeyF2) {
+		SceneView.RenderStates.FaceCulling = !SceneView.RenderStates.FaceCulling
 	}
 	if in.KeyToggled(glfw.KeyF3) {
 		toggleRetro()

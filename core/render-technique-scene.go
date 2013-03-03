@@ -9,6 +9,8 @@ type RenderTechniqueScene struct {
 	renderTechniqueBase
 	// Batch RenderBatch
 
+	Camera Camera
+
 	thrPrep struct {
 		nodeRender map[*Node]bool
 	}
@@ -18,12 +20,27 @@ type RenderTechniqueScene struct {
 	}
 }
 
-func newRenderTechniqueScene(cam *Camera) RenderTechnique {
+func newRenderTechniqueScene(view *RenderView) RenderTechnique {
 	me := &RenderTechniqueScene{}
-	me.init("Scene", cam)
+	view.RenderStates.DepthTest = true
+	me.init("Scene", view)
+	me.Camera.init()
 	// me.Batch.init(me)
 	// me.Batch.Enabled = true
+	me.ApplyPerspectiveProjection()
 	return me
+}
+
+func (me *RenderTechniqueScene) dispose() {
+	me.Camera.dispose()
+	me.renderTechniqueBase.dispose()
+}
+
+//	Applies changes made to the FovY, ZNear and/or ZFar parameters in me.Camera.Perspective.
+func (me *RenderTechniqueScene) ApplyPerspectiveProjection() {
+	if me.Camera.Perspective.Enabled {
+		me.Camera.thrApp.matProj.Perspective(me.Camera.Perspective.FovY, me.view.Port.aspect, me.Camera.Perspective.ZNear, me.Camera.Perspective.ZFar)
+	}
 }
 
 func (me *RenderTechniqueScene) ToggleBatching() {

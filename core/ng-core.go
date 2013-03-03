@@ -8,14 +8,14 @@ import (
 
 var (
 	//	The heart and brain of go:ngine --- a container for all runtime resources and responsible for rendering.
-	Core EngineCore
+	Core NgCore
 )
 
-//	EngineCore is a singleton type, only used for the core.Core package-global exported variable.
-//	It is only aware of that instance and does not support any other EngineCore instances.
-type EngineCore struct {
+//	NgCore is a singleton type, only used for the core.Core package-global exported variable.
+//	It is only aware of that instance and does not support any other NgCore instances.
+type NgCore struct {
 	MeshBuffers MeshBufferLib
-	Libs        EngineLibs
+	Libs        NgLibs
 	Render      struct {
 		Canvases RenderCanvasLib
 		Fx       struct {
@@ -37,7 +37,7 @@ type EngineCore struct {
 	fileIO fileIO
 }
 
-func (_ *EngineCore) dispose() {
+func (_ *NgCore) dispose() {
 	Core.isInit = false
 	Core.Libs.dispose()
 	Core.Render.Fx.Samplers.FullFilteringRepeat.Dispose()
@@ -45,7 +45,7 @@ func (_ *EngineCore) dispose() {
 	Core.Render.Fx.Samplers.NoFilteringClamp.Dispose()
 }
 
-func (_ *EngineCore) init() (err error) {
+func (_ *NgCore) init() (err error) {
 	Core.Libs.init()
 	Core.initRendering()
 	err = Core.showSplash()
@@ -53,7 +53,7 @@ func (_ *EngineCore) init() (err error) {
 	return
 }
 
-func (_ *EngineCore) initRendering() {
+func (_ *NgCore) initRendering() {
 	rend := &Core.Render
 	rend.KnownTechniques = map[string]renderTechniqueProvider{
 		"Quad":  newRenderTechniqueQuad,
@@ -69,14 +69,14 @@ func (_ *EngineCore) initRendering() {
 	rend.Fx.Samplers.FullFilteringRepeat.Create().EnableFullFiltering(true, 8).SetWrap(gl.REPEAT)
 	rend.Fx.Samplers.FullFilteringClamp.Create().EnableFullFiltering(true, 8).SetWrap(gl.CLAMP_TO_EDGE)
 	rend.Fx.Samplers.NoFilteringClamp.Create().DisableAllFiltering(false).SetWrap(gl.CLAMP_TO_BORDER)
-	if quadFx := &rend.Canvases.AddNew(true, 1, 1).AddNewCameraQuad().RenderTechniqueQuad().Effect; Options.Initialization.DefaultCanvas.GammaViaShader {
+	if quadFx := &rend.Canvases.AddNew(true, 1, 1).AddNewView("Quad").RenderTechniqueQuad().Effect; Options.Initialization.DefaultCanvas.GammaViaShader {
 		quadFx.FxProcs.EnableGamma(-1)
 		quadFx.KeepProcIDsLast = append(quadFx.KeepProcIDsLast, "Gamma")
 		quadFx.UpdateRoutine()
 	}
 }
 
-func (_ *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
+func (_ *NgCore) onResizeWindow(viewWidth, viewHeight int) {
 	if Core.isInit {
 		for i := 0; i < len(Core.Render.Canvases); i++ {
 			Core.Render.Canvases[i].onResize(viewWidth, viewHeight)
@@ -85,7 +85,7 @@ func (_ *EngineCore) onResizeWindow(viewWidth, viewHeight int) {
 	}
 }
 
-func (_ *EngineCore) GpuSyncImageLibs() (err error) {
+func (_ *NgCore) GpuSyncImageLibs() (err error) {
 	type imgChan chan fxImage
 	imgLoad := func(ch imgChan, img fxImage) {
 		if !img.Loaded() {
@@ -119,11 +119,11 @@ func (_ *EngineCore) GpuSyncImageLibs() (err error) {
 	return
 }
 
-func (_ *EngineCore) refreshWinSizeRels() {
+func (_ *NgCore) refreshWinSizeRels() {
 	Core.onResizeWindow(UserIO.Window.width, UserIO.Window.height)
 }
 
-func (_ *EngineCore) showSplash() (err error) {
+func (_ *NgCore) showSplash() (err error) {
 	splash := &Core.Libs.Images.SplashScreen
 	splash.init()
 	splash.Preprocess.FlipY, splash.Preprocess.ToLinear, splash.Preprocess.ToBgra = false, false, false
@@ -139,11 +139,11 @@ func (_ *EngineCore) showSplash() (err error) {
 	return
 }
 
-func (_ *EngineCore) useTechFx() {
+func (_ *NgCore) useTechFx() {
 	if thrRend.curTech != thrRend.nextTech || thrRend.curEffect != thrRend.nextEffect {
 		thrRend.curTech = thrRend.nextTech
-		if !(len(thrRend.curCam.Render.FxProcs) == 0 && len(thrRend.nextEffect.ext) == 0) {
-			thrRend.nextEffect.ext = thrRend.curCam.Render.FxProcs
+		if !(len(thrRend.curView.FxProcs) == 0 && len(thrRend.nextEffect.ext) == 0) {
+			thrRend.nextEffect.ext = thrRend.curView.FxProcs
 			thrRend.nextEffect.UpdateRoutine()
 		}
 		thrRend.curEffect = thrRend.nextEffect

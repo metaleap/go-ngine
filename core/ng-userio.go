@@ -8,13 +8,13 @@ import (
 
 var (
 	//	Your gateway for end-user input (key, mouse etc.) and "output" (window management, not the graphics themselves).
-	UserIO EngineUserIO
+	UserIO NgUserIO
 )
 
-//	Consider EngineUserIO a "Singleton" type, only valid use is the core.UserIO global variable.
+//	Consider NgUserIO a "Singleton" type, only valid use is the core.UserIO global variable.
 //	Your gateway for end-user input (key, mouse etc.) and "output" (window management, not the graphics themselves).
-type EngineUserIO struct {
-	//	Minimum delay for EngineUserIO.KeyToggled() method, in seconds. Defaults to 0.15.
+type NgUserIO struct {
+	//	Minimum delay for NgUserIO.KeyToggled() method, in seconds. Defaults to 0.15.
 	KeyToggleMinDelay float64
 
 	Window WindowOptions
@@ -24,7 +24,7 @@ type EngineUserIO struct {
 	lastToggles             map[int]float64
 }
 
-func (_ *EngineUserIO) dispose() {
+func (_ *NgUserIO) dispose() {
 	if UserIO.Window.isCreated {
 		UserIO.Window.isCreated = false
 		glfw.CloseWindow()
@@ -35,7 +35,7 @@ func (_ *EngineUserIO) dispose() {
 	}
 }
 
-func (_ *EngineUserIO) init(forceContextVersion float64) (err error) {
+func (_ *NgUserIO) init(forceContextVersion float64) (err error) {
 	UserIO.KeyToggleMinDelay, UserIO.lastToggles = 0.15, make(map[int]float64, 80)
 	if !UserIO.isGlfwInit {
 		if err = glfw.Init(); err == nil {
@@ -58,7 +58,7 @@ func (_ *EngineUserIO) init(forceContextVersion float64) (err error) {
 	return
 }
 
-func (_ *EngineUserIO) recreateWin() (err error) {
+func (_ *NgUserIO) recreateWin() (err error) {
 	winInit := &Options.Initialization.Window
 	if UserIO.Window.isCreated {
 		glfw.CloseWindow()
@@ -78,7 +78,7 @@ func (_ *EngineUserIO) recreateWin() (err error) {
 }
 
 //	Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
-func (_ *EngineUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64 {
+func (_ *NgUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64 {
 	if UserIO.KeyPressed(key) {
 		return ifTrue
 	}
@@ -86,12 +86,12 @@ func (_ *EngineUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64 {
 }
 
 //	Returns true if the specified key is pressed.
-func (_ *EngineUserIO) KeyPressed(key int) bool {
+func (_ *NgUserIO) KeyPressed(key int) bool {
 	return glfw.Key(key) == glfw.KeyPress
 }
 
 //	Returns the first in keys that is pressed.
-func (_ *EngineUserIO) KeyPressedWhich(keys ...int) int {
+func (_ *NgUserIO) KeyPressedWhich(keys ...int) int {
 	for _, UserIO.keyWhich = range keys {
 		if UserIO.KeyPressed(UserIO.keyWhich) {
 			return UserIO.keyWhich
@@ -101,27 +101,27 @@ func (_ *EngineUserIO) KeyPressedWhich(keys ...int) int {
 }
 
 //	Returns true if both specified keys are pressed.
-func (_ *EngineUserIO) KeysPressedAll2(k1, k2 int) bool {
+func (_ *NgUserIO) KeysPressedAll2(k1, k2 int) bool {
 	return UserIO.KeyPressed(k1) && UserIO.KeyPressed(k2)
 }
 
 //	Returns true if all three specified keys are pressed.
-func (_ *EngineUserIO) KeysPressedAll3(k1, k2, k3 int) bool {
+func (_ *NgUserIO) KeysPressedAll3(k1, k2, k3 int) bool {
 	return UserIO.KeyPressed(k1) && UserIO.KeyPressed(k2) && UserIO.KeyPressed(k3)
 }
 
 //	Returns true if any of the two specified keys is pressed.
-func (_ *EngineUserIO) KeysPressedAny2(k1, k2 int) bool {
+func (_ *NgUserIO) KeysPressedAny2(k1, k2 int) bool {
 	return UserIO.KeyPressed(k1) || UserIO.KeyPressed(k2)
 }
 
 //	Returns true if any of the three specified keys is pressed.
-func (_ *EngineUserIO) KeysPressedAny3(k1, k2, k3 int) bool {
+func (_ *NgUserIO) KeysPressedAny3(k1, k2, k3 int) bool {
 	return UserIO.KeyPressed(k1) || UserIO.KeyPressed(k2) || UserIO.KeyPressed(k3)
 }
 
 //	Returns true if the specified key has been "toggled", ie. its pressed-state changed within the last me.KeyToggleMinDelay seconds.
-func (_ *EngineUserIO) KeyToggled(key int) bool {
+func (_ *NgUserIO) KeyToggled(key int) bool {
 	if UserIO.togglePress = UserIO.KeyPressed(key); UserIO.togglePress && ((Loop.Tick.Now - UserIO.lastToggles[key]) > UserIO.KeyToggleMinDelay) {
 		UserIO.lastToggles[key] = Loop.Tick.Now
 		return true

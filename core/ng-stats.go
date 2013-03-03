@@ -6,12 +6,12 @@ import (
 
 var (
 	//	Tracks various go:ngine performance counters over time.
-	Stats EngineStats
+	Stats NgStats
 )
 
-//	Consider EngineStats a "Singleton" type, only valid use is the core.Stats global variable.
+//	Consider NgStats a "Singleton" type, only valid use is the core.Stats global variable.
 //	Tracks various go:ngine performance indicators over time.
-type EngineStats struct {
+type NgStats struct {
 	//	Gives the total number of frames rendered during the "previous"
 	//	(not the current) second. Good enough for just a simple-minded FPS indicator.
 	FpsLastSec int
@@ -85,23 +85,23 @@ type EngineStats struct {
 	}
 }
 
-func (_ *EngineStats) addProgCompile(numProgs int, duration int64) {
+func (_ *NgStats) addProgCompile(numProgs int, duration int64) {
 	Stats.Programs.NumProgsCompiled += numProgs
 	Stats.Programs.TotalTimeCost += duration
 }
 
 //	Returns the average number of frames-per-second since Loop.Loop() was last called.
-func (_ *EngineStats) AverageFps() float64 {
+func (_ *NgStats) AverageFps() float64 {
 	return Stats.fpsAll / glfw.Time()
 }
 
-func (_ *EngineStats) enable() {
+func (_ *NgStats) enable() {
 	if !Stats.enabled {
 		Stats.enabled, Stats.fpsAll = true, 0
 	}
 }
 
-func (_ *EngineStats) reset() {
+func (_ *NgStats) reset() {
 	Stats.FpsLastSec, Stats.fpsCounter, Stats.fpsAll, Stats.enabled = 0, 0, 0, false
 	Stats.Frame.reset()
 	Stats.FrameAppThread.reset()
@@ -115,7 +115,7 @@ func (_ *EngineStats) reset() {
 	Stats.Gc.reset()
 }
 
-func (_ *EngineStats) TotalFrames() float64 {
+func (_ *NgStats) TotalFrames() float64 {
 	return Stats.fpsAll
 }
 

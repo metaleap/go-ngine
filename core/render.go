@@ -4,7 +4,7 @@ import (
 	gl "github.com/go3d/go-opengl/core"
 )
 
-func (_ *EngineCore) onRender() {
+func (_ *NgCore) onRender() {
 	for cid := len(Core.Render.Canvases) - 1; cid >= 0; cid-- {
 		if Core.Render.Canvases[cid].renderThisFrame() {
 			Core.Render.Canvases[cid].render()
@@ -17,9 +17,8 @@ func (me *RenderCanvas) render() {
 		me.frameBuf.Bind()
 	}
 	Core.Render.states.SetFramebufferSrgb(me.Srgb)
-	for cam := 0; cam < len(me.Cams); cam++ {
-		thrRend.curCam = me.Cams[cam]
-		thrRend.curCam.render()
+	for view := 0; view < len(me.Views); view++ {
+		me.Views[view].render()
 	}
 	Core.Render.states.SetFramebufferSrgb(false)
 	if me.isRtt {
@@ -28,18 +27,18 @@ func (me *RenderCanvas) render() {
 	}
 }
 
-func (me *Camera) render() {
+func (me *RenderView) render() {
 	if me.Enabled {
-		thrRend.curTech, thrRend.curEffect = me.Render.Technique, nil
-		Core.Render.states.Apply(&me.thrRend.states)
-		if me.Render.Viewport.shouldScissor {
+		thrRend.curView, thrRend.curTech, thrRend.curEffect = me, me.Technique, nil
+		Core.Render.states.Apply(&me.RenderStates)
+		if me.Port.shouldScissor {
 			Core.Render.states.ForceEnableScissorTest()
-			gl.Scissor(me.Render.Viewport.glVpX, me.Render.Viewport.glVpY, me.Render.Viewport.glVpW, me.Render.Viewport.glVpH)
+			gl.Scissor(me.Port.glVpX, me.Port.glVpY, me.Port.glVpW, me.Port.glVpH)
 		}
-		gl.Viewport(me.Render.Viewport.glVpX, me.Render.Viewport.glVpY, me.Render.Viewport.glVpW, me.Render.Viewport.glVpH)
-		gl.Clear(me.thrRend.states.Other.ClearBits)
-		me.Render.Technique.render()
-		if me.Render.Viewport.shouldScissor {
+		gl.Viewport(me.Port.glVpX, me.Port.glVpY, me.Port.glVpW, me.Port.glVpH)
+		gl.Clear(me.RenderStates.Other.ClearBits)
+		me.Technique.render()
+		if me.Port.shouldScissor {
 			Core.Render.states.ForceDisableScissorTest()
 		}
 	}
@@ -56,7 +55,8 @@ func (me *RenderTechniqueQuad) render() {
 
 func (me *RenderTechniqueScene) render() {
 	thrRend.nextTech = me
-	if scene := thrRend.curCam.scene(); scene != nil && scene.RootNode.thrRend.camRender[thrRend.curCam] {
+	thrRend.curCam = &me.Camera
+	if scene := me.Camera.scene(); scene != nil && scene.RootNode.thrRend.camRender[&me.Camera] {
 		scene.RootNode.renderChildren()
 		scene.RootNode.renderSelf() // might be a skybox so "render" the root last
 	}

@@ -4,9 +4,10 @@ import (
 	glfw "github.com/go-gl/glfw"
 )
 
-//	Only used for core.UserIO.Window after initialization, BUT: core.UserIO.Window gets
-//	initialized from a copy of your NewWindowOptions() that you pass to your NewEngineOptions().
 type WindowOptions struct {
+	//	Defaults to a function that returns true to allow closing the window.
+	OnCloseRequested func() bool
+
 	//	Minimum delay, in seconds, to wait after the last window-resize event received from
 	//	the OS before notifying the rendering runtime of the new window dimensions.
 	//	Defaults to 0.15.
@@ -67,13 +68,15 @@ func (me *WindowOptions) Width() int {
 
 //	just a GLFW event callback without creating a closure
 func glfwOnWindowClose() (doit int) {
-	if !Loop.Running {
-		doit = 1
+	if UserIO.Window.OnCloseRequested() {
+		if !Loop.Running {
+			doit = 1
+		}
+		//	If looping, return 0 for now to "cancel the Close" but also stop loop to close cleanly.
+		//	If we returned 1 here to "accept the Close", the loop would continue
+		//	doing GL stuff against the destroyed window and record a GL error.
+		Loop.Running = false
 	}
-	//	If looping, return 0 to cancel the user's onWindowClose -- we close manually.
-	//	If we returned 1 to confirm the Close, the loop would continue
-	//	doing GL stuff against the destroyed window and record a GL error.
-	Loop.Running = false
 	return
 }
 

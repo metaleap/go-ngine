@@ -26,8 +26,9 @@ var (
 	//	This is an off-screen "render-to-texture" RenderCanvas.
 	SceneCanvas *ng.RenderCanvas
 
-	//	The primary scene-rendering camera, rendering to SceneCanvas.
 	SceneCam *ng.Camera
+
+	SceneView *ng.RenderView
 
 	//	Do not set this field directly, only use PauseResume() to
 	//	toggle it and effect the associated render-state changes.
@@ -38,7 +39,7 @@ var (
 
 	//	Takes the image rendered to SceneCanvas, may
 	//	post-process it or not, and blits it to PostFxCanvas.
-	PostFxCam *ng.Camera
+	PostFxView *ng.RenderView
 
 	Paused bool
 
@@ -85,7 +86,7 @@ func onSec() {
 	OnSec()
 }
 
-//	Called by each example-app's func main(). Initializes go:ngine, sets SceneCam/SceneCanvas/PostFxCam/PostFxCanvas etc., calls the specified setupExampleScene function, then enters The Loop.
+//	Called by each example-app's func main(). Initializes go:ngine, calls the specified setupExampleScene function, then enters The Loop.
 func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	//	by design, go:ngine doesn't do this for you automagically:
 	runtime.LockOSThread()
@@ -143,13 +144,14 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 		ng.Loop.On.EverySec, ng.Loop.On.AppThread, ng.Loop.On.WinThread = onSec, onAppThread, onWinThread
 
 		PostFxCanvas = ng.Core.Render.Canvases[0]
-		PostFxCam = PostFxCanvas.Cams[0]
-		PostFxCam.Render.States.ClearColor.Set(0.9, 0.6, 0.3, 1)
+		PostFxView = PostFxCanvas.Views[0]
+		PostFxView.RenderStates.ClearColor.Set(0.9, 0.6, 0.3, 1)
 
 		if setupExampleScene != nil {
 			SceneCanvas = ng.Core.Render.Canvases.AddNew(true, 1, 1)
-			SceneCam = SceneCanvas.AddNewCamera3D()
-			SceneCam.Render.States.ClearColor.Set(0.5, 0.6, 0.85, 1)
+			SceneView = SceneCanvas.AddNewView("Scene")
+			SceneCam = &SceneView.RenderTechniqueScene().Camera
+			SceneView.RenderStates.ClearColor.Set(0.5, 0.6, 0.85, 1)
 			setupExampleScene()
 			if err = ng.Core.Libs.Meshes.GpuSync(); err != nil {
 				panic(err)

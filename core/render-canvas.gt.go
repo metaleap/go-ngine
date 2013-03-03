@@ -17,7 +17,7 @@ type RenderCanvas struct {
 	//	0 = this RenderCanvas is disabled for rendering
 	EveryNthFrame float64
 
-	Cams CameraLib
+	Views RenderViewLib
 
 	Srgb bool
 
@@ -30,7 +30,7 @@ type RenderCanvas struct {
 
 func (me *RenderCanvas) init() {
 	me.EveryNthFrame, me.isRtt = 1, len(Core.Render.Canvases) > 1
-	me.Cams.init()
+	me.Views.init()
 }
 
 func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int) {
@@ -38,32 +38,16 @@ func (me *RenderCanvas) CurrentAbsoluteSize() (width, height int) {
 	return
 }
 
-func (me *RenderCanvas) AddNewCamera2D(allowOverlaps bool) (cam *Camera) {
-	cam = new(Camera)
-	me.Cams.add(cam)
-	cam.setup2D(me, allowOverlaps)
-	Core.refreshWinSizeRels()
-	return
-}
-
-func (me *RenderCanvas) AddNewCamera3D() (cam *Camera) {
-	cam = new(Camera)
-	me.Cams.add(cam)
-	cam.setup3D(me)
-	Core.refreshWinSizeRels()
-	return
-}
-
-func (me *RenderCanvas) AddNewCameraQuad() (cam *Camera) {
-	cam = new(Camera)
-	me.Cams.add(cam)
-	cam.setupQuad(me)
+func (me *RenderCanvas) AddNewView(renderTechnique string) (view *RenderView) {
+	view = new(RenderView)
+	me.Views.add(view)
+	view.setup(me, renderTechnique)
 	Core.refreshWinSizeRels()
 	return
 }
 
 func (me *RenderCanvas) dispose() {
-	me.Cams.dispose()
+	me.Views.dispose()
 	if me.isRtt {
 		me.frameBuf.Dispose()
 	}
@@ -76,10 +60,13 @@ func (me *RenderCanvas) onResize(viewWidth, viewHeight int) {
 	if me.isRtt {
 		me.frameBuf.Resize(gl.Sizei(int(me.absViewWidth)), gl.Sizei(int(me.absViewHeight)))
 	}
-	for cam := 0; cam < len(me.Cams); cam++ {
-		me.Cams[cam].Render.Viewport.canvWidth, me.Cams[cam].Render.Viewport.canvHeight = me.absViewWidth, me.absViewHeight
-		me.Cams[cam].Render.Viewport.update()
-		me.Cams[cam].ApplyMatrices()
+	var rts *RenderTechniqueScene
+	for i := 0; i < len(me.Views); i++ {
+		me.Views[i].Port.canvWidth, me.Views[i].Port.canvHeight = me.absViewWidth, me.absViewHeight
+		me.Views[i].Port.update()
+		if rts = me.Views[i].RenderTechniqueScene(); rts != nil {
+			rts.ApplyPerspectiveProjection()
+		}
 	}
 }
 

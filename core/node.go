@@ -61,21 +61,24 @@ func (me *Node) ApplyTransform() {
 	me.Transform.applyMatrices(me)
 }
 
-func (me *Node) initCamData(cam *Camera) {
-	if cam.scene() == me.rootScene {
-		me.thrPrep.camProjMats[cam], me.thrRend.camProjMats[cam] = unum.NewMat4Identity(), ugl.NewGlMat4(nil)
-		me.thrPrep.camRender[cam] = me.Rendering.Enabled
-		me.thrRend.camRender[cam] = me.Rendering.Enabled
+func (me *Node) initCamData(view *Camera) {
+	if view.scene() == me.rootScene {
+		me.thrPrep.camProjMats[view], me.thrRend.camProjMats[view] = unum.NewMat4Identity(), ugl.NewGlMat4(nil)
+		me.thrPrep.camRender[view] = me.Rendering.Enabled
+		me.thrRend.camRender[view] = me.Rendering.Enabled
 	}
 }
 
 func (me *Node) initCamDatas() {
 	me.thrPrep.camRender, me.thrRend.camRender = map[*Camera]bool{}, map[*Camera]bool{}
 	me.thrPrep.camProjMats, me.thrRend.camProjMats = nodeCamProjMats{}, nodeCamProjGlMats{}
-	var cam int
+	var view int
+	var rts *RenderTechniqueScene
 	for canv := 0; canv < len(Core.Render.Canvases); canv++ {
-		for cam = 0; cam < len(Core.Render.Canvases[canv].Cams); cam++ {
-			me.initCamData(Core.Render.Canvases[canv].Cams[cam])
+		for view = 0; view < len(Core.Render.Canvases[canv].Views); view++ {
+			if rts = Core.Render.Canvases[canv].Views[view].RenderTechniqueScene(); rts != nil {
+				me.initCamData(&rts.Camera)
+			}
 		}
 	}
 }
