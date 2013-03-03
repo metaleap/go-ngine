@@ -5,6 +5,7 @@ import (
 	"time"
 
 	ugl "github.com/go3d/go-opengl/util"
+	usl "github.com/metaleap/go-util/slice"
 	ustr "github.com/metaleap/go-util/str"
 )
 
@@ -112,7 +113,7 @@ func (me *uberShaders) processFuncs() {
 			//	annotate other funcs depending on this func
 			for _, fn2 = range *mp {
 				if fn2 != fn && strings.Index(fn2.rawSrc, fn.name) > 0 {
-					ustr.AppendUnique(&fn2.dependsOn, fn.name)
+					usl.StrAppendUnique(&fn2.dependsOn, fn.name)
 				}
 			}
 			if len(pref) == 0 {
@@ -121,7 +122,7 @@ func (me *uberShaders) processFuncs() {
 					if pref2 != pref {
 						for _, fn2 = range *mp2 {
 							if fn2 != fn && strings.Index(fn2.rawSrc, fn.name) > 0 {
-								ustr.AppendUnique(&fn2.dependsOn, fn.name)
+								usl.StrAppendUnique(&fn2.dependsOn, fn.name)
 							}
 						}
 					}
@@ -130,7 +131,7 @@ func (me *uberShaders) processFuncs() {
 			//	annotate this func for any uniforms, varyings or attributes
 			for _, pref = range []string{"att_", "uni_", "var_"} {
 				for _, pref2 = range ustr.ExtractAllIdentifiers(fn.rawSrc, pref) {
-					ustr.AppendUnique(&fn.allInputs, pref2)
+					usl.StrAppendUnique(&fn.allInputs, pref2)
 				}
 			}
 		}
@@ -256,7 +257,7 @@ func (me *uberShaders) setShaderSourceFrag(job *uberShaderJob, fx *FxEffect, inp
 	for shid, _ = range inputs {
 		switch shid[:4] {
 		case "uni_":
-			ustr.AppendUnique(&job.progUnis, shid)
+			usl.StrAppendUnique(&job.progUnis, shid)
 			srcHead.Writeln("uniform %s %s;", me.inoutTypeSpec(shid), shid)
 		case "var_":
 			srcHead.Writeln("%sin %s %s;", job.quals[shid], me.inoutTypeSpec(shid), shid)
@@ -305,10 +306,10 @@ func (me *uberShaders) setShaderSourceVert(job *uberShaderJob, vertTech string, 
 	for inout, _ = range inputs {
 		switch inout[:4] {
 		case "att_":
-			ustr.AppendUnique(&job.progAtts, inout)
+			usl.StrAppendUnique(&job.progAtts, inout)
 			srcHead.Writeln("in %s %s;", me.inoutTypeSpec(inout), inout)
 		case "uni_":
-			ustr.AppendUnique(&job.progUnis, inout)
+			usl.StrAppendUnique(&job.progUnis, inout)
 			srcHead.Writeln("uniform %s %s;", me.inoutTypeSpec(inout), inout)
 		}
 	}

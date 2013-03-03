@@ -136,9 +136,6 @@ func (_ FxMaterialLib) onFxMaterialIDsChanged(oldNewIDs map[int]int) {
 	var id, v int
 	for id = 0; id < len(Core.Libs.Scenes); id++ {
 		if Core.Libs.Scenes.Ok(id) {
-			Core.Libs.Scenes[id].RootNode.Walk(func(node *Node) {
-				Core.Libs.UpdateIDRef(oldNewIDs, &node.MatID)
-			})
 			for v = 0; v < len(Core.Libs.Scenes[id].allNodes); v++ {
 				if Core.Libs.Scenes[id].allNodes.Ok(v) {
 					Core.Libs.UpdateIDRef(oldNewIDs, &Core.Libs.Scenes[id].allNodes[v].Render.MatID)
@@ -163,9 +160,6 @@ func (_ MeshLib) onMeshIDsChanged(oldNewIDs map[int]int) {
 	}
 	for id = 0; id < len(Core.Libs.Scenes); id++ {
 		if Core.Libs.Scenes.Ok(id) {
-			Core.Libs.Scenes[id].RootNode.Walk(func(node *Node) {
-				Core.Libs.UpdateIDRef(oldNewIDs, &node.MeshID)
-			})
 			for v = 0; v < len(Core.Libs.Scenes[id].allNodes); v++ {
 				if Core.Libs.Scenes[id].allNodes.Ok(v) {
 					Core.Libs.UpdateIDRef(oldNewIDs, &Core.Libs.Scenes[id].allNodes[v].Render.MeshID)
@@ -180,9 +174,6 @@ func (_ ModelLib) onModelIDsChanged(oldNewIDs map[int]int) {
 	var id, i int
 	for id = 0; id < len(Core.Libs.Scenes); id++ {
 		if Core.Libs.Scenes.Ok(id) {
-			Core.Libs.Scenes[id].RootNode.Walk(func(node *Node) {
-				Core.Libs.UpdateIDRef(oldNewIDs, &node.ModelID)
-			})
 			for i = 0; i < len(Core.Libs.Scenes[id].allNodes); i++ {
 				if Core.Libs.Scenes[id].allNodes.Ok(i) {
 					Core.Libs.UpdateIDRef(oldNewIDs, &Core.Libs.Scenes[id].allNodes[i].Render.ModelID)

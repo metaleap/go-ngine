@@ -68,6 +68,9 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 				<dd><a href="#AddMainScene">func AddMainScene() (me *ng.Scene)</a></dd>
 			
 				
+				<dd><a href="#AddNode">func AddNode(scene *ng.Scene, parentNodeID, meshID, matID, modelID int) (node *ng.SceneNode)</a></dd>
+			
+				
 				<dd><a href="#AddSkyMesh">func AddSkyMesh(scene *ng.Scene, meshID int)</a></dd>
 			
 				
@@ -242,14 +245,21 @@ This function adds a new hint to be included in that rotation.
 		
 			
 			
-			<h2 id="AddSkyMesh">func <a href="/target/assets.go?s=467:511#L16">AddSkyMesh</a></h2>
+			<h2 id="AddNode">func <a href="/target/assets.go?s=467:559#L16">AddNode</a></h2>
+			<pre>func AddNode(scene *ng.Scene, parentNodeID, meshID, matID, modelID int) (node *ng.SceneNode)</pre>
+			
+			
+		
+			
+			
+			<h2 id="AddSkyMesh">func <a href="/target/assets.go?s=732:776#L23">AddSkyMesh</a></h2>
 			<pre>func AddSkyMesh(scene *ng.Scene, meshID int)</pre>
 			
 			
 		
 			
 			
-			<h2 id="AddTextureMaterials">func <a href="/target/assets.go?s=2028:2079#L49">AddTextureMaterials</a></h2>
+			<h2 id="AddTextureMaterials">func <a href="/target/assets.go?s=2309:2360#L57">AddTextureMaterials</a></h2>
 			<pre>func AddTextureMaterials(idsUrls map[string]string)</pre>
 			<p>
 Sets up textures and associated effects/materials with the specified IDs and image URLs.
@@ -341,10 +351,11 @@ Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent 
 		
 			
 			
-			<h2 id="Gui2D">type <a href="/target/gui2d.go?s=366:431#L1">Gui2D</a></h2>
+			<h2 id="Gui2D">type <a href="/target/gui2d.go?s=366:483#L1">Gui2D</a></h2>
 			<pre>type Gui2D struct {
-    View     *ng.RenderView
-    Cat, Dog *ng.Node
+    View                 *ng.RenderView
+    Cam                  *ng.Camera
+    CatNodeID, DogNodeID int
 }</pre>
 			<p>
 A fake &#34;2D GUI&#34; concoction. There will be much better ngine-provided support for stuff like this.
@@ -363,7 +374,7 @@ inside a red 64x64 px square in the bottom left canvas corner.
 
 			
 				
-				<h3 id="Gui2D.Setup">func (*Gui2D) <a href="/target/gui2d.go?s=433:469#L6">Setup</a></h3>
+				<h3 id="Gui2D.Setup">func (*Gui2D) <a href="/target/gui2d.go?s=485:521#L7">Setup</a></h3>
 				<pre>func (me *Gui2D) Setup() (err error)</pre>
 				
 				

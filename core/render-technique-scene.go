@@ -10,14 +10,6 @@ type RenderTechniqueScene struct {
 	// Batch RenderBatch
 
 	Camera Camera
-
-	thrPrep struct {
-		nodeRender map[*Node]bool
-	}
-
-	thrRend struct {
-		nodeRender map[*Node]bool
-	}
 }
 
 func newRenderTechniqueScene(view *RenderView) RenderTechnique {

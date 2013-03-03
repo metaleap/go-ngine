@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	floor *ng.Node
+	floorNodeID int
 )
 
 func main() {
@@ -25,7 +25,6 @@ func onAppThread() {
 func setupExample_02_EmptyGround() {
 	var (
 		err         error
-		scene       *ng.Scene
 		meshPlaneID int
 		bufRest     *ng.MeshBuffer
 	)
@@ -46,12 +45,12 @@ func setupExample_02_EmptyGround() {
 	bufRest.Add(meshPlaneID) // bufRest.Add(meshCube);
 
 	//	scene
-	scene = apputil.AddMainScene()
-	floor = scene.RootNode.ChildNodes.AddNew("node_floor", meshPlaneID)
-	floor.MatID = apputil.LibIDs.Mat["cobbles"]
+	scene := apputil.AddMainScene()
+	floor := apputil.AddNode(scene, 0, meshPlaneID, apputil.LibIDs.Mat["cobbles"], -1)
+	floorNodeID = floor.ID
 	floor.Transform.SetPos(0.1, 0, -8)
 	floor.Transform.SetScale(100)
-	floor.ApplyTransform()
+	scene.ApplyNodeTransform(floorNodeID)
 
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()

@@ -23,24 +23,27 @@ func (me *RenderView) onPrep() {
 
 func (me *RenderTechniqueScene) onPrep() {
 	me.Camera.thrPrep.matCamProj.SetFromMult4(&me.Camera.thrPrep.matProj, &me.Camera.Controller.thrPrep.mat)
-	if scene := me.Camera.scene(); scene != nil {
+	if scene := me.Camera.Scene(); scene != nil {
 		if !scene.thrPrep.done {
 			scene.thrPrep.done = true
 			scene.thrPrep.copyDone, scene.thrRend.copyDone = false, false
-			scene.RootNode.onPrep()
 		}
-		scene.RootNode.Walk(me.Camera.thrPrep.onPrepNode)
+		for i := 0; i < len(scene.allNodes); i++ {
+			if scene.allNodes.Ok(i) {
+				me.Camera.onPrepNode(scene, &scene.allNodes[i])
+			}
+		}
 		// if thrPrep.curTechScene = me.RenderTechniqueScene(); thrPrep.curTechScene != nil && thrPrep.curTechScene.Batch.Enabled {
 		// 	thrPrep.curTechScene.Batch.onPrep()
 		// }
 	}
 }
 
-func (me *Camera) onPrepNode(node *Node) {
-	camNodeRender := node.Rendering.Enabled && (node.parentNode == nil || me.thrPrep.nodeRender[node]) // && inFrustum etc.
+func (me *Camera) onPrepNode(scene *Scene, node *SceneNode) {
+	camNodeRender := node.Render.Enabled && (node.parentID == -1 || me.thrPrep.nodeRender[&scene.allNodes[node.parentID]]) // && inFrustum etc.
 	if me.thrPrep.nodeRender[node] = camNodeRender; camNodeRender {
 		if me.Perspective.Enabled {
-			if node.Rendering.skyMode {
+			if node.Render.skyMode {
 				me.thrPrep.nodeProjMats[node].SetFromMult4(&me.thrPrep.matCamProj, &me.thrPrep.matPos)
 			} else {
 				me.thrPrep.nodeProjMats[node].SetFromMult4(&me.thrPrep.matCamProj, &node.Transform.thrPrep.matModelView)
@@ -49,13 +52,5 @@ func (me *Camera) onPrepNode(node *Node) {
 			me.thrPrep.nodeProjMats[node].CopyFrom(&node.Transform.thrPrep.matModelView)
 		}
 		// thrPrep.nodePreBatch.prepNode(node)
-	}
-}
-
-func (me *Node) onPrep() {
-	if me.Rendering.Enabled {
-		for _, subNode := range me.ChildNodes.M {
-			subNode.onPrep()
-		}
 	}
 }

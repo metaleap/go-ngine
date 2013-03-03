@@ -8,7 +8,9 @@ import (
 )
 
 var (
-	floor, pyr, box *ng.Node
+	floorNodeID, pyrNodeID, boxNodeID int
+	tmpScene                          *ng.Scene
+	tmpNode                           *ng.SceneNode
 )
 
 func main() {
@@ -29,20 +31,24 @@ func onAppThread() {
 		apputil.HandleCamCtlKeys()
 
 		//	animate mesh nodes
-		pyr.Transform.Rot.Add3(-0.0005, -0.0005, 0)
-		pyr.Transform.Pos.Set(-1.5, 1.5+(2*math.Sin(ng.Loop.Tick.Now*3)), 7)
-		pyr.ApplyTransform()
-
-		box.Transform.Rot.Add3(0, 0.0004, 0.0006)
-		box.Transform.Pos.Set(1.5, 1.5+(2*math.Cos(ng.Loop.Tick.Now*0.3333)), 7)
-		box.ApplyTransform()
+		if tmpScene = apputil.SceneCam.Scene(); tmpScene != nil {
+			if tmpNode = tmpScene.Node(pyrNodeID); tmpNode != nil {
+				tmpNode.Transform.Rot.Add3(-0.0005, -0.0005, 0)
+				tmpNode.Transform.Pos.Set(-1.5, 1.5+(2*math.Sin(ng.Loop.Tick.Now*3)), 7)
+				tmpScene.ApplyNodeTransform(tmpNode.ID)
+			}
+			if tmpNode = tmpScene.Node(boxNodeID); tmpNode != nil {
+				tmpNode.Transform.Rot.Add3(0, 0.0004, 0.0006)
+				tmpNode.Transform.Pos.Set(1.5, 1.5+(2*math.Cos(ng.Loop.Tick.Now*0.3333)), 7)
+				tmpScene.ApplyNodeTransform(tmpNode.ID)
+			}
+		}
 	}
 }
 
 func setupExample_03_PyrCube() {
 	var (
 		err                                error
-		scene                              *ng.Scene
 		meshPlaneID, meshPyrID, meshCubeID int
 		bufFloor, bufRest                  *ng.MeshBuffer
 	)
@@ -91,18 +97,16 @@ func setupExample_03_PyrCube() {
 	ng.Core.Libs.Materials[apputil.LibIDs.Mat["mosaic"]].FaceEffects.ByID["t3"] = apputil.LibIDs.Fx["cat"]
 
 	//	scene / nodes
-	scene = apputil.AddMainScene()
+	scene := apputil.AddMainScene()
 	apputil.AddSkyMesh(scene, meshCubeID)
-	floor = scene.RootNode.ChildNodes.AddNew("node_floor", meshPlaneID)
-	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", meshPyrID)
-	pyr.MatID = apputil.LibIDs.Mat["mosaic"]
-	box = scene.RootNode.ChildNodes.AddNew("node_box", meshCubeID)
-	box.MatID = apputil.LibIDs.Mat["crate"]
-
-	floor.MatID = apputil.LibIDs.Mat["cobbles"]
+	floor := apputil.AddNode(scene, 0, meshPlaneID, apputil.LibIDs.Mat["cobbles"], -1)
+	floorNodeID = floor.ID
 	floor.Transform.SetPos(0.1, 0, -8)
 	floor.Transform.SetScale(1000)
-	floor.ApplyTransform()
+	scene.ApplyNodeTransform(floorNodeID)
+
+	pyrNodeID = apputil.AddNode(scene, 0, meshPyrID, apputil.LibIDs.Mat["mosaic"], -1).ID
+	boxNodeID = apputil.AddNode(scene, 0, meshCubeID, apputil.LibIDs.Mat["crate"], -1).ID
 
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()

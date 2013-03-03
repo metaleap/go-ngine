@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math"
 
 	glfw "github.com/go-gl/glfw"
@@ -13,11 +12,11 @@ import (
 var (
 	gui2d apputil.Gui2D
 
-	floor, pyr, box *ng.Node
-	crates          [3]*ng.Node
-	pyramids        [4]*ng.Node
-	i               int
-	f               float64
+	floorID, pyrID, boxID int
+	crateIDs              [3]int
+	pyrIDs                [4]int
+	tmpScene              *ng.Scene
+	tmpNode               *ng.SceneNode
 )
 
 func main() {
@@ -47,30 +46,39 @@ func onAppThread() {
 	apputil.RearView.OnApp()
 
 	//	node geometry anims
-	gui2d.Dog.Transform.Rot.Add3(0, -0.005, 0.001)
-	gui2d.Dog.ApplyTransform()
-	gui2d.Cat.Transform.Rot.X += 0.003
-	gui2d.Cat.ApplyTransform()
-
-	pyr.Transform.Rot.Add3(-0.0005, -0.0005, 0)
-	pyr.Transform.Pos.Set(-13.75, 2*math.Sin(ng.Loop.Tick.Now), 2)
-	pyr.ApplyTransform()
-
-	box.Transform.Rot.Add3(0.0004, 0, 0.0006)
-	box.Transform.Pos.Set(-8.125, 2*math.Cos(ng.Loop.Tick.Now), -2)
-	box.ApplyTransform()
-
-	for i = 0; i < len(crates); i++ {
-		f = float64(i)
-		f = (f + 1) * (f + 1)
-		crates[i].Transform.Rot.Add3(f*0.00001, f*0.0001, f*0.001)
-		crates[i].ApplyTransform()
+	if tmpScene = gui2d.Cam.Scene(); tmpScene != nil {
+		tmpScene.Node(gui2d.DogNodeID).Transform.Rot.Add3(0, -0.005, 0.001)
+		tmpScene.Node(gui2d.CatNodeID).Transform.Rot.X += 0.003
+		tmpScene.ApplyNodeTransform(0)
 	}
 
-	pyramids[0].Transform.Pos.X = math.Sin(ng.Loop.Tick.Now) * 100
-	pyramids[0].ApplyTransform()
-	pyramids[1].Transform.Pos.Z = math.Cos(ng.Loop.Tick.Now) * 1000
-	pyramids[1].ApplyTransform()
+	if tmpScene = apputil.SceneCam.Scene(); tmpScene != nil {
+		if tmpNode = tmpScene.Node(pyrID); tmpNode != nil {
+			tmpNode.Transform.Rot.Add3(-0.0005, -0.0005, 0)
+			tmpNode.Transform.Pos.Set(-13.75, 2*math.Sin(ng.Loop.Tick.Now), 2)
+		}
+		if tmpNode = tmpScene.Node(boxID); tmpNode != nil {
+			tmpNode.Transform.Rot.Add3(0.0004, 0, 0.0006)
+			tmpNode.Transform.Pos.Set(-8.125, 2*math.Cos(ng.Loop.Tick.Now), -2)
+		}
+
+		var f float64
+		for i := 0; i < len(crateIDs); i++ {
+			if tmpNode = tmpScene.Node(crateIDs[i]); tmpNode != nil {
+				f = float64(i)
+				f = (f + 1) * (f + 1)
+				tmpNode.Transform.Rot.Add3(f*0.00001, f*0.0001, f*0.001)
+			}
+		}
+
+		if tmpNode = tmpScene.Node(pyrIDs[0]); tmpNode != nil {
+			tmpNode.Transform.Pos.X = math.Sin(ng.Loop.Tick.Now) * 100
+		}
+		if tmpNode = tmpScene.Node(pyrIDs[1]); tmpNode != nil {
+			tmpNode.Transform.Pos.Z = math.Cos(ng.Loop.Tick.Now) * 1000
+		}
+		tmpScene.ApplyNodeTransform(0)
+	}
 }
 
 func setupExample_04_PyrsCubes() {
@@ -78,7 +86,6 @@ func setupExample_04_PyrsCubes() {
 		err                                error
 		meshPlaneID, meshPyrID, meshCubeID int
 		bufFloor, bufRest                  *ng.MeshBuffer
-		scene                              *ng.Scene
 	)
 
 	//	textures / materials
@@ -144,59 +151,62 @@ func setupExample_04_PyrsCubes() {
 	bufRest.Add(meshPyrID)
 
 	//	scene
-	scene = apputil.AddMainScene()
+	scene := apputil.AddMainScene()
 	apputil.AddSkyMesh(scene, meshPyrID)
-	floor = scene.RootNode.ChildNodes.AddNew("node_floor", meshPlaneID)
-	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", meshPyrID)
-	box = scene.RootNode.ChildNodes.AddNew("node_box", meshCubeID)
+	floor := apputil.AddNode(scene, 0, meshPlaneID, -1, -1)
+	floorID = floor.ID
+	floor.Transform.SetPos(0.1, 0, -8)
+	floor.Transform.SetScale(10000)
 
-	for i = 0; i < len(crates); i++ {
-		crates[i] = scene.RootNode.ChildNodes.AddNew(fmt.Sprintf("node_box_%v", i), meshCubeID)
+	pyrID = apputil.AddNode(scene, 0, meshPyrID, -1, -1).ID
+	boxID = apputil.AddNode(scene, 0, meshCubeID, -1, -1).ID
+
+	var i int
+	var f float64
+	for i = 0; i < len(crateIDs); i++ {
+		tmpNode = apputil.AddNode(scene, 0, meshCubeID, -1, -1)
+		crateIDs[i] = tmpNode.ID
 		if i == 0 {
-			crates[i].ModelID = modelCubeCatID
+			tmpNode.Render.ModelID = modelCubeCatID
+		}
+		if i == 2 {
+			tmpNode.Render.MatID = apputil.LibIDs.Mat["mix"]
 		}
 		f = float64(i)
-		crates[i].Transform.SetPos((f+3)*-2, (f+1)*2, (f+2)*3)
-		crates[i].ApplyTransform()
-		if i == 2 {
-			crates[i].MatID = apputil.LibIDs.Mat["mix"]
-		}
+		tmpNode.Transform.SetPos((f+3)*-2, (f+1)*2, (f+2)*3)
 	}
 
-	for i = 0; i < len(pyramids); i++ {
-		pyramids[i] = scene.RootNode.ChildNodes.AddNew(fmt.Sprintf("nody_pyr_%v", i), meshPyrID)
+	for i = 0; i < len(pyrIDs); i++ {
+		tmpNode = apputil.AddNode(scene, 0, meshPyrID, -1, -1)
+		pyrIDs[i] = tmpNode.ID
 		if i > 1 {
-			pyramids[i].ModelID = modelPyrDogID
+			tmpNode.Render.ModelID = modelPyrDogID
 		}
-		f = float64(len(pyramids) - i)
-		pyramids[i].Transform.SetScale((f + 1) * 2)
-		pyramids[i].Transform.SetPos((f+3)*-4, (f+2)*3, (f+2)*14)
+		f = float64(len(pyrIDs) - i)
+		tmpNode.Transform.SetScale((f + 1) * 2)
+		tmpNode.Transform.SetPos((f+3)*-4, (f+2)*3, (f+2)*14)
 		if i > 1 {
 			if i == 2 {
 				f = 45
 			} else {
 				f = 135
 			}
-			pyramids[i].Transform.Rot.Z = unum.DegToRad(f)
+			tmpNode.Transform.Rot.Z = unum.DegToRad(f)
 		} else {
 			if i == 0 {
 				f = 180
 			} else {
 				f = 90
 			}
-			pyramids[i].Transform.Rot.X = unum.DegToRad(f)
+			tmpNode.Transform.Rot.X = unum.DegToRad(f)
 		}
 		if i == 1 {
-			pyramids[i].Transform.SetScale(100)
-			pyramids[i].Transform.Pos.Y += 100
+			tmpNode.Transform.SetScale(100)
+			tmpNode.Transform.Pos.Y += 100
 		}
-		pyramids[i].ApplyTransform()
 	}
 
-	floor.Transform.SetPos(0.1, 0, -8)
-	floor.Transform.SetScale(10000)
-	floor.ApplyTransform()
-
+	scene.ApplyNodeTransform(0)
 	apputil.RearView.Setup(scene.ID)
 	if err = gui2d.Setup(); err != nil {
 		panic(err)

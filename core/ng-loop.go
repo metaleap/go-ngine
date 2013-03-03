@@ -162,10 +162,8 @@ func (_ *NgLoop) Run() {
 				Stats.FrameOnSec.end()
 				Stats.enable() // the first few frames were warm-ups that don't count towards the stats
 			}
-
 			//	Wait for threads -- waits until both app and prep threads are done and copies stage states around
 			Loop.onWaitForThreads()
-
 			//	Call On.WinThread() -- for main-thread user code (mostly input polling) without affecting On.AppThread
 			Loop.onThreadWin()
 
@@ -174,7 +172,6 @@ func (_ *NgLoop) Run() {
 			Loop.Tick.Prev, Loop.Tick.Now = Loop.Tick.Now, glfw.Time()
 			Stats.Frame.measureStartTime, Loop.Tick.Delta = Loop.Tick.Prev, Loop.Tick.Now-Loop.Tick.Prev
 			Stats.Frame.end()
-
 			//	GC stops-the-world so do it after go-routines have finished. Now is a good time, as the GPU
 			//	is likely still busy processing commands from step 1 and won't be interrupted by Go's GC --
 			//	the subsequent buffer-swap step block-waits for the GPU anyway.
@@ -182,7 +179,6 @@ func (_ *NgLoop) Run() {
 				runGc = Options.Loop.GcEvery.Frame
 				Loop.onGC()
 			}
-
 			//	STEP 3. Swap buffers -- this waits for the GPU/GL to finish processing its command
 			//	queue filled in Step 1, swap buffers and for V-sync (if any)
 			Loop.onSwap()

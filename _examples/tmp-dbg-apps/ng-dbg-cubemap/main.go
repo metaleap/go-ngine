@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	floor, cube, dog *ng.Node
+	floorID, cubeID, dogID int
 )
 
 func main() {
@@ -25,7 +25,6 @@ func onWinThread() {
 func setupScene() {
 	var (
 		err                     error
-		scene                   *ng.Scene
 		meshFloorID, meshCubeID int
 		bufRest                 *ng.MeshBuffer
 	)
@@ -52,20 +51,17 @@ func setupScene() {
 	bufRest.Add(meshCubeID)
 
 	//	scene
-	scene = apputil.AddMainScene()
+	scene := apputil.AddMainScene()
 	apputil.AddSkyMesh(scene, meshCubeID)
-	floor = scene.RootNode.ChildNodes.AddNew("node_floor", meshFloorID)
-	floor.MatID = apputil.LibIDs.Mat["cobbles"]
+	floor := apputil.AddNode(scene, 0, meshFloorID, apputil.LibIDs.Mat["cobbles"], -1)
+	floorID = floor.ID
 	floor.Transform.SetScale(100)
-	floor.ApplyTransform()
 
-	cube = scene.RootNode.ChildNodes.AddNew("node_cube", meshCubeID)
-	cube.MatID = apputil.LibIDs.Mat["sky"]
-
-	dog = scene.RootNode.ChildNodes.AddNew("node_dog", meshCubeID)
-	dog.MatID = apputil.LibIDs.Mat["dog"]
+	cubeID = apputil.AddNode(scene, 0, meshCubeID, apputil.LibIDs.Mat["sky"], -1).ID
+	dog := apputil.AddNode(scene, 0, meshCubeID, apputil.LibIDs.Mat["dog"], -1)
+	dogID = dog.ID
 	dog.Transform.Pos.X, dog.Transform.Pos.Z = -2, 2
-	dog.ApplyTransform()
+	scene.ApplyNodeTransform(0)
 
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()

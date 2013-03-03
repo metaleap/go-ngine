@@ -77,14 +77,13 @@ func (me *Camera) copyAppToPrep() {
 	me.thrPrep.matProj = me.thrApp.matProj
 	me.Controller.thrPrep.mat = me.Controller.thrApp.mat
 	me.thrPrep.matPos.Translation(&me.Controller.Pos)
-	if scene := me.scene(); scene != nil && !scene.thrPrep.copyDone {
-		scene.thrPrep.copyDone = true
-		scene.RootNode.copyAppToPrep()
+	if scene := me.Scene(); scene != nil {
+		scene.copyAppToPrep()
 	}
 }
 
 func (me *Camera) copyPrepToRend() {
-	var node *Node
+	var node *SceneNode
 	var nr bool
 	var pm *unum.Mat4
 	for node, nr = range me.thrPrep.nodeRender {
@@ -93,22 +92,37 @@ func (me *Camera) copyPrepToRend() {
 	for node, pm = range me.thrPrep.nodeProjMats {
 		me.thrRend.nodeProjMats[node].Load(pm)
 	}
-	if scene := me.scene(); scene != nil && !scene.thrRend.copyDone {
-		scene.thrRend.copyDone = true
-		scene.RootNode.copyPrepToRend()
-		scene.thrPrep.done = false
+	if scene := me.Scene(); scene != nil {
+		scene.copyPrepToRend()
 	}
 }
 
-func (me *Node) copyAppToPrep() {
+func (me *Scene) copyAppToPrep() {
+	if !me.thrPrep.copyDone {
+		me.thrPrep.copyDone = true
+		for i := 0; i < len(me.allNodes); i++ {
+			if me.allNodes.Ok(i) {
+				me.allNodes[i].copyAppToPrep()
+			}
+		}
+	}
+}
+
+func (me *Scene) copyPrepToRend() {
+	if !me.thrRend.copyDone {
+		me.thrRend.copyDone = true
+		for i := 0; i < len(me.allNodes); i++ {
+			if me.allNodes.Ok(i) {
+				me.allNodes[i].copyPrepToRend()
+			}
+		}
+		me.thrPrep.done = false
+	}
+}
+
+func (me *SceneNode) copyAppToPrep() {
 	me.Transform.thrPrep.matModelView = me.Transform.thrApp.matModelView
-	for _, subNode := range me.ChildNodes.M {
-		subNode.copyAppToPrep()
-	}
 }
 
-func (me *Node) copyPrepToRend() {
-	for _, subNode := range me.ChildNodes.M {
-		subNode.copyPrepToRend()
-	}
+func (me *SceneNode) copyPrepToRend() {
 }

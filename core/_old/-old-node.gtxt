@@ -47,7 +47,7 @@ func (me *Node) initCamNodeData() {
 	for canv := 0; canv < len(Core.Render.Canvases); canv++ {
 		for view = 0; view < len(Core.Render.Canvases[canv].Views); view++ {
 			if rts = Core.Render.Canvases[canv].Views[view].Technique_Scene(); rts != nil && rts.Camera.scene() == me.rootScene {
-				rts.Camera.initNodeCamData(me)
+				// rts.Camera.initNodeCamData(me)
 			}
 		}
 	}

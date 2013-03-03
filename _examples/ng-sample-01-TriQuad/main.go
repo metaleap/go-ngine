@@ -8,13 +8,39 @@ import (
 )
 
 var (
-	tri, quad *ng.Node
+	triNodeID, quadNodeID int
+
+	tmpScene *ng.Scene
+	tmpNode  *ng.SceneNode
 )
 
 func main() {
 	apputil.MaxKeyHint = 4
 	apputil.OnSec = onSec
 	apputil.Main(setupExample_01_TriQuad, onAppThread, onWinThread)
+}
+
+//	called once per frame in app thread
+func onAppThread() {
+	if !apputil.Paused {
+		if tmpScene = apputil.SceneCam.Scene(); tmpScene != nil {
+			if tmpNode = tmpScene.Node(triNodeID); tmpNode != nil {
+				tmpNode.Transform.Rot.Add3(-0.005, -0.0005, 0)
+				tmpNode.Transform.Pos.Set(0.85, 1*math.Sin(ng.Loop.Tick.Now), 4)
+				tmpScene.ApplyNodeTransform(triNodeID)
+			}
+			if tmpNode = tmpScene.Node(quadNodeID); tmpNode != nil {
+				tmpNode.Transform.Rot.Add3(0, 0.005, 0.0005)
+				tmpNode.Transform.Pos.Set(-0.85, 1*math.Cos(ng.Loop.Tick.Now), 4)
+				tmpScene.ApplyNodeTransform(quadNodeID)
+			}
+		}
+	}
+}
+
+//	called once per frame in main thread
+func onWinThread() {
+	apputil.CheckAndHandleToggleKeys()
 }
 
 //	called once per second in main thread
@@ -28,27 +54,9 @@ func onSec() {
 	ng.Core.Libs.Effects[fxID].UpdateRoutine()
 }
 
-//	called once per frame in main thread
-func onWinThread() {
-	apputil.CheckAndHandleToggleKeys()
-}
-
-//	called once per frame in app thread
-func onAppThread() {
-	if !apputil.Paused {
-		tri.Transform.Rot.Add3(-0.005, -0.0005, 0)
-		tri.Transform.Pos.Set(0.85, 1*math.Sin(ng.Loop.Tick.Now), 4)
-		tri.ApplyTransform()
-		quad.Transform.Rot.Add3(0, 0.005, 0.0005)
-		quad.Transform.Pos.Set(-0.85, 1*math.Cos(ng.Loop.Tick.Now), 4)
-		quad.ApplyTransform()
-	}
-}
-
 func setupExample_01_TriQuad() {
 	var (
 		err                   error
-		scene                 *ng.Scene
 		meshTriID, meshQuadID int
 		meshBuf               *ng.MeshBuffer
 	)
@@ -82,9 +90,7 @@ func setupExample_01_TriQuad() {
 	}
 
 	//	scene
-	scene = apputil.AddMainScene()
-	tri = scene.RootNode.ChildNodes.AddNew("node_tri", meshTriID)
-	quad = scene.RootNode.ChildNodes.AddNew("node_quad", meshQuadID)
-	tri.MatID = apputil.LibIDs.Mat["cat"]
-	quad.MatID = apputil.LibIDs.Mat["dog"]
+	scene := apputil.AddMainScene()
+	triNodeID = apputil.AddNode(scene, 0, meshTriID, apputil.LibIDs.Mat["cat"], -1).ID
+	quadNodeID = apputil.AddNode(scene, 0, meshQuadID, apputil.LibIDs.Mat["dog"], -1).ID
 }

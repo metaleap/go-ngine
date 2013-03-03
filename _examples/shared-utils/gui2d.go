@@ -9,8 +9,9 @@ import (
 //	Has two textured quads, a cat and a dog one, shows them both animated and overlapping
 //	inside a red 64x64 px square in the bottom left canvas corner.
 type Gui2D struct {
-	View     *ng.RenderView
-	Cat, Dog *ng.Node
+	View                 *ng.RenderView
+	Cam                  *ng.Camera
+	CatNodeID, DogNodeID int
 }
 
 func (me *Gui2D) Setup() (err error) {
@@ -21,11 +22,11 @@ func (me *Gui2D) Setup() (err error) {
 	sceneID := ng.Core.Libs.Scenes.AddNew()
 	scene := &ng.Core.Libs.Scenes[sceneID]
 	me.View = SceneCanvas.AddNewView("Scene")
-	cam := &me.View.Technique_Scene().Camera
-	cam.Perspective.Enabled = false
+	me.Cam = &me.View.Technique_Scene().Camera
+	me.Cam.Perspective.Enabled = false
 	me.View.RenderStates.ClearColor.Set(0.75, 0.25, 0.1, 1)
 	me.View.Port.SetAbsolute(8, 8, 64, 64) //SetRel(0.02, 0.04, 0.125, 0.222)
-	cam.SetScene(sceneID)
+	me.Cam.SetScene(sceneID)
 	if meshBuf, err = ng.Core.MeshBuffers.AddNew("buf_quad", 6); err != nil {
 		return
 	}
@@ -36,19 +37,23 @@ func (me *Gui2D) Setup() (err error) {
 		return
 	}
 
-	me.Dog = scene.RootNode.ChildNodes.AddNew("gui_dog", quadMeshID)
-	me.Dog.MatID = LibIDs.Mat["dog"]
-	me.Dog.Transform.SetScale(0.85)
-	me.Dog.Transform.Rot.Z = unum.DegToRad(90)
+	me.DogNodeID = scene.AddNewChildNode(0)
+	dog := scene.Node(me.DogNodeID)
+	dog.Render.MeshID = quadMeshID
+	dog.Render.MatID = LibIDs.Mat["dog"]
+	dog.Transform.SetScale(0.85)
+	dog.Transform.Rot.Z = unum.DegToRad(90)
 
-	me.Cat = scene.RootNode.ChildNodes.AddNew("gui_cat", quadMeshID)
-	me.Cat.MatID = LibIDs.Mat["cat"]
-	me.Cat.Transform.SetScale(0.85)
-	me.Cat.Transform.Rot.Z = unum.DegToRad(90)
+	me.CatNodeID = scene.AddNewChildNode(0)
+	cat := scene.Node(me.CatNodeID)
+	cat.Render.MeshID = quadMeshID
+	cat.Render.MatID = LibIDs.Mat["cat"]
+	cat.Transform.SetScale(0.85)
+	cat.Transform.Rot.Z = unum.DegToRad(90)
 
-	me.Dog.Transform.Pos.Z = 0.1
-	me.Cat.Transform.Pos.Z = 0.11
-	me.Dog.ApplyTransform()
-	me.Cat.ApplyTransform()
+	dog.Transform.Pos.Z = 0.1
+	cat.Transform.Pos.Z = 0.11
+	scene.ApplyNodeTransform(me.DogNodeID)
+	scene.ApplyNodeTransform(me.CatNodeID)
 	return
 }

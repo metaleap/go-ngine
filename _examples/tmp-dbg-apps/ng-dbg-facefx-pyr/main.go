@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	floor, pyr *ng.Node
+	floorID, pyrID int
 )
 
 func main() {
@@ -28,7 +28,6 @@ func onWinThread() {
 func setupScene() {
 	var (
 		err                    error
-		scene                  *ng.Scene
 		meshFloorID, meshPyrID int
 		bufRest                *ng.MeshBuffer
 	)
@@ -81,18 +80,18 @@ func setupScene() {
 	bufRest.Add(meshFloorID)
 	bufRest.Add(meshPyrID)
 
-	scene = apputil.AddMainScene()
+	scene := apputil.AddMainScene()
 	apputil.AddSkyMesh(scene, meshPyrID)
-	floor = scene.RootNode.ChildNodes.AddNew("node_floor", meshFloorID)
-	floor.MatID = apputil.LibIDs.Mat["cobbles"]
+
+	floor := apputil.AddNode(scene, 0, meshFloorID, apputil.LibIDs.Mat["cobbles"], -1)
+	floorID = floor.ID
 	floor.Transform.SetScale(100)
-	floor.ApplyTransform()
 
-	pyr = scene.RootNode.ChildNodes.AddNew("node_pyr", meshPyrID)
-	pyr.MatID = apputil.LibIDs.Mat["dog"]
+	pyr := apputil.AddNode(scene, 0, meshPyrID, apputil.LibIDs.Mat["dog"], -1)
+	pyrID = pyr.ID
 	pyr.Transform.Pos.Y = 2
-	pyr.ApplyTransform()
 
+	scene.ApplyNodeTransform(0)
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()
 	camCtl.Pos.Set(-1.5, 2, -4)

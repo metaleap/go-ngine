@@ -1,13 +1,14 @@
 package core
 
+import (
+	usl "github.com/metaleap/go-util/slice"
+)
+
 //	Represents a scene graph.
 type Scene struct {
 	ID int
 
 	allNodes SceneNodeLib
-
-	//	The root Node for this scene graph.
-	RootNode Node
 
 	thrPrep struct {
 		copyDone, done bool
@@ -23,17 +24,44 @@ func (me *Scene) dispose() {
 }
 
 func (me *Scene) init() {
-	me.RootNode = *newNode("", -1, nil, me)
 	me.allNodes.init()
 	root := &me.allNodes[me.allNodes.AddNew()]
 	root.Render.skyMode = true
 	root.parentID = -1
 }
 
+func (me *Scene) initCamNodeData(nodeID int) {
+	var view int
+	var rts *RenderTechniqueScene
+	for canv := 0; canv < len(Core.Render.Canvases); canv++ {
+		for view = 0; view < len(Core.Render.Canvases[canv].Views); view++ {
+			if rts = Core.Render.Canvases[canv].Views[view].Technique_Scene(); rts != nil && rts.Camera.sceneID == me.ID {
+				rts.Camera.initNodeCamData(&me.allNodes[nodeID])
+			}
+		}
+	}
+}
+
 func (me *Scene) AddNewChildNode(parentNodeID int) (childNodeID int) {
-	childNodeID = me.allNodes.AddNew()
-	me.allNodes[childNodeID].parentID = parentNodeID
+	childNodeID = -1
+	if me.allNodes.IsOk(parentNodeID) {
+		childNodeID = me.allNodes.AddNew()
+		usl.IntAppendUnique(&me.allNodes[parentNodeID].childNodeIDs, childNodeID)
+		me.allNodes[childNodeID].parentID = parentNodeID
+		me.initCamNodeData(childNodeID)
+		me.ApplyNodeTransform(childNodeID)
+	}
 	return
+}
+
+func (me *Scene) ApplyNodeTransform(id int) {
+	if me.allNodes.IsOk(id) {
+		me.allNodes[id].Transform.applyMatrices(me, id)
+	}
+}
+
+func (me *Scene) Node(id int) *SceneNode {
+	return me.allNodes.get(id)
 }
 
 func (me *Scene) ParentNodeID(childNodeID int) (parentID int) {
@@ -43,14 +71,25 @@ func (me *Scene) ParentNodeID(childNodeID int) (parentID int) {
 	return
 }
 
-func (me *Scene) RemoveNodes(fromID, num int) {
+func (me *Scene) RemoveNode(fromID int) {
 	if fromID > 0 {
-		me.allNodes.Remove(fromID, num)
+		if pid := me.ParentNodeID(fromID); me.allNodes.IsOk(pid) {
+			usl.IntRemove(&me.allNodes[pid].childNodeIDs, fromID, false)
+		}
+		me.allNodes.Remove(fromID, 1)
 	}
 }
 
 func (me *Scene) Root() *SceneNode {
 	return &me.allNodes[0]
+}
+
+func (me *Scene) Walk(onNode func(node *SceneNode)) {
+	for i := 0; i < len(me.allNodes); i++ {
+		if me.allNodes.Ok(i) {
+			onNode(&me.allNodes[i])
+		}
+	}
 }
 
 //#begin-gt -gen-lib.gt T:Scene L:Core.Libs.Scenes

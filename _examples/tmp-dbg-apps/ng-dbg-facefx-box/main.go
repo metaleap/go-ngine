@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	floor, box *ng.Node
+	floorID, boxID int
 )
 
 func main() {
@@ -28,7 +28,6 @@ func onWinThread() {
 func setupScene() {
 	var (
 		err                    error
-		scene                  *ng.Scene
 		meshFloorID, meshBoxID int
 		bufRest                *ng.MeshBuffer
 	)
@@ -65,17 +64,16 @@ func setupScene() {
 	bufRest.Add(meshFloorID)
 	bufRest.Add(meshBoxID)
 
-	scene = apputil.AddMainScene()
-	floor = scene.RootNode.ChildNodes.AddNew("node_floor", meshFloorID)
-	floor.MatID = apputil.LibIDs.Mat["cobbles"]
+	scene := apputil.AddMainScene()
+	floor := apputil.AddNode(scene, 0, meshFloorID, apputil.LibIDs.Mat["cobbles"], -1)
+	floorID = floor.ID
 	floor.Transform.SetScale(100)
-	floor.ApplyTransform()
 
-	box = scene.RootNode.ChildNodes.AddNew("node_box", meshBoxID)
-	box.MatID = apputil.LibIDs.Mat["dog"]
+	box := apputil.AddNode(scene, 0, meshBoxID, apputil.LibIDs.Mat["dog"], -1)
+	boxID = box.ID
 	box.Transform.Pos.Y = 2
-	box.ApplyTransform()
 
+	scene.ApplyNodeTransform(0)
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()
 	camCtl.Pos.Set(-2.5, 2, -7)

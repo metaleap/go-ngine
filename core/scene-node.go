@@ -1,10 +1,8 @@
 package core
 
 type SceneNode struct {
-	SceneNodeTransform
-	ID int
-
-	parentID int
+	ID        int
+	Transform SceneNodeTransform
 
 	Render struct {
 		Enabled bool
@@ -14,6 +12,9 @@ type SceneNode struct {
 
 		skyMode bool
 	}
+
+	parentID     int
+	childNodeIDs []int
 }
 
 func (me *SceneNode) dispose() {
@@ -23,7 +24,7 @@ func (me *SceneNode) dispose() {
 func (me *SceneNode) init() {
 	me.Render.Enabled = true
 	me.Render.MatID, me.Render.MeshID, me.Render.ModelID = -1, -1, -1
-	me.SceneNodeTransform.init()
+	me.Transform.init()
 }
 
 func (me *SceneNode) meshMat() (mesh *Mesh, mat *FxMaterial) {

@@ -4,7 +4,7 @@ import (
 	gl "github.com/go3d/go-opengl/core"
 
 	ugl "github.com/go3d/go-opengl/util"
-	ugo "github.com/metaleap/go-util"
+	usl "github.com/metaleap/go-util/slice"
 )
 
 type MeshBuffer struct {
@@ -66,7 +66,7 @@ func (me *MeshBuffer) Add(meshID int) (err error) {
 		if mesh.meshBuffer != nil {
 			err = errf("Cannot add mesh '%v' to mesh buffer '%v': already belongs to mesh buffer '%v'.", mesh.Name, me.Name, mesh.meshBuffer.Name)
 		} else {
-			ugo.AppendUniqueInt(&me.meshIDs, meshID)
+			usl.IntAppendUnique(&me.meshIDs, meshID)
 			mesh.gpuSynced, mesh.meshBuffer = false, me
 		}
 	}

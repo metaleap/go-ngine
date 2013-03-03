@@ -5,9 +5,9 @@ import (
 	unum "github.com/metaleap/go-util/num"
 )
 
-type camNodeProjMats map[*Node]*unum.Mat4
+type camNodeProjMats map[*SceneNode]*unum.Mat4
 
-type camNodeProjGlMats map[*Node]*ugl.GlMat4
+type camNodeProjGlMats map[*SceneNode]*ugl.GlMat4
 
 type CameraPerspective struct {
 	//	Whether this is a perspective-projection camera. Defaults to true.
@@ -41,42 +41,40 @@ type Camera struct {
 	}
 	thrPrep struct {
 		matCamProj, matProj, matPos unum.Mat4
-		onPrepNode                  func(*Node)
-		nodeRender                  map[*Node]bool
+		nodeRender                  map[*SceneNode]bool
 		nodeProjMats                camNodeProjMats
 	}
 	thrRend struct {
 		nodeProjMats camNodeProjGlMats
-		nodeRender   map[*Node]bool
+		nodeRender   map[*SceneNode]bool
 	}
 }
 
 func (me *Camera) init() {
 	me.SetScene(-1)
-	me.thrPrep.onPrepNode = func(n *Node) { me.onPrepNode(n) }
 	me.Perspective = Options.Cameras.PerspectiveDefaults
 	unum.Mat4Identities(&me.thrApp.matProj, &me.thrPrep.matProj)
 	me.Controller.init()
 }
 
-func (me *Camera) initNodeCamData(node *Node) {
+func (me *Camera) initNodeCamData(node *SceneNode) {
 	me.thrPrep.nodeProjMats[node] = unum.NewMat4Identity()
 	me.thrRend.nodeProjMats[node] = ugl.NewGlMat4(nil)
-	me.thrPrep.nodeRender[node] = node.Rendering.Enabled
-	me.thrRend.nodeRender[node] = node.Rendering.Enabled
+	me.thrPrep.nodeRender[node] = node.Render.Enabled
+	me.thrRend.nodeRender[node] = node.Render.Enabled
 }
 
-func (me *Camera) scene() *Scene {
+func (me *Camera) Scene() *Scene {
 	return Core.Libs.Scenes.get(me.sceneID)
 }
 
 func (me *Camera) SetScene(sceneID int) {
 	if sceneID != me.sceneID {
-		me.thrPrep.nodeRender, me.thrRend.nodeRender = make(map[*Node]bool, 1), make(map[*Node]bool, 1)
+		me.thrPrep.nodeRender, me.thrRend.nodeRender = make(map[*SceneNode]bool, 1), make(map[*SceneNode]bool, 1)
 		me.thrPrep.nodeProjMats, me.thrRend.nodeProjMats = make(camNodeProjMats, 1), make(camNodeProjGlMats, 1)
 		me.sceneID = sceneID
-		if scene := me.scene(); scene != nil {
-			scene.RootNode.Walk(func(node *Node) {
+		if scene := me.Scene(); scene != nil {
+			scene.Walk(func(node *SceneNode) {
 				me.initNodeCamData(node)
 			})
 		}
