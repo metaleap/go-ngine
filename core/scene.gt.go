@@ -1,8 +1,11 @@
 package core
 
 import (
+	unum "github.com/metaleap/go-util/num"
 	usl "github.com/metaleap/go-util/slice"
 )
+
+const sceneNodeChildCap = 16
 
 //	Represents a scene graph.
 type Scene struct {
@@ -26,6 +29,7 @@ func (me *Scene) dispose() {
 func (me *Scene) init() {
 	me.allNodes.init()
 	root := &me.allNodes[me.allNodes.AddNew()]
+	root.childNodeIDs = make([]int, 0, sceneNodeChildCap)
 	root.Render.skyMode = true
 	root.parentID = -1
 }
@@ -46,17 +50,46 @@ func (me *Scene) AddNewChildNode(parentNodeID int) (childNodeID int) {
 	childNodeID = -1
 	if me.allNodes.IsOk(parentNodeID) {
 		childNodeID = me.allNodes.AddNew()
-		usl.IntAppendUnique(&me.allNodes[parentNodeID].childNodeIDs, childNodeID)
 		me.allNodes[childNodeID].parentID = parentNodeID
+
+		if len(me.allNodes[parentNodeID].childNodeIDs) == cap(me.allNodes[parentNodeID].childNodeIDs) {
+			nuCap := sceneNodeChildCap
+			if len(me.allNodes[parentNodeID].childNodeIDs) > 0 {
+				nuCap = len(me.allNodes[parentNodeID].childNodeIDs) * 2
+			}
+			nu := make([]int, len(me.allNodes[parentNodeID].childNodeIDs), nuCap)
+			copy(nu, me.allNodes[parentNodeID].childNodeIDs)
+			me.allNodes[parentNodeID].childNodeIDs = nu
+		}
+		usl.IntAppendUnique(&me.allNodes[parentNodeID].childNodeIDs, childNodeID)
+
 		me.initCamNodeData(childNodeID)
-		me.ApplyNodeTransform(childNodeID)
+		me.ApplyNodeTransforms(childNodeID)
 	}
 	return
 }
 
-func (me *Scene) ApplyNodeTransform(id int) {
-	if me.allNodes.IsOk(id) {
-		me.allNodes[id].Transform.applyMatrices(me, id)
+//	Updates the internal 4x4 transformation matrix for all transformations of the specified
+//	node and child-nodes. It is only this matrix that is used by the rendering runtime.
+func (me *Scene) ApplyNodeTransforms(nodeID int) {
+	if me.allNodes.IsOk(nodeID) {
+		//	this node
+		var matParent, matTrans, matScale, matRotX, matRotY, matRotZ unum.Mat4
+		matScale.Scaling(&me.allNodes[nodeID].Transform.Scale)
+		matTrans.Translation(&me.allNodes[nodeID].Transform.Pos)
+		matRotX.RotationX(me.allNodes[nodeID].Transform.Rot.X)
+		matRotY.RotationY(me.allNodes[nodeID].Transform.Rot.Y)
+		matRotZ.RotationZ(me.allNodes[nodeID].Transform.Rot.Z)
+		if me.allNodes[nodeID].parentID < 0 {
+			matParent.Identity()
+		} else {
+			matParent.CopyFrom(&me.allNodes[me.allNodes[nodeID].parentID].Transform.thrApp.matModelView)
+		}
+		me.allNodes[nodeID].Transform.thrApp.matModelView.SetFromMultN(&matParent, &matTrans /*me.Other,*/, &matScale, &matRotX, &matRotY, &matRotZ)
+		//	child-nodes
+		for i := 0; i < len(me.allNodes[nodeID].childNodeIDs); i++ {
+			me.ApplyNodeTransforms(me.allNodes[nodeID].childNodeIDs[i])
+		}
 	}
 }
 
@@ -73,23 +106,12 @@ func (me *Scene) ParentNodeID(childNodeID int) (parentID int) {
 
 func (me *Scene) RemoveNode(fromID int) {
 	if fromID > 0 {
-		if pid := me.ParentNodeID(fromID); me.allNodes.IsOk(pid) {
-			usl.IntRemove(&me.allNodes[pid].childNodeIDs, fromID, false)
-		}
 		me.allNodes.Remove(fromID, 1)
 	}
 }
 
 func (me *Scene) Root() *SceneNode {
 	return &me.allNodes[0]
-}
-
-func (me *Scene) Walk(onNode func(node *SceneNode)) {
-	for i := 0; i < len(me.allNodes); i++ {
-		if me.allNodes.Ok(i) {
-			onNode(&me.allNodes[i])
-		}
-	}
 }
 
 //#begin-gt -gen-lib.gt T:Scene L:Core.Libs.Scenes
@@ -173,15 +195,15 @@ func (me SceneLib) Ok(id int) bool {
 	return me[id].ID == id
 }
 
-func (me *SceneLib) Remove(fromID, num int) {
-	if l := len(*me); fromID > -1 && fromID < l {
+func (me SceneLib) Remove(fromID, num int) {
+	if l := len(me); fromID > -1 && fromID < l {
 		if num < 1 || num > (l-fromID) {
 			num = l - fromID
 		}
 		changed := make(map[int]int, num)
 		for id := fromID; id < fromID+num; id++ {
-			(*me)[id].dispose()
-			changed[id], (*me)[id].ID = -1, -1
+			me[id].dispose()
+			changed[id], me[id].ID = -1, -1
 		}
 		me.onSceneIDsChanged(changed)
 	}

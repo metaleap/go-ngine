@@ -53,7 +53,7 @@ func (me *Gui2D) Setup() (err error) {
 
 	dog.Transform.Pos.Z = 0.1
 	cat.Transform.Pos.Z = 0.11
-	scene.ApplyNodeTransform(me.DogNodeID)
-	scene.ApplyNodeTransform(me.CatNodeID)
+	scene.ApplyNodeTransforms(me.DogNodeID)
+	scene.ApplyNodeTransforms(me.CatNodeID)
 	return
 }

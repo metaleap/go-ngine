@@ -91,7 +91,7 @@ func setupScene() {
 	pyrID = pyr.ID
 	pyr.Transform.Pos.Y = 2
 
-	scene.ApplyNodeTransform(0)
+	scene.ApplyNodeTransforms(0)
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()
 	camCtl.Pos.Set(-1.5, 2, -4)

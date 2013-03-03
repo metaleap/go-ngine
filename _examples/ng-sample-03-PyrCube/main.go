@@ -35,12 +35,12 @@ func onAppThread() {
 			if tmpNode = tmpScene.Node(pyrNodeID); tmpNode != nil {
 				tmpNode.Transform.Rot.Add3(-0.0005, -0.0005, 0)
 				tmpNode.Transform.Pos.Set(-1.5, 1.5+(2*math.Sin(ng.Loop.Tick.Now*3)), 7)
-				tmpScene.ApplyNodeTransform(tmpNode.ID)
+				tmpScene.ApplyNodeTransforms(tmpNode.ID)
 			}
 			if tmpNode = tmpScene.Node(boxNodeID); tmpNode != nil {
 				tmpNode.Transform.Rot.Add3(0, 0.0004, 0.0006)
 				tmpNode.Transform.Pos.Set(1.5, 1.5+(2*math.Cos(ng.Loop.Tick.Now*0.3333)), 7)
-				tmpScene.ApplyNodeTransform(tmpNode.ID)
+				tmpScene.ApplyNodeTransforms(tmpNode.ID)
 			}
 		}
 	}
@@ -103,7 +103,7 @@ func setupExample_03_PyrCube() {
 	floorNodeID = floor.ID
 	floor.Transform.SetPos(0.1, 0, -8)
 	floor.Transform.SetScale(1000)
-	scene.ApplyNodeTransform(floorNodeID)
+	scene.ApplyNodeTransforms(floorNodeID)
 
 	pyrNodeID = apputil.AddNode(scene, 0, meshPyrID, apputil.LibIDs.Mat["mosaic"], -1).ID
 	boxNodeID = apputil.AddNode(scene, 0, meshCubeID, apputil.LibIDs.Mat["crate"], -1).ID

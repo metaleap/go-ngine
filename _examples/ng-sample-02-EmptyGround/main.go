@@ -50,7 +50,7 @@ func setupExample_02_EmptyGround() {
 	floorNodeID = floor.ID
 	floor.Transform.SetPos(0.1, 0, -8)
 	floor.Transform.SetScale(100)
-	scene.ApplyNodeTransform(floorNodeID)
+	scene.ApplyNodeTransforms(floorNodeID)
 
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()

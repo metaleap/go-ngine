@@ -181,7 +181,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#FxEffectLib.Ok">func (me FxEffectLib) Ok(id int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#FxEffectLib.Remove">func (me *FxEffectLib) Remove(fromID, num int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#FxEffectLib.Remove">func (me FxEffectLib) Remove(fromID, num int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#FxEffectLib.Walk">func (me FxEffectLib) Walk(on func(ref *FxEffect))</a></dd>
@@ -227,7 +227,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#FxImage2DLib.Ok">func (me FxImage2DLib) Ok(id int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#FxImage2DLib.Remove">func (me *FxImage2DLib) Remove(fromID, num int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#FxImage2DLib.Remove">func (me FxImage2DLib) Remove(fromID, num int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#FxImage2DLib.Walk">func (me FxImage2DLib) Walk(on func(ref *FxImage2D))</a></dd>
@@ -281,7 +281,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#FxImageCubeLib.Ok">func (me FxImageCubeLib) Ok(id int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#FxImageCubeLib.Remove">func (me *FxImageCubeLib) Remove(fromID, num int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#FxImageCubeLib.Remove">func (me FxImageCubeLib) Remove(fromID, num int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#FxImageCubeLib.Walk">func (me FxImageCubeLib) Walk(on func(ref *FxImageCube))</a></dd>
@@ -327,7 +327,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Ok">func (me FxMaterialLib) Ok(id int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Remove">func (me *FxMaterialLib) Remove(fromID, num int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Remove">func (me FxMaterialLib) Remove(fromID, num int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#FxMaterialLib.Walk">func (me FxMaterialLib) Walk(on func(ref *FxMaterial))</a></dd>
@@ -634,7 +634,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#MeshLib.Ok">func (me MeshLib) Ok(id int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#MeshLib.Remove">func (me *MeshLib) Remove(fromID, num int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#MeshLib.Remove">func (me MeshLib) Remove(fromID, num int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#MeshLib.Walk">func (me MeshLib) Walk(on func(ref *Mesh))</a></dd>
@@ -667,7 +667,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#ModelLib.Ok">func (me ModelLib) Ok(id int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#ModelLib.Remove">func (me *ModelLib) Remove(fromID, num int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#ModelLib.Remove">func (me ModelLib) Remove(fromID, num int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#ModelLib.Walk">func (me ModelLib) Walk(on func(ref *Model))</a></dd>
@@ -721,6 +721,9 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#NgLibs.UpdateIDRefs">func (_ *NgLibs) UpdateIDRefs(oldNewIDs map[int]int, ptrs ...*int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NgLibs.UpdateIDRefsIn">func (_ *NgLibs) UpdateIDRefsIn(oldNewIDs map[int]int, slice []int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#NgLibs.UpdatedIDRef">func (_ *NgLibs) UpdatedIDRef(oldNewIDs map[int]int, in int) (out int)</a></dd>
@@ -878,7 +881,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#Scene.AddNewChildNode">func (me *Scene) AddNewChildNode(parentNodeID int) (childNodeID int)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Scene.ApplyNodeTransform">func (me *Scene) ApplyNodeTransform(id int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Scene.ApplyNodeTransforms">func (me *Scene) ApplyNodeTransforms(nodeID int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Scene.Node">func (me *Scene) Node(id int) *SceneNode</a></dd>
@@ -891,9 +894,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Scene.Root">func (me *Scene) Root() *SceneNode</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#Scene.Walk">func (me *Scene) Walk(onNode func(node *SceneNode))</a></dd>
 				
 			
 				
@@ -913,7 +913,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#SceneLib.Ok">func (me SceneLib) Ok(id int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#SceneLib.Remove">func (me *SceneLib) Remove(fromID, num int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#SceneLib.Remove">func (me SceneLib) Remove(fromID, num int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#SceneLib.Walk">func (me SceneLib) Walk(on func(ref *Scene))</a></dd>
@@ -941,7 +941,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#SceneNodeLib.Ok">func (me SceneNodeLib) Ok(id int) bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#SceneNodeLib.Remove">func (me *SceneNodeLib) Remove(fromID, num int)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#SceneNodeLib.Remove">func (me SceneNodeLib) Remove(fromID, num int)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#SceneNodeLib.Walk">func (me SceneNodeLib) Walk(on func(ref *SceneNode))</a></dd>
@@ -1612,14 +1612,14 @@ Only used for Core.Libs.Effects
 				
 			
 				
-				<h3 id="FxEffectLib.Remove">func (*FxEffectLib) <a href="/target/fx-effect.gt.go?s=3307:3353#L151">Remove</a></h3>
-				<pre>func (me *FxEffectLib) Remove(fromID, num int)</pre>
+				<h3 id="FxEffectLib.Remove">func (FxEffectLib) <a href="/target/fx-effect.gt.go?s=3307:3352#L151">Remove</a></h3>
+				<pre>func (me FxEffectLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxEffectLib.Walk">func (FxEffectLib) <a href="/target/fx-effect.gt.go?s=3648:3698#L165">Walk</a></h3>
+				<h3 id="FxEffectLib.Walk">func (FxEffectLib) <a href="/target/fx-effect.gt.go?s=3640:3690#L165">Walk</a></h3>
 				<pre>func (me FxEffectLib) Walk(on func(ref *FxEffect))</pre>
 				
 				
@@ -1735,14 +1735,14 @@ Only used for Core.Libs.Images.Tex2D
 				
 			
 				
-				<h3 id="FxImage2DLib.Remove">func (*FxImage2DLib) <a href="/target/fx-image-2d.gt.go?s=2446:2493#L128">Remove</a></h3>
-				<pre>func (me *FxImage2DLib) Remove(fromID, num int)</pre>
+				<h3 id="FxImage2DLib.Remove">func (FxImage2DLib) <a href="/target/fx-image-2d.gt.go?s=2446:2492#L128">Remove</a></h3>
+				<pre>func (me FxImage2DLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImage2DLib.Walk">func (FxImage2DLib) <a href="/target/fx-image-2d.gt.go?s=2789:2841#L142">Walk</a></h3>
+				<h3 id="FxImage2DLib.Walk">func (FxImage2DLib) <a href="/target/fx-image-2d.gt.go?s=2781:2833#L142">Walk</a></h3>
 				<pre>func (me FxImage2DLib) Walk(on func(ref *FxImage2D))</pre>
 				
 				
@@ -1886,14 +1886,14 @@ Only used for Core.Libs.Images.TexCube
 				
 			
 				
-				<h3 id="FxImageCubeLib.Remove">func (*FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=2706:2755#L139">Remove</a></h3>
-				<pre>func (me *FxImageCubeLib) Remove(fromID, num int)</pre>
+				<h3 id="FxImageCubeLib.Remove">func (FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=2706:2754#L139">Remove</a></h3>
+				<pre>func (me FxImageCubeLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxImageCubeLib.Walk">func (FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=3053:3109#L153">Walk</a></h3>
+				<h3 id="FxImageCubeLib.Walk">func (FxImageCubeLib) <a href="/target/fx-image-cube.gt.go?s=3045:3101#L153">Walk</a></h3>
 				<pre>func (me FxImageCubeLib) Walk(on func(ref *FxImageCube))</pre>
 				
 				
@@ -2054,14 +2054,14 @@ Only used for Core.Libs.Materials
 				
 			
 				
-				<h3 id="FxMaterialLib.Remove">func (*FxMaterialLib) <a href="/target/fx-material.gt.go?s=2846:2894#L123">Remove</a></h3>
-				<pre>func (me *FxMaterialLib) Remove(fromID, num int)</pre>
+				<h3 id="FxMaterialLib.Remove">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=2846:2893#L123">Remove</a></h3>
+				<pre>func (me FxMaterialLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxMaterialLib.Walk">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=3191:3245#L137">Walk</a></h3>
+				<h3 id="FxMaterialLib.Walk">func (FxMaterialLib) <a href="/target/fx-material.gt.go?s=3183:3237#L137">Walk</a></h3>
 				<pre>func (me FxMaterialLib) Walk(on func(ref *FxMaterial))</pre>
 				
 				
@@ -3081,14 +3081,14 @@ Only used for Core.Libs.Meshes
 				
 			
 				
-				<h3 id="MeshLib.Remove">func (*MeshLib) <a href="/target/mesh.gt.go?s=6185:6227#L213">Remove</a></h3>
-				<pre>func (me *MeshLib) Remove(fromID, num int)</pre>
+				<h3 id="MeshLib.Remove">func (MeshLib) <a href="/target/mesh.gt.go?s=6185:6226#L213">Remove</a></h3>
+				<pre>func (me MeshLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.Walk">func (MeshLib) <a href="/target/mesh.gt.go?s=6518:6560#L227">Walk</a></h3>
+				<h3 id="MeshLib.Walk">func (MeshLib) <a href="/target/mesh.gt.go?s=6510:6552#L227">Walk</a></h3>
 				<pre>func (me MeshLib) Walk(on func(ref *Mesh))</pre>
 				
 				
@@ -3182,14 +3182,14 @@ Only used for Core.Libs.Models
 				
 			
 				
-				<h3 id="ModelLib.Remove">func (*ModelLib) <a href="/target/model.gt.go?s=1714:1757#L90">Remove</a></h3>
-				<pre>func (me *ModelLib) Remove(fromID, num int)</pre>
+				<h3 id="ModelLib.Remove">func (ModelLib) <a href="/target/model.gt.go?s=1714:1756#L90">Remove</a></h3>
+				<pre>func (me ModelLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="ModelLib.Walk">func (ModelLib) <a href="/target/model.gt.go?s=2049:2093#L104">Walk</a></h3>
+				<h3 id="ModelLib.Walk">func (ModelLib) <a href="/target/model.gt.go?s=2041:2085#L104">Walk</a></h3>
 				<pre>func (me ModelLib) Walk(on func(ref *Model))</pre>
 				
 				
@@ -3389,7 +3389,14 @@ Only used for Core.Libs.
 				
 			
 				
-				<h3 id="NgLibs.UpdatedIDRef">func (*NgLibs) <a href="/target/ng-libs.go?s=1439:1509#L65">UpdatedIDRef</a></h3>
+				<h3 id="NgLibs.UpdateIDRefsIn">func (*NgLibs) <a href="/target/ng-libs.go?s=1439:1506#L65">UpdateIDRefsIn</a></h3>
+				<pre>func (_ *NgLibs) UpdateIDRefsIn(oldNewIDs map[int]int, slice []int)</pre>
+				
+				
+				
+			
+				
+				<h3 id="NgLibs.UpdatedIDRef">func (*NgLibs) <a href="/target/ng-libs.go?s=1634:1704#L75">UpdatedIDRef</a></h3>
 				<pre>func (_ *NgLibs) UpdatedIDRef(oldNewIDs map[int]int, in int) (out int)</pre>
 				
 				
@@ -4138,7 +4145,7 @@ representing the maximum extent of the viewport on that respective axis.
 		
 			
 			
-			<h2 id="Scene">type <a href="/target/scene.gt.go?s=96:231#L1">Scene</a></h2>
+			<h2 id="Scene">type <a href="/target/scene.gt.go?s=166:301#L1">Scene</a></h2>
 			<pre>type Scene struct {
     ID int
     <span class="comment">// contains filtered or unexported fields</span>
@@ -4158,50 +4165,47 @@ Represents a scene graph.
 
 			
 				
-				<h3 id="Scene.AddNewChildNode">func (*Scene) <a href="/target/scene.gt.go?s=833:901#L35">AddNewChildNode</a></h3>
+				<h3 id="Scene.AddNewChildNode">func (*Scene) <a href="/target/scene.gt.go?s=958:1026#L39">AddNewChildNode</a></h3>
 				<pre>func (me *Scene) AddNewChildNode(parentNodeID int) (childNodeID int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.ApplyNodeTransform">func (*Scene) <a href="/target/scene.gt.go?s=1208:1251#L47">ApplyNodeTransform</a></h3>
-				<pre>func (me *Scene) ApplyNodeTransform(id int)</pre>
-				
+				<h3 id="Scene.ApplyNodeTransforms">func (*Scene) <a href="/target/scene.gt.go?s=1939:1987#L64">ApplyNodeTransforms</a></h3>
+				<pre>func (me *Scene) ApplyNodeTransforms(nodeID int)</pre>
+				<p>
+Updates the internal 4x4 transformation matrix for all transformations of the specified
+node and child-nodes. It is only this matrix that is used by the rendering runtime.
+</p>
+
 				
 				
 			
 				
-				<h3 id="Scene.Node">func (*Scene) <a href="/target/scene.gt.go?s=1337:1377#L53">Node</a></h3>
+				<h3 id="Scene.Node">func (*Scene) <a href="/target/scene.gt.go?s=2867:2907#L86">Node</a></h3>
 				<pre>func (me *Scene) Node(id int) *SceneNode</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.ParentNodeID">func (*Scene) <a href="/target/scene.gt.go?s=1411:1472#L57">ParentNodeID</a></h3>
+				<h3 id="Scene.ParentNodeID">func (*Scene) <a href="/target/scene.gt.go?s=2941:3002#L90">ParentNodeID</a></h3>
 				<pre>func (me *Scene) ParentNodeID(childNodeID int) (parentID int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.RemoveNode">func (*Scene) <a href="/target/scene.gt.go?s=1572:1611#L64">RemoveNode</a></h3>
+				<h3 id="Scene.RemoveNode">func (*Scene) <a href="/target/scene.gt.go?s=3102:3141#L97">RemoveNode</a></h3>
 				<pre>func (me *Scene) RemoveNode(fromID int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.Root">func (*Scene) <a href="/target/scene.gt.go?s=1798:1832#L73">Root</a></h3>
+				<h3 id="Scene.Root">func (*Scene) <a href="/target/scene.gt.go?s=3199:3233#L103">Root</a></h3>
 				<pre>func (me *Scene) Root() *SceneNode</pre>
-				
-				
-				
-			
-				
-				<h3 id="Scene.Walk">func (*Scene) <a href="/target/scene.gt.go?s=1862:1913#L77">Walk</a></h3>
-				<pre>func (me *Scene) Walk(onNode func(node *SceneNode))</pre>
 				
 				
 				
@@ -4209,7 +4213,7 @@ Represents a scene graph.
 		
 			
 			
-			<h2 id="SceneLib">type <a href="/target/scene.gt.go?s=2105:2126#L88">SceneLib</a></h2>
+			<h2 id="SceneLib">type <a href="/target/scene.gt.go?s=3349:3370#L110">SceneLib</a></h2>
 			<pre>type SceneLib []Scene</pre>
 			<p>
 Only used for Core.Libs.Scenes
@@ -4226,42 +4230,42 @@ Only used for Core.Libs.Scenes
 
 			
 				
-				<h3 id="SceneLib.AddNew">func (*SceneLib) <a href="/target/scene.gt.go?s=2128:2165#L90">AddNew</a></h3>
+				<h3 id="SceneLib.AddNew">func (*SceneLib) <a href="/target/scene.gt.go?s=3372:3409#L112">AddNew</a></h3>
 				<pre>func (me *SceneLib) AddNew() (id int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Compact">func (*SceneLib) <a href="/target/scene.gt.go?s=2488:2517#L112">Compact</a></h3>
+				<h3 id="SceneLib.Compact">func (*SceneLib) <a href="/target/scene.gt.go?s=3732:3761#L134">Compact</a></h3>
 				<pre>func (me *SceneLib) Compact()</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.IsOk">func (SceneLib) <a href="/target/scene.gt.go?s=3272:3313#L155">IsOk</a></h3>
+				<h3 id="SceneLib.IsOk">func (SceneLib) <a href="/target/scene.gt.go?s=4516:4557#L177">IsOk</a></h3>
 				<pre>func (me SceneLib) IsOk(id int) (ok bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Ok">func (SceneLib) <a href="/target/scene.gt.go?s=3383:3417#L162">Ok</a></h3>
+				<h3 id="SceneLib.Ok">func (SceneLib) <a href="/target/scene.gt.go?s=4627:4661#L184">Ok</a></h3>
 				<pre>func (me SceneLib) Ok(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Remove">func (*SceneLib) <a href="/target/scene.gt.go?s=3447:3490#L166">Remove</a></h3>
-				<pre>func (me *SceneLib) Remove(fromID, num int)</pre>
+				<h3 id="SceneLib.Remove">func (SceneLib) <a href="/target/scene.gt.go?s=4691:4733#L188">Remove</a></h3>
+				<pre>func (me SceneLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Walk">func (SceneLib) <a href="/target/scene.gt.go?s=3782:3826#L180">Walk</a></h3>
+				<h3 id="SceneLib.Walk">func (SceneLib) <a href="/target/scene.gt.go?s=5018:5062#L202">Walk</a></h3>
 				<pre>func (me SceneLib) Walk(on func(ref *Scene))</pre>
 				
 				
@@ -4343,14 +4347,14 @@ Only used for Core.Scenes[id].allNodes
 				
 			
 				
-				<h3 id="SceneNodeLib.Remove">func (*SceneNodeLib) <a href="/target/scene-nodes.gt.go?s=1554:1601#L76">Remove</a></h3>
-				<pre>func (me *SceneNodeLib) Remove(fromID, num int)</pre>
+				<h3 id="SceneNodeLib.Remove">func (SceneNodeLib) <a href="/target/scene-nodes.gt.go?s=1554:1600#L76">Remove</a></h3>
+				<pre>func (me SceneNodeLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeLib.Walk">func (SceneNodeLib) <a href="/target/scene-nodes.gt.go?s=1897:1949#L90">Walk</a></h3>
+				<h3 id="SceneNodeLib.Walk">func (SceneNodeLib) <a href="/target/scene-nodes.gt.go?s=1889:1941#L90">Walk</a></h3>
 				<pre>func (me SceneNodeLib) Walk(on func(ref *SceneNode))</pre>
 				
 				
@@ -4407,35 +4411,35 @@ whenever its parent Node.ApplyTransform() method is called.
 				
 			
 				
-				<h3 id="SceneNodeTransform.SetPos">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=2022:2084#L59">SetPos</a></h3>
+				<h3 id="SceneNodeTransform.SetPos">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1114:1176#L37">SetPos</a></h3>
 				<pre>func (me *SceneNodeTransform) SetPos(posX, posY, posZ float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.SetRot">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=2139:2201#L63">SetRot</a></h3>
+				<h3 id="SceneNodeTransform.SetRot">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1231:1293#L41">SetRot</a></h3>
 				<pre>func (me *SceneNodeTransform) SetRot(radX, radY, radZ float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.SetScale">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=2256:2305#L67">SetScale</a></h3>
+				<h3 id="SceneNodeTransform.SetScale">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1348:1397#L45">SetScale</a></h3>
 				<pre>func (me *SceneNodeTransform) SetScale(s float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.SetScaleXyz">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=2357:2415#L71">SetScaleXyz</a></h3>
+				<h3 id="SceneNodeTransform.SetScaleXyz">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1449:1507#L49">SetScaleXyz</a></h3>
 				<pre>func (me *SceneNodeTransform) SetScaleXyz(x, y, z float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.StepDelta">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=2546:2617#L76">StepDelta</a></h3>
+				<h3 id="SceneNodeTransform.StepDelta">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1638:1709#L54">StepDelta</a></h3>
 				<pre>func (me *SceneNodeTransform) StepDelta(deltaPerSecond float64) float64</pre>
 				<p>
 Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.

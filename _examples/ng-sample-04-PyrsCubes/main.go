@@ -49,7 +49,7 @@ func onAppThread() {
 	if tmpScene = gui2d.Cam.Scene(); tmpScene != nil {
 		tmpScene.Node(gui2d.DogNodeID).Transform.Rot.Add3(0, -0.005, 0.001)
 		tmpScene.Node(gui2d.CatNodeID).Transform.Rot.X += 0.003
-		tmpScene.ApplyNodeTransform(0)
+		tmpScene.ApplyNodeTransforms(0)
 	}
 
 	if tmpScene = apputil.SceneCam.Scene(); tmpScene != nil {
@@ -77,7 +77,7 @@ func onAppThread() {
 		if tmpNode = tmpScene.Node(pyrIDs[1]); tmpNode != nil {
 			tmpNode.Transform.Pos.Z = math.Cos(ng.Loop.Tick.Now) * 1000
 		}
-		tmpScene.ApplyNodeTransform(0)
+		tmpScene.ApplyNodeTransforms(0)
 	}
 }
 
@@ -206,7 +206,7 @@ func setupExample_04_PyrsCubes() {
 		}
 	}
 
-	scene.ApplyNodeTransform(0)
+	scene.ApplyNodeTransforms(0)
 	apputil.RearView.Setup(scene.ID)
 	if err = gui2d.Setup(); err != nil {
 		panic(err)

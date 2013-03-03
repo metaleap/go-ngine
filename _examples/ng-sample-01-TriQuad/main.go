@@ -27,12 +27,12 @@ func onAppThread() {
 			if tmpNode = tmpScene.Node(triNodeID); tmpNode != nil {
 				tmpNode.Transform.Rot.Add3(-0.005, -0.0005, 0)
 				tmpNode.Transform.Pos.Set(0.85, 1*math.Sin(ng.Loop.Tick.Now), 4)
-				tmpScene.ApplyNodeTransform(triNodeID)
+				tmpScene.ApplyNodeTransforms(triNodeID)
 			}
 			if tmpNode = tmpScene.Node(quadNodeID); tmpNode != nil {
 				tmpNode.Transform.Rot.Add3(0, 0.005, 0.0005)
 				tmpNode.Transform.Pos.Set(-0.85, 1*math.Cos(ng.Loop.Tick.Now), 4)
-				tmpScene.ApplyNodeTransform(quadNodeID)
+				tmpScene.ApplyNodeTransforms(quadNodeID)
 			}
 		}
 	}

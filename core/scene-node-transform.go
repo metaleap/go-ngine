@@ -44,28 +44,6 @@ func (me *SceneNodeTransform) AddRotXYZ(x, y, z float64) {
 	me.Rot.Add3(x, y, z)
 }
 
-//	Updates the internal 4x4 transformation matrix for all transformations
-//	in me. It is only this matrix that is used by the rendering runtime.
-func (me *SceneNodeTransform) applyMatrices(scene *Scene, nodeID int) {
-	var matParent, matTrans, matScale, matRotX, matRotY, matRotZ unum.Mat4
-	matScale.Scaling(&me.Scale)
-	matTrans.Translation(&me.Pos)
-	matRotX.RotationX(me.Rot.X)
-	matRotY.RotationY(me.Rot.Y)
-	matRotZ.RotationZ(me.Rot.Z)
-	if scene.allNodes[nodeID].parentID < 0 {
-		matParent.Identity()
-	} else {
-		matParent.CopyFrom(&scene.allNodes[scene.allNodes[nodeID].parentID].Transform.thrApp.matModelView)
-	}
-	me.thrApp.matModelView.SetFromMultN(&matParent, &matTrans /*me.Other,*/, &matScale, &matRotX, &matRotY, &matRotZ)
-	for i := 0; i < len(scene.allNodes); i++ {
-		if scene.allNodes.Ok(i) && scene.allNodes[i].parentID == nodeID {
-			scene.allNodes[i].Transform.applyMatrices(scene, i)
-		}
-	}
-}
-
 func (me *SceneNodeTransform) SetPos(posX, posY, posZ float64) {
 	me.Pos.X, me.Pos.Y, me.Pos.Z = posX, posY, posZ
 }

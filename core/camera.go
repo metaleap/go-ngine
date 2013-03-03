@@ -74,9 +74,11 @@ func (me *Camera) SetScene(sceneID int) {
 		me.thrPrep.nodeProjMats, me.thrRend.nodeProjMats = make(camNodeProjMats, 1), make(camNodeProjGlMats, 1)
 		me.sceneID = sceneID
 		if scene := me.Scene(); scene != nil {
-			scene.Walk(func(node *SceneNode) {
-				me.initNodeCamData(node)
-			})
+			for i := 0; i < len(scene.allNodes); i++ {
+				if scene.allNodes.Ok(i) {
+					me.initNodeCamData(&scene.allNodes[i])
+				}
+			}
 		}
 	}
 }

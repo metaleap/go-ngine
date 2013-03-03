@@ -61,7 +61,7 @@ func setupScene() {
 	dog := apputil.AddNode(scene, 0, meshCubeID, apputil.LibIDs.Mat["dog"], -1)
 	dogID = dog.ID
 	dog.Transform.Pos.X, dog.Transform.Pos.Z = -2, 2
-	scene.ApplyNodeTransform(0)
+	scene.ApplyNodeTransforms(0)
 
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()

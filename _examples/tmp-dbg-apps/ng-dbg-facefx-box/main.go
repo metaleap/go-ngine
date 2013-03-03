@@ -73,7 +73,7 @@ func setupScene() {
 	boxID = box.ID
 	box.Transform.Pos.Y = 2
 
-	scene.ApplyNodeTransform(0)
+	scene.ApplyNodeTransforms(0)
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()
 	camCtl.Pos.Set(-2.5, 2, -7)

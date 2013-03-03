@@ -18,7 +18,6 @@ type SceneNode struct {
 }
 
 func (me *SceneNode) dispose() {
-
 }
 
 func (me *SceneNode) init() {

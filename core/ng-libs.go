@@ -72,6 +72,16 @@ func (_ *NgLibs) UpdateIDRefs(oldNewIDs map[int]int, ptrs ...*int) {
 	}
 }
 
+func (_ *NgLibs) UpdateIDRefsIn(oldNewIDs map[int]int, slice []int) {
+	var newID int
+	var ok bool
+	for i, ref := range slice {
+		if newID, ok = oldNewIDs[ref]; ok {
+			slice[i] = newID
+		}
+	}
+}
+
 func (_ *NgLibs) UpdatedIDRef(oldNewIDs map[int]int, in int) (out int) {
 	var ok bool
 	if out, ok = oldNewIDs[in]; !ok {
@@ -202,16 +212,11 @@ func (_ SceneLib) onSceneIDsChanged(oldNewIDs map[int]int) {
 	Options.Libs.OnIDsChanged.Scenes.callAll(oldNewIDs)
 }
 
-func (me *SceneNodeLib) onSceneNodeIDsChanged(oldNewIDs map[int]int) {
-	var i int
-	for i = 0; i < len(*me); i++ {
+func (me SceneNodeLib) onSceneNodeIDsChanged(oldNewIDs map[int]int) {
+	for i := 0; i < len(me); i++ {
 		if me.Ok(i) {
-			Core.Libs.UpdateIDRef(oldNewIDs, &(*me)[i].parentID)
-		}
-	}
-	for id := 0; id < len(Core.Libs.Scenes); id++ {
-		if Core.Libs.Scenes.Ok(id) && &Core.Libs.Scenes[id].allNodes == me {
-			break
+			Core.Libs.UpdateIDRef(oldNewIDs, &me[i].parentID)
+			Core.Libs.UpdateIDRefsIn(oldNewIDs, me[i].childNodeIDs)
 		}
 	}
 }
