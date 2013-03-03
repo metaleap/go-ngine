@@ -887,6 +887,9 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#Scene.Node">func (me *Scene) Node(id int) *SceneNode</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Scene.NumNodes">func (me *Scene) NumNodes() int</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Scene.ParentNodeID">func (me *Scene) ParentNodeID(childNodeID int) (parentID int)</a></dd>
 				
 					
@@ -3762,7 +3765,7 @@ Your gateway for end-user input (key, mouse etc.) and &#34;output&#34; (window m
 
 			
 				
-				<h3 id="NgUserIO.IifKeyF">func (*NgUserIO) <a href="/target/ng-userio.go?s=2679:2747#L71">IifKeyF</a></h3>
+				<h3 id="NgUserIO.IifKeyF">func (*NgUserIO) <a href="/target/ng-userio.go?s=2680:2748#L71">IifKeyF</a></h3>
 				<pre>func (_ *NgUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64</pre>
 				<p>
 Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
@@ -3772,7 +3775,7 @@ Returns ifTrue if the specified key is pressed, otherwise returns ifFalse.
 				
 			
 				
-				<h3 id="NgUserIO.KeyPressed">func (*NgUserIO) <a href="/target/ng-userio.go?s=2866:2909#L79">KeyPressed</a></h3>
+				<h3 id="NgUserIO.KeyPressed">func (*NgUserIO) <a href="/target/ng-userio.go?s=2867:2910#L79">KeyPressed</a></h3>
 				<pre>func (_ *NgUserIO) KeyPressed(key int) bool</pre>
 				<p>
 Returns true if the specified key is pressed.
@@ -3782,7 +3785,7 @@ Returns true if the specified key is pressed.
 				
 			
 				
-				<h3 id="NgUserIO.KeyPressedWhich">func (*NgUserIO) <a href="/target/ng-userio.go?s=3000:3051#L84">KeyPressedWhich</a></h3>
+				<h3 id="NgUserIO.KeyPressedWhich">func (*NgUserIO) <a href="/target/ng-userio.go?s=3001:3052#L84">KeyPressedWhich</a></h3>
 				<pre>func (_ *NgUserIO) KeyPressedWhich(keys ...int) int</pre>
 				<p>
 Returns the first in keys that is pressed.
@@ -3792,7 +3795,7 @@ Returns the first in keys that is pressed.
 				
 			
 				
-				<h3 id="NgUserIO.KeyToggled">func (*NgUserIO) <a href="/target/ng-userio.go?s=4053:4096#L114">KeyToggled</a></h3>
+				<h3 id="NgUserIO.KeyToggled">func (*NgUserIO) <a href="/target/ng-userio.go?s=4054:4097#L114">KeyToggled</a></h3>
 				<pre>func (_ *NgUserIO) KeyToggled(key int) bool</pre>
 				<p>
 Returns true if the specified key has been &#34;toggled&#34;, ie. its pressed-state changed within the last me.KeyToggleMinDelay seconds.
@@ -3802,7 +3805,7 @@ Returns true if the specified key has been &#34;toggled&#34;, ie. its pressed-st
 				
 			
 				
-				<h3 id="NgUserIO.KeysPressedAll2">func (*NgUserIO) <a href="/target/ng-userio.go?s=3233:3284#L94">KeysPressedAll2</a></h3>
+				<h3 id="NgUserIO.KeysPressedAll2">func (*NgUserIO) <a href="/target/ng-userio.go?s=3234:3285#L94">KeysPressedAll2</a></h3>
 				<pre>func (_ *NgUserIO) KeysPressedAll2(k1, k2 int) bool</pre>
 				<p>
 Returns true if both specified keys are pressed.
@@ -3812,7 +3815,7 @@ Returns true if both specified keys are pressed.
 				
 			
 				
-				<h3 id="NgUserIO.KeysPressedAll3">func (*NgUserIO) <a href="/target/ng-userio.go?s=3402:3457#L99">KeysPressedAll3</a></h3>
+				<h3 id="NgUserIO.KeysPressedAll3">func (*NgUserIO) <a href="/target/ng-userio.go?s=3403:3458#L99">KeysPressedAll3</a></h3>
 				<pre>func (_ *NgUserIO) KeysPressedAll3(k1, k2, k3 int) bool</pre>
 				<p>
 Returns true if all three specified keys are pressed.
@@ -3822,7 +3825,7 @@ Returns true if all three specified keys are pressed.
 				
 			
 				
-				<h3 id="NgUserIO.KeysPressedAny2">func (*NgUserIO) <a href="/target/ng-userio.go?s=3604:3655#L104">KeysPressedAny2</a></h3>
+				<h3 id="NgUserIO.KeysPressedAny2">func (*NgUserIO) <a href="/target/ng-userio.go?s=3605:3656#L104">KeysPressedAny2</a></h3>
 				<pre>func (_ *NgUserIO) KeysPressedAny2(k1, k2 int) bool</pre>
 				<p>
 Returns true if any of the two specified keys is pressed.
@@ -3832,7 +3835,7 @@ Returns true if any of the two specified keys is pressed.
 				
 			
 				
-				<h3 id="NgUserIO.KeysPressedAny3">func (*NgUserIO) <a href="/target/ng-userio.go?s=3779:3834#L109">KeysPressedAny3</a></h3>
+				<h3 id="NgUserIO.KeysPressedAny3">func (*NgUserIO) <a href="/target/ng-userio.go?s=3780:3835#L109">KeysPressedAny3</a></h3>
 				<pre>func (_ *NgUserIO) KeysPressedAny3(k1, k2, k3 int) bool</pre>
 				<p>
 Returns true if any of the three specified keys is pressed.
@@ -4145,7 +4148,7 @@ representing the maximum extent of the viewport on that respective axis.
 		
 			
 			
-			<h2 id="Scene">type <a href="/target/scene.gt.go?s=166:301#L1">Scene</a></h2>
+			<h2 id="Scene">type <a href="/target/scene.gt.go?s=166:317#L1">Scene</a></h2>
 			<pre>type Scene struct {
     ID int
     <span class="comment">// contains filtered or unexported fields</span>
@@ -4165,14 +4168,14 @@ Represents a scene graph.
 
 			
 				
-				<h3 id="Scene.AddNewChildNode">func (*Scene) <a href="/target/scene.gt.go?s=554:622#L27">AddNewChildNode</a></h3>
+				<h3 id="Scene.AddNewChildNode">func (*Scene) <a href="/target/scene.gt.go?s=604:672#L28">AddNewChildNode</a></h3>
 				<pre>func (me *Scene) AddNewChildNode(parentNodeID int) (childNodeID int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.ApplyNodeTransforms">func (*Scene) <a href="/target/scene.gt.go?s=1802:1850#L58">ApplyNodeTransforms</a></h3>
+				<h3 id="Scene.ApplyNodeTransforms">func (*Scene) <a href="/target/scene.gt.go?s=1869:1917#L60">ApplyNodeTransforms</a></h3>
 				<pre>func (me *Scene) ApplyNodeTransforms(nodeID int)</pre>
 				<p>
 Updates the internal 4x4 transformation matrix for all transformations of the specified
@@ -4183,28 +4186,35 @@ node and child-nodes. It is only this matrix that is used by the rendering runti
 				
 			
 				
-				<h3 id="Scene.Node">func (*Scene) <a href="/target/scene.gt.go?s=2730:2770#L80">Node</a></h3>
+				<h3 id="Scene.Node">func (*Scene) <a href="/target/scene.gt.go?s=2797:2837#L82">Node</a></h3>
 				<pre>func (me *Scene) Node(id int) *SceneNode</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.ParentNodeID">func (*Scene) <a href="/target/scene.gt.go?s=2804:2865#L84">ParentNodeID</a></h3>
+				<h3 id="Scene.NumNodes">func (*Scene) <a href="/target/scene.gt.go?s=2871:2902#L86">NumNodes</a></h3>
+				<pre>func (me *Scene) NumNodes() int</pre>
+				
+				
+				
+			
+				
+				<h3 id="Scene.ParentNodeID">func (*Scene) <a href="/target/scene.gt.go?s=2929:2990#L90">ParentNodeID</a></h3>
 				<pre>func (me *Scene) ParentNodeID(childNodeID int) (parentID int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.RemoveNode">func (*Scene) <a href="/target/scene.gt.go?s=2965:3004#L91">RemoveNode</a></h3>
+				<h3 id="Scene.RemoveNode">func (*Scene) <a href="/target/scene.gt.go?s=3090:3129#L97">RemoveNode</a></h3>
 				<pre>func (me *Scene) RemoveNode(fromID int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.Root">func (*Scene) <a href="/target/scene.gt.go?s=3197:3231#L102">Root</a></h3>
+				<h3 id="Scene.Root">func (*Scene) <a href="/target/scene.gt.go?s=3339:3373#L109">Root</a></h3>
 				<pre>func (me *Scene) Root() *SceneNode</pre>
 				
 				
@@ -4213,7 +4223,7 @@ node and child-nodes. It is only this matrix that is used by the rendering runti
 		
 			
 			
-			<h2 id="SceneLib">type <a href="/target/scene.gt.go?s=3347:3368#L109">SceneLib</a></h2>
+			<h2 id="SceneLib">type <a href="/target/scene.gt.go?s=3489:3510#L116">SceneLib</a></h2>
 			<pre>type SceneLib []Scene</pre>
 			<p>
 Only used for Core.Libs.Scenes
@@ -4230,42 +4240,42 @@ Only used for Core.Libs.Scenes
 
 			
 				
-				<h3 id="SceneLib.AddNew">func (*SceneLib) <a href="/target/scene.gt.go?s=3370:3407#L111">AddNew</a></h3>
+				<h3 id="SceneLib.AddNew">func (*SceneLib) <a href="/target/scene.gt.go?s=3512:3549#L118">AddNew</a></h3>
 				<pre>func (me *SceneLib) AddNew() (id int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Compact">func (*SceneLib) <a href="/target/scene.gt.go?s=3730:3759#L133">Compact</a></h3>
+				<h3 id="SceneLib.Compact">func (*SceneLib) <a href="/target/scene.gt.go?s=3872:3901#L140">Compact</a></h3>
 				<pre>func (me *SceneLib) Compact()</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.IsOk">func (SceneLib) <a href="/target/scene.gt.go?s=4514:4555#L176">IsOk</a></h3>
+				<h3 id="SceneLib.IsOk">func (SceneLib) <a href="/target/scene.gt.go?s=4656:4697#L183">IsOk</a></h3>
 				<pre>func (me SceneLib) IsOk(id int) (ok bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Ok">func (SceneLib) <a href="/target/scene.gt.go?s=4625:4659#L183">Ok</a></h3>
+				<h3 id="SceneLib.Ok">func (SceneLib) <a href="/target/scene.gt.go?s=4767:4801#L190">Ok</a></h3>
 				<pre>func (me SceneLib) Ok(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Remove">func (SceneLib) <a href="/target/scene.gt.go?s=4689:4731#L187">Remove</a></h3>
+				<h3 id="SceneLib.Remove">func (SceneLib) <a href="/target/scene.gt.go?s=4831:4873#L194">Remove</a></h3>
 				<pre>func (me SceneLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Walk">func (SceneLib) <a href="/target/scene.gt.go?s=5016:5060#L201">Walk</a></h3>
+				<h3 id="SceneLib.Walk">func (SceneLib) <a href="/target/scene.gt.go?s=5158:5202#L208">Walk</a></h3>
 				<pre>func (me SceneLib) Walk(on func(ref *Scene))</pre>
 				
 				

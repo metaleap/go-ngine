@@ -49,9 +49,9 @@ var (
 		postLoop int64
 	}
 	winTitle struct {
-		appName        string
-		cw, ch         int
-		camPos, camDir unum.Vec3
+		appName          string
+		cw, ch, numNodes int
+		camPos, camDir   unum.Vec3
 	}
 
 	curKeyHint = 0
@@ -70,9 +70,10 @@ func appWindowTitle() string {
 		winTitle.cw, winTitle.ch = SceneCanvas.CurrentAbsoluteSize()
 		if SceneCam != nil {
 			winTitle.camPos, winTitle.camDir = SceneCam.Controller.Pos, *SceneCam.Controller.Dir()
+			winTitle.numNodes = SceneCam.Scene().NumNodes()
 		}
 	}
-	return fmt.Sprintf("%s   |   %v FPS @ %vx%v   |   %s   |   Cam: P=%v D=%v", winTitle.appName, ng.Stats.FpsLastSec, winTitle.cw, winTitle.ch, KeyHints[curKeyHint], winTitle.camPos.String(), winTitle.camDir.String())
+	return fmt.Sprintf("%s   |   %v FPS @ %vx%v   |   %s   |   %d nodes  |  Cam: P=%v D=%v", winTitle.appName, ng.Stats.FpsLastSec, winTitle.cw, winTitle.ch, KeyHints[curKeyHint], winTitle.numNodes, winTitle.camPos.String(), winTitle.camDir.String())
 }
 
 func onSec() {

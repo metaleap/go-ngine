@@ -72,7 +72,7 @@ func (_ *NgUserIO) recreateWin() (err error) {
 		glfw.SetWindowSizeCallback(glfwOnWindowResize)
 		// glfw.Disable(glfw.MouseCursor)
 		glfw.Disable(glfw.AutoPollEvents)
-		glfw.Enable(glfw.StickyKeys)
+		glfw.Disable(glfw.StickyKeys)
 	}
 	return
 }

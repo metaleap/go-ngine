@@ -12,14 +12,16 @@ import (
 var (
 	gui2d apputil.Gui2D
 
-	floorID, pyrID, boxID int
-	crateIDs              [3]int
-	pyrIDs                [4]int
-	tmpScene              *ng.Scene
-	tmpNode               *ng.SceneNode
+	tmpScene                                                     *ng.Scene
+	tmpNode                                                      *ng.SceneNode
+	floorID, pyrID, boxID, meshCubeID, meshPyrID, modelCubeCatID int
+	pyrIDs                                                       [4]int
+	crateIDs                                                     = make([]int, 0, 9)
 )
 
 func main() {
+	apputil.AddKeyHint("F10", "Add three more crates")
+	apputil.AddKeyHint("F11", "Remove last three crates")
 	apputil.AddKeyHint("F12", "Toggle 'Rear-View-Mirror' Camera")
 	apputil.Main(setupExample_04_PyrsCubes, onAppThread, onWinThread)
 }
@@ -29,6 +31,12 @@ func onWinThread() {
 	apputil.CheckAndHandleToggleKeys()
 	if ng.UserIO.KeyToggled(glfw.KeyF12) {
 		apputil.RearView.Toggle()
+	}
+	if ng.UserIO.KeyToggled(glfw.KeyF10) {
+		addCrates(apputil.SceneCam.Scene(), 3)
+	}
+	if ng.UserIO.KeyToggled(glfw.KeyF11) {
+		removeCrates(apputil.SceneCam.Scene(), 3)
 	}
 	apputil.RearView.OnWin()
 
@@ -83,9 +91,9 @@ func onAppThread() {
 
 func setupExample_04_PyrsCubes() {
 	var (
-		err                                error
-		meshPlaneID, meshPyrID, meshCubeID int
-		bufFloor, bufRest                  *ng.MeshBuffer
+		err               error
+		meshPlaneID       int
+		bufFloor, bufRest *ng.MeshBuffer
 	)
 
 	//	textures / materials
@@ -132,7 +140,7 @@ func setupExample_04_PyrsCubes() {
 	modelCubeDefaultID := ng.Core.Libs.Models.AddNew()
 	ng.Core.Libs.Models[modelCubeDefaultID].MatID = apputil.LibIDs.Mat["crate"]
 	ng.Core.Libs.Meshes[meshCubeID].DefaultModelID = modelCubeDefaultID
-	modelCubeCatID := ng.Core.Libs.Models.AddNew()
+	modelCubeCatID = ng.Core.Libs.Models.AddNew()
 	ng.Core.Libs.Models[modelCubeCatID].MatID = apputil.LibIDs.Mat["cat"]
 
 	tmpMat := &ng.Core.Libs.Materials[apputil.LibIDs.Mat["crate"]]
@@ -161,22 +169,8 @@ func setupExample_04_PyrsCubes() {
 	pyrID = apputil.AddNode(scene, 0, meshPyrID, -1, -1).ID
 	boxID = apputil.AddNode(scene, 0, meshCubeID, -1, -1).ID
 
-	var i int
 	var f float64
-	for i = 0; i < len(crateIDs); i++ {
-		tmpNode = apputil.AddNode(scene, 0, meshCubeID, -1, -1)
-		crateIDs[i] = tmpNode.ID
-		if i == 0 {
-			tmpNode.Render.ModelID = modelCubeCatID
-		}
-		if i == 2 {
-			tmpNode.Render.MatID = apputil.LibIDs.Mat["mix"]
-		}
-		f = float64(i)
-		tmpNode.Transform.SetPos((f+3)*-2, (f+1)*2, (f+2)*3)
-	}
-
-	for i = 0; i < len(pyrIDs); i++ {
+	for i := 0; i < len(pyrIDs); i++ {
 		tmpNode = apputil.AddNode(scene, 0, meshPyrID, -1, -1)
 		pyrIDs[i] = tmpNode.ID
 		if i > 1 {
@@ -217,4 +211,39 @@ func setupExample_04_PyrsCubes() {
 	camCtl.Pos.X, camCtl.Pos.Y, camCtl.Pos.Z = -3.57, 3.63, 19.53
 	camCtl.TurnRightBy(155)
 	camCtl.EndUpdate()
+}
+
+func addCrates(scene *ng.Scene, num int) {
+	var f float64
+	oldLen := len(crateIDs)
+	nuLen := oldLen + 3
+	if nuLen > cap(crateIDs) {
+		nu := make([]int, len(crateIDs), len(crateIDs)*2)
+		copy(nu, crateIDs)
+		crateIDs = nu
+	}
+	for i := 0; i < num; i++ {
+		tmpNode = apputil.AddNode(scene, 0, meshCubeID, -1, -1)
+		crateIDs = append(crateIDs, tmpNode.ID)
+		f = float64(oldLen + i)
+		tmpNode.Transform.SetPos((f+3)*-2, (f+1)*2, (f+2)*3)
+		switch i {
+		case 0:
+			tmpNode.Render.MatID = apputil.LibIDs.Mat["mix"]
+		case 1:
+			apputil.AddNode(scene, tmpNode.ID, meshPyrID, apputil.LibIDs.Mat["cat"], -1).Transform.Pos.Y = 2.125
+		case 2:
+			tmpNode.Render.ModelID = modelCubeCatID
+		}
+	}
+	scene.ApplyNodeTransforms(0)
+}
+
+func removeCrates(scene *ng.Scene, num int) {
+	if len(crateIDs) >= num {
+		for i := len(crateIDs) - num; i < len(crateIDs); i++ {
+			scene.RemoveNode(crateIDs[i])
+		}
+		crateIDs = crateIDs[:len(crateIDs)-num]
+	}
 }

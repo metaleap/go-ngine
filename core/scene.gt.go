@@ -11,7 +11,8 @@ const sceneNodeChildCap = 16
 type Scene struct {
 	ID int
 
-	allNodes SceneNodeLib
+	allNodes  SceneNodeLib
+	nodeCount int
 
 	thrPrep struct {
 		copyDone, done bool
@@ -24,19 +25,20 @@ type Scene struct {
 
 func (me *Scene) dispose() {
 	me.allNodes.dispose()
+	me.nodeCount = 0
 }
 
 func (me *Scene) init() {
 	me.allNodes.init()
 	root := &me.allNodes[me.allNodes.AddNew()]
-	root.childNodeIDs = make([]int, 0, sceneNodeChildCap)
-	root.Render.skyMode = true
-	root.parentID = -1
+	me.nodeCount = 1
+	root.parentID, root.Render.skyMode, root.childNodeIDs = -1, true, make([]int, 0, sceneNodeChildCap)
 }
 
 func (me *Scene) AddNewChildNode(parentNodeID int) (childNodeID int) {
 	childNodeID = -1
 	if me.allNodes.IsOk(parentNodeID) {
+		me.nodeCount++
 		childNodeID = me.allNodes.AddNew()
 		me.allNodes[childNodeID].parentID = parentNodeID
 
@@ -91,6 +93,10 @@ func (me *Scene) Node(id int) *SceneNode {
 	return me.allNodes.get(id)
 }
 
+func (me *Scene) NumNodes() int {
+	return me.nodeCount
+}
+
 func (me *Scene) ParentNodeID(childNodeID int) (parentID int) {
 	if me.allNodes.IsOk(childNodeID) {
 		parentID = me.allNodes[childNodeID].parentID
@@ -100,12 +106,13 @@ func (me *Scene) ParentNodeID(childNodeID int) (parentID int) {
 
 func (me *Scene) RemoveNode(fromID int) {
 	if fromID > 0 {
-		me.allNodes.Remove(fromID, 1)
 		for i := 0; i < len(me.allNodes); i++ {
 			if me.allNodes.Ok(i) && me.allNodes[i].parentID == fromID {
 				me.RemoveNode(i)
 			}
 		}
+		me.allNodes.Remove(fromID, 1)
+		me.nodeCount--
 	}
 }
 
