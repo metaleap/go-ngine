@@ -56,7 +56,7 @@ func (me *RenderTechniqueQuad) render() {
 func (me *RenderTechniqueScene) render() {
 	thrRend.nextTech = me
 	thrRend.curCam = &me.Camera
-	if scene := me.Camera.scene(); scene != nil && scene.RootNode.thrRend.camRender[&me.Camera] {
+	if scene := me.Camera.scene(); scene != nil && me.Camera.thrRend.nodeRender[&scene.RootNode] {
 		scene.RootNode.renderChildren()
 		scene.RootNode.renderSelf() // might be a skybox so "render" the root last
 	}
@@ -64,7 +64,7 @@ func (me *RenderTechniqueScene) render() {
 
 func (me *Node) renderChildren() {
 	for _, subNode := range me.ChildNodes.M {
-		if subNode.thrRend.camRender[thrRend.curCam] {
+		if thrRend.curCam.thrRend.nodeRender[subNode] {
 			subNode.renderSelf()
 			subNode.renderChildren()
 		}
@@ -79,7 +79,7 @@ func (me *Node) renderSelf() {
 					thrRend.nextEffect = mat.faceEffect(&mesh.raw.faces[i])
 					Core.useTechFx()
 					mesh.meshBuffer.use()
-					thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &me.thrRend.camProjMats[thrRend.curCam][0])
+					thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &thrRend.curCam.thrRend.nodeProjMats[me][0])
 					gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices+(i*3*4))), gl.Int(mesh.meshBufOffsetBaseIndex))
 				}
 			} else {
@@ -91,7 +91,7 @@ func (me *Node) renderSelf() {
 					gl.DepthFunc(gl.LEQUAL)
 					thrRend.curProg.Uniform1i("uni_int_Sky", 1)
 				}
-				thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &me.thrRend.camProjMats[thrRend.curCam][0])
+				thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &thrRend.curCam.thrRend.nodeProjMats[me][0])
 				gl.DrawElementsBaseVertex(gl.TRIANGLES, mesh.raw.lastNumIndices, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices)), gl.Int(mesh.meshBufOffsetBaseIndex))
 				if me.Rendering.skyMode {
 					thrRend.curProg.Uniform1i("uni_int_Sky", 0)

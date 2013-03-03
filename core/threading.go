@@ -84,6 +84,15 @@ func (me *Camera) copyAppToPrep() {
 }
 
 func (me *Camera) copyPrepToRend() {
+	var node *Node
+	var nr bool
+	var pm *unum.Mat4
+	for node, nr = range me.thrPrep.nodeRender {
+		me.thrRend.nodeRender[node] = nr
+	}
+	for node, pm = range me.thrPrep.nodeProjMats {
+		me.thrRend.nodeProjMats[node].Load(pm)
+	}
 	if scene := me.scene(); scene != nil && !scene.thrRend.copyDone {
 		scene.thrRend.copyDone = true
 		scene.RootNode.copyPrepToRend()
@@ -92,24 +101,13 @@ func (me *Camera) copyPrepToRend() {
 }
 
 func (me *Node) copyAppToPrep() {
-	me.thrPrep.matModelView = me.Transform.matModelView
+	me.Transform.thrPrep.matModelView = me.Transform.thrApp.matModelView
 	for _, subNode := range me.ChildNodes.M {
 		subNode.copyAppToPrep()
 	}
 }
 
 func (me *Node) copyPrepToRend() {
-	var (
-		cam *Camera
-		mat *unum.Mat4
-		cr  bool
-	)
-	for cam, cr = range me.thrPrep.camRender {
-		me.thrRend.camRender[cam] = cr
-	}
-	for cam, mat = range me.thrPrep.camProjMats {
-		me.thrRend.camProjMats[cam].Load(mat)
-	}
 	for _, subNode := range me.ChildNodes.M {
 		subNode.copyPrepToRend()
 	}

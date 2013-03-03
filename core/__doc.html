@@ -1204,7 +1204,7 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.go?s=686:1032#L15">Camera</a></h2>
+			<h2 id="Camera">type <a href="/target/camera.go?s=813:1334#L20">Camera</a></h2>
 			<pre>type Camera struct {
     <span class="comment">//	Optical and imager properties for this camera.</span>
     Perspective CameraPerspective
@@ -1225,7 +1225,7 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 
 			
 				
-				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=1695:1734#L60">SetScene</a></h3>
+				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=1927:1966#L63">SetScene</a></h3>
 				<pre>func (me *Camera) SetScene(sceneID int)</pre>
 				
 				
@@ -1234,7 +1234,7 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="CameraPerspective">type <a href="/target/camera.go?s=66:684#L1">CameraPerspective</a></h2>
+			<h2 id="CameraPerspective">type <a href="/target/camera.go?s=193:811#L2">CameraPerspective</a></h2>
 			<pre>type CameraPerspective struct {
     <span class="comment">//	Whether this is a perspective-projection camera. Defaults to true.</span>
     <span class="comment">//	If false, no projection transformation is applied.</span>
@@ -3855,7 +3855,7 @@ Returns true if any of the three specified keys is pressed.
 		
 			
 			
-			<h2 id="Node">type <a href="/target/node.go?s=271:888#L5">Node</a></h2>
+			<h2 id="Node">type <a href="/target/node.go?s=88:510#L1">Node</a></h2>
 			<pre>type Node struct {
     Rendering struct {
         <span class="comment">//	Defaults to true. If false, this Node is ignored by the rendering runtime.</span>
@@ -3889,21 +3889,21 @@ Declares a point of interest in a Scene.
 
 			
 				
-				<h3 id="Node.ApplyTransform">func (*Node) <a href="/target/node.go?s=1230:1262#L50">ApplyTransform</a></h3>
+				<h3 id="Node.ApplyTransform">func (*Node) <a href="/target/node.go?s=855:887#L30">ApplyTransform</a></h3>
 				<pre>func (me *Node) ApplyTransform()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=2687:2722#L102">Root</a></h3>
+				<h3 id="Node.Root">func (*Node) <a href="/target/node.go?s=1821:1856#L72">Root</a></h3>
 				<pre>func (me *Node) Root() (root *Node)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=2818:2858#L111">Walk</a></h3>
+				<h3 id="Node.Walk">func (*Node) <a href="/target/node.go?s=1952:1992#L81">Walk</a></h3>
 				<pre>func (me *Node) Walk(onNode NodeVisitor)</pre>
 				
 				
@@ -3912,7 +3912,7 @@ Declares a point of interest in a Scene.
 		
 			
 			
-			<h2 id="NodeVisitor">type <a href="/target/node.go?s=197:225#L2">NodeVisitor</a></h2>
+			<h2 id="NodeVisitor">type <a href="/target/node.go?s=14:42#L1">NodeVisitor</a></h2>
 			<pre>type NodeVisitor func(*Node)</pre>
 			
 
@@ -4144,7 +4144,7 @@ Only used for Core.Render.Canvases
 
 			
 				
-				<h3 id="RenderTechniqueScene.ApplyCameraProjection">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=767:822#L30">ApplyCameraProjection</a></h3>
+				<h3 id="RenderTechniqueScene.ApplyCameraProjection">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=665:720#L25">ApplyCameraProjection</a></h3>
 				<pre>func (me *RenderTechniqueScene) ApplyCameraProjection()</pre>
 				<p>
 Applies changes made to the Enabled, FovY, ZNear and/or ZFar parameters in me.Camera.Perspective.
@@ -4154,7 +4154,7 @@ Applies changes made to the Enabled, FovY, ZNear and/or ZFar parameters in me.Ca
 				
 			
 				
-				<h3 id="RenderTechniqueScene.ToggleBatching">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=1060:1108#L38">ToggleBatching</a></h3>
+				<h3 id="RenderTechniqueScene.ToggleBatching">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=958:1006#L33">ToggleBatching</a></h3>
 				<pre>func (me *RenderTechniqueScene) ToggleBatching()</pre>
 				
 				
@@ -4489,7 +4489,7 @@ Only used for Core.Scenes[id].allNodes
 		
 			
 			
-			<h2 id="SceneNodeTransform">type <a href="/target/scene-node-transform.go?s=487:763#L4">SceneNodeTransform</a></h2>
+			<h2 id="SceneNodeTransform">type <a href="/target/scene-node-transform.go?s=487:830#L4">SceneNodeTransform</a></h2>
 			<pre>type SceneNodeTransform struct {
     <span class="comment">//	Translation of the from origin.</span>
     Pos unum.Vec3
@@ -4523,49 +4523,49 @@ whenever its parent Node.ApplyTransform() method is called.
 
 			
 				
-				<h3 id="SceneNodeTransform.AddRot">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=881:933#L24">AddRot</a></h3>
+				<h3 id="SceneNodeTransform.AddRot">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=955:1007#L29">AddRot</a></h3>
 				<pre>func (me *SceneNodeTransform) AddRot(rot *unum.Vec3)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.AddRotXYZ">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=956:1012#L28">AddRotXYZ</a></h3>
+				<h3 id="SceneNodeTransform.AddRotXYZ">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1030:1086#L33">AddRotXYZ</a></h3>
 				<pre>func (me *SceneNodeTransform) AddRotXYZ(x, y, z float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.SetPos">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1796:1858#L52">SetPos</a></h3>
+				<h3 id="SceneNodeTransform.SetPos">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1884:1946#L57">SetPos</a></h3>
 				<pre>func (me *SceneNodeTransform) SetPos(posX, posY, posZ float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.SetRot">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1913:1975#L56">SetRot</a></h3>
+				<h3 id="SceneNodeTransform.SetRot">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=2001:2063#L61">SetRot</a></h3>
 				<pre>func (me *SceneNodeTransform) SetRot(radX, radY, radZ float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.SetScale">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=2030:2079#L60">SetScale</a></h3>
+				<h3 id="SceneNodeTransform.SetScale">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=2118:2167#L65">SetScale</a></h3>
 				<pre>func (me *SceneNodeTransform) SetScale(s float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.SetScaleXyz">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=2131:2189#L64">SetScaleXyz</a></h3>
+				<h3 id="SceneNodeTransform.SetScaleXyz">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=2219:2277#L69">SetScaleXyz</a></h3>
 				<pre>func (me *SceneNodeTransform) SetScaleXyz(x, y, z float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.StepDelta">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=2320:2391#L69">StepDelta</a></h3>
+				<h3 id="SceneNodeTransform.StepDelta">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=2408:2479#L74">StepDelta</a></h3>
 				<pre>func (me *SceneNodeTransform) StepDelta(deltaPerSecond float64) float64</pre>
 				<p>
 Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.

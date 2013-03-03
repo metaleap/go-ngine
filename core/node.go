@@ -1,14 +1,5 @@
 package core
 
-import (
-	ugl "github.com/go3d/go-opengl/util"
-	unum "github.com/metaleap/go-util/num"
-)
-
-type nodeCamProjMats map[*Camera]*unum.Mat4
-
-type nodeCamProjGlMats map[*Camera]*ugl.GlMat4
-
 type NodeVisitor func(*Node)
 
 //	Declares a point of interest in a Scene.
@@ -33,17 +24,6 @@ type Node struct {
 	parentNode *Node
 	rootScene  *Scene
 	id         string
-
-	thrPrep struct {
-		matModelView unum.Mat4
-		camProjMats  nodeCamProjMats
-		camRender    map[*Camera]bool
-	}
-
-	thrRend struct {
-		camProjMats nodeCamProjGlMats
-		camRender   map[*Camera]bool
-	}
 }
 
 func newNode(id string, meshID int, parent *Node, scene *Scene) (me *Node) {
@@ -53,7 +33,7 @@ func newNode(id string, meshID int, parent *Node, scene *Scene) (me *Node) {
 	me.ChildNodes.init(me)
 	me.Transform.init()
 	me.ApplyTransform()
-	me.initCamDatas()
+	me.initCamNodeData()
 	return
 }
 
@@ -61,23 +41,13 @@ func (me *Node) ApplyTransform() {
 	me.Transform.applyMatrices(me)
 }
 
-func (me *Node) initCamData(view *Camera) {
-	if view.scene() == me.rootScene {
-		me.thrPrep.camProjMats[view], me.thrRend.camProjMats[view] = unum.NewMat4Identity(), ugl.NewGlMat4(nil)
-		me.thrPrep.camRender[view] = me.Rendering.Enabled
-		me.thrRend.camRender[view] = me.Rendering.Enabled
-	}
-}
-
-func (me *Node) initCamDatas() {
-	me.thrPrep.camRender, me.thrRend.camRender = make(map[*Camera]bool, 1), make(map[*Camera]bool, 1)
-	me.thrPrep.camProjMats, me.thrRend.camProjMats = make(nodeCamProjMats, 1), make(nodeCamProjGlMats, 1)
+func (me *Node) initCamNodeData() {
 	var view int
 	var rts *RenderTechniqueScene
 	for canv := 0; canv < len(Core.Render.Canvases); canv++ {
 		for view = 0; view < len(Core.Render.Canvases[canv].Views); view++ {
 			if rts = Core.Render.Canvases[canv].Views[view].Technique_Scene(); rts != nil && rts.Camera.scene() == me.rootScene {
-				me.initCamData(&rts.Camera)
+				rts.Camera.initNodeCamData(me)
 			}
 		}
 	}

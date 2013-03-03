@@ -23,12 +23,17 @@ type SceneNodeTransform struct {
 
 	// Other unum.Mat4
 
-	matModelView unum.Mat4
+	thrApp struct {
+		matModelView unum.Mat4
+	}
+	thrPrep struct {
+		matModelView unum.Mat4
+	}
 }
 
 func (me *SceneNodeTransform) init() {
 	me.Scale.X, me.Scale.Y, me.Scale.Z = 1, 1, 1
-	me.matModelView.Identity()
+	me.thrApp.matModelView.Identity()
 }
 
 func (me *SceneNodeTransform) AddRot(rot *unum.Vec3) {
@@ -51,9 +56,9 @@ func (me *SceneNodeTransform) applyMatrices(owner *Node) {
 	if owner.parentNode == nil {
 		matParent.Identity()
 	} else {
-		matParent.CopyFrom(&owner.parentNode.Transform.matModelView)
+		matParent.CopyFrom(&owner.parentNode.Transform.thrApp.matModelView)
 	}
-	me.matModelView.SetFromMultN(&matParent, &matTrans /*me.Other,*/, &matScale, &matRotX, &matRotY, &matRotZ)
+	me.thrApp.matModelView.SetFromMultN(&matParent, &matTrans /*me.Other,*/, &matScale, &matRotX, &matRotY, &matRotZ)
 	for _, subNode := range owner.ChildNodes.M {
 		subNode.Transform.applyMatrices(subNode)
 	}

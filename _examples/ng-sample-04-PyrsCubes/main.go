@@ -197,10 +197,10 @@ func setupExample_04_PyrsCubes() {
 	floor.Transform.SetScale(10000)
 	floor.ApplyTransform()
 
+	apputil.RearView.Setup(scene.ID)
 	if err = gui2d.Setup(); err != nil {
 		panic(err)
 	}
-	apputil.RearView.Setup(scene.ID)
 
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()

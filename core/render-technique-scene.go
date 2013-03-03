@@ -31,11 +31,6 @@ func newRenderTechniqueScene(view *RenderView) RenderTechnique {
 	return me
 }
 
-func (me *RenderTechniqueScene) dispose() {
-	me.Camera.dispose()
-	me.renderTechniqueBase.dispose()
-}
-
 //	Applies changes made to the Enabled, FovY, ZNear and/or ZFar parameters in me.Camera.Perspective.
 func (me *RenderTechniqueScene) ApplyCameraProjection() {
 	if me.Camera.Perspective.Enabled {

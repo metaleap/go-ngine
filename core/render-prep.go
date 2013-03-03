@@ -37,16 +37,16 @@ func (me *RenderTechniqueScene) onPrep() {
 }
 
 func (me *Camera) onPrepNode(node *Node) {
-	camNodeRender := node.Rendering.Enabled && (node.parentNode == nil || node.parentNode.thrPrep.camRender[me]) // && inFrustum etc.
-	if node.thrPrep.camRender[me] = camNodeRender; camNodeRender {
+	camNodeRender := node.Rendering.Enabled && (node.parentNode == nil || me.thrPrep.nodeRender[node]) // && inFrustum etc.
+	if me.thrPrep.nodeRender[node] = camNodeRender; camNodeRender {
 		if me.Perspective.Enabled {
 			if node.Rendering.skyMode {
-				node.thrPrep.camProjMats[me].SetFromMult4(&me.thrPrep.matCamProj, &me.thrPrep.matPos)
+				me.thrPrep.nodeProjMats[node].SetFromMult4(&me.thrPrep.matCamProj, &me.thrPrep.matPos)
 			} else {
-				node.thrPrep.camProjMats[me].SetFromMult4(&me.thrPrep.matCamProj, &node.thrPrep.matModelView)
+				me.thrPrep.nodeProjMats[node].SetFromMult4(&me.thrPrep.matCamProj, &node.Transform.thrPrep.matModelView)
 			}
 		} else {
-			node.thrPrep.camProjMats[me].CopyFrom(&node.thrPrep.matModelView)
+			me.thrPrep.nodeProjMats[node].CopyFrom(&node.Transform.thrPrep.matModelView)
 		}
 		// thrPrep.nodePreBatch.prepNode(node)
 	}
