@@ -82,6 +82,8 @@ type NgStats struct {
 	Programs struct {
 		NumProgsCompiled int
 		TotalTimeCost    int64
+
+		maxTexUnits int
 	}
 }
 

@@ -104,17 +104,6 @@ type NgOptions struct {
 	}
 
 	Loop struct {
-		//	By default, the app and prep "threads" being invoked every frame
-		//	during Loop() are just normal go-routines that may or may not
-		//	correspond to real separate OS thread contexts.
-		ForceThreads struct {
-			//	If true, each On.AppThread() go-routine invokation locks its own exclusive thread context.
-			App bool
-
-			//	If true, each prep-stage go-routine invokation locks its own exclusive thread context.
-			Prep bool
-		}
-
 		//	Controls whether and how often the Garbage Collector
 		//	is invoked during the Loop.
 		GcEvery struct {

@@ -116,8 +116,6 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	opt.Initialization.DefaultCanvas.GammaViaShader = true
 
 	//	Worth toggling this every once in a while just to see whether it makes a perf diff at all...
-	realThreads := false
-	opt.Loop.ForceThreads.App, opt.Loop.ForceThreads.Prep = realThreads, realThreads
 	opt.Loop.GcEvery.Frame = true
 
 	opt.AppDir.BasePath = AppDirBasePath()
@@ -154,7 +152,8 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 		if setupExampleScene != nil {
 			SceneCanvas = ng.Core.Render.Canvases.AddNew(true, 1, 1)
 			SceneView = SceneCanvas.AddNewView("Scene")
-			SceneCam = &SceneView.Technique_Scene().Camera
+			rts := SceneView.Technique_Scene()
+			SceneCam, winTitle.batched = &rts.Camera, ugo.Ifi(rts.Batch.Enabled, 1, 0)
 			SceneView.RenderStates.ClearColor.Set(0.5, 0.6, 0.85, 1)
 			setupExampleScene()
 			if err = ng.Core.Libs.Meshes.GpuSync(); err != nil {

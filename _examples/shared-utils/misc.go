@@ -6,6 +6,7 @@ import (
 	"time"
 
 	ng "github.com/go3d/go-ngine/core"
+	ugo "github.com/metaleap/go-util"
 )
 
 //	Pauses rendering or resumes from the current pause.
@@ -65,11 +66,7 @@ func toggleBatching() {
 	if SceneView != nil {
 		rts := SceneView.Technique_Scene()
 		rts.ToggleBatching()
-		if rts.Batch.Enabled {
-			winTitle.batched = 1
-		} else {
-			winTitle.batched = 0
-		}
+		winTitle.batched = ugo.Ifi(rts.Batch.Enabled, 1, 0)
 	}
 }
 

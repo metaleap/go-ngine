@@ -2,6 +2,7 @@ package core
 
 import (
 	"runtime"
+	"time"
 
 	glfw "github.com/go-gl/glfw"
 )
@@ -17,6 +18,10 @@ var (
 type NgLoop struct {
 	//	Set to true by Loop.Run(). Set to false to stop looping.
 	Running bool
+
+	Delay time.Duration
+
+	MaxIterations float64
 
 	On struct {
 		//	While Loop.Run() is running, this callback is invoked (in its own "app thread")
@@ -70,9 +75,6 @@ func (_ *NgLoop) onSwap() {
 
 func (_ *NgLoop) onThreadApp() {
 	Stats.FrameAppThread.begin()
-	if Options.Loop.ForceThreads.App {
-		runtime.LockOSThread()
-	}
 	Loop.On.AppThread()
 	Stats.FrameAppThread.end()
 	thrApp.Unlock()
@@ -80,9 +82,6 @@ func (_ *NgLoop) onThreadApp() {
 
 func (_ *NgLoop) onThreadPrep() {
 	Stats.FramePrepThread.begin()
-	if Options.Loop.ForceThreads.Prep {
-		runtime.LockOSThread()
-	}
 	Core.onPrep()
 	Stats.FramePrepThread.end()
 	thrPrep.Unlock()
@@ -135,10 +134,10 @@ func (_ *NgLoop) Run() {
 		Loop.Running = glfw.WindowParam(glfw.Opened) == 1
 		for Loop.Running {
 			//	STEP 0. Fire off the prep thread (for next frame) and app thread (for next-after-next frame).
-			thrApp.Lock()
-			go Loop.onThreadApp()
 			thrPrep.Lock()
 			go Loop.onThreadPrep()
+			thrApp.Lock()
+			go Loop.onThreadApp()
 
 			//	STEP 1. Fill the GPU command queue with rendering commands (batched together by the previous prep thread)
 			Stats.FrameRenderCpu.begin()
@@ -189,10 +188,19 @@ func (_ *NgLoop) Run() {
 				Core.onResizeWindow(UserIO.Window.width, UserIO.Window.height)
 			}
 			Stats.FrameRenderBoth.combine(&Stats.FrameRenderCpu, &Stats.FrameRenderGpu)
+			if Loop.Delay > 0 {
+				time.Sleep(Loop.Delay)
+			}
+			if Loop.MaxIterations > 0 && Stats.fpsAll >= Loop.MaxIterations {
+				Loop.Running = false
+			}
 		}
 		Loop.Running = false
 		Diag.LogMisc("Exited loop.")
 		Diag.LogIfGlErr("ngine.PostLoop")
+		// for rbi, rbe := range Core.Render.Canvases[1].Views[0].Technique_Scene().thrRend.batch.all {
+		// 	println(strf("%d\t==>\tP:%v\tT:%v\tB:%v", rbi, rbe.prog, rbe.texes, Core.Libs.Meshes[rbe.mesh].meshBuffer.glIbo.GlHandle))
+		// }
 	}
 }
 

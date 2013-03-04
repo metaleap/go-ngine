@@ -95,6 +95,9 @@ func (me *RenderTechniqueScene) renderBatched(scene *Scene) {
 			}
 		}
 	}
+	if thrRend.curCam.thrRend.nodeRender[0] {
+		scene.allNodes[0].render()
+	}
 }
 
 func (me *Scene) render() {

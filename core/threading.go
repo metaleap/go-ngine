@@ -70,9 +70,10 @@ func (me *RenderTechniqueScene) copyAppToPrep() {
 func (me *RenderTechniqueScene) copyPrepToRend() {
 	me.Camera.copyPrepToRend()
 	if me.Batch.Enabled {
-		me.thrRend.batch.n = me.thrPrep.batch.n
-		if len(me.thrRend.batch.all) < len(me.thrPrep.batch.all) {
-			me.thrRend.batch.all = make([]renderBatchEntry, len(me.thrPrep.batch.all))
+		n := me.thrPrep.batch.n
+		me.thrRend.batch.n = n
+		if len(me.thrRend.batch.all) < n {
+			me.thrRend.batch.all = make([]renderBatchEntry, n)
 		}
 		copy(me.thrRend.batch.all, me.thrPrep.batch.all)
 	}

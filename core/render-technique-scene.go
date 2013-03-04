@@ -1,6 +1,8 @@
 package core
 
 import (
+	"sync"
+
 	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
 )
@@ -13,6 +15,7 @@ type RenderTechniqueScene struct {
 	Camera Camera
 
 	thrPrep struct {
+		sync.WaitGroup
 		batch renderBatchList
 	}
 	thrRend struct {

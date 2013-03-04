@@ -33,9 +33,9 @@ func (me *FxEffect) init() {
 
 func (me *FxEffect) UpdateRoutine() {
 	var (
-		i   int
-		buf ustr.Buffer
-		rt  string
+		i, tc int
+		buf   ustr.Buffer
+		rt    string
 	)
 	if len(me.KeepProcIDsLast) > 0 {
 		me.FxProcs.EnsureLast(me.KeepProcIDsLast...)
@@ -50,6 +50,9 @@ doOps:
 			i = counts[ops[o].procID]
 			ops[o].setProcIndex(i)
 			counts[ops[o].procID] = i + 1
+			if ops[o].IsTex() {
+				tc++
+			}
 		}
 	}
 	if ext {
@@ -62,6 +65,9 @@ doOps:
 		me.uberPnames[rt] = strf("uber_%s%s", rt, me.uberName)
 	}
 	thrRend.curEffect = nil
+	if tc > Stats.Programs.maxTexUnits {
+		Stats.Programs.maxTexUnits = tc
+	}
 }
 
 func (me *FxEffect) use() {
