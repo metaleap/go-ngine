@@ -22,7 +22,8 @@ func (me *Gui2D) Setup() (err error) {
 	sceneID := ng.Core.Libs.Scenes.AddNew()
 	scene := &ng.Core.Libs.Scenes[sceneID]
 	me.View = SceneCanvas.AddNewView("Scene")
-	me.Cam = &me.View.Technique_Scene().Camera
+	rts := me.View.Technique_Scene()
+	rts.Batch.Enabled, me.Cam = false, &rts.Camera
 	me.Cam.Perspective.Enabled = false
 	me.View.RenderStates.ClearColor.Set(0.75, 0.25, 0.1, 1)
 	me.View.Port.SetAbsolute(8, 8, 64, 64) //SetRel(0.02, 0.04, 0.125, 0.222)

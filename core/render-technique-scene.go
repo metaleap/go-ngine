@@ -7,14 +7,24 @@ import (
 
 type RenderTechniqueScene struct {
 	renderTechniqueBase
+	numDrawCalls int
 
+	Batch  RenderBatcher
 	Camera Camera
+
+	thrPrep struct {
+		batch renderBatchList
+	}
+	thrRend struct {
+		batch renderBatchList
+	}
 }
 
 func newRenderTechniqueScene(view *RenderView) RenderTechnique {
 	me := &RenderTechniqueScene{}
 	view.RenderStates.DepthTest = true
 	me.init("Scene", view)
+	me.Batch = Options.Rendering.DefaultBatcher
 	me.Camera.init()
 	me.ApplyCameraProjection()
 	return me
@@ -29,8 +39,12 @@ func (me *RenderTechniqueScene) ApplyCameraProjection() {
 	}
 }
 
+func (me *RenderTechniqueScene) NumDrawCalls() int {
+	return me.numDrawCalls
+}
+
 func (me *RenderTechniqueScene) ToggleBatching() {
-	// me.Batch.Enabled = !me.Batch.Enabled
+	me.Batch.Enabled = !me.Batch.Enabled
 }
 
 func (me *RenderTechniqueScene) vertexAttribPointers() (atts []ugl.VertexAttribPointer) {

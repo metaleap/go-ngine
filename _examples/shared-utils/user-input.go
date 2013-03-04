@@ -17,6 +17,7 @@ var (
 		"[F2]  --  Toggle Backface Culling",
 		"[F3]  --  Toggle Retro Mode",
 		"[F4]  --  Toggle Texturing",
+		"[F5]  --  Toggle Batching",
 		"[W][S]  --  Camera rise / sink",
 		"[A][D]  --  Camera strafe left / right",
 		"[<][>]  --  Camera turn left / right",

@@ -57,7 +57,43 @@ func (me *RenderTechniqueScene) render() {
 	thrRend.nextTech = me
 	thrRend.curCam = &me.Camera
 	if scene := me.Camera.Scene(); scene != nil {
-		scene.render()
+		if me.Batch.Enabled {
+			me.renderBatched(scene)
+		} else {
+			scene.render()
+		}
+	}
+}
+
+func (me *RenderTechniqueScene) renderBatched(scene *Scene) {
+	var (
+		mesh   *Mesh
+		node   *SceneNode
+		effect *FxEffect
+	)
+	b := &me.thrRend.batch
+	for i := 0; i < b.n; i++ {
+		if node, mesh, effect = scene.allNodes.get(b.all[i].node), Core.Libs.Meshes.get(b.all[i].mesh), Core.Libs.Effects.get(b.all[i].fx); effect != nil && mesh != nil && node != nil && thrRend.curCam.thrRend.nodeRender[node.ID] {
+			thrRend.nextEffect = effect
+			Core.useTechFx()
+			mesh.meshBuffer.use()
+			if node.Render.skyMode {
+				Core.Render.states.DisableFaceCulling()
+				gl.DepthFunc(gl.LEQUAL)
+				thrRend.curProg.Uniform1i("uni_int_Sky", 1)
+			}
+			thrRend.curProg.UniformMat4("uni_mat4_VertexMatrix", &thrRend.curCam.thrRend.nodeProjMats[node.ID])
+			// thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &thrRend.curCam.thrRend.nodeProjMats[me.ID][0])
+			if b.all[i].face == -1 {
+				gl.DrawElementsBaseVertex(gl.TRIANGLES, mesh.raw.lastNumIndices, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices)), gl.Int(mesh.meshBufOffsetBaseIndex))
+			} else {
+				gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices+(b.all[i].face*3*Core.MeshBuffers.MemSizePerIndex()))), gl.Int(mesh.meshBufOffsetBaseIndex))
+			}
+			if node.Render.skyMode {
+				thrRend.curProg.Uniform1i("uni_int_Sky", 0)
+				gl.DepthFunc(gl.LESS)
+			}
+		}
 	}
 }
 
@@ -70,30 +106,31 @@ func (me *Scene) render() {
 }
 
 func (me *SceneNode) render() {
-	if mesh, mat := me.meshMat(); mesh != nil && mat != nil {
-		if mat.HasFaceEffects() {
-			for i, l := int32(0), int32(len(mesh.raw.faces)); i < l; i++ {
-				thrRend.nextEffect = mat.faceEffect(&mesh.raw.faces[i])
-				Core.useTechFx()
-				mesh.meshBuffer.use()
-				thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &thrRend.curCam.thrRend.nodeProjMats[me.ID][0])
-				gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices+(i*3*4))), gl.Int(mesh.meshBufOffsetBaseIndex))
-			}
-		} else {
-			thrRend.nextEffect = Core.Libs.Effects.get(mat.DefaultEffectID)
+	mesh, mat := me.meshMat()
+	if mat.HasFaceEffects() {
+		for i, l := int32(0), int32(len(mesh.raw.faces)); i < l; i++ {
+			thrRend.nextEffect = mat.faceEffect(&mesh.raw.faces[i])
 			Core.useTechFx()
 			mesh.meshBuffer.use()
-			if me.Render.skyMode {
-				Core.Render.states.DisableFaceCulling()
-				gl.DepthFunc(gl.LEQUAL)
-				thrRend.curProg.Uniform1i("uni_int_Sky", 1)
-			}
-			thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &thrRend.curCam.thrRend.nodeProjMats[me.ID][0])
-			gl.DrawElementsBaseVertex(gl.TRIANGLES, mesh.raw.lastNumIndices, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices)), gl.Int(mesh.meshBufOffsetBaseIndex))
-			if me.Render.skyMode {
-				thrRend.curProg.Uniform1i("uni_int_Sky", 0)
-				gl.DepthFunc(gl.LESS)
-			}
+			thrRend.curProg.UniformMat4("uni_mat4_VertexMatrix", &thrRend.curCam.thrRend.nodeProjMats[me.ID])
+			// thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &thrRend.curCam.thrRend.nodeProjMats[me.ID][0])
+			gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices+(i*3*Core.MeshBuffers.MemSizePerIndex()))), gl.Int(mesh.meshBufOffsetBaseIndex))
+		}
+	} else {
+		thrRend.nextEffect = Core.Libs.Effects.get(mat.DefaultEffectID)
+		Core.useTechFx()
+		mesh.meshBuffer.use()
+		if me.Render.skyMode {
+			Core.Render.states.DisableFaceCulling()
+			gl.DepthFunc(gl.LEQUAL)
+			thrRend.curProg.Uniform1i("uni_int_Sky", 1)
+		}
+		thrRend.curProg.UniformMat4("uni_mat4_VertexMatrix", &thrRend.curCam.thrRend.nodeProjMats[me.ID])
+		// thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &thrRend.curCam.thrRend.nodeProjMats[me.ID][0])
+		gl.DrawElementsBaseVertex(gl.TRIANGLES, mesh.raw.lastNumIndices, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices)), gl.Int(mesh.meshBufOffsetBaseIndex))
+		if me.Render.skyMode {
+			thrRend.curProg.Uniform1i("uni_int_Sky", 0)
+			gl.DepthFunc(gl.LESS)
 		}
 	}
 }

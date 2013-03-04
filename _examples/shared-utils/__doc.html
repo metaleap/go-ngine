@@ -195,6 +195,7 @@ Some common base functionality shared by all the go:ngine example apps in _examp
         &#34;[F2]  --  Toggle Backface Culling&#34;,
         &#34;[F3]  --  Toggle Retro Mode&#34;,
         &#34;[F4]  --  Toggle Texturing&#34;,
+        &#34;[F5]  --  Toggle Batching&#34;,
         &#34;[W][S]  --  Camera rise / sink&#34;,
         &#34;[A][D]  --  Camera strafe left / right&#34;,
         &#34;[&lt;][&gt;]  --  Camera turn left / right&#34;,
@@ -227,7 +228,7 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 		
 			
 			
-			<h2 id="AddKeyHint">func <a href="/target/user-input.go?s=1804:1837#L44">AddKeyHint</a></h2>
+			<h2 id="AddKeyHint">func <a href="/target/user-input.go?s=1835:1868#L45">AddKeyHint</a></h2>
 			<pre>func AddKeyHint(key, hint string)</pre>
 			<p>
 Key hints are shown in the window title bar, a new one every few seconds.
@@ -276,7 +277,7 @@ adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffe
 		
 			
 			
-			<h2 id="AppDirBasePath">func <a href="/target/apputil.go?s=1438:1466#L52">AppDirBasePath</a></h2>
+			<h2 id="AppDirBasePath">func <a href="/target/apputil.go?s=1492:1520#L52">AppDirBasePath</a></h2>
 			<pre>func AppDirBasePath() string</pre>
 			<p>
 Returns the base path of the &#34;app dir&#34; for our example apps, in this case: $GOPATH/src/github.com/go3d/go-ngine/_examples/-app-data
@@ -286,7 +287,7 @@ Returns the base path of the &#34;app dir&#34; for our example apps, in this cas
 		
 			
 			
-			<h2 id="CheckAndHandleToggleKeys">func <a href="/target/user-input.go?s=2462:2493#L61">CheckAndHandleToggleKeys</a></h2>
+			<h2 id="CheckAndHandleToggleKeys">func <a href="/target/user-input.go?s=2493:2524#L62">CheckAndHandleToggleKeys</a></h2>
 			<pre>func CheckAndHandleToggleKeys()</pre>
 			<p>
 To be called every frame (by the parent example app, ONLY in onWinThread()!) to
@@ -297,7 +298,7 @@ check AND handle key-toggle states for F2, F3 etc. function keys and Esc.
 		
 			
 			
-			<h2 id="CheckCamCtlKeys">func <a href="/target/user-input.go?s=2145:2167#L51">CheckCamCtlKeys</a></h2>
+			<h2 id="CheckCamCtlKeys">func <a href="/target/user-input.go?s=2176:2198#L52">CheckCamCtlKeys</a></h2>
 			<pre>func CheckCamCtlKeys()</pre>
 			<p>
 To be called every frame (by the parent example app, ONLY in onWinThread()!) to collect key-press
@@ -308,7 +309,7 @@ states for controlling (in HandleCamCtlKeys() in onAppThread()!) SceneCam.Contro
 		
 			
 			
-			<h2 id="HandleCamCtlKeys">func <a href="/target/user-input.go?s=3151:3174#L85">HandleCamCtlKeys</a></h2>
+			<h2 id="HandleCamCtlKeys">func <a href="/target/user-input.go?s=3182:3205#L86">HandleCamCtlKeys</a></h2>
 			<pre>func HandleCamCtlKeys()</pre>
 			<p>
 To be called every frame (by the parent example app, ONLY in onAppThread()!) to process key-press
@@ -319,7 +320,7 @@ states (from the previous CheckCamCtlKeys() call) for controlling SceneCam.Contr
 		
 			
 			
-			<h2 id="Main">func <a href="/target/apputil.go?s=2565:2626#L81">Main</a></h2>
+			<h2 id="Main">func <a href="/target/apputil.go?s=2742:2803#L84">Main</a></h2>
 			<pre>func Main(setupExampleScene, onAppThread, onWinThread func())</pre>
 			<p>
 Called by each example-app&#39;s func main(). Initializes go:ngine, calls the specified setupExampleScene function, then enters The Loop.

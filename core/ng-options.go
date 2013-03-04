@@ -129,6 +129,7 @@ type NgOptions struct {
 	}
 
 	Rendering struct {
+		DefaultBatcher    RenderBatcher
 		DefaultClearColor ugl.GlVec4
 	}
 
@@ -156,6 +157,10 @@ func init() {
 	init.Window.Rbits, init.Window.Gbits, init.Window.Bbits, init.Window.DepthBits = 8, 8, 8, 8
 
 	rend := &o.Rendering
+	rend.DefaultBatcher.Enabled = true
+	rend.DefaultBatcher.Priority[0] = BatchByProgram
+	rend.DefaultBatcher.Priority[1] = BatchByTexture
+	rend.DefaultBatcher.Priority[2] = BatchByBuffer
 	rend.DefaultClearColor = ugl.GlVec4{0, 0, 0, 1}
 
 	win := &UserIO.Window

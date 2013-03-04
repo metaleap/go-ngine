@@ -59,11 +59,17 @@ func PrintPostLoopSummary() {
 
 //	Experimental.
 func toggleBatching() {
-	if SceneView != nil {
-		SceneView.Technique_Scene().ToggleBatching()
-	}
 	if RearView.View != nil {
 		RearView.View.Technique_Scene().ToggleBatching()
+	}
+	if SceneView != nil {
+		rts := SceneView.Technique_Scene()
+		rts.ToggleBatching()
+		if rts.Batch.Enabled {
+			winTitle.batched = 1
+		} else {
+			winTitle.batched = 0
+		}
 	}
 }
 

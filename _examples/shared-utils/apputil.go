@@ -49,9 +49,9 @@ var (
 		postLoop int64
 	}
 	winTitle struct {
-		appName          string
-		cw, ch, numNodes int
-		camPos, camDir   unum.Vec3
+		appName                            string
+		cw, ch, numNodes, numDraw, batched int
+		camPos, camDir                     unum.Vec3
 	}
 
 	curKeyHint = 0
@@ -72,8 +72,11 @@ func appWindowTitle() string {
 			winTitle.camPos, winTitle.camDir = SceneCam.Controller.Pos, *SceneCam.Controller.Dir()
 			winTitle.numNodes = SceneCam.Scene().NumNodes()
 		}
+		if SceneView != nil {
+			winTitle.numDraw = SceneView.Technique_Scene().NumDrawCalls()
+		}
 	}
-	return fmt.Sprintf("%s   |   %v FPS @ %vx%v   |   %s   |   %d nodes  |  Cam: P=%v D=%v", winTitle.appName, ng.Stats.FpsLastSec, winTitle.cw, winTitle.ch, KeyHints[curKeyHint], winTitle.numNodes, winTitle.camPos.String(), winTitle.camDir.String())
+	return fmt.Sprintf("%s  |  %d FPS @ %dx%d (N%d/%d/D%d)  |  %s  |  Cam: P=%v D=%v", winTitle.appName, ng.Stats.FpsLastSec, winTitle.cw, winTitle.ch, winTitle.numNodes, winTitle.batched, winTitle.numDraw, KeyHints[curKeyHint], winTitle.camPos.String(), winTitle.camDir.String())
 }
 
 func onSec() {
@@ -113,7 +116,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	opt.Initialization.DefaultCanvas.GammaViaShader = true
 
 	//	Worth toggling this every once in a while just to see whether it makes a perf diff at all...
-	realThreads := true
+	realThreads := false
 	opt.Loop.ForceThreads.App, opt.Loop.ForceThreads.Prep = realThreads, realThreads
 	opt.Loop.GcEvery.Frame = true
 

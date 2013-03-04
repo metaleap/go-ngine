@@ -64,7 +64,7 @@ func (me *FxProc) unifName(t, n string) (un string) {
 func (me *FxProc) use() {
 	thrRend.curProg.Uniform1f(me.unifName("float", "MixWeight"), me.weight)
 	if me.IsColor() {
-		thrRend.curProg.Uniform3fv(me.unifName("vec3", "Rgb"), 1, &me.Color.Rgb[0])
+		thrRend.curProg.UniformVec3(me.unifName("vec3", "Rgb"), &me.Color.Rgb)
 	}
 	if me.IsTex() {
 		me.Tex.Sampler.Bind(me.Tex.glUnitU)

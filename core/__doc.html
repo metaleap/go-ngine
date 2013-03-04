@@ -786,6 +786,16 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
+				<dd><a href="#RenderBatchCriteria">type RenderBatchCriteria</a></dd>
+				
+				
+			
+				
+				<dd><a href="#RenderBatcher">type RenderBatcher</a></dd>
+				
+				
+			
+				
 				<dd><a href="#RenderCanvas">type RenderCanvas</a></dd>
 				
 				
@@ -832,6 +842,9 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#RenderTechniqueScene.ApplyCameraProjection">func (me *RenderTechniqueScene) ApplyCameraProjection()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RenderTechniqueScene.NumDrawCalls">func (me *RenderTechniqueScene) NumDrawCalls() int</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#RenderTechniqueScene.ToggleBatching">func (me *RenderTechniqueScene) ToggleBatching()</a></dd>
@@ -1089,6 +1102,8 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/ng.go">ng.go</a>
 			
+				<a href="/target/render-batcher.go">render-batcher.go</a>
+			
 				<a href="/target/render-canvas.gt.go">render-canvas.gt.go</a>
 			
 				<a href="/target/render-prep.go">render-prep.go</a>
@@ -1203,14 +1218,14 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 
 			
 				
-				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=2121:2153#L69">Scene</a></h3>
+				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=2079:2111#L69">Scene</a></h3>
 				<pre>func (me *Camera) Scene() *Scene</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=2200:2239#L73">SetScene</a></h3>
+				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=2158:2197#L73">SetScene</a></h3>
 				<pre>func (me *Camera) SetScene(sceneID int)</pre>
 				
 				
@@ -2101,7 +2116,7 @@ Only used for Core.Libs.Materials
 
 			
 				
-				<h3 id="FxProc.Color_SetRgb">func (*FxProc) <a href="/target/fx-proc.go?s=2077:2132#L84">Color_SetRgb</a></h3>
+				<h3 id="FxProc.Color_SetRgb">func (*FxProc) <a href="/target/fx-proc.go?s=2072:2127#L84">Color_SetRgb</a></h3>
 				<pre>func (me *FxProc) Color_SetRgb(rgb ...gl.Float) *FxProc</pre>
 				
 				
@@ -2143,7 +2158,7 @@ Only used for Core.Libs.Materials
 				
 			
 				
-				<h3 id="FxProc.IsTex">func (*FxProc) <a href="/target/fx-proc.go?s=2271:2301#L94">IsTex</a></h3>
+				<h3 id="FxProc.IsTex">func (*FxProc) <a href="/target/fx-proc.go?s=2266:2296#L94">IsTex</a></h3>
 				<pre>func (me *FxProc) IsTex() bool</pre>
 				
 				
@@ -2164,21 +2179,21 @@ Only used for Core.Libs.Materials
 				
 			
 				
-				<h3 id="FxProc.SetMixWeight">func (*FxProc) <a href="/target/fx-proc.go?s=1937:1983#L76">SetMixWeight</a></h3>
+				<h3 id="FxProc.SetMixWeight">func (*FxProc) <a href="/target/fx-proc.go?s=1932:1978#L76">SetMixWeight</a></h3>
 				<pre>func (me *FxProc) SetMixWeight(weight float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxProc.Tex_SetImageID">func (*FxProc) <a href="/target/fx-proc.go?s=2175:2228#L89">Tex_SetImageID</a></h3>
+				<h3 id="FxProc.Tex_SetImageID">func (*FxProc) <a href="/target/fx-proc.go?s=2170:2223#L89">Tex_SetImageID</a></h3>
 				<pre>func (me *FxProc) Tex_SetImageID(imageID int) *FxProc</pre>
 				
 				
 				
 			
 				
-				<h3 id="FxProc.Toggle">func (*FxProc) <a href="/target/fx-proc.go?s=2019:2045#L80">Toggle</a></h3>
+				<h3 id="FxProc.Toggle">func (*FxProc) <a href="/target/fx-proc.go?s=2014:2040#L80">Toggle</a></h3>
 				<pre>func (me *FxProc) Toggle()</pre>
 				
 				
@@ -3494,7 +3509,7 @@ Returns the number of seconds expired ever since Loop.Run() was last called.
 		
 			
 			
-			<h2 id="NgOptions">type <a href="/target/ng-options.go?s=613:3823#L23">NgOptions</a></h2>
+			<h2 id="NgOptions">type <a href="/target/ng-options.go?s=613:3857#L23">NgOptions</a></h2>
 			<pre>type NgOptions struct {
     AppDir struct {
         <span class="comment">//	The base directory path for app file paths.</span>
@@ -3594,6 +3609,7 @@ Returns the number of seconds expired ever since Loop.Run() was last called.
     }
 
     Rendering struct {
+        DefaultBatcher    RenderBatcher
         DefaultClearColor ugl.GlVec4
     }
 
@@ -3847,6 +3863,48 @@ Returns true if any of the three specified keys is pressed.
 		
 			
 			
+			<h2 id="RenderBatchCriteria">type <a href="/target/render-batcher.go?s=34:62#L1">RenderBatchCriteria</a></h2>
+			<pre>type RenderBatchCriteria int</pre>
+			
+
+			
+				<pre>const (
+    BatchByProgram RenderBatchCriteria = iota + 1
+    BatchByTexture
+    BatchByBuffer
+)</pre>
+				
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="RenderBatcher">type <a href="/target/render-batcher.go?s=508:585#L27">RenderBatcher</a></h2>
+			<pre>type RenderBatcher struct {
+    Enabled  bool
+    Priority [3]RenderBatchCriteria
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
 			<h2 id="RenderCanvas">type <a href="/target/render-canvas.gt.go?s=181:726#L1">RenderCanvas</a></h2>
 			<pre>type RenderCanvas struct {
     <span class="comment">//	This should be an non-negative integer, it&#39;s a float64 just to avoid a</span>
@@ -3989,8 +4047,9 @@ Only used for Core.Render.Canvases
 		
 			
 			
-			<h2 id="RenderTechniqueScene">type <a href="/target/render-technique-scene.go?s=101:174#L1">RenderTechniqueScene</a></h2>
+			<h2 id="RenderTechniqueScene">type <a href="/target/render-technique-scene.go?s=101:305#L1">RenderTechniqueScene</a></h2>
 			<pre>type RenderTechniqueScene struct {
+    Batch  RenderBatcher
     Camera Camera
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -4006,7 +4065,7 @@ Only used for Core.Render.Canvases
 
 			
 				
-				<h3 id="RenderTechniqueScene.ApplyCameraProjection">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=493:548#L14">ApplyCameraProjection</a></h3>
+				<h3 id="RenderTechniqueScene.ApplyCameraProjection">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=669:724#L24">ApplyCameraProjection</a></h3>
 				<pre>func (me *RenderTechniqueScene) ApplyCameraProjection()</pre>
 				<p>
 Applies changes made to the Enabled, FovY, ZNear and/or ZFar parameters in me.Camera.Perspective.
@@ -4016,7 +4075,14 @@ Applies changes made to the Enabled, FovY, ZNear and/or ZFar parameters in me.Ca
 				
 			
 				
-				<h3 id="RenderTechniqueScene.ToggleBatching">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=786:834#L22">ToggleBatching</a></h3>
+				<h3 id="RenderTechniqueScene.NumDrawCalls">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=962:1012#L32">NumDrawCalls</a></h3>
+				<pre>func (me *RenderTechniqueScene) NumDrawCalls() int</pre>
+				
+				
+				
+			
+				
+				<h3 id="RenderTechniqueScene.ToggleBatching">func (*RenderTechniqueScene) <a href="/target/render-technique-scene.go?s=1042:1090#L36">ToggleBatching</a></h3>
 				<pre>func (me *RenderTechniqueScene) ToggleBatching()</pre>
 				
 				

@@ -213,10 +213,18 @@ func (_ SceneLib) onSceneIDsChanged(oldNewIDs map[int]int) {
 }
 
 func (me SceneNodeLib) onSceneNodeIDsChanged(oldNewIDs map[int]int) {
+	var c int
+	var b, a []int
 	for i := 0; i < len(me); i++ {
 		if me.Ok(i) {
 			Core.Libs.UpdateIDRef(oldNewIDs, &me[i].parentID)
 			Core.Libs.UpdateIDRefsIn(oldNewIDs, me[i].childNodeIDs)
+			for c = 0; c < len(me[i].childNodeIDs); c++ {
+				if !me.IsOk(me[i].childNodeIDs[c]) {
+					b, a = me[i].childNodeIDs[:c], me[i].childNodeIDs[c+1:]
+					me[i].childNodeIDs = append(b, a...)
+				}
+			}
 		}
 	}
 }

@@ -72,8 +72,8 @@ func (me *Camera) initNodeCamData(all SceneNodeLib, nodeID int) {
 	me.thrPrep.nodeProjMats[nodeID].Identity()
 	usl.BoolEnsureLen(&me.thrPrep.nodeRender, len(all))
 	usl.BoolEnsureLen(&me.thrRend.nodeRender, len(all))
-	me.thrPrep.nodeRender[nodeID] = all[nodeID].Render.Enabled
-	me.thrRend.nodeRender[nodeID] = all[nodeID].Render.Enabled
+	me.thrPrep.nodeRender[nodeID] = false
+	me.thrRend.nodeRender[nodeID] = false
 }
 
 func (me *Camera) Scene() *Scene {

@@ -21,18 +21,31 @@ func (me *RenderView) onPrep() {
 }
 
 func (me *RenderTechniqueScene) onPrep() {
-	me.Camera.thrPrep.matCamProj.SetFromMult4(&me.Camera.thrPrep.matProj, &me.Camera.Controller.thrPrep.mat)
 	if scene := me.Camera.Scene(); scene != nil {
+		me.Camera.thrPrep.matCamProj.SetFromMult4(&me.Camera.thrPrep.matProj, &me.Camera.Controller.thrPrep.mat)
 		if !scene.thrPrep.done {
 			scene.thrPrep.done = true
 			scene.onPrep()
 		}
-		me.Camera.onPrep(scene.allNodes, 0)
+		bc := 0
+		me.Camera.onPrep(scene.allNodes, 0, &bc)
+		me.numDrawCalls = bc
+		if me.Batch.Enabled {
+			me.prepBatch(scene, me.numDrawCalls)
+		}
 	}
 }
 
-func (me *Camera) onPrep(all SceneNodeLib, nodeID int) {
-	camNodeRender := all[nodeID].Render.Enabled && (nodeID == 0 || me.thrPrep.nodeRender[all[nodeID].parentID]) // && inFrustum etc.
+func (me *Camera) onPrep(all SceneNodeLib, nodeID int, batchCounter *int) {
+	var mesh *Mesh
+	var mat *FxMaterial
+	camNodeRender := all[nodeID].Render.Enabled && (all[nodeID].parentID < 1 || me.thrPrep.nodeRender[all[nodeID].parentID])
+	// && inFrustum etc.
+	if camNodeRender {
+		if mesh, mat = all[nodeID].meshMat(); mesh == nil || mat == nil {
+			camNodeRender = false
+		}
+	}
 	if me.thrPrep.nodeRender[nodeID] = camNodeRender; camNodeRender {
 		if me.Perspective.Enabled {
 			if all[nodeID].Render.skyMode {
@@ -43,10 +56,15 @@ func (me *Camera) onPrep(all SceneNodeLib, nodeID int) {
 		} else {
 			me.thrPrep.nodeProjMats[nodeID].CopyFrom(&all[nodeID].Transform.thrPrep.matModelView)
 		}
+		if mat.HasFaceEffects() {
+			*batchCounter = *batchCounter + len(mesh.raw.faces)
+		} else {
+			*batchCounter = *batchCounter + 1
+		}
 	}
 	for i := 0; i < len(all[nodeID].childNodeIDs); i++ {
 		if all.IsOk(all[nodeID].childNodeIDs[i]) {
-			me.onPrep(all, all[nodeID].childNodeIDs[i])
+			me.onPrep(all, all[nodeID].childNodeIDs[i], batchCounter)
 		}
 	}
 }
