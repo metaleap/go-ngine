@@ -75,6 +75,7 @@ func (me *Mesh) load(meshData *MeshDescriptor) (err error) {
 		vreuse, offsetFace, ei, numFinalVerts          int
 		vexists                                        bool
 		ventry                                         MeshDescF3V
+		tvp1, tvp2, tvp3                               MeshDescVA3
 	)
 	numVerts := 3 * int32(len(meshData.Faces))
 	vertsMap := make(map[MeshDescF3V]uint32, numVerts)
@@ -85,6 +86,12 @@ func (me *Mesh) load(meshData *MeshDescriptor) (err error) {
 	me.raw.faces = make([]meshRawFace, len(meshData.Faces))
 	for fi := 0; fi < len(meshData.Faces); fi++ {
 		me.raw.faces[offsetFace].base = meshData.Faces[fi].MeshFaceBase
+		tvp1 = meshData.Positions[meshData.Faces[fi].V[0].PosIndex]
+		tvp2 = meshData.Positions[meshData.Faces[fi].V[1].PosIndex]
+		tvp3 = meshData.Positions[meshData.Faces[fi].V[2].PosIndex]
+		me.raw.faces[offsetFace].center.X = float64(tvp1[0]+tvp2[0]+tvp3[0]) / 3
+		me.raw.faces[offsetFace].center.Y = float64(tvp1[1]+tvp2[1]+tvp3[1]) / 3
+		me.raw.faces[offsetFace].center.Z = float64(tvp1[2]+tvp2[2]+tvp3[2]) / 3
 		for ei, ventry = range meshData.Faces[fi].V {
 			if vindex, vexists = vertsMap[ventry]; !vexists {
 				vindex, vertsMap[ventry] = offsetVertex, offsetVertex

@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	gl "github.com/go3d/go-opengl/core"
+	unum "github.com/metaleap/go-util/num"
 )
 
 //	Represents semi-processed loaded mesh data "almost ready" to core.Mesh.GpuUpload().
@@ -24,6 +25,7 @@ type meshRaw struct {
 type meshRawFace struct {
 	//	Indices of the triangle corners
 	entries [3]uint32
+	center  unum.Vec3
 
 	base MeshFaceBase
 }

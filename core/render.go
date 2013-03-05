@@ -2,6 +2,7 @@ package core
 
 import (
 	gl "github.com/go3d/go-opengl/core"
+	ugl "github.com/go3d/go-opengl/util"
 )
 
 func (_ *NgCore) onRender() {
@@ -48,7 +49,7 @@ func (me *RenderTechniqueQuad) render() {
 	me.glVao.Bind()
 	thrRend.nextTech, thrRend.nextEffect = me, &me.Effect
 	Core.useTechFx()
-	gl.BindTexture(gl.TEXTURE_2D, thrRend.quadTex)
+	ugl.Cache.BindTextureTo(0, thrRend.quadTex, gl.TEXTURE_2D)
 	gl.DrawArrays(gl.TRIANGLES, 0, 3)
 	me.glVao.Unbind()
 }

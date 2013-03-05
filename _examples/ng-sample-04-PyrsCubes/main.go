@@ -17,8 +17,8 @@ var (
 	floorID, pyrID, boxID, meshCubeID, meshPyrID, modelCubeCatID int
 	pyrIDs                                                       [4]int
 
-	crateIDs    = make([]int, 0, 9)
-	init3Crates = false
+	crateIDs         = make([]int, 0, 9)
+	initialCrateAdds = 0
 )
 
 func main() {
@@ -26,7 +26,7 @@ func main() {
 	apputil.AddKeyHint("F11", "Remove last three crates")
 	apputil.AddKeyHint("F12", "Toggle 'Rear-View-Mirror' Camera")
 	// ng.Options.Rendering.DefaultBatcher.Enabled = false
-	ng.Loop.MaxIterations = 3000
+	ng.Loop.MaxIterations = 2000
 	apputil.Main(setupExample_04_PyrsCubes, onAppThread, onWinThread)
 }
 
@@ -172,7 +172,7 @@ func setupExample_04_PyrsCubes() {
 
 	pyrID = apputil.AddNode(scene, 0, meshPyrID, -1, -1).ID
 	boxID = apputil.AddNode(scene, 0, meshCubeID, -1, -1).ID
-	if init3Crates {
+	for i := 0; i < initialCrateAdds; i++ {
 		addCrates(scene, 3)
 	}
 	var f float64

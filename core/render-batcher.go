@@ -3,6 +3,7 @@ package core
 import (
 	"sort"
 
+	unum "github.com/metaleap/go-util/num"
 	usl "github.com/metaleap/go-util/slice"
 )
 
@@ -16,6 +17,7 @@ const (
 
 type renderBatchEntry struct {
 	node, mesh, prog, fx int
+	dist                 float64
 	texes                []int
 	face                 int32
 }
@@ -56,7 +58,9 @@ func (me *renderBatchList) Less(i, j int) (less bool) {
 	var eq bool
 	if less, eq = me.compare(i, j, me.prios[0]); eq {
 		if less, eq = me.compare(i, j, me.prios[1]); eq {
-			less, _ = me.compare(i, j, me.prios[2])
+			if less, eq = me.compare(i, j, me.prios[2]); eq {
+				less = me.all[i].dist < me.all[j].dist
+			}
 		}
 	}
 	return
@@ -71,18 +75,26 @@ type RenderBatcher struct {
 	Priority [3]RenderBatchCriteria
 }
 
-func (me *RenderTechniqueScene) prepEntry(entry *renderBatchEntry, nid int, fi int32, mesh *Mesh, effect *FxEffect) {
-	var ti int
-	entry.mesh, entry.node, entry.fx, entry.face = mesh.ID, nid, effect.ID, fi
-	entry.prog = ogl.progs.Index(effect.uberPnames[me.name()])
+func (me *RenderTechniqueScene) prepEntry(n, nid, fx int, fi int32) {
+	entry := &me.thrPrep.batch.all[n]
+	entry.node, entry.fx, entry.face, entry.mesh = nid, fx, fi, Core.Libs.Scenes[me.Camera.sceneID].allNodes[nid].Render.MeshID
+	var distPos *unum.Vec3
+	if fi == -1 {
+		distPos = &Core.Libs.Scenes[me.Camera.sceneID].allNodes[nid].Transform.Pos
+	} else {
+		distPos = Core.Libs.Scenes[me.Camera.sceneID].allNodes[nid].Transform.Pos.AddTo(&Core.Libs.Meshes[entry.mesh].raw.faces[fi].center)
+	}
+	entry.dist = me.Camera.Controller.Pos.ManhattanDistanceFrom(distPos)
+	entry.prog = ogl.progs.Index(Core.Libs.Effects[fx].uberPnames[me.name()])
 	usl.IntEnsureLen(&entry.texes, Stats.Programs.maxTexUnits)
+	var ti int
 	for ti = 0; ti < len(entry.texes); ti++ {
 		entry.texes[ti] = -1
 	}
 	ti = 0
-	for oi := 0; oi < len(effect.FxProcs); oi++ {
-		if effect.FxProcs[oi].IsTex() {
-			entry.texes[ti] = effect.FxProcs[oi].Tex.ImageID
+	for oi := 0; oi < len(Core.Libs.Effects[fx].FxProcs); oi++ {
+		if Core.Libs.Effects[fx].FxProcs[oi].IsTex() {
+			entry.texes[ti] = Core.Libs.Effects[fx].FxProcs[oi].Tex.ImageID
 			ti++
 		}
 	}
@@ -91,7 +103,6 @@ func (me *RenderTechniqueScene) prepEntry(entry *renderBatchEntry, nid int, fi i
 
 func (me *RenderTechniqueScene) prepBatch(scene *Scene, size int) {
 	var (
-		entry  *renderBatchEntry
 		mesh   *Mesh
 		mat    *FxMaterial
 		effect *FxEffect
@@ -108,16 +119,14 @@ func (me *RenderTechniqueScene) prepBatch(scene *Scene, size int) {
 			if mesh, mat = scene.allNodes[nid].meshMat(); mat.HasFaceEffects() {
 				for fi, fl = 0, int32(len(mesh.raw.faces)); fi < fl; fi++ {
 					if effect = mat.faceEffect(&mesh.raw.faces[fi]); effect != nil {
-						entry = &b.all[b.n]
 						me.thrPrep.Add(1)
-						go me.prepEntry(entry, nid, fi, mesh, effect)
+						go me.prepEntry(b.n, nid, effect.ID, fi)
 						b.n++
 					}
 				}
 			} else if effect = Core.Libs.Effects.get(mat.DefaultEffectID); effect != nil {
-				entry = &b.all[b.n]
 				me.thrPrep.Add(1)
-				go me.prepEntry(entry, nid, -1, mesh, effect)
+				go me.prepEntry(b.n, nid, effect.ID, -1)
 				b.n++
 			}
 		}
