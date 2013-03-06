@@ -106,7 +106,7 @@ func setupExample_03_PyrCube() {
 
 	pyrNodeID = apputil.AddNode(scene, 0, meshPyrID, apputil.LibIDs.Mat["mosaic"], -1).ID
 	boxNodeID = apputil.AddNode(scene, 0, meshCubeID, apputil.LibIDs.Mat["crate"], -1).ID
-	// scene.Node(boxNodeID).Transform.Pos.Add3(1, 3, 2)
+	// scene.Node(boxNodeID).Transform.Pos.Add3(10, 30, 20)
 	// scene.ApplyNodeTransforms(boxNodeID)
 
 	camCtl := &apputil.SceneCam.Controller

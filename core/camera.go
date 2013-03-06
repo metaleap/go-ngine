@@ -53,7 +53,7 @@ type Camera struct {
 }
 
 func (me *Camera) init() {
-	// me.FrustumCull = true
+	me.FrustumCull = false
 	me.SetScene(-1)
 	me.Perspective = Options.Cameras.PerspectiveDefaults
 	unum.Mat4Identities(&me.thrApp.matProj, &me.thrPrep.matProj)
@@ -157,10 +157,10 @@ const (
 
 type cameraFrustum [6]cameraFrustumPlane
 
-func (me cameraFrustum) containsSphere(center *unum.Vec3, radius float64) bool {
+func (me cameraFrustum) containsSphere(radius float64) bool {
 	var dist float64
 	for i := 0; i < len(me); i++ {
-		dist = me[i].Dot(center) + me[i].d
+		dist = me[i].d
 		if dist < -radius {
 			//	fully outside this plane
 			return false

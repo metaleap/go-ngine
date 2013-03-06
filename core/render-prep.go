@@ -1,9 +1,5 @@
 package core
 
-import (
-	unum "github.com/metaleap/go-util/num"
-)
-
 func (_ *NgCore) onPrep() {
 	for cid := 0; cid < len(Core.Render.Canvases); cid++ {
 		if Core.Render.Canvases[cid].renderThisFrame() {
@@ -63,7 +59,7 @@ func (me *Camera) onPrep(all SceneNodeLib, nodeID int, batchCounter *int) {
 		}
 		if me.FrustumCull && nodeID == 3 {
 			me.updateFrustumPlanes(&me.thrPrep.nodeProjMats[nodeID])
-			if !me.thrPrep.frustum.containsSphere(&unum.Vec3{}, mesh.raw.bounding.sphere) {
+			if !me.thrPrep.frustum.containsSphere(mesh.raw.bounding.sphere) {
 				camNodeRender, me.thrPrep.nodeRender[nodeID] = false, false
 			}
 		}
