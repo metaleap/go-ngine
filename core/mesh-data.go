@@ -7,6 +7,13 @@ import (
 	unum "github.com/metaleap/go-util/num"
 )
 
+type geometryBounds struct {
+	sphere float64
+	aaBox  struct {
+		min, max, center, extent unum.Vec3
+	}
+}
+
 //	Represents semi-processed loaded mesh data "almost ready" to core.Mesh.GpuUpload().
 type meshRaw struct {
 	lastNumIndices gl.Sizei
@@ -19,6 +26,8 @@ type meshRaw struct {
 
 	//	Raw face definitions
 	faces []meshRawFace
+
+	bounding geometryBounds
 }
 
 //	Represents a triangle face inside a meshRaw.
@@ -77,6 +86,10 @@ type MeshDescVA2 [2]float32
 //	Represents a 3-component vertex attribute in a MeshDescriptor
 //	(such as for example vertex-normals)
 type MeshDescVA3 [3]float32
+
+func (me *MeshDescVA3) toVec3(vec *unum.Vec3) {
+	vec.X, vec.Y, vec.Z = float64((*me)[0]), float64((*me)[1]), float64((*me)[2])
+}
 
 //	Represents yet-unprocessed, descriptive mesh source data.
 type MeshDescriptor struct {

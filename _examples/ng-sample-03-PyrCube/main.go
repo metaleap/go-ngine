@@ -29,7 +29,6 @@ func onWinThread() {
 func onAppThread() {
 	if !apputil.Paused {
 		apputil.HandleCamCtlKeys()
-
 		//	animate mesh nodes
 		if tmpScene = apputil.SceneCam.Scene(); tmpScene != nil {
 			if tmpNode = tmpScene.Node(pyrNodeID); tmpNode != nil {
@@ -107,9 +106,11 @@ func setupExample_03_PyrCube() {
 
 	pyrNodeID = apputil.AddNode(scene, 0, meshPyrID, apputil.LibIDs.Mat["mosaic"], -1).ID
 	boxNodeID = apputil.AddNode(scene, 0, meshCubeID, apputil.LibIDs.Mat["crate"], -1).ID
+	// scene.Node(boxNodeID).Transform.Pos.Add3(1, 3, 2)
+	// scene.ApplyNodeTransforms(boxNodeID)
 
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()
-	camCtl.Pos.X, camCtl.Pos.Y, camCtl.Pos.Z = -1, 1.6, -2
+	camCtl.Pos.X, camCtl.Pos.Y, camCtl.Pos.Z = 0, 1.5, -2.1
 	camCtl.EndUpdate()
 }

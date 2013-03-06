@@ -1,5 +1,9 @@
 package core
 
+import (
+	unum "github.com/metaleap/go-util/num"
+)
+
 func (_ *NgCore) onPrep() {
 	for cid := 0; cid < len(Core.Render.Canvases); cid++ {
 		if Core.Render.Canvases[cid].renderThisFrame() {
@@ -23,6 +27,8 @@ func (me *RenderView) onPrep() {
 func (me *RenderTechniqueScene) onPrep() {
 	if scene := me.Camera.Scene(); scene != nil {
 		me.Camera.thrPrep.matCamProj.SetFromMult4(&me.Camera.thrPrep.matProj, &me.Camera.Controller.thrPrep.mat)
+		me.Camera.updateFrustumPlanes(&me.Camera.thrPrep.matCamProj)
+		// println(strf("F %v", me.Camera.thrPrep.frustum))
 		if !scene.thrPrep.done {
 			scene.thrPrep.done = true
 			scene.onPrep()
@@ -40,7 +46,6 @@ func (me *Camera) onPrep(all SceneNodeLib, nodeID int, batchCounter *int) {
 	var mesh *Mesh
 	var mat *FxMaterial
 	camNodeRender := all[nodeID].Render.Enabled && (all[nodeID].parentID < 1 || me.thrPrep.nodeRender[all[nodeID].parentID])
-	// && inFrustum etc.
 	if camNodeRender {
 		if mesh, mat = all[nodeID].meshMat(); mesh == nil || mat == nil {
 			camNodeRender = false
@@ -54,12 +59,20 @@ func (me *Camera) onPrep(all SceneNodeLib, nodeID int, batchCounter *int) {
 				me.thrPrep.nodeProjMats[nodeID].SetFromMult4(&me.thrPrep.matCamProj, &all[nodeID].Transform.thrPrep.matModelView)
 			}
 		} else {
-			me.thrPrep.nodeProjMats[nodeID].CopyFrom(&all[nodeID].Transform.thrPrep.matModelView)
+			me.thrPrep.nodeProjMats[nodeID] = all[nodeID].Transform.thrPrep.matModelView
 		}
-		if mat.HasFaceEffects() {
-			*batchCounter = *batchCounter + len(mesh.raw.faces)
-		} else {
-			*batchCounter = *batchCounter + 1
+		if me.FrustumCull && nodeID == 3 {
+			me.updateFrustumPlanes(&me.thrPrep.nodeProjMats[nodeID])
+			if !me.thrPrep.frustum.containsSphere(&unum.Vec3{}, mesh.raw.bounding.sphere) {
+				camNodeRender, me.thrPrep.nodeRender[nodeID] = false, false
+			}
+		}
+		if camNodeRender {
+			if mat.HasFaceEffects() {
+				*batchCounter = *batchCounter + len(mesh.raw.faces)
+			} else {
+				*batchCounter = *batchCounter + 1
+			}
 		}
 	}
 	for i := 0; i < len(all[nodeID].childNodeIDs); i++ {

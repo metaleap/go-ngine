@@ -2,6 +2,7 @@ package core
 
 import (
 	gl "github.com/go3d/go-opengl/core"
+	unum "github.com/metaleap/go-util/num"
 )
 
 type Mesh struct {
@@ -72,26 +73,36 @@ func (me *Mesh) Load(provider MeshProvider) (err error) {
 func (me *Mesh) load(meshData *MeshDescriptor) (err error) {
 	var (
 		offsetFloat, offsetIndex, offsetVertex, vindex uint32
-		vreuse, offsetFace, ei, numFinalVerts          int
+		f                                              float64
+		vreuse, offsetFace, ei, numFinalVerts, tvi     int
 		vexists                                        bool
 		ventry                                         MeshDescF3V
-		tvp1, tvp2, tvp3                               MeshDescVA3
+		tvp                                            [3]unum.Vec3
 	)
 	numVerts := 3 * int32(len(meshData.Faces))
 	vertsMap := make(map[MeshDescF3V]uint32, numVerts)
 	me.gpuSynced = false
+	me.raw.bounding.sphere = 0
+	me.raw.bounding.aaBox.min.SetToMax()
+	me.raw.bounding.aaBox.max.SetToMin()
 	me.raw.verts = make([]float32, Core.MeshBuffers.FloatsPerVertex()*numVerts)
 	me.raw.indices = make([]uint32, numVerts)
 	me.raw.lastNumIndices = gl.Sizei(numVerts)
 	me.raw.faces = make([]meshRawFace, len(meshData.Faces))
 	for fi := 0; fi < len(meshData.Faces); fi++ {
 		me.raw.faces[offsetFace].base = meshData.Faces[fi].MeshFaceBase
-		tvp1 = meshData.Positions[meshData.Faces[fi].V[0].PosIndex]
-		tvp2 = meshData.Positions[meshData.Faces[fi].V[1].PosIndex]
-		tvp3 = meshData.Positions[meshData.Faces[fi].V[2].PosIndex]
-		me.raw.faces[offsetFace].center.X = float64(tvp1[0]+tvp2[0]+tvp3[0]) / 3
-		me.raw.faces[offsetFace].center.Y = float64(tvp1[1]+tvp2[1]+tvp3[1]) / 3
-		me.raw.faces[offsetFace].center.Z = float64(tvp1[2]+tvp2[2]+tvp3[2]) / 3
+		meshData.Positions[meshData.Faces[fi].V[0].PosIndex].toVec3(&tvp[0])
+		meshData.Positions[meshData.Faces[fi].V[1].PosIndex].toVec3(&tvp[1])
+		meshData.Positions[meshData.Faces[fi].V[2].PosIndex].toVec3(&tvp[2])
+		for tvi = 0; tvi < len(tvp); tvi++ {
+			if f = tvp[tvi].DistanceFromZero(); f > me.raw.bounding.sphere {
+				me.raw.bounding.sphere = f
+			}
+			tvp[tvi].SetMinMax(&me.raw.bounding.aaBox.min, &me.raw.bounding.aaBox.max)
+		}
+		me.raw.faces[offsetFace].center.X = (tvp[0].X + tvp[1].X + tvp[2].X) / 3
+		me.raw.faces[offsetFace].center.Y = (tvp[0].Y + tvp[1].Y + tvp[2].Y) / 3
+		me.raw.faces[offsetFace].center.Z = (tvp[0].Z + tvp[1].Z + tvp[2].Z) / 3
 		for ei, ventry = range meshData.Faces[fi].V {
 			if vindex, vexists = vertsMap[ventry]; !vexists {
 				vindex, vertsMap[ventry] = offsetVertex, offsetVertex
@@ -112,6 +123,8 @@ func (me *Mesh) load(meshData *MeshDescriptor) (err error) {
 		}
 		offsetFace++
 	}
+	me.raw.bounding.aaBox.center = *me.raw.bounding.aaBox.max.AddTo(&me.raw.bounding.aaBox.min).Scaled(0.5)
+	me.raw.bounding.aaBox.extent = *me.raw.bounding.aaBox.max.Sub(&me.raw.bounding.aaBox.min).Scaled(0.5)
 	Diag.LogMeshes("mesh{%v}.Load() gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)", me.Name, len(me.raw.faces), len(me.raw.verts), numFinalVerts, numVerts, len(me.raw.indices), vreuse)
 	return
 }

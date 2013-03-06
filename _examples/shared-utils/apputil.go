@@ -76,7 +76,7 @@ func appWindowTitle() string {
 			winTitle.numDraw = SceneView.Technique_Scene().NumDrawCalls()
 		}
 	}
-	return fmt.Sprintf("%s  |  %d FPS @ %dx%d (N%d/%d/D%d)  |  %s  |  Cam: P=%v D=%v", winTitle.appName, ng.Stats.FpsLastSec, winTitle.cw, winTitle.ch, winTitle.numNodes, winTitle.batched, winTitle.numDraw, KeyHints[curKeyHint], winTitle.camPos.String(), winTitle.camDir.String())
+	return fmt.Sprintf("%s  |  %d FPS @ %dx%d (N%d/%d/D%d)  |  %s  |  Cam: P=%v D=%v", winTitle.appName, ng.Stats.FpsLastSec, winTitle.cw, winTitle.ch, winTitle.numNodes, winTitle.batched, winTitle.numDraw, KeyHints[curKeyHint], "", winTitle.camPos.String(), winTitle.camDir.String())
 }
 
 func onSec() {

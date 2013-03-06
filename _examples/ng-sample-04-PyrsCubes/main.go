@@ -18,7 +18,7 @@ var (
 	pyrIDs                                                       [4]int
 
 	crateIDs         = make([]int, 0, 9)
-	initialCrateAdds = 0
+	initialCrateAdds = 1
 )
 
 func main() {
@@ -26,7 +26,7 @@ func main() {
 	apputil.AddKeyHint("F11", "Remove last three crates")
 	apputil.AddKeyHint("F12", "Toggle 'Rear-View-Mirror' Camera")
 	// ng.Options.Rendering.DefaultBatcher.Enabled = false
-	ng.Loop.MaxIterations = 2000
+	// ng.Loop.MaxIterations = 2000
 	apputil.Main(setupExample_04_PyrsCubes, onAppThread, onWinThread)
 }
 
