@@ -198,7 +198,7 @@ func (_ *NgLoop) Run() {
 		Loop.Running = false
 		Diag.LogMisc("Exited loop.")
 		Diag.LogIfGlErr("ngine.PostLoop")
-		if false {
+		if true {
 			for rbi, rbe := range Core.Render.Canvases[1].Views[0].Technique_Scene().thrRend.batch.all {
 				println(strf("%d\t==>\tP:%v\tT:%v\tB:%v\tD:%v", rbi, rbe.prog, rbe.texes, Core.Libs.Meshes[rbe.mesh].meshBuffer.glIbo.GlHandle, rbe.dist))
 			}

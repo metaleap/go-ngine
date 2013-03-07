@@ -57,7 +57,7 @@ func (me *Controller) applyRotation() {
 		me.dir.RotateDeg(me.vAngle, &axis)
 		me.dir.Normalize()
 
-		me.UpAxis = *me.dir.Cross(&axis)
+		me.UpAxis.SetFromCrossOf(&me.dir, &axis)
 		me.UpAxis.Normalize()
 	}
 }

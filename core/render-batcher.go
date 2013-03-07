@@ -3,9 +3,12 @@ package core
 import (
 	"sort"
 
+	uhash "github.com/metaleap/go-util/hash"
 	unum "github.com/metaleap/go-util/num"
 	usl "github.com/metaleap/go-util/slice"
 )
+
+const numPrios = 3
 
 type RenderBatchCriteria int
 
@@ -23,9 +26,39 @@ type renderBatchEntry struct {
 }
 
 type renderBatchList struct {
-	all   []renderBatchEntry
-	n     int
-	prios [3]RenderBatchCriteria
+	all       []renderBatchEntry
+	distStats renderBatchDistStats
+	ki, kj    renderBatchDistStatsKey
+	n         int
+	prios     [numPrios]RenderBatchCriteria
+}
+
+func (me *renderBatchList) calcStats() {
+	me.distStats = make(renderBatchDistStats, numPrios*len(me.all))
+	var key renderBatchDistStatsKey
+	for i := 0; i < len(me.all); i++ {
+		for max := 0; max < numPrios; max++ {
+			me.statsKey(i, max, &key)
+			me.distStats.add(me.all[i].dist, key)
+		}
+	}
+}
+
+func (me *renderBatchList) statsKey(index, max int, key *renderBatchDistStatsKey) {
+	for i := 0; i < len(me.prios); i++ {
+		if i > max {
+			key[i] = -1
+		} else {
+			switch me.prios[i] {
+			case BatchByProgram:
+				key[i] = me.all[index].prog
+			case BatchByBuffer:
+				key[i] = int(Core.Libs.Meshes[me.all[index].mesh].meshBuffer.glIbo.GlHandle)
+			case BatchByTexture:
+				key[i] = uhash.Fnv1a(me.all[index].texes)
+			}
+		}
+	}
 }
 
 func (me *renderBatchList) compare(i, j int, crit RenderBatchCriteria) (less, equal bool) {
@@ -37,14 +70,10 @@ func (me *renderBatchList) compare(i, j int, crit RenderBatchCriteria) (less, eq
 		less = Core.Libs.Meshes[me.all[i].mesh].meshBuffer.glIbo.GlHandle < Core.Libs.Meshes[me.all[j].mesh].meshBuffer.glIbo.GlHandle
 		equal = Core.Libs.Meshes[me.all[i].mesh].meshBuffer.glIbo.GlHandle == Core.Libs.Meshes[me.all[j].mesh].meshBuffer.glIbo.GlHandle
 	case BatchByTexture:
-		if len(me.all[i].texes) > 0 {
-			less, equal = false, true
-			for t := 0; t < len(me.all[i].texes) && (less || equal); t++ {
-				less = less || me.all[i].texes[t] < me.all[j].texes[t]
-				equal = equal && me.all[i].texes[t] == me.all[j].texes[t]
-			}
-		} else {
-			less, equal = len(me.all[j].texes) > 0, len(me.all[j].texes) == 0
+		less, equal = false, true
+		for t := 0; (less || equal) && t < len(me.all[i].texes); t++ {
+			less = less || me.all[i].texes[t] < me.all[j].texes[t]
+			equal = equal && me.all[i].texes[t] == me.all[j].texes[t]
 		}
 	}
 	return
@@ -55,24 +84,56 @@ func (me *renderBatchList) Len() int {
 }
 
 func (me *renderBatchList) Less(i, j int) (less bool) {
-	var eq bool
-	if less, eq = me.compare(i, j, me.prios[0]); eq {
-		if less, eq = me.compare(i, j, me.prios[1]); eq {
-			if less, eq = me.compare(i, j, me.prios[2]); eq {
-				less = me.all[i].dist < me.all[j].dist
+	var mi, mj float64
+	var lt, eq bool
+	for crit := 0; crit < numPrios; crit++ {
+		if lt, eq = me.compare(i, j, me.prios[crit]); !eq {
+			me.statsKey(i, crit, &me.ki)
+			me.statsKey(j, crit, &me.kj)
+			mi, mj = me.distStats[me.ki].mean, me.distStats[me.kj].mean
+			if mi == mj {
+				return lt
+			} else {
+				return mi < mj
 			}
 		}
 	}
-	return
+	return me.all[i].dist < me.all[j].dist
 }
+
+// func (me *renderBatchList) oldLess(i, j int) (less bool) {
+// 	var eq bool
+// 	if less, eq = me.compare(i, j, me.prios[0]); eq {
+// 		if less, eq = me.compare(i, j, me.prios[1]); eq {
+// 			if less, eq = me.compare(i, j, me.prios[2]); eq {
+// 				less = me.all[i].dist < me.all[j].dist
+// 			}
+// 		}
+// 	}
+// 	return
+// }
 
 func (me *renderBatchList) Swap(i, j int) {
 	me.all[i], me.all[j] = me.all[j], me.all[i]
 }
 
+type renderBatchDistStatsKey [numPrios]int
+
+type renderBatchDistStats map[renderBatchDistStatsKey]struct {
+	count, mean, sum float64
+}
+
+func (me renderBatchDistStats) add(dist float64, key renderBatchDistStatsKey) {
+	v := me[key]
+	v.count++
+	v.sum += dist
+	v.mean = v.sum / v.count
+	me[key] = v
+}
+
 type RenderBatcher struct {
 	Enabled  bool
-	Priority [3]RenderBatchCriteria
+	Priority [numPrios]RenderBatchCriteria
 }
 
 func (me *RenderTechniqueScene) prepEntry(n, nid, fx int, fi int32) {
@@ -133,5 +194,6 @@ func (me *RenderTechniqueScene) prepBatch(scene *Scene, size int) {
 	}
 	b.prios = me.Batch.Priority
 	me.thrPrep.Wait()
+	b.calcStats()
 	sort.Sort(b)
 }

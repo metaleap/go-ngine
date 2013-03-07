@@ -1,0 +1,91 @@
+
+func (me cameraFrustum) updateFrustumPlanes(mat *unum.Mat4) {
+	f := me
+
+	m11, m21, m31, m41 := mat[0], mat[4], mat[8], mat[12]
+	m12, m22, m32, m42 := mat[1], mat[5], mat[9], mat[13]
+	m13, m23, m33, m43 := mat[2], mat[6], mat[10], mat[14]
+	m14, m24, m34, m44 := mat[3], mat[7], mat[11], mat[15]
+
+	f[cfpLeft].X = m41 + m11
+	f[cfpLeft].Y = m42 + m12
+	f[cfpLeft].Z = m43 + m13
+	f[cfpLeft].d = m44 + m14
+
+	f[cfpRight].X = m41 - m11
+	f[cfpRight].Y = m42 - m12
+	f[cfpRight].Z = m43 - m13
+	f[cfpRight].d = m44 - m14
+
+	f[cfpBottom].X = m41 + m21
+	f[cfpBottom].Y = m42 + m22
+	f[cfpBottom].Z = m43 + m23
+	f[cfpBottom].d = m44 + m24
+
+	f[cfpTop].X = m41 - m21
+	f[cfpTop].Y = m42 - m22
+	f[cfpTop].Z = m43 - m23
+	f[cfpTop].d = m44 - m24
+
+	f[cfpNear].X = m41 + m31
+	f[cfpNear].Y = m42 + m32
+	f[cfpNear].Z = m43 + m33
+	f[cfpNear].d = m44 + m34
+
+	f[cfpFar].X = m41 - m31
+	f[cfpFar].Y = m42 - m32
+	f[cfpFar].Z = m43 - m33
+	f[cfpFar].d = m44 - m34
+
+	f.normalize()
+}
+
+type cfp int
+
+const (
+	cfpNear   cfp = 0
+	cfpFar    cfp = 1
+	cfpBottom cfp = 2
+	cfpTop    cfp = 3
+	cfpLeft   cfp = 4
+	cfpRight  cfp = 5
+)
+
+type cameraFrustum [6]cameraFrustumPlane
+
+func (me cameraFrustum) containsSphere(radius float64) bool {
+	var dist float64
+	for i := 0; i < len(me); i++ {
+		dist = me[i].d
+		if dist < -radius {
+			//	fully outside this plane
+			return false
+		}
+		if math.Abs(dist) < radius {
+			//	intersecting plane
+			return true
+		}
+	}
+	//	fully in frustum
+	return true
+}
+
+func (me cameraFrustum) normalize() {
+	for i := 0; i < len(me); i++ {
+		me[i].normalize()
+	}
+}
+
+type cameraFrustumPlane struct {
+	unum.Vec3
+	d float64
+}
+
+func (me *cameraFrustumPlane) normalize() {
+	me.Vec3.Normalize()
+	me.d = me.d / me.Vec3.Magnitude()
+}
+
+func (me *cameraFrustumPlane) signedDistTo(point *unum.Vec3) float64 {
+	return me.Dot(point) + me.d
+}

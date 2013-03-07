@@ -23,7 +23,6 @@ func (me *RenderView) onPrep() {
 func (me *RenderTechniqueScene) onPrep() {
 	if scene := me.Camera.Scene(); scene != nil {
 		me.Camera.thrPrep.matCamProj.SetFromMult4(&me.Camera.thrPrep.matProj, &me.Camera.Controller.thrPrep.mat)
-		me.Camera.updateFrustumPlanes(&me.Camera.thrPrep.matCamProj)
 		// println(strf("F %v", me.Camera.thrPrep.frustum))
 		if !scene.thrPrep.done {
 			scene.thrPrep.done = true
@@ -58,8 +57,7 @@ func (me *Camera) onPrep(all SceneNodeLib, nodeID int, batchCounter *int) {
 			me.thrPrep.nodeProjMats[nodeID] = all[nodeID].Transform.thrPrep.matModelView
 		}
 		if me.FrustumCull && nodeID == 3 {
-			me.updateFrustumPlanes(&me.thrPrep.nodeProjMats[nodeID])
-			if !me.thrPrep.frustum.containsSphere(mesh.raw.bounding.sphere) {
+			if !me.frustumHasPoint(&all[nodeID].Transform.Pos) {
 				camNodeRender, me.thrPrep.nodeRender[nodeID] = false, false
 			}
 		}
