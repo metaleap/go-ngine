@@ -15,10 +15,6 @@ type Controller struct {
 	//	do so in between calling the BeginUpdate() and EndUpdate() methods.
 	Pos unum.Vec3
 
-	//	Indicates which axis is consider "upward". This is typically
-	//	the Y-axis, denoted by the default value (0, 1, 0).
-	//	When manipulating this manually (outside the TurnXyz() / MoveXyz() methods),
-	//	do so in between calling the BeginUpdate() and EndUpdate() methods.
 	UpAxis unum.Vec3
 
 	//	Defaults to a copy of Options.Cameras.DefaultControllerParams
@@ -28,21 +24,35 @@ type Controller struct {
 		mat unum.Mat4
 	}
 	thrPrep struct {
-		pos unum.Vec3
 		mat unum.Mat4
 	}
 
 	dir            unum.Vec3
 	autoUpdate     bool
 	hAngle, vAngle float64
+	frustAx        struct {
+		x, y, z unum.Vec3
+	}
 }
 
 func (me *Controller) applyTranslation() {
 	if me.autoUpdate {
-		var mlook, mtrans unum.Mat4
-		mlook.Orient(&me.dir, &me.UpAxis)
-		mtrans.Translation(me.Pos.Negated())
-		me.thrApp.mat.SetFromMult4(&mlook, &mtrans)
+		// var mlook, mtrans unum.Mat4
+		// mlook.LookAt(&me.dir, &me.UpAxis)
+		// mtrans.Translation(me.Pos.Negated())
+		// me.thrApp.mat.SetFromMult4(&mlook, &mtrans)
+		println(strf("dir=%v", me.dir))
+		camPos := me.Pos
+		camTarget := me.dir
+		camTarget.Add(&camPos)
+		// camPos.Z, camTarget.Z = -camPos.Z, -camTarget.Z
+		me.thrApp.mat.Lookat(&camPos, &camTarget, &unum.Vec3{0, 1, 0})
+
+		// me.frustAx.z = me.dir
+		// me.frustAx.y = me.UpAxis
+		// me.frustAx.x.Set(0, 1, 0)
+		// me.frustAx.x.SetFromCross(&me.frustAx.z)
+		// me.frustAx.x.Normalize()
 	}
 }
 
@@ -65,8 +75,7 @@ func (me *Controller) applyRotation() {
 
 //	Temporarily suspends all matrix re-calculations typically occuring inside
 //	the MoveXyz() / TurnXyz() methods. Call this prior to multiple subsequent
-//	calls to any combination of those methods, and/or prior to manually modifying
-//	the Pos, Dir or UpAxis fields of me. Immediately afterwards, be sure to call
+//	calls to any combination of those methods. Immediately afterwards, be sure to call
 //	EndUpdate() to apply all changes in a final matrix re-calculation.
 func (me *Controller) BeginUpdate() {
 	me.autoUpdate = false
@@ -84,7 +93,7 @@ func (me *Controller) Dir() *unum.Vec3 {
 	return &me.dir
 }
 
-//	Applies all changes made to Pos, Dir or UpAxis since BeginUpdate() was last
+//	Applies all changes made to Pos, Dir() or UpAxis since BeginUpdate() was last
 //	called, and recalculates this Controller's final 4x4 transformation matrix.
 //	Also resumes all matrix re-calculations typically occuring inside the
 //	MoveXyz() / TurnXyz() methods that were suspended since BeginUpdate().
@@ -96,7 +105,7 @@ func (me *Controller) EndUpdate() {
 
 func (me *Controller) init() {
 	me.Params = Options.Cameras.DefaultControllerParams
-	me.dir, me.UpAxis, me.autoUpdate = unum.Vec3{0, 0, -1}, unum.Vec3{0, 1, 0}, true
+	me.autoUpdate, me.dir.Z, me.UpAxis.Y = true, -1, 1
 	unum.Mat4Identities(&me.thrPrep.mat, &me.thrApp.mat)
 	htarget := &unum.Vec3{X: me.dir.X, Y: 0, Z: me.dir.Z}
 	htarget.Normalize()
@@ -118,9 +127,9 @@ func (me *Controller) init() {
 	me.applyTranslation()
 }
 
-//	Recomputes Pos with regards to UpAxis and Dir to effect a "move backward".
+//	Recomputes Pos with regards to UpAxis and Dir() to effect a "move backward".
 func (me *Controller) MoveBackward() {
-	me.Pos.SetFromAddMult1(&me.Pos, &me.dir, me.StepSizeMove())
+	me.Pos.SetFromSubMult1(&me.Pos, &me.dir, me.StepSizeMove())
 	me.applyTranslation()
 }
 
@@ -130,21 +139,21 @@ func (me *Controller) MoveDown() {
 	me.applyTranslation()
 }
 
-//	Recomputes Pos with regards to UpAxis and Dir to effect a "move forward".
+//	Recomputes Pos with regards to UpAxis and Dir() to effect a "move forward".
 func (me *Controller) MoveForward() {
-	me.Pos.SetFromSubMult1(&me.Pos, &me.dir, me.StepSizeMove())
+	me.Pos.SetFromAddMult1(&me.Pos, &me.dir, me.StepSizeMove())
 	me.applyTranslation()
 }
 
-//	Recomputes Pos with regards to UpAxis and Dir to effect a "move left-ward".
+//	Recomputes Pos with regards to UpAxis and Dir() to effect a "move left-ward".
 func (me *Controller) MoveLeft() {
-	me.Pos.SetFromAddMult1(&me.Pos, me.dir.CrossNormalized(&me.UpAxis), me.StepSizeMove())
+	me.Pos.SetFromAddMult1(&me.Pos, me.UpAxis.CrossNormalized(&me.dir), me.StepSizeMove())
 	me.applyTranslation()
 }
 
-//	Recomputes Pos with regards to UpAxis and Dir to effect a "move right-ward".
+//	Recomputes Pos with regards to UpAxis and Dir() to effect a "move right-ward".
 func (me *Controller) MoveRight() {
-	me.Pos.SetFromAddMult1(&me.Pos, me.UpAxis.CrossNormalized(&me.dir), me.StepSizeMove())
+	me.Pos.SetFromAddMult1(&me.Pos, me.dir.CrossNormalized(&me.UpAxis), me.StepSizeMove())
 	me.applyTranslation()
 }
 

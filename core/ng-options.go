@@ -135,7 +135,7 @@ func init() {
 	o.Textures.Storage.DiskCache.Decompressor = func(r io.ReadCloser) io.ReadCloser { return r }
 	o.Cameras.DefaultControllerParams.initDefaults()
 	persp := &o.Cameras.PerspectiveDefaults
-	persp.FovY, persp.ZFar, persp.ZNear, persp.Enabled = 37.8493, 30000, 0.3, true
+	persp.FovY.Deg, persp.ZFar, persp.ZNear, persp.Enabled = 37.8493, 30000, 0.3, true
 	o.Loop.GcEvery.Sec = true
 	o.Libs.InitialCap, o.Libs.GrowCapBy = 16, 32
 

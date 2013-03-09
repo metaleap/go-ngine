@@ -29,17 +29,14 @@ func newRenderTechniqueScene(view *RenderView) RenderTechnique {
 	me.init("Scene", view)
 	me.Batch = Options.Rendering.DefaultBatcher
 	me.Camera.init()
-	me.ApplyCameraProjection()
+	me.ApplyCameraPerspective()
 	return me
 }
 
 //	Applies changes made to the Enabled, FovY, ZNear and/or ZFar parameters in me.Camera.Perspective.
-func (me *RenderTechniqueScene) ApplyCameraProjection() {
-	if me.Camera.Perspective.Enabled {
-		me.Camera.thrApp.matProj.Perspective(me.Camera.Perspective.FovY, me.view.Port.aspect, me.Camera.Perspective.ZNear, me.Camera.Perspective.ZFar)
-	} else {
-		me.Camera.thrApp.matProj.Identity()
-	}
+func (me *RenderTechniqueScene) ApplyCameraPerspective() {
+	me.Camera.viewportAspectRatio = me.view.Port.aspect
+	me.Camera.applyPerspective()
 }
 
 func (me *RenderTechniqueScene) NumDrawCalls() int {

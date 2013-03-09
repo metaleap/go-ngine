@@ -33,7 +33,7 @@ func (me *RearMirror) OnWin() {
 func (me *RearMirror) Setup(sceneID int) {
 	me.View = SceneCanvas.AddNewView("Scene")
 	me.Cam = &me.View.Technique_Scene().Camera
-	me.Cam.Perspective.FovY *= 2
+	me.Cam.Perspective.FovY.Deg *= 2
 	me.View.RenderStates.ClearColor.Set(0.125, 0.25, 0.45, 1)
 	me.View.Port.SetRelative(0.66, 0.73, 0.33, 0.25)
 	me.View.FxProcs.EnableOrangify(-1).SetMixWeight(0.5)

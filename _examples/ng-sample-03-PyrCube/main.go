@@ -2,6 +2,7 @@ package main
 
 import (
 	"math"
+	"time"
 
 	apputil "github.com/go3d/go-ngine/_examples/shared-utils"
 	ng "github.com/go3d/go-ngine/core"
@@ -92,7 +93,6 @@ func setupExample_03_PyrCube() {
 	fx.EnableTex2D(1).Tex_SetImageID(apputil.LibIDs.Img2D["gopher"]).SetMixWeight(0.5)
 	fx.UpdateRoutine()
 	ng.Core.Libs.Materials[apputil.LibIDs.Mat["crate"]].FaceEffects.ByTag["front"] = apputil.LibIDs.Fx["dog"]
-	ng.Core.Libs.Materials[apputil.LibIDs.Mat["crate"]].FaceEffects.ByTag["back"] = apputil.LibIDs.Fx["dog"]
 	ng.Core.Libs.Materials[apputil.LibIDs.Mat["mosaic"]].FaceEffects.ByID["t3"] = apputil.LibIDs.Fx["cat"]
 
 	//	scene / nodes
@@ -106,11 +106,12 @@ func setupExample_03_PyrCube() {
 
 	pyrNodeID = apputil.AddNode(scene, 0, meshPyrID, apputil.LibIDs.Mat["mosaic"], -1).ID
 	boxNodeID = apputil.AddNode(scene, 0, meshCubeID, apputil.LibIDs.Mat["crate"], -1).ID
-	// scene.Node(boxNodeID).Transform.Pos.Add3(1, 2, 3)
-	// scene.ApplyNodeTransforms(boxNodeID)
 
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()
-	camCtl.Pos.X, camCtl.Pos.Y, camCtl.Pos.Z = 0, 1.5, -2.1
+	camCtl.Pos.X, camCtl.Pos.Y, camCtl.Pos.Z = 0, 1.7, -10
 	camCtl.EndUpdate()
+	if false {
+		ng.Loop.Delay = 100 * time.Millisecond
+	}
 }

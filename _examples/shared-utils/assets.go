@@ -24,9 +24,9 @@ func AddMainScene() (me *ng.Scene) {
 }
 
 func AddNode(scene *ng.Scene, parentNodeID, meshID, matID, modelID int) (node *ng.SceneNode) {
-	nodeID := scene.AddNewChildNode(parentNodeID)
+	nodeID := scene.AddNewChildNode(parentNodeID, meshID)
 	node = scene.Node(nodeID)
-	node.Render.MatID, node.Render.MeshID, node.Render.ModelID = matID, meshID, modelID
+	node.Render.MatID, node.Render.ModelID = matID, modelID
 	return
 }
 
@@ -51,9 +51,8 @@ func AddSkyMesh(scene *ng.Scene, meshID int) {
 	ng.Core.Libs.Materials[matID].DefaultEffectID = LibIDs.Fx["sky"]
 	LibIDs.Mat["sky"] = matID
 
-	root := scene.Root()
-	root.Render.MeshID = meshID
-	root.Render.MatID = matID
+	scene.SetNodeMeshID(0, meshID)
+	scene.Root().Render.MatID = matID
 }
 
 //	Sets up textures and associated effects/materials with the specified IDs and image URLs.

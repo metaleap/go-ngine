@@ -53,13 +53,13 @@ func (me *Camera) onPrep(all SceneNodeLib, nodeID int, batchCounter *int) {
 			} else {
 				me.thrPrep.nodeProjMats[nodeID].SetFromMult4(&me.thrPrep.matCamProj, &all[nodeID].Transform.thrPrep.matModelView)
 			}
+			if me.Cull.Frustum && all[nodeID].Render.Cull.Frustum {
+				if !me.frustumHasSphere(&all[nodeID].Transform.Pos, all[nodeID].thrPrep.bounding.sphere) {
+					camNodeRender, me.thrPrep.nodeRender[nodeID] = false, false
+				}
+			}
 		} else {
 			me.thrPrep.nodeProjMats[nodeID] = all[nodeID].Transform.thrPrep.matModelView
-		}
-		if me.FrustumCull && nodeID == 3 {
-			if !me.frustumHasPoint(&all[nodeID].Transform.Pos) {
-				camNodeRender, me.thrPrep.nodeRender[nodeID] = false, false
-			}
 		}
 		if camNodeRender {
 			if mat.HasFaceEffects() {

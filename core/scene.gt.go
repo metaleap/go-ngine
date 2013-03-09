@@ -32,15 +32,15 @@ func (me *Scene) init() {
 	me.allNodes.init()
 	root := &me.allNodes[me.allNodes.AddNew()]
 	me.nodeCount = 1
-	root.parentID, root.Render.skyMode, root.childNodeIDs = -1, true, make([]int, 0, sceneNodeChildCap)
+	root.parentID, root.childNodeIDs, root.Render.skyMode, root.Render.Cull.Frustum = -1, make([]int, 0, sceneNodeChildCap), true, false
 }
 
-func (me *Scene) AddNewChildNode(parentNodeID int) (childNodeID int) {
+func (me *Scene) AddNewChildNode(parentNodeID, meshID int) (childNodeID int) {
 	childNodeID = -1
 	if me.allNodes.IsOk(parentNodeID) {
 		me.nodeCount++
 		childNodeID = me.allNodes.AddNew()
-		me.allNodes[childNodeID].parentID = parentNodeID
+		me.allNodes[childNodeID].parentID, me.allNodes[childNodeID].Render.meshID = parentNodeID, meshID
 
 		if len(me.allNodes[parentNodeID].childNodeIDs) == cap(me.allNodes[parentNodeID].childNodeIDs) {
 			if len(me.allNodes[parentNodeID].childNodeIDs) > 0 {
@@ -86,6 +86,10 @@ func (me *Scene) ApplyNodeTransforms(nodeID int) {
 		for i := 0; i < len(me.allNodes[nodeID].childNodeIDs); i++ {
 			me.ApplyNodeTransforms(me.allNodes[nodeID].childNodeIDs[i])
 		}
+		me.allNodes[nodeID].thrApp.bounding.clear()
+		if Core.Libs.Meshes.IsOk(me.allNodes[nodeID].Render.meshID) {
+			me.allNodes[nodeID].thrApp.bounding.copyFrom(&Core.Libs.Meshes[me.allNodes[nodeID].Render.meshID].raw.bounding, &me.allNodes[nodeID].Transform)
+		}
 	}
 }
 
@@ -118,6 +122,13 @@ func (me *Scene) RemoveNode(fromID int) {
 
 func (me *Scene) Root() *SceneNode {
 	return &me.allNodes[0]
+}
+
+func (me *Scene) SetNodeMeshID(nodeID, meshID int) {
+	if me.allNodes.IsOk(nodeID) {
+		me.allNodes[nodeID].Render.meshID = meshID
+		me.ApplyNodeTransforms(nodeID)
+	}
 }
 
 //#begin-gt -gen-lib.gt T:Scene L:Core.Libs.Scenes

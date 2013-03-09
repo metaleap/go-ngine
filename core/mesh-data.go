@@ -14,6 +14,18 @@ type geometryBounds struct {
 	}
 }
 
+func (me *geometryBounds) clear() {
+	me.sphere = 0
+	me.aaBox.min.Clear()
+	me.aaBox.max.Clear()
+	me.aaBox.center.Clear()
+	me.aaBox.extent.Clear()
+}
+
+func (me *geometryBounds) copyFrom(meshBounds *geometryBounds, transform *SceneNodeTransform) {
+	me.sphere = meshBounds.sphere * transform.Scale.Max()
+}
+
 //	Represents semi-processed loaded mesh data "almost ready" to core.Mesh.GpuUpload().
 type meshRaw struct {
 	lastNumIndices gl.Sizei

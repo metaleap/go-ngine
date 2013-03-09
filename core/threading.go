@@ -81,11 +81,25 @@ func (me *RenderTechniqueScene) copyPrepToRend() {
 
 func (me *Camera) copyAppToPrep() {
 	me.thrPrep.matProj = me.thrApp.matProj
-	me.Controller.thrPrep.mat = me.Controller.thrApp.mat
+	me.Controller.copyAppToPrep()
+
+	me.thrPrep.frustum.axes.z = me.Controller.dir
+	me.thrPrep.frustum.axes.z.Negate()
+	me.thrPrep.frustum.axes.y = me.Controller.UpAxis
+	me.thrPrep.frustum.axes.x.Set(0, 1, 0)
+	me.thrPrep.frustum.axes.x.SetFromCross(&me.thrPrep.frustum.axes.z)
+	me.thrPrep.frustum.axes.x.Normalize()
+
 	me.thrPrep.matPos.Translation(&me.Controller.Pos)
 	if scene := me.Scene(); scene != nil {
 		scene.copyAppToPrep()
 	}
+
+}
+
+func (me *Controller) copyAppToPrep() {
+	me.thrPrep.mat = me.thrApp.mat
+	me.thrPrep.pos = me.Pos
 }
 
 func (me *Camera) copyPrepToRend() {
@@ -123,6 +137,7 @@ func (me *Scene) copyPrepToRend() {
 
 func (me *SceneNode) copyAppToPrep() {
 	me.Transform.thrPrep.matModelView = me.Transform.thrApp.matModelView
+	me.thrPrep.bounding = me.thrApp.bounding
 }
 
 func (me *SceneNode) copyPrepToRend() {

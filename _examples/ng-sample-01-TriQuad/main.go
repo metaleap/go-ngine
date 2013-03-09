@@ -45,8 +45,8 @@ func onWinThread() {
 
 //	called once per second in main thread
 func onSec() {
-	// toggleOrange(apputil.LibIDs.Fx["cat"])
-	// toggleOrange(apputil.LibIDs.Fx["dog"])
+	toggleOrange(apputil.LibIDs.Fx["cat"])
+	toggleOrange(apputil.LibIDs.Fx["dog"])
 }
 
 func toggleOrange(fxID int) {

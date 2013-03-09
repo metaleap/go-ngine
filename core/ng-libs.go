@@ -172,7 +172,7 @@ func (_ MeshLib) onMeshIDsChanged(oldNewIDs map[int]int) {
 		if Core.Libs.Scenes.Ok(id) {
 			for v = 0; v < len(Core.Libs.Scenes[id].allNodes); v++ {
 				if Core.Libs.Scenes[id].allNodes.Ok(v) {
-					Core.Libs.UpdateIDRef(oldNewIDs, &Core.Libs.Scenes[id].allNodes[v].Render.MeshID)
+					Core.Libs.UpdateIDRef(oldNewIDs, &Core.Libs.Scenes[id].allNodes[v].Render.meshID)
 				}
 			}
 		}

@@ -138,7 +138,7 @@ type RenderBatcher struct {
 
 func (me *RenderTechniqueScene) prepEntry(n, nid, fx int, fi int32) {
 	entry := &me.thrPrep.batch.all[n]
-	entry.node, entry.fx, entry.face, entry.mesh = nid, fx, fi, Core.Libs.Scenes[me.Camera.sceneID].allNodes[nid].Render.MeshID
+	entry.node, entry.fx, entry.face, entry.mesh = nid, fx, fi, Core.Libs.Scenes[me.Camera.sceneID].allNodes[nid].Render.meshID
 	var distPos *unum.Vec3
 	if fi == -1 {
 		distPos = &Core.Libs.Scenes[me.Camera.sceneID].allNodes[nid].Transform.Pos

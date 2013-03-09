@@ -38,16 +38,14 @@ func (me *Gui2D) Setup() (err error) {
 		return
 	}
 
-	me.DogNodeID = scene.AddNewChildNode(0)
+	me.DogNodeID = scene.AddNewChildNode(0, quadMeshID)
 	dog := scene.Node(me.DogNodeID)
-	dog.Render.MeshID = quadMeshID
 	dog.Render.MatID = LibIDs.Mat["dog"]
 	dog.Transform.SetScale(0.85)
 	dog.Transform.Rot.Z = unum.DegToRad(90)
 
-	me.CatNodeID = scene.AddNewChildNode(0)
+	me.CatNodeID = scene.AddNewChildNode(0, quadMeshID)
 	cat := scene.Node(me.CatNodeID)
-	cat.Render.MeshID = quadMeshID
 	cat.Render.MatID = LibIDs.Mat["cat"]
 	cat.Transform.SetScale(0.85)
 	cat.Transform.Rot.Z = unum.DegToRad(90)

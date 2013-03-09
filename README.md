@@ -17,10 +17,11 @@ Current state:
 - multi-texturing (specifically, multiple fx of the same type in an effect)
 - texture disk cache. Feed the go:ngine normal un-processed texture images -- it fetches instead from a temp dir (or creates in there only if missing) a file containing its equivalent, but readily pre-processed & re-aligned pixel data.
 - new: batched rendering
+- new: frustum culling
 
 Coming up soon:
 
-- geometry culling
+- more cullings
 - lighting models
 - HDR (16-bit) pipeline, tone-mapping... but gonna need decent lighting (and shadows) first, obviously!
 
