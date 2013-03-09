@@ -64,3 +64,48 @@ func (me *SceneNodeTransform) SetScaleXyz(x, y, z float64) {
 func (me *SceneNodeTransform) StepDelta(deltaPerSecond float64) float64 {
 	return Loop.Tick.Delta * deltaPerSecond
 }
+
+//	Updates the internal 4x4 transformation matrix for all transformations of the specified
+//	node and child-nodes. It is only this matrix that is used by the rendering runtime.
+func (me *Scene) ApplyNodeTransforms(nodeID int) {
+	if me.allNodes.IsOk(nodeID) {
+		//	this node
+		var matParent, matTrans, matScale, matRotX, matRotY, matRotZ unum.Mat4
+		matScale.Scaling(&me.allNodes[nodeID].Transform.Scale)
+		matTrans.Translation(&me.allNodes[nodeID].Transform.Pos)
+		matRotX.RotationX(me.allNodes[nodeID].Transform.Rot.X)
+		matRotY.RotationY(me.allNodes[nodeID].Transform.Rot.Y)
+		matRotZ.RotationZ(me.allNodes[nodeID].Transform.Rot.Z)
+		if me.allNodes[nodeID].parentID < 0 {
+			matParent.Identity()
+		} else {
+			matParent.CopyFrom(&me.allNodes[me.allNodes[nodeID].parentID].Transform.thrApp.matModelView)
+		}
+		me.allNodes[nodeID].Transform.thrApp.matModelView.SetFromMultN(&matParent, &matTrans /*me.Other,*/, &matScale, &matRotX, &matRotY, &matRotZ)
+		//	child-nodes
+		for i := 0; i < len(me.allNodes[nodeID].childNodeIDs); i++ {
+			me.ApplyNodeTransforms(me.allNodes[nodeID].childNodeIDs[i])
+		}
+		me.allNodes[nodeID].thrApp.bounding.full.clear()
+		me.allNodes[nodeID].thrApp.bounding.self.clear()
+		if Core.Libs.Meshes.IsOk(me.allNodes[nodeID].Render.meshID) {
+			me.applyBounds(nodeID, &Core.Libs.Meshes[me.allNodes[nodeID].Render.meshID].raw.bounding)
+		} else {
+			//	this node has no geometry of its own but its child-nodes might
+			me.applyBounds(nodeID, nil)
+		}
+	}
+}
+
+func (me *Scene) applyBounds(n int, src *geometryBounds) {
+	if src != nil {
+		me.allNodes[n].thrApp.bounding.self.sphere = src.sphere * me.allNodes[n].Transform.Scale.Max()
+	}
+	me.allNodes[n].thrApp.bounding.full.sphere = me.allNodes[n].thrApp.bounding.self.sphere
+	var r float64
+	for _, cid := range me.allNodes[n].childNodeIDs {
+		if r = me.allNodes[cid].thrApp.bounding.full.sphere + me.allNodes[cid].Transform.Pos.DistanceFromZero(); r > me.allNodes[n].thrApp.bounding.full.sphere {
+			me.allNodes[n].thrApp.bounding.full.sphere = r
+		}
+	}
+}

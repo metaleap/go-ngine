@@ -2798,7 +2798,7 @@ Only used for Core.MeshBuffers
 		
 			
 			
-			<h2 id="MeshDescF3">type <a href="/target/mesh-data.go?s=1164:1291#L53">MeshDescF3</a></h2>
+			<h2 id="MeshDescF3">type <a href="/target/mesh-data.go?s=1010:1137#L49">MeshDescF3</a></h2>
 			<pre>type MeshDescF3 struct {
     <span class="comment">//	The indexed vertices making up this triangle face.</span>
     V [3]MeshDescF3V
@@ -2819,7 +2819,7 @@ Represents an indexed triangle face.
 
 			
 				
-				<h3 id="NewMeshDescF3">func <a href="/target/mesh-data.go?s=1509:1583#L64">NewMeshDescF3</a></h3>
+				<h3 id="NewMeshDescF3">func <a href="/target/mesh-data.go?s=1355:1429#L60">NewMeshDescF3</a></h3>
 				<pre>func NewMeshDescF3(tags, id string, verts ...MeshDescF3V) (me *MeshDescF3)</pre>
 				<p>
 Creates and initializes a new MeshDescF3V with the specified tags,
@@ -2834,7 +2834,7 @@ classification tags separated by spaces, which will be split into Tags.
 		
 			
 			
-			<h2 id="MeshDescF3V">type <a href="/target/mesh-data.go?s=1785:1975#L73">MeshDescF3V</a></h2>
+			<h2 id="MeshDescF3V">type <a href="/target/mesh-data.go?s=1631:1821#L69">MeshDescF3V</a></h2>
 			<pre>type MeshDescF3V struct {
     <span class="comment">//	Index of the vertex position</span>
     PosIndex uint32
@@ -2862,7 +2862,7 @@ Represents an indexed vertex in a MeshDescF3.
 		
 			
 			
-			<h2 id="MeshDescVA2">type <a href="/target/mesh-data.go?s=2088:2115#L86">MeshDescVA2</a></h2>
+			<h2 id="MeshDescVA2">type <a href="/target/mesh-data.go?s=1934:1961#L82">MeshDescVA2</a></h2>
 			<pre>type MeshDescVA2 [2]float32</pre>
 			<p>
 Represents a 2-component vertex attribute in a MeshDescriptor.
@@ -2882,7 +2882,7 @@ Represents a 2-component vertex attribute in a MeshDescriptor.
 		
 			
 			
-			<h2 id="MeshDescVA3">type <a href="/target/mesh-data.go?s=2222:2249#L90">MeshDescVA3</a></h2>
+			<h2 id="MeshDescVA3">type <a href="/target/mesh-data.go?s=2068:2095#L86">MeshDescVA3</a></h2>
 			<pre>type MeshDescVA3 [3]float32</pre>
 			<p>
 Represents a 3-component vertex attribute in a MeshDescriptor
@@ -2902,7 +2902,7 @@ Represents a 3-component vertex attribute in a MeshDescriptor
 		
 			
 			
-			<h2 id="MeshDescriptor">type <a href="/target/mesh-data.go?s=2442:2672#L97">MeshDescriptor</a></h2>
+			<h2 id="MeshDescriptor">type <a href="/target/mesh-data.go?s=2288:2518#L93">MeshDescriptor</a></h2>
 			<pre>type MeshDescriptor struct {
     <span class="comment">//	Vertex positions</span>
     Positions []MeshDescVA3
@@ -2990,7 +2990,7 @@ The returned MeshDescriptor contains 1 triangle face with ID &#34;t0&#34; and ta
 
 			
 				
-				<h3 id="MeshDescriptor.AddFaces">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=2726:2782#L112">AddFaces</a></h3>
+				<h3 id="MeshDescriptor.AddFaces">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=2572:2628#L108">AddFaces</a></h3>
 				<pre>func (me *MeshDescriptor) AddFaces(faces ...*MeshDescF3)</pre>
 				<p>
 Adds all specified Faces to this MeshDescriptor.
@@ -3000,7 +3000,7 @@ Adds all specified Faces to this MeshDescriptor.
 				
 			
 				
-				<h3 id="MeshDescriptor.AddNormals">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=3177:3237#L127">AddNormals</a></h3>
+				<h3 id="MeshDescriptor.AddNormals">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=3023:3083#L123">AddNormals</a></h3>
 				<pre>func (me *MeshDescriptor) AddNormals(normals ...MeshDescVA3)</pre>
 				<p>
 Adds all the specified Normals to this MeshDescriptor.
@@ -3010,7 +3010,7 @@ Adds all the specified Normals to this MeshDescriptor.
 				
 			
 				
-				<h3 id="MeshDescriptor.AddPositions">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=2998:3062#L122">AddPositions</a></h3>
+				<h3 id="MeshDescriptor.AddPositions">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=2844:2908#L118">AddPositions</a></h3>
 				<pre>func (me *MeshDescriptor) AddPositions(positions ...MeshDescVA3)</pre>
 				<p>
 Adds all specified Positions to this MeshDescriptor.
@@ -3020,7 +3020,7 @@ Adds all specified Positions to this MeshDescriptor.
 				
 			
 				
-				<h3 id="MeshDescriptor.AddTexCoords">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=3348:3412#L132">AddTexCoords</a></h3>
+				<h3 id="MeshDescriptor.AddTexCoords">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=3194:3258#L128">AddTexCoords</a></h3>
 				<pre>func (me *MeshDescriptor) AddTexCoords(texCoords ...MeshDescVA2)</pre>
 				<p>
 Adds all the specified TexCoords to this MeshDescriptor.
@@ -3032,7 +3032,7 @@ Adds all the specified TexCoords to this MeshDescriptor.
 		
 			
 			
-			<h2 id="MeshFaceBase">type <a href="/target/mesh-data.go?s=976:1122#L44">MeshFaceBase</a></h2>
+			<h2 id="MeshFaceBase">type <a href="/target/mesh-data.go?s=822:968#L40">MeshFaceBase</a></h2>
 			<pre>type MeshFaceBase struct {
     <span class="comment">//	Mesh-unique identifier for this face.</span>
     ID string
@@ -4222,7 +4222,7 @@ representing the maximum extent of the viewport on that respective axis.
 		
 			
 			
-			<h2 id="Scene">type <a href="/target/scene.gt.go?s=166:317#L1">Scene</a></h2>
+			<h2 id="Scene">type <a href="/target/scene.gt.go?s=126:277#L1">Scene</a></h2>
 			<pre>type Scene struct {
     ID int
     <span class="comment">// contains filtered or unexported fields</span>
@@ -4242,14 +4242,14 @@ Represents a scene graph.
 
 			
 				
-				<h3 id="Scene.AddNewChildNode">func (*Scene) <a href="/target/scene.gt.go?s=604:680#L28">AddNewChildNode</a></h3>
+				<h3 id="Scene.AddNewChildNode">func (*Scene) <a href="/target/scene.gt.go?s=597:673#L27">AddNewChildNode</a></h3>
 				<pre>func (me *Scene) AddNewChildNode(parentNodeID, meshID int) (childNodeID int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.ApplyNodeTransforms">func (*Scene) <a href="/target/scene.gt.go?s=1925:1973#L60">ApplyNodeTransforms</a></h3>
+				<h3 id="Scene.ApplyNodeTransforms">func (*Scene) <a href="/target/scene-node-transform.go?s=1934:1982#L60">ApplyNodeTransforms</a></h3>
 				<pre>func (me *Scene) ApplyNodeTransforms(nodeID int)</pre>
 				<p>
 Updates the internal 4x4 transformation matrix for all transformations of the specified
@@ -4260,42 +4260,42 @@ node and child-nodes. It is only this matrix that is used by the rendering runti
 				
 			
 				
-				<h3 id="Scene.Node">func (*Scene) <a href="/target/scene.gt.go?s=3114:3154#L86">Node</a></h3>
+				<h3 id="Scene.Node">func (*Scene) <a href="/target/scene.gt.go?s=1740:1780#L57">Node</a></h3>
 				<pre>func (me *Scene) Node(id int) *SceneNode</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.NumNodes">func (*Scene) <a href="/target/scene.gt.go?s=3188:3219#L90">NumNodes</a></h3>
+				<h3 id="Scene.NumNodes">func (*Scene) <a href="/target/scene.gt.go?s=1814:1845#L61">NumNodes</a></h3>
 				<pre>func (me *Scene) NumNodes() int</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.ParentNodeID">func (*Scene) <a href="/target/scene.gt.go?s=3246:3307#L94">ParentNodeID</a></h3>
+				<h3 id="Scene.ParentNodeID">func (*Scene) <a href="/target/scene.gt.go?s=1872:1933#L65">ParentNodeID</a></h3>
 				<pre>func (me *Scene) ParentNodeID(childNodeID int) (parentID int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.RemoveNode">func (*Scene) <a href="/target/scene.gt.go?s=3407:3446#L101">RemoveNode</a></h3>
+				<h3 id="Scene.RemoveNode">func (*Scene) <a href="/target/scene.gt.go?s=2033:2072#L72">RemoveNode</a></h3>
 				<pre>func (me *Scene) RemoveNode(fromID int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.Root">func (*Scene) <a href="/target/scene.gt.go?s=3656:3690#L113">Root</a></h3>
+				<h3 id="Scene.Root">func (*Scene) <a href="/target/scene.gt.go?s=2282:2316#L84">Root</a></h3>
 				<pre>func (me *Scene) Root() *SceneNode</pre>
 				
 				
 				
 			
 				
-				<h3 id="Scene.SetNodeMeshID">func (*Scene) <a href="/target/scene.gt.go?s=3720:3770#L117">SetNodeMeshID</a></h3>
+				<h3 id="Scene.SetNodeMeshID">func (*Scene) <a href="/target/scene.gt.go?s=2346:2396#L88">SetNodeMeshID</a></h3>
 				<pre>func (me *Scene) SetNodeMeshID(nodeID, meshID int)</pre>
 				
 				
@@ -4304,7 +4304,7 @@ node and child-nodes. It is only this matrix that is used by the rendering runti
 		
 			
 			
-			<h2 id="SceneLib">type <a href="/target/scene.gt.go?s=3974:3995#L127">SceneLib</a></h2>
+			<h2 id="SceneLib">type <a href="/target/scene.gt.go?s=2600:2621#L98">SceneLib</a></h2>
 			<pre>type SceneLib []Scene</pre>
 			<p>
 Only used for Core.Libs.Scenes
@@ -4321,42 +4321,42 @@ Only used for Core.Libs.Scenes
 
 			
 				
-				<h3 id="SceneLib.AddNew">func (*SceneLib) <a href="/target/scene.gt.go?s=3997:4034#L129">AddNew</a></h3>
+				<h3 id="SceneLib.AddNew">func (*SceneLib) <a href="/target/scene.gt.go?s=2623:2660#L100">AddNew</a></h3>
 				<pre>func (me *SceneLib) AddNew() (id int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Compact">func (*SceneLib) <a href="/target/scene.gt.go?s=4357:4386#L151">Compact</a></h3>
+				<h3 id="SceneLib.Compact">func (*SceneLib) <a href="/target/scene.gt.go?s=2983:3012#L122">Compact</a></h3>
 				<pre>func (me *SceneLib) Compact()</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.IsOk">func (SceneLib) <a href="/target/scene.gt.go?s=5141:5182#L194">IsOk</a></h3>
+				<h3 id="SceneLib.IsOk">func (SceneLib) <a href="/target/scene.gt.go?s=3767:3808#L165">IsOk</a></h3>
 				<pre>func (me SceneLib) IsOk(id int) (ok bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Ok">func (SceneLib) <a href="/target/scene.gt.go?s=5252:5286#L201">Ok</a></h3>
+				<h3 id="SceneLib.Ok">func (SceneLib) <a href="/target/scene.gt.go?s=3878:3912#L172">Ok</a></h3>
 				<pre>func (me SceneLib) Ok(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Remove">func (SceneLib) <a href="/target/scene.gt.go?s=5316:5358#L205">Remove</a></h3>
+				<h3 id="SceneLib.Remove">func (SceneLib) <a href="/target/scene.gt.go?s=3942:3984#L176">Remove</a></h3>
 				<pre>func (me SceneLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneLib.Walk">func (SceneLib) <a href="/target/scene.gt.go?s=5643:5687#L219">Walk</a></h3>
+				<h3 id="SceneLib.Walk">func (SceneLib) <a href="/target/scene.gt.go?s=4269:4313#L190">Walk</a></h3>
 				<pre>func (me SceneLib) Walk(on func(ref *Scene))</pre>
 				
 				
@@ -4365,7 +4365,7 @@ Only used for Core.Libs.Scenes
 		
 			
 			
-			<h2 id="SceneNode">type <a href="/target/scene-node.go?s=14:347#L1">SceneNode</a></h2>
+			<h2 id="SceneNode">type <a href="/target/scene-node.go?s=69:394#L1">SceneNode</a></h2>
 			<pre>type SceneNode struct {
     ID        int
     Transform SceneNodeTransform

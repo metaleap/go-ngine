@@ -1,5 +1,9 @@
 package core
 
+type nodeBounds struct {
+	full, self geometryBounds
+}
+
 type SceneNode struct {
 	ID        int
 	Transform SceneNodeTransform
@@ -20,10 +24,10 @@ type SceneNode struct {
 	childNodeIDs []int
 
 	thrApp struct {
-		bounding geometryBounds
+		bounding nodeBounds
 	}
 	thrPrep struct {
-		bounding geometryBounds
+		bounding nodeBounds
 	}
 }
 

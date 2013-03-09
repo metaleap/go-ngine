@@ -1,7 +1,6 @@
 package core
 
 import (
-	unum "github.com/metaleap/go-util/num"
 	usl "github.com/metaleap/go-util/slice"
 )
 
@@ -63,34 +62,6 @@ func (me *Scene) AddNewChildNode(parentNodeID, meshID int) (childNodeID int) {
 		}
 	}
 	return
-}
-
-//	Updates the internal 4x4 transformation matrix for all transformations of the specified
-//	node and child-nodes. It is only this matrix that is used by the rendering runtime.
-func (me *Scene) ApplyNodeTransforms(nodeID int) {
-	if me.allNodes.IsOk(nodeID) {
-		//	this node
-		var matParent, matTrans, matScale, matRotX, matRotY, matRotZ unum.Mat4
-		matScale.Scaling(&me.allNodes[nodeID].Transform.Scale)
-		matTrans.Translation(&me.allNodes[nodeID].Transform.Pos)
-		matRotX.RotationX(me.allNodes[nodeID].Transform.Rot.X)
-		matRotY.RotationY(me.allNodes[nodeID].Transform.Rot.Y)
-		matRotZ.RotationZ(me.allNodes[nodeID].Transform.Rot.Z)
-		if me.allNodes[nodeID].parentID < 0 {
-			matParent.Identity()
-		} else {
-			matParent.CopyFrom(&me.allNodes[me.allNodes[nodeID].parentID].Transform.thrApp.matModelView)
-		}
-		me.allNodes[nodeID].Transform.thrApp.matModelView.SetFromMultN(&matParent, &matTrans /*me.Other,*/, &matScale, &matRotX, &matRotY, &matRotZ)
-		//	child-nodes
-		for i := 0; i < len(me.allNodes[nodeID].childNodeIDs); i++ {
-			me.ApplyNodeTransforms(me.allNodes[nodeID].childNodeIDs[i])
-		}
-		me.allNodes[nodeID].thrApp.bounding.clear()
-		if Core.Libs.Meshes.IsOk(me.allNodes[nodeID].Render.meshID) {
-			me.allNodes[nodeID].thrApp.bounding.copyFrom(&Core.Libs.Meshes[me.allNodes[nodeID].Render.meshID].raw.bounding, &me.allNodes[nodeID].Transform)
-		}
-	}
 }
 
 func (me *Scene) Node(id int) *SceneNode {

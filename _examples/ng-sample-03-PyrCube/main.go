@@ -30,6 +30,7 @@ func onWinThread() {
 func onAppThread() {
 	if !apputil.Paused {
 		apputil.HandleCamCtlKeys()
+
 		//	animate mesh nodes
 		if tmpScene = apputil.SceneCam.Scene(); tmpScene != nil {
 			if tmpNode = tmpScene.Node(pyrNodeID); tmpNode != nil {
