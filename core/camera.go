@@ -1,42 +1,15 @@
 package core
 
 import (
-	"math"
-
+	u3d "github.com/go3d/go-3dutil"
 	ugl "github.com/go3d/go-opengl/util"
 	unum "github.com/metaleap/go-util/num"
 	usl "github.com/metaleap/go-util/slice"
 )
 
-type CameraPerspective struct {
-	//	Whether this is a perspective-projection camera. Defaults to true.
-	//	If false, no projection transformation is applied.
-	Enabled bool
-
-	//	Vertical field-of-view angle.
-	FovY struct {
-		//	In degrees. Defaults to 37.8493.
-		//	After changing this value, call Camera.ApplyPerspective().
-		Deg float64
-
-		//	In radians, times 0.5. This is auto-set (from Deg) by Camera.ApplyPerspective().
-		RadHalf float64
-
-		tanRadHalf, tanRadHalfAspect float64
-	}
-
-	//	Distance of the far-plane from the camera. Defaults to 30000.
-	//	After changing this value, call Camera.ApplyPerspective().
-	ZFar float64
-
-	//	Distance of the near-plane from the camera. Defaults to 0.3.
-	//	After changing this value, call Camera.ApplyPerspective().
-	ZNear float64
-}
-
 type Camera struct {
 	//	Optical and imager properties for this camera.
-	Perspective CameraPerspective
+	Perspective u3d.Perspective
 
 	//	Encapsulates the position and direction of this camera.
 	Controller Controller
@@ -55,12 +28,7 @@ type Camera struct {
 		matCamProj, matProj, matPos unum.Mat4
 		nodeRender                  []bool
 		nodeProjMats                []unum.Mat4
-		frustum                     struct {
-			axes struct {
-				x, y, z unum.Vec3
-			}
-			sphereFactor unum.Vec2
-		}
+		frustum                     u3d.Frustum
 	}
 	thrRend struct {
 		nodeProjMats []ugl.GlMat4
@@ -80,10 +48,7 @@ func (me *Camera) init() {
 func (me *Camera) applyPerspective() {
 	if me.Perspective.Enabled {
 		me.Perspective.FovY.RadHalf = me.thrApp.matProj.Perspective(me.Perspective.FovY.Deg, me.viewportAspectRatio, me.Perspective.ZNear, me.Perspective.ZFar)
-		me.Perspective.FovY.tanRadHalf = math.Tan(me.Perspective.FovY.RadHalf)
-		me.Perspective.FovY.tanRadHalfAspect = me.Perspective.FovY.tanRadHalf * me.viewportAspectRatio
-		me.thrPrep.frustum.sphereFactor.Y = 1 / math.Cos(me.Perspective.FovY.RadHalf)
-		me.thrPrep.frustum.sphereFactor.X = 1 / math.Cos(math.Atan(me.Perspective.FovY.tanRadHalfAspect))
+		me.thrPrep.frustum.UpdateRatio(me.Perspective.FovY.RadHalf, me.viewportAspectRatio)
 	} else {
 		me.thrApp.matProj.Identity()
 	}
@@ -133,51 +98,9 @@ func (me *Camera) SetScene(sceneID int) {
 }
 
 func (me *Camera) frustumHasPoint(point *unum.Vec3) bool {
-	var axisPos float64
-	pp := point.Sub(&me.Controller.thrPrep.pos)
-	if axisPos = pp.Dot(&me.thrPrep.frustum.axes.z); axisPos > me.Perspective.ZFar || axisPos < me.Perspective.ZNear {
-		return false
-	}
-	halfHeight := axisPos * me.Perspective.FovY.tanRadHalf
-	if axisPos = pp.Dot(&me.thrPrep.frustum.axes.y); -halfHeight > axisPos || axisPos > halfHeight {
-		return false
-	}
-	halfWidth := halfHeight * me.viewportAspectRatio
-	if axisPos = pp.Dot(&me.thrPrep.frustum.axes.x); -halfWidth > axisPos || axisPos > halfWidth {
-		return false
-	}
-	return true
+	return me.thrPrep.frustum.HasPoint(&me.Controller.thrPrep.pos, point, me.Perspective.ZNear, me.Perspective.ZFar)
 }
 
-func (me *Camera) frustumHasSphere(center *unum.Vec3, radius float64) bool {
-	if radius == 0 {
-		return me.frustumHasPoint(center)
-	}
-	var axPos, z, d float64
-	cp := center.Sub(&me.Controller.thrPrep.pos)
-	if axPos = cp.Dot(&me.thrPrep.frustum.axes.z); axPos > me.Perspective.ZFar+radius || axPos < me.Perspective.ZNear-radius {
-		return false
-	}
-
-	z, d = axPos*me.Perspective.FovY.tanRadHalfAspect, me.thrPrep.frustum.sphereFactor.X*radius
-	if axPos = cp.Dot(&me.thrPrep.frustum.axes.x); axPos > z+d || axPos < -z-d {
-		return false
-	}
-
-	z, d = z/me.viewportAspectRatio, me.thrPrep.frustum.sphereFactor.Y*radius
-	if axPos = cp.Dot(&me.thrPrep.frustum.axes.y); axPos > z+d || axPos < -z-d {
-		return false
-	}
-
-	// if pc.Z > me.Perspective.ZFar-radius || pc.Z < me.Perspective.ZNear+radius {
-	// 	intersect = true
-	// }
-	// if pc.Y > zz.Y-d.Y || pc.Y < -zz.Y+d.Y {
-	// 	intersect = true
-	// }
-	// if pc.X > zz.X-d.X || pc.X < -zz.X+d.X {
-	// 	intersect = true
-	// }
-
-	return true
+func (me *Camera) frustumHasSphere(center *unum.Vec3, radius float64) (fullyInside, intersect bool) {
+	return me.thrPrep.frustum.HasSphere(&me.Controller.thrPrep.pos, center, radius, me.Perspective.ZNear, me.Perspective.ZFar)
 }

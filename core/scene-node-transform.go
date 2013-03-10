@@ -1,13 +1,12 @@
 package core
 
 import (
-	"math"
-
+	u3d "github.com/go3d/go-3dutil"
 	unum "github.com/metaleap/go-util/num"
 )
 
 type nodeBounds struct {
-	full, self geometryBounds
+	full, self u3d.Bounds
 }
 
 //	Represents one or more transformations of a Node.
@@ -92,8 +91,8 @@ func (me *Scene) ApplyNodeTransforms(nodeID int) {
 		for i := 0; i < len(me.allNodes[nodeID].childNodeIDs); i++ {
 			me.ApplyNodeTransforms(me.allNodes[nodeID].childNodeIDs[i])
 		}
-		me.allNodes[nodeID].thrApp.bounding.full.clear()
-		me.allNodes[nodeID].thrApp.bounding.self.clear()
+		me.allNodes[nodeID].thrApp.bounding.full.Clear()
+		me.allNodes[nodeID].thrApp.bounding.self.Clear()
 		if Core.Libs.Meshes.IsOk(me.allNodes[nodeID].Render.meshID) {
 			me.applyBounds(nodeID, &Core.Libs.Meshes[me.allNodes[nodeID].Render.meshID].raw.bounding)
 		} else {
@@ -103,18 +102,15 @@ func (me *Scene) ApplyNodeTransforms(nodeID int) {
 	}
 }
 
-func (me *Scene) applyBounds(n int, src *geometryBounds) {
+func (me *Scene) applyBounds(n int, src *u3d.Bounds) {
 	if src != nil {
-		me.allNodes[n].thrApp.bounding.self.aaBox = src.aaBox
-		me.allNodes[n].thrApp.bounding.self.aaBox.center.TransformCoord(&me.allNodes[n].Transform.thrApp.matModelView)
-		me.allNodes[n].thrApp.bounding.self.aaBox.extent.TransformNormal(&me.allNodes[n].Transform.thrApp.matModelView, true)
-		me.allNodes[n].thrApp.bounding.self.aabbSetMinMax()
-		me.allNodes[n].thrApp.bounding.self.sphere = math.Max(me.allNodes[n].thrApp.bounding.self.aaBox.min.DistanceFrom(&me.allNodes[n].Transform.Pos), me.allNodes[n].thrApp.bounding.self.aaBox.max.DistanceFrom(&me.allNodes[n].Transform.Pos))
+		me.allNodes[n].thrApp.bounding.self.AaBox = src.AaBox
+		me.allNodes[n].thrApp.bounding.self.AaBox.Transform(&me.allNodes[n].Transform.thrApp.matModelView)
+		me.allNodes[n].thrApp.bounding.self.Sphere = me.allNodes[n].thrApp.bounding.self.AaBox.BoundingSphere(&me.allNodes[n].Transform.Pos)
 	}
 	me.allNodes[n].thrApp.bounding.full = me.allNodes[n].thrApp.bounding.self
 	for _, cid := range me.allNodes[n].childNodeIDs {
-		me.allNodes[cid].thrApp.bounding.full.aaBox.min.SetMinMax(&me.allNodes[n].thrApp.bounding.full.aaBox.min, &me.allNodes[n].thrApp.bounding.full.aaBox.max)
-		me.allNodes[cid].thrApp.bounding.full.aaBox.max.SetMinMax(&me.allNodes[n].thrApp.bounding.full.aaBox.min, &me.allNodes[n].thrApp.bounding.full.aaBox.max)
+		me.allNodes[n].thrApp.bounding.full.AaBox.UpdateMinMaxFrom(&me.allNodes[cid].thrApp.bounding.full.AaBox)
 	}
-	me.allNodes[n].thrApp.bounding.full.sphere = math.Max(me.allNodes[n].thrApp.bounding.full.aaBox.min.DistanceFrom(&me.allNodes[n].Transform.Pos), me.allNodes[n].thrApp.bounding.full.aaBox.max.DistanceFrom(&me.allNodes[n].Transform.Pos))
+	me.allNodes[n].thrApp.bounding.full.Sphere = me.allNodes[n].thrApp.bounding.full.AaBox.BoundingSphere(&me.allNodes[n].Transform.Pos)
 }

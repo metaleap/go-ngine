@@ -34,7 +34,7 @@ func (me *NgLibs) dispose() {
 	for _, disp := range []interface {
 		dispose()
 	}{
-		&Core.Render.Canvases, &Core.MeshBuffers,
+		&Core.Render.Canvases, &Core.Mesh.Buffers,
 		&me.Models, &me.Materials, &me.Effects,
 		&me.Images.Tex2D, &me.Images.TexCube,
 		&me.Meshes, &me.Scenes,
@@ -47,7 +47,7 @@ func (me *NgLibs) init() {
 	for _, c := range []interface {
 		init()
 	}{
-		&Core.Render.Canvases, &Core.MeshBuffers,
+		&Core.Render.Canvases, &Core.Mesh.Buffers,
 		&me.Models, &me.Materials, &me.Effects,
 		&me.Images.Tex2D, &me.Images.TexCube,
 		&me.Meshes, &me.Scenes,
@@ -163,7 +163,7 @@ func (_ FxMaterialLib) onFxMaterialIDsChanged(oldNewIDs map[int]int) {
 
 func (_ MeshLib) onMeshIDsChanged(oldNewIDs map[int]int) {
 	var id, v int
-	for _, meshBuf := range Core.MeshBuffers {
+	for _, meshBuf := range Core.Mesh.Buffers {
 		for id, v = range meshBuf.meshIDs {
 			meshBuf.meshIDs[id] = Core.Libs.UpdatedIDRef(oldNewIDs, v)
 		}

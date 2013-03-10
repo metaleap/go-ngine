@@ -68,13 +68,13 @@ func setupScene() {
 	dogMat.FaceEffects.ByID["t2"] = fxGreenID
 
 	//	meshes / models
-	if bufRest, err = ng.Core.MeshBuffers.AddNew("buf_rest", 200); err != nil {
+	if bufRest, err = ng.Core.Mesh.Buffers.AddNew("buf_rest", 200); err != nil {
 		panic(err)
 	}
-	if meshFloorID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.MeshDescriptorPlane); err != nil {
+	if meshFloorID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.Core.Mesh.Desc.Plane); err != nil {
 		panic(err)
 	}
-	if meshPyrID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_pyr", ng.MeshDescriptorPyramid); err != nil {
+	if meshPyrID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_pyr", ng.Core.Mesh.Desc.Pyramid); err != nil {
 		panic(err)
 	}
 	bufRest.Add(meshFloorID)

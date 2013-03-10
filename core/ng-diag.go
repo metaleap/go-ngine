@@ -7,16 +7,6 @@ import (
 	ugo "github.com/metaleap/go-util"
 )
 
-type NgDiagLogCategory int
-
-const (
-	DiagLogCatMisc    NgDiagLogCategory = 1
-	DiagLogCatMeshes  NgDiagLogCategory = 2
-	DiagLogCatShaders NgDiagLogCategory = 4
-	DiagLogCatImages  NgDiagLogCategory = 8
-	DiagLogCatAll     NgDiagLogCategory = DiagLogCatMeshes | DiagLogCatMisc | DiagLogCatShaders | DiagLogCatImages
-)
-
 var (
 	Diag = NgDiag{
 		LogCategories: DiagLogCatAll,
@@ -29,10 +19,6 @@ var (
 		LogGLErrorsInLoopOnSec: false,
 	}
 )
-
-func init() {
-	ugo.LogErrorFormat = "[ERROR!]\t%v"
-}
 
 //	NgDiag is a singleton type, only used for the core.Diag package-global exported variable.
 //	It is only aware of that instance and does not support any other NgDiag instances.
@@ -70,4 +56,18 @@ func (_ *NgDiag) LogMisc(fmt string, fmtArgs ...interface{}) {
 
 func (_ *NgDiag) LogShaders(fmt string, fmtArgs ...interface{}) {
 	Diag.Log(DiagLogCatShaders, fmt, fmtArgs...)
+}
+
+type NgDiagLogCategory int
+
+const (
+	DiagLogCatMisc    NgDiagLogCategory = 1
+	DiagLogCatMeshes  NgDiagLogCategory = 2
+	DiagLogCatShaders NgDiagLogCategory = 4
+	DiagLogCatImages  NgDiagLogCategory = 8
+	DiagLogCatAll     NgDiagLogCategory = DiagLogCatMeshes | DiagLogCatMisc | DiagLogCatShaders | DiagLogCatImages
+)
+
+func init() {
+	ugo.LogErrorFormat = "[ERROR!]\t%v"
 }

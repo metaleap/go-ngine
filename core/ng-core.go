@@ -2,6 +2,7 @@ package core
 
 import (
 	glfw "github.com/go-gl/glfw"
+	u3d "github.com/go3d/go-3dutil"
 	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
 )
@@ -14,9 +15,14 @@ var (
 //	NgCore is a singleton type, only used for the core.Core package-global exported variable.
 //	It is only aware of that instance and does not support any other NgCore instances.
 type NgCore struct {
-	MeshBuffers MeshBufferLib
-	Libs        NgLibs
-	Render      struct {
+	Libs NgLibs
+	Mesh struct {
+		Buffers MeshBufferLib
+		Desc    struct {
+			Cube, Plane, Pyramid, Quad, Tri u3d.MeshProvider
+		}
+	}
+	Render struct {
 		Canvases RenderCanvasLib
 		Fx       struct {
 			KnownProcIDs []string
@@ -46,6 +52,7 @@ func (_ *NgCore) dispose() {
 }
 
 func (_ *NgCore) init() (err error) {
+	Core.Mesh.Desc.Cube, Core.Mesh.Desc.Plane, Core.Mesh.Desc.Pyramid, Core.Mesh.Desc.Quad, Core.Mesh.Desc.Tri = u3d.MeshDescriptorCube, u3d.MeshDescriptorPlane, u3d.MeshDescriptorPyramid, u3d.MeshDescriptorQuad, u3d.MeshDescriptorTri
 	Core.Libs.init()
 	Core.initRendering()
 	err = Core.showSplash()

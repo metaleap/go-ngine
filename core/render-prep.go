@@ -47,9 +47,11 @@ func (me *Camera) onPrep(all SceneNodeLib, nodeID int, batchCounter *int) {
 		}
 	}
 	if prepChildren && me.Perspective.Enabled && me.Cull.Frustum && all[nodeID].Render.Cull.Frustum {
-		if !me.frustumHasSphere(&all[nodeID].Transform.Pos, all[nodeID].thrPrep.bounding.full.sphere) {
+		frustIn, frustX := me.frustumHasSphere(&all[nodeID].Transform.Pos, all[nodeID].thrPrep.bounding.full.Sphere)
+
+		if !(frustIn || frustX) {
 			prepChildren, camNodeRender = false, false
-		} else if !me.frustumHasSphere(&all[nodeID].Transform.Pos, all[nodeID].thrPrep.bounding.self.sphere) {
+		} else if frustIn, frustX = me.frustumHasSphere(&all[nodeID].Transform.Pos, all[nodeID].thrPrep.bounding.self.Sphere); !(frustIn || frustX) {
 			camNodeRender = false
 		}
 	}

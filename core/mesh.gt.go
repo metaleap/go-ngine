@@ -1,9 +1,35 @@
 package core
 
 import (
+	u3d "github.com/go3d/go-3dutil"
 	gl "github.com/go3d/go-opengl/core"
 	unum "github.com/metaleap/go-util/num"
 )
+
+//	Represents semi-processed loaded mesh data "almost ready" to core.Mesh.GpuUpload().
+type meshRaw struct {
+	lastNumIndices gl.Sizei
+
+	//	Raw vertices
+	verts []float32
+
+	//	Vertex indices
+	indices []uint32
+
+	//	Raw face definitions
+	faces []meshRawFace
+
+	bounding u3d.Bounds
+}
+
+//	Represents a triangle face inside a meshRaw.
+type meshRawFace struct {
+	//	Indices of the triangle corners
+	entries [3]uint32
+	center  unum.Vec3
+
+	base u3d.MeshFaceBase
+}
 
 type Mesh struct {
 	ID             int
@@ -62,43 +88,41 @@ func (me *Mesh) GpuUploaded() bool {
 	return me.gpuSynced
 }
 
-func (me *Mesh) Load(provider MeshProvider) (err error) {
-	var meshData *MeshDescriptor
+func (me *Mesh) Load(provider u3d.MeshProvider) (err error) {
+	var meshData *u3d.MeshDescriptor
 	if meshData, err = provider(); err == nil && meshData != nil {
 		err = me.load(meshData)
 	}
 	return
 }
 
-func (me *Mesh) load(meshData *MeshDescriptor) (err error) {
+func (me *Mesh) load(meshData *u3d.MeshDescriptor) (err error) {
 	var (
 		offsetFloat, offsetIndex, offsetVertex, vindex uint32
 		f                                              float64
 		vreuse, offsetFace, ei, numFinalVerts, tvi     int
 		vexists                                        bool
-		ventry                                         MeshDescF3V
+		ventry                                         u3d.MeshDescF3V
 		tvp                                            [3]unum.Vec3
 	)
 	numVerts := 3 * int32(len(meshData.Faces))
-	vertsMap := make(map[MeshDescF3V]uint32, numVerts)
+	vertsMap := make(map[u3d.MeshDescF3V]uint32, numVerts)
 	me.gpuSynced = false
-	me.raw.bounding.sphere = 0
-	me.raw.bounding.aaBox.min.SetToMax()
-	me.raw.bounding.aaBox.max.SetToMin()
-	me.raw.verts = make([]float32, Core.MeshBuffers.FloatsPerVertex()*numVerts)
+	me.raw.bounding.Reset()
+	me.raw.verts = make([]float32, Core.Mesh.Buffers.FloatsPerVertex()*numVerts)
 	me.raw.indices = make([]uint32, numVerts)
 	me.raw.lastNumIndices = gl.Sizei(numVerts)
 	me.raw.faces = make([]meshRawFace, len(meshData.Faces))
 	for fi := 0; fi < len(meshData.Faces); fi++ {
 		me.raw.faces[offsetFace].base = meshData.Faces[fi].MeshFaceBase
-		meshData.Positions[meshData.Faces[fi].V[0].PosIndex].toVec3(&tvp[0])
-		meshData.Positions[meshData.Faces[fi].V[1].PosIndex].toVec3(&tvp[1])
-		meshData.Positions[meshData.Faces[fi].V[2].PosIndex].toVec3(&tvp[2])
+		meshData.Positions[meshData.Faces[fi].V[0].PosIndex].ToVec3(&tvp[0])
+		meshData.Positions[meshData.Faces[fi].V[1].PosIndex].ToVec3(&tvp[1])
+		meshData.Positions[meshData.Faces[fi].V[2].PosIndex].ToVec3(&tvp[2])
 		for tvi = 0; tvi < len(tvp); tvi++ {
-			if f = tvp[tvi].DistanceFromZero(); f > me.raw.bounding.sphere {
-				me.raw.bounding.sphere = f
+			if f = tvp[tvi].DistanceFromZero(); f > me.raw.bounding.Sphere {
+				me.raw.bounding.Sphere = f
 			}
-			tvp[tvi].SetMinMax(&me.raw.bounding.aaBox.min, &me.raw.bounding.aaBox.max)
+			me.raw.bounding.AaBox.UpdateMinMax(&tvp[tvi])
 		}
 		me.raw.faces[offsetFace].center.X = (tvp[0].X + tvp[1].X + tvp[2].X) / 3
 		me.raw.faces[offsetFace].center.Y = (tvp[0].Y + tvp[1].Y + tvp[2].Y) / 3
@@ -123,9 +147,7 @@ func (me *Mesh) load(meshData *MeshDescriptor) (err error) {
 		}
 		offsetFace++
 	}
-	println(strf("%s %#v", me.Name, me.raw.bounding.aaBox))
-	me.raw.bounding.aabbSetCenterExtent()
-	println(strf("%s %#v", me.Name, me.raw.bounding.aaBox))
+	me.raw.bounding.AaBox.SetCenterExtent()
 	Diag.LogMeshes("mesh{%v}.Load() gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)", me.Name, len(me.raw.faces), len(me.raw.verts), numFinalVerts, numVerts, len(me.raw.indices), vreuse)
 	return
 }
@@ -149,7 +171,7 @@ func (_ MeshLib) GpuSync() (err error) {
 	return
 }
 
-func (me *MeshLib) AddNewAndLoad(name string, meshProvider MeshProvider) (meshID int, err error) {
+func (me *MeshLib) AddNewAndLoad(name string, meshProvider u3d.MeshProvider) (meshID int, err error) {
 	meshID = me.AddNew()
 	mesh := &(*me)[meshID]
 	mesh.Name = name
@@ -158,6 +180,26 @@ func (me *MeshLib) AddNewAndLoad(name string, meshProvider MeshProvider) (meshID
 		meshID = -1
 	}
 	return
+}
+
+func (_ MeshLib) MeshCube() u3d.MeshProvider {
+	return u3d.MeshDescriptorCube
+}
+
+func (_ MeshLib) MeshPlane() u3d.MeshProvider {
+	return u3d.MeshDescriptorPlane
+}
+
+func (_ MeshLib) MeshPyramid() u3d.MeshProvider {
+	return u3d.MeshDescriptorPyramid
+}
+
+func (_ MeshLib) MeshQuad() u3d.MeshProvider {
+	return u3d.MeshDescriptorQuad
+}
+
+func (_ MeshLib) MeshTri() u3d.MeshProvider {
+	return u3d.MeshDescriptorTri
 }
 
 //#begin-gt -gen-lib.gt T:Mesh L:Core.Libs.Meshes

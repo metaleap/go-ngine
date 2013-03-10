@@ -83,12 +83,9 @@ func (me *Camera) copyAppToPrep() {
 	me.thrPrep.matProj = me.thrApp.matProj
 	me.Controller.copyAppToPrep()
 
-	me.thrPrep.frustum.axes.z = me.Controller.dir
-	me.thrPrep.frustum.axes.z.Negate()
-	me.thrPrep.frustum.axes.y = me.Controller.UpAxis
-	me.thrPrep.frustum.axes.x.Set(0, 1, 0)
-	me.thrPrep.frustum.axes.x.SetFromCross(&me.thrPrep.frustum.axes.z)
-	me.thrPrep.frustum.axes.x.Normalize()
+	if me.Cull.Frustum {
+		me.thrPrep.frustum.UpdateAxes(&me.Controller.dir, &me.Controller.UpVec, &me.Controller.UpAxis)
+	}
 
 	me.thrPrep.matPos.Translation(&me.Controller.Pos)
 	if scene := me.Scene(); scene != nil {

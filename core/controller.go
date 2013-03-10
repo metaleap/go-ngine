@@ -21,6 +21,8 @@ type Controller struct {
 	//	do so in between calling the BeginUpdate() and EndUpdate() methods.
 	UpAxis unum.Vec3
 
+	UpVec unum.Vec3
+
 	//	Defaults to a copy of Options.Cameras.DefaultControllerParams
 	Params ControllerParams
 
@@ -48,7 +50,7 @@ func (me *Controller) applyTranslation() {
 
 func (me *Controller) applyRotation() {
 	if me.autoUpdate {
-		axis := unum.Vec3{0, 1, 0}
+		axis := me.UpVec
 		me.dir.Set(0, 0, -1)
 		me.dir.RotateDeg(me.hAngle, &axis)
 		me.dir.Normalize()
@@ -96,7 +98,8 @@ func (me *Controller) EndUpdate() {
 
 func (me *Controller) init() {
 	me.Params = Options.Cameras.DefaultControllerParams
-	me.dir, me.UpAxis, me.autoUpdate = unum.Vec3{0, 0, -1}, unum.Vec3{0, 1, 0}, true
+	me.dir, me.UpVec, me.autoUpdate = unum.Vec3{0, 0, -1}, unum.Vec3{0, 1, 0}, true
+	me.UpAxis = me.UpVec
 	unum.Mat4Identities(&me.thrPrep.mat, &me.thrApp.mat)
 	htarget := &unum.Vec3{X: me.dir.X, Y: 0, Z: me.dir.Z}
 	htarget.Normalize()

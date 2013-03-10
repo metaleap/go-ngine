@@ -24,8 +24,8 @@ func newMeshBuffer(name string, capacity int32) (me *MeshBuffer, err error) {
 	me.meshIDs = make([]int, 0, 256)
 	me.glVaos = make([]ugl.VertexArray, 16)
 	numVerts, numIndices := capacity, capacity
-	me.memSizeIndices = Core.MeshBuffers.MemSizePerIndex() * numIndices
-	me.memSizeVertices = Core.MeshBuffers.MemSizePerVertex() * numVerts
+	me.memSizeIndices = Core.Mesh.Buffers.MemSizePerIndex() * numIndices
+	me.memSizeVertices = Core.Mesh.Buffers.MemSizePerVertex() * numVerts
 	if err = me.glVbo.Recreate(gl.ARRAY_BUFFER, gl.Sizeiptr(me.memSizeVertices), ugl.PtrNil, gl.STATIC_DRAW); err == nil {
 		err = me.glIbo.Recreate(gl.ELEMENT_ARRAY_BUFFER, gl.Sizeiptr(me.memSizeIndices), ugl.PtrNil, gl.STATIC_DRAW)
 	}
@@ -131,12 +131,12 @@ func (_ MeshBufferLib) MemSizePerIndex() int32 {
 
 func (_ MeshBufferLib) MemSizePerVertex() int32 {
 	const sizePerFloat int32 = 4
-	return sizePerFloat * Core.MeshBuffers.FloatsPerVertex()
+	return sizePerFloat * Core.Mesh.Buffers.FloatsPerVertex()
 }
 
-//#begin-gt -gen-reflib.gt T:MeshBuffer L:Core.MeshBuffers
+//#begin-gt -gen-reflib.gt T:MeshBuffer L:Core.Mesh.Buffers
 
-//	Only used for Core.MeshBuffers
+//	Only used for Core.Mesh.Buffers
 type MeshBufferLib []*MeshBuffer
 
 func (me *MeshBufferLib) add(ref *MeshBuffer) {

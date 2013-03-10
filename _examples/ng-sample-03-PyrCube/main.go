@@ -68,19 +68,19 @@ func setupExample_03_PyrCube() {
 	})
 
 	//	meshes
-	if bufFloor, err = ng.Core.MeshBuffers.AddNew("buf_floor", 6); err != nil {
+	if bufFloor, err = ng.Core.Mesh.Buffers.AddNew("buf_floor", 6); err != nil {
 		panic(err)
 	}
-	if bufRest, err = ng.Core.MeshBuffers.AddNew("buf_rest", 36+12); err != nil {
+	if bufRest, err = ng.Core.Mesh.Buffers.AddNew("buf_rest", 36+12); err != nil {
 		panic(err)
 	}
-	if meshPlaneID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.MeshDescriptorPlane); err != nil {
+	if meshPlaneID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.Core.Mesh.Desc.Plane); err != nil {
 		panic(err)
 	}
-	if meshPyrID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_pyramid", ng.MeshDescriptorPyramid); err != nil {
+	if meshPyrID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_pyramid", ng.Core.Mesh.Desc.Pyramid); err != nil {
 		panic(err)
 	}
-	if meshCubeID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_cube", ng.MeshDescriptorCube); err != nil {
+	if meshCubeID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_cube", ng.Core.Mesh.Desc.Cube); err != nil {
 		panic(err)
 	}
 	bufFloor.Add(meshPlaneID)

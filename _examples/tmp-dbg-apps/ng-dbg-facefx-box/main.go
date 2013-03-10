@@ -52,13 +52,13 @@ func setupScene() {
 	dogMat.FaceEffects.ByTag["front"] = fxPulseID
 
 	//	meshes / models
-	if bufRest, err = ng.Core.MeshBuffers.AddNew("buf_rest", 200); err != nil {
+	if bufRest, err = ng.Core.Mesh.Buffers.AddNew("buf_rest", 200); err != nil {
 		panic(err)
 	}
-	if meshFloorID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.MeshDescriptorPlane); err != nil {
+	if meshFloorID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_plane", ng.Core.Mesh.Desc.Plane); err != nil {
 		panic(err)
 	}
-	if meshBoxID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_box", ng.MeshDescriptorCube); err != nil {
+	if meshBoxID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_box", ng.Core.Mesh.Desc.Cube); err != nil {
 		panic(err)
 	}
 	bufRest.Add(meshFloorID)

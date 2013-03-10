@@ -4,6 +4,7 @@ import (
 	"io"
 	"runtime"
 
+	u3d "github.com/go3d/go-3dutil"
 	ugl "github.com/go3d/go-opengl/util"
 )
 
@@ -44,7 +45,7 @@ type NgOptions struct {
 
 	Cameras struct {
 		DefaultControllerParams ControllerParams
-		PerspectiveDefaults     CameraPerspective
+		PerspectiveDefaults     u3d.Perspective
 	}
 
 	Initialization struct {

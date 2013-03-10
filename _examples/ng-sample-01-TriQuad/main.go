@@ -70,14 +70,14 @@ func setupExample_01_TriQuad() {
 
 	//	meshes / models
 
-	if meshTriID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_tri", ng.MeshDescriptorTri); err != nil {
+	if meshTriID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_tri", ng.Core.Mesh.Desc.Tri); err != nil {
 		panic(err)
 	}
-	if meshQuadID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_quad", ng.MeshDescriptorQuad); err != nil {
+	if meshQuadID, err = ng.Core.Libs.Meshes.AddNewAndLoad("mesh_quad", ng.Core.Mesh.Desc.Quad); err != nil {
 		panic(err)
 	}
 
-	if meshBuf, err = ng.Core.MeshBuffers.AddNew("meshbuf", 3+6); err != nil {
+	if meshBuf, err = ng.Core.Mesh.Buffers.AddNew("meshbuf", 3+6); err != nil {
 		panic(err)
 	}
 	if err = meshBuf.Add(meshTriID); err != nil {

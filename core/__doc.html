@@ -84,11 +84,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#CameraPerspective">type CameraPerspective</a></dd>
-				
-				
-			
-				
 				<dd><a href="#Controller">type Controller</a></dd>
 				
 				
@@ -507,7 +502,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#Mesh.GpuUploaded">func (me *Mesh) GpuUploaded() bool</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Mesh.Load">func (me *Mesh) Load(provider MeshProvider) (err error)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Mesh.Load">func (me *Mesh) Load(provider u3d.MeshProvider) (err error)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Mesh.Loaded">func (me *Mesh) Loaded() bool</a></dd>
@@ -554,66 +549,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 			
 				
-				<dd><a href="#MeshDescF3">type MeshDescF3</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NewMeshDescF3">func NewMeshDescF3(tags, id string, verts ...MeshDescF3V) (me *MeshDescF3)</a></dd>
-				
-				
-			
-				
-				<dd><a href="#MeshDescF3V">type MeshDescF3V</a></dd>
-				
-				
-			
-				
-				<dd><a href="#MeshDescVA2">type MeshDescVA2</a></dd>
-				
-				
-			
-				
-				<dd><a href="#MeshDescVA3">type MeshDescVA3</a></dd>
-				
-				
-			
-				
-				<dd><a href="#MeshDescriptor">type MeshDescriptor</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshDescriptorCube">func MeshDescriptorCube() (meshDescriptor *MeshDescriptor, err error)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshDescriptorPlane">func MeshDescriptorPlane() (meshDescriptor *MeshDescriptor, err error)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshDescriptorPyramid">func MeshDescriptorPyramid() (meshDescriptor *MeshDescriptor, err error)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshDescriptorQuad">func MeshDescriptorQuad() (meshDescriptor *MeshDescriptor, err error)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshDescriptorTri">func MeshDescriptorTri() (meshDescriptor *MeshDescriptor, err error)</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshDescriptor.AddFaces">func (me *MeshDescriptor) AddFaces(faces ...*MeshDescF3)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshDescriptor.AddNormals">func (me *MeshDescriptor) AddNormals(normals ...MeshDescVA3)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshDescriptor.AddPositions">func (me *MeshDescriptor) AddPositions(positions ...MeshDescVA3)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#MeshDescriptor.AddTexCoords">func (me *MeshDescriptor) AddTexCoords(texCoords ...MeshDescVA2)</a></dd>
-				
-			
-				
-				<dd><a href="#MeshFaceBase">type MeshFaceBase</a></dd>
-				
-				
-			
-				
 				<dd><a href="#MeshLib">type MeshLib</a></dd>
 				
 				
@@ -621,7 +556,7 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#MeshLib.AddNew">func (me *MeshLib) AddNew() (id int)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#MeshLib.AddNewAndLoad">func (me *MeshLib) AddNewAndLoad(name string, meshProvider MeshProvider) (meshID int, err error)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#MeshLib.AddNewAndLoad">func (me *MeshLib) AddNewAndLoad(name string, meshProvider u3d.MeshProvider) (meshID int, err error)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#MeshLib.Compact">func (me *MeshLib) Compact()</a></dd>
@@ -633,6 +568,21 @@ The *core* package provides go:ngine client-side core functionality such as rend
 					<dd>&nbsp; &nbsp; <a href="#MeshLib.IsOk">func (me MeshLib) IsOk(id int) (ok bool)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#MeshLib.MeshCube">func (_ MeshLib) MeshCube() u3d.MeshProvider</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshLib.MeshPlane">func (_ MeshLib) MeshPlane() u3d.MeshProvider</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshLib.MeshPyramid">func (_ MeshLib) MeshPyramid() u3d.MeshProvider</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshLib.MeshQuad">func (_ MeshLib) MeshQuad() u3d.MeshProvider</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#MeshLib.MeshTri">func (_ MeshLib) MeshTri() u3d.MeshProvider</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#MeshLib.Ok">func (me MeshLib) Ok(id int) bool</a></dd>
 				
 					
@@ -640,11 +590,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#MeshLib.Walk">func (me MeshLib) Walk(on func(ref *Mesh))</a></dd>
-				
-			
-				
-				<dd><a href="#MeshProvider">type MeshProvider</a></dd>
-				
 				
 			
 				
@@ -1079,10 +1024,6 @@ The *core* package provides go:ngine client-side core functionality such as rend
 			
 				<a href="/target/mesh-buffer.gt.go">mesh-buffer.gt.go</a>
 			
-				<a href="/target/mesh-data.go">mesh-data.go</a>
-			
-				<a href="/target/mesh-provider.go">mesh-provider.go</a>
-			
 				<a href="/target/mesh.gt.go">mesh.gt.go</a>
 			
 				<a href="/target/model.gt.go">model.gt.go</a>
@@ -1200,10 +1141,10 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="Camera">type <a href="/target/camera.go?s=931:1620#L27">Camera</a></h2>
+			<h2 id="Camera">type <a href="/target/camera.go?s=178:794#L1">Camera</a></h2>
 			<pre>type Camera struct {
     <span class="comment">//	Optical and imager properties for this camera.</span>
-    Perspective CameraPerspective
+    Perspective u3d.Perspective
 
     <span class="comment">//	Encapsulates the position and direction of this camera.</span>
     Controller Controller
@@ -1225,14 +1166,14 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 
 			
 				
-				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=3224:3256#L104">Scene</a></h3>
+				<h3 id="Camera.Scene">func (*Camera) <a href="/target/camera.go?s=2134:2166#L69">Scene</a></h3>
 				<pre>func (me *Camera) Scene() *Scene</pre>
 				
 				
 				
 			
 				
-				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=3303:3342#L108">SetScene</a></h3>
+				<h3 id="Camera.SetScene">func (*Camera) <a href="/target/camera.go?s=2213:2252#L73">SetScene</a></h3>
 				<pre>func (me *Camera) SetScene(sceneID int)</pre>
 				
 				
@@ -1241,46 +1182,7 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
 		
 			
 			
-			<h2 id="CameraPerspective">type <a href="/target/camera.go?s=154:929#L1">CameraPerspective</a></h2>
-			<pre>type CameraPerspective struct {
-    <span class="comment">//	Whether this is a perspective-projection camera. Defaults to true.</span>
-    <span class="comment">//	If false, no projection transformation is applied.</span>
-    Enabled bool
-
-    <span class="comment">//	Vertical field-of-view angle.</span>
-    FovY struct {
-        <span class="comment">//	In degrees. Defaults to 37.8493.</span>
-        <span class="comment">//	After changing this value, call Camera.ApplyPerspective().</span>
-        Deg float64
-
-        <span class="comment">//	In radians, times 0.5. This is auto-set (from Deg) by Camera.ApplyPerspective().</span>
-        RadHalf float64
-        <span class="comment">// contains filtered or unexported fields</span>
-    }
-
-    <span class="comment">//	Distance of the far-plane from the camera. Defaults to 30000.</span>
-    <span class="comment">//	After changing this value, call Camera.ApplyPerspective().</span>
-    ZFar float64
-
-    <span class="comment">//	Distance of the near-plane from the camera. Defaults to 0.3.</span>
-    <span class="comment">//	After changing this value, call Camera.ApplyPerspective().</span>
-    ZNear float64
-}</pre>
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="Controller">type <a href="/target/controller.go?s=272:1068#L2">Controller</a></h2>
+			<h2 id="Controller">type <a href="/target/controller.go?s=272:1086#L2">Controller</a></h2>
 			<pre>type Controller struct {
     <span class="comment">//	The position being manipulated by this Controller.</span>
     <span class="comment">//	When manipulating this manually (outside the TurnXyz() / MoveXyz() methods),</span>
@@ -1292,6 +1194,8 @@ Initializes go:ngine; this first attempts to initialize OpenGL and then open a w
     <span class="comment">//	When manipulating this manually (outside the TurnXyz() / MoveXyz() methods),</span>
     <span class="comment">//	do so in between calling the BeginUpdate() and EndUpdate() methods.</span>
     UpAxis unum.Vec3
+
+    UpVec unum.Vec3
 
     <span class="comment">//	Defaults to a copy of Options.Cameras.DefaultControllerParams</span>
     Params ControllerParams
@@ -1314,7 +1218,7 @@ some entity that is rotated facing some arbitrary direction).
 
 			
 				
-				<h3 id="Controller.BeginUpdate">func (*Controller) <a href="/target/controller.go?s=2026:2061#L61">BeginUpdate</a></h3>
+				<h3 id="Controller.BeginUpdate">func (*Controller) <a href="/target/controller.go?s=2034:2069#L63">BeginUpdate</a></h3>
 				<pre>func (me *Controller) BeginUpdate()</pre>
 				<p>
 Temporarily suspends all matrix re-calculations typically occuring inside
@@ -1328,14 +1232,14 @@ EndUpdate() to apply all changes in a final matrix re-calculation.
 				
 			
 				
-				<h3 id="Controller.CopyFrom">func (*Controller) <a href="/target/controller.go?s=2090:2137#L65">CopyFrom</a></h3>
+				<h3 id="Controller.CopyFrom">func (*Controller) <a href="/target/controller.go?s=2098:2145#L67">CopyFrom</a></h3>
 				<pre>func (me *Controller) CopyFrom(copy Controller)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Controller.Dir">func (*Controller) <a href="/target/controller.go?s=2403:2441#L73">Dir</a></h3>
+				<h3 id="Controller.Dir">func (*Controller) <a href="/target/controller.go?s=2411:2449#L75">Dir</a></h3>
 				<pre>func (me *Controller) Dir() *unum.Vec3</pre>
 				<p>
 The direction being manipulated by this Controller.
@@ -1347,7 +1251,7 @@ NOT meant to be modified, as the vector is re-computed by the TurnFoo() methods.
 				
 			
 				
-				<h3 id="Controller.EndUpdate">func (*Controller) <a href="/target/controller.go?s=2768:2801#L81">EndUpdate</a></h3>
+				<h3 id="Controller.EndUpdate">func (*Controller) <a href="/target/controller.go?s=2776:2809#L83">EndUpdate</a></h3>
 				<pre>func (me *Controller) EndUpdate()</pre>
 				<p>
 Applies all changes made to Pos, Dir or UpAxis since BeginUpdate() was last
@@ -1360,7 +1264,7 @@ MoveXyz() / TurnXyz() methods that were suspended since BeginUpdate().
 				
 			
 				
-				<h3 id="Controller.MoveBackward">func (*Controller) <a href="/target/controller.go?s=3672:3708#L112">MoveBackward</a></h3>
+				<h3 id="Controller.MoveBackward">func (*Controller) <a href="/target/controller.go?s=3701:3737#L115">MoveBackward</a></h3>
 				<pre>func (me *Controller) MoveBackward()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move backward&#34;.
@@ -1370,7 +1274,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move backward&#34
 				
 			
 				
-				<h3 id="Controller.MoveDown">func (*Controller) <a href="/target/controller.go?s=3868:3900#L118">MoveDown</a></h3>
+				<h3 id="Controller.MoveDown">func (*Controller) <a href="/target/controller.go?s=3897:3929#L121">MoveDown</a></h3>
 				<pre>func (me *Controller) MoveDown()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis to effect a &#34;move downward&#34;.
@@ -1380,7 +1284,7 @@ Recomputes Pos with regards to UpAxis to effect a &#34;move downward&#34;.
 				
 			
 				
-				<h3 id="Controller.MoveForward">func (*Controller) <a href="/target/controller.go?s=4070:4105#L124">MoveForward</a></h3>
+				<h3 id="Controller.MoveForward">func (*Controller) <a href="/target/controller.go?s=4099:4134#L127">MoveForward</a></h3>
 				<pre>func (me *Controller) MoveForward()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move forward&#34;.
@@ -1390,7 +1294,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move forward&#34;
 				
 			
 				
-				<h3 id="Controller.MoveLeft">func (*Controller) <a href="/target/controller.go?s=4274:4306#L130">MoveLeft</a></h3>
+				<h3 id="Controller.MoveLeft">func (*Controller) <a href="/target/controller.go?s=4303:4335#L133">MoveLeft</a></h3>
 				<pre>func (me *Controller) MoveLeft()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move left-ward&#34;.
@@ -1400,7 +1304,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move left-ward&#3
 				
 			
 				
-				<h3 id="Controller.MoveRight">func (*Controller) <a href="/target/controller.go?s=4503:4536#L136">MoveRight</a></h3>
+				<h3 id="Controller.MoveRight">func (*Controller) <a href="/target/controller.go?s=4532:4565#L139">MoveRight</a></h3>
 				<pre>func (me *Controller) MoveRight()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move right-ward&#34;.
@@ -1410,7 +1314,7 @@ Recomputes Pos with regards to UpAxis and Dir to effect a &#34;move right-ward&#
 				
 			
 				
-				<h3 id="Controller.MoveUp">func (*Controller) <a href="/target/controller.go?s=4721:4751#L142">MoveUp</a></h3>
+				<h3 id="Controller.MoveUp">func (*Controller) <a href="/target/controller.go?s=4750:4780#L145">MoveUp</a></h3>
 				<pre>func (me *Controller) MoveUp()</pre>
 				<p>
 Recomputes Pos with regards to UpAxis to effect a &#34;move upward&#34;.
@@ -1420,7 +1324,7 @@ Recomputes Pos with regards to UpAxis to effect a &#34;move upward&#34;.
 				
 			
 				
-				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=5222:5266#L161">StepSizeMove</a></h3>
+				<h3 id="Controller.StepSizeMove">func (*Controller) <a href="/target/controller.go?s=5251:5295#L164">StepSizeMove</a></h3>
 				<pre>func (me *Controller) StepSizeMove() float64</pre>
 				<p>
 Returns the current distance that a single MoveXyz() call (per loop iteration) would move.
@@ -1431,7 +1335,7 @@ Returns the current distance that a single MoveXyz() call (per loop iteration) w
 				
 			
 				
-				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=5513:5557#L167">StepSizeTurn</a></h3>
+				<h3 id="Controller.StepSizeTurn">func (*Controller) <a href="/target/controller.go?s=5542:5586#L170">StepSizeTurn</a></h3>
 				<pre>func (me *Controller) StepSizeTurn() float64</pre>
 				<p>
 Returns the current degrees that a single TurnXyz() call (per loop iteration) would turn.
@@ -1442,7 +1346,7 @@ Returns the current degrees that a single TurnXyz() call (per loop iteration) wo
 				
 			
 				
-				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=5746:5778#L172">TurnDown</a></h3>
+				<h3 id="Controller.TurnDown">func (*Controller) <a href="/target/controller.go?s=5775:5807#L175">TurnDown</a></h3>
 				<pre>func (me *Controller) TurnDown()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34; by me.StepSizeTurn() degrees.
@@ -1452,7 +1356,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34
 				
 			
 				
-				<h3 id="Controller.TurnDownBy">func (*Controller) <a href="/target/controller.go?s=5921:5966#L177">TurnDownBy</a></h3>
+				<h3 id="Controller.TurnDownBy">func (*Controller) <a href="/target/controller.go?s=5950:5995#L180">TurnDownBy</a></h3>
 				<pre>func (me *Controller) TurnDownBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34; by the specified degrees.
@@ -1462,7 +1366,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn downward&#34
 				
 			
 				
-				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=6139:6171#L184">TurnLeft</a></h3>
+				<h3 id="Controller.TurnLeft">func (*Controller) <a href="/target/controller.go?s=6168:6200#L187">TurnLeft</a></h3>
 				<pre>func (me *Controller) TurnLeft()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#34; by me.StepSizeTurn() degrees.
@@ -1472,7 +1376,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#3
 				
 			
 				
-				<h3 id="Controller.TurnLeftBy">func (*Controller) <a href="/target/controller.go?s=6315:6360#L189">TurnLeftBy</a></h3>
+				<h3 id="Controller.TurnLeftBy">func (*Controller) <a href="/target/controller.go?s=6344:6389#L192">TurnLeftBy</a></h3>
 				<pre>func (me *Controller) TurnLeftBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#34; by the specified degrees.
@@ -1482,7 +1386,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn left-ward&#3
 				
 			
 				
-				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=6489:6522#L194">TurnRight</a></h3>
+				<h3 id="Controller.TurnRight">func (*Controller) <a href="/target/controller.go?s=6518:6551#L197">TurnRight</a></h3>
 				<pre>func (me *Controller) TurnRight()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#34; by me.StepSizeTurn() degrees.
@@ -1492,7 +1396,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#
 				
 			
 				
-				<h3 id="Controller.TurnRightBy">func (*Controller) <a href="/target/controller.go?s=6668:6714#L199">TurnRightBy</a></h3>
+				<h3 id="Controller.TurnRightBy">func (*Controller) <a href="/target/controller.go?s=6697:6743#L202">TurnRightBy</a></h3>
 				<pre>func (me *Controller) TurnRightBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#34; by the specified degrees.
@@ -1502,7 +1406,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn right-ward&#
 				
 			
 				
-				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=6840:6870#L204">TurnUp</a></h3>
+				<h3 id="Controller.TurnUp">func (*Controller) <a href="/target/controller.go?s=6869:6899#L207">TurnUp</a></h3>
 				<pre>func (me *Controller) TurnUp()</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; by me.StepSizeTurn() degrees.
@@ -1512,7 +1416,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 				
 			
 				
-				<h3 id="Controller.TurnUpBy">func (*Controller) <a href="/target/controller.go?s=7009:7052#L209">TurnUpBy</a></h3>
+				<h3 id="Controller.TurnUpBy">func (*Controller) <a href="/target/controller.go?s=7038:7081#L212">TurnUpBy</a></h3>
 				<pre>func (me *Controller) TurnUpBy(deg float64)</pre>
 				<p>
 Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; by the specified degress.
@@ -1524,7 +1428,7 @@ Recomputes Dir with regards to UpAxis and Pos to effect a &#34;turn upward&#34; 
 		
 			
 			
-			<h2 id="ControllerParams">type <a href="/target/controller.go?s=7114:7748#L215">ControllerParams</a></h2>
+			<h2 id="ControllerParams">type <a href="/target/controller.go?s=7143:7777#L218">ControllerParams</a></h2>
 			<pre>type ControllerParams struct {
     <span class="comment">//	Speed of &#34;moving&#34; in the MoveXyz() methods, in units per second.</span>
     <span class="comment">//	Defaults to 2.</span>
@@ -2634,7 +2538,7 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 		
 			
 			
-			<h2 id="Mesh">type <a href="/target/mesh.gt.go?s=103:482#L1">Mesh</a></h2>
+			<h2 id="Mesh">type <a href="/target/mesh.gt.go?s=590:969#L24">Mesh</a></h2>
 			<pre>type Mesh struct {
     ID             int
     DefaultModelID int
@@ -2653,42 +2557,42 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 
 			
 				
-				<h3 id="Mesh.GpuDelete">func (*Mesh) <a href="/target/mesh.gt.go?s=583:610#L17">GpuDelete</a></h3>
+				<h3 id="Mesh.GpuDelete">func (*Mesh) <a href="/target/mesh.gt.go?s=1070:1097#L43">GpuDelete</a></h3>
 				<pre>func (me *Mesh) GpuDelete()</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.GpuUpload">func (*Mesh) <a href="/target/mesh.gt.go?s=661:700#L23">GpuUpload</a></h3>
+				<h3 id="Mesh.GpuUpload">func (*Mesh) <a href="/target/mesh.gt.go?s=1148:1187#L49">GpuUpload</a></h3>
 				<pre>func (me *Mesh) GpuUpload() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.gt.go?s=2211:2245#L51">GpuUploaded</a></h3>
+				<h3 id="Mesh.GpuUploaded">func (*Mesh) <a href="/target/mesh.gt.go?s=2698:2732#L77">GpuUploaded</a></h3>
 				<pre>func (me *Mesh) GpuUploaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Load">func (*Mesh) <a href="/target/mesh.gt.go?s=2272:2327#L55">Load</a></h3>
-				<pre>func (me *Mesh) Load(provider MeshProvider) (err error)</pre>
+				<h3 id="Mesh.Load">func (*Mesh) <a href="/target/mesh.gt.go?s=2759:2818#L81">Load</a></h3>
+				<pre>func (me *Mesh) Load(provider u3d.MeshProvider) (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.gt.go?s=5206:5235#L123">Loaded</a></h3>
+				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.gt.go?s=5494:5523#L145">Loaded</a></h3>
 				<pre>func (me *Mesh) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.gt.go?s=5271:5295#L127">Unload</a></h3>
+				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.gt.go?s=5559:5583#L149">Unload</a></h3>
 				<pre>func (me *Mesh) Unload()</pre>
 				
 				
@@ -2714,14 +2618,14 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 
 			
 				
-				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.gt.go?s=1553:1602#L54">Add</a></h3>
+				<h3 id="MeshBuffer.Add">func (*MeshBuffer) <a href="/target/mesh-buffer.gt.go?s=1555:1604#L54">Add</a></h3>
 				<pre>func (me *MeshBuffer) Add(meshID int) (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.gt.go?s=2184:2224#L73">Remove</a></h3>
+				<h3 id="MeshBuffer.Remove">func (*MeshBuffer) <a href="/target/mesh-buffer.gt.go?s=2186:2226#L73">Remove</a></h3>
 				<pre>func (me *MeshBuffer) Remove(meshID int)</pre>
 				
 				
@@ -2730,10 +2634,10 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 		
 			
 			
-			<h2 id="MeshBufferLib">type <a href="/target/mesh-buffer.gt.go?s=3761:3793#L130">MeshBufferLib</a></h2>
+			<h2 id="MeshBufferLib">type <a href="/target/mesh-buffer.gt.go?s=3766:3798#L130">MeshBufferLib</a></h2>
 			<pre>type MeshBufferLib []*MeshBuffer</pre>
 			<p>
-Only used for Core.MeshBuffers
+Only used for Core.Mesh.Buffers
 </p>
 
 
@@ -2747,49 +2651,49 @@ Only used for Core.MeshBuffers
 
 			
 				
-				<h3 id="MeshBufferLib.AddNew">func (*MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=3026:3115#L103">AddNew</a></h3>
+				<h3 id="MeshBufferLib.AddNew">func (*MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=3028:3117#L103">AddNew</a></h3>
 				<pre>func (me *MeshBufferLib) AddNew(name string, capacity int32) (buf *MeshBuffer, err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBufferLib.FloatsPerVertex">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=3257:3303#L113">FloatsPerVertex</a></h3>
+				<h3 id="MeshBufferLib.FloatsPerVertex">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=3259:3305#L113">FloatsPerVertex</a></h3>
 				<pre>func (_ MeshBufferLib) FloatsPerVertex() int32</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBufferLib.IsOk">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=4017:4058#L146">IsOk</a></h3>
+				<h3 id="MeshBufferLib.IsOk">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=4022:4063#L146">IsOk</a></h3>
 				<pre>func (me MeshBufferLib) IsOk(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBufferLib.MemSizePerIndex">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=3464:3510#L118">MemSizePerIndex</a></h3>
+				<h3 id="MeshBufferLib.MemSizePerIndex">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=3466:3512#L118">MemSizePerIndex</a></h3>
 				<pre>func (_ MeshBufferLib) MemSizePerIndex() int32</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBufferLib.MemSizePerVertex">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=3526:3573#L122">MemSizePerVertex</a></h3>
+				<h3 id="MeshBufferLib.MemSizePerVertex">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=3528:3575#L122">MemSizePerVertex</a></h3>
 				<pre>func (_ MeshBufferLib) MemSizePerVertex() int32</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBufferLib.Remove">func (*MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=4096:4144#L150">Remove</a></h3>
+				<h3 id="MeshBufferLib.Remove">func (*MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=4101:4149#L150">Remove</a></h3>
 				<pre>func (me *MeshBufferLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshBufferLib.Walk">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=4418:4472#L163">Walk</a></h3>
+				<h3 id="MeshBufferLib.Walk">func (MeshBufferLib) <a href="/target/mesh-buffer.gt.go?s=4423:4477#L163">Walk</a></h3>
 				<pre>func (me MeshBufferLib) Walk(on func(ref *MeshBuffer))</pre>
 				
 				
@@ -2798,263 +2702,7 @@ Only used for Core.MeshBuffers
 		
 			
 			
-			<h2 id="MeshDescF3">type <a href="/target/mesh-data.go?s=1404:1531#L61">MeshDescF3</a></h2>
-			<pre>type MeshDescF3 struct {
-    <span class="comment">//	The indexed vertices making up this triangle face.</span>
-    V [3]MeshDescF3V
-
-    <span class="comment">//	ID, Tags</span>
-    MeshFaceBase
-}</pre>
-			<p>
-Represents an indexed triangle face.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="NewMeshDescF3">func <a href="/target/mesh-data.go?s=1749:1823#L72">NewMeshDescF3</a></h3>
-				<pre>func NewMeshDescF3(tags, id string, verts ...MeshDescF3V) (me *MeshDescF3)</pre>
-				<p>
-Creates and initializes a new MeshDescF3V with the specified tags,
-ID and verts, and returns it. tags may be empty or contain multiple
-classification tags separated by spaces, which will be split into Tags.
-</p>
-
-				
-			
-
-			
-		
-			
-			
-			<h2 id="MeshDescF3V">type <a href="/target/mesh-data.go?s=2025:2215#L81">MeshDescF3V</a></h2>
-			<pre>type MeshDescF3V struct {
-    <span class="comment">//	Index of the vertex position</span>
-    PosIndex uint32
-
-    <span class="comment">//	Index of the texture-coordinate.</span>
-    TexCoordIndex uint32
-
-    <span class="comment">//	Index of the vertex normal.</span>
-    NormalIndex uint32
-}</pre>
-			<p>
-Represents an indexed vertex in a MeshDescF3.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="MeshDescVA2">type <a href="/target/mesh-data.go?s=2328:2355#L94">MeshDescVA2</a></h2>
-			<pre>type MeshDescVA2 [2]float32</pre>
-			<p>
-Represents a 2-component vertex attribute in a MeshDescriptor.
-(such as for example texture-coordinates)
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="MeshDescVA3">type <a href="/target/mesh-data.go?s=2462:2489#L98">MeshDescVA3</a></h2>
-			<pre>type MeshDescVA3 [3]float32</pre>
-			<p>
-Represents a 3-component vertex attribute in a MeshDescriptor
-(such as for example vertex-normals)
-</p>
-
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="MeshDescriptor">type <a href="/target/mesh-data.go?s=2682:2912#L105">MeshDescriptor</a></h2>
-			<pre>type MeshDescriptor struct {
-    <span class="comment">//	Vertex positions</span>
-    Positions []MeshDescVA3
-
-    <span class="comment">//	Vertex texture coordinates</span>
-    TexCoords []MeshDescVA2
-
-    <span class="comment">//	Vertex normals</span>
-    Normals []MeshDescVA3
-
-    <span class="comment">//	Indexed triangle definitions</span>
-    Faces []MeshDescF3
-}</pre>
-			<p>
-Represents yet-unprocessed, descriptive mesh source data.
-</p>
-
-
-			
-
-			
-
-			
-
-			
-				
-				<h3 id="MeshDescriptorCube">func <a href="/target/mesh-provider.go?s=369:438#L1">MeshDescriptorCube</a></h3>
-				<pre>func MeshDescriptorCube() (meshDescriptor *MeshDescriptor, err error)</pre>
-				<p>
-A MeshProvider that creates MeshDescriptor for a cube with extents -1 .. 1.
-args is ignored and err is always nil.
-The returned MeshDescriptor contains 12 triangle faces with IDs &#34;t0&#34; through &#34;t11&#34;.
-These faces are classified in 6 distinct tags: &#34;front&#34;,&#34;back&#34;,&#34;top&#34;,&#34;bottom&#34;,&#34;right&#34;,&#34;left&#34;.
-</p>
-
-				
-			
-				
-				<h3 id="MeshDescriptorPlane">func <a href="/target/mesh-provider.go?s=2563:2633#L49">MeshDescriptorPlane</a></h3>
-				<pre>func MeshDescriptorPlane() (meshDescriptor *MeshDescriptor, err error)</pre>
-				<p>
-A MeshProvider that creates MeshDescriptor for a flat ground plane with extents -1 .. 1.
-args is ignored and err is always nil.
-The returned MeshDescriptor contains 2 triangle faces with IDs &#34;t0&#34; through &#34;t1&#34;.
-These faces are all classified with tag: &#34;plane&#34;.
-</p>
-
-				
-			
-				
-				<h3 id="MeshDescriptorPyramid">func <a href="/target/mesh-provider.go?s=3413:3485#L65">MeshDescriptorPyramid</a></h3>
-				<pre>func MeshDescriptorPyramid() (meshDescriptor *MeshDescriptor, err error)</pre>
-				<p>
-A MeshProvider that creates MeshDescriptor for a pyramid with extents -1 .. 1.
-args is ignored and err is always nil.
-The returned MeshDescriptor contains 4 triangle faces with IDs &#34;t0&#34; through &#34;t3&#34;.
-These faces are all classified with tag: &#34;pyr&#34;.
-</p>
-
-				
-			
-				
-				<h3 id="MeshDescriptorQuad">func <a href="/target/mesh-provider.go?s=4516:4585#L83">MeshDescriptorQuad</a></h3>
-				<pre>func MeshDescriptorQuad() (meshDescriptor *MeshDescriptor, err error)</pre>
-				<p>
-A MeshProvider that creates MeshDescriptor for a quad with extents -1 .. 1.
-args is ignored and err is always nil.
-The returned MeshDescriptor contains 2 triangle faces with IDs &#34;t0&#34; through &#34;t1&#34;.
-These faces are all classified with tag: &#34;quad&#34;.
-</p>
-
-				
-			
-				
-				<h3 id="MeshDescriptorTri">func <a href="/target/mesh-provider.go?s=5300:5368#L98">MeshDescriptorTri</a></h3>
-				<pre>func MeshDescriptorTri() (meshDescriptor *MeshDescriptor, err error)</pre>
-				<p>
-A MeshProvider that creates MeshDescriptor for a triangle with extents -1 .. 1.
-args is ignored and err is always nil.
-The returned MeshDescriptor contains 1 triangle face with ID &#34;t0&#34; and tag &#34;tri&#34;.
-</p>
-
-				
-			
-
-			
-				
-				<h3 id="MeshDescriptor.AddFaces">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=2966:3022#L120">AddFaces</a></h3>
-				<pre>func (me *MeshDescriptor) AddFaces(faces ...*MeshDescF3)</pre>
-				<p>
-Adds all specified Faces to this MeshDescriptor.
-</p>
-
-				
-				
-			
-				
-				<h3 id="MeshDescriptor.AddNormals">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=3417:3477#L135">AddNormals</a></h3>
-				<pre>func (me *MeshDescriptor) AddNormals(normals ...MeshDescVA3)</pre>
-				<p>
-Adds all the specified Normals to this MeshDescriptor.
-</p>
-
-				
-				
-			
-				
-				<h3 id="MeshDescriptor.AddPositions">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=3238:3302#L130">AddPositions</a></h3>
-				<pre>func (me *MeshDescriptor) AddPositions(positions ...MeshDescVA3)</pre>
-				<p>
-Adds all specified Positions to this MeshDescriptor.
-</p>
-
-				
-				
-			
-				
-				<h3 id="MeshDescriptor.AddTexCoords">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=3588:3652#L140">AddTexCoords</a></h3>
-				<pre>func (me *MeshDescriptor) AddTexCoords(texCoords ...MeshDescVA2)</pre>
-				<p>
-Adds all the specified TexCoords to this MeshDescriptor.
-</p>
-
-				
-				
-			
-		
-			
-			
-			<h2 id="MeshFaceBase">type <a href="/target/mesh-data.go?s=1216:1362#L52">MeshFaceBase</a></h2>
-			<pre>type MeshFaceBase struct {
-    <span class="comment">//	Mesh-unique identifier for this face.</span>
-    ID string
-
-    <span class="comment">//	Arbitrary classification tags for this face.</span>
-    Tags []string
-}</pre>
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="MeshLib">type <a href="/target/mesh.gt.go?s=5938:5957#L156">MeshLib</a></h2>
+			<h2 id="MeshLib">type <a href="/target/mesh.gt.go?s=6641:6660#L198">MeshLib</a></h2>
 			<pre>type MeshLib []Mesh</pre>
 			<p>
 Only used for Core.Libs.Meshes
@@ -3071,76 +2719,95 @@ Only used for Core.Libs.Meshes
 
 			
 				
-				<h3 id="MeshLib.AddNew">func (*MeshLib) <a href="/target/mesh.gt.go?s=5959:5995#L158">AddNew</a></h3>
+				<h3 id="MeshLib.AddNew">func (*MeshLib) <a href="/target/mesh.gt.go?s=6662:6698#L200">AddNew</a></h3>
 				<pre>func (me *MeshLib) AddNew() (id int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.AddNewAndLoad">func (*MeshLib) <a href="/target/mesh.gt.go?s=5591:5687#L142">AddNewAndLoad</a></h3>
-				<pre>func (me *MeshLib) AddNewAndLoad(name string, meshProvider MeshProvider) (meshID int, err error)</pre>
+				<h3 id="MeshLib.AddNewAndLoad">func (*MeshLib) <a href="/target/mesh.gt.go?s=5879:5979#L164">AddNewAndLoad</a></h3>
+				<pre>func (me *MeshLib) AddNewAndLoad(name string, meshProvider u3d.MeshProvider) (meshID int, err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.Compact">func (*MeshLib) <a href="/target/mesh.gt.go?s=6316:6344#L180">Compact</a></h3>
+				<h3 id="MeshLib.Compact">func (*MeshLib) <a href="/target/mesh.gt.go?s=7019:7047#L222">Compact</a></h3>
 				<pre>func (me *MeshLib) Compact()</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.GpuSync">func (MeshLib) <a href="/target/mesh.gt.go?s=5342:5380#L131">GpuSync</a></h3>
+				<h3 id="MeshLib.GpuSync">func (MeshLib) <a href="/target/mesh.gt.go?s=5630:5668#L153">GpuSync</a></h3>
 				<pre>func (_ MeshLib) GpuSync() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.IsOk">func (MeshLib) <a href="/target/mesh.gt.go?s=7091:7131#L223">IsOk</a></h3>
+				<h3 id="MeshLib.IsOk">func (MeshLib) <a href="/target/mesh.gt.go?s=7794:7834#L265">IsOk</a></h3>
 				<pre>func (me MeshLib) IsOk(id int) (ok bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.Ok">func (MeshLib) <a href="/target/mesh.gt.go?s=7201:7234#L230">Ok</a></h3>
+				<h3 id="MeshLib.MeshCube">func (MeshLib) <a href="/target/mesh.gt.go?s=6145:6189#L175">MeshCube</a></h3>
+				<pre>func (_ MeshLib) MeshCube() u3d.MeshProvider</pre>
+				
+				
+				
+			
+				
+				<h3 id="MeshLib.MeshPlane">func (MeshLib) <a href="/target/mesh.gt.go?s=6226:6271#L179">MeshPlane</a></h3>
+				<pre>func (_ MeshLib) MeshPlane() u3d.MeshProvider</pre>
+				
+				
+				
+			
+				
+				<h3 id="MeshLib.MeshPyramid">func (MeshLib) <a href="/target/mesh.gt.go?s=6309:6356#L183">MeshPyramid</a></h3>
+				<pre>func (_ MeshLib) MeshPyramid() u3d.MeshProvider</pre>
+				
+				
+				
+			
+				
+				<h3 id="MeshLib.MeshQuad">func (MeshLib) <a href="/target/mesh.gt.go?s=6396:6440#L187">MeshQuad</a></h3>
+				<pre>func (_ MeshLib) MeshQuad() u3d.MeshProvider</pre>
+				
+				
+				
+			
+				
+				<h3 id="MeshLib.MeshTri">func (MeshLib) <a href="/target/mesh.gt.go?s=6477:6520#L191">MeshTri</a></h3>
+				<pre>func (_ MeshLib) MeshTri() u3d.MeshProvider</pre>
+				
+				
+				
+			
+				
+				<h3 id="MeshLib.Ok">func (MeshLib) <a href="/target/mesh.gt.go?s=7904:7937#L272">Ok</a></h3>
 				<pre>func (me MeshLib) Ok(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.Remove">func (MeshLib) <a href="/target/mesh.gt.go?s=7264:7305#L234">Remove</a></h3>
+				<h3 id="MeshLib.Remove">func (MeshLib) <a href="/target/mesh.gt.go?s=7967:8008#L276">Remove</a></h3>
 				<pre>func (me MeshLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.Walk">func (MeshLib) <a href="/target/mesh.gt.go?s=7589:7631#L248">Walk</a></h3>
+				<h3 id="MeshLib.Walk">func (MeshLib) <a href="/target/mesh.gt.go?s=8292:8334#L290">Walk</a></h3>
 				<pre>func (me MeshLib) Walk(on func(ref *Mesh))</pre>
 				
 				
 				
-			
-		
-			
-			
-			<h2 id="MeshProvider">type <a href="/target/mesh-provider.go?s=14:63#L1">MeshProvider</a></h2>
-			<pre>type MeshProvider func() (*MeshDescriptor, error)</pre>
-			
-
-			
-
-			
-
-			
-
-			
-
 			
 		
 			
@@ -3230,11 +2897,16 @@ Only used for Core.Libs.Models
 		
 			
 			
-			<h2 id="NgCore">type <a href="/target/ng-core.go?s=441:890#L6">NgCore</a></h2>
+			<h2 id="NgCore">type <a href="/target/ng-core.go?s=474:1001#L7">NgCore</a></h2>
 			<pre>type NgCore struct {
-    MeshBuffers MeshBufferLib
-    Libs        NgLibs
-    Render      struct {
+    Libs NgLibs
+    Mesh struct {
+        Buffers MeshBufferLib
+        Desc    struct {
+            Cube, Plane, Pyramid, Quad, Tri u3d.MeshProvider
+        }
+    }
+    Render struct {
         Canvases RenderCanvasLib
         Fx       struct {
             KnownProcIDs []string
@@ -3272,7 +2944,7 @@ It is only aware of that instance and does not support any other NgCore instance
 
 			
 				
-				<h3 id="NgCore.GpuSyncImageLibs">func (*NgCore) <a href="/target/ng-core.go?s=2556:2603#L78">GpuSyncImageLibs</a></h3>
+				<h3 id="NgCore.GpuSyncImageLibs">func (*NgCore) <a href="/target/ng-core.go?s=2899:2946#L85">GpuSyncImageLibs</a></h3>
 				<pre>func (_ *NgCore) GpuSyncImageLibs() (err error)</pre>
 				
 				
@@ -3281,7 +2953,7 @@ It is only aware of that instance and does not support any other NgCore instance
 		
 			
 			
-			<h2 id="NgDiag">type <a href="/target/ng-diag.go?s=947:1093#L29">NgDiag</a></h2>
+			<h2 id="NgDiag">type <a href="/target/ng-diag.go?s=578:724#L15">NgDiag</a></h2>
 			<pre>type NgDiag struct {
     LogCategories          NgDiagLogCategory
     LogCategoryNames       map[NgDiagLogCategory]string
@@ -3303,49 +2975,49 @@ It is only aware of that instance and does not support any other NgDiag instance
 
 			
 				
-				<h3 id="NgDiag.Log">func (*NgDiag) <a href="/target/ng-diag.go?s=1095:1174#L35">Log</a></h3>
+				<h3 id="NgDiag.Log">func (*NgDiag) <a href="/target/ng-diag.go?s=726:805#L21">Log</a></h3>
 				<pre>func (_ *NgDiag) Log(cat NgDiagLogCategory, fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="NgDiag.LogErr">func (*NgDiag) <a href="/target/ng-diag.go?s=1280:1314#L41">LogErr</a></h3>
+				<h3 id="NgDiag.LogErr">func (*NgDiag) <a href="/target/ng-diag.go?s=911:945#L27">LogErr</a></h3>
 				<pre>func (_ *NgDiag) LogErr(err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="NgDiag.LogIfGlErr">func (*NgDiag) <a href="/target/ng-diag.go?s=1339:1402#L45">LogIfGlErr</a></h3>
+				<h3 id="NgDiag.LogIfGlErr">func (*NgDiag) <a href="/target/ng-diag.go?s=970:1033#L31">LogIfGlErr</a></h3>
 				<pre>func (_ *NgDiag) LogIfGlErr(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="NgDiag.LogImages">func (*NgDiag) <a href="/target/ng-diag.go?s=1443:1505#L49">LogImages</a></h3>
+				<h3 id="NgDiag.LogImages">func (*NgDiag) <a href="/target/ng-diag.go?s=1074:1136#L35">LogImages</a></h3>
 				<pre>func (_ *NgDiag) LogImages(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="NgDiag.LogMeshes">func (*NgDiag) <a href="/target/ng-diag.go?s=1556:1618#L53">LogMeshes</a></h3>
+				<h3 id="NgDiag.LogMeshes">func (*NgDiag) <a href="/target/ng-diag.go?s=1187:1249#L39">LogMeshes</a></h3>
 				<pre>func (_ *NgDiag) LogMeshes(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="NgDiag.LogMisc">func (*NgDiag) <a href="/target/ng-diag.go?s=1669:1729#L57">LogMisc</a></h3>
+				<h3 id="NgDiag.LogMisc">func (*NgDiag) <a href="/target/ng-diag.go?s=1300:1360#L43">LogMisc</a></h3>
 				<pre>func (_ *NgDiag) LogMisc(fmt string, fmtArgs ...interface{})</pre>
 				
 				
 				
 			
 				
-				<h3 id="NgDiag.LogShaders">func (*NgDiag) <a href="/target/ng-diag.go?s=1778:1841#L61">LogShaders</a></h3>
+				<h3 id="NgDiag.LogShaders">func (*NgDiag) <a href="/target/ng-diag.go?s=1409:1472#L47">LogShaders</a></h3>
 				<pre>func (_ *NgDiag) LogShaders(fmt string, fmtArgs ...interface{})</pre>
 				
 				
@@ -3354,7 +3026,7 @@ It is only aware of that instance and does not support any other NgDiag instance
 		
 			
 			
-			<h2 id="NgDiagLogCategory">type <a href="/target/ng-diag.go?s=107:133#L1">NgDiagLogCategory</a></h2>
+			<h2 id="NgDiagLogCategory">type <a href="/target/ng-diag.go?s=1524:1550#L51">NgDiagLogCategory</a></h2>
 			<pre>type NgDiagLogCategory int</pre>
 			
 
@@ -3407,28 +3079,28 @@ Only used for Core.Libs.
 
 			
 				
-				<h3 id="NgLibs.UpdateIDRef">func (*NgLibs) <a href="/target/ng-libs.go?s=1125:1186#L49">UpdateIDRef</a></h3>
+				<h3 id="NgLibs.UpdateIDRef">func (*NgLibs) <a href="/target/ng-libs.go?s=1127:1188#L49">UpdateIDRef</a></h3>
 				<pre>func (_ *NgLibs) UpdateIDRef(oldNewIDs map[int]int, ptr *int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="NgLibs.UpdateIDRefs">func (*NgLibs) <a href="/target/ng-libs.go?s=1249:1315#L55">UpdateIDRefs</a></h3>
+				<h3 id="NgLibs.UpdateIDRefs">func (*NgLibs) <a href="/target/ng-libs.go?s=1251:1317#L55">UpdateIDRefs</a></h3>
 				<pre>func (_ *NgLibs) UpdateIDRefs(oldNewIDs map[int]int, ptrs ...*int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="NgLibs.UpdateIDRefsIn">func (*NgLibs) <a href="/target/ng-libs.go?s=1439:1506#L65">UpdateIDRefsIn</a></h3>
+				<h3 id="NgLibs.UpdateIDRefsIn">func (*NgLibs) <a href="/target/ng-libs.go?s=1441:1508#L65">UpdateIDRefsIn</a></h3>
 				<pre>func (_ *NgLibs) UpdateIDRefsIn(oldNewIDs map[int]int, slice []int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="NgLibs.UpdatedIDRef">func (*NgLibs) <a href="/target/ng-libs.go?s=1634:1704#L75">UpdatedIDRef</a></h3>
+				<h3 id="NgLibs.UpdatedIDRef">func (*NgLibs) <a href="/target/ng-libs.go?s=1636:1706#L75">UpdatedIDRef</a></h3>
 				<pre>func (_ *NgLibs) UpdatedIDRef(oldNewIDs map[int]int, in int) (out int)</pre>
 				
 				
@@ -3527,7 +3199,7 @@ Returns the number of seconds expired ever since Loop.Run() was last called.
 		
 			
 			
-			<h2 id="NgOptions">type <a href="/target/ng-options.go?s=613:3422#L23">NgOptions</a></h2>
+			<h2 id="NgOptions">type <a href="/target/ng-options.go?s=646:3453#L24">NgOptions</a></h2>
 			<pre>type NgOptions struct {
     AppDir struct {
         <span class="comment">//	The base directory path for app file paths.</span>
@@ -3542,7 +3214,7 @@ Returns the number of seconds expired ever since Loop.Run() was last called.
 
     Cameras struct {
         DefaultControllerParams ControllerParams
-        PerspectiveDefaults     CameraPerspective
+        PerspectiveDefaults     u3d.Perspective
     }
 
     Initialization struct {
@@ -4249,7 +3921,7 @@ Represents a scene graph.
 				
 			
 				
-				<h3 id="Scene.ApplyNodeTransforms">func (*Scene) <a href="/target/scene-node-transform.go?s=1998:2046#L66">ApplyNodeTransforms</a></h3>
+				<h3 id="Scene.ApplyNodeTransforms">func (*Scene) <a href="/target/scene-node-transform.go?s=2018:2066#L65">ApplyNodeTransforms</a></h3>
 				<pre>func (me *Scene) ApplyNodeTransforms(nodeID int)</pre>
 				<p>
 Updates the internal 4x4 transformation matrix for all transformations of the specified
@@ -4456,7 +4128,7 @@ Only used for Core.Scenes[id].allNodes
 		
 			
 			
-			<h2 id="SceneNodeTransform">type <a href="/target/scene-node-transform.go?s=551:894#L10">SceneNodeTransform</a></h2>
+			<h2 id="SceneNodeTransform">type <a href="/target/scene-node-transform.go?s=571:914#L9">SceneNodeTransform</a></h2>
 			<pre>type SceneNodeTransform struct {
     <span class="comment">//	Translation of the from origin.</span>
     Pos unum.Vec3
@@ -4490,49 +4162,49 @@ whenever its parent Node.ApplyTransform() method is called.
 
 			
 				
-				<h3 id="SceneNodeTransform.AddRot">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1019:1071#L35">AddRot</a></h3>
+				<h3 id="SceneNodeTransform.AddRot">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1039:1091#L34">AddRot</a></h3>
 				<pre>func (me *SceneNodeTransform) AddRot(rot *unum.Vec3)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.AddRotXYZ">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1094:1150#L39">AddRotXYZ</a></h3>
+				<h3 id="SceneNodeTransform.AddRotXYZ">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1114:1170#L38">AddRotXYZ</a></h3>
 				<pre>func (me *SceneNodeTransform) AddRotXYZ(x, y, z float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.SetPos">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1178:1240#L43">SetPos</a></h3>
+				<h3 id="SceneNodeTransform.SetPos">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1198:1260#L42">SetPos</a></h3>
 				<pre>func (me *SceneNodeTransform) SetPos(posX, posY, posZ float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.SetRot">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1295:1357#L47">SetRot</a></h3>
+				<h3 id="SceneNodeTransform.SetRot">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1315:1377#L46">SetRot</a></h3>
 				<pre>func (me *SceneNodeTransform) SetRot(radX, radY, radZ float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.SetScale">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1412:1461#L51">SetScale</a></h3>
+				<h3 id="SceneNodeTransform.SetScale">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1432:1481#L50">SetScale</a></h3>
 				<pre>func (me *SceneNodeTransform) SetScale(s float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.SetScaleXyz">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1513:1571#L55">SetScaleXyz</a></h3>
+				<h3 id="SceneNodeTransform.SetScaleXyz">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1533:1591#L54">SetScaleXyz</a></h3>
 				<pre>func (me *SceneNodeTransform) SetScaleXyz(x, y, z float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.StepDelta">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1702:1773#L60">StepDelta</a></h3>
+				<h3 id="SceneNodeTransform.StepDelta">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1722:1793#L59">StepDelta</a></h3>
 				<pre>func (me *SceneNodeTransform) StepDelta(deltaPerSecond float64) float64</pre>
 				<p>
 Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.

@@ -88,7 +88,7 @@ func (me *RenderTechniqueScene) renderBatched(scene *Scene) {
 			if b.all[i].face == -1 {
 				gl.DrawElementsBaseVertex(gl.TRIANGLES, mesh.raw.lastNumIndices, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices)), gl.Int(mesh.meshBufOffsetBaseIndex))
 			} else {
-				gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices+(b.all[i].face*3*Core.MeshBuffers.MemSizePerIndex()))), gl.Int(mesh.meshBufOffsetBaseIndex))
+				gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices+(b.all[i].face*3*Core.Mesh.Buffers.MemSizePerIndex()))), gl.Int(mesh.meshBufOffsetBaseIndex))
 			}
 			if node.Render.skyMode {
 				thrRend.curProg.Uniform1i("uni_int_Sky", 0)
@@ -118,7 +118,7 @@ func (me *SceneNode) render() {
 			mesh.meshBuffer.use()
 			thrRend.curProg.UniformMat4("uni_mat4_VertexMatrix", &thrRend.curCam.thrRend.nodeProjMats[me.ID])
 			// thrRend.curProg.UniformMatrix4fv("uni_mat4_VertexMatrix", 1, gl.FALSE, &thrRend.curCam.thrRend.nodeProjMats[me.ID][0])
-			gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices+(i*3*Core.MeshBuffers.MemSizePerIndex()))), gl.Int(mesh.meshBufOffsetBaseIndex))
+			gl.DrawElementsBaseVertex(gl.TRIANGLES, 3, gl.UNSIGNED_INT, gl.Util.PtrOffset(nil, uintptr(mesh.meshBufOffsetIndices+(i*3*Core.Mesh.Buffers.MemSizePerIndex()))), gl.Int(mesh.meshBufOffsetBaseIndex))
 		}
 	} else {
 		thrRend.nextEffect = Core.Libs.Effects.get(mat.DefaultEffectID)
