@@ -22,6 +22,18 @@ func (me *geometryBounds) clear() {
 	me.aaBox.extent.Clear()
 }
 
+func (me *geometryBounds) aabbSetCenterExtent() {
+	me.aaBox.center.SetFromAdd(&me.aaBox.max, &me.aaBox.min)
+	me.aaBox.center.Scale(0.5)
+	me.aaBox.extent.SetFromSub(&me.aaBox.max, &me.aaBox.min)
+	me.aaBox.extent.Scale(0.5)
+}
+
+func (me *geometryBounds) aabbSetMinMax() {
+	me.aaBox.min.SetFromSub(&me.aaBox.center, &me.aaBox.extent)
+	me.aaBox.max.SetFromAdd(&me.aaBox.center, &me.aaBox.extent)
+}
+
 //	Represents semi-processed loaded mesh data "almost ready" to core.Mesh.GpuUpload().
 type meshRaw struct {
 	lastNumIndices gl.Sizei

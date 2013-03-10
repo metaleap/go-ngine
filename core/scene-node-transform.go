@@ -1,8 +1,14 @@
 package core
 
 import (
+	"math"
+
 	unum "github.com/metaleap/go-util/num"
 )
+
+type nodeBounds struct {
+	full, self geometryBounds
+}
 
 //	Represents one or more transformations of a Node.
 //	This is only used by Node objects, which initialize their SceneNodeTransform with the
@@ -99,13 +105,16 @@ func (me *Scene) ApplyNodeTransforms(nodeID int) {
 
 func (me *Scene) applyBounds(n int, src *geometryBounds) {
 	if src != nil {
-		me.allNodes[n].thrApp.bounding.self.sphere = src.sphere * me.allNodes[n].Transform.Scale.Max()
+		me.allNodes[n].thrApp.bounding.self.aaBox = src.aaBox
+		me.allNodes[n].thrApp.bounding.self.aaBox.center.TransformCoord(&me.allNodes[n].Transform.thrApp.matModelView)
+		me.allNodes[n].thrApp.bounding.self.aaBox.extent.TransformNormal(&me.allNodes[n].Transform.thrApp.matModelView, true)
+		me.allNodes[n].thrApp.bounding.self.aabbSetMinMax()
+		me.allNodes[n].thrApp.bounding.self.sphere = math.Max(me.allNodes[n].thrApp.bounding.self.aaBox.min.DistanceFrom(&me.allNodes[n].Transform.Pos), me.allNodes[n].thrApp.bounding.self.aaBox.max.DistanceFrom(&me.allNodes[n].Transform.Pos))
 	}
-	me.allNodes[n].thrApp.bounding.full.sphere = me.allNodes[n].thrApp.bounding.self.sphere
-	var r float64
+	me.allNodes[n].thrApp.bounding.full = me.allNodes[n].thrApp.bounding.self
 	for _, cid := range me.allNodes[n].childNodeIDs {
-		if r = me.allNodes[cid].thrApp.bounding.full.sphere + me.allNodes[cid].Transform.Pos.DistanceFromZero(); r > me.allNodes[n].thrApp.bounding.full.sphere {
-			me.allNodes[n].thrApp.bounding.full.sphere = r
-		}
+		me.allNodes[cid].thrApp.bounding.full.aaBox.min.SetMinMax(&me.allNodes[n].thrApp.bounding.full.aaBox.min, &me.allNodes[n].thrApp.bounding.full.aaBox.max)
+		me.allNodes[cid].thrApp.bounding.full.aaBox.max.SetMinMax(&me.allNodes[n].thrApp.bounding.full.aaBox.min, &me.allNodes[n].thrApp.bounding.full.aaBox.max)
 	}
+	me.allNodes[n].thrApp.bounding.full.sphere = math.Max(me.allNodes[n].thrApp.bounding.full.aaBox.min.DistanceFrom(&me.allNodes[n].Transform.Pos), me.allNodes[n].thrApp.bounding.full.aaBox.max.DistanceFrom(&me.allNodes[n].Transform.Pos))
 }

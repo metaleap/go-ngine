@@ -123,8 +123,9 @@ func (me *Mesh) load(meshData *MeshDescriptor) (err error) {
 		}
 		offsetFace++
 	}
-	me.raw.bounding.aaBox.center = *me.raw.bounding.aaBox.max.AddTo(&me.raw.bounding.aaBox.min).Scaled(0.5)
-	me.raw.bounding.aaBox.extent = *me.raw.bounding.aaBox.max.Sub(&me.raw.bounding.aaBox.min).Scaled(0.5)
+	println(strf("%s %#v", me.Name, me.raw.bounding.aaBox))
+	me.raw.bounding.aabbSetCenterExtent()
+	println(strf("%s %#v", me.Name, me.raw.bounding.aaBox))
 	Diag.LogMeshes("mesh{%v}.Load() gave %v faces, %v att floats for %v final verts (%v source verts), %v indices (%vx vertex reuse)", me.Name, len(me.raw.faces), len(me.raw.verts), numFinalVerts, numVerts, len(me.raw.indices), vreuse)
 	return
 }

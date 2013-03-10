@@ -2681,14 +2681,14 @@ For this change to be applied, call FxEffect.UpdateRoutine() subsequently.
 				
 			
 				
-				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.gt.go?s=5261:5290#L122">Loaded</a></h3>
+				<h3 id="Mesh.Loaded">func (*Mesh) <a href="/target/mesh.gt.go?s=5206:5235#L123">Loaded</a></h3>
 				<pre>func (me *Mesh) Loaded() bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.gt.go?s=5326:5350#L126">Unload</a></h3>
+				<h3 id="Mesh.Unload">func (*Mesh) <a href="/target/mesh.gt.go?s=5271:5295#L127">Unload</a></h3>
 				<pre>func (me *Mesh) Unload()</pre>
 				
 				
@@ -2798,7 +2798,7 @@ Only used for Core.MeshBuffers
 		
 			
 			
-			<h2 id="MeshDescF3">type <a href="/target/mesh-data.go?s=1010:1137#L49">MeshDescF3</a></h2>
+			<h2 id="MeshDescF3">type <a href="/target/mesh-data.go?s=1404:1531#L61">MeshDescF3</a></h2>
 			<pre>type MeshDescF3 struct {
     <span class="comment">//	The indexed vertices making up this triangle face.</span>
     V [3]MeshDescF3V
@@ -2819,7 +2819,7 @@ Represents an indexed triangle face.
 
 			
 				
-				<h3 id="NewMeshDescF3">func <a href="/target/mesh-data.go?s=1355:1429#L60">NewMeshDescF3</a></h3>
+				<h3 id="NewMeshDescF3">func <a href="/target/mesh-data.go?s=1749:1823#L72">NewMeshDescF3</a></h3>
 				<pre>func NewMeshDescF3(tags, id string, verts ...MeshDescF3V) (me *MeshDescF3)</pre>
 				<p>
 Creates and initializes a new MeshDescF3V with the specified tags,
@@ -2834,7 +2834,7 @@ classification tags separated by spaces, which will be split into Tags.
 		
 			
 			
-			<h2 id="MeshDescF3V">type <a href="/target/mesh-data.go?s=1631:1821#L69">MeshDescF3V</a></h2>
+			<h2 id="MeshDescF3V">type <a href="/target/mesh-data.go?s=2025:2215#L81">MeshDescF3V</a></h2>
 			<pre>type MeshDescF3V struct {
     <span class="comment">//	Index of the vertex position</span>
     PosIndex uint32
@@ -2862,7 +2862,7 @@ Represents an indexed vertex in a MeshDescF3.
 		
 			
 			
-			<h2 id="MeshDescVA2">type <a href="/target/mesh-data.go?s=1934:1961#L82">MeshDescVA2</a></h2>
+			<h2 id="MeshDescVA2">type <a href="/target/mesh-data.go?s=2328:2355#L94">MeshDescVA2</a></h2>
 			<pre>type MeshDescVA2 [2]float32</pre>
 			<p>
 Represents a 2-component vertex attribute in a MeshDescriptor.
@@ -2882,7 +2882,7 @@ Represents a 2-component vertex attribute in a MeshDescriptor.
 		
 			
 			
-			<h2 id="MeshDescVA3">type <a href="/target/mesh-data.go?s=2068:2095#L86">MeshDescVA3</a></h2>
+			<h2 id="MeshDescVA3">type <a href="/target/mesh-data.go?s=2462:2489#L98">MeshDescVA3</a></h2>
 			<pre>type MeshDescVA3 [3]float32</pre>
 			<p>
 Represents a 3-component vertex attribute in a MeshDescriptor
@@ -2902,7 +2902,7 @@ Represents a 3-component vertex attribute in a MeshDescriptor
 		
 			
 			
-			<h2 id="MeshDescriptor">type <a href="/target/mesh-data.go?s=2288:2518#L93">MeshDescriptor</a></h2>
+			<h2 id="MeshDescriptor">type <a href="/target/mesh-data.go?s=2682:2912#L105">MeshDescriptor</a></h2>
 			<pre>type MeshDescriptor struct {
     <span class="comment">//	Vertex positions</span>
     Positions []MeshDescVA3
@@ -2990,7 +2990,7 @@ The returned MeshDescriptor contains 1 triangle face with ID &#34;t0&#34; and ta
 
 			
 				
-				<h3 id="MeshDescriptor.AddFaces">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=2572:2628#L108">AddFaces</a></h3>
+				<h3 id="MeshDescriptor.AddFaces">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=2966:3022#L120">AddFaces</a></h3>
 				<pre>func (me *MeshDescriptor) AddFaces(faces ...*MeshDescF3)</pre>
 				<p>
 Adds all specified Faces to this MeshDescriptor.
@@ -3000,7 +3000,7 @@ Adds all specified Faces to this MeshDescriptor.
 				
 			
 				
-				<h3 id="MeshDescriptor.AddNormals">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=3023:3083#L123">AddNormals</a></h3>
+				<h3 id="MeshDescriptor.AddNormals">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=3417:3477#L135">AddNormals</a></h3>
 				<pre>func (me *MeshDescriptor) AddNormals(normals ...MeshDescVA3)</pre>
 				<p>
 Adds all the specified Normals to this MeshDescriptor.
@@ -3010,7 +3010,7 @@ Adds all the specified Normals to this MeshDescriptor.
 				
 			
 				
-				<h3 id="MeshDescriptor.AddPositions">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=2844:2908#L118">AddPositions</a></h3>
+				<h3 id="MeshDescriptor.AddPositions">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=3238:3302#L130">AddPositions</a></h3>
 				<pre>func (me *MeshDescriptor) AddPositions(positions ...MeshDescVA3)</pre>
 				<p>
 Adds all specified Positions to this MeshDescriptor.
@@ -3020,7 +3020,7 @@ Adds all specified Positions to this MeshDescriptor.
 				
 			
 				
-				<h3 id="MeshDescriptor.AddTexCoords">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=3194:3258#L128">AddTexCoords</a></h3>
+				<h3 id="MeshDescriptor.AddTexCoords">func (*MeshDescriptor) <a href="/target/mesh-data.go?s=3588:3652#L140">AddTexCoords</a></h3>
 				<pre>func (me *MeshDescriptor) AddTexCoords(texCoords ...MeshDescVA2)</pre>
 				<p>
 Adds all the specified TexCoords to this MeshDescriptor.
@@ -3032,7 +3032,7 @@ Adds all the specified TexCoords to this MeshDescriptor.
 		
 			
 			
-			<h2 id="MeshFaceBase">type <a href="/target/mesh-data.go?s=822:968#L40">MeshFaceBase</a></h2>
+			<h2 id="MeshFaceBase">type <a href="/target/mesh-data.go?s=1216:1362#L52">MeshFaceBase</a></h2>
 			<pre>type MeshFaceBase struct {
     <span class="comment">//	Mesh-unique identifier for this face.</span>
     ID string
@@ -3054,7 +3054,7 @@ Adds all the specified TexCoords to this MeshDescriptor.
 		
 			
 			
-			<h2 id="MeshLib">type <a href="/target/mesh.gt.go?s=5993:6012#L155">MeshLib</a></h2>
+			<h2 id="MeshLib">type <a href="/target/mesh.gt.go?s=5938:5957#L156">MeshLib</a></h2>
 			<pre>type MeshLib []Mesh</pre>
 			<p>
 Only used for Core.Libs.Meshes
@@ -3071,56 +3071,56 @@ Only used for Core.Libs.Meshes
 
 			
 				
-				<h3 id="MeshLib.AddNew">func (*MeshLib) <a href="/target/mesh.gt.go?s=6014:6050#L157">AddNew</a></h3>
+				<h3 id="MeshLib.AddNew">func (*MeshLib) <a href="/target/mesh.gt.go?s=5959:5995#L158">AddNew</a></h3>
 				<pre>func (me *MeshLib) AddNew() (id int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.AddNewAndLoad">func (*MeshLib) <a href="/target/mesh.gt.go?s=5646:5742#L141">AddNewAndLoad</a></h3>
+				<h3 id="MeshLib.AddNewAndLoad">func (*MeshLib) <a href="/target/mesh.gt.go?s=5591:5687#L142">AddNewAndLoad</a></h3>
 				<pre>func (me *MeshLib) AddNewAndLoad(name string, meshProvider MeshProvider) (meshID int, err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.Compact">func (*MeshLib) <a href="/target/mesh.gt.go?s=6371:6399#L179">Compact</a></h3>
+				<h3 id="MeshLib.Compact">func (*MeshLib) <a href="/target/mesh.gt.go?s=6316:6344#L180">Compact</a></h3>
 				<pre>func (me *MeshLib) Compact()</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.GpuSync">func (MeshLib) <a href="/target/mesh.gt.go?s=5397:5435#L130">GpuSync</a></h3>
+				<h3 id="MeshLib.GpuSync">func (MeshLib) <a href="/target/mesh.gt.go?s=5342:5380#L131">GpuSync</a></h3>
 				<pre>func (_ MeshLib) GpuSync() (err error)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.IsOk">func (MeshLib) <a href="/target/mesh.gt.go?s=7146:7186#L222">IsOk</a></h3>
+				<h3 id="MeshLib.IsOk">func (MeshLib) <a href="/target/mesh.gt.go?s=7091:7131#L223">IsOk</a></h3>
 				<pre>func (me MeshLib) IsOk(id int) (ok bool)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.Ok">func (MeshLib) <a href="/target/mesh.gt.go?s=7256:7289#L229">Ok</a></h3>
+				<h3 id="MeshLib.Ok">func (MeshLib) <a href="/target/mesh.gt.go?s=7201:7234#L230">Ok</a></h3>
 				<pre>func (me MeshLib) Ok(id int) bool</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.Remove">func (MeshLib) <a href="/target/mesh.gt.go?s=7319:7360#L233">Remove</a></h3>
+				<h3 id="MeshLib.Remove">func (MeshLib) <a href="/target/mesh.gt.go?s=7264:7305#L234">Remove</a></h3>
 				<pre>func (me MeshLib) Remove(fromID, num int)</pre>
 				
 				
 				
 			
 				
-				<h3 id="MeshLib.Walk">func (MeshLib) <a href="/target/mesh.gt.go?s=7644:7686#L247">Walk</a></h3>
+				<h3 id="MeshLib.Walk">func (MeshLib) <a href="/target/mesh.gt.go?s=7589:7631#L248">Walk</a></h3>
 				<pre>func (me MeshLib) Walk(on func(ref *Mesh))</pre>
 				
 				
@@ -4249,7 +4249,7 @@ Represents a scene graph.
 				
 			
 				
-				<h3 id="Scene.ApplyNodeTransforms">func (*Scene) <a href="/target/scene-node-transform.go?s=1934:1982#L60">ApplyNodeTransforms</a></h3>
+				<h3 id="Scene.ApplyNodeTransforms">func (*Scene) <a href="/target/scene-node-transform.go?s=1998:2046#L66">ApplyNodeTransforms</a></h3>
 				<pre>func (me *Scene) ApplyNodeTransforms(nodeID int)</pre>
 				<p>
 Updates the internal 4x4 transformation matrix for all transformations of the specified
@@ -4365,7 +4365,7 @@ Only used for Core.Libs.Scenes
 		
 			
 			
-			<h2 id="SceneNode">type <a href="/target/scene-node.go?s=69:394#L1">SceneNode</a></h2>
+			<h2 id="SceneNode">type <a href="/target/scene-node.go?s=14:339#L1">SceneNode</a></h2>
 			<pre>type SceneNode struct {
     ID        int
     Transform SceneNodeTransform
@@ -4456,7 +4456,7 @@ Only used for Core.Scenes[id].allNodes
 		
 			
 			
-			<h2 id="SceneNodeTransform">type <a href="/target/scene-node-transform.go?s=487:830#L4">SceneNodeTransform</a></h2>
+			<h2 id="SceneNodeTransform">type <a href="/target/scene-node-transform.go?s=551:894#L10">SceneNodeTransform</a></h2>
 			<pre>type SceneNodeTransform struct {
     <span class="comment">//	Translation of the from origin.</span>
     Pos unum.Vec3
@@ -4490,49 +4490,49 @@ whenever its parent Node.ApplyTransform() method is called.
 
 			
 				
-				<h3 id="SceneNodeTransform.AddRot">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=955:1007#L29">AddRot</a></h3>
+				<h3 id="SceneNodeTransform.AddRot">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1019:1071#L35">AddRot</a></h3>
 				<pre>func (me *SceneNodeTransform) AddRot(rot *unum.Vec3)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.AddRotXYZ">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1030:1086#L33">AddRotXYZ</a></h3>
+				<h3 id="SceneNodeTransform.AddRotXYZ">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1094:1150#L39">AddRotXYZ</a></h3>
 				<pre>func (me *SceneNodeTransform) AddRotXYZ(x, y, z float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.SetPos">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1114:1176#L37">SetPos</a></h3>
+				<h3 id="SceneNodeTransform.SetPos">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1178:1240#L43">SetPos</a></h3>
 				<pre>func (me *SceneNodeTransform) SetPos(posX, posY, posZ float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.SetRot">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1231:1293#L41">SetRot</a></h3>
+				<h3 id="SceneNodeTransform.SetRot">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1295:1357#L47">SetRot</a></h3>
 				<pre>func (me *SceneNodeTransform) SetRot(radX, radY, radZ float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.SetScale">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1348:1397#L45">SetScale</a></h3>
+				<h3 id="SceneNodeTransform.SetScale">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1412:1461#L51">SetScale</a></h3>
 				<pre>func (me *SceneNodeTransform) SetScale(s float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.SetScaleXyz">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1449:1507#L49">SetScaleXyz</a></h3>
+				<h3 id="SceneNodeTransform.SetScaleXyz">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1513:1571#L55">SetScaleXyz</a></h3>
 				<pre>func (me *SceneNodeTransform) SetScaleXyz(x, y, z float64)</pre>
 				
 				
 				
 			
 				
-				<h3 id="SceneNodeTransform.StepDelta">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1638:1709#L54">StepDelta</a></h3>
+				<h3 id="SceneNodeTransform.StepDelta">func (*SceneNodeTransform) <a href="/target/scene-node-transform.go?s=1702:1773#L60">StepDelta</a></h3>
 				<pre>func (me *SceneNodeTransform) StepDelta(deltaPerSecond float64) float64</pre>
 				<p>
 Returns the result of multiplying deltaPerSecond with EngineLoop.TickDelta.

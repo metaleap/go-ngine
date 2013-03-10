@@ -1,9 +1,5 @@
 package core
 
-type nodeBounds struct {
-	full, self geometryBounds
-}
-
 type SceneNode struct {
 	ID        int
 	Transform SceneNodeTransform

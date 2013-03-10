@@ -21,9 +21,9 @@ func onAppThread() {
 	apputil.HandleCamCtlKeys()
 	if tmpScene = apputil.SceneCam.Scene(); tmpScene != nil {
 		if tmpNode = tmpScene.Node(boxID); tmpNode != nil {
-			// tmpNode.Transform.Pos.Y = (2.125 + (0.5 * math.Sin(ng.Loop.Tick.Now*8)))
-			// tmpNode.Transform.Rot.Y += 0.005
-			// tmpNode.Transform.SetScale(1.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*2)))
+			tmpNode.Transform.Pos.Y = (2.125 + (0.5 * math.Sin(ng.Loop.Tick.Now*8)))
+			tmpNode.Transform.Rot.Y += 0.005
+			tmpNode.Transform.SetScale(1.5 + (0.5 * math.Sin(ng.Loop.Tick.Now*2)))
 			tmpScene.ApplyNodeTransforms(tmpNode.ID)
 		}
 	}
