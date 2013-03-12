@@ -48,7 +48,7 @@ func (me *Camera) init() {
 func (me *Camera) applyPerspective() {
 	if me.Perspective.Enabled {
 		me.Perspective.FovY.RadHalf = me.thrApp.matProj.Perspective(me.Perspective.FovY.Deg, me.viewportAspectRatio, me.Perspective.ZNear, me.Perspective.ZFar)
-		me.thrPrep.frustum.UpdateRatio(me.Perspective.FovY.RadHalf, me.viewportAspectRatio)
+		me.thrPrep.frustum.UpdateRatio(&me.Perspective, me.viewportAspectRatio)
 	} else {
 		me.thrApp.matProj.Identity()
 	}

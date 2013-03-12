@@ -23,6 +23,10 @@ func (me *RenderView) onPrep() {
 func (me *RenderTechniqueScene) onPrep() {
 	if scene := me.Camera.Scene(); scene != nil {
 		me.Camera.thrPrep.matCamProj.SetFromMult4(&me.Camera.thrPrep.matProj, &me.Camera.Controller.thrPrep.mat)
+		// if me.Camera.Cull.Frustum {
+		// 	me.Camera.thrPrep.frustum.UpdatePlanes(&me.Camera.thrPrep.matCamProj, true)
+		// 	println(me.Camera.thrPrep.frustum.String())
+		// }
 		if !scene.thrPrep.done {
 			scene.thrPrep.done = true
 			scene.onPrep()

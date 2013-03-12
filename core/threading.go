@@ -84,7 +84,8 @@ func (me *Camera) copyAppToPrep() {
 	me.Controller.copyAppToPrep()
 
 	if me.Cull.Frustum {
-		me.thrPrep.frustum.UpdateAxes(&me.Controller.dir, &me.Controller.UpVec, &me.Controller.UpAxis)
+		me.thrPrep.frustum.UpdateCoords(&me.Perspective, &me.Controller.Pos, &me.Controller.dir, &me.Controller.UpVec, &me.Controller.UpAxis)
+		println(me.thrPrep.frustum.String())
 	}
 
 	me.thrPrep.matPos.Translation(&me.Controller.Pos)
