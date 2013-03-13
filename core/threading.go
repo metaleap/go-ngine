@@ -3,8 +3,6 @@ package core
 import (
 	"sync"
 
-	// "github.com/davecgh/go-spew/spew"
-
 	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
 )
@@ -87,7 +85,6 @@ func (me *Camera) copyAppToPrep() {
 
 	if me.Cull.Frustum {
 		me.thrPrep.frustum.UpdateCoords(&me.Perspective, &me.Controller.Pos, &me.Controller.dir, &me.Controller.UpVec, &me.Controller.UpAxis)
-		// spew.Printf("N:%v\tF:%v\n", me.thrPrep.frustum.Near, me.thrPrep.frustum.Far)
 	}
 
 	me.thrPrep.matPos.Translation(&me.Controller.Pos)

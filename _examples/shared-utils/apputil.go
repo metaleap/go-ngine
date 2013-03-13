@@ -9,6 +9,8 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/davecgh/go-spew/spew"
+
 	ng "github.com/go3d/go-ngine/core"
 	ugo "github.com/metaleap/go-util"
 	unum "github.com/metaleap/go-util/num"
@@ -95,6 +97,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	//	by design, go:ngine doesn't do this for you automagically:
 	runtime.LockOSThread()
 	runtime.GOMAXPROCS(runtime.NumCPU())
+	spew.Config.DisableMethods = true
 
 	//	can set window options before it is created
 	win := &ng.UserIO.Window
