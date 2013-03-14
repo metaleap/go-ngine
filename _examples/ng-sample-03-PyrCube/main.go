@@ -113,7 +113,7 @@ func setupExample_03_PyrCube() {
 
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()
-	camCtl.Pos.X, camCtl.Pos.Y, camCtl.Pos.Z = 0, 1.7, -10
+	// camCtl.Pos.X, camCtl.Pos.Y, camCtl.Pos.Z = 0, 1.7, -10
 	camCtl.EndUpdate()
 	if false {
 		ng.Loop.Delay = 100 * time.Millisecond
