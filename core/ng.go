@@ -19,14 +19,24 @@ func Dispose() {
 //	Initializes go:ngine; this first attempts to initialize OpenGL and then open a window to your supplied specifications with a GL 3.3-or-higher profile.
 func Init(fullscreen bool) (err error) {
 	var (
-		glVerIndex = len(ugl.KnownVersions) - 1
-		badVer     string
-		glVer      float64
+		glVerIndex         = len(ugl.KnownVersions) - 1
+		badVer, tmpDirPath string
+		glVer              float64
 	)
+	if err = uio.EnsureDirExists(Core.fileIO.resolveLocalFilePath(Options.AppDir.Temp.BaseName)); err != nil {
+		return
+	}
 	defer runtime.GC()
 	if len(Options.AppDir.Temp.BaseName) > 0 {
+		for _, diagTmpDirName := range []string{Options.AppDir.Temp.ShaderSources, Options.AppDir.Temp.CachedTextures} {
+			tmpDirPath = Core.fileIO.resolveLocalFilePath(filepath.Join(Options.AppDir.Temp.BaseName, diagTmpDirName))
+			if err = uio.EnsureDirExists(tmpDirPath); err != nil {
+				return
+			}
+		}
 		for _, diagTmpDirName := range []string{Options.AppDir.Temp.ShaderSources} {
-			if err = uio.ClearDirectory(Core.fileIO.resolveLocalFilePath(filepath.Join(Options.AppDir.Temp.BaseName, diagTmpDirName))); err != nil {
+			tmpDirPath = Core.fileIO.resolveLocalFilePath(filepath.Join(Options.AppDir.Temp.BaseName, diagTmpDirName))
+			if err = uio.ClearDirectory(tmpDirPath); err != nil {
 				return
 			}
 		}
