@@ -1,7 +1,7 @@
 Update May 2013:
 
-- The project is "on hold for the time being" and has been for the last 2 months
-- All go+gfx enthusiasts are more than welcome to pick up where I left off
+- The project is "on hold for now", in fact has been for the last 2 months. ("Abandoned", if you will.)
+- All go+gfx enthusiasts are more than welcome to pick up where I left off.
 
 Builds in Go 1.1 just as well as it did in Go 1.0.3, but performance has roughly halved and GC durations have roughly doubled. Sad story. Not sure why that is, since for most other projects out there, Go 1.1 had the opposite effect.
 
