@@ -18,7 +18,7 @@ First, **go get github.com/go-gl/glfw** --- this may not compile at first, until
 
 This go-gl/glfw package needs to be working on your system before you can proceed.
 
-Once it does, **go get github.com/go3d/go-ngine** should in theory download and build everything. This may well take a couple of minutes!
+Once it does, **go get github.com/go3d/go-ngine** should in theory download and build everything including dependencies. This may well take a couple of minutes!
 
 There shouldn't be any compilation errors if the above glfw package is fully installed.
 
