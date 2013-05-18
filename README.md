@@ -1,3 +1,31 @@
+Update May 2013:
+
+- The project is "on hold for the time being" and has been for the last 2 months
+- All go+gfx enthusiasts are more than welcome to pick up where I left off
+
+Builds in Go 1.1 just as well as it did in Go 1.0.3, but performance has roughly halved and GC durations have roughly doubled. Sad story. Not sure why that is, since for most other projects out there, Go 1.1 had the opposite effect.
+
+I suspect the current code-base overdid it badly on the prematurely-optimizing, over-clever "custom allocators, as few pointers as possible" approach. Lesson learned?
+
+That being said---I still think it's a pretty great library to base your GL gfx/engine efforts on, rather than starting from scratch.
+
+(Of course, the real buffs won't be considering exactly that piece of advice ;)
+
+Getting going:
+==============
+
+First, **go get github.com/go-gl/glfw** --- this may not compile at first, until you have the glfw.org libs installed properly on your system.
+
+This go-gl/glfw package needs to be working on your system before you can proceed.
+
+Once it does, **go get github.com/go3d/go-ngine** should in theory download and build everything. This may well take a couple of minutes!
+
+There shouldn't be any compilation errors if the above glfw package is fully installed.
+
+Now you should be able to **go run** pretty much any main.go packages underneath *go3d/go-ngine/_examples* -- note the programs need write access to *go3d/go-ngine/_examples/-app-data/_tmp*
+
+
+
 go-ngine
 ========
 
