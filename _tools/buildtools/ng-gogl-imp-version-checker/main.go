@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	xmlx "github.com/jteeuwen/go-pkg-xmlx"
+	xmlx "github.com/goforks/go-pkg-xmlx"
 
 	util "github.com/metaleap/go-util"
 	uio "github.com/metaleap/go-util/io"

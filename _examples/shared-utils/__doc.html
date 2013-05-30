@@ -25,14 +25,14 @@
 -->
 
 	
+		
 		<div id="short-nav">
 			<dl>
 			<dd><code>import "github.com/go3d/go-ngine/_examples/shared-utils"</code></dd>
 			</dl>
 			<dl>
 			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
-			<dd><a href="#pkg-index">Index</a></dd>
-			
+			<dd><a href="#pkg-index" class="indexLink">Index</a></dd>
 			
 			
 			</dl>
@@ -51,10 +51,16 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 			</div>
 		</div>
 		
-	
-		<h2 id="pkg-index">Index</h2>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
 		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
-		<div id="manual-nav">
+			<div id="manual-nav">
 			<dl>
 			
 			
@@ -124,7 +130,8 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 				
 			
 			
-		</dl>
+			</dl>
+			</div><!-- #manual-nav -->
 
 		
 
@@ -150,46 +157,48 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 			</span>
 			</p>
 		
-	
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
 		
 		
 			<h2 id="pkg-variables">Variables</h2>
 			
 				<pre>var (
     <span class="comment">//	Change to higher value to check out your splash-screen</span>
-    ArtificialSplashScreenDelay = 0 * time.Second
+    <span id="ArtificialSplashScreenDelay">ArtificialSplashScreenDelay</span> = 0 * <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Second">Second</a>
 
     <span class="comment">//	Optionally set this to a callback function to be</span>
     <span class="comment">//	invoked every second on the windowing main thread.</span>
-    OnSec = func() {}
+    <span id="OnSec">OnSec</span> = func() {}
 
     <span class="comment">//	The RenderCanvas the example scene is initially being rendered to.</span>
     <span class="comment">//	This is an off-screen &#34;render-to-texture&#34; RenderCanvas.</span>
-    SceneCanvas *ng.RenderCanvas
+    <span id="SceneCanvas">SceneCanvas</span> *<a href="/pkg/github.com/go3d/go-ngine/core/">ng</a>.<a href="/pkg/github.com/go3d/go-ngine/core/#RenderCanvas">RenderCanvas</a>
 
-    SceneCam *ng.Camera
+    <span id="SceneCam">SceneCam</span> *<a href="/pkg/github.com/go3d/go-ngine/core/">ng</a>.<a href="/pkg/github.com/go3d/go-ngine/core/#Camera">Camera</a>
 
-    SceneView *ng.RenderView
+    <span id="SceneView">SceneView</span> *<a href="/pkg/github.com/go3d/go-ngine/core/">ng</a>.<a href="/pkg/github.com/go3d/go-ngine/core/#RenderView">RenderView</a>
 
     <span class="comment">//	Unlike the off-screen (render-to-texture) SceneCanvas above,</span>
     <span class="comment">//	this RenderCanvas epresents the actual screen/window.</span>
-    PostFxCanvas *ng.RenderCanvas
+    <span id="PostFxCanvas">PostFxCanvas</span> *<a href="/pkg/github.com/go3d/go-ngine/core/">ng</a>.<a href="/pkg/github.com/go3d/go-ngine/core/#RenderCanvas">RenderCanvas</a>
 
     <span class="comment">//	Takes the image rendered to SceneCanvas, may</span>
     <span class="comment">//	post-process it or not, and blits it to PostFxCanvas.</span>
-    PostFxView *ng.RenderView
+    <span id="PostFxView">PostFxView</span> *<a href="/pkg/github.com/go3d/go-ngine/core/">ng</a>.<a href="/pkg/github.com/go3d/go-ngine/core/#RenderView">RenderView</a>
 
-    Paused bool
+    <span id="Paused">Paused</span> <a href="/pkg/builtin/#bool">bool</a>
 )</pre>
 				
 			
 				<pre>var (
     <span class="comment">//	The maximum index for KeyHints when cycling through it in OnSec()</span>
-    MaxKeyHint = len(KeyHints) - 1
+    <span id="MaxKeyHint">MaxKeyHint</span> = <a href="/pkg/builtin/#len">len</a>(<a href="#KeyHints">KeyHints</a>) - 1
 
     <span class="comment">//	OnSec() changes the window title every second to display FPS etc.</span>
     <span class="comment">//	Also every 4 seconds shows the next one in a number of &#34;key hints&#34; defined here:</span>
-    KeyHints = []string{
+    <span id="KeyHints">KeyHints</span> = []<a href="/pkg/builtin/#string">string</a>{
         &#34;[Ctrl+Q]  --  Quit&#34;,
         &#34;[Esc]  --  Pause/Resume&#34;,
         &#34;[F2]  --  Toggle Backface Culling&#34;,
@@ -208,19 +217,19 @@ Some common base functionality shared by all the go:ngine example apps in _examp
     <span class="comment">//	(typically resulting in matrix remultiplications and other CPU work) happens in onAppThread,</span>
     <span class="comment">//	this struct helps keep track of both which keys to check in the first place, and their</span>
     <span class="comment">//	latest press-state.</span>
-    Keys struct {
+    <span id="Keys">Keys</span> struct {
         <span class="comment">//	Updated by CheckCamCtlKeys(), contains the latest press-states of the keys in CheckForPressed.</span>
-        Pressed map[int]bool
+        Pressed map[<a href="/pkg/builtin/#int">int</a>]<a href="/pkg/builtin/#bool">bool</a>
 
         <span class="comment">//	Contains the keys that CheckCamCtlKeys() will poll and update in Pressed.</span>
-        CheckForPressed []int
+        CheckForPressed []<a href="/pkg/builtin/#int">int</a>
         <span class="comment">// contains filtered or unexported fields</span>
     }
 )</pre>
 				
 			
-				<pre>var LibIDs struct {
-    Fx, Img2D, ImgCube, Mat map[string]int
+				<pre>var <span id="LibIDs">LibIDs</span> struct {
+    Fx, Img2D, ImgCube, Mat map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#int">int</a>
 }</pre>
 				
 			
@@ -229,7 +238,7 @@ Some common base functionality shared by all the go:ngine example apps in _examp
 			
 			
 			<h2 id="AddKeyHint">func <a href="/target/user-input.go?s=1835:1868#L45">AddKeyHint</a></h2>
-			<pre>func AddKeyHint(key, hint string)</pre>
+			<pre>func AddKeyHint(key, hint <a href="/pkg/builtin/#string">string</a>)</pre>
 			<p>
 Key hints are shown in the window title bar, a new one every few seconds.
 This function adds a new hint to be included in that rotation.
@@ -240,28 +249,28 @@ This function adds a new hint to be included in that rotation.
 			
 			
 			<h2 id="AddMainScene">func <a href="/target/assets.go?s=329:363#L9">AddMainScene</a></h2>
-			<pre>func AddMainScene() (me *ng.Scene)</pre>
+			<pre>func AddMainScene() (me *<a href="/pkg/github.com/go3d/go-ngine/core/">ng</a>.<a href="/pkg/github.com/go3d/go-ngine/core/#Scene">Scene</a>)</pre>
 			
 			
 		
 			
 			
 			<h2 id="AddNode">func <a href="/target/assets.go?s=467:559#L16">AddNode</a></h2>
-			<pre>func AddNode(scene *ng.Scene, parentNodeID, meshID, matID, modelID int) (node *ng.SceneNode)</pre>
+			<pre>func AddNode(scene *<a href="/pkg/github.com/go3d/go-ngine/core/">ng</a>.<a href="/pkg/github.com/go3d/go-ngine/core/#Scene">Scene</a>, parentNodeID, meshID, matID, modelID <a href="/pkg/builtin/#int">int</a>) (node *<a href="/pkg/github.com/go3d/go-ngine/core/">ng</a>.<a href="/pkg/github.com/go3d/go-ngine/core/#SceneNode">SceneNode</a>)</pre>
 			
 			
 		
 			
 			
 			<h2 id="AddSkyMesh">func <a href="/target/assets.go?s=712:756#L23">AddSkyMesh</a></h2>
-			<pre>func AddSkyMesh(scene *ng.Scene, meshID int)</pre>
+			<pre>func AddSkyMesh(scene *<a href="/pkg/github.com/go3d/go-ngine/core/">ng</a>.<a href="/pkg/github.com/go3d/go-ngine/core/#Scene">Scene</a>, meshID <a href="/pkg/builtin/#int">int</a>)</pre>
 			
 			
 		
 			
 			
 			<h2 id="AddTextureMaterials">func <a href="/target/assets.go?s=2278:2329#L56">AddTextureMaterials</a></h2>
-			<pre>func AddTextureMaterials(idsUrls map[string]string)</pre>
+			<pre>func AddTextureMaterials(idsUrls map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a>)</pre>
 			<p>
 Sets up textures and associated effects/materials with the specified IDs and image URLs.
 For each ID (such as &#34;foo&#34; and &#34;bar&#34;):
@@ -278,7 +287,7 @@ adds it to ng.Core.Libs.Materials; its DefaultEffectID pointing to the ng.FxEffe
 			
 			
 			<h2 id="AppDirBasePath">func <a href="/target/apputil.go?s=1528:1556#L54">AppDirBasePath</a></h2>
-			<pre>func AppDirBasePath() string</pre>
+			<pre>func AppDirBasePath() <a href="/pkg/builtin/#string">string</a></pre>
 			<p>
 Returns the base path of the &#34;app dir&#34; for our example apps, in this case: $GOPATH/src/github.com/go3d/go-ngine/_examples/-app-data
 </p>
@@ -354,9 +363,9 @@ Prints a summary of go:ngine&#39;s *Stats* performance counters when the parent 
 			
 			<h2 id="Gui2D">type <a href="/target/gui2d.go?s=366:483#L1">Gui2D</a></h2>
 			<pre>type Gui2D struct {
-    View                 *ng.RenderView
-    Cam                  *ng.Camera
-    CatNodeID, DogNodeID int
+    View                 *<a href="/pkg/github.com/go3d/go-ngine/core/">ng</a>.<a href="/pkg/github.com/go3d/go-ngine/core/#RenderView">RenderView</a>
+    Cam                  *<a href="/pkg/github.com/go3d/go-ngine/core/">ng</a>.<a href="/pkg/github.com/go3d/go-ngine/core/#Camera">Camera</a>
+    CatNodeID, DogNodeID <a href="/pkg/builtin/#int">int</a>
 }</pre>
 			<p>
 A fake &#34;2D GUI&#34; concoction. There will be much better ngine-provided support for stuff like this.
@@ -376,7 +385,7 @@ inside a red 64x64 px square in the bottom left canvas corner.
 			
 				
 				<h3 id="Gui2D.Setup">func (*Gui2D) <a href="/target/gui2d.go?s=485:521#L7">Setup</a></h3>
-				<pre>func (me *Gui2D) Setup() (err error)</pre>
+				<pre>func (me *<a href="#Gui2D">Gui2D</a>) Setup() (err <a href="/pkg/builtin/#error">error</a>)</pre>
 				
 				
 				
@@ -386,8 +395,8 @@ inside a red 64x64 px square in the bottom left canvas corner.
 			
 			<h2 id="RearMirror">type <a href="/target/rear-mirror.go?s=260:324#L2">RearMirror</a></h2>
 			<pre>type RearMirror struct {
-    Cam  *ng.Camera
-    View *ng.RenderView
+    Cam  *<a href="/pkg/github.com/go3d/go-ngine/core/">ng</a>.<a href="/pkg/github.com/go3d/go-ngine/core/#Camera">Camera</a>
+    View *<a href="/pkg/github.com/go3d/go-ngine/core/">ng</a>.<a href="/pkg/github.com/go3d/go-ngine/core/#RenderView">RenderView</a>
 }</pre>
 			<p>
 A rather simple &#34;rear-view mirror&#34; view that can
@@ -398,7 +407,7 @@ be added to the example-program&#39;s main render canvas.
 			
 
 			
-				<pre>var RearView RearMirror</pre>
+				<pre>var <span id="RearView">RearView</span> <a href="#RearMirror">RearMirror</a></pre>
 				<p>
 Not actively used unless RearView.Setup() is called.
 </p>
@@ -412,7 +421,7 @@ Not actively used unless RearView.Setup() is called.
 			
 				
 				<h3 id="RearMirror.OnApp">func (*RearMirror) <a href="/target/rear-mirror.go?s=448:477#L8">OnApp</a></h3>
-				<pre>func (me *RearMirror) OnApp()</pre>
+				<pre>func (me *<a href="#RearMirror">RearMirror</a>) OnApp()</pre>
 				<p>
 Copies the main camera&#39;s current position and direction and reverses its by 180 degrees to achieve a rear-view mirror.
 </p>
@@ -422,7 +431,7 @@ Copies the main camera&#39;s current position and direction and reverses its by 
 			
 				
 				<h3 id="RearMirror.OnWin">func (*RearMirror) <a href="/target/rear-mirror.go?s=676:705#L16">OnWin</a></h3>
-				<pre>func (me *RearMirror) OnWin()</pre>
+				<pre>func (me *<a href="#RearMirror">RearMirror</a>) OnWin()</pre>
 				<p>
 Syncs the rear-view camera&#39;s render states with the main camera&#39;s.
 </p>
@@ -432,7 +441,7 @@ Syncs the rear-view camera&#39;s render states with the main camera&#39;s.
 			
 				
 				<h3 id="RearMirror.Setup">func (*RearMirror) <a href="/target/rear-mirror.go?s=931:971#L23">Setup</a></h3>
-				<pre>func (me *RearMirror) Setup(sceneID int)</pre>
+				<pre>func (me *<a href="#RearMirror">RearMirror</a>) Setup(sceneID <a href="/pkg/builtin/#int">int</a>)</pre>
 				<p>
 Adds the rear-view mirror&#39;s camera to the main render canvas, at 1/3rd of its width and 1/4th of its height.
 </p>
@@ -442,7 +451,7 @@ Adds the rear-view mirror&#39;s camera to the main render canvas, at 1/3rd of it
 			
 				
 				<h3 id="RearMirror.Toggle">func (*RearMirror) <a href="/target/rear-mirror.go?s=1333:1363#L34">Toggle</a></h3>
-				<pre>func (me *RearMirror) Toggle()</pre>
+				<pre>func (me *<a href="#RearMirror">RearMirror</a>) Toggle()</pre>
 				<p>
 Enables or disables this rear-view mirror.
 </p>
@@ -451,7 +460,6 @@ Enables or disables this rear-view mirror.
 				
 			
 		
-		</div>
 	
 
 	
