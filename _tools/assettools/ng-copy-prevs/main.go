@@ -28,7 +28,7 @@ func processPreview(walker *uio.DirWalker, filePath string, _ os.FileInfo) bool 
 }
 
 func main() {
-	if errs := uio.NewDirWalker(nil, processPreview).Walk(srcDirPath); len(errs) > 0 {
+	if errs := uio.NewDirWalker(true, nil, processPreview).Walk(srcDirPath); len(errs) > 0 {
 		panic(errs[0])
 	}
 }

@@ -57,7 +57,7 @@ func processFile(_ *uio.DirWalker, srcFilePath string, _ os.FileInfo) (keepWalki
 
 func main() {
 	flag.Parse()
-	if errs := uio.NewDirWalker(nil, processFile).Walk(*fSrcDirPath); len(errs) > 0 {
+	if errs := uio.NewDirWalker(true, nil, processFile).Walk(*fSrcDirPath); len(errs) > 0 {
 		panic(errs[0])
 	}
 }

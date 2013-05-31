@@ -103,7 +103,7 @@ func main() {
 	)
 	loadSpecXml()
 	enumNodes, funcNodes := specDoc.SelectNodesRecursive("*", "enum"), specDoc.SelectNodesRecursive("*", "function")
-	if errs := uio.NewDirWalker(nil, checkGoFile).Walk(util.GopathSrcGithub("go3d")); len(errs) > 0 {
+	if errs := uio.NewDirWalker(true, nil, checkGoFile).Walk(util.GopathSrcGithub("go3d")); len(errs) > 0 {
 		panic(errs[0])
 	}
 	for glName, _ := range glNames {

@@ -187,7 +187,7 @@ func main() {
 
 	srcDirPathEmbeds := filepath.Join(nginePath, "core", "_embed")
 	if !force {
-		if errs := uio.NewDirWalker(nil, uio.NewWalkerVisitor_IsNewerThan(outFileTime, &srcTimeGlsl)).Walk(srcDirPathEmbeds); len(errs) > 0 {
+		if errs := uio.NewDirWalker(false, nil, uio.NewWalkerVisitor_IsNewerThan(outFileTime, &srcTimeGlsl)).Walk(srcDirPathEmbeds); len(errs) > 0 {
 			panic(errs[0])
 		}
 	}
