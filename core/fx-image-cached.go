@@ -8,8 +8,8 @@ import (
 	"os"
 	"path/filepath"
 
-	ugo "github.com/metaleap/go-util"
 	ugfx "github.com/metaleap/go-util/gfx"
+	uhash "github.com/metaleap/go-util/hash"
 )
 
 type fxImageCached struct {
@@ -26,7 +26,7 @@ func newFxImageCached(init *FxImageInitFrom, fxImg *FxImageBase) (me *fxImageCac
 		err error
 	)
 	dirPath := Core.fileIO.resolveLocalFilePath(filepath.Join(Options.AppDir.Temp.BaseName, Options.AppDir.Temp.CachedTextures))
-	fileName := ugo.Hash(fnv.New64a(), strf("%s_%t_%t_%t_%t", init.RefUrl, fxImg.Preprocess.FlipY, fxImg.Preprocess.ToBgra, fxImg.Preprocess.ToLinear, fxImg.Storage.Gpu.Bgra))
+	fileName := uhash.EncodeToString(fnv.New64a(), []byte(strf("%s_%t_%t_%t_%t", init.RefUrl, fxImg.Preprocess.FlipY, fxImg.Preprocess.ToBgra, fxImg.Preprocess.ToLinear, fxImg.Storage.Gpu.Bgra)), nil)
 	me = &fxImageCached{needImg: true, fullPath: filepath.Join(dirPath, fileName)}
 
 	if me.src, err = os.Stat(Core.fileIO.resolveLocalFilePath(init.RefUrl)); err != nil {
