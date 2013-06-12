@@ -170,6 +170,23 @@ var (
 	}
 )
 
+//	Returns a new WalkerVisitor that during a DirWalker.Walk() tracks FileInfo.ModTime() for all visited files
+//	and/or directories, always storing the newest one in fileTime, and terminating early as soon as fileTime
+//	records a value higher than the specified testTime.
+func newWalkerVisitor_IsNewerThan(testTime time.Time, fileTime *time.Time) uio.WalkerVisitor {
+	var tmpTime time.Time
+	return func(fullPath string) (keepWalking bool) {
+		keepWalking = true
+		if fileInfo, err := os.Stat(fullPath); err == nil && fileInfo != nil {
+			if tmpTime = fileInfo.ModTime(); tmpTime.UnixNano() > fileTime.UnixNano() {
+				*fileTime = tmpTime
+			}
+			keepWalking = fileTime.UnixNano() <= testTime.UnixNano()
+		}
+		return
+	}
+}
+
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	var srcTimeGlsl, srcTimeEmbeds time.Time
@@ -187,7 +204,7 @@ func main() {
 
 	srcDirPathEmbeds := filepath.Join(nginePath, "core", "_embed")
 	if !force {
-		if errs := uio.NewDirWalker(false, nil, uio.NewWalkerVisitor_IsNewerThan(outFileTime, &srcTimeGlsl)).Walk(srcDirPathEmbeds); len(errs) > 0 {
+		if errs := uio.NewDirWalker(false, nil, newWalkerVisitor_IsNewerThan(outFileTime, &srcTimeGlsl)).Walk(srcDirPathEmbeds); len(errs) > 0 {
 			panic(errs[0])
 		}
 	}

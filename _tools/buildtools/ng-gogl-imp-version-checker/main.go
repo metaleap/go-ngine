@@ -6,7 +6,6 @@ import (
 	"go/ast"
 	"go/parser"
 	"go/token"
-	"os"
 	"strings"
 
 	xmlx "github.com/goforks/go-pkg-xmlx"
@@ -28,7 +27,7 @@ var (
 	specDoc     *xmlx.Document
 )
 
-func checkGoFile(_ *uio.DirWalker, filePath string, _ os.FileInfo) bool {
+func checkGoFile(filePath string) bool {
 	if strings.HasSuffix(filePath, ".go") {
 		var (
 			fset       = token.NewFileSet()
