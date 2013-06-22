@@ -11,7 +11,7 @@ import (
 
 	uio "github.com/metaleap/go-util/io"
 
-	"github.com/goforks/tga"
+	"github.com/go-forks/tga"
 )
 
 var (

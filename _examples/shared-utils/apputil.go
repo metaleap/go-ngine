@@ -9,7 +9,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/goforks/go-spew/spew"
+	"github.com/go-forks/go-spew/spew"
 
 	ng "github.com/go3d/go-ngine/core"
 	ugo "github.com/metaleap/go-util"
