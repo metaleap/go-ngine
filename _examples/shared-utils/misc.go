@@ -5,8 +5,8 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/go-utils/ugo"
 	ng "github.com/go3d/go-ngine/core"
-	ugo "github.com/metaleap/go-util"
 )
 
 //	Pauses rendering or resumes from the current pause.

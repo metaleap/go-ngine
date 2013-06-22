@@ -1,7 +1,7 @@
 package core
 
 import (
-	usl "github.com/metaleap/go-util/slice"
+	"github.com/go-utils/uslice"
 )
 
 const sceneNodeChildCap = 16
@@ -43,12 +43,12 @@ func (me *Scene) AddNewChildNode(parentNodeID, meshID int) (childNodeID int) {
 
 		if len(me.allNodes[parentNodeID].childNodeIDs) == cap(me.allNodes[parentNodeID].childNodeIDs) {
 			if len(me.allNodes[parentNodeID].childNodeIDs) > 0 {
-				usl.IntSetCap(&me.allNodes[parentNodeID].childNodeIDs, 2*len(me.allNodes[parentNodeID].childNodeIDs))
+				uslice.IntSetCap(&me.allNodes[parentNodeID].childNodeIDs, 2*len(me.allNodes[parentNodeID].childNodeIDs))
 			} else {
-				usl.IntSetCap(&me.allNodes[parentNodeID].childNodeIDs, sceneNodeChildCap)
+				uslice.IntSetCap(&me.allNodes[parentNodeID].childNodeIDs, sceneNodeChildCap)
 			}
 		}
-		usl.IntAppendUnique(&me.allNodes[parentNodeID].childNodeIDs, childNodeID)
+		uslice.IntAppendUnique(&me.allNodes[parentNodeID].childNodeIDs, childNodeID)
 		me.ApplyNodeTransforms(childNodeID)
 
 		var view int

@@ -1,12 +1,13 @@
+// Renders a scene of many animated 3D objects surrounded by a sky-pyramid, adding a 2nd smaller (tinted & pulsating) "look-behind" camera.
 package main
 
 import (
 	"math"
 
 	glfw "github.com/go-gl/glfw"
+	"github.com/go-utils/unum"
 	apputil "github.com/go3d/go-ngine/_examples/shared-utils"
 	ng "github.com/go3d/go-ngine/core"
-	unum "github.com/metaleap/go-util/num"
 )
 
 var (

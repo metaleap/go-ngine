@@ -2,8 +2,8 @@ package core
 
 import (
 	glfw "github.com/go-gl/glfw"
+	ugo "github.com/go-utils/ugo"
 	ugl "github.com/go3d/go-opengl/util"
-	ugo "github.com/metaleap/go-util"
 )
 
 var (

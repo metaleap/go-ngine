@@ -10,10 +10,10 @@ import (
 	"time"
 
 	"github.com/go-forks/go-spew/spew"
+	"github.com/go-utils/ugo"
+	"github.com/go-utils/unum"
 
 	ng "github.com/go3d/go-ngine/core"
-	ugo "github.com/metaleap/go-util"
-	unum "github.com/metaleap/go-util/num"
 )
 
 var (

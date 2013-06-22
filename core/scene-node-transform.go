@@ -1,8 +1,8 @@
 package core
 
 import (
+	"github.com/go-utils/unum"
 	u3d "github.com/go3d/go-3dutil"
-	unum "github.com/metaleap/go-util/num"
 )
 
 type nodeBounds struct {
@@ -13,7 +13,7 @@ type nodeBounds struct {
 //	This is only used by Node objects, which initialize their SceneNodeTransform with the
 //	proper defaults and associate themselves with their SceneNodeTransform. (Any other
 //	SceneNodeTransform are invalid.)
-//	
+//
 //	A single SceneNodeTransform encapsulates an unexported 4x4 matrix that is recalculated
 //	whenever its parent Node.ApplyTransform() method is called.
 type SceneNodeTransform struct {

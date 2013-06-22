@@ -9,8 +9,8 @@ import (
 	"os"
 	"path/filepath"
 
-	ugfx "github.com/metaleap/go-util/gfx"
-	uhash "github.com/metaleap/go-util/hash"
+	"github.com/go-utils/ugfx"
+	"github.com/go-utils/uhash"
 )
 
 type fxImageCached struct {

@@ -1,3 +1,4 @@
+// Shows only the splash screen without loading or rendering any scene data.
 package main
 
 import (

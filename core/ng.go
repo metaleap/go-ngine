@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"runtime"
 
+	"github.com/go-utils/uio"
 	ugl "github.com/go3d/go-opengl/util"
-	uio "github.com/metaleap/go-util/io"
 )
 
 //	Call this to "un-init" go:ngine and to release any and all GPU or RAM resources still allocated.

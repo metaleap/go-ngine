@@ -1,8 +1,8 @@
 package exampleutils
 
 import (
+	"github.com/go-utils/unum"
 	ng "github.com/go3d/go-ngine/core"
-	unum "github.com/metaleap/go-util/num"
 )
 
 //	A fake "2D GUI" concoction. There will be much better ngine-provided support for stuff like this.

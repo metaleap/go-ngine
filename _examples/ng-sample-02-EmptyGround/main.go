@@ -1,3 +1,4 @@
+// Provides a keyboard-controllable camera in 3D space; only an empty scene with just a flat ground plane is rendered.
 package main
 
 import (

@@ -1,3 +1,4 @@
+// Renders a scene of 2 animated 3D objects on a ground-plane surrounded by a sky-box.
 package main
 
 import (

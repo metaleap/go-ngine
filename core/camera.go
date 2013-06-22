@@ -1,10 +1,10 @@
 package core
 
 import (
+	"github.com/go-utils/unum"
+	"github.com/go-utils/uslice"
 	u3d "github.com/go3d/go-3dutil"
 	ugl "github.com/go3d/go-opengl/util"
-	unum "github.com/metaleap/go-util/num"
-	usl "github.com/metaleap/go-util/slice"
 )
 
 type Camera struct {
@@ -70,8 +70,8 @@ func (me *Camera) ensureProjMats(length int) {
 func (me *Camera) initNodeCamData(all SceneNodeLib, nodeID int) {
 	me.ensureProjMats(len(all))
 	me.thrPrep.nodeProjMats[nodeID].Identity()
-	usl.BoolEnsureLen(&me.thrPrep.nodeRender, len(all))
-	usl.BoolEnsureLen(&me.thrRend.nodeRender, len(all))
+	uslice.BoolEnsureLen(&me.thrPrep.nodeRender, len(all))
+	uslice.BoolEnsureLen(&me.thrRend.nodeRender, len(all))
 	me.thrPrep.nodeRender[nodeID] = false
 	me.thrRend.nodeRender[nodeID] = false
 }
@@ -86,8 +86,8 @@ func (me *Camera) SetScene(sceneID int) {
 		if scene := me.Scene(); scene != nil {
 			cap := len(scene.allNodes)
 			me.ensureProjMats(cap)
-			usl.BoolEnsureLen(&me.thrPrep.nodeRender, cap)
-			usl.BoolEnsureLen(&me.thrRend.nodeRender, cap)
+			uslice.BoolEnsureLen(&me.thrPrep.nodeRender, cap)
+			uslice.BoolEnsureLen(&me.thrRend.nodeRender, cap)
 			for i := 0; i < len(scene.allNodes); i++ {
 				if scene.allNodes.Ok(i) {
 					me.initNodeCamData(scene.allNodes, i)

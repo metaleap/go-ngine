@@ -3,9 +3,9 @@ package core
 import (
 	"sort"
 
-	uhash "github.com/metaleap/go-util/hash"
-	unum "github.com/metaleap/go-util/num"
-	usl "github.com/metaleap/go-util/slice"
+	"github.com/go-utils/uhash"
+	"github.com/go-utils/unum"
+	"github.com/go-utils/uslice"
 )
 
 const numPrios = 3
@@ -147,7 +147,7 @@ func (me *RenderTechniqueScene) prepEntry(n, nid, fx int, fi int32) {
 	}
 	entry.dist = me.Camera.Controller.Pos.ManhattanDistanceFrom(distPos)
 	entry.prog = ogl.progs.Index(Core.Libs.Effects[fx].uberPnames[me.name()])
-	usl.IntEnsureLen(&entry.texes, Stats.Programs.maxTexUnits)
+	uslice.IntEnsureLen(&entry.texes, Stats.Programs.maxTexUnits)
 	var ti int
 	for ti = 0; ti < len(entry.texes); ti++ {
 		entry.texes[ti] = -1

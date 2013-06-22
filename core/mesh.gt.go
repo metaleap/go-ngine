@@ -1,9 +1,9 @@
 package core
 
 import (
+	"github.com/go-utils/unum"
 	u3d "github.com/go3d/go-3dutil"
 	gl "github.com/go3d/go-opengl/core"
-	unum "github.com/metaleap/go-util/num"
 )
 
 //	Represents semi-processed loaded mesh data "almost ready" to core.Mesh.GpuUpload().

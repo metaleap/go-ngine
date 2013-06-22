@@ -5,11 +5,11 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/go-utils/ugo"
+	"github.com/go-utils/uio"
+	"github.com/go-utils/ustr"
 	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
-	ugo "github.com/metaleap/go-util"
-	uio "github.com/metaleap/go-util/io"
-	ustr "github.com/metaleap/go-util/str"
 )
 
 const (
