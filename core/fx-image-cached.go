@@ -1,6 +1,7 @@
 package core
 
 import (
+	"encoding/base64"
 	"encoding/binary"
 	"hash/fnv"
 	"image"
@@ -26,7 +27,8 @@ func newFxImageCached(init *FxImageInitFrom, fxImg *FxImageBase) (me *fxImageCac
 		err error
 	)
 	dirPath := Core.fileIO.resolveLocalFilePath(filepath.Join(Options.AppDir.Temp.BaseName, Options.AppDir.Temp.CachedTextures))
-	fileName := uhash.EncodeToString(fnv.New64a(), []byte(strf("%s_%t_%t_%t_%t", init.RefUrl, fxImg.Preprocess.FlipY, fxImg.Preprocess.ToBgra, fxImg.Preprocess.ToLinear, fxImg.Storage.Gpu.Bgra)), nil)
+	hash, _ := uhash.WriteAndSum(fnv.New64a(), []byte(strf("%s_%t_%t_%t_%t", init.RefUrl, fxImg.Preprocess.FlipY, fxImg.Preprocess.ToBgra, fxImg.Preprocess.ToLinear, fxImg.Storage.Gpu.Bgra)), nil)
+	fileName := base64.URLEncoding.EncodeToString(hash)
 	me = &fxImageCached{needImg: true, fullPath: filepath.Join(dirPath, fileName)}
 
 	if me.src, err = os.Stat(Core.fileIO.resolveLocalFilePath(init.RefUrl)); err != nil {
