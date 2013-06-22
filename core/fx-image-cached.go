@@ -89,7 +89,7 @@ func (me *fxImageCached) Pix() []byte {
 
 func (me *fxImageCached) setImg(img image.Image, fxImg *FxImageBase) (err error) {
 	me.bounds[0], me.bounds[1] = uint64(img.Bounds().Dx()), uint64(img.Bounds().Dy())
-	_, me.pix = ugfx.CloneImage(img, true)
+	_, me.pix = ugfx.CreateLike(img, true)
 	if len(me.fullPath) > 0 {
 		var file *os.File
 		if file, err = os.Create(me.fullPath); err == nil {

@@ -228,7 +228,7 @@ func makeEmbeds(srcDirPath string) {
 	if raw := uio.ReadBinaryFile(filePath, true); len(raw) > 0 {
 		if strings.HasSuffix(filePath, ".png") {
 			if src, _, err := image.Decode(bytes.NewReader(raw)); err == nil {
-				dst, _ := ugfx.CloneImage(src, false)
+				dst, _ := ugfx.CreateLike(src, false)
 				ugfx.PreprocessImage(src, dst, true, true, true)
 				w := new(bytes.Buffer)
 				png.Encode(w, dst)
