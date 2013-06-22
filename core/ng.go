@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/go-utils/uio"
+	"github.com/go-utils/ufs"
 	ugl "github.com/go3d/go-opengl/util"
 )
 
@@ -23,20 +23,20 @@ func Init(fullscreen bool) (err error) {
 		badVer, tmpDirPath string
 		glVer              float64
 	)
-	if err = uio.EnsureDirExists(Core.fileIO.resolveLocalFilePath(Options.AppDir.Temp.BaseName)); err != nil {
+	if err = ufs.EnsureDirExists(Core.fileIO.resolveLocalFilePath(Options.AppDir.Temp.BaseName)); err != nil {
 		return
 	}
 	defer runtime.GC()
 	if len(Options.AppDir.Temp.BaseName) > 0 {
 		for _, diagTmpDirName := range []string{Options.AppDir.Temp.ShaderSources, Options.AppDir.Temp.CachedTextures} {
 			tmpDirPath = Core.fileIO.resolveLocalFilePath(filepath.Join(Options.AppDir.Temp.BaseName, diagTmpDirName))
-			if err = uio.EnsureDirExists(tmpDirPath); err != nil {
+			if err = ufs.EnsureDirExists(tmpDirPath); err != nil {
 				return
 			}
 		}
 		for _, diagTmpDirName := range []string{Options.AppDir.Temp.ShaderSources} {
 			tmpDirPath = Core.fileIO.resolveLocalFilePath(filepath.Join(Options.AppDir.Temp.BaseName, diagTmpDirName))
-			if err = uio.ClearDirectory(tmpDirPath); err != nil {
+			if err = ufs.ClearDirectory(tmpDirPath); err != nil {
 				return
 			}
 		}

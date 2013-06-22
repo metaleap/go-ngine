@@ -5,8 +5,8 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/go-utils/ufs"
 	"github.com/go-utils/ugo"
-	"github.com/go-utils/uio"
 	"github.com/go-utils/ustr"
 	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
@@ -82,7 +82,7 @@ func (_ *glMan) makeProgs(forceAll bool, forceSome ...string) (dur time.Duration
 	if len(Options.AppDir.Temp.ShaderSources) > 0 {
 		writeSrc := func(i int, ext, src string) {
 			if len(src) > 0 {
-				uio.WriteTextFile(Core.fileIO.resolveLocalFilePath(path.Join(Options.AppDir.Temp.BaseName, Options.AppDir.Temp.ShaderSources, ogl.progs.All[i].Name+ext)), src)
+				ufs.WriteTextFile(Core.fileIO.resolveLocalFilePath(path.Join(Options.AppDir.Temp.BaseName, Options.AppDir.Temp.ShaderSources, ogl.progs.All[i].Name+ext)), src)
 			}
 		}
 		for i := 0; i < len(ogl.progs.All); i++ {
