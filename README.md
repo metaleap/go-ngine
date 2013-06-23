@@ -13,8 +13,6 @@ There shouldn't be any compilation errors if the above-mentioned `go-gl/glfw` pa
 
 Now you should be able to `go run` pretty much any `main.go` packages underneath `go3d/go-ngine/_examples` -- note the programs need write access to the `go3d/go-ngine/_examples/-app-data/_tmp` directory!
 
-
-
 go:ngine
 ========
 
