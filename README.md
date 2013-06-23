@@ -15,7 +15,7 @@ Now you should be able to `go run` pretty much any `main.go` packages underneath
 
 
 
-go-ngine
+go:ngine
 ========
 
 An in-development OpenGL-based "3D rendering engine" written in Go, focusing on interactive real-time apps such as games or demos.
