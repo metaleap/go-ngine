@@ -1,7 +1,7 @@
+![ Screenshot of go3d/go-ngine/_examples/ng-sample-04-PyrsCubes ](https://dl.dropboxusercontent.com/u/136375/img/screens/go-ngine.png)
+
 Getting going:
 ==============
-
-![ Screenshot of go3d/go-ngine/_examples/ng-sample-04-PyrsCubes ](https://dl.dropboxusercontent.com/u/136375/img/screens/go-ngine.png)
 
 First, `go get github.com/go-gl/glfw` --- this may not compile at first, until you have the http://glfw.org dev libs installed properly on your operating system.
 
