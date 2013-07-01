@@ -7,7 +7,6 @@ import (
 	"image/png"
 	"os"
 	"path/filepath"
-	"runtime"
 	"sort"
 	"strings"
 	"sync"
@@ -15,6 +14,7 @@ import (
 
 	"github.com/go-utils/ufs"
 	"github.com/go-utils/ugfx"
+	"github.com/go-utils/ugo"
 	"github.com/go-utils/ustr"
 )
 
@@ -188,7 +188,7 @@ func newWalkerVisitor_IsNewerThan(testTime time.Time, fileTime *time.Time) ufs.W
 }
 
 func main() {
-	runtime.GOMAXPROCS(runtime.NumCPU())
+	ugo.MaxProcs()
 	var srcTimeGlsl, srcTimeEmbeds time.Time
 	force := false
 	nginePath = os.Args[1]

@@ -96,7 +96,7 @@ func onSec() {
 func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	//	by design, go:ngine doesn't do this for you automagically:
 	runtime.LockOSThread()
-	runtime.GOMAXPROCS(runtime.NumCPU())
+	ugo.MaxProcs()
 	spew.Config.DisableMethods = true
 
 	//	can set window options before it is created
