@@ -64,12 +64,12 @@ tryInit:
 			Diag.LogIfGlErr("INIT")
 		} else if len(badVer) > 0 && !Options.Initialization.GlContext.CoreProfile.ForceFirst {
 			Options.Initialization.GlContext.CoreProfile.ForceFirst = true
-			UserIO.isGlfwInit, UserIO.Window.isCreated = false, false
+			UserIO.isCtxInit, UserIO.Window.isCreated = false, false
 			goto tryInit
 		}
 	} else if Options.Initialization.GlContext.CoreProfile.ForceFirst && (glVerIndex > 0) {
 		glVerIndex--
-		UserIO.isGlfwInit, UserIO.Window.isCreated = false, false
+		UserIO.isCtxInit, UserIO.Window.isCreated = false, false
 		goto tryInit
 	} else {
 		badVer = ogl.lastBadVer

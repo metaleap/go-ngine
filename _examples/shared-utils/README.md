@@ -39,6 +39,7 @@ const (
 
 ```go
 var (
+
 	//	Change to higher value to check out your splash-screen
 	ArtificialSplashScreenDelay = 0 * time.Second
 

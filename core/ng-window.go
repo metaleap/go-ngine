@@ -21,7 +21,7 @@ type WindowOptions struct {
 }
 
 func (me *WindowOptions) Created() bool {
-	return UserIO.isGlfwInit && me.isCreated && me.win != nil
+	return UserIO.isCtxInit && me.isCreated && me.win != nil
 }
 
 func (me *WindowOptions) Fullscreen() bool {
@@ -67,15 +67,13 @@ func (me *WindowOptions) Width() int {
 	return me.width
 }
 
-//	just a GLFW event callback without creating a closure
-func glfwOnWindowClose() {
+func glctxOnWindowClose() {
 	if UserIO.Window.OnCloseRequested() {
 		Loop.Running = false
 	}
 }
 
-//	just a GLFW event callback without creating a closure
-func glfwOnWindowResize(width, height int) {
+func glctxOnWindowResize(width, height int) {
 	UserIO.Window.width, UserIO.Window.height = width, height
 	UserIO.Window.lastResize = Loop.Tick.Now
 }

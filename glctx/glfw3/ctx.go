@@ -36,7 +36,7 @@ func (me *context) Init() (err error) {
 	return
 }
 
-func (me *context) Window(width, height int, title string, bufSize *ngctx.BufferBits, ctxProf *ngctx.CtxProfile) (window ngctx.Window, err error) {
+func (me *context) Window(winf *ngctx.WinProfile, bufSize *ngctx.BufferBits, ctxProf *ngctx.CtxProfile) (window ngctx.Window, err error) {
 	glfw.WindowHint(glfw.Samples, 0) // AA will be a pluggable post-processing shader
 	glfw.WindowHint(glfw.RedBits, bufSize.Color.R)
 	glfw.WindowHint(glfw.GreenBits, bufSize.Color.G)
@@ -50,9 +50,15 @@ func (me *context) Window(width, height int, title string, bufSize *ngctx.Buffer
 	if ctxProf.ForwardCompatibility {
 		glfw.WindowHint(glfw.OpenglForwardCompatible, 1)
 	}
-	var win *glfw.Window
-	if win, err = glfw.CreateWindow(width, height, title, nil, nil); err == nil {
-		window = newWindow(win)
+	var mon *glfw.Monitor
+	if winf.FullScreen {
+		mon, err = glfw.GetPrimaryMonitor()
+	}
+	if err == nil {
+		var win *glfw.Window
+		if win, err = glfw.CreateWindow(winf.Width, winf.Height, winf.Title, mon, nil); win != nil {
+			window = newWindow(win)
+		}
 	}
 	return
 }

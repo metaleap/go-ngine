@@ -26,7 +26,7 @@ func (me *context) Init() (err error) {
 	return
 }
 
-func (me *context) Window(width, height int, title string, bufSize *ngctx.BufferBits, ctxProf *ngctx.CtxProfile) (win ngctx.Window, err error) {
+func (me *context) Window(winf *ngctx.WinProfile, bufSize *ngctx.BufferBits, ctxProf *ngctx.CtxProfile) (win ngctx.Window, err error) {
 	glfw.OpenWindowHint(glfw.FsaaSamples, 0) // AA will be a pluggable post-processing shader
 	glfw.OpenWindowHint(glfw.OpenGLVersionMajor, ctxProf.Version.Major)
 	glfw.OpenWindowHint(glfw.OpenGLVersionMinor, ctxProf.Version.Minor)
@@ -34,8 +34,13 @@ func (me *context) Window(width, height int, title string, bufSize *ngctx.Buffer
 	if ctxProf.ForwardCompatibility {
 		glfw.OpenWindowHint(glfw.OpenGLForwardCompat, 1)
 	}
-	if err = glfw.OpenWindow(width, height, bufSize.Color.R, bufSize.Color.G, bufSize.Color.B, bufSize.Color.A, bufSize.Depth, bufSize.Stencil, glfw.Windowed); err == nil {
+	winMode := glfw.Windowed
+	if winf.FullScreen {
+		winMode = glfw.Fullscreen
+	}
+	if err = glfw.OpenWindow(winf.Width, winf.Height, bufSize.Color.R, bufSize.Color.G, bufSize.Color.B, bufSize.Color.A, bufSize.Depth, bufSize.Stencil, winMode); err == nil {
 		win = newWindow()
+		win.SetTitle(winf.Title)
 	}
 	return
 }

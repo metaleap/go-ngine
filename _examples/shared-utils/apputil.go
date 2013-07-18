@@ -17,6 +17,8 @@ import (
 )
 
 var (
+	winFullscreen = false
+
 	//	Change to higher value to check out your splash-screen
 	ArtificialSplashScreenDelay = 0 * time.Second
 
@@ -103,7 +105,6 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	win := &ng.UserIO.Window
 	//	release apps shouldn't do this, but during dev/test we want to observe max fps:
 	win.SetSwapInterval(0)
-	winFullscreen := false
 	win.SetSize(1280, 720)
 	winTitle.appName = filepath.Base(os.Args[0])
 	win.SetTitle(fmt.Sprintf("Loading \"%s\" example app... (%v CPU cores)", winTitle.appName, runtime.GOMAXPROCS(0)))

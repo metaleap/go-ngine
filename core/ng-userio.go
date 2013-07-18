@@ -19,10 +19,10 @@ type NgUserIO struct {
 
 	Window WindowOptions
 
-	ctx                     ngctx.CtxProvider
-	isGlfwInit, togglePress bool
-	keyWhich                int
-	lastToggles             map[int]float64
+	ctx                    ngctx.CtxProvider
+	isCtxInit, togglePress bool
+	keyWhich               int
+	lastToggles            map[int]float64
 }
 
 func (_ *NgUserIO) dispose() {
@@ -31,20 +31,20 @@ func (_ *NgUserIO) dispose() {
 		UserIO.Window.win.Close()
 		UserIO.Window.win = nil
 	}
-	if UserIO.isGlfwInit {
-		UserIO.isGlfwInit = false
+	if UserIO.isCtxInit {
+		UserIO.isCtxInit = false
 		UserIO.ctx.Terminate()
 	}
 }
 
 func (_ *NgUserIO) init(forceContextVersion float64) (err error) {
 	UserIO.KeyToggleMinDelay, UserIO.lastToggles = 0.15, make(map[int]float64, 80)
-	if !UserIO.isGlfwInit {
+	if !UserIO.isCtxInit {
 		if err = UserIO.ctx.Init(); err == nil {
-			UserIO.isGlfwInit = true
+			UserIO.isCtxInit = true
 		}
 	}
-	if UserIO.isGlfwInit && !UserIO.Window.isCreated {
+	if UserIO.isCtxInit && !UserIO.Window.isCreated {
 		var ctxProfile = ngctx.CtxProfile{CoreProfile: true, ForwardCompatibility: Options.Initialization.GlContext.CoreProfile.ForwardCompat}
 		if forceContextVersion > 0 {
 			ctxProfile.Version.Major, ctxProfile.Version.Minor = ugl.VersionMajorMinor(forceContextVersion)
@@ -55,18 +55,19 @@ func (_ *NgUserIO) init(forceContextVersion float64) (err error) {
 }
 
 func (_ *NgUserIO) recreateWin(ctxProfile *ngctx.CtxProfile) (err error) {
-	if UserIO.Window.isCreated {
-		UserIO.Window.isCreated = false
-		UserIO.Window.win.Close()
-		UserIO.Window.win = nil
+	uioWin := &UserIO.Window
+	if uioWin.isCreated {
+		uioWin.isCreated = false
+		uioWin.win.Close()
+		uioWin.win = nil
 	}
-	//ugo.Ifi(UserIO.Window.fullscreen, glfw.Fullscreen, glfw.Windowed)
-	if UserIO.Window.win, err = UserIO.ctx.Window(UserIO.Window.width, UserIO.Window.height, UserIO.Window.title, &Options.Initialization.Window.BufSizes, ctxProfile); err == nil {
-		UserIO.Window.width, UserIO.Window.height = UserIO.Window.win.Size()
-		UserIO.Window.isCreated = true
-		UserIO.Window.SetSwapInterval(UserIO.Window.swap)
-		UserIO.Window.win.CallbackWindowClose(glfwOnWindowClose)
-		UserIO.Window.win.CallbackWindowSize(glfwOnWindowResize)
+	var winf = ngctx.WinProfile{Width: uioWin.width, Height: uioWin.height, Title: uioWin.title, FullScreen: uioWin.fullscreen}
+	if uioWin.win, err = UserIO.ctx.Window(&winf, &Options.Initialization.Window.BufSizes, ctxProfile); err == nil {
+		uioWin.width, uioWin.height = uioWin.win.Size()
+		uioWin.isCreated = true
+		uioWin.SetSwapInterval(uioWin.swap)
+		uioWin.win.CallbackWindowClose(glctxOnWindowClose)
+		uioWin.win.CallbackWindowSize(glctxOnWindowResize)
 	}
 	return
 }
