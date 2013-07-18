@@ -1,9 +1,9 @@
 package core
 
 import (
-	glfw "github.com/go-gl/glfw"
-	ugo "github.com/go-utils/ugo"
 	ugl "github.com/go3d/go-opengl/util"
+
+	ngctx "github.com/go3d/go-ngine/glctx"
 )
 
 var (
@@ -19,6 +19,7 @@ type NgUserIO struct {
 
 	Window WindowOptions
 
+	ctx                     ngctx.CtxProvider
 	isGlfwInit, togglePress bool
 	keyWhich                int
 	lastToggles             map[int]float64
@@ -27,52 +28,45 @@ type NgUserIO struct {
 func (_ *NgUserIO) dispose() {
 	if UserIO.Window.isCreated {
 		UserIO.Window.isCreated = false
-		glfw.CloseWindow()
+		UserIO.Window.win.Close()
+		UserIO.Window.win = nil
 	}
 	if UserIO.isGlfwInit {
 		UserIO.isGlfwInit = false
-		glfw.Terminate()
+		UserIO.ctx.Terminate()
 	}
 }
 
 func (_ *NgUserIO) init(forceContextVersion float64) (err error) {
 	UserIO.KeyToggleMinDelay, UserIO.lastToggles = 0.15, make(map[int]float64, 80)
 	if !UserIO.isGlfwInit {
-		if err = glfw.Init(); err == nil {
+		if err = UserIO.ctx.Init(); err == nil {
 			UserIO.isGlfwInit = true
 		}
 	}
 	if UserIO.isGlfwInit && !UserIO.Window.isCreated {
-		glfw.OpenWindowHint(glfw.FsaaSamples, 0) // AA will be a pluggable post-processing shader
+		var ctxProfile = ngctx.CtxProfile{CoreProfile: true, ForwardCompatibility: Options.Initialization.GlContext.CoreProfile.ForwardCompat}
 		if forceContextVersion > 0 {
-			major, minor := ugl.VersionMajorMinor(forceContextVersion)
-			glfw.OpenWindowHint(glfw.OpenGLVersionMajor, major)
-			glfw.OpenWindowHint(glfw.OpenGLVersionMinor, minor)
-			glfw.OpenWindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
-			if Options.Initialization.GlContext.CoreProfile.ForwardCompat {
-				glfw.OpenWindowHint(glfw.OpenGLForwardCompat, 1)
-			}
+			ctxProfile.Version.Major, ctxProfile.Version.Minor = ugl.VersionMajorMinor(forceContextVersion)
 		}
-		err = UserIO.recreateWin()
+		err = UserIO.recreateWin(&ctxProfile)
 	}
 	return
 }
 
-func (_ *NgUserIO) recreateWin() (err error) {
-	winInit := &Options.Initialization.Window
+func (_ *NgUserIO) recreateWin(ctxProfile *ngctx.CtxProfile) (err error) {
 	if UserIO.Window.isCreated {
-		glfw.CloseWindow()
+		UserIO.Window.isCreated = false
+		UserIO.Window.win.Close()
+		UserIO.Window.win = nil
 	}
-	if UserIO.Window.isCreated, err = false, glfw.OpenWindow(UserIO.Window.width, UserIO.Window.height, winInit.Rbits, winInit.Gbits, winInit.Bbits, winInit.Abits, winInit.DepthBits, winInit.StencilBits, ugo.Ifi(UserIO.Window.fullscreen, glfw.Fullscreen, glfw.Windowed)); err == nil {
-		UserIO.Window.width, UserIO.Window.height = glfw.WindowSize()
+	//ugo.Ifi(UserIO.Window.fullscreen, glfw.Fullscreen, glfw.Windowed)
+	if UserIO.Window.win, err = UserIO.ctx.Window(UserIO.Window.width, UserIO.Window.height, UserIO.Window.title, &Options.Initialization.Window.BufSizes, ctxProfile); err == nil {
+		UserIO.Window.width, UserIO.Window.height = UserIO.Window.win.Size()
 		UserIO.Window.isCreated = true
-		UserIO.Window.SetTitle(UserIO.Window.title)
 		UserIO.Window.SetSwapInterval(UserIO.Window.swap)
-		glfw.SetWindowCloseCallback(glfwOnWindowClose)
-		glfw.SetWindowSizeCallback(glfwOnWindowResize)
-		// glfw.Disable(glfw.MouseCursor)
-		glfw.Disable(glfw.AutoPollEvents)
-		glfw.Disable(glfw.StickyKeys)
+		UserIO.Window.win.CallbackWindowClose(glfwOnWindowClose)
+		UserIO.Window.win.CallbackWindowSize(glfwOnWindowResize)
 	}
 	return
 }
@@ -87,7 +81,7 @@ func (_ *NgUserIO) IifKeyF(key int, ifTrue, ifFalse float64) float64 {
 
 //	Returns true if the specified key is pressed.
 func (_ *NgUserIO) KeyPressed(key int) bool {
-	return glfw.Key(key) == glfw.KeyPress
+	return UserIO.Window.win.Key(key) == 1
 }
 
 //	Returns the first in keys that is pressed.

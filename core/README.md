@@ -53,7 +53,7 @@ still allocated.
 #### func  Init
 
 ```go
-func Init(fullscreen bool) (err error)
+func Init(fullscreen bool, ctx ngctx.CtxProvider) (err error)
 ```
 Initializes go:ngine; this first attempts to initialize OpenGL and then open a
 window to your supplied specifications with a GL 3.3-or-higher profile.
@@ -1604,11 +1604,11 @@ type NgOptions struct {
 			SplashImage    []byte
 		}
 		Window struct {
-			//	Defaults: R=8 G=8 B=8 A=0 D=8 S=0.
+			//	Defaults: Color.R=8 Color.G=8 Color.B=8 Color.A=0 Depth=8 Stencil=0.
 			//	These defaults are reasonable when using a render-to-texture off-screen
-			//	RenderCanvas. Otherwise, may want to bump D to at least 24 or 32.
-			//	D shouldn't be 0 as this causes some Intel HD drivers to bug out badly.
-			Rbits, Gbits, Bbits, Abits, DepthBits, StencilBits int
+			//	RenderCanvas. Otherwise, may want to bump Depth to at least 24 or 32.
+			//	Depth shouldn't be 0 as this causes some Intel HD drivers to bug out badly.
+			BufSizes ngctx.BufferBits
 		}
 	}
 

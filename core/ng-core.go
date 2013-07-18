@@ -1,7 +1,6 @@
 package core
 
 import (
-	glfw "github.com/go-gl/glfw"
 	u3d "github.com/go3d/go-3dutil"
 	gl "github.com/go3d/go-opengl/core"
 	ugl "github.com/go3d/go-opengl/util"
@@ -142,7 +141,7 @@ func (_ *NgCore) showSplash() (err error) {
 	Core.onRender()
 	splash.Unload()
 	splash.InitFrom.RawData = nil
-	glfw.SwapBuffers()
+	UserIO.Window.win.SwapBuffers()
 	return
 }
 

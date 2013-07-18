@@ -1,7 +1,7 @@
 package core
 
 import (
-	glfw "github.com/go-gl/glfw"
+	ngctx "github.com/go3d/go-ngine/glctx"
 )
 
 type WindowOptions struct {
@@ -13,6 +13,7 @@ type WindowOptions struct {
 	//	Defaults to 0.15.
 	ResizeMinDelay float64
 
+	win                   ngctx.Window
 	fullscreen, isCreated bool
 	width, height, swap   int
 	title                 string
@@ -20,7 +21,7 @@ type WindowOptions struct {
 }
 
 func (me *WindowOptions) Created() bool {
-	return UserIO.isGlfwInit && me.isCreated
+	return UserIO.isGlfwInit && me.isCreated && me.win != nil
 }
 
 func (me *WindowOptions) Fullscreen() bool {
@@ -34,14 +35,14 @@ func (me *WindowOptions) Height() int {
 
 func (me *WindowOptions) SetSize(width, height int) {
 	if me.width, me.height = width, height; me.Created() {
-		glfw.SetWindowSize(width, height)
+		me.win.SetSize(width, height)
 	}
 }
 
 func (me *WindowOptions) SetSwapInterval(newSwap int) {
 	me.swap = newSwap
 	if me.Created() {
-		glfw.SetSwapInterval(me.swap)
+		UserIO.ctx.SetSwapInterval(me.swap)
 	}
 }
 
@@ -49,7 +50,7 @@ func (me *WindowOptions) SetSwapInterval(newSwap int) {
 func (me *WindowOptions) SetTitle(newTitle string) {
 	me.title = newTitle
 	if me.Created() {
-		glfw.SetWindowTitle(newTitle)
+		me.win.SetTitle(newTitle)
 	}
 }
 
@@ -67,17 +68,10 @@ func (me *WindowOptions) Width() int {
 }
 
 //	just a GLFW event callback without creating a closure
-func glfwOnWindowClose() (doit int) {
+func glfwOnWindowClose() {
 	if UserIO.Window.OnCloseRequested() {
-		if !Loop.Running {
-			doit = 1
-		}
-		//	If looping, return 0 for now to "cancel the Close" but also stop loop to close cleanly.
-		//	If we returned 1 here to "accept the Close", the loop would continue
-		//	doing GL stuff against the destroyed window and record a GL error.
 		Loop.Running = false
 	}
-	return
 }
 
 //	just a GLFW event callback without creating a closure

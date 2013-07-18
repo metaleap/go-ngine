@@ -141,7 +141,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	}
 
 	//	STEP 1: init go:ngine
-	err := ng.Init(winFullscreen)
+	err := ng.Init(winFullscreen, newGlCtx())
 	if err != nil {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {

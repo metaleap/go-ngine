@@ -1,0 +1,39 @@
+package exampleutils
+
+import (
+	glfw "github.com/go-gl/glfw"
+	glctx "github.com/go3d/go-ngine/glctx"
+	ngctx "github.com/go3d/go-ngine/glctx/glfw2"
+)
+
+const (
+	KeyLalt     = glfw.KeyLalt
+	KeyLshift   = glfw.KeyLshift
+	KeyRshift   = glfw.KeyRshift
+	KeyLeft     = glfw.KeyLeft
+	KeyRight    = glfw.KeyRight
+	KeyUp       = glfw.KeyUp
+	KeyDown     = glfw.KeyDown
+	KeyPagedown = glfw.KeyPagedown
+	KeyPageup   = glfw.KeyPageup
+	KeyKP9      = glfw.KeyKP9
+	KeyKP3      = glfw.KeyKP3
+	KeyEsc      = glfw.KeyEsc
+	KeyF1       = glfw.KeyF1
+	KeyF2       = glfw.KeyF2
+	KeyF3       = glfw.KeyF3
+	KeyF4       = glfw.KeyF4
+	KeyF5       = glfw.KeyF5
+	KeyF6       = glfw.KeyF6
+	KeyF7       = glfw.KeyF7
+	KeyF8       = glfw.KeyF8
+	KeyF9       = glfw.KeyF9
+	KeyF10      = glfw.KeyF10
+	KeyF11      = glfw.KeyF11
+	KeyF12      = glfw.KeyF12
+	KeyLctrl    = glfw.KeyLctrl
+)
+
+func newGlCtx() glctx.CtxProvider {
+	return ngctx.New()
+}

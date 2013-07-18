@@ -3,8 +3,6 @@ package core
 import (
 	"runtime"
 	"time"
-
-	glfw "github.com/go-gl/glfw"
 )
 
 var (
@@ -69,7 +67,7 @@ func (_ *NgLoop) onGC() {
 
 func (_ *NgLoop) onSwap() {
 	Stats.FrameRenderGpu.begin()
-	glfw.SwapBuffers()
+	UserIO.Window.win.SwapBuffers()
 	Stats.FrameRenderGpu.end()
 }
 
@@ -89,7 +87,7 @@ func (_ *NgLoop) onThreadPrep() {
 
 func (_ *NgLoop) onThreadWin() {
 	Stats.FrameWinThread.begin()
-	if glfw.PollEvents(); glfw.WindowParam(glfw.Opened) == 1 {
+	if UserIO.ctx.PollEvents(); !UserIO.Window.win.ShouldClose() {
 		Loop.On.WinThread()
 	} else {
 		Loop.Running = false
@@ -112,7 +110,7 @@ func (_ *NgLoop) onWaitForThreads() {
 }
 
 //	Initiates a rendering loop. This method returns only when the loop is stopped for whatever reason.
-//	
+//
 //	(Before entering the loop, this method performs a one-off GC invokation.)
 func (_ *NgLoop) Run() {
 	var (
@@ -121,17 +119,17 @@ func (_ *NgLoop) Run() {
 	)
 	if !Loop.Running {
 		Loop.Running = true
-		glfw.SetTime(0)
-		Loop.Tick.Now = glfw.Time()
+		UserIO.ctx.SetTime(0)
+		Loop.Tick.Now = UserIO.ctx.Time()
 		Core.copyAppToPrep()
 		Core.copyPrepToRend()
 		Loop.Tick.Prev = Loop.Tick.Now
-		Loop.Tick.Now = glfw.Time()
+		Loop.Tick.Now = UserIO.ctx.Time()
 		Loop.Tick.PrevSec, Loop.Tick.Delta = int(Loop.Tick.Now), Loop.Tick.Now-Loop.Tick.Prev
 		Stats.reset()
 		runtime.GC()
 		Diag.LogMisc("Enter loop...")
-		Loop.Running = glfw.WindowParam(glfw.Opened) == 1
+		Loop.Running = !UserIO.Window.win.ShouldClose()
 		for Loop.Running {
 			//	STEP 0. Fire off the prep thread (for next frame) and app thread (for next-after-next frame).
 			thrPrep.Lock()
@@ -168,7 +166,7 @@ func (_ *NgLoop) Run() {
 
 			//	Must do this here so that current-tick won't change half-way through OnAppTread(),
 			//	and then we'd also like this frame's On.WinThread() to have the same current-tick.
-			Loop.Tick.Prev, Loop.Tick.Now = Loop.Tick.Now, glfw.Time()
+			Loop.Tick.Prev, Loop.Tick.Now = Loop.Tick.Now, UserIO.ctx.Time()
 			Stats.Frame.measureStartTime, Loop.Tick.Delta = Loop.Tick.Prev, Loop.Tick.Now-Loop.Tick.Prev
 			Stats.Frame.end()
 			//	GC stops-the-world so do it after go-routines have finished. Now is a good time, as the GPU
@@ -208,5 +206,5 @@ func (_ *NgLoop) Run() {
 
 //	Returns the number of seconds expired ever since Loop.Run() was last called.
 func (_ *NgLoop) Time() float64 {
-	return glfw.Time()
+	return UserIO.ctx.Time()
 }

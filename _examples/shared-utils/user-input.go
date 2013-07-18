@@ -1,7 +1,6 @@
 package exampleutils
 
 import (
-	glfw "github.com/go-gl/glfw"
 	ng "github.com/go3d/go-ngine/core"
 )
 
@@ -44,9 +43,9 @@ var (
 func init() {
 	Keys.Pressed = map[int]bool{}
 	Keys.CheckForPressed = []int{
-		glfw.KeyLalt, glfw.KeyLshift, glfw.KeyRshift, 'W', 'A', 'S', 'D',
-		glfw.KeyLeft, glfw.KeyRight, glfw.KeyUp, glfw.KeyDown,
-		glfw.KeyPagedown, glfw.KeyPageup, glfw.KeyKP9, glfw.KeyKP3,
+		KeyLalt, KeyLshift, KeyRshift, 'W', 'A', 'S', 'D',
+		KeyLeft, KeyRight, KeyUp, KeyDown,
+		KeyPagedown, KeyPageup, KeyKP9, KeyKP3,
 	}
 }
 
@@ -71,22 +70,22 @@ func CheckCamCtlKeys() {
 //	check AND handle key-toggle states for F2, F3 etc. function keys and Esc.
 func CheckAndHandleToggleKeys() {
 	in := &ng.UserIO
-	if in.KeyToggled(glfw.KeyEsc) {
+	if in.KeyToggled(KeyEsc) {
 		PauseResume()
 	}
-	if SceneView != nil && in.KeyToggled(glfw.KeyF2) {
+	if SceneView != nil && in.KeyToggled(KeyF2) {
 		SceneView.RenderStates.FaceCulling = !SceneView.RenderStates.FaceCulling
 	}
-	if in.KeyToggled(glfw.KeyF3) {
+	if in.KeyToggled(KeyF3) {
 		toggleRetro()
 	}
-	if in.KeyToggled(glfw.KeyF4) {
+	if in.KeyToggled(KeyF4) {
 		toggleTexturing()
 	}
-	if in.KeyToggled(glfw.KeyF5) {
+	if in.KeyToggled(KeyF5) {
 		toggleBatching()
 	}
-	if in.KeysPressedAll2(glfw.KeyLctrl, 'Q') {
+	if in.KeysPressedAll2(KeyLctrl, 'Q') {
 		ng.Loop.Running = false
 	}
 }
@@ -96,17 +95,17 @@ func CheckAndHandleToggleKeys() {
 func HandleCamCtlKeys() {
 	if SceneCam.Controller.Params.MoveSpeedupFactor = 1; !Paused {
 		camCtl := &SceneCam.Controller
-		if Keys.Pressed[glfw.KeyLshift] {
+		if Keys.Pressed[KeyLshift] {
 			camCtl.Params.MoveSpeedupFactor = 10
-		} else if Keys.Pressed[glfw.KeyRshift] {
+		} else if Keys.Pressed[KeyRshift] {
 			camCtl.Params.MoveSpeedupFactor = 100
-		} else if Keys.Pressed[glfw.KeyLalt] {
+		} else if Keys.Pressed[KeyLalt] {
 			camCtl.Params.MoveSpeedupFactor = 0.1
 		}
-		if Keys.Pressed[glfw.KeyUp] {
+		if Keys.Pressed[KeyUp] {
 			camCtl.MoveForward()
 		}
-		if Keys.Pressed[glfw.KeyDown] {
+		if Keys.Pressed[KeyDown] {
 			camCtl.MoveBackward()
 		}
 		if Keys.Pressed['A'] {
@@ -121,16 +120,16 @@ func HandleCamCtlKeys() {
 		if Keys.Pressed['S'] {
 			camCtl.MoveDown()
 		}
-		if Keys.Pressed[glfw.KeyLeft] {
+		if Keys.Pressed[KeyLeft] {
 			camCtl.TurnLeft()
 		}
-		if Keys.Pressed[glfw.KeyRight] {
+		if Keys.Pressed[KeyRight] {
 			camCtl.TurnRight()
 		}
-		if Keys.Pressed[glfw.KeyPageup] || Keys.Pressed[glfw.KeyKP9] {
+		if Keys.Pressed[KeyPageup] || Keys.Pressed[KeyKP9] {
 			camCtl.TurnUp()
 		}
-		if Keys.Pressed[glfw.KeyPagedown] || Keys.Pressed[glfw.KeyKP3] {
+		if Keys.Pressed[KeyPagedown] || Keys.Pressed[KeyKP3] {
 			camCtl.TurnDown()
 		}
 	}

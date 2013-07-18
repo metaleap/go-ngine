@@ -4,7 +4,6 @@ package main
 import (
 	"math"
 
-	glfw "github.com/go-gl/glfw"
 	"github.com/go-utils/unum"
 	apputil "github.com/go3d/go-ngine/_examples/shared-utils"
 	ng "github.com/go3d/go-ngine/core"
@@ -34,13 +33,13 @@ func main() {
 func onWinThread() {
 	apputil.CheckCamCtlKeys()
 	apputil.CheckAndHandleToggleKeys()
-	if ng.UserIO.KeyToggled(glfw.KeyF12) {
+	if ng.UserIO.KeyToggled(apputil.KeyF12) {
 		apputil.RearView.Toggle()
 	}
-	if ng.UserIO.KeyToggled(glfw.KeyF10) {
+	if ng.UserIO.KeyToggled(apputil.KeyF10) {
 		addCrates(apputil.SceneCam.Scene(), 3)
 	}
-	if ng.UserIO.KeyToggled(glfw.KeyF11) {
+	if ng.UserIO.KeyToggled(apputil.KeyF11) {
 		removeCrates(apputil.SceneCam.Scene(), 3)
 	}
 	apputil.RearView.OnWin()

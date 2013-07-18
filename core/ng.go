@@ -7,6 +7,8 @@ import (
 
 	"github.com/go-utils/ufs"
 	ugl "github.com/go3d/go-opengl/util"
+
+	ngctx "github.com/go3d/go-ngine/glctx"
 )
 
 //	Call this to "un-init" go:ngine and to release any and all GPU or RAM resources still allocated.
@@ -17,12 +19,13 @@ func Dispose() {
 }
 
 //	Initializes go:ngine; this first attempts to initialize OpenGL and then open a window to your supplied specifications with a GL 3.3-or-higher profile.
-func Init(fullscreen bool) (err error) {
+func Init(fullscreen bool, ctx ngctx.CtxProvider) (err error) {
 	var (
 		glVerIndex         = len(ugl.KnownVersions) - 1
 		badVer, tmpDirPath string
 		glVer              float64
 	)
+	UserIO.ctx = ctx
 	if err = ufs.EnsureDirExists(Core.fileIO.resolveLocalFilePath(Options.AppDir.Temp.BaseName)); err != nil {
 		return
 	}

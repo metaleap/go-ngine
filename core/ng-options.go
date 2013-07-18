@@ -6,6 +6,8 @@ import (
 
 	u3d "github.com/go3d/go-3dutil"
 	ugl "github.com/go3d/go-opengl/util"
+
+	ngctx "github.com/go3d/go-ngine/glctx"
 )
 
 const DefaultBadVersionMessage = `
@@ -80,11 +82,11 @@ type NgOptions struct {
 			SplashImage    []byte
 		}
 		Window struct {
-			//	Defaults: R=8 G=8 B=8 A=0 D=8 S=0.
+			//	Defaults: Color.R=8 Color.G=8 Color.B=8 Color.A=0 Depth=8 Stencil=0.
 			//	These defaults are reasonable when using a render-to-texture off-screen
-			//	RenderCanvas. Otherwise, may want to bump D to at least 24 or 32.
-			//	D shouldn't be 0 as this causes some Intel HD drivers to bug out badly.
-			Rbits, Gbits, Bbits, Abits, DepthBits, StencilBits int
+			//	RenderCanvas. Otherwise, may want to bump Depth to at least 24 or 32.
+			//	Depth shouldn't be 0 as this causes some Intel HD drivers to bug out badly.
+			BufSizes ngctx.BufferBits
 		}
 	}
 
@@ -144,7 +146,8 @@ func init() {
 	init, isMac, initGl := &o.Initialization, runtime.GOOS == "darwin", &o.Initialization.GlContext
 	initGl.CoreProfile.ForceFirst, initGl.CoreProfile.ForwardCompat, initGl.BadVersionMessage = isMac, isMac, DefaultBadVersionMessage
 	initGl.CoreProfile.VersionHint = ugl.KnownVersions[len(ugl.KnownVersions)-1]
-	init.Window.Rbits, init.Window.Gbits, init.Window.Bbits, init.Window.DepthBits = 8, 8, 8, 8
+	buf := &init.Window.BufSizes
+	buf.Color.R, buf.Color.G, buf.Color.B, buf.Depth = 8, 8, 8, 8
 
 	rend := &o.Rendering
 	rend.DefaultBatcher.Enabled = true

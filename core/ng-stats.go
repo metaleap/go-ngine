@@ -1,8 +1,6 @@
 package core
 
-import (
-	glfw "github.com/go-gl/glfw"
-)
+import ()
 
 var (
 	//	Tracks various go:ngine performance counters over time.
@@ -67,10 +65,10 @@ type NgStats struct {
 	FrameThreadSync TimingStats
 
 	//	During the Loop, the Go Garbge Collector is invoked at least and at most once per second.
-	//	
+	//
 	//	Forcing GC "that often" practically guarantees it will almost never have so much work to do as to
 	//	noticably block user interaction --- typically well below 10ms, most often around 1ms.
-	//	
+	//
 	//	This TimingStats instance over time tracks the maximum and average time spent on that
 	//	1x-per-second-during-Loop GC invokation (but does not track any other GC invokations).
 	Gc TimingStats
@@ -94,7 +92,7 @@ func (_ *NgStats) addProgCompile(numProgs int, duration int64) {
 
 //	Returns the average number of frames-per-second since Loop.Loop() was last called.
 func (_ *NgStats) AverageFps() float64 {
-	return Stats.fpsAll / glfw.Time()
+	return Stats.fpsAll / UserIO.ctx.Time()
 }
 
 func (_ *NgStats) enable() {
@@ -141,13 +139,13 @@ func (me *TimingStats) combine(c1, c2 *TimingStats) {
 
 func (me *TimingStats) begin() {
 	if Stats.enabled {
-		me.measureStartTime = glfw.Time()
+		me.measureStartTime = UserIO.ctx.Time()
 	}
 }
 
 func (me *TimingStats) end() {
 	if Stats.enabled {
-		if me.thisTime = glfw.Time() - me.measureStartTime; me.thisTime > me.max {
+		if me.thisTime = UserIO.ctx.Time() - me.measureStartTime; me.thisTime > me.max {
 			me.max = me.thisTime
 		}
 		me.measuredCounter++
