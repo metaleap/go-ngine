@@ -1,3 +1,5 @@
+//	A crate with two custom face effects for top and front faces,
+//	the latter also show-casing a fade-animated multi-textured face effect.
 package main
 
 import (

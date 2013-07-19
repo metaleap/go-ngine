@@ -1,4 +1,4 @@
-// Renders rotating, moving triangles and quads with some color funkyness in 3D space.
+// Renders a rotating & moving triangle and quad with some color funkyness in 3D space.
 package main
 
 import (

@@ -1,3 +1,4 @@
+//	A pyramid declared as a child node to a crate, thus inheriting all node transformations.
 package main
 
 import (

@@ -1,3 +1,4 @@
+//	A pyramid with all 4 faces showing each a different effect.
 package main
 
 import (

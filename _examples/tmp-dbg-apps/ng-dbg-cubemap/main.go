@@ -1,3 +1,4 @@
+//	Renders a cube-mapped crate next to a normal texture-mapped crate.
 package main
 
 import (
