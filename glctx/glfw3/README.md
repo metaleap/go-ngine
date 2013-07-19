@@ -2,6 +2,7 @@
 --
     import "github.com/go3d/go-ngine/glctx/glfw3"
 
+Implements a `CtxProvider` for GLFW 3.x.
 
 ## Usage
 
@@ -10,6 +11,7 @@
 ```go
 func New() ngctx.CtxProvider
 ```
+Returns a new `CtxProvider` for GLFW 3.x.
 
 --
 **godocdown** http://github.com/robertkrimen/godocdown

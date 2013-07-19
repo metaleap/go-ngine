@@ -17,7 +17,8 @@ import (
 )
 
 var (
-	winFullscreen = false
+	//	Change this before calling `Main` for full-screen mode.
+	WinFullscreen = false
 
 	//	Change to higher value to check out your splash-screen
 	ArtificialSplashScreenDelay = 0 * time.Second
@@ -142,7 +143,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	}
 
 	//	STEP 1: init go:ngine
-	err := ng.Init(winFullscreen, newGlCtx())
+	err := ng.Init(WinFullscreen, newGlCtx())
 	if err != nil {
 		fmt.Printf("ABORT:\n%v\n", err)
 	} else {

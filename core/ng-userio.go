@@ -45,7 +45,7 @@ func (_ *NgUserIO) init(forceContextVersion float64) (err error) {
 		}
 	}
 	if UserIO.isCtxInit && !UserIO.Window.isCreated {
-		var ctxProfile = ngctx.CtxProfile{CoreProfile: true, ForwardCompatibility: Options.Initialization.GlContext.CoreProfile.ForwardCompat}
+		var ctxProfile = ngctx.CtxProfile{CoreProfile: true, ForwardCompat: Options.Initialization.GlContext.CoreProfile.ForwardCompat}
 		if forceContextVersion > 0 {
 			ctxProfile.Version.Major, ctxProfile.Version.Minor = ugl.VersionMajorMinor(forceContextVersion)
 		}

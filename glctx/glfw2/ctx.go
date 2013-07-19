@@ -1,3 +1,4 @@
+//	Implements a `CtxProvider` for GLFW 2.x.
 package glctx_glfw2
 
 import (
@@ -5,11 +6,10 @@ import (
 	ngctx "github.com/go3d/go-ngine/glctx"
 )
 
-// if FS glfw.Disable(glfw.MouseCursor)
-
 type context struct {
 }
 
+//	Returns a new `CtxProvider` for GLFW 2.x.
 func New() ngctx.CtxProvider {
 	return &context{}
 }
@@ -31,7 +31,7 @@ func (me *context) Window(winf *ngctx.WinProfile, bufSize *ngctx.BufferBits, ctx
 	glfw.OpenWindowHint(glfw.OpenGLVersionMajor, ctxProf.Version.Major)
 	glfw.OpenWindowHint(glfw.OpenGLVersionMinor, ctxProf.Version.Minor)
 	glfw.OpenWindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
-	if ctxProf.ForwardCompatibility {
+	if ctxProf.ForwardCompat {
 		glfw.OpenWindowHint(glfw.OpenGLForwardCompat, 1)
 	}
 	winMode := glfw.Windowed
@@ -41,6 +41,9 @@ func (me *context) Window(winf *ngctx.WinProfile, bufSize *ngctx.BufferBits, ctx
 	if err = glfw.OpenWindow(winf.Width, winf.Height, bufSize.Color.R, bufSize.Color.G, bufSize.Color.B, bufSize.Color.A, bufSize.Depth, bufSize.Stencil, winMode); err == nil {
 		win = newWindow()
 		win.SetTitle(winf.Title)
+		if winMode == glfw.Fullscreen {
+			glfw.Disable(glfw.MouseCursor)
+		}
 	}
 	return
 }

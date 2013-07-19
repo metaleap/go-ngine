@@ -1,3 +1,4 @@
+//	Implements a `CtxProvider` for GLFW 3.x.
 package glctx_glfw3
 
 import (
@@ -7,8 +8,6 @@ import (
 	ngctx "github.com/go3d/go-ngine/glctx"
 )
 
-// if FS glfw.Disable(glfw.MouseCursor)
-
 type context struct {
 	lastErr struct {
 		code glfw.ErrorCode
@@ -16,6 +15,7 @@ type context struct {
 	}
 }
 
+//	Returns a new `CtxProvider` for GLFW 3.x.
 func New() ngctx.CtxProvider {
 	me := &context{}
 	me.lastErr.code = -1
@@ -47,7 +47,7 @@ func (me *context) Window(winf *ngctx.WinProfile, bufSize *ngctx.BufferBits, ctx
 	glfw.WindowHint(glfw.ContextVersionMajor, ctxProf.Version.Major)
 	glfw.WindowHint(glfw.ContextVersionMinor, ctxProf.Version.Minor)
 	glfw.WindowHint(glfw.OpenglProfile, glfw.OpenglCoreProfile)
-	if ctxProf.ForwardCompatibility {
+	if ctxProf.ForwardCompat {
 		glfw.WindowHint(glfw.OpenglForwardCompatible, 1)
 	}
 	var mon *glfw.Monitor
@@ -58,6 +58,9 @@ func (me *context) Window(winf *ngctx.WinProfile, bufSize *ngctx.BufferBits, ctx
 		var win *glfw.Window
 		if win, err = glfw.CreateWindow(winf.Width, winf.Height, winf.Title, mon, nil); win != nil {
 			window = newWindow(win)
+			if winf.FullScreen {
+				win.SetInputMode(glfw.Cursor, glfw.CursorHidden)
+			}
 		}
 	}
 	return
