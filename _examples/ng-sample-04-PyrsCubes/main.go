@@ -22,7 +22,6 @@ var (
 )
 
 func main() {
-	apputil.WinFullscreen = true
 	apputil.AddKeyHint("F10", "Add three more crates")
 	apputil.AddKeyHint("F11", "Remove last three crates")
 	apputil.AddKeyHint("F12", "Toggle 'Rear-View-Mirror' Camera")
