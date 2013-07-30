@@ -18,7 +18,7 @@ import (
 
 var (
 	//	Change this before calling `Main` for full-screen mode.
-	WinFullscreen = true
+	WinFullscreen = false
 
 	//	Change to higher value to check out your splash-screen
 	ArtificialSplashScreenDelay = 0 * time.Second
