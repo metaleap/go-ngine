@@ -3,12 +3,12 @@ Cross-platform real-time OpenGL-based 3D engine in Go for Windows (Vista or newe
 ![ Screenshot of go3d/go-ngine/_examples/ng-sample-04-PyrsCubes ](https://dl.dropboxusercontent.com/u/136375/img/screens/go-ngine.png)
 
 
-Getting started via GLFW3:
-==========================
+Getting started via GLFW 3.x:
+=============================
 
 1. first, `go get github.com/go-gl/glfw3` --- this may not compile at first, until you have the http://glfw.org dev libs installed properly for your OS. **Note:** this `go-gl/glfw3` package **needs to be fully built/installed** in your `$GOPATH/pkg` before you can proceed!
 
-2. Next,  `go get github.com/go3d/go-opengl/core` --- our GoGL-inspired CGO wrapper for cross-platform "modern OpenGL" Core Profile . Compilation of this may well take some 10 seconds or longer, but this is a one-off cost. Again, this package **needs to be fully built/installed** in your `$GOPATH/pkg` before you can proceed!
+2. Next,  `go get github.com/go3d/go-opengl/core` --- my GoGL-inspired CGO wrapper for cross-platform "modern OpenGL" Core Profile . Compilation of this may well take some 10 seconds or longer, but this is a one-off cost. Again, this package **needs to be fully built/installed** in your `$GOPATH/pkg` before you can proceed!
 
 3. Before finally diving into *go:ngine*, for now just try to build (via `go get`) and run **github.com/go3d/go-opengl/cmd/opengl-minimal-app-glfw3/main.go** -- if this runs, *go:ngine*'s example apps should run, too.
 
@@ -17,8 +17,8 @@ Getting started via GLFW3:
 Now you should be able to `go run` pretty much any `main.go` packages underneath `go3d/go-ngine/_examples` -- note the programs need write access to the `go3d/go-ngine/_examples/-app-data/_tmp` directory!
 
 
-Getting started via GLFW2:
-==========================
+Getting started via GLFW 2.x:
+=============================
 
 Same as above, but
 
