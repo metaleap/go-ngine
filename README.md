@@ -1,22 +1,44 @@
+Cross-platform real-time OpenGL-based 3D engine in Go for Windows (Vista or newer), Linux (with *cough* decent graphics drivers *cough*) and Mac OS X (10.9 Mavericks or newer *only*).
+
 ![ Screenshot of go3d/go-ngine/_examples/ng-sample-04-PyrsCubes ](https://dl.dropboxusercontent.com/u/136375/img/screens/go-ngine.png)
 
-Getting going:
-==============
 
-First, `go get github.com/go-gl/glfw` --- this may not compile at first, until you have the http://glfw.org dev libs installed properly on your operating system.
+Getting started via GLFW3:
+==========================
 
-This `go-gl/glfw` package needs to be fully installed in your `$GOPATH/pkg` before you can proceed!
+1. first, `go get github.com/go-gl/glfw3` --- this may not compile at first, until you have the http://glfw.org dev libs installed properly for your OS. **Note:** this `go-gl/glfw3` package **needs to be fully built/installed** in your `$GOPATH/pkg` before you can proceed!
 
-Once it is, `go get github.com/go3d/go-ngine` should download and build everything including dependencies. This may well take a couple of minutes!
+2. Next,  `go get github.com/go3d/go-opengl/core` --- our GoGL-inspired CGO wrapper for cross-platform "modern OpenGL" Core Profile . Compilation of this may well take some 10 seconds or longer, but this is a one-off cost. Again, this package **needs to be fully built/installed** in your `$GOPATH/pkg` before you can proceed!
 
-There shouldn't be any compilation errors if the above-mentioned `go-gl/glfw` package is fully installed.
+3. Before finally diving into *go:ngine*, for now just try to build (via `go get`) and run **github.com/go3d/go-opengl/cmd/opengl-minimal-app-glfw3/main.go** -- if this runs, *go:ngine*'s example apps should run, too.
+
+4. Now, finally `go get github.com/go3d/go-ngine` should download and build everything else including dependencies.
 
 Now you should be able to `go run` pretty much any `main.go` packages underneath `go3d/go-ngine/_examples` -- note the programs need write access to the `go3d/go-ngine/_examples/-app-data/_tmp` directory!
+
+
+Getting started via GLFW2:
+==========================
+
+Same as above, but
+
+1. instead of `github.com/go-gl/glfw3` you use `github.com/go-gl/glfw`.
+
+3. instead of `github.com/go3d/go-opengl/cmd/opengl-minimal-app-glfw3/main.go` use `github.com/go3d/go-opengl/cmd/opengl-minimal-app-glfw2/main.go`
+
+4. before running any of the `go3d/go-ngine/_examples`, swap the file extensions of `_examples/shared-utils/use-glfw3.go` and `_examples/shared-utils/use-glfw2.gtxt`
+
+
+Getting started via GLFW2:
+==========================
+
+Get someone to write a `CtxProvider` for SDL to be placed in `go-ngine/glctx/sdl`...  ;)
+
 
 go:ngine
 ========
 
-An in-development OpenGL-based "3D rendering engine" written in Go, focusing on interactive real-time apps such as games or demos.
+An ~~in-development~~ OpenGL-based "3D rendering engine" written in Go, focusing on interactive real-time apps such as games or demos.
 
 Early work-in-progress, "progressing" at a rather leisurely pace too. Performance is a high priority, slowing development considerably. **Not really ready for any "production" use-cases just yet...**
 
