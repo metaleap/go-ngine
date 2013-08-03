@@ -29,8 +29,8 @@ Same as above, but
 4. before running any of the `go3d/go-ngine/_examples`, swap the file extensions of `_examples/shared-utils/use-glfw3.go` and `_examples/shared-utils/use-glfw2.gtxt`
 
 
-Getting started via GLFW2:
-==========================
+Getting started via SDL:
+========================
 
 Get someone to write a `CtxProvider` for SDL to be placed in `go-ngine/glctx/sdl`...  ;)
 
