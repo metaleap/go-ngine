@@ -40,7 +40,7 @@ go:ngine
 
 An ~~in-development~~ OpenGL-based "3D rendering engine" written in Go, focusing on interactive real-time apps such as games or demos.
 
-Early work-~~in-progress~~, "~~progressing~~" at a rather leisurely pace too. Performance is a high priority, slowing development considerably. **Not really ready for any "production" use-cases just yet...**
+Early ~~work-in-progress~~, and ~~progressing~~ at a rather leisurely pace too. Performance is a high priority, slowing development considerably. **Not really ready for any "production" use-cases just yet...**
 
 Current state:
 
