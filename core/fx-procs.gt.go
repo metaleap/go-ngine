@@ -205,6 +205,8 @@ func (me *FxProcs) Toggle(procID string, n int) {
 	}
 }
 
+
+
 //#begin-gt -gen-fx-procs.gt GT_MULT_SEP:, N:Tex2D,TexCube,Orangify,Grayscale,Coords,Color,Gamma
 
 func (me *FxProc) IsTex2D() bool {
@@ -234,8 +236,6 @@ func (me *FxProcs) ToggleTex2D(n int) {
 	me.Toggle("Tex2D", n)
 }
 
-
-
 func (me *FxProc) IsTexCube() bool {
 	return me.procID == "TexCube"
 }
@@ -262,8 +262,6 @@ func (me FxProcs) GetTexCube(n int) *FxProc {
 func (me *FxProcs) ToggleTexCube(n int) {
 	me.Toggle("TexCube", n)
 }
-
-
 
 func (me *FxProc) IsOrangify() bool {
 	return me.procID == "Orangify"
@@ -292,8 +290,6 @@ func (me *FxProcs) ToggleOrangify(n int) {
 	me.Toggle("Orangify", n)
 }
 
-
-
 func (me *FxProc) IsGrayscale() bool {
 	return me.procID == "Grayscale"
 }
@@ -320,8 +316,6 @@ func (me FxProcs) GetGrayscale(n int) *FxProc {
 func (me *FxProcs) ToggleGrayscale(n int) {
 	me.Toggle("Grayscale", n)
 }
-
-
 
 func (me *FxProc) IsCoords() bool {
 	return me.procID == "Coords"
@@ -350,8 +344,6 @@ func (me *FxProcs) ToggleCoords(n int) {
 	me.Toggle("Coords", n)
 }
 
-
-
 func (me *FxProc) IsColor() bool {
 	return me.procID == "Color"
 }
@@ -378,8 +370,6 @@ func (me FxProcs) GetColor(n int) *FxProc {
 func (me *FxProcs) ToggleColor(n int) {
 	me.Toggle("Color", n)
 }
-
-
 
 func (me *FxProc) IsGamma() bool {
 	return me.procID == "Gamma"

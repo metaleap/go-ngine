@@ -83,6 +83,8 @@ func (me *FxEffect) useProcs(ops FxProcs) {
 	}
 }
 
+
+
 //#begin-gt -gen-lib.gt T:FxEffect L:Core.Libs.Effects
 
 //	Only used for Core.Libs.Effects

@@ -106,7 +106,7 @@ func Main(setupExampleScene, onAppThread, onWinThread func()) {
 	win := &ng.UserIO.Window
 	//	release apps shouldn't do this, but during dev/test we want to observe max fps:
 	win.SetSwapInterval(0)
-	win.SetSize(1366, 768)
+	win.SetSize(1440, 810)
 	winTitle.appName = filepath.Base(os.Args[0])
 	win.SetTitle(fmt.Sprintf("Loading \"%s\" example app... (%v CPU cores)", winTitle.appName, runtime.GOMAXPROCS(0)))
 

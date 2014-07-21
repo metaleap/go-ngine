@@ -87,6 +87,8 @@ func (me *RenderViewport) update() {
 	me.aspect = float64(me.absW) / float64(me.absH)
 }
 
+
+
 //#begin-gt -gen-reflib.gt T:RenderView L:Core.Render.Canvases[id].Views
 
 //	Only used for Core.Render.Canvases[id].Views
