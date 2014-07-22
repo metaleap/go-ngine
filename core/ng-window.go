@@ -13,6 +13,9 @@ type WindowOptions struct {
 	//	Defaults to 0.15.
 	ResizeMinDelay float64
 
+	//	Number of samples (0, 2, 4, 8...)
+	MultiSampling int
+
 	win                   ngctx.Window
 	fullscreen, isCreated bool
 	width, height, swap   int

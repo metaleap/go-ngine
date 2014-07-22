@@ -104,6 +104,9 @@ func (me *Scene) SetNodeMeshID(nodeID, meshID int) {
 
 
 
+
+
+
 //#begin-gt -gen-lib.gt T:Scene L:Core.Libs.Scenes
 
 //	Only used for Core.Libs.Scenes

@@ -38,6 +38,9 @@ type WinProfile struct {
 
 	//	Window title
 	Title string
+
+	//	Number of samples (0, 2, 4, 8...)
+	MultiSampling int
 }
 
 type CtxProvider interface {

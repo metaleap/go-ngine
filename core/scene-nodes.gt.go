@@ -4,6 +4,9 @@ type sceneChildNodes []int
 
 
 
+
+
+
 //#begin-gt -gen-lib.gt T:SceneNode L:Core.Scenes[id].allNodes
 
 //	Only used for Core.Scenes[id].allNodes

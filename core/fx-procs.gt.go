@@ -207,6 +207,9 @@ func (me *FxProcs) Toggle(procID string, n int) {
 
 
 
+
+
+
 //#begin-gt -gen-fx-procs.gt GT_MULT_SEP:, N:Tex2D,TexCube,Orangify,Grayscale,Coords,Color,Gamma
 
 func (me *FxProc) IsTex2D() bool {

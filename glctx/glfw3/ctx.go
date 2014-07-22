@@ -37,7 +37,7 @@ func (me *context) Init() (err error) {
 }
 
 func (me *context) Window(winf *ngctx.WinProfile, bufSize *ngctx.BufferBits, ctxProf *ngctx.CtxProfile) (window ngctx.Window, err error) {
-	glfw.WindowHint(glfw.Samples, 0) // AA will be a pluggable post-processing shader
+	glfw.WindowHint(glfw.Samples, winf.MultiSampling)
 	glfw.WindowHint(glfw.RedBits, bufSize.Color.R)
 	glfw.WindowHint(glfw.GreenBits, bufSize.Color.G)
 	glfw.WindowHint(glfw.BlueBits, bufSize.Color.B)

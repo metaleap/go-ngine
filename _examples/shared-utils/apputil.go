@@ -35,9 +35,6 @@ var (
 
 	SceneView *ng.RenderView
 
-	//	Do not set this field directly, only use PauseResume() to
-	//	toggle it and effect the associated render-state changes.
-
 	//	Unlike the off-screen (render-to-texture) SceneCanvas above,
 	//	this RenderCanvas epresents the actual screen/window.
 	PostFxCanvas *ng.RenderCanvas
@@ -46,6 +43,8 @@ var (
 	//	post-process it or not, and blits it to PostFxCanvas.
 	PostFxView *ng.RenderView
 
+	//	Do not set this field directly, only use PauseResume() to
+	//	toggle it and effect the associated render-state changes.
 	Paused bool
 
 	retro  bool

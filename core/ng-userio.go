@@ -61,7 +61,7 @@ func (_ *NgUserIO) recreateWin(ctxProfile *ngctx.CtxProfile) (err error) {
 		uioWin.win.Close()
 		uioWin.win = nil
 	}
-	var winf = ngctx.WinProfile{Width: uioWin.width, Height: uioWin.height, Title: uioWin.title, FullScreen: uioWin.fullscreen}
+	var winf = ngctx.WinProfile{Width: uioWin.width, Height: uioWin.height, Title: uioWin.title, FullScreen: uioWin.fullscreen, MultiSampling: uioWin.MultiSampling}
 	if uioWin.win, err = UserIO.ctx.Window(&winf, &Options.Initialization.Window.BufSizes, ctxProfile); err == nil {
 		uioWin.width, uioWin.height = uioWin.win.Size()
 		uioWin.isCreated = true

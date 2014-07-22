@@ -2333,6 +2333,9 @@ type WindowOptions struct {
 	//	the OS before notifying the rendering runtime of the new window dimensions.
 	//	Defaults to 0.15.
 	ResizeMinDelay float64
+
+	//	Number of samples (0, 2, 4, 8...)
+	MultiSampling int
 }
 ```
 
