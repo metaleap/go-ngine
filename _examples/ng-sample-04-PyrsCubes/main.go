@@ -56,6 +56,7 @@ func onAppThread() {
 
 	apputil.HandleCamCtlKeys()
 	apputil.RearView.OnApp()
+	nowSin, nowCos := math.Sincos(ng.Loop.Tick.Now)
 
 	//	node geometry anims
 	if tmpScene = gui2d.Cam.Scene(); tmpScene != nil {
@@ -67,11 +68,11 @@ func onAppThread() {
 	if tmpScene = apputil.SceneCam.Scene(); tmpScene != nil {
 		if tmpNode = tmpScene.Node(pyrID); tmpNode != nil {
 			tmpNode.Transform.Rot.Add3(-0.0005, -0.0005, 0)
-			tmpNode.Transform.Pos.Set(-13.75, 2*math.Sin(ng.Loop.Tick.Now), 2)
+			tmpNode.Transform.Pos.Set(-13.75, 2*nowSin, 2)
 		}
 		if tmpNode = tmpScene.Node(boxID); tmpNode != nil {
 			tmpNode.Transform.Rot.Add3(0.0004, 0, 0.0006)
-			tmpNode.Transform.Pos.Set(-8.125, 2*math.Cos(ng.Loop.Tick.Now), -2)
+			tmpNode.Transform.Pos.Set(-8.125, 2*nowCos, -2)
 		}
 
 		var f float64
@@ -84,10 +85,10 @@ func onAppThread() {
 		}
 
 		if tmpNode = tmpScene.Node(pyrIDs[0]); tmpNode != nil {
-			tmpNode.Transform.Pos.X = math.Sin(ng.Loop.Tick.Now) * 100
+			tmpNode.Transform.Pos.X = nowSin * 100
 		}
 		if tmpNode = tmpScene.Node(pyrIDs[1]); tmpNode != nil {
-			tmpNode.Transform.Pos.Z = math.Cos(ng.Loop.Tick.Now) * 1000
+			tmpNode.Transform.Pos.Z = nowCos * 1000
 		}
 		tmpScene.ApplyNodeTransforms(0)
 	}
