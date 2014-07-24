@@ -215,7 +215,7 @@ func setupExample_04_PyrsCubes() {
 	camCtl := &apputil.SceneCam.Controller
 	camCtl.BeginUpdate()
 	camCtl.Pos.X, camCtl.Pos.Y, camCtl.Pos.Z = -3.57, 3.63, 19.53
-	camCtl.TurnRightBy(155)
+	camCtl.TurnRightBy(-111)
 	camCtl.EndUpdate()
 }
 

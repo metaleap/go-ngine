@@ -107,6 +107,11 @@ func (me *RenderCanvasLib) AddNew(relative bool, width, height float64) (canv *R
 
 
 
+
+
+
+
+
 //#begin-gt -gen-reflib.gt T:RenderCanvas L:Core.Render.Canvases
 
 //	Only used for Core.Render.Canvases

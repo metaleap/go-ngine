@@ -40,9 +40,9 @@ buffers.
 
 ```go
 type CtxProfile struct {
-	//	If `true`, an OpenGL Core Profile context is created.
-	//	If `false`, an OpenGL Compatibility Profile context is created.
-	CoreProfile bool
+	//	If `false`, an OpenGL Core Profile context is created (recommended & default).
+	//	If `true`, an OpenGL Compatibility Profile context is created (at your own risk).
+	CompatProfile bool
 
 	//	Whether to create a "forward-compatible" OpenGL context.
 	ForwardCompat bool

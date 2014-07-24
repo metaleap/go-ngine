@@ -119,7 +119,7 @@ func (me *Mesh) load(meshData *u3d.MeshDescriptor) (err error) {
 		meshData.Positions[meshData.Faces[fi].V[1].PosIndex].ToVec3(&tvp[1])
 		meshData.Positions[meshData.Faces[fi].V[2].PosIndex].ToVec3(&tvp[2])
 		for tvi = 0; tvi < len(tvp); tvi++ {
-			if f = tvp[tvi].DistanceFromZero(); f > me.raw.bounding.Sphere {
+			if f = tvp[tvi].Magnitude(); f > me.raw.bounding.Sphere {
 				me.raw.bounding.Sphere = f
 			}
 			me.raw.bounding.AaBox.UpdateMinMax(&tvp[tvi])
@@ -201,8 +201,6 @@ func (_ MeshLib) MeshQuad() u3d.MeshProvider {
 func (_ MeshLib) MeshTri() u3d.MeshProvider {
 	return u3d.MeshDescriptorTri
 }
-
-
 
 
 

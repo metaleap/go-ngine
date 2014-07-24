@@ -143,9 +143,9 @@ func (me *RenderTechniqueScene) prepEntry(n, nid, fx int, fi int32) {
 	if fi == -1 {
 		distPos = &Core.Libs.Scenes[me.Camera.sceneID].allNodes[nid].Transform.Pos
 	} else {
-		distPos = Core.Libs.Scenes[me.Camera.sceneID].allNodes[nid].Transform.Pos.AddTo(&Core.Libs.Meshes[entry.mesh].raw.faces[fi].center)
+		distPos = Core.Libs.Scenes[me.Camera.sceneID].allNodes[nid].Transform.Pos.Added(&Core.Libs.Meshes[entry.mesh].raw.faces[fi].center)
 	}
-	entry.dist = me.Camera.Controller.Pos.ManhattanDistanceFrom(distPos)
+	entry.dist = me.Camera.Controller.Pos.DistanceManhattan(distPos)
 	entry.prog = ogl.progs.Index(Core.Libs.Effects[fx].uberPnames[me.name()])
 	uslice.IntEnsureLen(&entry.texes, Stats.Programs.maxTexUnits)
 	var ti int

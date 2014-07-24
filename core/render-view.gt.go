@@ -92,6 +92,11 @@ func (me *RenderViewport) update() {
 
 
 
+
+
+
+
+
 //#begin-gt -gen-reflib.gt T:RenderView L:Core.Render.Canvases[id].Views
 
 //	Only used for Core.Render.Canvases[id].Views

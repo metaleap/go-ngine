@@ -139,6 +139,11 @@ func (_ MeshBufferLib) MemSizePerVertex() int32 {
 
 
 
+
+
+
+
+
 //#begin-gt -gen-reflib.gt T:MeshBuffer L:Core.Mesh.Buffers
 
 //	Only used for Core.Mesh.Buffers

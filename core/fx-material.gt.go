@@ -54,6 +54,11 @@ func (me *FxMaterial) HasFaceEffects() bool {
 
 
 
+
+
+
+
+
 //#begin-gt -gen-lib.gt T:FxMaterial L:Core.Libs.Materials
 
 //	Only used for Core.Libs.Materials
