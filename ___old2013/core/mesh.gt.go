@@ -202,13 +202,6 @@ func (_ MeshLib) MeshTri() u3d.MeshProvider {
 	return u3d.MeshDescriptorTri
 }
 
-
-
-
-
-
-
-
 //#begin-gt -gen-lib.gt T:Mesh L:Core.Libs.Meshes
 
 //	Only used for Core.Libs.Meshes

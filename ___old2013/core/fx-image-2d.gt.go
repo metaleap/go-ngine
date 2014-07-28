@@ -54,20 +54,6 @@ func (me *FxImage2D) Unload() {
 	me.img, me.glSynced = nil, false
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //#begin-gt -gen-lib.gt T:FxImage2D L:Core.Libs.Images.Tex2D
 
 //	Only used for Core.Libs.Images.Tex2D

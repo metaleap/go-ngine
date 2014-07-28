@@ -16,20 +16,6 @@ func (me *Model) init() {
 	return
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //#begin-gt -gen-lib.gt T:Model L:Core.Libs.Models
 
 //	Only used for Core.Libs.Models
