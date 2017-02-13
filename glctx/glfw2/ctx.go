@@ -3,7 +3,7 @@ package glctx_glfw2
 
 import (
 	glfw "github.com/go-gl/glfw"
-	ngctx "github.com/go3d/go-ngine/glctx"
+	ngctx "github.com/metaleap/go-ngine/glctx"
 )
 
 type context struct {

@@ -9,11 +9,11 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/go-forks/go-spew/spew"
-	"github.com/go-utils/ugo"
-	"github.com/go-utils/unum"
+	"github.com/davecgh/go-spew/spew"
+	"github.com/metaleap/go-util-misc"
+	"github.com/metaleap/go-util-num"
 
-	ng "github.com/go3d/go-ngine/___old2013/core"
+	ng "github.com/metaleap/go-ngine/___old2013/core"
 )
 
 var (
@@ -62,7 +62,7 @@ var (
 	sec        = 0
 )
 
-//	Returns the base path of the "app dir" for our example apps, in this case: $GOPATH/src/github.com/go3d/go-ngine/___old2013/_examples/-app-data
+//	Returns the base path of the "app dir" for our example apps, in this case: $GOPATH/src/github.com/metaleap/go-ngine/___old2013/_examples/-app-data
 func AppDirBasePath() string {
 	return ugo.GopathSrcGithub("go3d", "go-ngine", "___old2013", "_examples", "-app-data")
 }

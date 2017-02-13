@@ -2,7 +2,7 @@
 package main
 
 import (
-	apputil "github.com/go3d/go-ngine/___old2013/_examples/shared-utils"
+	apputil "github.com/metaleap/go-ngine/___old2013/_examples/shared-utils"
 )
 
 func main() {

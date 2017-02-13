@@ -4,9 +4,9 @@ package main
 import (
 	"math"
 
-	"github.com/go-utils/unum"
-	apputil "github.com/go3d/go-ngine/___old2013/_examples/shared-utils"
-	ng "github.com/go3d/go-ngine/___old2013/core"
+	"github.com/metaleap/go-util-num"
+	apputil "github.com/metaleap/go-ngine/___old2013/_examples/shared-utils"
+	ng "github.com/metaleap/go-ngine/___old2013/core"
 )
 
 var (

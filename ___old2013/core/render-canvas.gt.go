@@ -3,8 +3,8 @@ package core
 import (
 	"math"
 
-	gl "github.com/go3d/go-opengl/core"
-	ugl "github.com/go3d/go-opengl/util"
+	gl "github.com/metaleap/go-opengl/core"
+	ugl "github.com/metaleap/go-opengl/util"
 )
 
 //	Represents a surface (texture framebuffer) that can be rendered to.

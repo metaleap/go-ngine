@@ -1,6 +1,6 @@
 # unitycompat
 --
-    import "github.com/go3d/go-ngine/unitycompat"
+    import "github.com/metaleap/go-ngine/unitycompat"
 
 
 ## Usage

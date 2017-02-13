@@ -1,9 +1,9 @@
 package core
 
 import (
-	ugl "github.com/go3d/go-opengl/util"
+	ugl "github.com/metaleap/go-opengl/util"
 
-	ngctx "github.com/go3d/go-ngine/glctx"
+	ngctx "github.com/metaleap/go-ngine/glctx"
 )
 
 var (

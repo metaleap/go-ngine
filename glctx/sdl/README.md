@@ -1,6 +1,6 @@
 # glctx_sdl
 --
-    import "github.com/go3d/go-ngine/glctx/sdl"
+    import "github.com/metaleap/go-ngine/glctx/sdl"
 
 
 ## Usage

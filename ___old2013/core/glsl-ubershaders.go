@@ -4,9 +4,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/go-utils/uslice"
-	"github.com/go-utils/ustr"
-	ugl "github.com/go3d/go-opengl/util"
+	"github.com/metaleap/go-util-slice"
+	"github.com/metaleap/go-util-str"
+	ugl "github.com/metaleap/go-opengl/util"
 )
 
 type uberShaderFunc struct {

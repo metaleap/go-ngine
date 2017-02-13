@@ -5,10 +5,10 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/go-utils/ufs"
-	ugl "github.com/go3d/go-opengl/util"
+	"github.com/metaleap/go-util-fs"
+	ugl "github.com/metaleap/go-opengl/util"
 
-	ngctx "github.com/go3d/go-ngine/glctx"
+	ngctx "github.com/metaleap/go-ngine/glctx"
 )
 
 //	Call this to "un-init" go:ngine and to release any and all GPU or RAM resources still allocated.

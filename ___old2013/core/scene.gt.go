@@ -1,7 +1,7 @@
 package core
 
 import (
-	"github.com/go-utils/uslice"
+	"github.com/metaleap/go-util-slice"
 )
 
 const sceneNodeChildCap = 16

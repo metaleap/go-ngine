@@ -8,10 +8,10 @@ import (
 	"go/token"
 	"strings"
 
-	xmlx "github.com/go-forks/go-pkg-xmlx"
+	xmlx "github.com/jteeuwen/go-pkg-xmlx"
 
-	util "github.com/metaleap/go-util"
-	uio "github.com/metaleap/go-util/io"
+	util "github.com/metaleap/go-util-misc"
+	uio "github.com/metaleap/go-util-fs"
 )
 
 type glNameInfo struct {
@@ -39,7 +39,7 @@ func checkGoFile(filePath string) bool {
 			panic(err)
 		}
 		for _, s := range astFile.Imports {
-			if hasGoglImp = (strings.Index(s.Path.Value, "github.com/go3d/go-opengl/core/") >= 0); hasGoglImp {
+			if hasGoglImp = (strings.Index(s.Path.Value, "github.com/metaleap/go-opengl/core/") >= 0); hasGoglImp {
 				break
 			}
 		}

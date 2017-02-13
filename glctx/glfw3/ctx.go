@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	glfw "github.com/go-gl/glfw3"
-	ngctx "github.com/go3d/go-ngine/glctx"
+	ngctx "github.com/metaleap/go-ngine/glctx"
 )
 
 type context struct {

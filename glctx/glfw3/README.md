@@ -1,6 +1,6 @@
 # glctx_glfw3
 --
-    import "github.com/go3d/go-ngine/glctx/glfw3"
+    import "github.com/metaleap/go-ngine/glctx/glfw3"
 
 Implements a `CtxProvider` for GLFW 3.x.
 

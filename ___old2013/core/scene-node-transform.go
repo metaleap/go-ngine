@@ -1,8 +1,8 @@
 package core
 
 import (
-	"github.com/go-utils/unum"
-	u3d "github.com/go3d/go-3dutil"
+	"github.com/metaleap/go-util-num"
+	u3d "github.com/metaleap/go-util-3d"
 )
 
 type nodeBounds struct {

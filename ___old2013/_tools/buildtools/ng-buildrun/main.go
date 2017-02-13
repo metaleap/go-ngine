@@ -12,10 +12,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/go-utils/ufs"
-	"github.com/go-utils/ugfx"
-	"github.com/go-utils/ugo"
-	"github.com/go-utils/ustr"
+	"github.com/metaleap/go-util-fs"
+	"github.com/metaleap/go-util-gfx"
+	"github.com/metaleap/go-util-misc"
+	"github.com/metaleap/go-util-str"
 )
 
 type shaderSrc struct {

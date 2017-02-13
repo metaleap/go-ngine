@@ -1,7 +1,7 @@
 package core
 
 import (
-	ngctx "github.com/go3d/go-ngine/glctx"
+	ngctx "github.com/metaleap/go-ngine/glctx"
 )
 
 type WindowOptions struct {

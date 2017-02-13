@@ -1,6 +1,6 @@
 # exampleutils
 --
-    import "github.com/go3d/go-ngine/___old2013/_examples/shared-utils"
+    import "github.com/metaleap/go-ngine/___old2013/_examples/shared-utils"
 
 Some common base functionality shared by all the go:ngine example apps in
 _examples.
@@ -164,7 +164,7 @@ pointing to the ng.FxEffect.
 func AppDirBasePath() string
 ```
 Returns the base path of the "app dir" for our example apps, in this case:
-$GOPATH/src/github.com/go3d/go-ngine/___old2013/_examples/-app-data
+$GOPATH/src/github.com/metaleap/go-ngine/___old2013/_examples/-app-data
 
 #### func  CheckAndHandleToggleKeys
 

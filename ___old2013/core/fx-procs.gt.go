@@ -1,9 +1,9 @@
 package core
 
 import (
-	"github.com/go-utils/ustr"
-	gl "github.com/go3d/go-opengl/core"
-	ugl "github.com/go3d/go-opengl/util"
+	"github.com/metaleap/go-util-str"
+	gl "github.com/metaleap/go-opengl/core"
+	ugl "github.com/metaleap/go-opengl/util"
 )
 
 func fxKnownProcIDs() []string {

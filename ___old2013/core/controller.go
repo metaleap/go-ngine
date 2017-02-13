@@ -3,7 +3,7 @@ package core
 import (
 	"math"
 
-	"github.com/go-utils/unum"
+	"github.com/metaleap/go-util-num"
 )
 
 //	Encapsulates a position-and-direction and provides methods

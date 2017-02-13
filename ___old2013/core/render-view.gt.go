@@ -1,8 +1,8 @@
 package core
 
 import (
-	gl "github.com/go3d/go-opengl/core"
-	ugl "github.com/go3d/go-opengl/util"
+	gl "github.com/metaleap/go-opengl/core"
+	ugl "github.com/metaleap/go-opengl/util"
 )
 
 type RenderView struct {

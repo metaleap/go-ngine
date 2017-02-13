@@ -2,7 +2,7 @@
 package glctx_sdl
 
 import (
-	ngctx "github.com/go3d/go-ngine/glctx"
+	ngctx "github.com/metaleap/go-ngine/glctx"
 )
 
 //	Currently returns `nil`.

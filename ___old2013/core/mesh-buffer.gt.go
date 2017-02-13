@@ -1,10 +1,10 @@
 package core
 
 import (
-	gl "github.com/go3d/go-opengl/core"
+	gl "github.com/metaleap/go-opengl/core"
 
-	"github.com/go-utils/uslice"
-	ugl "github.com/go3d/go-opengl/util"
+	"github.com/metaleap/go-util-slice"
+	ugl "github.com/metaleap/go-opengl/util"
 )
 
 type MeshBuffer struct {

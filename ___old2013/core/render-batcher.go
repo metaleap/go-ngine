@@ -3,9 +3,9 @@ package core
 import (
 	"sort"
 
-	"github.com/go-utils/uhash"
-	"github.com/go-utils/unum"
-	"github.com/go-utils/uslice"
+	"github.com/go-util-hash"
+	"github.com/metaleap/go-util-num"
+	"github.com/metaleap/go-util-slice"
 )
 
 const numPrios = 3

@@ -1,6 +1,6 @@
 # glctx
 --
-    import "github.com/go3d/go-ngine/glctx"
+    import "github.com/metaleap/go-ngine/glctx"
 
 Provides GL context creation for go:ngine.
 

@@ -9,9 +9,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	uio "github.com/metaleap/go-util/io"
+	uio "github.com/metaleap/go-util-fs"
 
-	"github.com/go-forks/tga"
+	"github.com/ftrvxmtrx/tga"
 )
 
 var (

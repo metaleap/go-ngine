@@ -5,7 +5,7 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 
-	ugl "github.com/go3d/go-opengl/util"
+	ugl "github.com/metaleap/go-opengl/util"
 )
 
 type FxImage2D struct {

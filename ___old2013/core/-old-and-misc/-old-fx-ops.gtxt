@@ -1,9 +1,9 @@
 package core
 
 import (
-	gl "github.com/go3d/go-opengl/core"
-	ugl "github.com/go3d/go-opengl/util"
-	ustr "github.com/metaleap/go-util/str"
+	gl "github.com/metaleap/go-opengl/core"
+	ugl "github.com/metaleap/go-opengl/util"
+	ustr "github.com/metaleap/go-util-str"
 )
 
 //	Implemented by specialized types such as FxOpTex2D, FxOpGrayscale etc.

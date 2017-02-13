@@ -8,11 +8,11 @@ Getting started via GLFW 3.x:
 
 1. first, `go get github.com/go-gl/glfw3` --- this may not compile at first, until you have the http://glfw.org dev libs installed properly for your OS. **Note:** this `go-gl/glfw3` package **needs to be fully built/installed** in your `$GOPATH/pkg` before you can proceed!
 
-2. Next,  `go get github.com/go3d/go-opengl/core` --- my GoGL-inspired CGO wrapper for cross-platform "modern OpenGL" Core Profile . Compilation of this may well take some 10 seconds or longer, but this is a one-off cost. Again, this package **needs to be fully built/installed** in your `$GOPATH/pkg` before you can proceed!
+2. Next,  `go get github.com/metaleap/go-opengl/core` --- my GoGL-inspired CGO wrapper for cross-platform "modern OpenGL" Core Profile . Compilation of this may well take some 10 seconds or longer, but this is a one-off cost. Again, this package **needs to be fully built/installed** in your `$GOPATH/pkg` before you can proceed!
 
-3. Before finally diving into *go:ngine*, for now just try to build (via `go get`) and run **github.com/go3d/go-opengl/cmd/opengl-minimal-app-glfw3/main.go** -- if this runs, *go:ngine*'s example apps should run, too.
+3. Before finally diving into *go:ngine*, for now just try to build (via `go get`) and run **github.com/metaleap/go-opengl/cmd/opengl-minimal-app-glfw3/main.go** -- if this runs, *go:ngine*'s example apps should run, too.
 
-4. Now, finally `go get github.com/go3d/go-ngine/___old2013` should download and build everything else including dependencies.
+4. Now, finally `go get github.com/metaleap/go-ngine/___old2013` should download and build everything else including dependencies.
 
 Now you should be able to `go run` pretty much any `main.go` packages underneath `go3d/go-ngine/___old2013/_examples` -- note the programs need write access to the `go3d/go-ngine/___old2013/_examples/-app-data/_tmp` directory!
 
@@ -24,7 +24,7 @@ Same as above, but
 
 1. instead of `github.com/go-gl/glfw3` you use `github.com/go-gl/glfw`.
 
-3. instead of `github.com/go3d/go-opengl/cmd/opengl-minimal-app-glfw3/main.go` use `github.com/go3d/go-opengl/cmd/opengl-minimal-app-glfw2/main.go`
+3. instead of `github.com/metaleap/go-opengl/cmd/opengl-minimal-app-glfw3/main.go` use `github.com/metaleap/go-opengl/cmd/opengl-minimal-app-glfw2/main.go`
 
 4. before running any of the `go3d/go-ngine/___old2013/_examples`, swap the file extensions of `_examples/shared-utils/use-glfw3.go` and `_examples/shared-utils/use-glfw2.gtxt`
 

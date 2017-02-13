@@ -4,10 +4,10 @@ import (
 	"io"
 	"runtime"
 
-	u3d "github.com/go3d/go-3dutil"
-	ugl "github.com/go3d/go-opengl/util"
+	u3d "github.com/metaleap/go-util-3d"
+	ugl "github.com/metaleap/go-opengl/util"
 
-	ngctx "github.com/go3d/go-ngine/glctx"
+	ngctx "github.com/metaleap/go-ngine/glctx"
 )
 
 const DefaultBadVersionMessage = `

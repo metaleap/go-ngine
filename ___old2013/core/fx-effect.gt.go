@@ -1,7 +1,7 @@
 package core
 
 import (
-	"github.com/go-utils/ustr"
+	"github.com/metaleap/go-util-str"
 )
 
 //	Declares the visual appearance of a surface.

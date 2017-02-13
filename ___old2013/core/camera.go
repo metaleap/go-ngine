@@ -1,10 +1,10 @@
 package core
 
 import (
-	"github.com/go-utils/unum"
-	"github.com/go-utils/uslice"
-	u3d "github.com/go3d/go-3dutil"
-	ugl "github.com/go3d/go-opengl/util"
+	"github.com/metaleap/go-util-num"
+	"github.com/metaleap/go-util-slice"
+	u3d "github.com/metaleap/go-util-3d"
+	ugl "github.com/metaleap/go-opengl/util"
 )
 
 type Camera struct {

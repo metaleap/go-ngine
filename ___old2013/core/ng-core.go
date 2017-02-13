@@ -1,9 +1,9 @@
 package core
 
 import (
-	u3d "github.com/go3d/go-3dutil"
-	gl "github.com/go3d/go-opengl/core"
-	ugl "github.com/go3d/go-opengl/util"
+	u3d "github.com/metaleap/go-util-3d"
+	gl "github.com/metaleap/go-opengl/core"
+	ugl "github.com/metaleap/go-opengl/util"
 )
 
 var (

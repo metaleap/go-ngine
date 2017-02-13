@@ -1,7 +1,7 @@
 package exampleutils
 
 import (
-	ng "github.com/go3d/go-ngine/___old2013/core"
+	ng "github.com/metaleap/go-ngine/___old2013/core"
 )
 
 //	Not actively used unless RearView.Setup() is called.

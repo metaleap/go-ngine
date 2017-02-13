@@ -3,8 +3,8 @@ package unitycompat
 import (
 	"math"
 
-	"github.com/go-utils/ugo"
-	"github.com/go-utils/unum"
+	"github.com/metaleap/go-util-misc"
+	"github.com/metaleap/go-util-num"
 )
 
 func Mathf_Abs(value int) int {

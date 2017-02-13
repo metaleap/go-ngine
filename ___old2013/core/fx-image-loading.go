@@ -7,7 +7,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/go-utils/ugfx"
+	"github.com/metaleap/go-util-gfx"
 )
 
 type FxImageInitFrom struct {

@@ -3,8 +3,8 @@ package core
 import (
 	"log"
 
-	"github.com/go-utils/ugo"
-	ugl "github.com/go3d/go-opengl/util"
+	"github.com/metaleap/go-util-misc"
+	ugl "github.com/metaleap/go-opengl/util"
 )
 
 var (
