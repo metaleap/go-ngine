@@ -1,7 +1,7 @@
 package glctx_glfw3
 
 import (
-	glfw "github.com/go-gl/glfw3"
+	glfw "github.com/go-gl/glfw/v3.0/glfw"
 )
 
 type window struct {

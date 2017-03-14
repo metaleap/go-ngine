@@ -3,7 +3,7 @@ package core
 import (
 	"sort"
 
-	"github.com/go-util-hash"
+	"github.com/metaleap/go-util-hash"
 	"github.com/metaleap/go-util-num"
 	"github.com/metaleap/go-util-slice"
 )

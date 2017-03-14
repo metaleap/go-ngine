@@ -1,7 +1,7 @@
 package exampleutils
 
 import (
-	glfw "github.com/go-gl/glfw3"
+	glfw "github.com/go-gl/glfw/v3.0/glfw"
 	glctx "github.com/metaleap/go-ngine/glctx"
 	ngctx "github.com/metaleap/go-ngine/glctx/glfw3"
 )

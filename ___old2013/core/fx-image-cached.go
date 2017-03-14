@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 
 	"github.com/metaleap/go-util-gfx"
-	"github.com/go-util-hash"
+	"github.com/metaleap/go-util-hash"
 )
 
 type fxImageCached struct {
