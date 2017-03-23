@@ -9,7 +9,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/davecgh/go-spew/spew"
+	"github.com/go-forks/go-spew/spew"
 	"github.com/metaleap/go-util-misc"
 	"github.com/metaleap/go-util-num"
 

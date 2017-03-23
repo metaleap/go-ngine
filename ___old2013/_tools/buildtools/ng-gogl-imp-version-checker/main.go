@@ -8,7 +8,7 @@ import (
 	"go/token"
 	"strings"
 
-	xmlx "github.com/jteeuwen/go-pkg-xmlx"
+	xmlx "github.com/go-forks/go-pkg-xmlx"
 
 	util "github.com/metaleap/go-util-misc"
 	uio "github.com/metaleap/go-util-fs"
